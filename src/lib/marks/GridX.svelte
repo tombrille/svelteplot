@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Figure } from '$lib/classes/Figure.svelte';
-	import type { GridProps, DataRow, DataRecord } from '$lib/types';
+	import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
+	import type { DataRow, DataRecord } from '$lib/types';
 	import { getContext } from 'svelte';
 
 	const figure = getContext<Figure>('svelteplot');
@@ -19,9 +20,12 @@
 
 	let ticks = $derived(data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 60)));
 	let tickTexts = $derived(ticks.map(tickFormat));
+
+    $effect(() => console.log(figure.xScale(1.5)))
 </script>
 
-<g class="grid-x">
+<GroupMultiple data={ticks} class="grid-x">
+    <text>{ticks.length}</text>
 	{#each ticks as tick, t}
 		{@const textLines = tickTexts[t]}
 		{@const prevTextLines = t && tickTexts[t - 1]}
@@ -43,7 +47,7 @@
 			</g>
 		</g>
 	{/each}
-</g>
+</GroupMultiple>
 
 <style>
 	.x-tick text {

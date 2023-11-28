@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Figure } from '$lib/classes/Figure.svelte';
+	import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
 	import type { DataRow, DataRecord } from '$lib/types';
 	import { getContext } from 'svelte';
 
@@ -25,7 +26,7 @@
 	let ticks = $derived(data.length > 0 ? data : figure.yScale.ticks(Math.ceil(figure.plotHeight / 60)));
 </script>
 
-<g class="y-grid">
+<GroupMultiple data={ticks} class="grid-y">
 	{#if label}
 		<text x={0} y={5} class="grid-label" dominant-baseline="hanging">{label}</text>
 	{/if}
@@ -36,7 +37,7 @@
 			<line class="grid" x2={figure.width - figure.margins.right - figure.margins.left} />
 		</g>
 	{/each}
-</g>
+</GroupMultiple>
 
 <style>
 	text {

@@ -30,6 +30,7 @@ export type Mark = {
 		data: DataRow[];
 		x?: ChannelAccessor;
 		y?: ChannelAccessor;
+		r?: ChannelAccessor;
 		fill?: ChannelAccessor;
 		stroke?: ChannelAccessor;
 	};
