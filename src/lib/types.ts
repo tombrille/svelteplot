@@ -1,5 +1,4 @@
-import type { SnippetBlock } from 'svelte/compiler';
-import { CHANNEL_TYPES } from './contants';
+import type { CHANNEL_TYPES } from './contants';
 
 export type FigureProps = {
 	height?: number;
@@ -10,6 +9,8 @@ export type FigureProps = {
 	header?: () => void;
 	footer?: () => void;
 	children?: () => void;
+	// options for scales
+	radius?: { range?: [number,number ]};
 };
 
 export type Margins = {
@@ -23,40 +24,81 @@ export type GridProps = {
 	tickFormat?: (d: any) => string;
 };
 
-export type Mark = {
-	type: string;
-	channels: Set<ChannelName>;
-	props: {
-		data: DataRow[];
-		x?: ChannelAccessor;
-		y?: ChannelAccessor;
-		r?: ChannelAccessor;
-		fill?: ChannelAccessor;
-		stroke?: ChannelAccessor;
-	};
-};
-
 export type DataRecord = Record<string, RawValue>;
-export type DataRow = DataRecord;
+export type DataRow = DataRecord | RawValue | [number, number];
 
-export type ChannelAccessor = string | ((d: DataRow) => RawValue) | null;
+export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null;
 
 export type RawValue = number | Date | boolean | string | null;
 
-export type ChannelTypeRaw = 'opacity' | 'color' | 'position' | 'angle' | 'radius' | 'symbol';
+export type ChannelName = 'opacity' | 'color' | 'x' | 'y' | 'angle' | 'radius' | 'symbol' | 'width';
 
-export type ChannelName =
-	| 'x'
-	| 'y'
-	| 'r'
-	| 'rotate'
-	| 'symbol'
+// const MarkPro
+
+// list of all prossible style props on marks
+export type MarkStyleProps =
+	| 'strokeDasharray'
+	| 'opacity'
 	| 'fill'
 	| 'fillOpacity'
 	| 'stroke'
+	| 'strokeWidth'
 	| 'strokeOpacity'
-	| 'opacity';
+	| 'x'
+	| 'y'
+	| 'angle'
+	| 'radius'
+	| 'symbol'
+	| 'width';
+
+export type MarkProps2 = 'x' | 'y' | 'r' | 'rotate' | 'symbol';
 
 export type ValueOf<T> = T[keyof T];
 
 export type ChannelType = ValueOf<typeof CHANNEL_TYPES>;
+
+export interface MarkProps {
+	data: DataRow[];
+}
+
+export type BaseMarkProps = MarkProps & {
+	type: string;
+	channels: ChannelName[];
+};
+
+export type BaseMarkStyleProps = {
+	fill?: ChannelAccessor;
+	stroke?: ChannelAccessor;
+	opacity?: ChannelAccessor;
+	fillOpacity?: ChannelAccessor;
+	strokeOpacity?: ChannelAccessor;
+	strokeWidth?: ChannelAccessor;
+};
+
+export type DotMarkProps = MarkProps &
+	BaseMarkStyleProps & {
+		data: DataRow[];
+		x?: ChannelAccessor;
+		y?: ChannelAccessor;
+		r?: ChannelAccessor;
+		rotate?: ChannelAccessor;
+		symbol?: ChannelAccessor;
+	};
+
+export type GridOptions = {
+	title: string;
+	strokeDasharray?: ChannelAccessor;
+	stroke?: ChannelAccessor;
+	strokeWidth?: ChannelAccessor;
+	tickFormat: (d: RawValue) => string;
+};
+
+export type GridXMarkProps = MarkProps & {
+	y1?: ChannelAccessor;
+	y2?: ChannelAccessor;
+};
+
+export type GridYMarkProps = MarkProps & {
+	x1?: ChannelAccessor;
+	x2?: ChannelAccessor;
+};

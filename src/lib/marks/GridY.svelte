@@ -1,43 +1,33 @@
 <script lang="ts">
 	import type { Figure } from '$lib/classes/Figure.svelte';
-	import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-	import type { DataRow, DataRecord } from '$lib/types';
+	// import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
+	import type { GridYMarkProps } from '$lib/types';
 	import { getContext } from 'svelte';
+	import BaseMark from './BaseMark.svelte';
 
 	const figure = getContext<Figure>('svelteplot');
 
-	let {
-		data = [],
-		label = null,
-		tickFormat = (d) => String(d)
-	} = $props<{
-		data: DataRow[];
-		tickFormat: (d: DataRecord) => string;
-		fill: string;
-		label: string;
-	}>();
+	let { data = [], title = null, tickFormat = (d) => String(d) } = $props<GridYMarkProps>();
 
-	figure.addMark({
-		type: 'grid-y',
-		channels: new Set(data.length ? ['y'] : []),
-		props: { data }
-	});
-
-	let ticks = $derived(data.length > 0 ? data : figure.yScale.ticks(Math.ceil(figure.plotHeight / 60)));
+	let ticks = $derived(
+		data.length > 0 ? data : figure.yScale.ticks(Math.ceil(figure.plotHeight / 60))
+	);
 </script>
 
-<GroupMultiple data={ticks} class="grid-y">
-	{#if label}
-		<text x={0} y={5} class="grid-label" dominant-baseline="hanging">{label}</text>
-	{/if}
-	{#each ticks as tick}
-		<g class="y-tick" transform="translate({figure.margins.left},{figure.yScale(tick)})">
-			<text x="-7" dominant-baseline="middle">{tickFormat(tick)}</text>
-			<line x2="-5" />
-			<line class="grid" x2={figure.width - figure.margins.right - figure.margins.left} />
-		</g>
-	{/each}
-</GroupMultiple>
+<BaseMark type="grid-y" {data} channels={data.length ? ['y'] : []}>
+	<g class="grid-y">
+		{#if title}
+			<text x={0} y={5} class="grid-title" dominant-baseline="hanging">{title}</text>
+		{/if}
+		{#each ticks as tick}
+			<g class="y-tick" transform="translate({figure.margins.left},{figure.yScale(tick)})">
+				<text x="-7" dominant-baseline="middle">{tickFormat(tick)}</text>
+				<line x2="-5" />
+				<line class="grid" x2={figure.width - figure.margins.right - figure.margins.left} />
+			</g>
+		{/each}
+	</g>
+</BaseMark>
 
 <style>
 	text {

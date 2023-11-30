@@ -1,19 +1,20 @@
 <script lang="ts">
 	import type { Figure } from '$lib/classes/Figure.svelte';
 	import { getContext } from 'svelte';
+	import BaseMark from './BaseMark.svelte';
 
 	const figure = getContext<Figure>('svelteplot');
-
-	figure.addMark({ type: 'frame', data: [], channels: new Set() });
 </script>
 
-<rect
-	class="frame"
-	x={figure.margins.left}
-	y={figure.margins.top}
-	width={figure.plotWidth}
-	height={figure.plotHeight}
-/>
+<BaseMark type="frame" data={[]} channels={[]}>
+	<rect
+		class="frame"
+		x={figure.margins.left}
+		y={figure.margins.top}
+		width={figure.plotWidth}
+		height={figure.plotHeight}
+	/>
+</BaseMark>
 
 <!-- todo remove -->
 

@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { DataRow } from '$lib/types';
+	import type { DataRow } from '$lib/types';
 
-    let { data = [], ...rest } = $props<{ data: DataRow[] }>();
+	let { data = [], ...rest } = $props<{ data: DataRow[] }>();
 </script>
 
-{#if data.length > 1}
-    <g {...rest}><slot /></g>
+{#if data.length !== 1}
+	<g {...rest}><slot /></g>
 {:else}
-    <slot />
+	<slot />
 {/if}

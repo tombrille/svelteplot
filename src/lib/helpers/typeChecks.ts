@@ -1,4 +1,5 @@
 import type { RawValue } from '$lib/types';
+import chroma from 'chroma-js';
 import { isDate, isFinite } from 'underscore';
 
 export function isBooleanOrNull(v: RawValue) {
@@ -15,4 +16,13 @@ export function isNumberOrNull(v: RawValue) {
 
 export function isStringOrNull(v: RawValue) {
 	return v == null || typeof v === 'string';
+}
+
+export function isColorOrNull(v: RawValue) {
+	// todo: maybe not use chroma.js here to save kb
+	return v == null || typeof v === 'string' && chroma.valid(v);
+}
+
+export function isOpacityOrNull(v: RawValue) {
+	return v == null || (typeof v === 'number' && isFinite(v) && v >= 0 && v <= 1);
 }

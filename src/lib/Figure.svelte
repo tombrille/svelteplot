@@ -13,12 +13,14 @@
 		marginLeft = 30,
 		marginRight = 10,
 		marginTop = 10,
-		marginBottom = 30
+		marginBottom = 30,
+		// scales
+		radius,
 	} = $props<FigureProps>();
 
 	let width = $state(400);
 
-	const figure = new Figure(600, 400, marginTop, marginLeft, marginRight, marginBottom);
+	const figure = new Figure(600, 400, { marginTop, marginLeft, marginRight, marginBottom, radius });
 
 	setContext('svelteplot', figure);
 
@@ -29,8 +31,8 @@
 		figure.marginRight = marginRight;
 		figure.marginTop = marginTop;
 		figure.marginBottom = marginBottom;
+		figure.options = { radius };
 	});
-
 </script>
 
 <figure class="svelteplot" bind:clientWidth={width}>
@@ -54,5 +56,4 @@
 	.svelteplot :global(h3) {
 		margin: 0 0 0.5ex;
 	}
-	
 </style>
