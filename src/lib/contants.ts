@@ -1,32 +1,32 @@
 import type { ChannelName, ValueOf, MarkProps, MarkStyleProps } from './types';
 
 export const CHANNEL_TYPES: Record<ChannelName, symbol> = {
-	opacity: Symbol('opacity'),
-	color: Symbol('color'),
-	x: Symbol('position'),
-	y: Symbol('position'),
-	angle: Symbol('angle'),
-	symbol: Symbol('symbol'),
-	radius: Symbol('radius'),
-	width: Symbol('width')
+    opacity: Symbol('opacity'),
+    color: Symbol('color'),
+    x: Symbol('position'),
+    y: Symbol('position'),
+    angle: Symbol('angle'),
+    symbol: Symbol('symbol'),
+    radius: Symbol('radius'),
+    width: Symbol('width')
 };
 
 export const MARK_PROP_CHANNEL: Record<MarkProps & MarkStyleProps, ChannelName> = {
-	x: 'x',
-	x1: 'x',
-	x2: 'x',
-	y: 'y',
-	y1: 'y',
-	y2: 'y',
-	rotate: 'angle',
-	r: 'radius',
-	symbol: 'symbol',
-	fill: 'color',
-	stroke: 'color',
-	opacity: 'opacity',
-	fillOpacity: 'opacity',
-	strokeOpacity: 'opacity',
-	strokeWidth: 'width'
+    x: 'x',
+    x1: 'x',
+    x2: 'x',
+    y: 'y',
+    y1: 'y',
+    y2: 'y',
+    rotate: 'angle',
+    r: 'radius',
+    symbol: 'symbol',
+    fill: 'color',
+    stroke: 'color',
+    opacity: 'opacity',
+    fillOpacity: 'opacity',
+    strokeOpacity: 'opacity',
+    strokeWidth: 'width'
 };
 
 // export const CHANNEL_MAP: Record<ChannelName, ValueOf<typeof CHANNEL_TYPES>> = {

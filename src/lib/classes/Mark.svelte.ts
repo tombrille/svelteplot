@@ -1,22 +1,22 @@
 import type { ChannelName, MarkProps } from '$lib/types';
 
 export class Mark<T extends MarkProps> {
-	readonly id: symbol;
-	readonly type: string;
+    readonly id: symbol;
+    readonly type: string;
 
-	channels = $state<Set<ChannelName>>(new Set());
-	props = $state<T>();
+    channels = $state<Set<ChannelName>>(new Set());
+    props = $state<T>();
 
-	constructor(type: string, channels: ChannelName[], props: T) {
-		this.id = Symbol();
-		this.type = type;
-		this.channels = new Set(channels);
-		this.props = props;
-	}
+    constructor(type: string, channels: ChannelName[], props: T) {
+        this.id = Symbol();
+        this.type = type;
+        this.channels = new Set(channels);
+        this.props = props;
+    }
 
-	toString() {
-		return `Mark[${this.type}]`;
-	}
+    toString() {
+        return `Mark[${this.type}]`;
+    }
 }
 
 type BaseFooProps = { bar: number[] };
