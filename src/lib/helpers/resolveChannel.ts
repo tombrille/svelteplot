@@ -20,10 +20,6 @@ export default function (
 		return accessor;
 	} else {
 		// return single value or accessor
-		return typeof accessor === 'function'
-			? accessor(datum, index)
-			: accessor !== null && Array.isArray(datum)
-			  ? accessor
-			  : datum;
+		return typeof accessor === 'function' ? accessor(datum) : accessor !== null ? accessor : datum;
 	}
 }

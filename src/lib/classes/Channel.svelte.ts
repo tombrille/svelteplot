@@ -10,7 +10,6 @@ import {
 	isStringOrNull
 } from '$lib/helpers/typeChecks';
 import { uniq } from 'underscore';
-import { createScale } from '$lib/helpers/createScale';
 
 export class Channel {
 	readonly name: ChannelName | undefined = undefined;
@@ -39,7 +38,7 @@ export class Channel {
 			// only check marks with data
 			.filter((mark) => mark.props.data.length)
 			.map((mark) =>
-				this.possibleProps.map(prop => 
+				this.possibleProps.map((prop) =>
 					mark.props.data.map((row) => resolveChannel(this.name, row, mark.props[prop]))
 				)
 			)
@@ -47,8 +46,9 @@ export class Channel {
 	);
 
 	readonly valueType = $derived(
-		this.dataValues.every(v => v == null) ? 'null' :
-		this.dataValues.every(isColorOrNull)
+		this.dataValues.every((v) => v == null)
+			? 'null'
+			: this.dataValues.every(isColorOrNull)
 			  ? 'color'
 			  : this.dataValues.every(isBooleanOrNull)
 			    ? 'boolean'

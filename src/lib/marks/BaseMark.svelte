@@ -14,7 +14,7 @@
 	let { type, data = [], channels = [], children, ...rest } = $props<T & Foo>();
 
 	const mark = new Mark(type, channels, { data, ...rest });
-
+	// console.log(type, { data, rest });
 	figure.addMark(mark);
 
 	$effect(() => {

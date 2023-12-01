@@ -1,11 +1,14 @@
 <script lang="ts">
 	import type { Figure } from '$lib/classes/Figure.svelte';
 	import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-	import type { DataRow, BaseMarkProps, GridXMarkProps, GridOptions } from '$lib/types';
+	import type { DataRow, BaseMarkProps, GridXMarkProps, GridOptions, RawValue } from '$lib/types';
 	import { getContext } from 'svelte';
 	import BaseMark from './BaseMark.svelte';
 	import resolveChannel from '$lib/helpers/resolveChannel';
 	import getBaseStyles from '$lib/helpers/getBaseStyles';
+	import removeIdenticalLines from '$lib/helpers/removeIdenticalLines';
+	import autoTimeFormat from '$lib/helpers/autoTimeFormat';
+	import dayjs from 'dayjs';
 
 	const BaseMark_GridX = BaseMark<BaseMarkProps & GridXMarkProps>;
 
@@ -13,7 +16,7 @@
 
 	let {
 		data = [],
-		tickFormat = (d) => String(d),
+		tickFormat = null,
 		y1 = null,
 		y2 = null,
 		title = null,
@@ -21,7 +24,18 @@
 	} = $props<GridXMarkProps & GridOptions>();
 
 	let ticks = $derived(data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 60)));
-	let tickTexts = $derived(ticks.map(tickFormat));
+
+	let useTickFormat = $derived(
+		typeof tickFormat === 'function'
+			? tickFormat
+			: figure.x.scaleType === 'time'
+			  ? typeof tickFormat === 'string'
+					? (d: Date) => dayjs(d).format(tickFormat as string).split('\n')
+					: autoTimeFormat(figure.x, figure.plotWidth)
+			  :  (d: RawValue) => String(d)
+	);
+
+	let tickTexts = $derived(removeIdenticalLines(ticks.map(useTickFormat)));
 </script>
 
 <BaseMark_GridX type="grid-x" {data} channels={data.length ? ['x'] : []} {y1} {y2}>

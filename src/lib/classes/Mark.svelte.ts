@@ -1,4 +1,4 @@
-import type { ChannelAccessor, DataRow, ChannelName, MarkProps } from '$lib/types';
+import type { ChannelName, MarkProps } from '$lib/types';
 
 export class Mark<T extends MarkProps> {
 	readonly id: symbol;
@@ -20,14 +20,3 @@ export class Mark<T extends MarkProps> {
 }
 
 type BaseFooProps = { bar: number[] };
-
-class Foo<T extends BaseFooProps> {
-	readonly props = $state<T>();
-
-	constructor(props: T) {
-		this.props = { ...{ bar: 0 }, ...props };
-	}
-}
-// Example usage
-const validProps: BaseFooProps = { bar: [42] };
-new Foo(validProps);

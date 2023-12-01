@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Figure, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib';
+	import RuleX from '$lib/marks/RuleX.svelte';
+	import { range } from 'd3-array';
 
 	let marginLeft = $state(30);
 	let marginRight = $state(20);
@@ -37,7 +39,7 @@ has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
 <hr />
 Figure Test:
 
-<Figure {marginLeft} {marginRight} {marginBottom} {marginTop} radius={{ range: [1,maxRad]}}>
+<Figure {marginLeft} {marginRight} {marginBottom} {marginTop} radius={{ range: [1, maxRad] }}>
 	{#snippet header()}
 		<h2>Figure with header</h2>
 		<h3>and a subtitle</h3>
@@ -55,6 +57,14 @@ Figure Test:
 		stroke="black"
 		r={hasFrame ? 'size' : 'y'}
 	/>
+	<RuleX
+		data={[0, 1, -2]}
+		stroke="red"
+		y1={1.5}
+		y2={(v) => Math.abs(v + 1) * 0.5}
+		strokeWidth="10"
+		opacity="0.2"
+	/>
 	{#snippet footer()}
 		<figcaption>and some words below</figcaption>
 	{/snippet}
@@ -66,13 +76,18 @@ Figure Test:
 			{#snippet header()}<h3 style="text-align:center">DotX</h3>{/snippet}
 			<GridX /><GridY />
 			<Frame />
-			<DotX data={[-2, 1, 2, 3, 4, 5, 10]} fill="blue" />
+			<DotX
+				data={[-2, 1, 2, 3, 4, 5, 10]}
+				fill="blue"
+				strokeWidth="4"
+				stroke={() => (Math.random() < 0.5 ? 'pink' : 'green')}
+			/>
 		</Figure>
 	</div>
 	<div style="flex-grow: 1;max-width:50%">
 		<Figure height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
 			{#snippet footer()}<h3 style="text-align:center">DotY</h3>{/snippet}
-			<GridX /><GridY />
+			<GridX tickFormat={(d) => d.toFixed(2)} /><GridY />
 			<Frame />
 			<DotY data={[-2, 1, 2, 3, 4, 5, 10]} fill="blue" />
 		</Figure>
@@ -101,7 +116,9 @@ Another one using [[x0,y0], [x1,y1], ...] coordinates:
 			[8, 12]
 		]}
 	/>
-</Figure> <!-- -->
+</Figure>
+
+<!-- -->
 
 <style>
 	h3 {

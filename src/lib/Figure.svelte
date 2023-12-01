@@ -16,22 +16,26 @@
 		marginBottom = 30,
 		// scales
 		radius,
+		y
 	} = $props<FigureProps>();
 
 	let width = $state(400);
 
-	const figure = new Figure(600, 400, { marginTop, marginLeft, marginRight, marginBottom, radius });
+	const figure = new Figure(600, 400, {
+		marginTop,
+		marginLeft,
+		marginRight,
+		marginBottom,
+		radius,
+		y
+	});
 
 	setContext('svelteplot', figure);
 
 	$effect(() => {
 		figure.width = width;
 		figure.height = height;
-		figure.marginLeft = marginLeft;
-		figure.marginRight = marginRight;
-		figure.marginTop = marginTop;
-		figure.marginBottom = marginBottom;
-		figure.options = { radius };
+		figure.options = { marginBottom, marginLeft, marginRight, marginTop, radius, y };
 	});
 </script>
 

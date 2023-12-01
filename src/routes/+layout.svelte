@@ -1,3 +1,12 @@
+<script lang="ts">
+	import type { Datasets } from '$lib/types';
+	import { setContext } from 'svelte';
+
+	const { data } = $props<Datasets>();
+
+	setContext('data', data);
+</script>
+
 <svelte:head></svelte:head>
 
 <slot />
