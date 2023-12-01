@@ -9,8 +9,8 @@ const DEFAULT_OPTIONS = {
     marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
-    x: { domain: null },
-    y: { domain: null }
+    x: { domain: null, grid: false },
+    y: { domain: null, grid: false }
 };
 export class Figure {
     width = $state(600);
@@ -39,11 +39,11 @@ export class Figure {
         createScale(this.x.scaleType, this.options.x?.domain || this.x.domain, [
             this.margins.left,
             this.margins.left + this.plotWidth
-        ])  
+        ])
     );
 
     readonly yScale = $derived(
-        createScale(this.y.scaleType, this.options.y?.domain ||this.y.domain, [
+        createScale(this.y.scaleType, this.options.y?.domain || this.y.domain, [
             this.height - this.margins.bottom,
             this.margins.top
         ])
@@ -74,7 +74,6 @@ export class Figure {
         };
         this.width = width;
         this.height = height;
-        console.log({opts})
         this.options = opts;
     }
 

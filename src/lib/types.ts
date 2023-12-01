@@ -22,20 +22,21 @@ export type Datasets = {
 };
 
 export type FigureProps = {
-    height?: number|string;
+    height?: number | string;
     marginTop?: number;
     marginBottom?: number;
     marginLeft?: number;
     marginRight?: number;
     maxWidth?: string;
     grid?: boolean;
+    frame?: boolean;
     header?: () => void;
     footer?: () => void;
     children?: () => void;
     // options for scales
     radius?: { range?: [number, number] };
-    x?: { domain?: [number, number] };
-    y?: { domain?: [number, number] };
+    x?: { domain?: [number, number], grid?: boolean };
+    y?: { domain?: [number, number], grid?: boolean };
 };
 
 export type Margins = {
@@ -130,15 +131,17 @@ export type GridOptions = {
     tickFontSize?: ChannelAccessor;
 };
 
-export type GridXMarkProps = Partial<MarkProps> & GridOptions & {
-    y1?: ChannelAccessor;
-    y2?: ChannelAccessor;
-};
+export type GridXMarkProps = Partial<MarkProps> &
+    GridOptions & {
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+    };
 
-export type GridYMarkProps = Partial<MarkProps> & GridOptions & {
-    x1?: ChannelAccessor;
-    x2?: ChannelAccessor;
-};
+export type GridYMarkProps = Partial<MarkProps> &
+    GridOptions & {
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+    };
 
 type RuleMarkProps = {
     stroke?: ChannelAccessor;

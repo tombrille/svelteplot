@@ -6,7 +6,6 @@ export default function (
     datum: DataRow,
     accessor: ChannelAccessor = null
 ): RawValue {
-    if (channel === 'y' && typeof accessor === 'function') console.log(datum, accessor(datum));
     if ((channel === 'x' || channel === 'y') && Array.isArray(datum) && accessor === null) {
         // special case for [[x0,y0], [x1,y1], ...] format
         return datum[channel === 'x' ? 0 : 1];

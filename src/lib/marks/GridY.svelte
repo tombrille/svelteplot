@@ -8,7 +8,13 @@
 
     const figure = getContext<Figure>('svelteplot');
 
-    let { data = [], title = null, tickFormat = (d) => String(d), tickFontSize = null, ...styleProps } = $props<GridYMarkProps>();
+    let {
+        data = [],
+        title = null,
+        tickFormat = (d) => String(d),
+        tickFontSize = null,
+        ...styleProps
+    } = $props<GridYMarkProps>();
 
     let ticks = $derived(
         data.length > 0 ? data : figure.yScale.ticks(Math.ceil(figure.plotHeight / 80))
@@ -29,9 +35,17 @@
         {/if}
         {#each ticks as tick}
             <g class="y-tick" transform="translate({figure.margins.left},{figure.yScale(tick)})">
-                <text style={getBaseStyles(tick, { fontSize: tickFontSize })}  x="-7" dominant-baseline="middle">{tickFormat(tick)}</text>
+                <text
+                    style={getBaseStyles(tick, { fontSize: tickFontSize })}
+                    x="-7"
+                    dominant-baseline="middle">{tickFormat(tick)}</text
+                >
                 <line x2="-5" />
-                <line style={getBaseStyles(tick, styleProps)} class="grid" x2={figure.width - figure.margins.right - figure.margins.left} />
+                <line
+                    style={getBaseStyles(tick, styleProps)}
+                    class="grid"
+                    x2={figure.width - figure.margins.right - figure.margins.left}
+                />
             </g>
         {/each}
     </g>

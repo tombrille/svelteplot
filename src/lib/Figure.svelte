@@ -1,7 +1,7 @@
 <script lang="ts">
     import { setContext } from 'svelte';
     import type { Margins, FigureProps } from './types';
-    import { GridX, GridY } from '$lib';
+    import { Frame, GridX, GridY } from '$lib';
     import { Figure } from './classes/Figure.svelte';
 
     let {
@@ -16,6 +16,7 @@
         marginTop = 20,
         marginBottom = 30,
         grid = false,
+        frame = false,
         maxWidth = null,
         // scales
         radius = null,
@@ -48,7 +49,9 @@
     {#if header}{@render header()}{/if}
 
     <svg {width} {height}>
-        {#if grid}<GridX /><GridY />{/if}
+        {#if grid || x?.grid}<GridX />{/if}
+        {#if grid || y?.grid}<GridY />{/if}
+        {#if frame}<Frame />{/if}
         {#if children}
             <slot {figure} />
         {/if}

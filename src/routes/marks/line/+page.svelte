@@ -31,7 +31,7 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 <p class="block">Use can use the <b>LineY</b> mark to quickly plot an array of numbers as line:</p>
 
 <Figure grid height="200">
-    <LineY data={range(100).map(v => Math.cos(v/5))} />
+    <LineY data={range(100).map((v) => Math.cos(v / 5))} />
 </Figure>
 
 <pre class="block"><code
@@ -40,12 +40,15 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 </Figure>`}</code
     ></pre>
 
-<p class="block">Similarily, you can use <b>LineX</b> mark to quickly plot an array of numbers as lines, but the values will be used as x values instead:</p>
+<p class="block">
+    Similarily, you can use <b>LineX</b> mark to quickly plot an array of numbers as lines, but the values
+    will be used as x values instead:
+</p>
 
 <Figure grid height="400" maxWidth="300px">
     <Frame stroke="lightgrey" />
     <RuleX data={[0]} />
-    <LineX data={range(Math.PI*20).map(v => Math.sin(v/10))} stroke="teal" strokeWidth="2" />
+    <LineX data={range(Math.PI * 20).map((v) => Math.sin(v / 10))} stroke="teal" strokeWidth="2" />
 </Figure>
 
 <pre class="block"><code

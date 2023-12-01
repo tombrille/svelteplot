@@ -10,7 +10,6 @@
     type AAPL = (typeof aapl)[0];
 </script>
 
-
 <Figure grid>
     <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
     <RuleX
@@ -24,8 +23,8 @@
 </Figure>
 
 {#if code}
-<pre class="block"><code
-        >{`<Figure grid>
+    <pre class="block"><code
+            >{`<Figure grid>
     <RuleX 
         data={aapl.slice(750, 800)}
         x="Date"
@@ -41,6 +40,5 @@
         strokeWidth="5"
         stroke={(d) => d.Close > d.Open ? 'lightseagreen' : 'crimson'} />
 </Figure>`}</code
-    ></pre>
+        ></pre>
 {/if}
-
