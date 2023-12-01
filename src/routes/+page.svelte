@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Figure, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib';
     import RuleX from '$lib/marks/RuleX.svelte';
-    import { range } from 'd3-array';
+    import CandlestickExample from './marks/rule/CandlestickExample.svelte';
 
     let marginLeft = $state(30);
     let marginRight = $state(20);
@@ -26,9 +26,29 @@
     let useData = $derived(demoData.slice(0, cutoff));
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="content">
+    <h1>Welcome to SveltePlot</h1>
 
+    <p>
+        <b>SveltePlot</b> is an open-source plotting library for Svelte based on
+        <a href="https://d3js.org/">D3.js</a>
+        and heavily inspired by <a href="https://observablehq.com/plot/">Observable Plot</a>.
+    </p>
+
+    <p>
+        Like Observable Plot, you can use SveltePlot to construct visualizations by stacking marks
+        on top of each other, which are automatically sharing common scales such as x, y, or color.
+    </p>
+
+    <h4>Differences to Observable Plot</h4>
+
+    <p>
+        Most importantly, <b>SveltePlot</b> is built on top of
+        <a href="https://svelte.dev/">Svelte</a>. That means that it doesn't re-render the entire
+        plot every time you make changes to the plot configuration, but only updates the parts that
+        have changed. That means you can not just stack marks but also group them arbitrarily.
+    </p>
+</div>
 marginLeft:<input type="range" bind:value={marginLeft} min={0} max={100} /><br />
 marginRight: <input type="range" bind:value={marginRight} min={0} max={100} /><br />
 marginTop: <input type="range" bind:value={marginTop} min={0} max={100} /><br />
@@ -37,7 +57,6 @@ cutoff: <input type="range" bind:value={cutoff} min={0} max={demoData.length} />
 max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
 has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
 <hr />
-Figure Test:
 
 <Figure {marginLeft} {marginRight} {marginBottom} {marginTop} radius={{ range: [1, maxRad] }}>
     {#snippet header()}
@@ -69,6 +88,10 @@ Figure Test:
         <figcaption>and some words below</figcaption>
     {/snippet}
 </Figure>
+
+<CandlestickExample />
+
+<p>Being Svelte-native also means you can pass event callback to the marks:</p>
 
 <div style="display:flex;">
     <div style="flex-grow: 1;max-width:50%">

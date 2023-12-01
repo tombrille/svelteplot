@@ -1,8 +1,10 @@
 <script lang="ts">
     import '../app.scss';
+    import { page } from '$app/stores';
     import Nav from './nav.svelte';
     import type { Datasets } from '$lib/types';
     import { setContext } from 'svelte';
+    import { group } from 'd3-array';
 
     const { data } = $props<Datasets>();
 
@@ -13,16 +15,26 @@
 
 <svelte:head></svelte:head>
 
-<div class="container">
+<div class="container mt-3">
     <div class="columns">
         <div class="column is-3">
+            <div class="mb-5"><a class="has-text-weight-bold" href="/"> SveltePlot </a></div>
+
             <aside class="menu">
-                <p class="menu-label">Marks</p>
-                <ul class="menu-list">
-                    {#each nav.pages as page}
-                        <li><a data-sveltekit-reload href={page.url}>{page.title}</a></li>
-                    {/each}
-                </ul>
+                {#each nav.pageGroups as group}
+                    <p class="menu-label">{group.title}</p>
+                    <ul class="menu-list">
+                        {#each group.pages as navItem}
+                            <li>
+                                <a
+                                    class:is-active={navItem.url === $page.url.pathname}
+                                    data-sveltekit-reload
+                                    href={navItem.url}>{navItem.title}</a
+                                >
+                            </li>
+                        {/each}
+                    </ul>
+                {/each}
             </aside>
         </div>
         <div class="column is-8">

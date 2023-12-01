@@ -1,6 +1,7 @@
 <script lang="ts">
     import { setContext } from 'svelte';
     import type { Margins, FigureProps } from './types';
+    import { GridX, GridY } from '$lib';
     import { Figure } from './classes/Figure.svelte';
 
     let {
@@ -12,8 +13,10 @@
         height = 400,
         marginLeft = 30,
         marginRight = 10,
-        marginTop = 10,
+        marginTop = 20,
         marginBottom = 30,
+        grid = false,
+        maxWidth = null,
         // scales
         radius,
         y
@@ -39,13 +42,16 @@
     });
 </script>
 
-<figure class="svelteplot" bind:clientWidth={width}>
+<figure class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
     {#if header}{@render header()}{/if}
-    {#if children}
-        <svg {width} {height}>
+
+    <svg {width} {height}>
+        {#if grid}<GridX /><GridY />{/if}
+        {#if children}
             <slot {figure} />
-        </svg>
-    {/if}
+        {/if}
+    </svg>
+
     {#if footer}{@render footer()}{/if}
 </figure>
 

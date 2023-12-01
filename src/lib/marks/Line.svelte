@@ -34,5 +34,6 @@
     .lines path {
         stroke: currentColor;
         fill: none;
+        stroke-width: 1.4px;
     }
 </style>

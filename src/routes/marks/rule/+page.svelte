@@ -7,6 +7,8 @@
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import dayjs from 'dayjs';
+    import SineRules from './SineRules.svelte';
+    import CandlestickExample from './CandlestickExample.svelte';
 
     const { aapl } = getContext<Datasets>('data');
 
@@ -17,57 +19,29 @@
 
 <p>A common use case for rules are axis lines or value annotations:</p>
 
-<code
-    ><pre>{`<Figure>
-    <GridX />
-    <GridY />
-    <RuleY data={[56]} stroke="turquoise" strokeWidth="3" />
-    <RuleY data={[0]} />
-    <RuleX data={[new Date(2016, 0, 1)]} stroke="red" />
+<Figure grid>
+    <RuleY data={[90]} stroke="turquoise" strokeWidth="3" />
+    <RuleX data={[new Date(2016, 4, 14)]} stroke="red" strokeWidth="3" opacity="0.5" />
     <Line data={aapl} x="Date" y="Close" />
-</Figure>`}
-    </pre></code
->
-
-<Figure>
-    <GridX />
-    <GridY />
-    <RuleY data={[56]} stroke="turquoise" strokeWidth="3" />
     <RuleY data={[0]} />
-    <RuleX data={[new Date(2016, 0, 1)]} stroke="red" />
-    <Line data={aapl} x="Date" y="Close" />
 </Figure>
 
-Rules can be used for showing data, too:
+<pre class="block"><code
+        >{`<Figure grid>
+    <RuleY data={[90]} stroke="turquoise" strokeWidth="3" />
+    <RuleX data={[new Date(2016, 4, 14)]} stroke="red" strokeWidth="3" opacity="0.5" />
+    <Line data={aapl} x="Date" y="Close" />
+    <RuleY data={[0]} />
+</Figure>`}</code
+    ></pre>
 
-<Figure>
-    <GridX />
-    <GridY />
-    <RuleX
-        data={aapl}
-        x="Date"
-        y1="Open"
-        y2="Close"
-        strokeWidth="2"
-        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'green' : 'red')}
-    />
-</Figure>
+<p class="block">
+    By defining the <b>x</b>, <b>y1</b> and <b>y2</b> properties, rules can be used for showing data,
+    too:
+</p>
+
+<CandlestickExample code />
 
 Or just some generated numbers
 
-<Figure let:figure>
-    <GridX
-        data={range(0, 3.01, 0.5).map((d) => d * Math.PI)}
-        tickFormat={(d) => `${Number(d) / Math.PI}π`}
-    />
-    <GridY />
-    <RuleY data={[0]} />
-    <RuleX
-        data={range(0, Math.PI * 3, 0.1)}
-        y1={0}
-        y2={(d) => Math.sin(Number(d))}
-        stroke="teal"
-        strokeOpacity="0.8"
-        strokeWidth={figure.plotWidth / 100 + 0.5}
-    />
-</Figure>
+<SineRules />

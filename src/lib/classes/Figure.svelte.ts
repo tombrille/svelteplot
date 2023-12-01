@@ -6,7 +6,7 @@ import type { Mark } from './Mark.svelte';
 const DEFAULT_OPTIONS = {
     marginLeft: 0,
     marginRight: 0,
-    marginTop: 0,
+    marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
     y: { domain: null }

@@ -9,14 +9,26 @@ export type Datasets = {
         Close: number;
         'Adj Close': number;
     }[];
+    cars: {
+        name: string;
+        'economy (mpg)': number;
+        cylinders: number;
+        'displacement (cc)': number;
+        'power (hp)': number;
+        'weight (lb)': number;
+        '0-60 mph (s)': number;
+        year: number;
+    }[];
 };
 
 export type FigureProps = {
-    height?: number;
+    height?: number|string;
     marginTop?: number;
     marginBottom?: number;
     marginLeft?: number;
     marginRight?: number;
+    maxWidth?: string;
+    grid?: boolean;
     header?: () => void;
     footer?: () => void;
     children?: () => void;
@@ -86,6 +98,8 @@ export type BaseMarkStyleProps = {
     strokeOpacity?: ChannelAccessor;
     strokeWidth?: ChannelAccessor;
 };
+
+export type FrameProps = BaseMarkStyleProps;
 
 export type DotMarkProps = MarkProps &
     BaseMarkStyleProps & {

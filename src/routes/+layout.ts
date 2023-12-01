@@ -2,8 +2,12 @@ import type { PageLoad } from './$types';
 import { csvParse } from 'd3-dsv';
 
 export const load: PageLoad = async ({ fetch }) => {
-    const res = await fetch(`/data/aapl.csv`);
-    const aapl = csvParse(await res.text(), (d) => ({
+    const [aaplRes, carsRes] = await Promise.all([
+        fetch(`/data/aapl.csv`),
+        fetch(`/data/cars.csv`)
+    ]);
+
+    const aapl = csvParse(await aaplRes.text(), (d: Record<string, string>) => ({
         Date: new Date(d.Date),
         Open: +d.Open,
         Close: +d.Close,
@@ -11,5 +15,8 @@ export const load: PageLoad = async ({ fetch }) => {
         Low: +d.Low,
         'Adj Close': +d['Adj Close']
     }));
-    return { aapl };
+    const cars = csvParse(await carsRes.text(), (d: Record<string, string>) =>
+        Object.fromEntries(Object.entries(d).map(([k, v]) => [k, k === 'name' ? v : +v]))
+    );
+    return { aapl, cars };
 };

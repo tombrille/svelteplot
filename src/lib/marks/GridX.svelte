@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Figure } from '$lib/classes/Figure.svelte';
-    import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-    import type { DataRow, BaseMarkProps, GridXMarkProps, GridOptions, RawValue } from '$lib/types';
+    import type { BaseMarkProps, GridXMarkProps, GridOptions, RawValue } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
@@ -24,7 +23,7 @@
     } = $props<GridXMarkProps & GridOptions>();
 
     let ticks = $derived(
-        data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 60))
+        data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 80))
     );
 
     let useTickFormat = $derived(
@@ -47,12 +46,24 @@
                 .map((tick: string | string[]) => (Array.isArray(tick) ? tick : [tick]))
         )
     );
+
+    let autoTitle = $derived(
+        figure.x.activeMarks.length === 1 && typeof figure.x.activeMarks[0].props.x === 'string'
+            ? figure.x.activeMarks[0].props.x
+            : null
+    );
+    let useTitle = $derived(title || autoTitle);
 </script>
 
 <BaseMark_GridX type="grid-x" {data} channels={data.length ? ['x'] : []} {y1} {y2}>
     <g class="grid-x">
-        {#if title}
-            <text x={0} y={5} class="grid-title" dominant-baseline="hanging">{title}</text>
+        {#if useTitle}
+            <text
+                x={figure.plotWidth + figure.margins.left}
+                y={figure.height - 10}
+                class="grid-title"
+                dominant-baseline="hanging">{useTitle} →</text
+            >
         {/if}
         {#each ticks as tick, t}
             {@const textLines = tickTexts[t]}
@@ -92,11 +103,15 @@
 </BaseMark_GridX>
 
 <style>
-    .x-tick text {
+    text {
         text-anchor: middle;
         font-size: 11px;
 
         fill: #4a4a4a;
+    }
+
+    text.grid-title {
+        text-anchor: end;
     }
     .x-tick line {
         stroke: currentColor;
