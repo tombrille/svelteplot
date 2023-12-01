@@ -19,6 +19,7 @@
         y1 = null,
         y2 = null,
         title = null,
+        tickFontSize = null,
         ...styleProps
     } = $props<GridXMarkProps & GridOptions>();
 
@@ -82,7 +83,7 @@
                         figure.margins.top -
                         figure.margins.bottom})"
                 >
-                    <text y={5} dominant-baseline="hanging">
+                    <text style={getBaseStyles(tick, { fontSize: tickFontSize })} y={5} dominant-baseline="hanging">
                         {#if typeof textLines === 'string' || textLines.length === 1}
                             {textLines}
                         {:else}

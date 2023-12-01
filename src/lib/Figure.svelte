@@ -18,8 +18,9 @@
         grid = false,
         maxWidth = null,
         // scales
-        radius,
-        y
+        radius = null,
+        x = null,
+        y = null
     } = $props<FigureProps>();
 
     let width = $state(400);
@@ -30,6 +31,7 @@
         marginRight,
         marginBottom,
         radius,
+        x,
         y
     });
 
@@ -38,7 +40,7 @@
     $effect(() => {
         figure.width = width;
         figure.height = height;
-        figure.options = { marginBottom, marginLeft, marginRight, marginTop, radius, y };
+        figure.options = { marginBottom, marginLeft, marginRight, marginTop, radius, x, y };
     });
 </script>
 

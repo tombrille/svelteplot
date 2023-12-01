@@ -9,6 +9,7 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     strokeDasharray: 'stroke-dasharray',
     fillOpacity: 'fill-opacity',
     strokeOpacity: 'stroke-opacity',
+    fontSize: 'font-size',
     opacity: 'opacity'
 };
 

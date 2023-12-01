@@ -34,6 +34,7 @@ export type FigureProps = {
     children?: () => void;
     // options for scales
     radius?: { range?: [number, number] };
+    x?: { domain?: [number, number] };
     y?: { domain?: [number, number] };
 };
 
@@ -65,6 +66,7 @@ export type MarkStyleProps =
     | 'opacity'
     | 'fill'
     | 'fillOpacity'
+    | 'fontSize'
     | 'stroke'
     | 'strokeWidth'
     | 'strokeOpacity'
@@ -125,14 +127,15 @@ export type GridOptions = {
     stroke?: ChannelAccessor;
     strokeWidth?: ChannelAccessor;
     tickFormat?: ((d: RawValue) => string) | string;
+    tickFontSize?: ChannelAccessor;
 };
 
-export type GridXMarkProps = Partial<MarkProps> & {
+export type GridXMarkProps = Partial<MarkProps> & GridOptions & {
     y1?: ChannelAccessor;
     y2?: ChannelAccessor;
 };
 
-export type GridYMarkProps = Partial<MarkProps> & {
+export type GridYMarkProps = Partial<MarkProps> & GridOptions & {
     x1?: ChannelAccessor;
     x2?: ChannelAccessor;
 };
