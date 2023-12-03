@@ -8,20 +8,20 @@
 
     const figure = getContext<Figure>('svelteplot');
 
-    let { data = [], ...styleProps } = $props<GridYMarkProps>();
+    let { ticks = [], ...styleProps } = $props<GridYMarkProps>();
 
-    let ticks = $derived(
-        data.length > 0
-            ? data
+    let autoTicks = $derived(
+        ticks.length > 0
+            ? ticks
             : figure.yScale.ticks(
-                  Math.ceil(figure.plotHeight / (figure.options.y.autoTickDist || 80))
+                  Math.ceil(figure.plotHeight / (figure.options.y.tickSpacing || 80))
               )
     );
 </script>
 
-<BaseMark type="grid-y" {data} channels={data.length ? ['y'] : []}>
+<BaseMark type="grid-y" data={ticks} channels={ticks.length ? ['y'] : []}>
     <g class="grid-y">
-        {#each ticks as tick}
+        {#each autoTicks as tick}
             <g class="y-tick" transform="translate({figure.margins.left},{figure.yScale(tick)})">
                 <line
                     style={getBaseStyles(tick, styleProps)}

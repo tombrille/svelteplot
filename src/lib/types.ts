@@ -21,6 +21,9 @@ export type Datasets = {
     }[];
 };
 
+type AxisXAnchor = 'bottom' | 'top' | 'both';
+type AxisYAnchor = 'left' | 'right' | 'both';
+
 export type FigureProps = {
     height?: number;
     marginTop?: number;
@@ -38,14 +41,14 @@ export type FigureProps = {
     x?: {
         domain?: [number, number];
         grid?: boolean;
-        autoTickDist: number;
-        axis: 'bottom' | 'top' | 'both';
+        tickSpacing: number;
+        axis: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
     };
     y?: {
         domain?: [number, number];
         grid?: boolean;
-        autoTickDist: number;
-        axis: 'left' | 'right' | 'both';
+        tickSpacing: number;
+        axis: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
 };
 
@@ -111,6 +114,7 @@ export type BaseMarkStyleProps = {
     fillOpacity?: ChannelAccessor;
     strokeOpacity?: ChannelAccessor;
     strokeWidth?: ChannelAccessor;
+    strokeDasharray?: ChannelAccessor;
 };
 
 export type FrameProps = BaseMarkStyleProps;
@@ -134,6 +138,7 @@ export type LineMarkProps = MarkProps &
     };
 
 export type GridOptions = {
+    ticks?: RawValue[];
     strokeDasharray?: ChannelAccessor;
     stroke?: ChannelAccessor;
     strokeWidth?: ChannelAccessor;
@@ -152,6 +157,7 @@ export type GridYMarkProps = Partial<MarkProps> &
     };
 
 export type AxisMarkOptions = {
+    ticks?: RawValue[];
     automatic?: boolean;
     tickSize?: number;
     tickPadding?: number;

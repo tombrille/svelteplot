@@ -21,7 +21,7 @@
     const figure = getContext<Figure>('svelteplot');
 
     let {
-        data = [],
+        ticks = [],
         anchor = 'bottom',
         tickSize = 6,
         tickPadding = 3,
@@ -34,8 +34,12 @@
         ...styleProps
     } = $props<AxisXMArkProps & AxisMarkOptions>();
 
-    let ticks = $derived(
-        data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 80))
+    let autoTicks = $derived(
+        ticks.length
+            ? ticks
+            : figure.xScale.ticks(
+                  Math.ceil(figure.plotWidth / (figure.options.x.tickSpacing || 80))
+              )
     );
 
     let useTickFormat = $derived(
@@ -53,7 +57,7 @@
 
     let tickTexts = $derived(
         removeIdenticalLines(
-            ticks
+            autoTicks
                 .map(useTickFormat)
                 .map((tick: string | string[]) => (Array.isArray(tick) ? tick : [tick]))
         )
@@ -67,7 +71,7 @@
     let useTitle = $derived(title || autoTitle);
 </script>
 
-<BaseMark_AxisX type="axis-x" {data} channels={data.length ? ['x'] : []} {y1} {y2} {automatic}>
+<BaseMark_AxisX type="axis-x" data={ticks} channels={['x']} {y1} {y2} {automatic}>
     <g class="axis-x">
         {#if useTitle}
             <text
@@ -77,7 +81,7 @@
                 dominant-baseline="hanging">{useTitle} →</text
             >
         {/if}
-        {#each ticks as tick, t}
+        {#each autoTicks as tick, t}
             {@const textLines = tickTexts[t]}
             {@const prevTextLines = t && tickTexts[t - 1]}
             <g

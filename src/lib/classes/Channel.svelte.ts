@@ -62,12 +62,14 @@ export class Channel {
                       : 'mixed'
     );
 
-    readonly nonNullDataValues = $derived(this.dataValues.length ? this.dataValues : [0]);
-
     readonly domain = $derived(
-        this.valueType === 'boolean' || this.valueType === 'text' || this.valueType === 'color'
-            ? uniq(this.nonNullDataValues)
-            : extent(this.nonNullDataValues as ('date' | 'number')[])
+        !this.dataValues.length
+            ? [0, 1]
+            : this.valueType === 'boolean' ||
+                this.valueType === 'text' ||
+                this.valueType === 'color'
+              ? uniq(this.dataValues)
+              : extent(this.dataValues as ('date' | 'number')[])
     ) as [number, number] | [Date, Date] | string[];
 
     readonly scaleType: string = $derived(

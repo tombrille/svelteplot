@@ -15,6 +15,7 @@ export default class Nav {
             title: 'Marks',
             pages: [
                 { title: 'Frame', url: '/marks/frame' },
+                { title: 'Axis', url: '/marks/axis' },
                 { title: 'Grid', url: '/marks/grid' },
                 { title: 'Dot', url: '/marks/dot' },
                 { title: 'Line', url: '/marks/line' },

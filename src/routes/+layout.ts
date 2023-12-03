@@ -20,3 +20,5 @@ export const load: PageLoad = async ({ fetch }) => {
     );
     return { aapl, cars };
 };
+
+export const ssr = false;

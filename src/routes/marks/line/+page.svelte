@@ -18,12 +18,12 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 
 <p>Lines are cool</p>
 
-<Figure grid>
+<Figure>
     <Line data={aapl.slice(cutoff1, cutoff2)} x="Date" y="Adj Close" />
 </Figure>
 
 <pre class="block"><code
-        >{`<Figure grid>
+        >{`<Figure>
     <Line data={aapl} x="Date" y="Adj Close" /> 
 </Figure>`}</code
     ></pre>

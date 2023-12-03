@@ -7,19 +7,18 @@
     const { aapl } = getContext<Datasets>('data');
 </script>
 
-<h1 class="title">Grids</h1>
+<h1 class="title">Axes</h1>
 
 <p>
-    You can let SveltePlot create grids automatically for you by setting the <code>grid</code> flag
-    on the <b>Figure</b>:
+    By default SveltePlot will create axis marks automatically:
 </p>
 
-<Figure grid>
+<Figure>
     <Line data={aapl} x="Date" y="Close" />
 </Figure>
 
 <pre class="block"><code
-        >{`<Figure grid>
+        >{`<Figure>
     <Line data={aapl} x="Date" y="Close" />
 </Figure>`}</code
     ></pre>
@@ -59,6 +58,10 @@
     <GridY stroke="magenta" ticks={[0,1.5,2,2.5,4,5]} />
 </Figure>`}</code
     ></pre>
+
+<p class="block">Use can provide custom ticks to grids using the <b>ticks</b> option:</p>
+
+<SineRules />
 
 <p>The automatic ticks can be customized using the <b>tickSpacing</b> option:</p>
 

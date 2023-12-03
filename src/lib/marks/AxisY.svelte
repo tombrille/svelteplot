@@ -11,7 +11,7 @@
     const figure = getContext<Figure>('svelteplot');
 
     let {
-        data = [],
+        ticks = [],
         anchor = 'left',
         automatic = false,
         tickSize = 6,
@@ -22,11 +22,11 @@
         ...styleProps
     } = $props<AxisYMArkProps>();
 
-    let ticks = $derived(
-        data.length > 0
-            ? data
+    let autoTicks = $derived(
+        ticks.length > 0
+            ? ticks
             : figure.yScale.ticks(
-                  Math.ceil(figure.plotHeight / (figure.options.y.autoTickDist || 80))
+                  Math.ceil(figure.plotHeight / (figure.options.y.tickSpacing || 80))
               )
     );
 
@@ -38,12 +38,12 @@
     let useTitle = $derived(title || autoTitle);
 </script>
 
-<BaseMark_AxisX type="axis-y" {data} channels={data.length ? ['y'] : []} {automatic}>
+<BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>
     <g class="axis-y">
         {#if useTitle}
             <text x={0} y={5} class="axis-title" dominant-baseline="hanging">↑ {useTitle}</text>
         {/if}
-        {#each ticks as tick}
+        {#each autoTicks as tick}
             <g
                 class="y-tick"
                 transform="translate({figure.margins.left +

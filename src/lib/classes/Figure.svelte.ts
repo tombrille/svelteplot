@@ -10,8 +10,8 @@ export const DEFAULT_FIGURE_OPTIONS = {
     marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
-    x: { domain: null, grid: false, autoTickDist: 80, axis: 'bottom' },
-    y: { domain: null, grid: false, autoTickDist: 60, axis: 'left' }
+    x: { domain: null, grid: false, tickSpacing: 80, axis: 'bottom' },
+    y: { domain: null, grid: false, tickSpacing: 60, axis: 'left' }
 };
 export class Figure {
     width = $state(600);
@@ -83,6 +83,10 @@ export class Figure {
         ) as typeof DEFAULT_FIGURE_OPTIONS;
         this.width = width;
         this.height = height;
+        // if (typeof opts.x.axis === 'string') {
+        //     // convert to axis object
+        //     opts.x.axis = { anchor: opts.x.axis };
+        // }
         this.options = opts;
     }
 
@@ -99,7 +103,7 @@ export class Figure {
         // add mark to respective channels
         this.updateChannels();
         if (mark.channels.size > 0 && this.y) {
-            console.log(mark.channels, this.y.activeMarks, this.y.dataValues, this.y.domain);
+            console.log(mark.channels, this.y.dataValues, this.y.domain);
         }
     }
 
