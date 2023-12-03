@@ -11,9 +11,9 @@
 
     type Foo = { children?: Function };
 
-    let { type, data = [], channels = [], children, ...rest } = $props<T & Foo>();
+    let { type, data = [], channels = [], children, automatic, ...rest } = $props<T & Foo>();
 
-    const mark = new Mark(type, channels, { data, ...rest });
+    const mark = new Mark(type, channels, automatic, { data, ...rest });
     // console.log(type, { data, rest });
     figure.addMark(mark);
 

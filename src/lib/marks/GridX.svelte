@@ -13,62 +13,20 @@
 
     const figure = getContext<Figure>('svelteplot');
 
-    let {
-        data = [],
-        tickFormat = null,
-        y1 = null,
-        y2 = null,
-        title = null,
-        tickFontSize = null,
-        ...styleProps
-    } = $props<GridXMarkProps & GridOptions>();
+    let { data = [], y1 = null, y2 = null, ...styleProps } = $props<GridXMarkProps & GridOptions>();
 
     let ticks = $derived(
-        data.length ? data : figure.xScale.ticks(Math.ceil(figure.plotWidth / 80))
+        data.length
+            ? data
+            : figure.xScale.ticks(
+                  Math.ceil(figure.plotWidth / (figure.options.x.autoTickDist || 80))
+              )
     );
-
-    let useTickFormat = $derived(
-        typeof tickFormat === 'function'
-            ? tickFormat
-            : figure.x.scaleType === 'time'
-              ? typeof tickFormat === 'string'
-                  ? (d: Date) =>
-                        dayjs(d)
-                            .format(tickFormat as string)
-                            .split('\n')
-                  : autoTimeFormat(figure.x, figure.plotWidth)
-              : (d: RawValue) => String(d)
-    );
-
-    let tickTexts = $derived(
-        removeIdenticalLines(
-            ticks
-                .map(useTickFormat)
-                .map((tick: string | string[]) => (Array.isArray(tick) ? tick : [tick]))
-        )
-    );
-
-    let autoTitle = $derived(
-        figure.x.activeMarks.length === 1 && typeof figure.x.activeMarks[0].props.x === 'string'
-            ? figure.x.activeMarks[0].props.x
-            : null
-    );
-    let useTitle = $derived(title || autoTitle);
 </script>
 
 <BaseMark_GridX type="grid-x" {data} channels={data.length ? ['x'] : []} {y1} {y2}>
     <g class="grid-x">
-        {#if useTitle}
-            <text
-                x={figure.plotWidth + figure.margins.left}
-                y={figure.height - 10}
-                class="grid-title"
-                dominant-baseline="hanging">{useTitle} →</text
-            >
-        {/if}
         {#each ticks as tick, t}
-            {@const textLines = tickTexts[t]}
-            {@const prevTextLines = t && tickTexts[t - 1]}
             <g class="x-tick" transform="translate({figure.xScale(tick)},{figure.margins.top})">
                 <line
                     class="grid"
@@ -78,49 +36,12 @@
                         ? figure.yScale(resolveChannel('y', tick, y2))
                         : figure.height - figure.margins.top - figure.margins.bottom}
                 />
-                <g
-                    transform="translate(0,{figure.height -
-                        figure.margins.top -
-                        figure.margins.bottom})"
-                >
-                    <text
-                        style={getBaseStyles(tick, { fontSize: tickFontSize })}
-                        y={10}
-                        dominant-baseline="hanging"
-                    >
-                        {#if typeof textLines === 'string' || textLines.length === 1}
-                            {textLines}
-                        {:else}
-                            {#each textLines as line, i}
-                                <tspan x="0" dy={i ? 12 : 0}
-                                    >{!prevTextLines || prevTextLines[i] !== line
-                                        ? line
-                                        : ''}</tspan
-                                >
-                            {/each}
-                        {/if}
-                    </text>
-                    <line y2="5" />
-                </g>
             </g>
         {/each}
     </g>
 </BaseMark_GridX>
 
 <style>
-    text {
-        text-anchor: middle;
-        font-size: 11px;
-
-        fill: #4a4a4a;
-    }
-
-    text.grid-title {
-        text-anchor: end;
-    }
-    .x-tick line {
-        stroke: currentColor;
-    }
     .x-tick line.grid {
         stroke: #d9d9d9;
     }

@@ -1,22 +1,23 @@
 import { createScale } from '$lib/helpers/createScale';
+import mergeDeep from '$lib/helpers/mergeDeep';
 import type { BaseMarkProps, Margins } from '../types';
 import { Channel } from './Channel.svelte';
 import type { Mark } from './Mark.svelte';
 
-const DEFAULT_OPTIONS = {
+export const DEFAULT_FIGURE_OPTIONS = {
     marginLeft: 0,
     marginRight: 0,
     marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
-    x: { domain: null, grid: false },
-    y: { domain: null, grid: false }
+    x: { domain: null, grid: false, autoTickDist: 80, axis: 'bottom' },
+    y: { domain: null, grid: false, autoTickDist: 60, axis: 'left' }
 };
 export class Figure {
     width = $state(600);
     height = $state(400);
 
-    options = $state(DEFAULT_OPTIONS);
+    options = $state(DEFAULT_FIGURE_OPTIONS);
 
     marks = $state<Mark<BaseMarkProps>[]>([]);
     // derived props
@@ -57,6 +58,13 @@ export class Figure {
         )
     );
 
+    readonly hasAxisXMark = $derived(
+        !!this.marks.find((mark) => mark.type === 'axis-x' && !mark.automatic)
+    );
+    readonly hasAxisYMark = $derived(
+        !!this.marks.find((mark) => mark.type === 'axis-y' && !mark.automatic)
+    );
+
     constructor(
         width: number,
         height: number,
@@ -68,10 +76,11 @@ export class Figure {
             radius?: { range: [number, number] };
         }
     ) {
-        const opts = {
-            ...DEFAULT_OPTIONS,
-            ...options
-        };
+        const opts = mergeDeep(
+            {},
+            DEFAULT_FIGURE_OPTIONS,
+            options
+        ) as typeof DEFAULT_FIGURE_OPTIONS;
         this.width = width;
         this.height = height;
         this.options = opts;

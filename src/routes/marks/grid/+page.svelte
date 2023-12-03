@@ -15,7 +15,8 @@
 <pre class="block"><code>{`<Figure grid x={{domain:[0,5]}} y={{domain:[0,5]}} />`}</code></pre>
 
 <p class="block">
-    You can turn the grids on individually using by adding <code>grid: true</code> to the x and y scale options:
+    You can turn the grids on individually using by adding <code>grid: true</code> to the x and y scale
+    options:
 </p>
 
 <div class="columns">
@@ -27,11 +28,15 @@
     </div>
 </div>
 
-<pre class="block"><code>{`<Figure height={300} x={{ domain: [0, 5], grid: true }} />
-<Figure height={300} y={{ domain: [0, 5], grid: true }} />`}</code></pre>
+<pre class="block"><code
+        >{`<Figure height={300} x={{ domain: [0, 5], grid: true }} />
+<Figure height={300} y={{ domain: [0, 5], grid: true }} />`}</code
+    ></pre>
 
-
-<p class="block">Or you can add the <b>GridX</b> and <b>GridY</b> marks explicitely for more options, such as layering grids on top of other marks:</p>
+<p class="block">
+    Or you can add the <b>GridX</b> and <b>GridY</b> marks explicitely for more options, such as layering
+    grids on top of other marks:
+</p>
 
 <Figure x={{ domain: [0, 5] }} y={{ domain: [0, 5] }}>
     <GridX stroke="lime" tickFontSize="14px" />

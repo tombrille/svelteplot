@@ -43,7 +43,7 @@ export class Channel {
                 )
             )
             .flat(3)
-            .filter(d => d != null)
+            .filter((d) => d != null)
     );
 
     readonly valueType = $derived(

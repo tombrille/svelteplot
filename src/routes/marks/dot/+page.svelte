@@ -1,4 +1,6 @@
 <script lang="ts">
+    import AxisY from '$lib/marks/AxisY.svelte';
+
     import { Figure, GridX, GridY, Dot } from '$lib';
     import DotX from '$lib/marks/DotX.svelte';
     import DotY from '$lib/marks/DotY.svelte';

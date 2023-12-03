@@ -22,7 +22,7 @@ export type Datasets = {
 };
 
 export type FigureProps = {
-    height?: number | string;
+    height?: number;
     marginTop?: number;
     marginBottom?: number;
     marginLeft?: number;
@@ -35,8 +35,18 @@ export type FigureProps = {
     children?: () => void;
     // options for scales
     radius?: { range?: [number, number] };
-    x?: { domain?: [number, number], grid?: boolean };
-    y?: { domain?: [number, number], grid?: boolean };
+    x?: {
+        domain?: [number, number];
+        grid?: boolean;
+        autoTickDist: number;
+        axis: 'bottom' | 'top' | 'both';
+    };
+    y?: {
+        domain?: [number, number];
+        grid?: boolean;
+        autoTickDist: number;
+        axis: 'left' | 'right' | 'both';
+    };
 };
 
 export type Margins = {
@@ -91,6 +101,7 @@ export interface MarkProps {
 export type BaseMarkProps = MarkProps & {
     type: string;
     channels: ChannelName[];
+    automatic: boolean;
 };
 
 export type BaseMarkStyleProps = {
@@ -123,12 +134,9 @@ export type LineMarkProps = MarkProps &
     };
 
 export type GridOptions = {
-    title?: string;
     strokeDasharray?: ChannelAccessor;
     stroke?: ChannelAccessor;
     strokeWidth?: ChannelAccessor;
-    tickFormat?: ((d: RawValue) => string) | string;
-    tickFontSize?: ChannelAccessor;
 };
 
 export type GridXMarkProps = Partial<MarkProps> &
@@ -142,6 +150,23 @@ export type GridYMarkProps = Partial<MarkProps> &
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
     };
+
+export type AxisMarkOptions = {
+    automatic?: boolean;
+    tickSize?: number;
+    tickPadding?: number;
+    tickFormat?: ((d: RawValue) => string) | string;
+    tickFontSize?: ChannelAccessor;
+    title?: string;
+};
+
+export type AxisXMArkProps = AxisMarkOptions & {
+    anchor: 'top' | 'bottom';
+};
+
+export type AxisYMArkProps = AxisMarkOptions & {
+    anchor: 'left' | 'right';
+};
 
 type RuleMarkProps = {
     stroke?: ChannelAccessor;
