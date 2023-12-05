@@ -26,7 +26,7 @@
     );
 </script>
 
-<BaseMark_GridX type="grid-x" data={ticks} channels={ticks.length ? ['x'] : []} {y1} {y2}>
+<BaseMark_GridX type="grid-x" data={ticks} channels={['x']} {y1} {y2}>
     <g class="grid-x">
         {#each autoTicks as tick, t}
             <g class="x-tick" transform="translate({plot.xScale(tick)},{plot.margins.top})">

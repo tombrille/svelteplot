@@ -26,6 +26,7 @@ type AxisYAnchor = 'left' | 'right' | 'both';
 
 export type ChannelOptions = {
     log?: boolean;
+    reverse?: boolean;
     domain?: [number, number] | null;
     grid?: boolean;
     ticks?: RawValue[];
@@ -36,7 +37,7 @@ export type ChannelOptions = {
  * these are the props that can be set by the user on the <Plot> element directly
  */
 export type PlotProps = {
-    height?: number;
+    height?: number | 'auto';
     marginTop?: number;
     marginBottom?: number;
     marginLeft?: number;
@@ -59,6 +60,9 @@ export type PlotProps = {
     y?: ChannelOptions & {
         axis: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
+    symbol?: {
+        range?: string[]
+    }
 };
 
 export type Margins = {

@@ -13,7 +13,7 @@
         footer,
         children,
         // props
-        height = 400,
+        height = 'auto',
         marginLeft = 30,
         marginRight = 10,
         marginTop = 20,
@@ -33,7 +33,7 @@
 
     let width = $state(400);
 
-    const plot = new Plot(600, 400, {
+    const plot = new Plot(600, height || defaultPlotHeight, {
         marginTop,
         marginLeft,
         marginRight,
@@ -50,7 +50,7 @@
 
     $effect(() => {
         plot.width = width;
-        plot.height = height;
+        plot._height = height;
         plot.options = mergeDeep({}, DEFAULT_PLOT_OPTIONS, {
             marginBottom,
             marginLeft,
@@ -81,12 +81,17 @@
     {/if}
     {#if header}{@render header()}{/if}
 
-    <svg role="document" {width} {height} onmousemove={onmousemove ? onMouseMove : null}>
+    <svg
+        role="document"
+        {width}
+        height={plot.height}
+        onmousemove={onmousemove ? onMouseMove : null}
+    >
         <!-- automatic grids -->
         {#if grid || x?.grid}<GridX />{/if}
         {#if grid || y?.grid}<GridY />{/if}
 
-        {#if !plot.hasAxisXMark}
+        {#if !plot.hasAxisXMark && plot.hasChannelX}
             <!-- automatic x axis -->
             {#if plot.options.x.axis === 'bottom' || plot.options.x.axis === 'both'}
                 <AxisX anchor="bottom" automatic />
@@ -95,7 +100,7 @@
                 <AxisX anchor="top" automatic />
             {/if}
         {/if}
-        {#if !plot.hasAxisYMark}
+        {#if !plot.hasAxisYMark && plot.hasChannelY}
             <!-- automatic y axis -->
             {#if plot.options.y.axis === 'left' || plot.options.y.axis === 'both'}
                 <AxisY anchor="left" automatic />

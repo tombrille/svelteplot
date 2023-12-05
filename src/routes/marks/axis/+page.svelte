@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line, Frame } from '$lib';
     import { getContext } from 'svelte';
     import SineRules from '../rule/SineRules.svelte';
     import type { Datasets } from '$lib/types';
+    import Code from '../../Code.svelte';
 
     const { aapl } = getContext<Datasets>('data');
 </script>
@@ -15,11 +16,11 @@
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 
-<pre class="block"><code
-        >{`<Plot>
+<Code
+    code={`<Plot>
     <Line data={aapl} x="Date" y="Close" />
-</Plot>`}</code
-    ></pre>
+</Plot>`}
+/>
 
 <p class="block">
     You can turn the grids on individually using by adding <code>grid: true</code> to the x and y scale
@@ -35,10 +36,10 @@
     </div>
 </div>
 
-<pre class="block"><code
-        >{`<Plot height={300} x={{ grid: true }} />
-<Plot height={300} y={{ grid: true }} />`}</code
-    ></pre>
+<Code
+    code={`<Plot height={300} x={{ grid: true }} />
+<Plot height={300} y={{ grid: true }} />`}
+/>
 
 <p class="block">
     Or you can add the <b>GridX</b> and <b>GridY</b> marks explicitely for more options, such as layering
@@ -51,12 +52,12 @@
     <GridY stroke="magenta" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
 </Plot>
 
-<pre class="block"><code
-        >{`<Plot x={{domain:[0,5]}} y={{domain:[0,5]}}>
+<Code
+    code={`<Plot x={{ domain: [0, 5] }} y={{ domain: [0, 5] }}>
     <GridX stroke="lime" />
-    <GridY stroke="magenta" ticks={[0,1.5,2,2.5,4,5]} />
-</Plot>`}</code
-    ></pre>
+    <GridY stroke="magenta" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+</Plot>`}
+/>
 
 <p class="block">Use can provide custom ticks to grids using the <b>ticks</b> option:</p>
 
@@ -68,8 +69,8 @@
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 
-<pre class="block"><code
-        >{`<Plot grid x={{ tickSpacing: 40 }} y={{ tickSpacing: 10 }}>
+<Code
+    code={`<Plot grid x={{ tickSpacing: 40 }} y={{ tickSpacing: 10 }}>
     <Line data={aapl} x="Date" y="Close" />
-</Plot>`}</code
-    ></pre>
+</Plot>`}
+/>

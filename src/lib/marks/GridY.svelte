@@ -19,7 +19,7 @@
     );
 </script>
 
-<BaseMark type="grid-y" data={ticks} channels={ticks.length ? ['y'] : []}>
+<BaseMark type="grid-y" data={ticks} channels={['y']}>
     <g class="grid-y">
         {#each autoTicks as tick}
             <g class="y-tick" transform="translate({plot.margins.left},{plot.yScale(tick)})">

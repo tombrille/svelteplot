@@ -1,12 +1,11 @@
 <script lang="ts">
-    import AxisY from '$lib/marks/AxisY.svelte';
-
     import { Plot, GridX, GridY, Dot } from '$lib';
     import DotX from '$lib/marks/DotX.svelte';
     import DotY from '$lib/marks/DotY.svelte';
     import type { Datasets } from '$lib/types';
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
+    import Code from '../../Code.svelte';
 
     const { cars, aapl } = getContext<Datasets>('data');
 
@@ -23,25 +22,29 @@
     ];
 
     let maxRad = $state(10);
+    let fill = $state(false);
 </script>
 
-<h1 class="title">Dot mark</h1>
+<div class="content">
+    <h1>Dot mark</h1>
 
-<p>You can use the dot mark to create simple scatterplots:</p>
+    <p>You can use the dot mark to create simple scatterplots:</p>
+   
+    <input type="checkbox" bind:checked={fill} /> fill symbols
 
-<Plot grid>
-    <Dot data={cars} x="economy (mpg)" y="power (hp)" />
-</Plot>
+    <Plot grid height={500} x={{ log: true }}>
+        <Dot data={cars} x="economy (mpg)" y="power (hp)" fill={fill ? 'red' : null} symbol={d => d.name.split(' ')[0]} />
+    </Plot>
 
-<pre><code
-        >{`<script>
+    <Code
+        code={`<script>
     import { Plot, Dot } from 'svelteplot';
 </script>
 
 <Plot grid>
     <Dot data={cars} x="economy (mpg)" y="power (hp)"/>
-</Plot>`}</code
-    ></pre>
+</Plot>`} />
+</div>
 
 <Plot grid radius={{ range: [1, maxRad] }}>
     <Dot

@@ -1,23 +1,26 @@
 <script>
-    import Highlight from 'svelte-highlight';
-    import xml from 'svelte-highlight/languages/xml';
-    //   import svelte from "svelte-highlight/languages/svelte";
-    import atomOneDark from 'svelte-highlight/styles/atom-one-dark';
+    import HighlightSvelte from 'svelte-highlight/HighlightSvelte.svelte';
+    import atomOneLight from 'svelte-highlight/styles/github';
 
     let { code = '' } = $props();
 </script>
 
 <svelte:head>
-    {@html atomOneDark}
+    {@html atomOneLight}
 </svelte:head>
 
 <div class="block">
-    <Highlight language={xml} {code} />
+    <HighlightSvelte {code} />
 </div>
 
 <style>
     div :global(pre) {
         padding: 0;
-        background-color: none;
+        background-color: #f6f6f7;
+        border-radius: 6px !important;
+    }
+    div :global(code) {
+        background-color: #f6f6f7;
+        padding: 1.5rem !important;
     }
 </style>

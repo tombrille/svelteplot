@@ -17,11 +17,14 @@
 
 <div class="container mt-3">
     <div class="columns">
-        <div class="column is-3">
-            <div class="mb-5"><a class="has-text-weight-bold" href="/"> SveltePlot </a></div>
+        <div class="column is-2">
+            <div class="mb-5">
+                <a class="is-size-5 has-text-weight-bold" href="/">SveltePlot </a>
+            </div>
 
             <aside class="menu">
                 {#each nav.pageGroups as group}
+                    <hr />
                     <p class="menu-label">{group.title}</p>
                     <ul class="menu-list">
                         {#each group.pages as navItem}
@@ -37,7 +40,7 @@
                 {/each}
             </aside>
         </div>
-        <div class="column is-8">
+        <div class="column is-10">
             <slot />
         </div>
     </div>
@@ -51,5 +54,20 @@
 
     :global(body) {
         font-family: var(--system-ui);
+    }
+
+    .menu-label {
+        text-transform: none;
+        font-weight: bold;
+    }
+
+    .menu-list li a {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: #777;
+    }
+
+    .menu-list li a.is-active {
+        color: #222;
     }
 </style>

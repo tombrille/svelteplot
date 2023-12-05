@@ -13,17 +13,28 @@ export const DEFAULT_PLOT_OPTIONS = {
     marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
-    x: { domain: null, grid: false, tickSpacing: 80, axis: 'bottom', log: false },
-    y: { domain: null, grid: false, tickSpacing: 60, axis: 'left', log: false }
+    symbol: {},
+    x: { domain: null, grid: false, tickSpacing: 80, axis: 'bottom', log: false, reverse: false },
+    y: { domain: null, grid: false, tickSpacing: 60, axis: 'left', log: false, reverse: false }
 };
 
 export class Plot {
     width = $state(600);
-    height = $state(400);
+    _height = $state<number | 'auto'>(400);
 
     options = $state(DEFAULT_PLOT_OPTIONS);
 
     marks = $state<Mark<BaseMarkProps>[]>([]);
+
+    readonly hasChannelX = $derived(!!this.marks.find((mark) => mark.channels.has('x')));
+    readonly hasChannelY = $derived(!!this.marks.find((mark) => mark.channels.has('y')));
+
+    readonly hasFilledDotMarks = $derived<boolean>(!!this.marks.find(d => d.type === 'dot' && d.props?.fill))
+
+    readonly height = $derived(
+        this._height === 'auto' ? (this.hasChannelY ? 400 : 90) : this._height
+    );
+
     // derived props
     readonly margins = $derived<Margins>({
         top: this.options.marginTop,
@@ -35,23 +46,30 @@ export class Plot {
     readonly plotWidth = $derived(this.width - this.margins.left - this.margins.right);
     readonly plotHeight = $derived(this.height - this.margins.top - this.margins.bottom);
 
-    x = new Channel('x');
-    y = new Channel('y');
-    radius = new Channel('radius');
-    color = new Channel('color');
+    x = new Channel('x', this);
+    y = new Channel('y', this);
+    radius = new Channel('radius', this);
+    color = new Channel('color', this);
+    symbol = new Channel('symbol', this);
 
     readonly xScale = $derived(
-        createScale(this.x.scaleType, this.options.x?.domain || this.x.domain, [
-            this.margins.left,
-            this.margins.left + this.plotWidth
-        ])
+        createScale(
+            this.x.scaleType === 'linear' && this.options.x.log ? 'log' : this.x.scaleType,
+            this.options.x?.domain || this.x.domain,
+            this.options.x?.reverse
+                ? [this.margins.left + this.plotWidth, this.margins.left]
+                : [this.margins.left, this.margins.left + this.plotWidth],
+            this.x.scaleType === 'linear' && this.options.x.log ? { base: 10 } : {}
+        )
     );
 
     readonly yScale = $derived(
         createScale(
             this.y.scaleType === 'linear' && this.options.y.log ? 'log' : this.y.scaleType,
             this.options.y?.domain || this.y.domain,
-            [this.height - this.margins.bottom, this.margins.top],
+            this.options.y?.reverse
+                ? [this.margins.top, this.height - this.margins.bottom]
+                : [this.height - this.margins.bottom, this.margins.top],
             this.y.scaleType === 'linear' && this.options.y.log ? { base: '10' } : {}
         )
     );
@@ -63,6 +81,15 @@ export class Plot {
             this.options.radius.range
         )
     );
+
+    readonly symbolScale = $derived(createScale(
+        'ordinal',
+        this.symbol.domain,
+        this.options.symbol?.range ||
+        this.hasFilledDotMarks ? 
+        ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye'] : 
+        ['circle', 'plus', 'times', 'triangle2', 'asterisk', 'square2', 'diamond2']
+    ))
 
     readonly colorScale = $derived(
         createScale(this.color.scaleType, this.color.domain, ['white', 'blue'])
@@ -78,7 +105,7 @@ export class Plot {
     constructor(width: number, height: number, options: Partial<typeof DEFAULT_PLOT_OPTIONS>) {
         const opts = mergeDeep({}, DEFAULT_PLOT_OPTIONS, options) as typeof DEFAULT_PLOT_OPTIONS;
         this.width = width;
-        this.height = height;
+        this._height = height;
         this.options = opts;
     }
 
@@ -94,7 +121,7 @@ export class Plot {
         this.marks = [...this.marks, mark];
         // add mark to respective channels
         this.updateChannels();
-        console.log(this.color.domain);
+        console.log(mark, this.hasFilledDotMarks);
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {

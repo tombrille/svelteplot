@@ -1,4 +1,4 @@
-import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog } from 'd3-scale';
+import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog, scaleOrdinal } from 'd3-scale';
 import { getLogTicks } from './getLogTicks';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
@@ -6,7 +6,8 @@ const Scales: Record<string, (domain: number[], range: [number, number]) => (val
     linear: scaleLinear,
     time: scaleTime,
     sqrt: scaleSqrt,
-    log: scaleLog
+    log: scaleLog,
+    ordinal: scaleOrdinal
 };
 
 export function createScale(type: keyof typeof Scales, domain, range, options = {}) {

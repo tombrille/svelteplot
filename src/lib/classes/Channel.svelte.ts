@@ -1,4 +1,5 @@
 import type { ChannelName, ChannelOptions, ChannelType, Mark } from '$lib/types';
+import type { Plot } from './Plot.svelte';
 import resolveChannel from '$lib/helpers/resolveChannel';
 import { extent } from 'd3-array';
 import { MARK_PROP_CHANNEL, CHANNEL_TYPES } from '$lib/contants';
@@ -13,15 +14,22 @@ import { uniq } from 'underscore';
 
 export class Channel {
     readonly name: ChannelName | undefined = undefined;
+    readonly plot: Plot | undefined = undefined;
 
-    constructor(name: ChannelName) {
+    constructor(name: ChannelName, plot: Plot) {
         this.name = name;
-        // this.type = CHANNEL_MAP[name];
+        this.plot = plot;
     }
 
     // readonly type: ChannelType = CHANNEL_TYPES.position;
     // all marks that have this channel
     marks: Mark[] = $state([]);
+
+    readonly forceDomain: [number, number] | [Date, Date] | null = $derived(
+        this.plot && (this.name === 'x' || this.name === 'y')
+            ? this.plot.options[this.name]?.domain
+            : null
+    );
 
     readonly activeMarks: Mark[] = $derived(
         this.marks.filter((mark) => mark.channels.has(this.name))
@@ -33,8 +41,8 @@ export class Channel {
             .map(([prop]) => prop)
     );
 
-    readonly dataValues = $derived(
-        this.activeMarks
+    readonly dataValues = $derived([
+        ...this.activeMarks
             // only check marks with data
             .filter((mark) => mark.props.data.length)
             .map((mark) =>
@@ -43,8 +51,9 @@ export class Channel {
                 )
             )
             .flat(3)
-            .filter((d) => d != null)
-    );
+            .filter((d) => d != null),
+        ...(this.forceDomain || [])
+    ]);
 
     readonly valueType = $derived(
         this.dataValues.every((v) => v == null)
