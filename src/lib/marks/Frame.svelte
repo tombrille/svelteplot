@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import type { FrameProps } from '$lib/types';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     let { ...styleProps } = $props<FrameProps>();
 </script>
@@ -14,10 +14,10 @@
     <rect
         class="frame"
         style={getBaseStyles(null, styleProps)}
-        x={figure.margins.left}
-        y={figure.margins.top}
-        width={figure.plotWidth}
-        height={figure.plotHeight}
+        x={plot.margins.left}
+        y={plot.margins.top}
+        width={plot.plotWidth}
+        height={plot.plotHeight}
     />
 </BaseMark>
 
@@ -26,8 +26,8 @@
     style="font-size: 40px;text-anchor:middle"
     dominant-baseline="central"
     opacity={0.1}
-    transform="translate({figure.margins.left + figure.plotWidth * 0.5}, {figure.margins.top +
-        figure.plotHeight * 0.5})">{figure.plotWidth} x {figure.plotHeight}</text
+    transform="translate({plot.margins.left + plot.plotWidth * 0.5}, {plot.margins.top +
+        plot.plotHeight * 0.5})">{plot.plotWidth} x {plot.plotHeight}</text
 > -->
 
 <style>

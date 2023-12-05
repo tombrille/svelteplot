@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
     import type { BaseMarkProps, DotMarkProps } from '$lib/types';
@@ -9,10 +9,12 @@
 
     const BaseMark_Dot = BaseMark<BaseMarkProps & DotMarkProps>;
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     let { data, x = null, y = null, r = 3, ...styleProps } = $props<DotMarkProps>();
-    // console.log({r,data}, figure.radius.domain, figure.radiusScale(resolveChannel('radius', data[0], r)))
+
+    $effect(() => console.log(data));
+    // console.log({r,data}, plot.radius.domain, plot.radiusScale(resolveChannel('radius', data[0], r)))
 </script>
 
 <BaseMark_Dot type="dot" {data} channels={['x', 'y', 'radius']} {x} {y} {r} {...styleProps}>
@@ -20,13 +22,13 @@
         {#each data as datum, i}
             {@const cx = resolveChannel('x', datum, x)}
             {@const cy = resolveChannel('y', datum, y)}
-            {#if Number.isFinite(cx) && Number.isFinite(cy)}
+            {#if cx !== null && cy !== null}
                 <circle
                     r={typeof r === 'number'
                         ? r
-                        : figure.radiusScale(resolveChannel('radius', datum, r))}
+                        : plot.radiusScale(resolveChannel('radius', datum, r))}
                     style={getBaseStyles(datum, styleProps)}
-                    transform="translate({[figure.xScale(cx), figure.yScale(cy)]})"
+                    transform="translate({[plot.xScale(cx), plot.yScale(cy)]})"
                 />
             {/if}
         {/each}

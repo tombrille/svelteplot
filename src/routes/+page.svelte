@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib';
+    import { Plot, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib';
     import RuleX from '$lib/marks/RuleX.svelte';
     import CandlestickExample from './marks/rule/CandlestickExample.svelte';
 
@@ -58,9 +58,9 @@ max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
 has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
 <hr />
 
-<Figure {marginLeft} {marginRight} {marginBottom} {marginTop} radius={{ range: [1, maxRad] }}>
+<Plot {marginLeft} {marginRight} {marginBottom} {marginTop} radius={{ range: [1, maxRad] }}>
     {#snippet header()}
-        <h2>Figure with header</h2>
+        <h2>Plot with header</h2>
         <h3>and a subtitle</h3>
     {/snippet}
     <GridX />
@@ -87,7 +87,7 @@ has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
     {#snippet footer()}
         <figcaption>and some words below</figcaption>
     {/snippet}
-</Figure>
+</Plot>
 
 <CandlestickExample />
 
@@ -95,7 +95,7 @@ has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
 
 <div style="display:flex;">
     <div style="flex-grow: 1;max-width:50%">
-        <Figure height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
+        <Plot height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
             {#snippet header()}<h3 style="text-align:center">DotX</h3>{/snippet}
             <GridX /><GridY />
             <Frame />
@@ -105,28 +105,28 @@ has frame: <input type="checkbox" bind:checked={hasFrame} /><br />
                 strokeWidth="4"
                 stroke={() => (Math.random() < 0.5 ? 'pink' : 'green')}
             />
-        </Figure>
+        </Plot>
     </div>
     <div style="flex-grow: 1;max-width:50%">
-        <Figure height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
+        <Plot height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
             {#snippet footer()}<h3 style="text-align:center">DotY</h3>{/snippet}
             <GridX tickFormat={(d) => d.toFixed(2)} /><GridY />
             <Frame />
             <DotY data={[-2, 1, 2, 3, 4, 5, 10]} fill="blue" />
-        </Figure>
+        </Plot>
     </div>
 </div>
 
 <b>Custom grid ticks</b>
 
-<Figure height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
+<Plot height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
     <GridX data={[-3, 1, 2, 3, 4, 5, 10]} /><GridY data={[-1, 2, 3, 4, 6]} />
     <DotX data={[-2, 1, 2, 3, 4, 5, 10]} r={3} />
-</Figure>
+</Plot>
 
 Another one using [[x0,y0], [x1,y1], ...] coordinates:
 
-<Figure height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
+<Plot height={350} {marginLeft} {marginRight} {marginBottom} {marginTop}>
     <GridX />
     <GridY label="y" />
     <Frame />
@@ -139,7 +139,7 @@ Another one using [[x0,y0], [x1,y1], ...] coordinates:
             [8, 12]
         ]}
     />
-</Figure>
+</Plot>
 
 <!-- -->
 

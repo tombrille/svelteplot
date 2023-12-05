@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     import type {
         BaseMarkProps,
         GridXMarkProps,
@@ -18,7 +18,7 @@
 
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisXMArkProps>;
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     let {
         ticks = [],
@@ -37,21 +37,21 @@
     let autoTicks = $derived(
         ticks.length
             ? ticks
-            : figure.xScale.ticks(
-                  Math.ceil(figure.plotWidth / (figure.options.x.tickSpacing || 80))
-              )
+            : plot.options.x.ticks
+              ? plot.options.x.ticks
+              : plot.xScale.ticks(Math.ceil(plot.plotWidth / (plot.options.x.tickSpacing || 80)))
     );
 
     let useTickFormat = $derived(
         typeof tickFormat === 'function'
             ? tickFormat
-            : figure.x.scaleType === 'time'
+            : plot.x.scaleType === 'time'
               ? typeof tickFormat === 'string'
                   ? (d: Date) =>
                         dayjs(d)
                             .format(tickFormat as string)
                             .split('\n')
-                  : autoTimeFormat(figure.x, figure.plotWidth)
+                  : autoTimeFormat(plot.x, plot.plotWidth)
               : (d: RawValue) => String(d)
     );
 
@@ -64,8 +64,8 @@
     );
 
     let autoTitle = $derived(
-        figure.x.activeMarks.length === 1 && typeof figure.x.activeMarks[0].props.x === 'string'
-            ? figure.x.activeMarks[0].props.x
+        plot.x.activeMarks.length === 1 && typeof plot.x.activeMarks[0].props.x === 'string'
+            ? plot.x.activeMarks[0].props.x
             : null
     );
     let useTitle = $derived(title || autoTitle);
@@ -75,8 +75,8 @@
     <g class="axis-x">
         {#if useTitle}
             <text
-                x={figure.plotWidth + figure.margins.left}
-                y={figure.height - 10}
+                x={plot.plotWidth + plot.margins.left}
+                y={plot.height - 10}
                 class="Axis-title"
                 dominant-baseline="hanging">{useTitle} →</text
             >
@@ -86,9 +86,9 @@
             {@const prevTextLines = t && tickTexts[t - 1]}
             <g
                 class="x-tick"
-                transform="translate({figure.xScale(tick)},{anchor === 'bottom'
-                    ? figure.margins.top + figure.plotHeight
-                    : figure.margins.top})"
+                transform="translate({plot.xScale(tick)},{anchor === 'bottom'
+                    ? plot.margins.top + plot.plotHeight
+                    : plot.margins.top})"
             >
                 <text
                     style={getBaseStyles(tick, { fontSize: tickFontSize })}

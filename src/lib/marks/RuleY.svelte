@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     import type { BaseMarkProps, RuleYMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
@@ -9,7 +9,7 @@
 
     const BaseMark_RuleY = BaseMark<BaseMarkProps & RuleYMarkProps>;
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     let { data = [], y, x1, x2, ...styleProps } = $props<RuleYMarkProps>();
 
@@ -20,14 +20,12 @@
     <g class="rule-y">
         {#each data as datum}
             <line
-                transform="translate(0,{figure.yScale(resolveChannel('y', datum, y))})"
+                transform="translate(0,{plot.yScale(resolveChannel('y', datum, y))})"
                 style={getBaseStyles(datum, styleProps)}
-                x1={x1 != null
-                    ? figure.xScale(resolveChannel('x', datum, x1))
-                    : figure.margins.left}
+                x1={x1 != null ? plot.xScale(resolveChannel('x', datum, x1)) : plot.margins.left}
                 x2={x2 != null
-                    ? figure.xScale(resolveChannel('x', datum, x2))
-                    : figure.plotWidth + figure.margins.left}
+                    ? plot.xScale(resolveChannel('x', datum, x2))
+                    : plot.plotWidth + plot.margins.left}
             />
         {/each}
     </g>

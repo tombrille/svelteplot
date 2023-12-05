@@ -1,8 +1,8 @@
 <script lang="ts">
     import { setContext } from 'svelte';
-    import type { Margins, FigureProps } from './types';
+    import type { Margins, PlotProps } from './types';
     import { Frame, GridX, GridY } from '$lib';
-    import { DEFAULT_FIGURE_OPTIONS, Figure } from './classes/Figure.svelte';
+    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
     import mergeDeep from './helpers/mergeDeep';
     import AxisX from './marks/AxisX.svelte';
     import AxisY from './marks/AxisY.svelte';
@@ -21,76 +21,101 @@
         grid = false,
         frame = false,
         maxWidth = null,
+        title = '',
+        subtitle = '',
+        caption = '',
         // scales
         radius = null,
         x = null,
-        y = null
-    } = $props<FigureProps>();
+        y = null,
+        onmousemove = null
+    } = $props<PlotProps>();
 
     let width = $state(400);
 
-    const figure = new Figure(600, 400, {
+    const plot = new Plot(600, 400, {
         marginTop,
         marginLeft,
         marginRight,
         marginBottom,
         radius,
         x,
-        y
+        y,
+        title,
+        subtitle,
+        caption
     });
 
-    setContext('svelteplot', figure);
+    setContext('svelteplot', plot);
 
     $effect(() => {
-        figure.width = width;
-        figure.height = height;
-        figure.options = mergeDeep({}, DEFAULT_FIGURE_OPTIONS, {
+        plot.width = width;
+        plot.height = height;
+        plot.options = mergeDeep({}, DEFAULT_PLOT_OPTIONS, {
             marginBottom,
             marginLeft,
             marginRight,
             marginTop,
             radius,
             x,
-            y
-        }) as typeof DEFAULT_FIGURE_OPTIONS;
+            y,
+            title,
+            subtitle,
+            caption
+        }) as typeof DEFAULT_PLOT_OPTIONS;
     });
+
+    function onMouseMove(evt) {
+        evt.plot = plot;
+        onmousemove(evt);
+    }
 </script>
 
 <figure class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
+    <!-- default title -->
+    {#if plot.options.title}
+        <h2>{@html plot.options.title}</h2>
+    {/if}
+    {#if plot.options.subtitle}
+        <h3>{@html plot.options.subtitle}</h3>
+    {/if}
     {#if header}{@render header()}{/if}
 
-    <svg {width} {height}>
+    <svg role="document" {width} {height} onmousemove={onmousemove ? onMouseMove : null}>
         <!-- automatic grids -->
         {#if grid || x?.grid}<GridX />{/if}
         {#if grid || y?.grid}<GridY />{/if}
 
-        {#if !figure.hasAxisXMark}
+        {#if !plot.hasAxisXMark}
             <!-- automatic x axis -->
-            {#if figure.options.x.axis === 'bottom' || figure.options.x.axis === 'both'}
+            {#if plot.options.x.axis === 'bottom' || plot.options.x.axis === 'both'}
                 <AxisX anchor="bottom" automatic />
             {/if}
-            {#if figure.options.x.axis === 'top' || figure.options.x.axis === 'both'}
+            {#if plot.options.x.axis === 'top' || plot.options.x.axis === 'both'}
                 <AxisX anchor="top" automatic />
             {/if}
         {/if}
-        {#if !figure.hasAxisYMark}
+        {#if !plot.hasAxisYMark}
             <!-- automatic y axis -->
-            {#if figure.options.y.axis === 'left' || figure.options.y.axis === 'both'}
+            {#if plot.options.y.axis === 'left' || plot.options.y.axis === 'both'}
                 <AxisY anchor="left" automatic />
             {/if}
-            {#if figure.options.y.axis === 'right' || figure.options.y.axis === 'both'}
+            {#if plot.options.y.axis === 'right' || plot.options.y.axis === 'both'}
                 <AxisY anchor="right" automatic />
             {/if}
         {/if}
         <!-- automatic frame -->
         {#if frame}<Frame />{/if}
         {#if children}
-            <slot {figure} />
+            <slot {plot} />
         {/if}
     </svg>
 
     <div class="overlay"></div>
 
+    {#if plot.options.caption}
+        <figcaption>{@html plot.options.caption}</figcaption>
+    {/if}
     {#if footer}{@render footer()}{/if}
 </figure>
 
@@ -109,9 +134,5 @@
         left: 0;
         bottom: 0;
         right: 0;
-    }
-    .svelteplot :global(h2),
-    .svelteplot :global(h3) {
-        margin: 0 0 0.5ex;
     }
 </style>

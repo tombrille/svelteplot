@@ -3,11 +3,11 @@
 </script>
 
 <script lang="ts" generics="T extends BaseMarkProps">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     import { Mark } from '$lib/classes/Mark.svelte';
     import { getContext } from 'svelte';
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     type Foo = { children?: Function };
 
@@ -15,7 +15,7 @@
 
     const mark = new Mark(type, channels, automatic, { data, ...rest });
     // console.log(type, { data, rest });
-    figure.addMark(mark);
+    plot.addMark(mark);
 
     $effect(() => {
         // update mark channels
@@ -29,8 +29,8 @@
 
     $effect(() => {
         return () => {
-            // remove mark from figure
-            figure.removeMark(mark);
+            // remove mark from plot
+            plot.removeMark(mark);
         };
     });
 </script>

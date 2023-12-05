@@ -1,4 +1,4 @@
-import type { ChannelName, ChannelType, Mark } from '$lib/types';
+import type { ChannelName, ChannelOptions, ChannelType, Mark } from '$lib/types';
 import resolveChannel from '$lib/helpers/resolveChannel';
 import { extent } from 'd3-array';
 import { MARK_PROP_CHANNEL, CHANNEL_TYPES } from '$lib/contants';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, Frame, Line, LineX, LineY, RuleX } from '$lib';
+    import { Plot, Frame, Line, LineX, LineY, RuleX } from '$lib';
 
     import type { Datasets } from '$lib/types';
     import { range } from 'd3-array';
@@ -18,26 +18,32 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 
 <p>Lines are cool</p>
 
-<Figure>
-    <Line data={aapl.slice(cutoff1, cutoff2)} x="Date" y="Adj Close" />
-</Figure>
+<Plot>
+    <Line
+        data={aapl.slice(cutoff1, cutoff2)}
+        z={(d) => d.Date.getFullYear()}
+        stroke={(d) => d.Date.getFullYear()}
+        x="Date"
+        y="Adj Close"
+    />
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure>
+        >{`<Plot>
     <Line data={aapl} x="Date" y="Adj Close" /> 
-</Figure>`}</code
+</Plot>`}</code
     ></pre>
 
 <p class="block">Use can use the <b>LineY</b> mark to quickly plot an array of numbers as line:</p>
 
-<Figure grid height="200">
+<Plot grid height="200">
     <LineY data={range(100).map((v) => Math.cos(v / 5))} />
-</Figure>
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure grid height="200">
+        >{`<Plot grid height="200">
     <LineY data={range(100).map(v => Math.cos(v/5))} />
-</Figure>`}</code
+</Plot>`}</code
     ></pre>
 
 <p class="block">
@@ -45,18 +51,18 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
     will be used as x values instead:
 </p>
 
-<Figure grid height="400" maxWidth="300px">
+<Plot grid height="400" maxWidth="300px">
     <Frame stroke="lightgrey" />
     <RuleX data={[0]} />
     <LineX data={range(Math.PI * 20).map((v) => Math.sin(v / 10))} stroke="teal" strokeWidth="2" />
-</Figure>
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure grid height="400" maxWidth="300px">
+        >{`<Plot grid height="400" maxWidth="300px">
     <RuleX data={[0]} />
     <LineX 
         data={range(Math.PI*20).map(v => Math.sin(v/10))}
         stroke="teal"
         strokeWidth="2" />
-</Figure>`}</code
+</Plot>`}</code
     ></pre>

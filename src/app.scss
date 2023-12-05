@@ -11,6 +11,11 @@
 figure.svelteplot {
     h2 {
         font-weight: bold;
+        font-size: 22px;
+        margin-bottom: 0;
+    }
+    h2 + h3 {
+        margin-top: 0;
     }
     figcaption {
         color: gray;

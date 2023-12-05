@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
     import type { BaseMarkProps, LineMarkProps } from '$lib/types';
@@ -7,28 +7,50 @@
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
     import { line } from 'd3-shape';
+    import { groupBy } from 'underscore';
 
-    const BaseMark_Dot = BaseMark<BaseMarkProps & LineMarkProps>;
+    const BaseMark_Line = BaseMark<BaseMarkProps & LineMarkProps>;
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
-    let { data, x = null, y = null, r = 5, ...styleProps } = $props<LineMarkProps>();
+    let {
+        data,
+        x = null,
+        y = null,
+        z = null,
+        fill,
+        stroke,
+        r = 5,
+        ...styleProps
+    } = $props<LineMarkProps>();
 
-    let groups = $derived([data]); // todo: split by z
+    let groups = $derived(
+        z ? Object.values(groupBy(data, (d) => resolveChannel('z', d, z))) : [data]
+    ); // todo: split by z
     let linePath = line()
-        .x((d) => figure.xScale(resolveChannel('x', d, x)))
-        .y((d) => figure.yScale(resolveChannel('y', d, y)));
+        .x((d) => plot.xScale(resolveChannel('x', d, x)))
+        .y((d) => plot.yScale(resolveChannel('y', d, y)));
 
-    // console.log({r,data}, figure.radius.domain, figure.radiusScale(resolveChannel('radius', data[0], r)))
+    // console.log({r,data}, plot.radius.domain, plot.radiusScale(resolveChannel('radius', data[0], r)))
 </script>
 
-<BaseMark_Dot type="dot" {data} channels={['x', 'y', 'radius']} {x} {y} {r} {...styleProps}>
+<BaseMark_Line
+    type="dot"
+    {data}
+    channels={['x', 'y', 'radius', 'color']}
+    {x}
+    {y}
+    {r}
+    {fill}
+    {stroke}
+    {...styleProps}
+>
     <g class="lines">
         {#each groups as lineData}
             <path d={linePath(lineData)} style={getBaseStyles(lineData[0], styleProps)} />
         {/each}
     </g>
-</BaseMark_Dot>
+</BaseMark_Line>
 
 <style>
     .lines path {

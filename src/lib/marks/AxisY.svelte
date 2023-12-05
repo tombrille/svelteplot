@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Figure } from '$lib/classes/Figure.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
     // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import type { AxisYMArkProps, BaseMarkProps, GridYMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
@@ -8,7 +8,7 @@
 
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMArkProps>;
 
-    const figure = getContext<Figure>('svelteplot');
+    const plot = getContext<Plot>('svelteplot');
 
     let {
         ticks = [],
@@ -25,14 +25,14 @@
     let autoTicks = $derived(
         ticks.length > 0
             ? ticks
-            : figure.yScale.ticks(
-                  Math.ceil(figure.plotHeight / (figure.options.y.tickSpacing || 80))
-              )
+            : plot.options.y.ticks
+              ? plot.options.y.ticks
+              : plot.yScale.ticks(Math.ceil(plot.plotHeight / (plot.options.y.tickSpacing || 80)))
     );
 
     let autoTitle = $derived(
-        figure.y.activeMarks.length === 1 && typeof figure.y.activeMarks[0].props.y === 'string'
-            ? figure.y.activeMarks[0].props.y
+        plot.y.activeMarks.length === 1 && typeof plot.y.activeMarks[0].props.y === 'string'
+            ? plot.y.activeMarks[0].props.y
             : null
     );
     let useTitle = $derived(title || autoTitle);
@@ -46,8 +46,8 @@
         {#each autoTicks as tick}
             <g
                 class="y-tick"
-                transform="translate({figure.margins.left +
-                    (anchor === 'left' ? 0 : figure.plotWidth)},{figure.yScale(tick)})"
+                transform="translate({plot.margins.left +
+                    (anchor === 'left' ? 0 : plot.plotWidth)},{plot.yScale(tick)})"
             >
                 <text
                     class:is-left={anchor === 'left'}

@@ -4,20 +4,24 @@ import type { BaseMarkProps, Margins } from '../types';
 import { Channel } from './Channel.svelte';
 import type { Mark } from './Mark.svelte';
 
-export const DEFAULT_FIGURE_OPTIONS = {
+export const DEFAULT_PLOT_OPTIONS = {
+    title: '',
+    subtitle: '',
+    caption: '',
     marginLeft: 0,
     marginRight: 0,
     marginTop: 30,
     marginBottom: 0,
     radius: { range: [1, 10] },
-    x: { domain: null, grid: false, tickSpacing: 80, axis: 'bottom' },
-    y: { domain: null, grid: false, tickSpacing: 60, axis: 'left' }
+    x: { domain: null, grid: false, tickSpacing: 80, axis: 'bottom', log: false },
+    y: { domain: null, grid: false, tickSpacing: 60, axis: 'left', log: false }
 };
-export class Figure {
+
+export class Plot {
     width = $state(600);
     height = $state(400);
 
-    options = $state(DEFAULT_FIGURE_OPTIONS);
+    options = $state(DEFAULT_PLOT_OPTIONS);
 
     marks = $state<Mark<BaseMarkProps>[]>([]);
     // derived props
@@ -44,10 +48,12 @@ export class Figure {
     );
 
     readonly yScale = $derived(
-        createScale(this.y.scaleType, this.options.y?.domain || this.y.domain, [
-            this.height - this.margins.bottom,
-            this.margins.top
-        ])
+        createScale(
+            this.y.scaleType === 'linear' && this.options.y.log ? 'log' : this.y.scaleType,
+            this.options.y?.domain || this.y.domain,
+            [this.height - this.margins.bottom, this.margins.top],
+            this.y.scaleType === 'linear' && this.options.y.log ? { base: '10' } : {}
+        )
     );
 
     readonly radiusScale = $derived(
@@ -58,6 +64,10 @@ export class Figure {
         )
     );
 
+    readonly colorScale = $derived(
+        createScale(this.color.scaleType, this.color.domain, ['white', 'blue'])
+    );
+
     readonly hasAxisXMark = $derived(
         !!this.marks.find((mark) => mark.type === 'axis-x' && !mark.automatic)
     );
@@ -65,28 +75,10 @@ export class Figure {
         !!this.marks.find((mark) => mark.type === 'axis-y' && !mark.automatic)
     );
 
-    constructor(
-        width: number,
-        height: number,
-        options: {
-            marginTop: number;
-            marginLeft: number;
-            marginRight: number;
-            marginBottom: number;
-            radius?: { range: [number, number] };
-        }
-    ) {
-        const opts = mergeDeep(
-            {},
-            DEFAULT_FIGURE_OPTIONS,
-            options
-        ) as typeof DEFAULT_FIGURE_OPTIONS;
+    constructor(width: number, height: number, options: Partial<typeof DEFAULT_PLOT_OPTIONS>) {
+        const opts = mergeDeep({}, DEFAULT_PLOT_OPTIONS, options) as typeof DEFAULT_PLOT_OPTIONS;
         this.width = width;
         this.height = height;
-        // if (typeof opts.x.axis === 'string') {
-        //     // convert to axis object
-        //     opts.x.axis = { anchor: opts.x.axis };
-        // }
         this.options = opts;
     }
 
@@ -102,13 +94,10 @@ export class Figure {
         this.marks = [...this.marks, mark];
         // add mark to respective channels
         this.updateChannels();
-        if (mark.channels.size > 0 && this.y) {
-            console.log(mark.channels, this.y.dataValues, this.y.domain);
-        }
+        console.log(this.color.domain);
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {
-        console.log('removeMark: ' + removeMark);
         this.marks = this.marks.filter((mark) => mark.id !== removeMark.id);
         this.updateChannels();
     }

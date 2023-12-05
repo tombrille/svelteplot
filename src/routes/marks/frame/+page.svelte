@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, Frame, Line } from '$lib';
+    import { Plot, Frame, Line } from '$lib';
     import type { Datasets } from '$lib/types';
     import { getContext } from 'svelte';
 
@@ -11,18 +11,18 @@
 
     <p>
         The <b>frame</b> mark can be used to add a rectangle outside your plot boundaries. The
-        easiest way to add a frame is to set the <b>frame</b> option of the Figure element
+        easiest way to add a frame is to set the <b>frame</b> option of the Plot element
     </p>
 </div>
 
-<Figure grid frame>
+<Plot grid frame>
     <Line data={aapl} x="Date" y="Close" />
-</Figure>
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure grid frame>
+        >{`<Plot grid frame>
     <Line data={aapl} x="Date" y="Close" />
-</Figure>`}</code
+</Plot>`}</code
     ></pre>
 
 <p class="block">
@@ -31,13 +31,13 @@
     > mark to your plot:
 </p>
 
-<Figure grid>
+<Plot grid>
     <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
-</Figure>
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure grid>
+        >{`<Plot grid>
    <Frame 
         fill="yellow"
         fillOpacity="0.2"
@@ -45,5 +45,5 @@
         strokeWidth="2"
         strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
-</Figure>`}</code
+</Plot>`}</code
     ></pre>

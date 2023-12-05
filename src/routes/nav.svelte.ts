@@ -9,7 +9,11 @@ export default class Nav {
         });
         this.pageGroups.push({
             title: 'Features',
-            pages: [{ title: 'Figure', url: '/features/figure' }]
+            pages: [
+                { title: 'Plot', url: '/features/plot' },
+                { title: 'Scales', url: '/features/scales' },
+                { title: 'Interaction', url: '/features/interactivity' }
+            ]
         });
         this.pageGroups.push({
             title: 'Marks',

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, Frame, Line, RuleX, RuleY } from '$lib';
+    import { Plot, Frame, Line, RuleX, RuleY } from '$lib';
     import Dot from '$lib/marks/Dot.svelte';
     import GridX from '$lib/marks/GridX.svelte';
     import GridY from '$lib/marks/GridY.svelte';
@@ -19,20 +19,20 @@
 
 <p>A common use case for rules are axis lines or value annotations:</p>
 
-<Figure grid>
+<Plot grid>
     <RuleY data={[90]} stroke="turquoise" strokeWidth="3" />
     <RuleX data={[new Date(2016, 4, 14)]} stroke="red" strokeWidth="3" opacity="0.5" />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
-</Figure>
+</Plot>
 
 <pre class="block"><code
-        >{`<Figure grid>
+        >{`<Plot grid>
     <RuleY data={[90]} stroke="turquoise" strokeWidth="3" />
     <RuleX data={[new Date(2016, 4, 14)]} stroke="red" strokeWidth="3" opacity="0.5" />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
-</Figure>`}</code
+</Plot>`}</code
     ></pre>
 
 <p class="block">

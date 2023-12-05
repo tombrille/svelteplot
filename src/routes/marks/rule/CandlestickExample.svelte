@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, RuleX } from '$lib';
+    import { Plot, RuleX } from '$lib';
     import type { Datasets } from '$lib/types';
     import { getContext } from 'svelte';
 
@@ -10,7 +10,7 @@
     type AAPL = (typeof aapl)[0];
 </script>
 
-<Figure grid>
+<Plot grid>
     <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
     <RuleX
         data={aapl.slice(750, 800)}
@@ -20,11 +20,11 @@
         strokeWidth="5"
         stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'lightseagreen' : 'crimson')}
     />
-</Figure>
+</Plot>
 
 {#if code}
     <pre class="block"><code
-            >{`<Figure grid>
+            >{`<Plot grid>
     <RuleX 
         data={aapl.slice(750, 800)}
         x="Date"
@@ -39,6 +39,6 @@
         y2="Close"
         strokeWidth="5"
         stroke={(d) => d.Close > d.Open ? 'lightseagreen' : 'crimson'} />
-</Figure>`}</code
+</Plot>`}</code
         ></pre>
 {/if}

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Figure, RuleX, RuleY } from '$lib';
+    import { Plot, RuleX, RuleY } from '$lib';
     import AxisX from '$lib/marks/AxisX.svelte';
     import GridX from '$lib/marks/GridX.svelte';
     import GridY from '$lib/marks/GridY.svelte';
@@ -8,7 +8,7 @@
     const ticks = range(0, 3.01, 0.5).map((d) => d * Math.PI);
 </script>
 
-<Figure let:figure>
+<Plot let:plot>
     <AxisX {ticks} tickFormat={(d) => `${Number(d) / Math.PI}π`} />
     <GridX {ticks} />
     <GridY ticks={[-1, -0.5, 0, 0.5, 1]} />
@@ -19,7 +19,7 @@
         y2={(d) => Math.sin(Number(d))}
         stroke="teal"
         strokeOpacity="0.8"
-        strokeWidth={figure.plotWidth / 100 / 2}
+        strokeWidth={plot.plotWidth / 100 / 2}
     />
     <RuleY data={[0]} />
-</Figure>
+</Plot>

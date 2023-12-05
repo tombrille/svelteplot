@@ -24,7 +24,18 @@ export type Datasets = {
 type AxisXAnchor = 'bottom' | 'top' | 'both';
 type AxisYAnchor = 'left' | 'right' | 'both';
 
-export type FigureProps = {
+export type ChannelOptions = {
+    log?: boolean;
+    domain?: [number, number] | null;
+    grid?: boolean;
+    ticks?: RawValue[];
+    tickSpacing?: number;
+};
+
+/*
+ * these are the props that can be set by the user on the <Plot> element directly
+ */
+export type PlotProps = {
     height?: number;
     marginTop?: number;
     marginBottom?: number;
@@ -33,21 +44,19 @@ export type FigureProps = {
     maxWidth?: string;
     grid?: boolean;
     frame?: boolean;
+    title?: string;
+    subtitle?: string;
+    caption?: string;
+    // snippets
     header?: () => void;
     footer?: () => void;
     children?: () => void;
     // options for scales
     radius?: { range?: [number, number] };
-    x?: {
-        domain?: [number, number];
-        grid?: boolean;
-        tickSpacing: number;
-        axis: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
+    x?: ChannelOptions & {
+        axis?: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
     };
-    y?: {
-        domain?: [number, number];
-        grid?: boolean;
-        tickSpacing: number;
+    y?: ChannelOptions & {
         axis: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
 };
