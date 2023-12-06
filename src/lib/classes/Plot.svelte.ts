@@ -1,4 +1,4 @@
-import { createScale } from '$lib/helpers/createScale';
+import { createScale, createColorScale } from '$lib/helpers/createScale';
 import mergeDeep from '$lib/helpers/mergeDeep';
 import type { SymbolType } from 'd3-shape';
 import type {
@@ -151,7 +151,7 @@ export class Plot {
     );
 
     readonly colorScale = $derived(
-        createScale(this.color.scaleType, this.color.domain, ['white', 'blue'])
+        createColorScale(this.color.scaleType, this.color.domain)
     );
 
     readonly hasAxisXMark = $derived(
@@ -168,23 +168,13 @@ export class Plot {
         this.options = opts;
     }
 
-    private updateChannels() {
-        this.x.marks = this.marks;
-        this.y.marks = this.marks;
-        this.radius.marks = this.marks;
-        this.color.marks = this.marks;
-    }
-
     addMark(mark: Mark<BaseMarkProps>) {
         // console.log('addMark: ' + mark);
         this.marks = [...this.marks, mark];
         // add mark to respective channels
-        this.updateChannels();
-        console.log('x', this.manualMarks.length, this.singlePosChannelMark);
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {
         this.marks = this.marks.filter((mark) => mark.id !== removeMark.id);
-        this.updateChannels();
     }
 }

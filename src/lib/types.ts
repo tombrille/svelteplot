@@ -19,6 +19,15 @@ export type Datasets = {
         '0-60 mph (s)': number;
         year: number;
     }[];
+    penguins: {
+        species: string;
+        island: string;
+        culmen_length_mm: number;
+        culmen_depth_mm: number;
+        flipper_length_mm: number;
+        body_mass_g: number;
+        sex: string;
+    }[];
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';

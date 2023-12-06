@@ -51,10 +51,10 @@
     </p>
 
     <Plot frame x={{ domain: [0, 10] }} y={{ domain: [0, 5] }} marginBottom={40} marginRight={30}>
-        <AxisX anchor="top"  tickSize={10} tickFontSize="14px" />
+        <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
         <AxisX stroke="cornflowerblue" fill="cornflowerblue" />
         <AxisY fill="green" anchor="right" tickSize={-5} tickPadding={10} />
-        <AxisY stroke="magenta"  fill="#dd0000" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+        <AxisY stroke="magenta" fill="#dd0000" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
     </Plot>
 
     <Code

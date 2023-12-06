@@ -23,7 +23,7 @@ export class Channel {
 
     // readonly type: ChannelType = CHANNEL_TYPES.position;
     // all marks that have this channel
-    marks: Mark[] = $state([]);
+    readonly marks: Mark[] = $derived(this.plot?.marks ?? []);
 
     readonly forceDomain: [number, number] | [Date, Date] | null = $derived(
         this.plot && (this.name === 'x' || this.name === 'y')
@@ -31,8 +31,14 @@ export class Channel {
             : null
     );
 
+    readonly possibleProps = $derived(
+        Object.entries(MARK_PROP_CHANNEL)
+            .filter(([, channel]) => channel === this.name)
+            .map(([prop]) => prop)
+    );
+
     readonly activeMarks: Mark[] = $derived(
-        this.marks.filter((mark) => mark.channels.has(this.name))
+        this.marks.filter((mark) => mark.channels.has(this.name) && this.possibleProps.find(prop => mark.props[prop]))
     );
     readonly manualActiveMarks: Mark[] = $derived(
         this.activeMarks.filter((mark) => !mark.automatic)
@@ -42,12 +48,6 @@ export class Channel {
             typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string'
             ? this.manualActiveMarks[0].props?.[this.name as 'x' | 'y']
             : null
-    );
-
-    readonly possibleProps = $derived(
-        Object.entries(MARK_PROP_CHANNEL)
-            .filter(([, channel]) => channel === this.name)
-            .map(([prop]) => prop)
     );
 
     readonly dataValues = $derived([

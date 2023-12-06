@@ -7,7 +7,7 @@
     import { getContext } from 'svelte';
     import Code from '../../Code.svelte';
 
-    const { cars, aapl } = getContext<Datasets>('data');
+    const { cars, penguins } = getContext<Datasets>('data');
 
     const demoData = [
         { x: 0, y: 0, size: 6 },
@@ -55,6 +55,11 @@
     <Dot data={cars} x="economy (mpg)" y="power (hp)"/>
 </Plot>`}
     />
+
+    <Plot grid height={500} let:plot>
+        {@debug {x:plot.color.}}
+        <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
+    </Plot>
 
     <Plot grid radius={{ range: [1, maxRad] }}>
         <Dot

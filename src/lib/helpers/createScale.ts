@@ -25,3 +25,7 @@ export function createScale(type: keyof typeof Scales, domain, range, options = 
     }
     return scale;
 }
+
+export function createColorScale(type, domain) {
+    console.log('createColorScale', {type, domain})
+}

@@ -62,7 +62,10 @@
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
                     dominant-baseline="middle">{tickFormat(tick)}</text
                 >
-                <line style={getBaseStyles(tick, styleProps)} x2={anchor === 'left' ? -tickSize : tickSize} />
+                <line
+                    style={getBaseStyles(tick, styleProps)}
+                    x2={anchor === 'left' ? -tickSize : tickSize}
+                />
             </g>
         {/each}
     </g>

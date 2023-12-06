@@ -8,6 +8,7 @@
     import getBaseStyles from '$lib/helpers/getBaseStyles';
     import { symbol as d3Symbol, type SymbolType } from 'd3-shape';
     import { isSymbol, maybeSymbol } from '$lib/helpers/symbols';
+    import chroma from 'chroma-js';
 
     const BaseMark_Dot = BaseMark<BaseMarkProps & DotMarkProps>;
 
@@ -19,6 +20,8 @@
         y = null,
         r = 3,
         symbol = 'circle',
+        stroke = null,
+        fill = null,
         ...styleProps
     } = $props<DotMarkProps>();
 
@@ -30,13 +33,12 @@
     function isValid(value: number | Date | string | null): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
-    $effect(() => console.log(data));
 </script>
 
 <BaseMark_Dot
     type="dot"
     {data}
-    channels={[...(x ? ['x' as 'x'] : []), ...(y ? ['y' as 'y'] : []), 'radius']}
+    channels={[...(x ? ['x' as 'x'] : []), ...(y ? ['y' as 'y'] : []), 'radius', 'color']}
     {x}
     {y}
     {r}
@@ -53,10 +55,24 @@
             {@const radius =
                 typeof r === 'number' ? r : plot.radiusScale(resolveChannel('radius', datum, r))}
             {@const size = radius * radius * Math.PI}
+            {@const maybeFillColor = resolveChannel('color', datum, fill)}
+            {@const maybeStrokeColor = resolveChannel('color', datum, stroke)}
             {#if isValid(cx) && isValid(cy)}
                 <path
                     d={d3Symbol(symbolType, size)()}
-                    style={getBaseStyles(datum, styleProps2)}
+                    style={getBaseStyles(datum, styleProps)}
+                    style:fill={maybeFillColor
+                        ? chroma.valid(maybeFillColor)
+                            ? maybeFillColor
+                            : plot.colorScale(maybeFillColor)
+                        : null}
+                    style:stroke={maybeStrokeColor
+                        ? chroma.valid(maybeStrokeColor)
+                            ? maybeStrokeColor
+                            : plot.colorScale(maybeStrokeColor)
+                        : maybeFillColor
+                          ? null
+                          : 'currentColor'}
                     transform="translate({[plot.xScale(cx), plot.yScale(cy)]})"
                 />
             {/if}

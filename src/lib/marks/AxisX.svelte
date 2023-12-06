@@ -76,7 +76,7 @@
             <text
                 x={plot.plotWidth + plot.margins.left}
                 y={plot.height - 10}
-                class="Axis-title"
+                class="axis-title"
                 dominant-baseline="hanging">{useTitle} →</text
             >
         {/if}
@@ -104,7 +104,10 @@
                         {/each}
                     {/if}
                 </text>
-                <line style={getBaseStyles(tick,styleProps)} y2={anchor === 'bottom' ? tickSize : -tickSize} />
+                <line
+                    style={getBaseStyles(tick, styleProps)}
+                    y2={anchor === 'bottom' ? tickSize : -tickSize}
+                />
             </g>
         {/each}
     </g>
@@ -118,7 +121,7 @@
         fill: #4a4a4a;
     }
 
-    text.grid-title {
+    text.axis-title {
         text-anchor: end;
     }
     .x-tick line {
