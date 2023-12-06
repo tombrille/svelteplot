@@ -5,9 +5,4 @@
     let { data, ...rest } = $props<{ data: RawValue[] }>();
 </script>
 
-<Dot
-    data={data.map((value, index) => ({ value, index, ___orig___: value }))}
-    x="value"
-    y="index"
-    {...rest}
-/>
+<Dot {data} x={(d) => d} y={0} {...rest} />

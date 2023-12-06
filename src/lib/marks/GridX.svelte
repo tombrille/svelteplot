@@ -14,6 +14,7 @@
         ticks = [],
         y1 = null,
         y2 = null,
+        automatic = false,
         ...styleProps
     } = $props<GridXMarkProps & GridOptions>();
 
@@ -26,7 +27,7 @@
     );
 </script>
 
-<BaseMark_GridX type="grid-x" data={ticks} channels={['x']} {y1} {y2}>
+<BaseMark_GridX type="grid-x" data={ticks} channels={['x']} {y1} {y2} {automatic}>
     <g class="grid-x">
         {#each autoTicks as tick, t}
             <g class="x-tick" transform="translate({plot.xScale(tick)},{plot.margins.top})">

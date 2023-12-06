@@ -18,6 +18,7 @@
         marginRight = 10,
         marginTop = 20,
         marginBottom = 40,
+        inset = null,
         grid = false,
         frame = false,
         maxWidth = null,
@@ -56,6 +57,7 @@
             marginLeft,
             marginRight,
             marginTop,
+            inset,
             radius,
             x,
             y,
@@ -80,7 +82,6 @@
         <h3>{@html plot.options.subtitle}</h3>
     {/if}
     {#if header}{@render header()}{/if}
-
     <svg
         role="document"
         {width}
@@ -88,8 +89,8 @@
         onmousemove={onmousemove ? onMouseMove : null}
     >
         <!-- automatic grids -->
-        {#if grid || x?.grid}<GridX />{/if}
-        {#if grid || y?.grid}<GridY />{/if}
+        {#if grid || x?.grid}<GridX automatic />{/if}
+        {#if grid || y?.grid}<GridY automatic />{/if}
 
         {#if !plot.hasAxisXMark && plot.hasChannelX}
             <!-- automatic x axis -->

@@ -21,17 +21,18 @@ export type Datasets = {
     }[];
 };
 
-type AxisXAnchor = 'bottom' | 'top' | 'both';
-type AxisYAnchor = 'left' | 'right' | 'both';
+export type AxisXAnchor = 'bottom' | 'top' | 'both';
+export type AxisYAnchor = 'left' | 'right' | 'both';
 
-export type ChannelOptions = {
-    log?: boolean;
-    reverse?: boolean;
+export type PositionChannelOptions = Partial<{
+    label?: string | null;
     domain?: [number, number] | null;
     grid?: boolean;
     ticks?: RawValue[];
     tickSpacing?: number;
-};
+    log?: boolean;
+    reverse?: boolean;
+}>;
 
 /*
  * these are the props that can be set by the user on the <Plot> element directly
@@ -43,6 +44,7 @@ export type PlotProps = {
     marginLeft?: number;
     marginRight?: number;
     maxWidth?: string;
+    inset?: number;
     grid?: boolean;
     frame?: boolean;
     title?: string;
@@ -54,15 +56,15 @@ export type PlotProps = {
     children?: () => void;
     // options for scales
     radius?: { range?: [number, number] };
-    x?: ChannelOptions & {
+    x?: PositionChannelOptions & {
         axis?: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
     };
-    y?: ChannelOptions & {
-        axis: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
+    y?: PositionChannelOptions & {
+        axis?: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
     symbol?: {
-        range?: string[]
-    }
+        range?: string[];
+    };
 };
 
 export type Margins = {
@@ -161,12 +163,14 @@ export type GridXMarkProps = Partial<MarkProps> &
     GridOptions & {
         y1?: ChannelAccessor;
         y2?: ChannelAccessor;
+        automatic?: boolean;
     };
 
 export type GridYMarkProps = Partial<MarkProps> &
     GridOptions & {
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
+        automatic?: boolean;
     };
 
 export type AxisMarkOptions = {
@@ -177,14 +181,16 @@ export type AxisMarkOptions = {
     tickFormat?: ((d: RawValue) => string) | string;
     tickFontSize?: ChannelAccessor;
     title?: string;
+    stroke?: ChannelAccessor;
+    fill?: ChannelAccessor;
 };
 
-export type AxisXMArkProps = AxisMarkOptions & {
-    anchor: 'top' | 'bottom';
+export type AxisXMarkProps = AxisMarkOptions & {
+    anchor?: 'top' | 'bottom';
 };
 
-export type AxisYMArkProps = AxisMarkOptions & {
-    anchor: 'left' | 'right';
+export type AxisYMarkProps = AxisMarkOptions & {
+    anchor?: 'left' | 'right';
 };
 
 type RuleMarkProps = {

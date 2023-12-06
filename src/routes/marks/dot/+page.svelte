@@ -28,12 +28,22 @@
 <div class="content">
     <h1>Dot mark</h1>
 
-    <p>You can use the dot mark to create simple scatterplots:</p>
-   
+    <p>
+        The dot mark draws circles or other symbols positioned in <b>x</b> and <b>y</b> as in a scatterplot.
+        For example, the chart below shows the roughly-inverse relationship between car horsepower in
+        y↑ and fuel efficiency in miles per gallon in x→.
+    </p>
+
     <input type="checkbox" bind:checked={fill} /> fill symbols
 
-    <Plot grid height={500} x={{ log: true }}>
-        <Dot data={cars} x="economy (mpg)" y="power (hp)" fill={fill ? 'red' : null} symbol={d => d.name.split(' ')[0]} />
+    <Plot grid height={500}>
+        <Dot
+            data={cars}
+            x="economy (mpg)"
+            y="power (hp)"
+            fill={fill ? 'red' : null}
+            symbol={(d) => d.name.split(' ')[0]}
+        />
     </Plot>
 
     <Code
@@ -43,36 +53,31 @@
 
 <Plot grid>
     <Dot data={cars} x="economy (mpg)" y="power (hp)"/>
-</Plot>`} />
-</div>
-
-<Plot grid radius={{ range: [1, maxRad] }}>
-    <Dot
-        data={demoData}
-        x="x"
-        y="y"
-        r="size"
-        fill={(d) => (d.x < 5 ? 'red' : 'blue')}
-        stroke="black"
+</Plot>`}
     />
-</Plot>
 
-max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
+    <Plot grid radius={{ range: [1, maxRad] }}>
+        <Dot
+            data={demoData}
+            x="x"
+            y="y"
+            r="size"
+            fill={(d) => (d.x < 5 ? 'red' : 'blue')}
+            stroke="black"
+        />
+    </Plot>
 
-<p>Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:</p>
+    max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
 
-<Plot height={200}>
-    <GridX />
-    <GridY />
-    <DotY data={range(40).map((d) => Math.sin(d / 5))} />
-</Plot>
+    <p>Using the <b>DotX</b> mark, you can quickly plot a list of numbers as dots:</p>
 
-<p>Using the <b>DotX</b> mark, you can quickly plot a list of numbers as dots:</p>
+    <Plot>
+        <DotX data={cars.map((d) => d['economy (mpg)'])} />
+    </Plot>
 
-<div style="width:200px">
-    <Plot height={400}>
-        <GridY />
-        <GridX />
-        <DotX data={range(30).map((d) => Math.sin(d / 5))} />
+    <p>Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:</p>
+
+    <Plot>
+        <DotY data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
 </div>

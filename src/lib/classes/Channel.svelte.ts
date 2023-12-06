@@ -27,12 +27,21 @@ export class Channel {
 
     readonly forceDomain: [number, number] | [Date, Date] | null = $derived(
         this.plot && (this.name === 'x' || this.name === 'y')
-            ? this.plot.options[this.name]?.domain
+            ? this.plot.options[this.name]?.domain || null
             : null
     );
 
     readonly activeMarks: Mark[] = $derived(
         this.marks.filter((mark) => mark.channels.has(this.name))
+    );
+    readonly manualActiveMarks: Mark[] = $derived(
+        this.activeMarks.filter((mark) => !mark.automatic)
+    );
+    readonly autoTitle = $derived(
+        this.manualActiveMarks.length === 1 &&
+            typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string'
+            ? this.manualActiveMarks[0].props?.[this.name as 'x' | 'y']
+            : null
     );
 
     readonly possibleProps = $derived(

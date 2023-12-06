@@ -50,18 +50,18 @@ const symbols = new Map([
     ['wye', symbolWye]
 ]);
 
-function isSymbolObject(value: SymbolType|string): value is SymbolType {
+function isSymbolObject(value: SymbolType | string): value is SymbolType {
     if (typeof value === 'string') return false;
     return value && typeof value.draw === 'function';
 }
 
-export function isSymbol(value: string|SymbolType) {
+export function isSymbol(value: string | SymbolType) {
     if (isSymbolObject(value)) return true;
     if (typeof value !== 'string') return false;
     return symbols.has(value.toLowerCase());
 }
 
-export function maybeSymbol(symbol: SymbolType|string) {
+export function maybeSymbol(symbol: SymbolType | string) {
     if (symbol == null || isSymbolObject(symbol)) return symbol;
     const value = symbols.get(`${symbol}`.toLowerCase());
     if (value) return value;

@@ -30,8 +30,6 @@
     let linePath = line()
         .x((d) => plot.xScale(resolveChannel('x', d, x)))
         .y((d) => plot.yScale(resolveChannel('y', d, y)));
-
-    // console.log({r,data}, plot.radius.domain, plot.radiusScale(resolveChannel('radius', data[0], r)))
 </script>
 
 <BaseMark_Line

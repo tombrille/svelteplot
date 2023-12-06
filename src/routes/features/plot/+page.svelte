@@ -7,23 +7,44 @@
     const { aapl } = getContext<Datasets>('data');
 </script>
 
-<h1 class="title">Plot</h1>
+<div class="content">
+    <h1>Plot</h1>
 
-<p class="block">
-    The <b>Plot</b> component is the base for each SveltePlot. It takes care of creating the shared scales
-</p>
+    <p>
+        The <b>Plot</b> component is the base for each SveltePlot. It takes care of creating the shared
+        scales
+    </p>
 
-<Plot grid>
-    <Frame />
-    <Line data={aapl} x="Date" y="Close" />
-</Plot>
+    <Plot grid frame>
+        <Frame />
+        <Line data={aapl} x="Date" y="Close" />
+    </Plot>
 
-<Code
-    code={`<Plot grid>
+    <Code
+        code={`<Plot grid>
     <Frame />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>`}
-/>
+    />
+
+    <p>You can style plots to look like ggplot:</p>
+
+    <Plot inset={10}>
+        <Frame fill="#eaeaea" stroke={null} />
+        <GridX stroke="white" />
+        <GridY stroke="white" />
+        <Line data={aapl} x="Date" y="Close" />
+    </Plot>
+
+    <Code
+        code={`<Plot inset={10}>
+    <Frame fill="#eaeaea" stroke={null}/>
+    <GridX stroke="white" />
+    <GridY stroke="white" />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>`}
+    />
+</div>
 
 <p class="block">
     You can pass <b>title</b>, <b>subtitle</b>, and <b>caption</b> directly as Plot properties:

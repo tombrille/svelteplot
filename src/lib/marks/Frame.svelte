@@ -8,12 +8,17 @@
     const plot = getContext<Plot>('svelteplot');
 
     let { ...styleProps } = $props<FrameProps>();
+
+    let styleProps2 = $derived({
+        ...styleProps,
+        ...(!styleProps.fill && !styleProps.stroke ? { stroke: 'currentColor' } : {})
+    });
 </script>
 
 <BaseMark type="frame" data={[]} channels={[]}>
     <rect
         class="frame"
-        style={getBaseStyles(null, styleProps)}
+        style={getBaseStyles(null, styleProps2)}
         x={plot.margins.left}
         y={plot.margins.top}
         width={plot.plotWidth}
@@ -32,7 +37,7 @@
 
 <style>
     .frame {
-        stroke: currentColor;
+        stroke: none;
         fill: none;
     }
 </style>

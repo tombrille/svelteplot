@@ -1,13 +1,6 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type {
-        BaseMarkProps,
-        GridXMarkProps,
-        GridOptions,
-        RawValue,
-        AxisXMArkProps,
-        AxisMarkOptions
-    } from '$lib/types';
+    import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
@@ -15,8 +8,9 @@
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat';
     import dayjs from 'dayjs';
+    import { get } from 'underscore';
 
-    const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisXMArkProps>;
+    const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisXMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
@@ -27,19 +21,20 @@
         tickPadding = 3,
         tickFormat = null,
         automatic = false,
-        y1 = null,
-        y2 = null,
         title = null,
         tickFontSize = null,
+        fill = null,
         ...styleProps
-    } = $props<AxisXMArkProps & AxisMarkOptions>();
+    } = $props<AxisXMarkProps & AxisMarkOptions>();
+
+    let autoTickCount = $derived(plot.plotWidth / get(plot, 'options.x.tickSpacing', 80));
 
     let autoTicks = $derived(
         ticks.length
             ? ticks
-            : plot.options.x.ticks
+            : plot.options.x?.ticks
               ? plot.options.x.ticks
-              : plot.xScale.ticks(Math.ceil(plot.plotWidth / (plot.options.x.tickSpacing || 80)))
+              : plot.xScale.ticks(autoTickCount)
     );
 
     let useTickFormat = $derived(
@@ -63,15 +58,19 @@
         )
     );
 
-    let autoTitle = $derived(
-        plot.x.activeMarks.length === 1 && typeof plot.x.activeMarks[0].props.x === 'string'
-            ? plot.x.activeMarks[0].props.x
-            : null
+    let optionsLabel = $derived(plot.options?.x?.label);
+
+    let useTitle = $derived(
+        title ||
+            (optionsLabel === null
+                ? null
+                : optionsLabel === undefined
+                  ? plot.x.autoTitle
+                  : optionsLabel)
     );
-    let useTitle = $derived(title || autoTitle);
 </script>
 
-<BaseMark_AxisX type="axis-x" data={ticks} channels={['x']} {y1} {y2} {automatic}>
+<BaseMark_AxisX type="axis-x" data={ticks} channels={['x']} {automatic}>
     <g class="axis-x">
         {#if useTitle}
             <text
@@ -91,7 +90,7 @@
                     : plot.margins.top})"
             >
                 <text
-                    style={getBaseStyles(tick, { fontSize: tickFontSize })}
+                    style={getBaseStyles(tick, { fill, fontSize: tickFontSize })}
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                 >
@@ -105,7 +104,7 @@
                         {/each}
                     {/if}
                 </text>
-                <line y2={anchor === 'bottom' ? tickSize : -tickSize} />
+                <line style={getBaseStyles(tick,styleProps)} y2={anchor === 'bottom' ? tickSize : -tickSize} />
             </g>
         {/each}
     </g>

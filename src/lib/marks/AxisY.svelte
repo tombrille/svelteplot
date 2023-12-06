@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
     // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-    import type { AxisYMArkProps, BaseMarkProps, GridYMarkProps } from '$lib/types';
+    import type { AxisYMarkProps, BaseMarkProps, GridYMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import { get } from 'underscore';
 
-    const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMArkProps>;
+    const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
@@ -19,23 +20,29 @@
         title = null,
         tickFormat = (d) => String(d),
         tickFontSize = null,
+        fill = null,
         ...styleProps
     } = $props<AxisYMArkProps>();
+
+    let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
 
     let autoTicks = $derived(
         ticks.length > 0
             ? ticks
             : plot.options.y.ticks
               ? plot.options.y.ticks
-              : plot.yScale.ticks(Math.ceil(plot.plotHeight / (plot.options.y.tickSpacing || 80)))
+              : plot.yScale.ticks(autoTickCount)
     );
 
-    let autoTitle = $derived(
-        plot.y.activeMarks.length === 1 && typeof plot.y.activeMarks[0].props.y === 'string'
-            ? plot.y.activeMarks[0].props.y
-            : null
+    let optionsLabel = $derived(plot.options?.y?.label);
+    let useTitle = $derived(
+        title ||
+            (optionsLabel === null
+                ? null
+                : optionsLabel === undefined
+                  ? plot.y.autoTitle
+                  : optionsLabel)
     );
-    let useTitle = $derived(title || autoTitle);
 </script>
 
 <BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>
@@ -51,11 +58,11 @@
             >
                 <text
                     class:is-left={anchor === 'left'}
-                    style={getBaseStyles(tick, { fontSize: tickFontSize })}
+                    style={getBaseStyles(tick, { fill, fontSize: tickFontSize })}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
                     dominant-baseline="middle">{tickFormat(tick)}</text
                 >
-                <line x2={anchor === 'left' ? -tickSize : tickSize} />
+                <line style={getBaseStyles(tick, styleProps)} x2={anchor === 'left' ? -tickSize : tickSize} />
             </g>
         {/each}
     </g>

@@ -8,7 +8,7 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { ticks = [], ...styleProps } = $props<GridYMarkProps>();
+    let { ticks = [], automatic = false, ...styleProps } = $props<GridYMarkProps>();
 
     let autoTicks = $derived(
         ticks.length > 0
@@ -19,7 +19,7 @@
     );
 </script>
 
-<BaseMark type="grid-y" data={ticks} channels={['y']}>
+<BaseMark type="grid-y" data={ticks} channels={['y']} {automatic}>
     <g class="grid-y">
         {#each autoTicks as tick}
             <g class="y-tick" transform="translate({plot.margins.left},{plot.yScale(tick)})">

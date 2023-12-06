@@ -13,26 +13,46 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data, x = null, y = null, r = 3, symbol = 'circle', ...styleProps } = $props<DotMarkProps>();
+    let {
+        data,
+        x = null,
+        y = null,
+        r = 3,
+        symbol = 'circle',
+        ...styleProps
+    } = $props<DotMarkProps>();
 
-    let styleProps2 = $derived({ ...styleProps, ...(!styleProps.fill && !styleProps.stroke ? { stroke: 'currentColor' } : {}) });
+    let styleProps2 = $derived({
+        ...styleProps,
+        ...(!styleProps.fill && !styleProps.stroke ? { stroke: 'currentColor' } : {})
+    });
 
-    function isValid(value:number|Date|string|null): value is number|Date|string {
+    function isValid(value: number | Date | string | null): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
     $effect(() => console.log(data));
-    // console.log({r,data}, plot.radius.domain, plot.radiusScale(resolveChannel('radius', data[0], r)))
 </script>
 
-<BaseMark_Dot type="dot" {data} channels={['x', 'y', 'radius']} {x} {y} {r} {...styleProps}>
+<BaseMark_Dot
+    type="dot"
+    {data}
+    channels={[...(x ? ['x' as 'x'] : []), ...(y ? ['y' as 'y'] : []), 'radius']}
+    {x}
+    {y}
+    {r}
+    {...styleProps}
+>
     <g class="dots">
         {#each data as datum, i}
             {@const cx = resolveChannel('x', datum, x)}
             {@const cy = resolveChannel('y', datum, y)}
             {@const symbolT = resolveChannel('symbol', datum, symbol) as string|SymbolType}
-            {@const symbolType = isSymbol(symbolT) ? maybeSymbol(symbolT) : maybeSymbol(plot.symbolScale(symbolT))}
-            {@const radius = typeof r === 'number' ? r : plot.radiusScale(resolveChannel('radius', datum, r))}
-            {@const size = radius * radius  * Math.PI}
+            {@const symbolType = isSymbol(symbolT)
+                ? maybeSymbol(symbolT)
+                : maybeSymbol(plot.symbolScale(symbolT))}
+            {@const radius =
+                typeof r === 'number' ? r : plot.radiusScale(resolveChannel('radius', datum, r))}
+            {@const size = radius * radius * Math.PI}
             {#if isValid(cx) && isValid(cy)}
                 <path
                     d={d3Symbol(symbolType, size)()}
