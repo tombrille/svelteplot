@@ -1,11 +1,10 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-    import resolveChannel from '$lib/helpers/resolveChannel';
+    import resolveChannel from '$lib/helpers/resolveChannel.js';
     import type { BaseMarkProps, LineMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { line } from 'd3-shape';
     import { groupBy } from 'underscore';
 

@@ -1,14 +1,12 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
     import type { BaseMarkProps, DotMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { symbol as d3Symbol, type SymbolType } from 'd3-shape';
-    import { isSymbol, maybeSymbol } from '$lib/helpers/symbols';
-    import chroma from 'chroma-js';
+    import { isSymbol, maybeSymbol } from '$lib/helpers/symbols.js';
 
     const BaseMark_Dot = BaseMark<BaseMarkProps & DotMarkProps>;
 

@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
     import { getContext } from 'svelte';
-    import { symbol as d3Symbol, type SymbolType } from 'd3-shape';
-    import { maybeSymbol } from '$lib/helpers/symbols';
+    import { symbol as d3Symbol } from 'd3-shape';
+    import { maybeSymbol } from '$lib/helpers/symbols.js';
 
     const plot = getContext<Plot>('svelteplot');
 </script>

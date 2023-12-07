@@ -1,7 +1,7 @@
 import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog, scaleOrdinal } from 'd3-scale';
-import { getLogTicks } from './getLogTicks';
-import { categoricalSchemes, isCategoricalScheme, isOrdinalScheme, ordinalScheme } from './colors';
-import { isColorOrNull } from './typeChecks';
+import { getLogTicks } from './getLogTicks.js';
+import { categoricalSchemes, isCategoricalScheme, ordinalScheme } from './colors.js';
+import { isColorOrNull } from './typeChecks.js';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     band: scaleBand,

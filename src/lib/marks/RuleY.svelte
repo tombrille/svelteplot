@@ -3,9 +3,8 @@
     import type { BaseMarkProps, RuleYMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
-    import resolveChannel from '$lib/helpers/resolveChannel';
-    import wrapArray from '$lib/helpers/wrapArray';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import resolveChannel from '$lib/helpers/resolveChannel.js';
 
     const BaseMark_RuleY = BaseMark<BaseMarkProps & RuleYMarkProps>;
 

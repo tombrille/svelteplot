@@ -1,5 +1,5 @@
-import { createScale, createColorScale } from '$lib/helpers/createScale';
-import mergeDeep from '$lib/helpers/mergeDeep';
+import { createScale, createColorScale } from '$lib/helpers/createScale.js';
+import mergeDeep from '$lib/helpers/mergeDeep.js';
 import type { SymbolType } from 'd3-shape';
 import type {
     BaseMarkProps,
@@ -12,7 +12,6 @@ import type {
 } from '../types';
 import { Channel } from './Channel.svelte';
 import type { Mark } from './Mark.svelte';
-import { uniq } from 'underscore';
 
 export const DEFAULT_PLOT_OPTIONS: {
     title: string;

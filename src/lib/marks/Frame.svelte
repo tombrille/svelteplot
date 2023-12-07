@@ -3,7 +3,7 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import type { FrameProps } from '$lib/types';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
 
     const plot = getContext<Plot>('svelteplot');
 

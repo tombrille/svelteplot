@@ -1,6 +1,6 @@
-import { MARK_PROP_CHANNEL } from '$lib/contants';
+import { MARK_PROP_CHANNEL } from '$lib/contants.js';
 import type { ChannelAccessor, MarkStyleProps, DataRecord, DataRow } from '$lib/types';
-import resolveChannel from './resolveChannel';
+import resolveChannel from './resolveChannel.js';
 
 const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     fill: 'fill',

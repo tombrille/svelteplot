@@ -1,4 +1,4 @@
-import isDataRecord from '$lib/helpers/isDataRecord';
+import isDataRecord from '$lib/helpers/isDataRecord.js';
 import type { ChannelName, ChannelAccessor, DataRow, RawValue } from '../types';
 
 export default function (

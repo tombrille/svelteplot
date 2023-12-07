@@ -3,7 +3,7 @@
     import type { PlotProps } from './types';
     import { Frame, GridX, GridY } from '$lib';
     import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
-    import mergeDeep from './helpers/mergeDeep';
+    import mergeDeep from './helpers/mergeDeep.js';
     import AxisX from './marks/AxisX.svelte';
     import AxisY from './marks/AxisY.svelte';
     import type { MouseEventHandler } from 'svelte/elements';

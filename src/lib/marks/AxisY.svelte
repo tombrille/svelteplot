@@ -4,7 +4,7 @@
     import type { AxisYMarkProps, BaseMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { get } from 'underscore';
 
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMarkProps>;

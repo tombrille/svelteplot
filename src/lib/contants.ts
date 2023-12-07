@@ -1,4 +1,4 @@
-import type { ChannelName, ValueOf, MarkProps, MarkStyleProps } from './types';
+import type { ChannelName, MarkProps, MarkStyleProps } from './types';
 
 export const CHANNEL_TYPES: Record<ChannelName, symbol> = {
     opacity: Symbol('opacity'),

@@ -1,6 +1,6 @@
-import type { ChannelName, ChannelOptions, ChannelType, Mark } from '$lib/types';
+import type { ChannelName } from '$lib/types';
 import type { Plot } from './Plot.svelte';
-import resolveChannel from '$lib/helpers/resolveChannel';
+import resolveChannel from '$lib/helpers/resolveChannel.js';
 import { extent } from 'd3-array';
 import { MARK_PROP_CHANNEL, CHANNEL_TYPES } from '$lib/contants';
 import {
@@ -9,7 +9,7 @@ import {
     isDateOrNull,
     isNumberOrNull,
     isStringOrNull
-} from '$lib/helpers/typeChecks';
+} from '$lib/helpers/typeChecks.js';
 import { uniq } from 'underscore';
 
 export class Channel {

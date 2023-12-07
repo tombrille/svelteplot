@@ -3,10 +3,9 @@
     import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
-    import resolveChannel from '$lib/helpers/resolveChannel';
-    import getBaseStyles from '$lib/helpers/getBaseStyles';
-    import removeIdenticalLines from '$lib/helpers/removeIdenticalLines';
-    import autoTimeFormat from '$lib/helpers/autoTimeFormat';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
+    import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
     import { get } from 'underscore';
 
