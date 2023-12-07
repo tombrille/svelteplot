@@ -57,7 +57,7 @@
         {#each data as datum, i}
             {@const cx = resolveChannel('x', datum, x)}
             {@const cy = resolveChannel('y', datum, y)}
-            {@const symbolT = resolveChannel('symbol', datum, symbol) as string|SymbolType}
+            {@const symbolT = resolveChannel('symbol', datum, symbol)}
             {@const symbolType = isSymbol(symbolT)
                 ? maybeSymbol(symbolT)
                 : maybeSymbol(plot.symbolScale(symbolT))}
