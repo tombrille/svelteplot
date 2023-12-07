@@ -1,13 +1,15 @@
 <script lang="ts">
+    // external
+    import { getContext } from 'svelte';
+    import dayjs from 'dayjs';
+    import { get } from 'underscore';
+    // types
     import type { Plot } from '$lib/classes/Plot.svelte';
     import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types';
-    import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-    import dayjs from 'dayjs';
-    import { get } from 'underscore';
 
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisXMarkProps>;
 

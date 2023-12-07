@@ -1,12 +1,11 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import type { AxisYMarkProps, BaseMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
+    import { get } from 'underscore';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { get } from 'underscore';
-
+    
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');

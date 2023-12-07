@@ -1,11 +1,11 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import resolveChannel from '$lib/helpers/resolveChannel';
     import type { BaseMarkProps, DotMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
+    import { symbol as d3Symbol } from 'd3-shape';
     import BaseMark from './BaseMark.svelte';
+    import resolveChannel from '$lib/helpers/resolveChannel.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { symbol as d3Symbol, type SymbolType } from 'd3-shape';
     import { isSymbol, maybeSymbol } from '$lib/helpers/symbols.js';
 
     const BaseMark_Dot = BaseMark<BaseMarkProps & DotMarkProps>;
