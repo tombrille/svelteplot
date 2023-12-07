@@ -8,28 +8,26 @@
 </script>
 
 {#if plot.color.manualActiveMarks.length > 0 && !(plot.options.color?.legend && plot.colorSymbolRedundant)}
-<div class="symbol-legend">
-    {#each plot.symbolScale.domain() as value}
-        {@const symbolV = plot.symbolScale(value)}
-        {@const symbolType = maybeSymbol(symbolV)}
-        {@const color = plot.colorSymbolRedundant ? plot.colorScale(value) : 'currentColor'}
-        <div class="item">
-            <div class="swatch">
-                <svg width="15" height="15"
-                    >
+    <div class="symbol-legend">
+        {#each plot.symbolScale.domain() as value}
+            {@const symbolV = plot.symbolScale(value)}
+            {@const symbolType = maybeSymbol(symbolV)}
+            {@const color = plot.colorSymbolRedundant ? plot.colorScale(value) : 'currentColor'}
+            <div class="item">
+                <div class="swatch">
+                    <svg width="15" height="15">
                         <path
                             transform="translate(7.5,7.5)"
                             fill={plot.hasFilledDotMarks ? color : 'none'}
                             stroke={plot.hasFilledDotMarks ? null : color}
                             d={d3Symbol(symbolType, 40)()}
                         />
-                   </svg
-                >
+                    </svg>
+                </div>
+                <span class="item-label">{value}</span>
             </div>
-            <span class="item-label">{value}</span>
-        </div>
-    {/each}
-</div>
+        {/each}
+    </div>
 {/if}
 
 <style>
@@ -41,7 +39,9 @@
     .item {
         margin: 0 1em 0.5ex 0;
     }
-    path { stroke-width: 1.5;}
+    path {
+        stroke-width: 1.5;
+    }
     .item,
     .item-label,
     .swatch {

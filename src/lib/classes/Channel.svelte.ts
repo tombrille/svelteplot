@@ -1,8 +1,8 @@
-import type { ChannelName } from '$lib/types';
+import type { ChannelName } from '$lib/types.js';
 import type { Plot } from './Plot.svelte';
 import resolveChannel from '$lib/helpers/resolveChannel.js';
 import { extent } from 'd3-array';
-import { MARK_PROP_CHANNEL, CHANNEL_TYPES } from '$lib/contants';
+import { MARK_PROP_CHANNEL } from '$lib/contants.js';
 import {
     isBooleanOrNull,
     isColorOrNull,

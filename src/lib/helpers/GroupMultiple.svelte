@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { DataRow } from '$lib/types';
+    import type { DataRow } from '$lib/types.js';
 
     let { data = [], ...rest } = $props<{ data: DataRow[] }>();
 </script>

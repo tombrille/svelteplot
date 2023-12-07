@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, RuleX, RuleY } from '$lib';
+    import { Plot, RuleX, RuleY } from '$lib/index.js';
     import AxisX from '$lib/marks/AxisX.svelte';
     import GridX from '$lib/marks/GridX.svelte';
     import GridY from '$lib/marks/GridY.svelte';

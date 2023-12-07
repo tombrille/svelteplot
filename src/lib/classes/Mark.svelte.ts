@@ -1,4 +1,4 @@
-import type { ChannelName, MarkProps } from '$lib/types';
+import type { ChannelName, MarkProps } from '$lib/types.js';
 
 export class Mark<T extends MarkProps> {
     readonly id: symbol;

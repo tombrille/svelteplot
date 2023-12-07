@@ -2,7 +2,7 @@
     import '../app.scss';
     import { page } from '$app/stores';
     import Nav from './nav.svelte';
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
     import { setContext } from 'svelte';
     import { group } from 'd3-array';
 

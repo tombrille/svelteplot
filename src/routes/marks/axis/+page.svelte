@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Line, Frame } from '$lib';
+    import { Plot, GridX, GridY, Line, Frame } from '$lib/index.js';
     import { getContext } from 'svelte';
     import SineRules from '../rule/SineRules.svelte';
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
     import Code from '../../Code.svelte';
     import AxisX from '$lib/marks/AxisX.svelte';
     import AxisY from '$lib/marks/AxisY.svelte';

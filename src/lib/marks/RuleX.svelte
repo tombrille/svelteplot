@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type { BaseMarkProps, RuleXMarkProps } from '$lib/types';
+    import type { BaseMarkProps, RuleXMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';

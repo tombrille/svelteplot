@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line } from '$lib/index.js';
     import { getContext } from 'svelte';
     import SineRules from '../rule/SineRules.svelte';
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
 
     const { aapl } = getContext<Datasets>('data');
 </script>

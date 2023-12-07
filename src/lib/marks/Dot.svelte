@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type { BaseMarkProps, DotMarkProps } from '$lib/types';
+    import type { BaseMarkProps, DotMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { symbol as d3Symbol } from 'd3-shape';
     import BaseMark from './BaseMark.svelte';
@@ -38,10 +38,10 @@
     {data}
     channels={[
         ...(x ? ['x'] : []),
-        ...(y ? ['y'] : []), 
-        ...(r ? ['radius'] : []), 
-        ...(symbol ? ['symbol'] : []), 
-        ...(fill || stroke ? ['color']: [])
+        ...(y ? ['y'] : []),
+        ...(r ? ['radius'] : []),
+        ...(symbol ? ['symbol'] : []),
+        ...(fill || stroke ? ['color'] : [])
     ]}
     {x}
     {y}

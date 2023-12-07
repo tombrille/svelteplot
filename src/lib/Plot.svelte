@@ -1,14 +1,13 @@
 <script lang="ts">
     import { setContext } from 'svelte';
-    import type { PlotProps } from './types';
-    import { Frame, GridX, GridY } from '$lib';
-    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
-    import mergeDeep from './helpers/mergeDeep.js';
-    import AxisX from './marks/AxisX.svelte';
-    import AxisY from './marks/AxisY.svelte';
     import type { MouseEventHandler } from 'svelte/elements';
-    import ColorLegend from './marks/ColorLegend.svelte';
-    import SymbolLegend from './marks/SymbolLegend.svelte';
+    import type { PlotProps } from './types.js';
+
+    import { Frame, GridX, GridY, AxisX, AxisY, ColorLegend, SymbolLegend } from '$lib/index.js';
+
+    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
+
+    import mergeDeep from './helpers/mergeDeep.js';
 
     let {
         // snippets

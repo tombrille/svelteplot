@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import type { BaseMarkProps } from '$lib/types';
+    import type { BaseMarkProps } from '$lib/types.js';
 </script>
 
 <script lang="ts" generics="T extends BaseMarkProps">

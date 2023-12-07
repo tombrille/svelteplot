@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Plot, Frame, Line, LineX, LineY, RuleX } from '$lib';
+    import { Plot, Frame, Line, LineX, LineY, RuleX } from '$lib/index.js';
 
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
 

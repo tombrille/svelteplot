@@ -1,12 +1,10 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Dot } from '$lib';
+    import { Plot, Dot } from '$lib/index.js';
     import DotX from '$lib/marks/DotX.svelte';
     import DotY from '$lib/marks/DotY.svelte';
-    import type { Datasets } from '$lib/types';
-    import { range } from 'd3-array';
+    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     import Code from '../../Code.svelte';
-    import ColorLegend from '$lib/marks/ColorLegend.svelte';
 
     const { cars, penguins } = getContext<Datasets>('data');
 
@@ -60,17 +58,18 @@
 </Plot>`}
     />
 
-<Plot grid height={500} symbol={{ legend: true }}>
-    <Dot
-        data={penguins}
-        x="culmen_length_mm"
-        y="culmen_depth_mm"
-        stroke="species"
-        symbol="species"
-    />
-</Plot>
+    <Plot grid height={500} symbol={{ legend: true }}>
+        <Dot
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            stroke="species"
+            symbol="species"
+        />
+    </Plot>
 
-    <Code code={`<Plot grid height={500} color={{ legend: true }} symbol={{ legend: true }}>
+    <Code
+        code={`<Plot grid height={500} color={{ legend: true }} symbol={{ legend: true }}>
     <Dot
         data={penguins}
         x="culmen_length_mm"
@@ -78,7 +77,8 @@
         stroke="species"
         symbol="species"
     />
-</Plot>`} />
+</Plot>`}
+    />
 
     <Plot grid radius={{ range: [1, maxRad] }}>
         <Dot

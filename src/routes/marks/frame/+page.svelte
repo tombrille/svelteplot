@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Plot, Frame, Line } from '$lib';
-    import type { Datasets } from '$lib/types';
+    import { Plot, Frame, Line } from '$lib/index.js';
+    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
     const { aapl } = getContext<Datasets>('data');

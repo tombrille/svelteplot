@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Plot, RuleX } from '$lib';
-    import type { Datasets } from '$lib/types';
+    import { Plot, RuleX } from '$lib/index.js';
+    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
     let { code = false } = $props();

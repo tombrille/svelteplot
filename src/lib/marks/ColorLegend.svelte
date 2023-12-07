@@ -8,29 +8,29 @@
 </script>
 
 {#if plot.color.manualActiveMarks.length > 0}
-<div class="color-legend">
-    {#each plot.colorScale.domain() as value}
-        {@const symbolV = plot.symbolScale(value)}
-        {@const symbolType = maybeSymbol(symbolV)}
-        <div class="item">
-            <div class="swatch">
-                <svg width="15" height="15"
-                    >{#if plot.colorSymbolRedundant}
-                        <path
-                            transform="translate(7.5,7.5)"
-                            fill={plot.hasFilledDotMarks ? plot.colorScale(value) : 'none'}
-                            stroke={plot.hasFilledDotMarks ? null : plot.colorScale(value)}
-                            d={d3Symbol(symbolType, 40)()}
-                        />
-                    {:else}
-                        <rect fill={plot.colorScale(value)} width="15" height="15" />
-                    {/if}</svg
-                >
+    <div class="color-legend">
+        {#each plot.colorScale.domain() as value}
+            {@const symbolV = plot.symbolScale(value)}
+            {@const symbolType = maybeSymbol(symbolV)}
+            <div class="item">
+                <div class="swatch">
+                    <svg width="15" height="15"
+                        >{#if plot.colorSymbolRedundant}
+                            <path
+                                transform="translate(7.5,7.5)"
+                                fill={plot.hasFilledDotMarks ? plot.colorScale(value) : 'none'}
+                                stroke={plot.hasFilledDotMarks ? null : plot.colorScale(value)}
+                                d={d3Symbol(symbolType, 40)()}
+                            />
+                        {:else}
+                            <rect fill={plot.colorScale(value)} width="15" height="15" />
+                        {/if}</svg
+                    >
+                </div>
+                <span class="item-label">{value}</span>
             </div>
-            <span class="item-label">{value}</span>
-        </div>
-    {/each}
-</div>
+        {/each}
+    </div>
 {/if}
 
 <style>
@@ -43,7 +43,9 @@
     .item {
         margin: 0 1em 0.5ex 0;
     }
-    path { stroke-width: 1.5;}
+    path {
+        stroke-width: 1.5;
+    }
     .item,
     .item-label,
     .swatch {

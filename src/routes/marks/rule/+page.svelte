@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Plot, Frame, Line, RuleX, RuleY } from '$lib';
+    import { Plot, Frame, Line, RuleX, RuleY } from '$lib/index.js';
     import Dot from '$lib/marks/Dot.svelte';
     import GridX from '$lib/marks/GridX.svelte';
     import GridY from '$lib/marks/GridY.svelte';
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import dayjs from 'dayjs';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib';
+    import { Plot, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib/index.js';
     import RuleX from '$lib/marks/RuleX.svelte';
     import CandlestickExample from './marks/rule/CandlestickExample.svelte';
 

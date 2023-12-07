@@ -1,4 +1,4 @@
-import type { DataRecord } from '$lib/types';
+import type { DataRecord } from '$lib/types.js';
 
 export default function (value: any): value is DataRecord {
     if (typeof value !== 'object' || value === null) return false;

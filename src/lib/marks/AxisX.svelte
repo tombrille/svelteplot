@@ -5,7 +5,7 @@
     import { get } from 'underscore';
     // types
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types';
+    import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types.js';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';

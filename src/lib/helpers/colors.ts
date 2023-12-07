@@ -77,7 +77,7 @@ import {
 } from 'd3-scale-chromatic';
 
 import { quantize } from 'd3-interpolate';
-import type { ColorScheme } from '$lib/types';
+import type { ColorScheme } from '$lib/types.js';
 
 export const categoricalSchemes = new Map([
     ['accent', schemeAccent],

@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { CHANNEL_TYPES } from './contants';
+import type { CHANNEL_TYPES } from './contants.js';
 import type { Plot } from './classes/Plot.svelte';
 import type { MouseEventHandler } from 'svelte/elements';
 
@@ -80,7 +80,7 @@ export type PlotProps = {
     symbol?: {
         range?: string[];
         legend?: boolean;
-    }| null;
+    } | null;
     color?: {
         scheme?: ColorScheme | string[];
         legend?: boolean;

@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-    import type { GridYMarkProps } from '$lib/types';
+    import type { GridYMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';

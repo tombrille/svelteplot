@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Line, Frame } from '$lib';
+    import { Plot, GridX, GridY, Line, Frame } from '$lib/index.js';
     import { getContext } from 'svelte';
-    import type { Datasets } from '$lib/types';
+    import type { Datasets } from '$lib/types.js';
     import Code from '../../Code.svelte';
 
     const { aapl } = getContext<Datasets>('data');

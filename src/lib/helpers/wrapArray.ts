@@ -1,4 +1,4 @@
-import type { DataRow } from '$lib/types';
+import type { DataRow } from '$lib/types.js';
 import { isObject } from 'underscore';
 
 export default function (data: DataRow[]) {

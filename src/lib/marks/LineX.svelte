@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { RawValue } from '$lib/types';
+    import type { RawValue } from '$lib/types.js';
     import Line from './Line.svelte';
 
     let { data, ...rest } = $props<{ data: RawValue[] }>();

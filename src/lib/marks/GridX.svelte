@@ -1,11 +1,12 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type { BaseMarkProps, GridXMarkProps, GridOptions } from '$lib/types';
+    import type { BaseMarkProps, GridXMarkProps, GridOptions } from '$lib/types.js';
     import { getContext } from 'svelte';
+    import { get } from 'underscore';
+    
     import BaseMark from './BaseMark.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { get } from 'underscore';
 
     const BaseMark_GridX = BaseMark<BaseMarkProps & GridXMarkProps>;
 

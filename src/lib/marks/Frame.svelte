@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
     import { getContext } from 'svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { FrameProps } from '$lib/types.js';
     import BaseMark from './BaseMark.svelte';
-    import type { FrameProps } from '$lib/types';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
 
     const plot = getContext<Plot>('svelteplot');
