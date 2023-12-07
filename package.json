@@ -11,7 +11,8 @@
         "lint": "prettier --check . && eslint .",
         "format": "prettier --write .",
         "test:integration": "playwright test",
-        "test:unit": "vitest"
+        "test:unit": "vitest",
+        "prepack": "npx svelte-package"
     },
     "exports": {
         ".": {
@@ -60,6 +61,7 @@
     "types": "./dist/index.d.ts",
     "type": "module",
     "dependencies": {
+        "@sveltejs/package": "^2.2.3",
         "@types/d3-array": "^3.2.1",
         "@types/d3-scale": "^4.0.8",
         "@types/underscore": "^1.11.15",
