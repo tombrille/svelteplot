@@ -6,6 +6,7 @@
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import Code from '../../Code.svelte';
+    import ColorLegend from '$lib/marks/ColorLegend.svelte';
 
     const { cars, penguins } = getContext<Datasets>('data');
 
@@ -23,6 +24,8 @@
 
     let maxRad = $state(10);
     let fill = $state(false);
+
+    const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <div class="content">
@@ -41,25 +44,41 @@
             data={cars}
             x="economy (mpg)"
             y="power (hp)"
-            fill={fill ? 'red' : null}
-            symbol={(d) => d.name.split(' ')[0]}
+            stroke={!fill ? manufactor : null}
+            fill={fill ? manufactor : null}
+            symbol={manufactor}
         />
     </Plot>
 
     <Code
-        code={`<script>
+        code={`<scri${'pt>'}
     import { Plot, Dot } from 'svelteplot';
-</script>
+</scr${'ipt>'}
 
 <Plot grid>
     <Dot data={cars} x="economy (mpg)" y="power (hp)"/>
 </Plot>`}
     />
 
-    <Plot grid height={500} let:plot>
-        {@debug {x:plot.color.}}
-        <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
-    </Plot>
+<Plot grid height={500} symbol={{ legend: true }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species"
+    />
+</Plot>
+
+    <Code code={`<Plot grid height={500} color={{ legend: true }} symbol={{ legend: true }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species"
+    />
+</Plot>`} />
 
     <Plot grid radius={{ range: [1, maxRad] }}>
         <Dot

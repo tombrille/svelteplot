@@ -5,6 +5,7 @@
     import BaseMark from './BaseMark.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import { get } from 'underscore';
 
     const BaseMark_GridX = BaseMark<BaseMarkProps & GridXMarkProps>;
 
@@ -18,12 +19,10 @@
         ...styleProps
     } = $props<GridXMarkProps & GridOptions>();
 
+    let autoTickCount = $derived(plot.plotWidth / get(plot, 'options.x.tickSpacing', 80));
+
     let autoTicks = $derived(
-        ticks.length
-            ? ticks
-            : plot.options.x.ticks
-              ? plot.options.x.ticks
-              : plot.xScale.ticks(Math.ceil(plot.plotWidth / (plot.options.x.tickSpacing || 80)))
+        ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))
     );
 </script>
 

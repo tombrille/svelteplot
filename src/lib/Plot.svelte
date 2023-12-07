@@ -1,16 +1,20 @@
 <script lang="ts">
     import { setContext } from 'svelte';
-    import type { Margins, PlotProps } from './types';
+    import type { PlotProps } from './types';
     import { Frame, GridX, GridY } from '$lib';
     import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
     import mergeDeep from './helpers/mergeDeep';
     import AxisX from './marks/AxisX.svelte';
     import AxisY from './marks/AxisY.svelte';
+    import type { MouseEventHandler } from 'svelte/elements';
+    import ColorLegend from './marks/ColorLegend.svelte';
+    import SymbolLegend from './marks/SymbolLegend.svelte';
 
     let {
         // snippets
         header,
         footer,
+        overlay,
         children,
         // props
         height = 'auto',
@@ -27,6 +31,8 @@
         caption = '',
         // scales
         radius = null,
+        color = null,
+        symbol = null,
         x = null,
         y = null,
         onmousemove = null
@@ -39,9 +45,13 @@
         marginLeft,
         marginRight,
         marginBottom,
+        // scales
+        symbol,
         radius,
         x,
         y,
+        color,
+        // other
         title,
         subtitle,
         caption
@@ -58,7 +68,9 @@
             marginRight,
             marginTop,
             inset,
+            symbol,
             radius,
+            color,
             x,
             y,
             title,
@@ -67,21 +79,15 @@
         }) as typeof DEFAULT_PLOT_OPTIONS;
     });
 
-    function onMouseMove(evt) {
-        evt.plot = plot;
-        onmousemove(evt);
+    function onMouseMove(evt: MouseEventHandler<SVGElement>) {
+        // evt.plot = plot;
+        if (onmousemove) onmousemove({ ...evt, plot });
     }
+
+    let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 
 <figure class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
-    <!-- default title -->
-    {#if plot.options.title}
-        <h2>{@html plot.options.title}</h2>
-    {/if}
-    {#if plot.options.subtitle}
-        <h3>{@html plot.options.subtitle}</h3>
-    {/if}
-    {#if header}{@render header()}{/if}
     <svg
         role="document"
         {width}
@@ -112,26 +118,57 @@
         {/if}
         <!-- automatic frame -->
         {#if frame}<Frame />{/if}
-        {#if children}
-            <slot {plot} />
-        {/if}
+        {#if children}{@render children(plot)}{/if}
     </svg>
 
-    <div class="overlay"></div>
-
-    {#if plot.options.caption}
-        <figcaption>{@html plot.options.caption}</figcaption>
+    {#if plot.options.title || plot.options.subtitle || header || hasLegend}
+        <div class="plot-header">
+            {#if plot.options.title}
+                <h2>{@html plot.options.title}</h2>
+            {/if}
+            {#if plot.options.subtitle}
+                <h3>{@html plot.options.subtitle}</h3>
+            {/if}
+            {#if color?.legend}
+                <ColorLegend />
+            {/if}
+            {#if symbol?.legend}
+                <SymbolLegend />
+            {/if}
+            {#if header}{@render header(plot)}{/if}
+        </div>
     {/if}
-    {#if footer}{@render footer()}{/if}
+
+    {#if footer || plot.options.caption}
+        <div class="plot-footer">
+            {#if plot.options.caption}
+                <figcaption>{@html plot.options.caption}</figcaption>
+            {/if}
+            {#if footer}{@render footer(plot)}{/if}
+        </div>
+    {/if}
+
+    <div class="overlay">
+        {#if overlay}{@render overlay(plot)}{/if}
+    </div>
 </figure>
 
 <style>
     figure {
         margin: 1em 0;
         position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    figure .plot-header {
+        order: 1;
     }
     svg {
+        order: 2;
         overflow: visible;
+    }
+    figure .plot-footer {
+        order: 3;
     }
     .overlay {
         position: absolute;

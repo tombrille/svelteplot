@@ -77,6 +77,7 @@ import {
 } from 'd3-scale-chromatic';
 
 import { quantize } from 'd3-interpolate';
+import type { ColorScheme } from '$lib/types';
 
 export const categoricalSchemes = new Map([
     ['accent', schemeAccent],
@@ -95,9 +96,9 @@ export function isCategoricalScheme(scheme: string) {
     return scheme != null && categoricalSchemes.has(`${scheme}`.toLowerCase());
 }
 
-type SchemeGetter = ({ length }: { length: number }) => readonly string[];
+type SchemeGetter = (n: number) => readonly string[];
 
-const ordinalSchemes = new Map<string, SchemeGetter>([
+const ordinalSchemes = new Map<ColorScheme, SchemeGetter>([
     // diverging
     ['brbg', scheme11(schemeBrBG, interpolateBrBG)],
     ['prgn', scheme11(schemePRGn, interpolatePRGn)],
@@ -149,10 +150,14 @@ const ordinalSchemes = new Map<string, SchemeGetter>([
     ['sinebow', schemeicyclical(interpolateSinebow)]
 ]);
 
-type ColorScheme = readonly (readonly string[])[];
+export function isOrdinalScheme(scheme: ColorScheme) {
+    return ordinalSchemes.has(scheme);
+}
 
-function scheme9(scheme: ColorScheme, interpolate: (d: number) => string) {
-    return ({ length: n }) => {
+type ColorSchemeArray = readonly (readonly string[])[];
+
+function scheme9(scheme: ColorSchemeArray, interpolate: (d: number) => string) {
+    return (n: number) => {
         if (n === 1) return [scheme[3][1]]; // favor midpoint
         if (n === 2) return [scheme[3][1], scheme[3][2]]; // favor darker
         n = Math.max(3, Math.floor(n));
@@ -160,16 +165,16 @@ function scheme9(scheme: ColorScheme, interpolate: (d: number) => string) {
     };
 }
 
-function scheme11(scheme: ColorScheme, interpolate: (d: number) => string) {
-    return ({ length: n }) => {
+function scheme11(scheme: ColorSchemeArray, interpolate: (d: number) => string) {
+    return (n: number) => {
         if (n === 2) return [scheme[3][0], scheme[3][2]]; // favor diverging extrema
         n = Math.max(3, Math.floor(n));
         return n > 11 ? quantize(interpolate, n) : scheme[n];
     };
 }
 
-function scheme11r(scheme: ColorScheme, interpolate: (d: number) => string) {
-    return ({ length: n }) => {
+function scheme11r(scheme: ColorSchemeArray, interpolate: (d: number) => string) {
+    return (n: number) => {
         if (n === 2) return [scheme[3][2], scheme[3][0]]; // favor diverging extrema
         n = Math.max(3, Math.floor(n));
         return n > 11 ? quantize((t) => interpolate(1 - t), n) : scheme[n].slice().reverse();
@@ -177,11 +182,11 @@ function scheme11r(scheme: ColorScheme, interpolate: (d: number) => string) {
 }
 
 function schemei(interpolate: (d: number) => string) {
-    return ({ length: n }) => quantize(interpolate, Math.max(2, Math.floor(n)));
+    return (n: number) => quantize(interpolate, Math.max(2, Math.floor(n)));
 }
 
 function schemeicyclical(interpolate: (d: number) => string) {
-    return ({ length: n }) => quantize(interpolate, Math.floor(n) + 1).slice(0, -1);
+    return (n: number) => quantize(interpolate, Math.floor(n) + 1).slice(0, -1);
 }
 
 export function ordinalScheme(scheme: string) {
@@ -262,6 +267,10 @@ const quantitativeSchemes = new Map([
     ['rainbow', interpolateRainbow],
     ['sinebow', interpolateSinebow]
 ]);
+
+export function isQuantitativeScheme(scheme: string) {
+    return quantitativeSchemes.has(scheme);
+}
 
 export function quantitativeScheme(scheme: string) {
     const s = `${scheme}`.toLowerCase();

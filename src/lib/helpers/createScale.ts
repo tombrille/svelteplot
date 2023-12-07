@@ -1,5 +1,7 @@
 import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog, scaleOrdinal } from 'd3-scale';
 import { getLogTicks } from './getLogTicks';
+import { categoricalSchemes, isCategoricalScheme, isOrdinalScheme, ordinalScheme } from './colors';
+import { isColorOrNull } from './typeChecks';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     band: scaleBand,
@@ -26,6 +28,26 @@ export function createScale(type: keyof typeof Scales, domain, range, options = 
     return scale;
 }
 
-export function createColorScale(type, domain) {
-    console.log('createColorScale', {type, domain})
+const identity = (d) => d;
+
+export function createColorScale(
+    type,
+    domain: string[] | [number, number] | [Date, Date] | [boolean | boolean],
+    scheme
+) {
+    if (type === 'band') {
+        if (domain.every(isColorOrNull)) {
+            console.log('domain is colors', domain);
+            return identity;
+        }
+        const colorRange = !scheme
+            ? categoricalSchemes.get('tableau10')
+            : Array.isArray(scheme)
+              ? scheme
+              : isCategoricalScheme(scheme)
+                ? categoricalSchemes.get(scheme)
+                : ordinalScheme(scheme)(domain.length);
+        return scaleOrdinal().domain(domain).range(colorRange);
+    }
+    return (d) => d;
 }

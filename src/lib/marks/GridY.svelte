@@ -5,17 +5,16 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
+    import { get } from 'underscore';
 
     const plot = getContext<Plot>('svelteplot');
 
     let { ticks = [], automatic = false, ...styleProps } = $props<GridYMarkProps>();
 
+    let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
+
     let autoTicks = $derived(
-        ticks.length > 0
-            ? ticks
-            : plot.options.y.ticks
-              ? plot.options.y.ticks
-              : plot.yScale.ticks(Math.ceil(plot.plotHeight / (plot.options.y.tickSpacing || 80)))
+        ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
     );
 </script>
 

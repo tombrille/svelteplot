@@ -38,7 +38,10 @@ export class Channel {
     );
 
     readonly activeMarks: Mark[] = $derived(
-        this.marks.filter((mark) => mark.channels.has(this.name) && this.possibleProps.find(prop => mark.props[prop]))
+        this.marks.filter(
+            (mark) =>
+                mark.channels.has(this.name) && this.possibleProps.find((prop) => mark.props[prop])
+        )
     );
     readonly manualActiveMarks: Mark[] = $derived(
         this.activeMarks.filter((mark) => !mark.automatic)
@@ -48,6 +51,18 @@ export class Channel {
             typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string'
             ? this.manualActiveMarks[0].props?.[this.name as 'x' | 'y']
             : null
+    );
+
+    readonly uniqueMarkProps = $derived(
+        uniq(
+            this.manualActiveMarks
+                .map((mark) =>
+                    this.possibleProps
+                        .filter((prop) => mark.props[prop])
+                        .map((prop) => mark.props[prop])
+                )
+                .flat(2)
+        )
     );
 
     readonly dataValues = $derived([

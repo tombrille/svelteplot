@@ -1,4 +1,7 @@
+import type { Snippet } from 'svelte';
 import type { CHANNEL_TYPES } from './contants';
+import type { Plot } from './classes/Plot.svelte';
+import type { MouseEventHandler } from 'svelte/elements';
 
 export type Datasets = {
     aapl: {
@@ -59,10 +62,13 @@ export type PlotProps = {
     title?: string;
     subtitle?: string;
     caption?: string;
+    // events
+    onmousemove?: MouseEventHandler<SVGElement>;
     // snippets
-    header?: () => void;
-    footer?: () => void;
-    children?: () => void;
+    header?: Snippet<Plot>;
+    footer?: Snippet<Plot>;
+    children?: Snippet<Plot>;
+    overlay?: Snippet<Plot>;
     // options for scales
     radius?: { range?: [number, number] };
     x?: PositionChannelOptions & {
@@ -73,7 +79,12 @@ export type PlotProps = {
     };
     symbol?: {
         range?: string[];
-    };
+        legend?: boolean;
+    }| null;
+    color?: {
+        scheme?: ColorScheme | string[];
+        legend?: boolean;
+    } | null;
 };
 
 export type Margins = {
@@ -223,3 +234,55 @@ export type RuleYMarkProps = MarkProps &
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
     };
+
+export type ColorScheme =
+    | 'brbg'
+    | 'prgn'
+    | 'piyg'
+    | 'puor'
+    | 'rdbu'
+    | 'rdgy'
+    | 'rdylbu'
+    | 'rdylgn'
+    | 'spectral'
+    | 'burd'
+    | 'buylrd'
+    | 'blues'
+    | 'greens'
+    | 'greys'
+    | 'oranges'
+    | 'purples'
+    | 'reds'
+    | 'turbo'
+    | 'viridis'
+    | 'magma'
+    | 'inferno'
+    | 'plasma'
+    | 'cividis'
+    | 'cubehelix'
+    | 'warm'
+    | 'cool'
+    | 'bugn'
+    | 'bupu'
+    | 'gnbu'
+    | 'orrd'
+    | 'pubu'
+    | 'pubugn'
+    | 'purd'
+    | 'rdpu'
+    | 'ylgn'
+    | 'ylgnbu'
+    | 'ylorbr'
+    | 'ylorrd'
+    | 'rainbow'
+    | 'sinebow'
+    | 'accent'
+    | 'category10'
+    | 'dark2'
+    | 'paired'
+    | 'pastel1'
+    | 'pastel2'
+    | 'set1'
+    | 'set2'
+    | 'set3'
+    | 'tableau10';

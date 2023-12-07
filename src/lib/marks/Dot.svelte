@@ -38,10 +38,19 @@
 <BaseMark_Dot
     type="dot"
     {data}
-    channels={[...(x ? ['x' as 'x'] : []), ...(y ? ['y' as 'y'] : []), 'radius', 'color']}
+    channels={[
+        ...(x ? ['x' as 'x'] : []),
+        ...(y ? ['y' as 'y'] : []), 
+        ...(r ? ['radius'] : []), 
+        ...(symbol ? ['symbol'] : []), 
+        ...(fill || stroke ? ['color']: [])
+    ]}
     {x}
     {y}
     {r}
+    {fill}
+    {stroke}
+    {symbol}
     {...styleProps}
 >
     <g class="dots">
@@ -61,15 +70,9 @@
                 <path
                     d={d3Symbol(symbolType, size)()}
                     style={getBaseStyles(datum, styleProps)}
-                    style:fill={maybeFillColor
-                        ? chroma.valid(maybeFillColor)
-                            ? maybeFillColor
-                            : plot.colorScale(maybeFillColor)
-                        : null}
+                    style:fill={maybeFillColor ? plot.colorScale(maybeFillColor) : null}
                     style:stroke={maybeStrokeColor
-                        ? chroma.valid(maybeStrokeColor)
-                            ? maybeStrokeColor
-                            : plot.colorScale(maybeStrokeColor)
+                        ? plot.colorScale(maybeStrokeColor)
                         : maybeFillColor
                           ? null
                           : 'currentColor'}
@@ -84,6 +87,6 @@
     path {
         fill: none;
         stroke: none;
-        stroke-width: 1.4px;
+        stroke-width: 1.6px;
     }
 </style>

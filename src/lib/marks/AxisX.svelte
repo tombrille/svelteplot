@@ -30,11 +30,7 @@
     let autoTickCount = $derived(plot.plotWidth / get(plot, 'options.x.tickSpacing', 80));
 
     let autoTicks = $derived(
-        ticks.length
-            ? ticks
-            : plot.options.x?.ticks
-              ? plot.options.x.ticks
-              : plot.xScale.ticks(autoTickCount)
+        ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))
     );
 
     let useTickFormat = $derived(

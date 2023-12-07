@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
     // import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
-    import type { AxisYMarkProps, BaseMarkProps, GridYMarkProps } from '$lib/types';
+    import type { AxisYMarkProps, BaseMarkProps } from '$lib/types';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles';
@@ -22,19 +22,15 @@
         tickFontSize = null,
         fill = null,
         ...styleProps
-    } = $props<AxisYMArkProps>();
+    } = $props<AxisYMarkProps>();
 
     let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
 
     let autoTicks = $derived(
-        ticks.length > 0
-            ? ticks
-            : plot.options.y.ticks
-              ? plot.options.y.ticks
-              : plot.yScale.ticks(autoTickCount)
+        ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
     );
 
-    let optionsLabel = $derived(plot.options?.y?.label);
+    let optionsLabel = $derived(get(plot, 'options.y.label'));
     let useTitle = $derived(
         title ||
             (optionsLabel === null

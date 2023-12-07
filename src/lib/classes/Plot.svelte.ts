@@ -7,10 +7,12 @@ import type {
     PositionChannelOptions,
     RawValue,
     AxisXAnchor,
-    AxisYAnchor
+    AxisYAnchor,
+    ColorScheme
 } from '../types';
 import { Channel } from './Channel.svelte';
 import type { Mark } from './Mark.svelte';
+import { uniq } from 'underscore';
 
 export const DEFAULT_PLOT_OPTIONS: {
     title: string;
@@ -20,9 +22,10 @@ export const DEFAULT_PLOT_OPTIONS: {
     marginRight: number;
     marginTop: number;
     marginBottom: number;
-    inset: number;
+    inset?: number;
     radius: { range?: [number, number] };
-    symbol: { range?: (string | SymbolType)[] };
+    symbol: { range?: (string | SymbolType)[]; legend?: boolean } | null;
+    color: { scheme?: ColorScheme | string[]; legend?: boolean } | null;
     x: PositionChannelOptions & {
         axis?: AxisXAnchor;
     };
@@ -39,6 +42,7 @@ export const DEFAULT_PLOT_OPTIONS: {
     marginBottom: 0,
     radius: { range: [1, 10] },
     symbol: {},
+    color: {},
     x: {
         domain: undefined,
         grid: false,
@@ -110,6 +114,12 @@ export class Plot {
     color = new Channel('color', this);
     symbol = new Channel('symbol', this);
 
+    readonly colorSymbolRedundant = $derived(
+        this.color.uniqueMarkProps.length === 1 &&
+            this.symbol.uniqueMarkProps.length === 1 &&
+            this.color.uniqueMarkProps[0] === this.symbol.uniqueMarkProps[0]
+    );
+
     readonly xScale = $derived(
         createScale(
             this.x.scaleType === 'linear' && this.options.x.log ? 'log' : this.x.scaleType,
@@ -151,7 +161,7 @@ export class Plot {
     );
 
     readonly colorScale = $derived(
-        createColorScale(this.color.scaleType, this.color.domain)
+        createColorScale(this.color.scaleType, this.color.domain, this.options.color.scheme)
     );
 
     readonly hasAxisXMark = $derived(
@@ -172,6 +182,7 @@ export class Plot {
         // console.log('addMark: ' + mark);
         this.marks = [...this.marks, mark];
         // add mark to respective channels
+        if (mark.channels.has('color')) console.log(this.color.uniqueMarkProps);
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {
