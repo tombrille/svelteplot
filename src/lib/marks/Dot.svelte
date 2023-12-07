@@ -39,8 +39,8 @@
     type="dot"
     {data}
     channels={[
-        ...(x ? ['x' as 'x'] : []),
-        ...(y ? ['y' as 'y'] : []), 
+        ...(x ? ['x'] : []),
+        ...(y ? ['y'] : []), 
         ...(r ? ['radius'] : []), 
         ...(symbol ? ['symbol'] : []), 
         ...(fill || stroke ? ['color']: [])
