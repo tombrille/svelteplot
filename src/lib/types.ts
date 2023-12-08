@@ -180,6 +180,17 @@ export type LineMarkProps = MarkProps &
         sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
     };
 
+export type AreaMarkProps = MarkProps &
+    BaseMarkStyleProps & {
+        data: DataRow[];
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+        z?: ChannelAccessor;
+        sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+    };
+
 export type GridOptions = {
     ticks?: RawValue[];
     strokeDasharray?: ChannelAccessor;

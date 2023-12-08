@@ -83,7 +83,7 @@
         if (onmousemove) onmousemove({ ...evt, plot });
     }
 
-    $inspect(plot.x.domain);    
+    $inspect(plot.x.domain);
 
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
@@ -164,7 +164,8 @@
     figure .plot-header {
         order: 1;
     }
-    h2, h3 {
+    h2,
+    h3 {
         margin: 0;
     }
     svg {

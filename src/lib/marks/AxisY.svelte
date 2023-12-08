@@ -5,6 +5,7 @@
     import { get } from 'underscore';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
 
     const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisYMarkProps>;
 
@@ -17,7 +18,7 @@
         tickSize = 6,
         tickPadding = 3,
         title = null,
-        tickFormat = (d) => String(d),
+        tickFormat,
         tickFontSize = null,
         fill = null,
         ...styleProps
@@ -27,6 +28,19 @@
 
     let autoTicks = $derived(
         ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
+    );
+
+    let useTickFormat = $derived(
+        typeof tickFormat === 'function'
+            ? tickFormat
+            : plot.y.scaleType === 'time'
+              ? typeof tickFormat === 'string'
+                  ? (d: Date) =>
+                        dayjs(d)
+                            .format(tickFormat as string)
+                            .split('\n')
+                  : autoTimeFormat(plot.y, plot.plotHeight)
+              : (d: RawValue) => String(d)+'x'
     );
 
     let optionsLabel = $derived(plot.options.y?.label);
@@ -39,15 +53,21 @@
                   : `↑ ${plot.y.autoTitle}`)
     );
 
-    $inspect(optionsLabel)
 </script>
 
 <BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>
     <g class="axis-y">
         {#if useTitle}
-            <text x={0} y={5} class="axis-title" dominant-baseline="hanging">{useTitle}</text>
+            <text
+                style:text-anchor={anchor === 'left' ? 'start' : 'end'}
+                x={anchor === 'left' ? 0 : plot.width}
+                y={5}
+                class="axis-title"
+                dominant-baseline="hanging">{useTitle}</text
+            >
         {/if}
         {#each autoTicks as tick}
+            {@const tickText = useTickFormat(tick)}
             <g
                 class="y-tick"
                 transform="translate({plot.margins.left +
@@ -57,7 +77,7 @@
                     class:is-left={anchor === 'left'}
                     style={getBaseStyles(tick, { fill, fontSize: tickFontSize })}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
-                    dominant-baseline="middle">{tickFormat(tick)}</text
+                    dominant-baseline="middle">{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
                 >
                 <line
                     style={getBaseStyles(tick, styleProps)}

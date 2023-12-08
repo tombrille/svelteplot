@@ -27,13 +27,14 @@
         ...styleProps
     } = $props<AxisXMarkProps & AxisMarkOptions>();
 
-    let autoTickCount = $derived(Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80))));
+    let autoTickCount = $derived(
+        Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80)))
+    );
 
     $inspect(autoTickCount);
-    $inspect(ticks.length);
 
     let autoTicks = $derived(
-        ticks.length > 0 ? ticks : (plot.options?.x?.ticks ?? plot.xScale.ticks(autoTickCount))
+        ticks.length > 0 ? ticks : plot.options?.x?.ticks ?? plot.xScale.ticks(autoTickCount)
     );
 
     let useTickFormat = $derived(
@@ -65,7 +66,11 @@
                 ? null
                 : optionsLabel !== undefined
                   ? optionsLabel
-                  : `${plot.x.autoTitle} →`)
+                  : plot.x.autoTitle
+                    ? plot.options.x?.reverse
+                        ? `← ${plot.x.autoTitle}`
+                        : `${plot.x.autoTitle} →`
+                    : '')
     );
 </script>
 

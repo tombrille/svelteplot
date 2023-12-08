@@ -2,6 +2,9 @@
 export { default as AxisX } from './marks/AxisX.svelte';
 export { default as AxisY } from './marks/AxisY.svelte';
 export { default as ColorLegend } from './marks/ColorLegend.svelte';
+export { default as Area } from './marks/Area.svelte';
+export { default as AreaX } from './marks/AreaX.svelte';
+export { default as AreaY } from './marks/AreaY.svelte';
 export { default as Dot } from './marks/Dot.svelte';
 export { default as DotX } from './marks/DotX.svelte';
 export { default as DotY } from './marks/DotY.svelte';

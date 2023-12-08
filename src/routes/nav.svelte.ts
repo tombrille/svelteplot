@@ -18,10 +18,11 @@ export default class Nav {
         this.pageGroups.push({
             title: 'Marks',
             pages: [
-                { title: 'Frame', url: '/marks/frame' },
+                { title: 'Area', url: '/marks/area' },
                 { title: 'Axis', url: '/marks/axis' },
-                { title: 'Grid', url: '/marks/grid' },
                 { title: 'Dot', url: '/marks/dot' },
+                { title: 'Frame', url: '/marks/frame' },
+                { title: 'Grid', url: '/marks/grid' },
                 { title: 'Line', url: '/marks/line' },
                 { title: 'Rule', url: '/marks/rule' }
             ]

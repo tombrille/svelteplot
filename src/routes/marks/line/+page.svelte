@@ -25,11 +25,11 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
     <Line data={aapl.slice(cutoff1, cutoff2)} x="Date" y="Adj Close" />
 </Plot>
 
-<pre class="block"><code
-        >{`<Plot>
+<Code
+    code={`<Plot>
     <Line data={aapl} x="Date" y="Adj Close" /> 
-</Plot>`}</code
-    ></pre>
+</Plot>`}
+/>
 
 <p class="block">Use can use the <b>LineY</b> mark to quickly plot an array of numbers as line:</p>
 
@@ -66,7 +66,8 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 
 <p>You can plot multiple lines using the <b>z</b> channel</p>
 
-<input type="range" bind:value={wiggle} min={0} max={1} step={0.01} /> {wiggle}
+<input type="range" bind:value={wiggle} min={0} max={1} step={0.01} />
+{wiggle}
 
 <Plot y={{ grid: true, label: '↑ Unemployment (%)' }} x={{ label: '' }}>
     <Line

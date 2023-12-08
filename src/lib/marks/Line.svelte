@@ -20,7 +20,6 @@
         z = null,
         fill,
         stroke,
-        r = 5,
         sort,
         ...styleProps
     } = $props<LineMarkProps>();
@@ -46,12 +45,11 @@
 </script>
 
 <BaseMark_Line
-    type="dot"
+    type="line"
     {data}
-    channels={['x', 'y', 'radius', 'color']}
+    channels={['x', 'y', 'color']}
     {x}
     {y}
-    {r}
     {fill}
     {stroke}
     {...styleProps}
