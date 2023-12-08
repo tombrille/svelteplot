@@ -164,6 +164,9 @@
     figure .plot-header {
         order: 1;
     }
+    h2, h3 {
+        margin: 0;
+    }
     svg {
         order: 2;
         overflow: visible;
