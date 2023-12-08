@@ -83,6 +83,8 @@
         if (onmousemove) onmousemove({ ...evt, plot });
     }
 
+    $inspect(plot.x.domain);    
+
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 

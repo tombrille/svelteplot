@@ -3,7 +3,7 @@
     import type { BaseMarkProps, GridXMarkProps, GridOptions } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { get } from 'underscore';
-    
+
     import BaseMark from './BaseMark.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';

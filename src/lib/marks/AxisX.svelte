@@ -2,7 +2,6 @@
     // external
     import { getContext } from 'svelte';
     import dayjs from 'dayjs';
-    import { get } from 'underscore';
     // types
     import type { Plot } from '$lib/classes/Plot.svelte';
     import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types.js';
@@ -28,10 +27,13 @@
         ...styleProps
     } = $props<AxisXMarkProps & AxisMarkOptions>();
 
-    let autoTickCount = $derived(plot.plotWidth / get(plot, 'options.x.tickSpacing', 80));
+    let autoTickCount = $derived(Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80))));
+
+    $inspect(autoTickCount);
+    $inspect(ticks.length);
 
     let autoTicks = $derived(
-        ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))
+        ticks.length > 0 ? ticks : (plot.options?.x?.ticks ?? plot.xScale.ticks(autoTickCount))
     );
 
     let useTickFormat = $derived(
@@ -61,9 +63,9 @@
         title ||
             (optionsLabel === null
                 ? null
-                : optionsLabel === undefined
-                  ? plot.x.autoTitle
-                  : optionsLabel)
+                : optionsLabel !== undefined
+                  ? optionsLabel
+                  : `${plot.x.autoTitle} →`)
     );
 </script>
 
@@ -74,7 +76,7 @@
                 x={plot.plotWidth + plot.margins.left}
                 y={plot.height - 10}
                 class="axis-title"
-                dominant-baseline="hanging">{useTitle} →</text
+                dominant-baseline="hanging">{useTitle}</text
             >
         {/if}
         {#each autoTicks as tick, t}

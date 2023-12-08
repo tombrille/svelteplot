@@ -31,6 +31,11 @@ export type Datasets = {
         body_mass_g: number;
         sex: string;
     }[];
+    bls: {
+        division: string;
+        date: Date;
+        unemployment: number;
+    }[];
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
@@ -82,7 +87,9 @@ export type PlotProps = {
         legend?: boolean;
     } | null;
     color?: {
-        scheme?: ColorScheme | string[];
+        range?: string[];
+        domain: RawValue[];
+        scheme?: ColorScheme;
         legend?: boolean;
     } | null;
 };
@@ -170,6 +177,7 @@ export type LineMarkProps = MarkProps &
         x?: ChannelAccessor;
         y?: ChannelAccessor;
         z?: ChannelAccessor;
+        sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
     };
 
 export type GridOptions = {

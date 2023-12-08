@@ -12,6 +12,7 @@ import type {
 } from '../types';
 import { Channel } from './Channel.svelte';
 import type { Mark } from './Mark.svelte';
+import { get } from 'underscore';
 
 export const DEFAULT_PLOT_OPTIONS: {
     title: string;
@@ -24,7 +25,7 @@ export const DEFAULT_PLOT_OPTIONS: {
     inset?: number;
     radius: { range?: [number, number] };
     symbol: { range?: (string | SymbolType)[]; legend?: boolean } | null;
-    color: { scheme?: ColorScheme | string[]; legend?: boolean } | null;
+    color: { scheme?: ColorScheme; range: string[]; domain: RawValue[]; legend?: boolean } | null;
     x: PositionChannelOptions & {
         axis?: AxisXAnchor;
     };
@@ -160,7 +161,12 @@ export class Plot {
     );
 
     readonly colorScale = $derived(
-        createColorScale(this.color.scaleType, this.color.domain, this.options.color.scheme)
+        createColorScale(
+            this.color.scaleType,
+            this.color.domain,
+            this.options.color?.range || null,
+            this.options.color?.scheme
+        )
     );
 
     readonly hasAxisXMark = $derived(
@@ -181,7 +187,7 @@ export class Plot {
         // console.log('addMark: ' + mark);
         this.marks = [...this.marks, mark];
         // add mark to respective channels
-        if (mark.channels.has('color')) console.log(this.color.uniqueMarkProps);
+        // console.log(this.x.domain);
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {

@@ -1,7 +1,15 @@
 import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog, scaleOrdinal } from 'd3-scale';
+import { scaleSequential, scaleDiverging } from 'd3-scale';
 import { getLogTicks } from './getLogTicks.js';
-import { categoricalSchemes, isCategoricalScheme, ordinalScheme } from './colors.js';
+import {
+    categoricalSchemes,
+    isCategoricalScheme,
+    isQuantitativeScheme,
+    ordinalScheme,
+    quantitativeScheme
+} from './colors.js';
 import { isColorOrNull } from './typeChecks.js';
+import type { ColorScheme, RawValue } from '$lib/types.js';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     band: scaleBand,
@@ -9,7 +17,9 @@ const Scales: Record<string, (domain: number[], range: [number, number]) => (val
     time: scaleTime,
     sqrt: scaleSqrt,
     log: scaleLog,
-    ordinal: scaleOrdinal
+    ordinal: scaleOrdinal,
+    sequential: scaleSequential,
+    diverging: scaleDiverging
 };
 
 export function createScale(type: keyof typeof Scales, domain, range, options = {}) {
@@ -33,21 +43,27 @@ const identity = (d) => d;
 export function createColorScale(
     type,
     domain: string[] | [number, number] | [Date, Date] | [boolean | boolean],
-    scheme
+    range: RawValue[] | null,
+    scheme: ColorScheme | null
 ) {
+    if (type === 'identity') return identity;
     if (type === 'band') {
         if (domain.every(isColorOrNull)) {
-            console.log('domain is colors', domain);
             return identity;
         }
-        const colorRange = !scheme
-            ? categoricalSchemes.get('tableau10')
-            : Array.isArray(scheme)
-              ? scheme
+        const colorRange = Array.isArray(range)
+            ? range
+            : !scheme
+              ? categoricalSchemes.get('tableau10')
               : isCategoricalScheme(scheme)
                 ? categoricalSchemes.get(scheme)
                 : ordinalScheme(scheme)(domain.length);
         return scaleOrdinal().domain(domain).range(colorRange);
+    } else if (type === 'linear') {
+        const colorInterpolator = isQuantitativeScheme(scheme)
+            ? quantitativeScheme(scheme)
+            : quantitativeScheme('blues');
+        return scaleSequential(domain, colorInterpolator);
     }
     return (d) => d;
 }

@@ -114,7 +114,9 @@ export class Channel {
                 ? 'linear'
                 : this.valueType === 'text'
                   ? 'band'
-                  : 'linear'
+                  : this.valueType === 'color'
+                    ? 'identity'
+                    : 'linear'
     );
 
     // if this.type === 'color' && this.valueType !== 'color' we need to map

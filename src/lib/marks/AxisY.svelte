@@ -29,21 +29,23 @@
         ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
     );
 
-    let optionsLabel = $derived(get(plot, 'options.y.label'));
+    let optionsLabel = $derived(plot.options.y?.label);
     let useTitle = $derived(
         title ||
             (optionsLabel === null
                 ? null
-                : optionsLabel === undefined
-                  ? plot.y.autoTitle
-                  : optionsLabel)
+                : optionsLabel !== undefined
+                  ? optionsLabel
+                  : `↑ ${plot.y.autoTitle}`)
     );
+
+    $inspect(optionsLabel)
 </script>
 
 <BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>
     <g class="axis-y">
         {#if useTitle}
-            <text x={0} y={5} class="axis-title" dominant-baseline="hanging">↑ {useTitle}</text>
+            <text x={0} y={5} class="axis-title" dominant-baseline="hanging">{useTitle}</text>
         {/if}
         {#each autoTicks as tick}
             <g
