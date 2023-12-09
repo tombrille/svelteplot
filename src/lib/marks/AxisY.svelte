@@ -27,7 +27,7 @@
     let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
 
     let autoTicks = $derived(
-        ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
+        ticks.length > 0 ? ticks : (plot.options.y?.ticks || plot.yScale.ticks(autoTickCount))
     );
 
     let useTickFormat = $derived(
@@ -40,7 +40,7 @@
                             .format(tickFormat as string)
                             .split('\n')
                   : autoTimeFormat(plot.y, plot.plotHeight)
-              : (d: RawValue) => String(d)+'x'
+              : (d: RawValue) => String(d)
     );
 
     let optionsLabel = $derived(plot.options.y?.label);
@@ -50,7 +50,7 @@
                 ? null
                 : optionsLabel !== undefined
                   ? optionsLabel
-                  : `↑ ${plot.y.autoTitle}`)
+                  : plot.y.autoTitle ? `↑ ${plot.y.autoTitle}` : '')
     );
 
 </script>

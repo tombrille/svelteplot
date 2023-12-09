@@ -13,7 +13,7 @@
     let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
 
     let autoTicks = $derived(
-        ticks.length > 0 ? ticks : get(plot, 'options.y.ticks', plot.yScale.ticks(autoTickCount))
+        ticks.length > 0 ? ticks : (plot.options.y?.ticks || plot.yScale.ticks(autoTickCount))
     );
 </script>
 

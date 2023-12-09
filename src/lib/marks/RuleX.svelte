@@ -10,12 +10,12 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data = [], x, y1, y2, ...styleProps } = $props<RuleXMarkProps>();
+    let { data = [], x, y1 = null, y2 = null, ...styleProps } = $props<RuleXMarkProps>();
 
     let dataWrapped = $derived(x ? data : data.map((d) => ({ x: d, ___orig___: d })));
 </script>
 
-<BaseMark_RuleX type="rule-x" data={dataWrapped} channels={['x', 'y']} {x} {y1} {y2}>
+<BaseMark_RuleX type="rule-x" data={dataWrapped} channels={y1 || y2 ? ['x', 'y'] : ['x']} x={x || 'x'} {y1} {y2}>
     <g class="rule-x">
         {#each data as datum}
             <line

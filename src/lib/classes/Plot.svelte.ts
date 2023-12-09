@@ -71,8 +71,8 @@ export class Plot {
 
     marks = $state<Mark<BaseMarkProps>[]>([]);
 
-    readonly hasChannelX = $derived(!!this.marks.find((mark) => mark.channels.has('x')));
-    readonly hasChannelY = $derived(!!this.marks.find((mark) => mark.channels.has('y')));
+    readonly hasChannelX = $derived(!!this.marks.find((mark) => !mark.automatic && mark.channels.has('x')));
+    readonly hasChannelY = $derived(!!this.marks.find((mark) => !mark.automatic && mark.channels.has('y')));
 
     readonly hasFilledDotMarks = $derived<boolean>(
         !!this.marks.find((d) => d.type === 'dot' && d.props?.fill)
@@ -187,7 +187,7 @@ export class Plot {
         // console.log('addMark: ' + mark);
         this.marks = [...this.marks, mark];
         // add mark to respective channels
-        // console.log(this.x.domain);
+        console.log('y', this.hasChannelY, this.marks.filter(m => !m.automatic && m.channels.has('y')));
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {

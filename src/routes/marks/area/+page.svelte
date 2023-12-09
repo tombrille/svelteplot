@@ -4,6 +4,7 @@
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     import Code from '../../Code.svelte';
+    import { range } from 'd3-array';
 
     const { aapl } = getContext<Datasets>('data');
 </script>
@@ -45,9 +46,23 @@
     <AreaY data={aapl} x="Date" y1={100} y2="Close"  />
 </Plot>`} />
 
-    <p>For "vertical" area charts you can use the <b>AreaX</b> as shorthand</p>
+    <p>You can also just pass an array of numbers to <b>AreaY</b> for a quick plot</p>
+
+    <Plot grid height={200} y={{ ticks: [-1, 0, 1]}}>
+        <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5}  />
+        <RuleY data={[0]} />
+    </Plot>
+
+     <Code code={`<Plot grid height={200} y={{ ticks: [-1, 0, 1]}}>
+    <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5}  />
+    <RuleY data={[0]} />
+</Plot>`} />
+
+    <p>For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand</p>
 
     <Plot grid height={600} maxWidth="300px">
         <AreaX data={aapl} y="Date" x="Close" />
     </Plot>
+
+    <p>TODO: transform data for stacked areas</p>
 </div>

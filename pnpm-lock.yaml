@@ -26,6 +26,9 @@ dependencies:
   d3-interpolate:
     specifier: ^3.0.1
     version: 3.0.1
+  d3-random:
+    specifier: ^3.0.1
+    version: 3.0.1
   d3-scale:
     specifier: ^4.0.2
     version: 4.0.2
@@ -61,6 +64,9 @@ devDependencies:
   '@types/d3-interpolate':
     specifier: ^3.0.4
     version: 3.0.4
+  '@types/d3-random':
+    specifier: ^3.0.3
+    version: 3.0.3
   '@types/d3-scale-chromatic':
     specifier: ^3.0.3
     version: 3.0.3
@@ -683,6 +689,10 @@ packages:
     resolution: {integrity: sha512-WAIEVlOCdd/NKRYTsqCpOMHQHemKBEINf8YXMYOtXH0GA7SY0dqMB78P3Uhgfy+4X+/Mlw2wDtlETkN6kQUCMA==}
     dev: true
 
+  /@types/d3-random@3.0.3:
+    resolution: {integrity: sha512-Imagg1vJ3y76Y2ea0871wpabqp613+8/r0mCLEBfdtqC7xMSfj9idOnmBYyMoULfHePJyxMAw3nWhJxzc+LFwQ==}
+    dev: true
+
   /@types/d3-scale-chromatic@3.0.3:
     resolution: {integrity: sha512-laXM4+1o5ImZv3RpFAsTRn3TEkzqkytiOY0Dz0sq5cnd1dtNlk6sHLon4OvqaiJb28T0S/TdsBI3Sjsy+keJrw==}
     dev: true
@@ -1152,6 +1162,11 @@ packages:
 
   /d3-path@3.1.0:
     resolution: {integrity: sha512-p3KP5HCf/bvjBSSKuXid6Zqijx7wIfNW+J/maPs+iwR35at5JCbLUT0LzF1cnjbCHWhqzQTIN2Jpe8pRebIEFQ==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /d3-random@3.0.1:
+    resolution: {integrity: sha512-FXMe9GfxTxqd5D6jFsQ+DJ8BJS4E/fT5mqqdjovykEB2oFbTMDVdg1MGFxfQW+FBOGoB++k8swBrgwSHT1cUXQ==}
     engines: {node: '>=12'}
     dev: false
 

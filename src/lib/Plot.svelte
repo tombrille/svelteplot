@@ -96,8 +96,8 @@
         onmousemove={onmousemove ? onMouseMove : null}
     >
         <!-- automatic grids -->
-        {#if grid || x?.grid}<GridX automatic />{/if}
-        {#if grid || y?.grid}<GridY automatic />{/if}
+        {#if (grid || x?.grid) && plot.hasChannelX}<GridX automatic />{/if}
+        {#if (grid || y?.grid) && plot.hasChannelY}<GridY automatic />{/if}
 
         {#if !plot.hasAxisXMark && plot.hasChannelX}
             <!-- automatic x axis -->
