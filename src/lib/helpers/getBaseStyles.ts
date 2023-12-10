@@ -1,4 +1,4 @@
-import { MARK_PROP_CHANNEL } from '$lib/contants.js';
+import { CHANNEL_SCALE } from '$lib/contants.js';
 import type { ChannelAccessor, MarkStyleProps, DataRecord, DataRow } from '$lib/types.js';
 import resolveChannel from './resolveChannel.js';
 
@@ -16,9 +16,6 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
 export default function (datum: DataRow, props: Partial<Record<MarkStyleProps, ChannelAccessor>>) {
     return (Object.entries(styleProps) as [MarkStyleProps, string][])
         .filter(([key, cssKey]) => cssKey && props[key] != null)
-        .map(
-            ([key, cssKey]) =>
-                `${cssKey}: ${resolveChannel(MARK_PROP_CHANNEL[key], datum, props[key])}`
-        )
+        .map(([key, cssKey]) => `${cssKey}: ${resolveChannel(key, datum, props)}`)
         .join(';');
 }

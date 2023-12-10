@@ -49,7 +49,7 @@
     the axes marks.
 </p>
 
-<Plot x={{ domain: [0, 5] }} y={{ domain: [0, 5] }}>
+<Plot x={{ domain: [0, 5] }}>
     <GridX stroke="lime" />
     <GridY stroke="magenta" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
 </Plot>
@@ -63,12 +63,12 @@
 
 <p>The automatic ticks can be customized using the <b>tickSpacing</b> option:</p>
 
-<Plot grid x={{ tickSpacing: 40 }} y={{ tickSpacing: 10 }}>
+<Plot grid x={{ tickSpacing: 150 }} y={{ tickSpacing: 10 }}>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 
 <pre class="block"><code
-        >{`<Plot grid x={{ tickSpacing: 40 }} y={{ tickSpacing: 10 }}>
+        >{`<Plot grid x={{ tickSpacing: 150 }} y={{ tickSpacing: 10 }}>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>`}</code
     ></pre>

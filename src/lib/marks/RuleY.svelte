@@ -10,7 +10,9 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data = [], y, x1, x2, ...styleProps } = $props<RuleYMarkProps>();
+    let { data = [], ...channels } = $props<RuleYMarkProps>();
+
+    let { y, x1, x2 } = $derived(channels);
 
     let dataWrapped = $derived(y ? data : data.map((d) => ({ y: d, ___orig___: d })));
 </script>
@@ -19,11 +21,13 @@
     <g class="rule-y">
         {#each data as datum}
             <line
-                transform="translate(0,{plot.yScale(resolveChannel('y', datum, y))})"
-                style={getBaseStyles(datum, styleProps)}
-                x1={x1 != null ? plot.xScale(resolveChannel('x', datum, x1)) : plot.margins.left}
+                transform="translate(0,{plot.yScale(resolveChannel('y', datum, channels))})"
+                style={getBaseStyles(datum, channels)}
+                x1={x1 != null
+                    ? plot.xScale(resolveChannel('x1', datum, channels))
+                    : plot.margins.left}
                 x2={x2 != null
-                    ? plot.xScale(resolveChannel('x', datum, x2))
+                    ? plot.xScale(resolveChannel('x2', datum, channels))
                     : plot.plotWidth + plot.margins.left}
             />
         {/each}

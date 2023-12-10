@@ -1,6 +1,12 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type { BaseMarkProps, GridXMarkProps, GridOptions } from '$lib/types.js';
+    import type {
+        BaseMarkProps,
+        GridXMarkProps,
+        GridOptions,
+        ChannelAccessor,
+        ChannelName
+    } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { get } from 'underscore';
 
@@ -14,29 +20,31 @@
 
     let {
         ticks = [],
-        y1 = null,
-        y2 = null,
         automatic = false,
-        ...styleProps
+        ...channels
     } = $props<GridXMarkProps & GridOptions>();
 
-    let autoTickCount = $derived(plot.plotWidth / get(plot, 'options.x.tickSpacing', 80));
+    let autoTickCount = $derived(plot.plotWidth / (plot.options.x?.tickSpacing || 80));
 
     let autoTicks = $derived(
         ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))
     );
+
+    let { y1, y2 } = $derived(channels);
+
 </script>
 
-<BaseMark_GridX type="grid-x" data={ticks} channels={['x']} {y1} {y2} {automatic}>
+
+<BaseMark_GridX type="grid-x" data={ticks.length ? ticks.map(tick => ({x:tick})) : undefined}  channels={['y']} x="x" {...channels} {automatic}>
     <g class="grid-x">
-        {#each autoTicks as tick, t}
+        {#each autoTicks as tick}
             <g class="x-tick" transform="translate({plot.xScale(tick)},{plot.margins.top})">
                 <line
                     class="grid"
-                    style={getBaseStyles(tick, styleProps)}
-                    y1={y1 ? plot.yScale(resolveChannel('y', tick, y1)) : 0}
+                    style={getBaseStyles(tick, channels)}
+                    y1={y1 ? plot.yScale(resolveChannel('y1', tick, channels)) : 0}
                     y2={y2
-                        ? plot.yScale(resolveChannel('y', tick, y2))
+                        ? plot.yScale(resolveChannel('y2', tick, channels))
                         : plot.height - plot.margins.top - plot.margins.bottom}
                 />
             </g>
@@ -48,4 +56,4 @@
     .x-tick line.grid {
         stroke: #d9d9d9;
     }
-</style>
+</style> 

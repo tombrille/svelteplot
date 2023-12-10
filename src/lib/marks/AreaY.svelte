@@ -1,15 +1,28 @@
+<script context="module" lang="ts">
+    import type { MarkProps, BaseMarkStyleProps, ChannelAccessor, DataRow } from '$lib/types.js';
+    export type AreaYMarkProps = MarkProps &
+        BaseMarkStyleProps & {
+            x?: ChannelAccessor;
+            y?: ChannelAccessor;
+            y1?: ChannelAccessor;
+            y2?: ChannelAccessor;
+            z?: ChannelAccessor;
+            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+        };
+</script>
+
 <script lang="ts">
-    import type { RawValue } from '$lib/types.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
     import Area from './Area.svelte';
 
-    let { data, x, y, y1, y2, ...rest } = $props<{ data: RawValue[] }>();
-
+    let { data, x, y, y1, y2, ...rest } = $props<AreaYMarkProps>();
     let dataIsRawValueArray = $derived(!isDataRecord(data[0]));
 
-    let transformedData = $derived(dataIsRawValueArray ? 
-        data.map((value, index) => ({ value, index, ___orig___: value })) :
-        data);
+    let transformedData = $derived(
+        dataIsRawValueArray
+            ? (data.map((value, index) => ({ value, index, ___orig___: value })) as DataRow[])
+            : data
+    );
 </script>
 
 <Area

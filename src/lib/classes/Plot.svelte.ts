@@ -4,13 +4,13 @@ import type { SymbolType } from 'd3-shape';
 import type {
     BaseMarkProps,
     Margins,
-    PositionChannelOptions,
+    PositionScaleOptions,
     RawValue,
     AxisXAnchor,
     AxisYAnchor,
     ColorScheme
 } from '../types';
-import { Channel } from './Channel.svelte';
+import { Scale } from './Scale.svelte';
 import type { Mark } from './Mark.svelte';
 import { get } from 'underscore';
 
@@ -26,10 +26,10 @@ export const DEFAULT_PLOT_OPTIONS: {
     radius: { range?: [number, number] };
     symbol: { range?: (string | SymbolType)[]; legend?: boolean } | null;
     color: { scheme?: ColorScheme; range: string[]; domain: RawValue[]; legend?: boolean } | null;
-    x: PositionChannelOptions & {
+    x: PositionScaleOptions & {
         axis?: AxisXAnchor;
     };
-    y: PositionChannelOptions & {
+    y: PositionScaleOptions & {
         axis?: AxisYAnchor;
     };
 } = {
@@ -71,8 +71,12 @@ export class Plot {
 
     marks = $state<Mark<BaseMarkProps>[]>([]);
 
-    readonly hasChannelX = $derived(!!this.marks.find((mark) => !mark.automatic && mark.channels.has('x')));
-    readonly hasChannelY = $derived(!!this.marks.find((mark) => !mark.automatic && mark.channels.has('y')));
+    readonly hasScaleX = $derived(
+        !!this.marks.find((mark) => !mark.automatic && mark.channels.has('x'))
+    );
+    readonly hasScaleY = $derived(
+        !!this.marks.find((mark) => !mark.automatic && mark.channels.has('y'))
+    );
 
     readonly hasFilledDotMarks = $derived<boolean>(
         !!this.marks.find((d) => d.type === 'dot' && d.props?.fill)
@@ -80,19 +84,19 @@ export class Plot {
 
     readonly manualMarks = $derived(this.marks.filter((mark) => !mark.automatic));
 
-    readonly singlePosChannelMark = $derived<boolean>(
+    readonly singlePosScaleMark = $derived<boolean>(
         this.manualMarks.length === 1 &&
             (!this.manualMarks[0].channels.has('x') || !this.manualMarks[0].channels.has('y'))
     );
 
     readonly height = $derived(
-        this._height === 'auto' ? (this.hasChannelY ? 400 : 90) : this._height
+        this._height === 'auto' ? (this.hasScaleY ? 400 : 90) : this._height
     );
 
     readonly inset = $derived(
         typeof this.options.inset === 'number'
             ? this.options.inset
-            : this.singlePosChannelMark
+            : this.singlePosScaleMark
               ? 10
               : 0
     );
@@ -108,11 +112,11 @@ export class Plot {
     readonly plotWidth = $derived(this.width - this.margins.left - this.margins.right);
     readonly plotHeight = $derived(this.height - this.margins.top - this.margins.bottom);
 
-    x = new Channel('x', this);
-    y = new Channel('y', this);
-    radius = new Channel('radius', this);
-    color = new Channel('color', this);
-    symbol = new Channel('symbol', this);
+    x = new Scale('x', this);
+    y = new Scale('y', this);
+    radius = new Scale('radius', this);
+    color = new Scale('color', this);
+    symbol = new Scale('symbol', this);
 
     readonly colorSymbolRedundant = $derived(
         this.color.uniqueMarkProps.length === 1 &&
@@ -187,7 +191,11 @@ export class Plot {
         // console.log('addMark: ' + mark);
         this.marks = [...this.marks, mark];
         // add mark to respective channels
-        console.log('y', this.hasChannelY, this.marks.filter(m => !m.automatic && m.channels.has('y')));
+        console.log(
+            'y',
+            this.hasScaleY,
+            this.marks.filter((m) => !m.automatic && m.channels.has('y'))
+        );
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {

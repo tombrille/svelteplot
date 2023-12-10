@@ -1,11 +1,21 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import type { ChannelName, ChannelAccessor, DataRow, RawValue } from '../types';
+import type { ChannelName, ChannelAccessor, DataRow, RawValue } from '$lib/types.js';
+import isRawValue from './isRawValue.js';
+
+type ChannelAlias = { channel: ChannelName };
 
 export default function (
     channel: ChannelName,
     datum: DataRow,
-    accessor: ChannelAccessor = null
+    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
 ): RawValue {
+    const maybeAccessor: ChannelAccessor | ChannelAlias = channel === 'z' ? channels.z || channels.fill || channels.stroke : channels[channel];
+    const accessor =
+        isDataRecord(maybeAccessor) && maybeAccessor?.channel
+            ? channels[maybeAccessor?.channel]
+            : maybeAccessor;
+    if (isDataRecord(accessor) && accessor.channel)
+        throw new Error('multiple channel aliases are not allowed');
     if ((channel === 'x' || channel === 'y') && Array.isArray(datum) && accessor === null) {
         // special case for [[x0,y0], [x1,y1], ...] format
         return datum[channel === 'x' ? 0 : 1];
@@ -18,13 +28,15 @@ export default function (
         // fallback to channel name as accessor
         if (accessor === null && datum[channel] !== undefined) return datum[channel];
         // interpret accessor as constant
-        return accessor;
+        return isRawValue(accessor) ? accessor : null;
     } else {
         // return single value or accessor
         return typeof accessor === 'function'
             ? accessor(datum)
-            : accessor !== null
+            : accessor !== null && isRawValue(accessor)
               ? accessor
-              : datum;
+              : !Array.isArray(datum)
+                ? datum
+                : null;
     }
 }

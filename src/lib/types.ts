@@ -1,7 +1,18 @@
 import type { Snippet } from 'svelte';
-import type { CHANNEL_TYPES } from './contants.js';
+import type { SCALE_TYPES } from './contants.js';
 import type { Plot } from './classes/Plot.svelte';
 import type { MouseEventHandler } from 'svelte/elements';
+
+export type ScaleName =
+    | 'opacity'
+    | 'color'
+    | 'x'
+    | 'y'
+    | 'angle'
+    | 'radius'
+    | 'symbol'
+    | 'width'
+    | 'fontSize';
 
 export type Datasets = {
     aapl: {
@@ -41,7 +52,7 @@ export type Datasets = {
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
 export type AxisYAnchor = 'left' | 'right' | 'both';
 
-export type PositionChannelOptions = Partial<{
+export type PositionScaleOptions = Partial<{
     label?: string | null;
     domain?: [number, number] | null;
     grid?: boolean;
@@ -76,10 +87,10 @@ export type PlotProps = {
     overlay?: Snippet<Plot>;
     // options for scales
     radius?: { range?: [number, number] };
-    x?: PositionChannelOptions & {
+    x?: PositionScaleOptions & {
         axis?: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
     };
-    y?: PositionChannelOptions & {
+    y?: PositionScaleOptions & {
         axis?: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
     symbol?: {
@@ -108,13 +119,30 @@ export type GridProps = {
 export type DataRecord = Record<string, RawValue>;
 export type DataRow = DataRecord | RawValue | [number, number];
 
-export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null;
+export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null | undefined;
 
 export type RawValue = number | Date | boolean | string | null;
 
-export type ChannelName = 'opacity' | 'color' | 'x' | 'y' | 'angle' | 'radius' | 'symbol' | 'width';
-
-// const MarkPro
+export type ChannelName =
+    | 'angle'
+    | 'fill'
+    | 'fillOpacity'
+    | 'fontSize'
+    | 'opacity'
+    | 'r'
+    | 'sort'
+    | 'stroke'
+    | 'strokeDasharray'
+    | 'strokeOpacity'
+    | 'symbol'
+    | 'width'
+    | 'x'
+    | 'x1'
+    | 'x2'
+    | 'y'
+    | 'y1'
+    | 'y2'
+    | 'z';
 
 // list of all prossible style props on marks
 export type MarkStyleProps =
@@ -137,7 +165,7 @@ export type MarkProps2 = 'x' | 'y' | 'r' | 'rotate' | 'symbol';
 
 export type ValueOf<T> = T[keyof T];
 
-export type ChannelType = ValueOf<typeof CHANNEL_TYPES>;
+export type ChannelType = ValueOf<typeof SCALE_TYPES>;
 
 export interface MarkProps {
     data: DataRow[];
@@ -160,36 +188,6 @@ export type BaseMarkStyleProps = {
 };
 
 export type FrameProps = BaseMarkStyleProps;
-
-export type DotMarkProps = MarkProps &
-    BaseMarkStyleProps & {
-        data: DataRow[];
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        r?: ChannelAccessor;
-        rotate?: ChannelAccessor;
-        symbol?: ChannelAccessor;
-    };
-
-export type LineMarkProps = MarkProps &
-    BaseMarkStyleProps & {
-        data: DataRow[];
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        z?: ChannelAccessor;
-        sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-    };
-
-export type AreaMarkProps = MarkProps &
-    BaseMarkStyleProps & {
-        data: DataRow[];
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        z?: ChannelAccessor;
-        sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-    };
 
 export type GridOptions = {
     ticks?: RawValue[];

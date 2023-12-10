@@ -1,3 +1,22 @@
+<script context="module" lang="ts">
+    import type {
+        MarkProps,
+        BaseMarkProps,
+        BaseMarkStyleProps,
+        ChannelAccessor,
+        ChannelName,
+        DataRow
+    } from '$lib/types.js';
+    export type LineMarkProps = MarkProps &
+        BaseMarkStyleProps & {
+            data: DataRow[];
+            x?: ChannelAccessor;
+            y?: ChannelAccessor;
+            z?: ChannelAccessor;
+            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+        };
+</script>
+
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
@@ -7,62 +26,48 @@
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { line } from 'd3-shape';
     import { groupBy } from 'underscore';
-    import isDataRecord from '$lib/helpers/isDataRecord.js';
 
     const BaseMark_Line = BaseMark<BaseMarkProps & LineMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
-    let {
-        data,
-        x = null,
-        y = null,
-        z = null,
-        fill,
-        stroke,
-        sort,
-        ...styleProps
-    } = $props<LineMarkProps>();
+    let { data, ...channels } = $props<LineMarkProps>();
+
+    let { sort, z, fill, stroke } = $derived(channels);
 
     let groups = $derived(
         z || fill || stroke
-            ? Object.values(groupBy(data, (d) => resolveChannel('z', d, z || fill || stroke)))
+            ? Object.values(groupBy(data, (d) => resolveChannel('z', d, channels)))
             : [data]
     );
 
-    // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
     let sortedGroups = $derived(
         sort
             ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], sort) > resolveChannel('sort', b[0], sort) ? 1 : -1
+                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels)
+                      ? 1
+                      : -1
               )
             : groups
     );
 
     let linePath = line()
-        .x((d) => plot.xScale(resolveChannel('x', d, x)))
-        .y((d) => plot.yScale(resolveChannel('y', d, y)));
+        .x((d) => plot.xScale(resolveChannel('x', d, channels)))
+        .y((d) => plot.yScale(resolveChannel('y', d, channels)));
 </script>
 
-<BaseMark_Line
-    type="line"
-    {data}
-    channels={['x', 'y', 'color']}
-    {x}
-    {y}
-    {fill}
-    {stroke}
-    {...styleProps}
->
+<BaseMark_Line type="line" {data} channels={['x', 'y', 'color']} {...channels}>
     <g class="lines">
         {#each sortedGroups as lineData}
             <path
                 d={linePath(lineData)}
                 stroke={stroke
-                    ? plot.colorScale(resolveChannel('color', lineData[0], stroke))
+                    ? plot.colorScale(resolveChannel('stroke', lineData[0], channels))
                     : 'currentColor'}
-                fill={fill ? plot.colorScale(resolveChannel('color', lineData[0], fill)) : 'none'}
-                style={getBaseStyles(lineData[0], styleProps)}
+                fill={fill
+                    ? plot.colorScale(resolveChannel('fill', lineData[0], channels))
+                    : 'none'}
+                style={getBaseStyles(lineData[0], channels)}
             />
         {/each}
     </g>

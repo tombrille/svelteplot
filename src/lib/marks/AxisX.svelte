@@ -27,13 +27,11 @@
         ...styleProps
     } = $props<AxisXMarkProps & AxisMarkOptions>();
 
-
     let autoTickCount = $derived(
         Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80)))
     );
 
     $inspect(autoTickCount);
-  
 
     let autoTicks = $derived(
         ticks.length > 0 ? ticks : plot.options?.x?.ticks ?? plot.xScale.ticks(autoTickCount)
@@ -49,8 +47,7 @@
                             .format(tickFormat as string)
                             .split('\n')
                   : autoTimeFormat(plot.x, plot.plotWidth)
-              : 
-              (d: RawValue) => String(d)
+              : (d: RawValue) => String(d)
     );
 
     let tickTexts = $derived(

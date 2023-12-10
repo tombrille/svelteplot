@@ -1,8 +1,8 @@
-import type { ChannelName } from '$lib/types.js';
-import type { Plot } from './Plot.svelte';
+import type { ChannelName, ScaleName } from '$lib/types.js';
+import type { Plot } from './Plot.svelte.js';
 import resolveChannel from '$lib/helpers/resolveChannel.js';
 import { extent } from 'd3-array';
-import { MARK_PROP_CHANNEL } from '$lib/contants.js';
+import { CHANNEL_SCALE } from '$lib/contants.js';
 import {
     isBooleanOrNull,
     isColorOrNull,
@@ -12,16 +12,16 @@ import {
 } from '$lib/helpers/typeChecks.js';
 import { uniq } from 'underscore';
 
-export class Channel {
-    readonly name: ChannelName | undefined = undefined;
+export class Scale {
+    readonly name: ScaleName | undefined = undefined;
     readonly plot: Plot | undefined = undefined;
 
-    constructor(name: ChannelName, plot: Plot) {
+    constructor(name: ScaleName, plot: Plot) {
         this.name = name;
         this.plot = plot;
     }
 
-    // readonly type: ChannelType = CHANNEL_TYPES.position;
+    // readonly type: ScaleType = SCALE_TYPES.position;
     // all marks that have this channel
     readonly marks: Mark[] = $derived(this.plot?.marks ?? []);
 
@@ -31,16 +31,17 @@ export class Channel {
             : null
     );
 
-    readonly possibleProps = $derived(
-        Object.entries(MARK_PROP_CHANNEL)
+    readonly possibleChannels = $derived(
+        Object.entries(CHANNEL_SCALE)
             .filter(([, channel]) => channel === this.name)
-            .map(([prop]) => prop)
+            .map(([prop]) => prop as ChannelName)
     );
 
     readonly activeMarks: Mark[] = $derived(
         this.marks.filter(
             (mark) =>
-                mark.channels.has(this.name) && this.possibleProps.find((prop) => mark.props[prop])
+                mark.channels.has(this.name) &&
+                this.possibleChannels.find((prop) => mark.props[prop])
         )
     );
     readonly manualActiveMarks: Mark[] = $derived(
@@ -57,7 +58,7 @@ export class Channel {
         uniq(
             this.manualActiveMarks
                 .map((mark) =>
-                    this.possibleProps
+                    this.possibleChannels
                         .filter((prop) => mark.props[prop])
                         .map((prop) => mark.props[prop])
                 )
@@ -70,8 +71,8 @@ export class Channel {
             // only check marks with data
             .filter((mark) => mark.props.data.length)
             .map((mark) =>
-                this.possibleProps.map((prop) =>
-                    mark.props.data.map((row) => resolveChannel(this.name, row, mark.props[prop]))
+                this.possibleChannels.map((prop) =>
+                    mark.props.data.map((row) => resolveChannel(prop, row, mark.props))
                 )
             )
             .flat(3)

@@ -24,10 +24,10 @@
         ...styleProps
     } = $props<AxisYMarkProps>();
 
-    let autoTickCount = $derived(plot.plotHeight / get(plot, 'options.y.tickSpacing', 80));
+    let autoTickCount = $derived(plot.plotHeight / (plot.options.y?.tickSpacing || 80));
 
     let autoTicks = $derived(
-        ticks.length > 0 ? ticks : (plot.options.y?.ticks || plot.yScale.ticks(autoTickCount))
+        ticks.length > 0 ? ticks : plot.options.y?.ticks || plot.yScale.ticks(autoTickCount)
     );
 
     let useTickFormat = $derived(
@@ -50,9 +50,10 @@
                 ? null
                 : optionsLabel !== undefined
                   ? optionsLabel
-                  : plot.y.autoTitle ? `↑ ${plot.y.autoTitle}` : '')
+                  : plot.y.autoTitle
+                    ? `↑ ${plot.y.autoTitle}`
+                    : '')
     );
-
 </script>
 
 <BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>
@@ -77,7 +78,8 @@
                     class:is-left={anchor === 'left'}
                     style={getBaseStyles(tick, { fill, fontSize: tickFontSize })}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
-                    dominant-baseline="middle">{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
+                    dominant-baseline="middle"
+                    >{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
                 >
                 <line
                     style={getBaseStyles(tick, styleProps)}

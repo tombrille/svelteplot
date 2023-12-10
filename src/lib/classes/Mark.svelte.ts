@@ -1,4 +1,5 @@
-import type { ChannelName, MarkProps } from '$lib/types.js';
+import { CHANNEL_SCALE } from '$lib/contants.js';
+import type { MarkProps, ChannelName } from '$lib/types.js';
 
 export class Mark<T extends MarkProps> {
     readonly id: symbol;
@@ -6,6 +7,11 @@ export class Mark<T extends MarkProps> {
     readonly automatic: boolean;
 
     channels = $state<Set<ChannelName>>(new Set());
+
+    readonly scales = $derived(
+        new Set(Array.from(this.channels.values()).map((channel) => CHANNEL_SCALE[channel]))
+    );
+
     props = $state<T>();
 
     constructor(type: string, channels: ChannelName[], automatic: boolean, props: T) {
@@ -20,5 +26,3 @@ export class Mark<T extends MarkProps> {
         return `Mark[${this.type}]`;
     }
 }
-
-type BaseFooProps = { bar: number[] };

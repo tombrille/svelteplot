@@ -2,6 +2,7 @@
     import { Plot, RuleX } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
+    import Code from '../../Code.svelte';
 
     let { code = false } = $props();
 
@@ -23,8 +24,8 @@
 </Plot>
 
 {#if code}
-    <pre class="block"><code
-            >{`<Plot grid>
+    <Code
+        code={`<Plot grid>
     <RuleX 
         data={aapl.slice(750, 800)}
         x="Date"
@@ -39,6 +40,6 @@
         y2="Close"
         strokeWidth="5"
         stroke={(d) => d.Close > d.Open ? 'lightseagreen' : 'crimson'} />
-</Plot>`}</code
-        ></pre>
+</Plot>`}
+    />
 {/if}

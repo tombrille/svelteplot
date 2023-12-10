@@ -1,6 +1,6 @@
-import type { ChannelName, MarkProps, MarkStyleProps } from './types';
+import type { ScaleName, ChannelName, MarkProps, MarkStyleProps } from './types';
 
-export const CHANNEL_TYPES: Record<ChannelName, symbol> = {
+export const SCALE_TYPES: Record<ScaleName, symbol> = {
     opacity: Symbol('opacity'),
     color: Symbol('color'),
     x: Symbol('position'),
@@ -8,10 +8,11 @@ export const CHANNEL_TYPES: Record<ChannelName, symbol> = {
     angle: Symbol('angle'),
     symbol: Symbol('symbol'),
     radius: Symbol('radius'),
-    width: Symbol('width')
+    width: Symbol('width'),
+    fontSize: Symbol('width')
 };
 
-export const MARK_PROP_CHANNEL: Record<MarkProps & MarkStyleProps, ChannelName> = {
+export const CHANNEL_SCALE: Record<ChannelName, ScaleName> = {
     x: 'x',
     x1: 'x',
     x2: 'x',
@@ -26,19 +27,20 @@ export const MARK_PROP_CHANNEL: Record<MarkProps & MarkStyleProps, ChannelName> 
     opacity: 'opacity',
     fillOpacity: 'opacity',
     strokeOpacity: 'opacity',
-    strokeWidth: 'width'
+    strokeWidth: 'width',
+    fontSize: 'fontSize'
 };
 
-// export const CHANNEL_MAP: Record<ChannelName, ValueOf<typeof CHANNEL_TYPES>> = {
-// 	x: CHANNEL_TYPES.x,
-// 	y: CHANNEL_TYPES.y,
-// 	opacity: CHANNEL_TYPES.opacity,
-// 	strokeOpacity: CHANNEL_TYPES.opacity,
-// 	strokeWidth: CHANNEL_TYPES.width,
-// 	fillOpacity: CHANNEL_TYPES.opacity,
-// 	stroke: CHANNEL_TYPES.color,
-// 	fill: CHANNEL_TYPES.color,
-// 	r: CHANNEL_TYPES.radius,
-// 	rotate: CHANNEL_TYPES.angle,
-// 	symbol: CHANNEL_TYPES.symbol
+// export const CHANNEL_MAP: Record<ScaleName, ValueOf<typeof SCALE_TYPES>> = {
+// 	x: SCALE_TYPES.x,
+// 	y: SCALE_TYPES.y,
+// 	opacity: SCALE_TYPES.opacity,
+// 	strokeOpacity: SCALE_TYPES.opacity,
+// 	strokeWidth: SCALE_TYPES.width,
+// 	fillOpacity: SCALE_TYPES.opacity,
+// 	stroke: SCALE_TYPES.color,
+// 	fill: SCALE_TYPES.color,
+// 	r: SCALE_TYPES.radius,
+// 	rotate: SCALE_TYPES.angle,
+// 	symbol: SCALE_TYPES.symbol
 // };

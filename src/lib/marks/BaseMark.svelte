@@ -5,13 +5,18 @@
 <script lang="ts" generics="T extends BaseMarkProps">
     import type { Plot } from '$lib/classes/Plot.svelte';
     import { Mark } from '$lib/classes/Mark.svelte';
-    import { getContext } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
 
     const plot = getContext<Plot>('svelteplot');
 
-    type Foo = { children?: Function };
-
-    let { type, data = [], channels = [], children, automatic, ...rest } = $props<T & Foo>();
+    let {
+        type,
+        data = [],
+        channels = [],
+        children,
+        automatic,
+        ...rest
+    } = $props<T & { children?: Snippet }>();
 
     const mark = new Mark(type, channels, automatic, { data, ...rest });
     // console.log(type, { data, rest });
