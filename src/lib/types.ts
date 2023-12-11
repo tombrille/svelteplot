@@ -66,6 +66,7 @@ export type PositionScaleOptions = Partial<{
  * these are the props that can be set by the user on the <Plot> element directly
  */
 export type PlotProps = {
+    testid?: string;
     height?: number | 'auto';
     marginTop?: number;
     marginBottom?: number;

@@ -37,7 +37,7 @@
 
     <input type="checkbox" bind:checked={fill} /> fill symbols
 
-    <Plot grid height={500}>
+    <Plot grid height={500} testid="cars">
         <Dot
             data={cars}
             x="economy (mpg)"
@@ -58,7 +58,7 @@
 </Plot>`}
     />
 
-    <Plot grid height={500} symbol={{ legend: true }}>
+    <Plot grid height={500} symbol={{ legend: true }} testid="penguins">
         <Dot
             data={penguins}
             x="culmen_length_mm"
@@ -95,13 +95,13 @@
 
     <p>Using the <b>DotX</b> mark, you can quickly plot a list of numbers as dots:</p>
 
-    <Plot>
+    <Plot testid="dotx">
         <DotX data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
 
     <p>Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:</p>
 
-    <Plot>
+    <Plot testid="doty">
         <DotY data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
 </div>

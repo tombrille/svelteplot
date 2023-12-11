@@ -28,6 +28,7 @@
         title = '',
         subtitle = '',
         caption = '',
+        testid,
         // scales
         radius = null,
         color = null,
@@ -88,7 +89,7 @@
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 
-<figure class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
+<figure data-testid={testid} class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
     <svg
         role="document"
         {width}

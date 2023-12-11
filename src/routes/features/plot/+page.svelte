@@ -15,7 +15,7 @@
         scales
     </p>
 
-    <Plot grid frame>
+    <Plot grid frame testid="first">
         <Frame />
         <Line data={aapl} x="Date" y="Close" />
     </Plot>
@@ -29,7 +29,7 @@
 
     <p>You can style plots to look like ggplot:</p>
 
-    <Plot inset={10}>
+    <Plot inset={10} testid="ggplot">
         <Frame fill="#eaeaea" stroke={null} />
         <GridX stroke="white" />
         <GridY stroke="white" />
@@ -50,7 +50,7 @@
     You can pass <b>title</b>, <b>subtitle</b>, and <b>caption</b> directly as Plot properties:
 </p>
 
-<Plot maxWidth="700px" title="Apple stocks" subtitle="Daily stocks" caption="Source: Lorem Ipsum">
+<Plot maxWidth="700px" title="Apple stocks" subtitle="Daily stocks" caption="Source: Lorem Ipsum" testid="with-title">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 

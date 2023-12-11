@@ -17,7 +17,7 @@
         the topline and a <b>RuleY</b> for the baseline:
     </p>
 
-    <Plot grid>
+    <Plot grid testid="area-line-rule">
         <Area data={aapl} x1="Date" y1={0} y2="Close" opacity={0.25} />
         <Line data={aapl} x="Date" y="Close" />
         <RuleY data={[0]} />
@@ -36,7 +36,7 @@
         for "horizontal" area charts, where the time axis going from left to right:
     </p>
 
-    <Plot>
+    <Plot testid="area-y1">
         <AreaY data={aapl} x="Date" y="Close" />
     </Plot>
 
@@ -51,7 +51,7 @@
         <b>y</b>:
     </p>
 
-    <Plot grid>
+    <Plot grid testid="area-y2">
         <AreaY data={aapl} x="Date" y1={100} y2="Close" />
     </Plot>
 
@@ -63,7 +63,7 @@
 
     <p>You can also just pass an array of numbers to <b>AreaY</b> for a quick plot</p>
 
-    <Plot grid height={200} y={{ ticks: [-1, 0, 1] }}>
+    <Plot testid="area-y-numbers" grid height={200} y={{ ticks: [-1, 0, 1] }}>
         <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5} />
         <RuleY data={[0]} />
     </Plot>
@@ -77,7 +77,7 @@
 
     <p>For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand</p>
 
-    <Plot grid height={600} maxWidth="300px">
+    <Plot grid testid="area-x" height={600} maxWidth="300px">
         <AreaX data={aapl} y="Date" x="Close" />
     </Plot>
 
