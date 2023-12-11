@@ -13,7 +13,6 @@
     let cutoff2 = $state(aapl.length);
 
     let wiggle = $state(1);
-
 </script>
 
 cutoff1: <input type="range" bind:value={cutoff1} min={0} max={cutoff2 - 1} /><br />

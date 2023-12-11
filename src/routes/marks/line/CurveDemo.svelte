@@ -37,7 +37,9 @@
     <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} y="value" x="index" />
 </Plot>
 
-<Code code={`<Plot grid>
+<Code
+    code={`<Plot grid>
     <LineY data={numbers} {curve} {tension} />
     <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} y="value" x="index" />
-</Plot>`} />
+</Plot>`}
+/>

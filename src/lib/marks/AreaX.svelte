@@ -4,8 +4,9 @@
         BaseMarkStyleProps,
         ChannelAccessor,
         DataRow,
-        ChannelName
+        Curve
     } from '$lib/types.js';
+    import type { CurveFactory } from 'd3-shape';
     export type AreaXMarkProps = MarkProps &
         BaseMarkStyleProps & {
             x?: ChannelAccessor;
@@ -14,11 +15,12 @@
             y?: ChannelAccessor;
             z?: ChannelAccessor;
             sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+            curve: Curve | CurveFactory;
+            tension: number;
         };
 </script>
 
 <script lang="ts">
-    import type { RawValue } from '$lib/types.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
     import Area from './Area.svelte';
 

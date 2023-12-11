@@ -1,7 +1,6 @@
 <script context="module" lang="ts">
     import type {
         MarkProps,
-        BaseMarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
         ChannelName,

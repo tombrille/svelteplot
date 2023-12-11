@@ -3,7 +3,8 @@
         MarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
-        ChannelName
+        ChannelName,
+        Curve
     } from '$lib/types.js';
     export type AreaMarkProps = MarkProps &
         BaseMarkStyleProps & {
@@ -13,6 +14,8 @@
             y2?: ChannelAccessor;
             z?: ChannelAccessor;
             sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+            curve: Curve | CurveFactory;
+            tension: number;
         };
 </script>
 
@@ -23,9 +26,10 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { area } from 'd3-shape';
+    import { area, type CurveFactory } from 'd3-shape';
     import { groupBy } from 'underscore';
     import callWithProps from '$lib/helpers/callWithProps.js';
+    import { maybeCurve } from '$lib/helpers/curves.js';
 
     const BaseMark_Area = BaseMark<BaseMarkProps & AreaMarkProps>;
 
@@ -33,6 +37,8 @@
 
     let {
         data,
+        curve,
+        tension,
         x1 = null,
         x2 = null,
         y1 = null,
@@ -73,10 +79,9 @@
     );
 
     let areaPath = $derived(
-        callWithProps(
-            area,
-            [],
-            x1 != null && x2 != null
+        callWithProps(area, [], {
+            curve: maybeCurve(curve, tension),
+            ...(x1 != null && x2 != null
                 ? {
                       // vertical area
                       x0: (d) => plot.xScale(resolveChannel('x1', d, channels)),
@@ -88,8 +93,8 @@
                       x: (d) => plot.xScale(resolveChannel('x1', d, channels)),
                       y0: (d) => plot.yScale(resolveChannel('y1', d, channels)),
                       y1: (d) => plot.yScale(resolveChannel('y2', d, channels))
-                  }
-        )
+                  })
+        })
     );
 
     // $inspect(plot.x.activeMarks[0]?.dataValues)

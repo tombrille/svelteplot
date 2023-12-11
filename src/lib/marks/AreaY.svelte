@@ -1,5 +1,12 @@
 <script context="module" lang="ts">
-    import type { MarkProps, BaseMarkStyleProps, ChannelAccessor, DataRow } from '$lib/types.js';
+    import type {
+        MarkProps,
+        BaseMarkStyleProps,
+        ChannelAccessor,
+        DataRow,
+        Curve
+    } from '$lib/types.js';
+    import type { CurveFactory } from 'd3-shape';
     export type AreaYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             x?: ChannelAccessor;
@@ -8,6 +15,8 @@
             y2?: ChannelAccessor;
             z?: ChannelAccessor;
             sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+            curve: Curve | CurveFactory;
+            tension: number;
         };
 </script>
 
