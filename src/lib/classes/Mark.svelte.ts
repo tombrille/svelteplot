@@ -13,7 +13,10 @@ export class Mark<T extends MarkProps> {
     readonly scales = $derived(
         new Set(
             Array.from(this.channels.values())
-                .filter((channel) => this.props[channel] !== null && !(typeof this.props[channel] === 'number'))
+                .filter(
+                    (channel) =>
+                        this.props[channel] !== null && !(typeof this.props[channel] === 'number')
+                )
                 .map((channel) => CHANNEL_SCALE[channel])
         )
     );

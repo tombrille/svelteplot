@@ -303,3 +303,25 @@ export type ColorScheme =
     | 'set2'
     | 'set3'
     | 'tableau10';
+
+export type Curve =
+    | 'basis'
+    | 'basis-closed'
+    | 'basis-open'
+    | 'bundle'
+    | 'bump-x'
+    | 'bump-y'
+    | 'cardinal'
+    | 'cardinal-closed'
+    | 'cardinal-open'
+    | 'catmull-rom'
+    | 'catmull-rom-closed'
+    | 'catmull-rom-open'
+    | 'linear'
+    | 'linear-closed'
+    | 'monotone-x'
+    | 'monotone-y'
+    | 'natural'
+    | 'step'
+    | 'step-after'
+    | 'step-before';

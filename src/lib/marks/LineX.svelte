@@ -1,8 +1,26 @@
+<script context="module" lang="ts">
+    import type { CurveFactory } from 'd3-shape';
+    import type {
+        MarkProps,
+        BaseMarkStyleProps,
+        ChannelAccessor,
+        Curve,
+        RawValue
+    } from '$lib/types.js';
+    export type LineXMarkProps = MarkProps &
+        BaseMarkStyleProps & {
+            data: RawValue[];
+            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
+            // static
+            curve?: Curve | CurveFactory;
+            tension?: number;
+        };
+</script>
+
 <script lang="ts">
-    import type { RawValue } from '$lib/types.js';
     import Line from './Line.svelte';
 
-    let { data, ...rest } = $props<{ data: RawValue[] }>();
+    let { data, ...rest } = $props<LineXMarkProps>();
 </script>
 
 <Line

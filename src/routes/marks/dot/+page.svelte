@@ -102,6 +102,6 @@
     <p>Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:</p>
 
     <Plot>
-        <DotY data={cars.map((d) => d['economy (mpg)'])}  />
+        <DotY data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
 </div>
