@@ -50,7 +50,13 @@
     You can pass <b>title</b>, <b>subtitle</b>, and <b>caption</b> directly as Plot properties:
 </p>
 
-<Plot maxWidth="700px" title="Apple stocks" subtitle="Daily stocks" caption="Source: Lorem Ipsum" testid="with-title">
+<Plot
+    maxWidth="700px"
+    title="Apple stocks"
+    subtitle="Daily stocks"
+    caption="Source: Lorem Ipsum"
+    testid="with-title"
+>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 

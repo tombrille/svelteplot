@@ -37,3 +37,15 @@ test('marks/line', async ({ page }) => {
     await expect(page.getByTestId('linex')).toHaveScreenshot();
     await expect(page.getByTestId('liney')).toHaveScreenshot();
 });
+
+test('marks/frame', async ({ page }) => {
+    await page.goto('/marks/frame');
+    await expect(page.getByTestId('frame-demo')).toHaveScreenshot();
+});
+
+test('marks/grid', async ({ page }) => {
+    await page.goto('/marks/grid');
+    await expect(page.getByTestId('grid')).toHaveScreenshot();
+    await expect(page.getByTestId('custom')).toHaveScreenshot();
+    await expect(page.getByTestId('tickspacing')).toHaveScreenshot();
+});

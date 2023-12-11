@@ -31,7 +31,7 @@
     > mark to your plot:
 </p>
 
-<Plot grid>
+<Plot grid testid="frame-demo">
     <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
