@@ -40,13 +40,13 @@
         side of the plot while the second (x = 100) corresponds to the right side.
     </p>
 
-    <Plot x={{ domain: [0, 100], grid: true }} />
+    <Plot x={{ domain: [0, 100], grid: true }} testid="linear" />
 
     <Code code={`<Plot x={{ domain: [0,100], grid: true }} />`} />
 
     <p>Scales can be reversed using the <b>reverse</b> option:</p>
 
-    <Plot x={{ domain: [0, 100], grid: true, reverse: true }} />
+    <Plot x={{ domain: [0, 100], grid: true, reverse: true }} testid="reverse" />
 
     <Code code={`<Plot x={{ domain: [0,100], grid: true, reverse: true }} />`} />
 
@@ -55,7 +55,10 @@
         based on the Gregorian calendar.
     </p>
 
-    <Plot x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true }} />
+    <Plot
+        x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true }}
+        testid="time"
+    />
 
     <Code
         code={`<Plot x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true }} />`}
@@ -69,16 +72,37 @@
         side of the plot while the second (x = 100) corresponds to the right side.
     </p>
 
-    <Plot x={{ domain: [0, 100], log: true, grid: true }} />
+    <div class="log-scales" data-testid="log-scales">
+        <Plot marginTop={0} x={{ domain: [1, 1e3], log: true, grid: true }} />
+        <Plot marginTop={0} x={{ domain: [1, 1e5], log: true, grid: true }} />
+        <Plot marginTop={0} x={{ domain: [1, 1e7], log: true, grid: true }} />
+    </div>
 
-    <Code code={`<Plot x={{ domain: [0,100], log: true, grid: true }} />`} />
+    <Code
+        code={`<Plot x={{ domain: [1, 1e3 ], log: true, grid: true }}  />
+<Plot x={{ domain: [1, 1e5 ], log: true, grid: true }}  />
+<Plot x={{ domain: [1, 1e7 ], log: true, grid: true }}  />`}
+    />
+
+    <p>By default SveltePlot will create axis marks automatically:</p>
+
+    <Plot grid y={{ log: true }} onmousemove={onMouseMove}>
+        <Line data={aapl} x="Date" y="Close" />
+        {#if nearestDataPoint}
+            <Dot fill="black" r={4} data={[nearestDataPoint]} x="Date" y="Close" />
+        {/if}
+    </Plot>
+
+    <p>but you can turn them off by passing <code>axis: false</code></p>
+
+    <Plot grid y={{ log: true, axis: false }} marginLeft={0} testid="axis-off">
+        <Line data={aapl} x="Date" y="Close" />
+        {#if nearestDataPoint}
+            <Dot fill="black" r={4} data={[nearestDataPoint]} x="Date" y="Close" />
+        {/if}
+    </Plot>
 </div>
 
-<p>By default SveltePlot will create axis marks automatically:</p>
-
-<Plot grid y={{ log: true }} onmousemove={onMouseMove}>
-    <Line data={aapl} x="Date" y="Close" />
-    {#if nearestDataPoint}
-        <Dot fill="black" r={4} data={[nearestDataPoint]} x="Date" y="Close" />
-    {/if}
-</Plot>
+<style>
+    .log-scales :global(figure) { margin: 0}
+</style>

@@ -84,8 +84,6 @@
         if (onmousemove) onmousemove({ ...evt, plot });
     }
 
-    $inspect(plot.x.domain);
-
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 
@@ -97,10 +95,10 @@
         onmousemove={onmousemove ? onMouseMove : null}
     >
         <!-- automatic grids -->
-        {#if (grid || x?.grid) && plot.hasScaleX}<GridX automatic />{/if}
-        {#if (grid || y?.grid) && plot.hasScaleY}<GridY automatic />{/if}
+        {#if (grid && plot.hasScaleX) || x?.grid}<GridX automatic />{/if}
+        {#if (grid && plot.hasScaleY) || y?.grid}<GridY automatic />{/if}
 
-        {#if !plot.hasAxisXMark && plot.hasScaleX}
+        {#if !plot.hasAxisXMark && (plot.hasScaleX || x?.grid)}
             <!-- automatic x axis -->
             {#if plot.options.x.axis === 'bottom' || plot.options.x.axis === 'both'}
                 <AxisX anchor="bottom" automatic />
@@ -109,7 +107,7 @@
                 <AxisX anchor="top" automatic />
             {/if}
         {/if}
-        {#if !plot.hasAxisYMark && plot.hasScaleY}
+        {#if !plot.hasAxisYMark && (plot.hasScaleY || y?.grid)}
             <!-- automatic y axis -->
             {#if plot.options.y.axis === 'left' || plot.options.y.axis === 'both'}
                 <AxisY anchor="left" automatic />

@@ -5,11 +5,20 @@ test('index page has expected h1', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Welcome to SveltePlot' })).toBeVisible();
 });
 
-test('features/plot page shows a valid plot', async ({ page }) => {
+test('features/plot', async ({ page }) => {
     await page.goto('/features/plot');
     await expect(page.getByTestId('first')).toHaveScreenshot();
     await expect(page.getByTestId('ggplot')).toHaveScreenshot();
     await expect(page.getByTestId('with-title')).toHaveScreenshot();
+});
+
+test('features/scales', async ({ page }) => {
+    await page.goto('/features/scales');
+    await expect(page.getByTestId('linear')).toHaveScreenshot();
+    await expect(page.getByTestId('reverse')).toHaveScreenshot();
+    await expect(page.getByTestId('time')).toHaveScreenshot();
+    await expect(page.getByTestId('log-scales')).toHaveScreenshot();
+    await expect(page.getByTestId('axis-off')).toHaveScreenshot();
 });
 
 test('marks/area', async ({ page }) => {
@@ -48,4 +57,6 @@ test('marks/grid', async ({ page }) => {
     await expect(page.getByTestId('grid')).toHaveScreenshot();
     await expect(page.getByTestId('custom')).toHaveScreenshot();
     await expect(page.getByTestId('tickspacing')).toHaveScreenshot();
+    await expect(page.getByTestId('grid-x')).toHaveScreenshot();
+    await expect(page.getByTestId('grid-y')).toHaveScreenshot();
 });

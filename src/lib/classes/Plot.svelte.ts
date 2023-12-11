@@ -9,10 +9,9 @@ import type {
     AxisXAnchor,
     AxisYAnchor,
     ColorScheme
-} from '../types';
-import { Scale } from './Scale.svelte';
-import type { Mark } from './Mark.svelte';
-import { get } from 'underscore';
+} from '../types.js';
+import { Scale } from './Scale.svelte.js';
+import type { Mark } from './Mark.svelte.js';
 
 export const DEFAULT_PLOT_OPTIONS: {
     title: string;

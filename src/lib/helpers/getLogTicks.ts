@@ -7,7 +7,7 @@ export function getLogTicks(domain: [number, number], count = 6) {
     if (reversed) domain = domain.slice(0).reverse() as [number, number];
     if (domain[0] < 0 || domain[1] < 0) return [];
     if (domain[0] === 0) return ticksArray(domain[0], domain[1], count - 2);
-    let mult = Math.pow(10, Math.floor(Math.log10(Math.abs(domain[1] - domain[0]))) - 1);
+    let mult = 1; //Math.pow(10, Math.floor(Math.log10(Math.abs(domain[1] - domain[0]))) - 1);
     count += 2;
     let candidates = getTickCandidates(domain, mult);
     if (candidates[0].num > count) {
@@ -41,12 +41,12 @@ function getTickCandidates(domain: [number, number], mult = 1) {
     return logSeries.map((factors) => {
         let i = Math.pow(10, Math.floor(Math.log10(domain[0])));
         let f = 0;
-        const r = [i];
-        while (i < domain[1] && r.length < 50) {
+        const ticks = [i];
+        while (i < domain[1] && ticks.length < 50) {
             i *= factors[f] * mult;
-            r.push(i);
+            ticks.push(i);
             f = (f + 1) % factors.length;
         }
-        return { ticks: r, num: r.length };
+        return { ticks, num: ticks.length };
     });
 }

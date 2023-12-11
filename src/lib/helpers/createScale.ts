@@ -10,6 +10,8 @@ import {
 } from './colors.js';
 import { isColorOrNull } from './typeChecks.js';
 import type { ColorScheme, RawValue } from '$lib/types.js';
+import callWithProps from './callWithProps.js';
+import { count, nice } from 'd3-array';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     band: scaleBand,
@@ -23,9 +25,10 @@ const Scales: Record<string, (domain: number[], range: [number, number]) => (val
 };
 
 export function createScale(type: keyof typeof Scales, domain, range, options = {}) {
-    const scale = Scales[type](domain, range);
+    const scale = Scales[type]();
     // allow setting arbiraty scale options
-    for (const [key, val] of Object.entries(options)) {
+    // callWithProps(scale, { domain,})
+    for (const [key, val] of Object.entries({ domain, range, ...options })) {
         if (typeof scale[key] === 'function') scale[key](val);
         else console.warn('unknown scale setter ' + key);
     }
@@ -34,6 +37,14 @@ export function createScale(type: keyof typeof Scales, domain, range, options = 
         scale.ticks = (count: number) => getLogTicks(domain, count);
         // console.log({domain})
         // console.log(getLogTicks(domain, 5))
+        console.log(
+            'log',
+            domain,
+            range,
+            options,
+            scaleLog().domain(domain).range(range).base(10)(1000),
+            scale(1000)
+        );
     }
     return scale;
 }

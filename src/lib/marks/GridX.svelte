@@ -20,7 +20,10 @@
 
     let { ticks = [], automatic = false, ...channels } = $props<GridXMarkProps & GridOptions>();
 
-    let autoTickCount = $derived(plot.plotWidth / (plot.options.x?.tickSpacing || 80));
+    let autoTickCount = $derived(
+        Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80)))
+    );
+    $inspect(autoTickCount);
 
     let autoTicks = $derived(
         ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))

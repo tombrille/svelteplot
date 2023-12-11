@@ -23,7 +23,8 @@
     <Code
         code={`<Plot grid>
     <Line data={aapl} x="Date" y="Close" />
-</Plot>`} />
+</Plot>`}
+    />
 
     <p class="block">
         You can turn the grids on individually using by adding <code>grid: true</code> to the x and y
@@ -32,16 +33,17 @@
 
     <div class="columns">
         <div class="column is-half">
-            <Plot frame height={300} x={{ grid: true }} />
+            <Plot frame height={300} x={{ grid: true }} testid="grid-x" />
         </div>
         <div class="column is-half">
-            <Plot frame height={300} y={{ grid: true }} />
+            <Plot frame height={300} y={{ grid: true }} testid="grid-y" />
         </div>
     </div>
 
     <Code
         code={`<Plot height={300} x={{ grid: true }} />
-<Plot height={300} y={{ grid: true }} />`} />
+<Plot height={300} y={{ grid: true }} />`}
+    />
 
     <p class="block">
         Or you can add the <b>GridX</b> and <b>GridY</b> marks explicitely for more options, such as
@@ -58,7 +60,8 @@
         code={`<Plot x={{domain:[0,5]}} y={{domain:[0,5]}}>
     <GridX stroke="lime" />
     <GridY stroke="magenta" ticks={[0,1.5,2,2.5,4,5]} />
-</Plot>`} />
+</Plot>`}
+    />
 
     <p>The automatic ticks can be customized using the <b>tickSpacing</b> option:</p>
 
