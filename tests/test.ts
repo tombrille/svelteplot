@@ -28,3 +28,12 @@ test('marks/dot', async ({ page }) => {
     await expect(page.getByTestId('dotx')).toHaveScreenshot();
     await expect(page.getByTestId('doty')).toHaveScreenshot();
 });
+
+test('marks/line', async ({ page }) => {
+    await page.goto('/marks/line');
+    await expect(page.getByTestId('aapl')).toHaveScreenshot();
+    await expect(page.getByTestId('bls')).toHaveScreenshot();
+    await expect(page.getByTestId('curvedemo')).toHaveScreenshot();
+    await expect(page.getByTestId('linex')).toHaveScreenshot();
+    await expect(page.getByTestId('liney')).toHaveScreenshot();
+});

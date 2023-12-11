@@ -23,7 +23,7 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
 
     <p>Lines are cool</p>
 
-    <Plot>
+    <Plot testid="aapl">
         <Line data={aapl.slice(cutoff1, cutoff2)} x="Date" y="Adj Close" />
     </Plot>
 
@@ -37,7 +37,7 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
         Use can use the <b>LineY</b> mark to quickly plot an array of numbers as line:
     </p>
 
-    <Plot grid height="200">
+    <Plot testid="liney" grid height="200">
         <LineY data={range(100).map((v) => Math.cos(v / 5))} />
     </Plot>
 
@@ -52,7 +52,7 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
         values will be used as x values instead:
     </p>
 
-    <Plot grid height="400" maxWidth="300px">
+    <Plot grid height="400" maxWidth="300px" testid="linex">
         <Frame stroke="lightgrey" />
         <RuleX data={[0]} />
         <LineX
@@ -77,7 +77,7 @@ cutoff2: <input type="range" bind:value={cutoff2} min={cutoff1} max={aapl.length
     <input type="range" bind:value={wiggle} min={0} max={1} step={0.01} />
     {wiggle}
 
-    <Plot y={{ grid: true, label: '↑ Unemployment (%)' }} x={{ label: '' }}>
+    <Plot testid="bls" y={{ grid: true, label: '↑ Unemployment (%)' }} x={{ label: '' }}>
         <Line
             data={bls}
             x="date"

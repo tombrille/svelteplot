@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<Plot grid>
+<Plot grid testid="curvedemo">
     <LineY data={numbers} {curve} {tension} />
     <!-- TODO: use DotY here -->
     <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} y="value" x="index" />
