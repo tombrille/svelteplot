@@ -38,10 +38,10 @@ export class Scale {
     );
 
     readonly activeMarks: Mark[] = $derived(
-        this.marks.filter(
-            (mark) =>
-                mark.channels.has(this.name) &&
-                this.possibleChannels.find((prop) => mark.props[prop])
+        this.marks.filter((mark) =>
+            this.possibleChannels.find(
+                (channel) => mark.channels.has(channel) && mark.props[channel] !== undefined
+            )
         )
     );
     readonly manualActiveMarks: Mark[] = $derived(
@@ -59,7 +59,7 @@ export class Scale {
             this.manualActiveMarks
                 .map((mark) =>
                     this.possibleChannels
-                        .filter((prop) => mark.props[prop])
+                        .filter((prop) => mark.props[prop] !== undefined)
                         .map((prop) => mark.props[prop])
                 )
                 .flat(2)
@@ -113,7 +113,7 @@ export class Scale {
               ? 'time'
               : this.valueType === 'number'
                 ? 'linear'
-                : this.valueType === 'text'
+                : this.valueType === 'text' || this.valueType === 'boolean'
                   ? 'band'
                   : this.valueType === 'color'
                     ? 'identity'

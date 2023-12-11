@@ -98,7 +98,7 @@
 <BaseMark_Area
     type="area"
     {data}
-    channels={['x', 'y', 'color']}
+    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke']}
     {x1}
     {x2}
     {y1}

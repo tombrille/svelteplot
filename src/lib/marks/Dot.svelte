@@ -36,6 +36,11 @@
     function isValid(value: number | Date | string | null): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
+
+    let { r = 3, symbol = 'circle' } = $derived(channels);
+    let channelsWithDefaults = $derived({ ...channels, r, symbol });
+
+    $inspect({ col: plot.color.marks.length });
 </script>
 
 <BaseMark_Dot
@@ -46,21 +51,23 @@
 >
     <g class="dots">
         {#each data as datum, i}
-            {@const cx = resolveChannel('x', datum, channels)}
-            {@const cy = resolveChannel('y', datum, channels)}
-            {@const symbolT = resolveChannel('symbol', datum, channels)}
+            {@const cx = resolveChannel('x', datum, channelsWithDefaults)}
+            {@const cy = resolveChannel('y', datum, channelsWithDefaults)}
+            {@const symbolT = resolveChannel('symbol', datum, channelsWithDefaults)}
             {@const symbolType = isSymbol(symbolT)
                 ? maybeSymbol(symbolT)
                 : maybeSymbol(plot.symbolScale(symbolT))}
             {@const radius =
-                typeof r === 'number' ? r : plot.radiusScale(resolveChannel('r', datum, channels))}
+                typeof r === 'number'
+                    ? r
+                    : plot.radiusScale(resolveChannel('r', datum, channelsWithDefaults))}
             {@const size = radius * radius * Math.PI}
-            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
-            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
+            {@const maybeFillColor = resolveChannel('fill', datum, channelsWithDefaults)}
+            {@const maybeStrokeColor = resolveChannel('stroke', datum, channelsWithDefaults)}
             {#if isValid(cx) && isValid(cy)}
                 <path
                     d={d3Symbol(symbolType, size)()}
-                    style={getBaseStyles(datum, channels)}
+                    style={getBaseStyles(datum, channelsWithDefaults)}
                     style:fill={maybeFillColor ? plot.colorScale(maybeFillColor) : null}
                     style:stroke={maybeStrokeColor
                         ? plot.colorScale(maybeStrokeColor)

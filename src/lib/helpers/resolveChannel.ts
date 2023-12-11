@@ -1,3 +1,4 @@
+import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import type { ChannelName, ChannelAccessor, DataRow, RawValue } from '$lib/types.js';
 import isRawValue from './isRawValue.js';
@@ -9,7 +10,9 @@ export default function (
     datum: DataRow,
     channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
 ): RawValue {
-    const maybeAccessor: ChannelAccessor | ChannelAlias = channel === 'z' ? channels.z || channels.fill || channels.stroke : channels[channel];
+    const scale = CHANNEL_SCALE[channel];
+    const maybeAccessor: ChannelAccessor | ChannelAlias =
+        channel === 'z' ? channels.z || channels.fill || channels.stroke : channels[channel];
     const accessor =
         isDataRecord(maybeAccessor) && maybeAccessor?.channel
             ? channels[maybeAccessor?.channel]
@@ -27,7 +30,6 @@ export default function (
         if (typeof accessor === 'string' && datum[accessor] !== undefined) return datum[accessor];
         // fallback to channel name as accessor
         if (accessor === null && datum[channel] !== undefined) return datum[channel];
-        // interpret accessor as constant
         return isRawValue(accessor) ? accessor : null;
     } else {
         // return single value or accessor
@@ -35,7 +37,7 @@ export default function (
             ? accessor(datum)
             : accessor !== null && isRawValue(accessor)
               ? accessor
-              : !Array.isArray(datum)
+              : !Array.isArray(datum) && (scale === 'x' || scale === 'y')
                 ? datum
                 : null;
     }

@@ -18,11 +18,7 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let {
-        ticks = [],
-        automatic = false,
-        ...channels
-    } = $props<GridXMarkProps & GridOptions>();
+    let { ticks = [], automatic = false, ...channels } = $props<GridXMarkProps & GridOptions>();
 
     let autoTickCount = $derived(plot.plotWidth / (plot.options.x?.tickSpacing || 80));
 
@@ -31,11 +27,16 @@
     );
 
     let { y1, y2 } = $derived(channels);
-
 </script>
 
-
-<BaseMark_GridX type="grid-x" data={ticks.length ? ticks.map(tick => ({x:tick})) : undefined}  channels={['y']} x="x" {...channels} {automatic}>
+<BaseMark_GridX
+    type="grid-x"
+    data={ticks.length ? ticks.map((tick) => ({ x: tick })) : undefined}
+    channels={['y']}
+    x="x"
+    {...channels}
+    {automatic}
+>
     <g class="grid-x">
         {#each autoTicks as tick}
             <g class="x-tick" transform="translate({plot.xScale(tick)},{plot.margins.top})">
@@ -56,4 +57,4 @@
     .x-tick line.grid {
         stroke: #d9d9d9;
     }
-</style> 
+</style>

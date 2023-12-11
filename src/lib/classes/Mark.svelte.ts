@@ -8,11 +8,15 @@ export class Mark<T extends MarkProps> {
 
     channels = $state<Set<ChannelName>>(new Set());
 
-    readonly scales = $derived(
-        new Set(Array.from(this.channels.values()).map((channel) => CHANNEL_SCALE[channel]))
-    );
-
     props = $state<T>();
+
+    readonly scales = $derived(
+        new Set(
+            Array.from(this.channels.values())
+                .filter((channel) => this.props[channel] !== null && !(typeof this.props[channel] === 'number'))
+                .map((channel) => CHANNEL_SCALE[channel])
+        )
+    );
 
     constructor(type: string, channels: ChannelName[], automatic: boolean, props: T) {
         this.id = Symbol();
