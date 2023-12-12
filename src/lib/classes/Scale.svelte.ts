@@ -14,7 +14,7 @@ import { uniq } from 'underscore';
 
 export class Scale {
     readonly name: ScaleName | undefined = undefined;
-    readonly plot: Plot | undefined = undefined;
+    readonly plot: Plot | undefined = $state(undefined);
 
     constructor(name: ScaleName, plot: Plot) {
         this.name = name;
@@ -44,12 +44,14 @@ export class Scale {
             )
         )
     );
+
     readonly manualActiveMarks: Mark[] = $derived(
         this.activeMarks.filter((mark) => !mark.automatic)
     );
     readonly autoTitle = $derived(
         this.manualActiveMarks.length === 1 &&
-            typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string'
+            typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string' &&
+            !this.manualActiveMarks[0]?.data?.__wrapped__
             ? this.manualActiveMarks[0].props?.[this.name as 'x' | 'y']
             : null
     );

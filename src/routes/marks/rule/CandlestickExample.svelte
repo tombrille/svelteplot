@@ -11,7 +11,7 @@
     type AAPL = (typeof aapl)[0];
 </script>
 
-<Plot grid>
+<Plot grid testid="candlestick">
     <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
     <RuleX
         data={aapl.slice(750, 800)}

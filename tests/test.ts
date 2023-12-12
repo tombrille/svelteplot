@@ -60,3 +60,11 @@ test('marks/grid', async ({ page }) => {
     await expect(page.getByTestId('grid-x')).toHaveScreenshot();
     await expect(page.getByTestId('grid-y')).toHaveScreenshot();
 });
+
+test('marks/rule', async ({ page }) => {
+    await page.goto('/marks/rule');
+    await expect(page.getByTestId('rule-annotations')).toHaveScreenshot();
+    await expect(page.getByTestId('candlestick')).toHaveScreenshot();
+    await expect(page.getByTestId('barcode')).toHaveScreenshot();
+    await expect(page.getByTestId('sine')).toHaveScreenshot();
+});

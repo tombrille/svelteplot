@@ -15,7 +15,7 @@ export class Mark<T extends MarkProps> {
             Array.from(this.channels.values())
                 .filter(
                     (channel) =>
-                        this.props[channel] !== null && !(typeof this.props[channel] === 'number')
+                        this.props[channel] != null && !(typeof this.props[channel] === 'number')
                 )
                 .map((channel) => CHANNEL_SCALE[channel])
         )

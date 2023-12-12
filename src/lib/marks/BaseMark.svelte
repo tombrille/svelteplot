@@ -18,7 +18,7 @@
         ...rest
     } = $props<T & { children?: Snippet }>();
 
-    const mark = new Mark(type, channels, automatic, { data, ...rest });
+    const mark = new Mark(type, channels, !!automatic, { data, ...rest });
     // console.log(type, { data, rest });
     plot.addMark(mark);
 

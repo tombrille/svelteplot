@@ -18,14 +18,10 @@
 </script>
 
 <script lang="ts">
+    import wrapValueArray from '$lib/helpers/wrapValueArray.js';
     import Line from './Line.svelte';
 
     let { data, ...rest } = $props<LineXMarkProps>();
 </script>
 
-<Line
-    data={data.map((value, index) => ({ value, index, ___orig___: value }))}
-    x="value"
-    y="index"
-    {...rest}
-/>
+<Line data={wrapValueArray(data)} x="value" y="index" {...rest} />

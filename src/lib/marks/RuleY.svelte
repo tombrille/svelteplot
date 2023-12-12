@@ -17,7 +17,12 @@
     let dataWrapped = $derived(y ? data : data.map((d) => ({ y: d, ___orig___: d })));
 </script>
 
-<BaseMark_RuleY type="rule-y" data={dataWrapped} channels={['y', 'x']} {y} {x1} {x2}>
+<BaseMark_RuleY
+    type="rule-y"
+    data={dataWrapped}
+    channels={['y', 'x1', 'x2']}
+    {...{ y: 'y', ...channels }}
+>
     <g class="rule-y">
         {#each data as datum}
             <line

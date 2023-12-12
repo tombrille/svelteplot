@@ -8,7 +8,7 @@
     const ticks = range(0, 3.01, 0.5).map((d) => d * Math.PI);
 </script>
 
-<Plot let:plot>
+<Plot testid="sine">
     <AxisX {ticks} tickFormat={(d) => `${Number(d) / Math.PI}π`} />
     <GridX {ticks} />
     <GridY ticks={[-1, -0.5, 0, 0.5, 1]} />

@@ -24,7 +24,7 @@ export const DEFAULT_PLOT_OPTIONS: {
     inset?: number;
     radius: { range?: [number, number] };
     symbol: { range?: (string | SymbolType)[]; legend?: boolean } | null;
-    color: { scheme?: ColorScheme; range: string[]; domain: RawValue[]; legend?: boolean } | null;
+    color: { scheme?: ColorScheme; range?: string[]; domain?: RawValue[]; legend?: boolean } | null;
     x: PositionScaleOptions & {
         axis?: AxisXAnchor;
     };

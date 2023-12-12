@@ -104,5 +104,7 @@
 </div>
 
 <style>
-    .log-scales :global(figure) { margin: 0}
+    .log-scales :global(figure) {
+        margin: 0;
+    }
 </style>
