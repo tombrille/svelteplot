@@ -6,7 +6,7 @@
     import { setContext } from 'svelte';
     import { group } from 'd3-array';
 
-    const { data } = $props<Datasets>();
+    const { data, children } = $props<Datasets>();
 
     let nav = $state(new Nav());
 
@@ -41,7 +41,7 @@
             </aside>
         </div>
         <div class="column is-10">
-            <slot />
+            {@render children()}
         </div>
     </div>
 </div>

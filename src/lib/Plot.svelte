@@ -62,8 +62,6 @@
     $effect(() => {
         plot.width = width;
         plot._height = height;
-        console.log('update opts');
-        const rad = plot.radiusScale;
         plot.options = mergeDeep({}, DEFAULT_PLOT_OPTIONS, {
             marginBottom,
             marginLeft,
@@ -79,7 +77,6 @@
             subtitle,
             caption
         }) as typeof DEFAULT_PLOT_OPTIONS;
-        console.log(plot.radiusScale.range(), plot.radiusScale === rad);
     });
 
     function onMouseMove(evt: MouseEventHandler<SVGElement>) {

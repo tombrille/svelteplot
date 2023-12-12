@@ -81,7 +81,6 @@
                           : 'currentColor'}
                     transform="translate({[plot.xScale(cx), plot.yScale(cy)]})"
                 />
-                <SymbolPath {datum} {plot} channels={channelsWithDefaults} />
             {/if}
         {/each}
     </g>

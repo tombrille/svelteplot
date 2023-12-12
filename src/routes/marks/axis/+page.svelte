@@ -50,11 +50,13 @@
         with the axes marks.
     </p>
 
-    <Plot frame x={{ domain: [0, 10] }} y={{ domain: [0, 5] }} marginBottom={40} marginRight={30}>
-        <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
+    <Plot frame >
+         <Line data={aapl} x="Date" y="Close" />
+         
+        <!-- <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
         <AxisX stroke="cornflowerblue" fill="cornflowerblue" />
         <AxisY fill="green" anchor="right" tickSize={-5} tickPadding={10} />
-        <AxisY stroke="magenta" fill="#dd0000" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+        <AxisY stroke="magenta" fill="#dd0000" ticks={[0, 1.5, 2, 2.5, 4, 5]} /> -->
     </Plot>
 
     <Code
@@ -72,7 +74,7 @@
 
     <p>The automatic ticks can be customized using the <b>tickSpacing</b> option:</p>
 
-    <Plot grid x={{ tickSpacing: 40 }} y={{ tickSpacing: 10 }}>
+    <Plot grid  y={{ tickSpacing: 20 }}>
         <Line data={aapl} x="Date" y="Close" />
     </Plot>
 
@@ -82,9 +84,15 @@
 </Plot>`}
     />
 
-    <p>Custom axis labels</p>
+    <p>You can pass custom  axis labels using the <b>x.label</b> and <b>y.label</b> options:</p>
 
-    <Plot grid x={{ label: 'Foo' }} y={{ label: 'Bar' }}>
+    <Plot testid="custom-labels" grid x={{ label: 'Foo →' }} y={{ label: '↑ Bar' }}>
         <Line data={aapl} x="Date" y="Close" />
     </Plot>
+
+    <Code
+        code={`<Plot grid x={{ label: 'Foo →' }} y={{ label: '↑ Bar' }}>
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>`}
+    />
 </div>
