@@ -4,7 +4,6 @@
     import Nav from './nav.svelte';
     import type { Datasets } from '$lib/types.js';
     import { setContext } from 'svelte';
-    import { group } from 'd3-array';
 
     const { data, children } = $props<Datasets>();
 

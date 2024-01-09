@@ -47,6 +47,12 @@ export type Datasets = {
         date: Date;
         unemployment: number;
     }[];
+    stageage: {
+        state: string;
+        age: string;
+        population: number;
+        pop_share: number;
+    }[]
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
@@ -61,6 +67,22 @@ export type PositionScaleOptions = Partial<{
     log?: boolean;
     reverse?: boolean;
 }>;
+
+export type ScaleType = 'linear' | 'pow' | 'sqrt' | 'log' | 'time';
+
+export type PositionScaleType = ScaleType | ('point' | 'band');
+
+export type ColorScaleType =
+    | ScaleType
+    | (
+          | 'categorical'
+          | 'sequential'
+          | 'cyclical'
+          | 'threshold'
+          | 'quantile'
+          | 'quantize'
+          | 'diverging'
+      );
 
 /*
  * these are the props that can be set by the user on the <Plot> element directly
@@ -89,9 +111,11 @@ export type PlotProps = {
     // options for scales
     radius?: { range?: [number, number] };
     x?: PositionScaleOptions & {
+        type?: PositionScaleType;
         axis?: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
     };
     y?: PositionScaleOptions & {
+        type?: PositionScaleType;
         axis?: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
     };
     symbol?: {
@@ -99,6 +123,7 @@ export type PlotProps = {
         legend?: boolean;
     } | null;
     color?: {
+        type?: ColorScaleType;
         range?: string[];
         domain: RawValue[];
         scheme?: ColorScheme;
@@ -252,6 +277,11 @@ export type RuleYMarkProps = MarkProps &
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
     };
+
+export type TickXMarkProps = MarkProps & {
+    x?: ChannelAccessor;
+    y?: ChannelAccessor;
+};
 
 export type ColorScheme =
     | 'brbg'

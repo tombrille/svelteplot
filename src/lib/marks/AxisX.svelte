@@ -47,7 +47,7 @@
                             .format(tickFormat as string)
                             .split('\n')
                   : autoTimeFormat(plot.x, plot.plotWidth)
-              : (d: RawValue) => String(d)
+              : (d: RawValue) => String(plot.x.scaleOptions.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     let tickTexts = $derived(

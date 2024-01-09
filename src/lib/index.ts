@@ -1,10 +1,10 @@
 // Reexport your entry components here
-export { default as AxisX } from './marks/AxisX.svelte';
-export { default as AxisY } from './marks/AxisY.svelte';
-export { default as ColorLegend } from './marks/ColorLegend.svelte';
 export { default as Area } from './marks/Area.svelte';
 export { default as AreaX } from './marks/AreaX.svelte';
 export { default as AreaY } from './marks/AreaY.svelte';
+export { default as AxisX } from './marks/AxisX.svelte';
+export { default as AxisY } from './marks/AxisY.svelte';
+export { default as ColorLegend } from './marks/ColorLegend.svelte';
 export { default as Dot } from './marks/Dot.svelte';
 export { default as DotX } from './marks/DotX.svelte';
 export { default as DotY } from './marks/DotY.svelte';
@@ -18,3 +18,4 @@ export { default as Plot } from './Plot.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
+export { default as TickX } from './marks/TickX.svelte';

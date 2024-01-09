@@ -24,7 +24,8 @@ export default class Nav {
                 { title: 'Frame', url: '/marks/frame' },
                 { title: 'Grid', url: '/marks/grid' },
                 { title: 'Line', url: '/marks/line' },
-                { title: 'Rule', url: '/marks/rule' }
+                { title: 'Rule', url: '/marks/rule' },
+                { title: 'Tick', url: '/marks/tick' }
             ]
         });
     }

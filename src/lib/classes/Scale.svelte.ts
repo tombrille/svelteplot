@@ -1,4 +1,10 @@
-import type { ChannelName, ScaleName } from '$lib/types.js';
+import type {
+    ChannelName,
+    ColorScaleType,
+    PositionScaleType,
+    RawValue,
+    ScaleName
+} from '$lib/types.js';
 import type { Plot } from './Plot.svelte.js';
 import resolveChannel from '$lib/helpers/resolveChannel.js';
 import { extent } from 'd3-array';
@@ -25,9 +31,13 @@ export class Scale {
     // all marks that have this channel
     readonly marks: Mark[] = $derived(this.plot?.marks ?? []);
 
+    readonly scaleOptions = $derived(
+        this.plot && this.name !== undefined ? this.plot.options[this.name] || {} : {}
+    );
+
     readonly forceDomain: [number, number] | [Date, Date] | null = $derived(
         this.plot && (this.name === 'x' || this.name === 'y')
-            ? this.plot.options[this.name]?.domain || null
+            ? this.scaleOptions?.domain || null
             : null
     );
 
@@ -82,48 +92,61 @@ export class Scale {
         ...(this.forceDomain || [])
     ]);
 
-    readonly valueType = $derived(
-        this.dataValues.every((v) => v == null)
-            ? 'null'
-            : this.dataValues.every(isColorOrNull)
-              ? 'color'
-              : this.dataValues.every(isBooleanOrNull)
-                ? 'boolean'
-                : this.dataValues.every(isStringOrNull)
-                  ? 'text'
-                  : this.dataValues.every(isNumberOrNull)
-                    ? 'number'
-                    : this.dataValues.every(isDateOrNull)
-                      ? 'date'
-                      : 'mixed'
+    readonly isPosition = $derived(this.name === 'x' || this.name === 'y');
+    readonly isColor = $derived(this.name === 'color');
+
+    readonly scaleType = $derived(
+        this.scaleOptions.type ||
+            inferScaleType(this.dataValues, { isPosition: this.isPosition, isColor: this.isColor })
     );
+
+    // readonly valueType = $derived(
+    //     this.dataValues.every((v) => v == null)
+    //         ? 'null'
+    //         : this.dataValues.every(isColorOrNull)
+    //           ? 'color'
+    //           : this.dataValues.every(isBooleanOrNull)
+    //             ? 'boolean'
+    //             : this.dataValues.every(isStringOrNull)
+    //               ? 'text'
+    //               : this.dataValues.every(isNumberOrNull)
+    //                 ? 'number'
+    //                 : this.dataValues.every(isDateOrNull)
+    //                   ? 'date'
+    //                   : 'mixed'
+    // );
 
     readonly domain = $derived(
-        !this.dataValues.length
-            ? [0, 1]
-            : this.valueType === 'boolean' ||
-                this.valueType === 'text' ||
-                this.valueType === 'color'
-              ? uniq(this.dataValues)
-              : extent(this.dataValues as ('date' | 'number')[])
-    ) as [number, number] | [Date, Date] | string[];
-
-    readonly scaleType: string = $derived(
-        this.name === 'radius'
-            ? 'sqrt'
-            : this.valueType === 'date'
-              ? 'time'
-              : this.valueType === 'number'
-                ? 'linear'
-                : this.valueType === 'text' || this.valueType === 'boolean'
-                  ? 'band'
-                  : this.valueType === 'color'
-                    ? 'identity'
-                    : 'linear'
+        this.scaleOptions.domain || inferScaleDomain(this.dataValues, this.scaleType)
     );
-
-    // if this.type === 'color' && this.valueType !== 'color' we need to map
-    // the input values to either a quantitative or qualitative color scale
 }
 
 // opacity: typeof === 'number' && between [0,1]
+
+function inferScaleType(
+    dataValues: RawValue[],
+    { isPosition, isColor }: { isPosition: boolean; isColor: boolean }
+): ColorScaleType | PositionScaleType {
+    if (!dataValues.length) return 'linear';
+    if (dataValues.every(isNumberOrNull)) return 'linear';
+    if (dataValues.every(isDateOrNull)) return 'time';
+    if (dataValues.every(isStringOrNull)) return 'band';
+    console.log('inferScaleType', dataValues, { isPosition, isColor });
+    return 'linear';
+}
+
+function inferScaleDomain(dataValues: RawValue[], scaleType: PositionScaleType | ColorScaleType) {
+    if (scaleType === 'point' || scaleType === 'band') {
+        return uniq(dataValues);
+    }
+    if (
+        scaleType === 'linear' ||
+        scaleType === 'pow' ||
+        scaleType === 'log' ||
+        scaleType === 'sqrt' ||
+        scaleType === 'sequential' || 
+        scaleType === 'time'
+    ) {
+        return extent(dataValues as number[]);
+    }
+}

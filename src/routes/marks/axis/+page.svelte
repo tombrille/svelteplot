@@ -50,9 +50,9 @@
         with the axes marks.
     </p>
 
-    <Plot frame >
-         <Line data={aapl} x="Date" y="Close" />
-         
+    <Plot frame>
+        <Line data={aapl} x="Date" y="Close" />
+
         <!-- <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
         <AxisX stroke="cornflowerblue" fill="cornflowerblue" />
         <AxisY fill="green" anchor="right" tickSize={-5} tickPadding={10} />
@@ -74,7 +74,7 @@
 
     <p>The automatic ticks can be customized using the <b>tickSpacing</b> option:</p>
 
-    <Plot grid  y={{ tickSpacing: 20 }}>
+    <Plot grid y={{ tickSpacing: 20 }}>
         <Line data={aapl} x="Date" y="Close" />
     </Plot>
 
@@ -84,7 +84,7 @@
 </Plot>`}
     />
 
-    <p>You can pass custom  axis labels using the <b>x.label</b> and <b>y.label</b> options:</p>
+    <p>You can pass custom axis labels using the <b>x.label</b> and <b>y.label</b> options:</p>
 
     <Plot testid="custom-labels" grid x={{ label: 'Foo →' }} y={{ label: '↑ Bar' }}>
         <Line data={aapl} x="Date" y="Close" />

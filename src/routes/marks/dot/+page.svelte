@@ -104,4 +104,18 @@
     <Plot testid="doty">
         <DotY data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
+
+
+    <p>Dots with point scale</p>
+
+     <Plot grid height={500} testid="cars" y={{ type: 'point'}}>
+        <Dot
+            data={cars}
+            y={manufactor}
+            x="power (hp)"
+            stroke={!fill ? manufactor : null}
+            fill={fill ? manufactor : null}
+            symbol={manufactor}
+        />
+    </Plot>
 </div>

@@ -72,7 +72,7 @@
             <g
                 class="y-tick"
                 transform="translate({plot.margins.left +
-                    (anchor === 'left' ? 0 : plot.plotWidth)},{plot.yScale(tick)})"
+                    (anchor === 'left' ? 0 : plot.plotWidth)},{plot.yScale(tick) + ( plot.yScale.bandwidth ? plot.yScale.bandwidth() * 0.5 : 0)})"
             >
                 <text
                     class:is-left={anchor === 'left'}
