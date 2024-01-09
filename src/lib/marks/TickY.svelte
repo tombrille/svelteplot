@@ -7,29 +7,29 @@
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
 
-    const BaseMark_TickX = BaseMark<BaseMarkProps & TickMarkProps>;
+    const BaseMark_TickY = BaseMark<BaseMarkProps & TickMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
     let { data = [], ...channels } = $props<TickMarkProps>();
 </script>
 
-<BaseMark_TickX type="tick-x" {data} channels={['x', 'y', 'stroke']} {...channels}>
-    <g class="tick-x">
+<BaseMark_TickY type="tick-y" {data} channels={['x', 'y', 'stroke']} {...channels}>
+    <g class="tick-y">
         {#each data as datum}
             <line
-                transform="translate({plot.xScale(resolveChannel('x', datum, channels))}, {0})"
+                transform="translate(0, {plot.yScale(resolveChannel('y', datum, channels))})"
                 style:stroke={channels.stroke ? plot.colorScale(resolveChannel('stroke', datum, channels)) : null}
                 style={getBaseStyles(datum, channels)}
-                y1={plot.yScale(resolveChannel('y', datum, channels))}
-                y2={plot.yScale(resolveChannel('y', datum, channels)) + plot.yScale.bandwidth()}
+                x1={plot.xScale(resolveChannel('x', datum, channels))}
+                x2={plot.xScale(resolveChannel('x', datum, channels)) + plot.xScale.bandwidth()}
             />
         {/each}
     </g>
-</BaseMark_TickX>
+</BaseMark_TickY>
 
 <style>
-    .tick-x line {
+    .tick-y line {
         stroke: currentColor;
     }
 </style>

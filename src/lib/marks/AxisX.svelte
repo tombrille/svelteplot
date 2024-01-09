@@ -89,7 +89,7 @@
             {@const prevTextLines = t && tickTexts[t - 1]}
             <g
                 class="x-tick"
-                transform="translate({plot.xScale(tick)},{anchor === 'bottom'
+                transform="translate({plot.xScale(tick) + (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{anchor === 'bottom'
                     ? plot.margins.top + plot.plotHeight
                     : plot.margins.top})"
             >

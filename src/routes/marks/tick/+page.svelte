@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { Plot, RuleX, TickX } from '$lib/index.js';
+    import { Plot, RuleX, TickX , RuleY, TickY} from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import { uniq } from 'underscore';
 
-    const { stateage } = getContext<Datasets>('data');
+    const { stateage, penguins } = getContext<Datasets>('data');
 
     type StateAge = (typeof stateage)[0];
 
@@ -23,6 +23,16 @@
     >
         <RuleX data={[0]} />
         <TickX data={stateage} y="age" x="pop_share" />
+    </Plot>
+
+    <b>TickY</b>
+
+     <Plot
+        x={{ label: '', padding: 0.3 }}
+        y={{ grid: true, label: '↑ Population (%)', percent: true }}
+    >
+        <RuleY data={[0]} />
+        <TickY data={penguins} stroke="sex" strokeWidth="2" x={d => `${d.species} / ${d.island}`} y="culmen_depth_mm" />
     </Plot>
 
     <p>You can set the padding:</p>

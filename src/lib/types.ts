@@ -290,6 +290,7 @@ export type RuleYMarkProps = MarkProps &
 export type TickMarkProps = MarkProps & {
     x?: ChannelAccessor;
     y?: ChannelAccessor;
+    stroke?: ChannelAccessor;
 };
 
 export type ColorScheme =
