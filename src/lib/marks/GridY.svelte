@@ -26,7 +26,11 @@
 >
     <g class="grid-y">
         {#each autoTicks as tick}
-            <g class="y-tick" transform="translate({plot.margins.left},{plot.yScale(tick) + ( plot.yScale.bandwidth ? plot.yScale.bandwidth() * 0.5 : 0) })">
+            <g
+                class="y-tick"
+                transform="translate({plot.margins.left},{plot.yScale(tick) +
+                    (plot.yScale.bandwidth ? plot.yScale.bandwidth() * 0.5 : 0)})"
+            >
                 <line
                     style={getBaseStyles(tick, styleProps)}
                     class="grid"

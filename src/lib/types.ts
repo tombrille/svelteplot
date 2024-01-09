@@ -52,7 +52,7 @@ export type Datasets = {
         age: string;
         population: number;
         pop_share: number;
-    }[]
+    }[];
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
@@ -68,7 +68,7 @@ export type PositionScaleOptions = Partial<{
     reverse?: boolean;
 }>;
 
-export type ScaleType = 'linear' | 'pow' | 'sqrt' | 'log' | 'time';
+export type ScaleType = 'linear' | 'pow' | 'sqrt' | 'log' | 'symlog' | 'time' | 'point' | 'band';
 
 export type PositionScaleType = ScaleType | ('point' | 'band');
 
@@ -77,11 +77,20 @@ export type ColorScaleType =
     | (
           | 'categorical'
           | 'sequential'
+          | 'sequentialSymlog'
+          | 'sequentialLog'
+          | 'sequentialPow'
+          | 'sequentialSqrt'
+          | 'sequentialQuantile'
           | 'cyclical'
           | 'threshold'
           | 'quantile'
           | 'quantize'
           | 'diverging'
+          | 'divergingLog'
+          | 'divergingPow'
+          | 'divergingSqrt'
+          | 'divergingSymlog'
       );
 
 /*
@@ -278,7 +287,7 @@ export type RuleYMarkProps = MarkProps &
         x2?: ChannelAccessor;
     };
 
-export type TickXMarkProps = MarkProps & {
+export type TickMarkProps = MarkProps & {
     x?: ChannelAccessor;
     y?: ChannelAccessor;
 };

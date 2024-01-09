@@ -1,4 +1,14 @@
-import { scaleBand, scaleLinear, scaleTime, scaleSqrt, scaleLog, scaleOrdinal, scalePoint } from 'd3-scale';
+import {
+    scaleBand,
+    scaleLinear,
+    scaleTime,
+    scaleSqrt,
+    scaleLog,
+    scaleOrdinal,
+    scalePoint,
+    scaleSymlog,
+    scalePow
+} from 'd3-scale';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
 import { getLogTicks } from './getLogTicks.js';
 import {
@@ -19,7 +29,9 @@ const Scales: Record<string, (domain: number[], range: [number, number]) => (val
     linear: scaleLinear,
     time: scaleTime,
     sqrt: scaleSqrt,
+    pow: scalePow,
     log: scaleLog,
+    symlog: scaleSymlog,
     ordinal: scaleOrdinal,
     sequential: scaleSequential,
     diverging: scaleDiverging
@@ -29,7 +41,12 @@ export function createScale(type: keyof typeof Scales, domain, range, options = 
     const scale = Scales[type]();
 
     // scale defaults
-    if (type === 'band' && options.padding === undefined && options.paddingInner === undefined && options.paddingOuter === undefined) {
+    if (
+        type === 'band' &&
+        options.padding === undefined &&
+        options.paddingInner === undefined &&
+        options.paddingOuter === undefined
+    ) {
         options.padding = 0.2;
     }
 
@@ -39,22 +56,11 @@ export function createScale(type: keyof typeof Scales, domain, range, options = 
         if (typeof scale[key] === 'function') scale[key](val);
         else console.warn('unknown scale setter ' + key);
     }
-    if (type === 'band'  || type === 'point') {
+    if (type === 'band' || type === 'point') {
         scale.ticks = () => domain;
     }
     if (type === 'log') {
-        // overwrite scaleLog's internal ticks() method
         scale.ticks = (count: number) => getLogTicks(domain, count);
-        // console.log({domain})
-        // console.log(getLogTicks(domain, 5))
-        console.log(
-            'log',
-            domain,
-            range,
-            options,
-            scaleLog().domain(domain).range(range).base(10)(1000),
-            scale(1000)
-        );
     }
     return scale;
 }

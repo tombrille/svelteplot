@@ -144,7 +144,7 @@ function inferScaleDomain(dataValues: RawValue[], scaleType: PositionScaleType |
         scaleType === 'pow' ||
         scaleType === 'log' ||
         scaleType === 'sqrt' ||
-        scaleType === 'sequential' || 
+        scaleType === 'sequential' ||
         scaleType === 'time'
     ) {
         return extent(dataValues as number[]);

@@ -73,15 +73,15 @@
     </p>
 
     <div class="log-scales" data-testid="log-scales">
-        <Plot marginTop={0} x={{ domain: [1, 1e3], log: true, grid: true }} />
-        <Plot marginTop={0} x={{ domain: [1, 1e5], log: true, grid: true }} />
-        <Plot marginTop={0} x={{ domain: [1, 1e7], log: true, grid: true }} />
+        <Plot marginTop={0} x={{ domain: [1, 1e3], type: 'log', grid: true }} />
+        <Plot marginTop={0} x={{ domain: [1, 1e5], type: 'log', grid: true }} />
+        <Plot marginTop={0} x={{ domain: [1, 1e7], type: 'log', grid: true }} />
     </div>
 
     <Code
-        code={`<Plot x={{ domain: [1, 1e3 ], log: true, grid: true }}  />
-<Plot x={{ domain: [1, 1e5 ], log: true, grid: true }}  />
-<Plot x={{ domain: [1, 1e7 ], log: true, grid: true }}  />`}
+        code={`<Plot x={{ domain: [1, 1e3 ], type: 'log', grid: true }}  />
+<Plot x={{ domain: [1, 1e5 ], type: 'log', grid: true }}  />
+<Plot x={{ domain: [1, 1e7 ], type: 'log', grid: true }}  />`}
     />
 
     <p>By default SveltePlot will create axis marks automatically:</p>

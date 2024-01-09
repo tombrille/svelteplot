@@ -8,10 +8,12 @@ import type {
     RawValue,
     AxisXAnchor,
     AxisYAnchor,
-    ColorScheme
+    ColorScheme,
+    ScaleType
 } from '../types.js';
 import { Scale } from './Scale.svelte.js';
 import type { Mark } from './Mark.svelte.js';
+import pick from 'underscore/modules/pick.js';
 
 export const DEFAULT_PLOT_OPTIONS: {
     title: string;
@@ -89,7 +91,13 @@ export class Plot {
     );
 
     readonly height = $derived(
-        this._height === 'auto' ? (this.hasScaleY ? (this.y.scaleType === 'band' || this.y.scaleType === 'point' ? this.y.domain.length * 30 : 400) : 90) : this._height
+        this._height === 'auto'
+            ? this.hasScaleY
+                ? this.y.scaleType === 'band' || this.y.scaleType === 'point'
+                    ? this.y.domain.length * 30
+                    : 400
+                : 90
+            : this._height
     );
 
     readonly inset = $derived(
@@ -125,23 +133,25 @@ export class Plot {
 
     readonly xScale = $derived(
         createScale(
-            this.x.scaleType === 'linear' && this.options.x.log ? 'log' : this.x.scaleType,
+            this.x.scaleType,
             this.options?.x?.domain || this.x.domain,
             this.options?.x?.reverse
                 ? [this.margins.left + this.plotWidth - this.inset, this.margins.left + this.inset]
                 : [this.margins.left + this.inset, this.margins.left + this.plotWidth - this.inset],
-            this.x.scaleType === 'linear' && this.options.x.log ? { base: 10 } : {}
+            // options
+            getScaleOptions(this.x.scaleType, this.options.x)
         )
     );
 
     readonly yScale = $derived(
         createScale(
-            this.y.scaleType === 'linear' && this.options.y.log ? 'log' : this.y.scaleType,
+            this.y.scaleType,
             this.options.y?.domain || this.y.domain,
             this.options.y?.reverse
                 ? [this.margins.top + this.inset, this.height - this.margins.bottom - this.inset]
                 : [this.height - this.margins.bottom - this.inset, this.margins.top + this.inset],
-            this.y.scaleType === 'linear' && this.options.y.log ? { base: '10' } : {}
+            // options
+            getScaleOptions(this.y.scaleType, this.options.y)
         )
     );
 
@@ -159,7 +169,8 @@ export class Plot {
             this.symbol.domain,
             this.options.symbol?.range || this.hasFilledDotMarks
                 ? ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye']
-                : ['circle', 'plus', 'times', 'triangle2', 'asterisk', 'square2', 'diamond2']
+                : ['circle', 'plus', 'times', 'triangle2', 'asterisk', 'square2', 'diamond2'],
+            getScaleOptions(this.symbol.scaleType, this.options.symbol || {})
         )
     );
 
@@ -193,4 +204,23 @@ export class Plot {
     removeMark(removeMark: Mark<BaseMarkProps>) {
         this.marks = this.marks.filter((mark) => mark.id !== removeMark.id);
     }
+}
+
+/**
+ * users can pass options to the D3 scale function
+ */
+function getScaleOptions(scaleType: ScaleType, options: Record<string, any> = {}) {
+    return scaleType === 'linear'
+        ? pick(options, ['clamp', 'unknown'])
+        : scaleType === 'pow'
+          ? pick(options, ['exponent'])
+          : scaleType === 'log'
+            ? { base: 10, ...pick(options, ['base']) }
+            : scaleType === 'symlog'
+              ? pick(options, ['constant'])
+              : scaleType === 'point'
+                ? pick(options, ['padding', 'align', 'round'])
+                : scaleType === 'band'
+                  ? pick(options, ['padding', 'paddingInner', 'paddingOuter', 'align', 'round'])
+                  : {};
 }

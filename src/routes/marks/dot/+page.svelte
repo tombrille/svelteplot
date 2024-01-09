@@ -105,10 +105,9 @@
         <DotY data={cars.map((d) => d['economy (mpg)'])} />
     </Plot>
 
-
     <p>Dots with point scale</p>
 
-     <Plot grid height={500} testid="cars" y={{ type: 'point'}}>
+    <Plot grid height={500} testid="cars" y={{ type: 'point' }}>
         <Dot
             data={cars}
             y={manufactor}

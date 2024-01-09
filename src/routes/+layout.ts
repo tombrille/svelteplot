@@ -9,7 +9,7 @@ export const load: PageLoad = async ({ fetch }) => {
                 fetch(`/data/cars.csv`),
                 fetch(`/data/penguins.csv`),
                 fetch(`/data/bls.csv`),
-                fetch(`/data/stateage2.csv`),
+                fetch(`/data/stateage2.csv`)
             ])
         ).map(async (res) => csvParse(await res.text(), autoType))
     );

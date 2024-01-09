@@ -1,34 +1,24 @@
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte';
-    import type {
-        BaseMarkProps,
-        TickXMarkProps,
-        ChannelName,
-        ChannelAccessor
-    } from '$lib/types.js';
+    import type { BaseMarkProps, TickMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
 
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
 
-    const BaseMark_TickX = BaseMark<BaseMarkProps & TickXMarkProps>;
+    const BaseMark_TickX = BaseMark<BaseMarkProps & TickMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data = [], ...channels } = $props<TickXMarkProps>();
+    let { data = [], ...channels } = $props<TickMarkProps>();
 
-    let { x, y } = $derived(channels);
+    let { x } = $derived(channels);
 
     let dataWrapped = $derived(x ? data : data.map((d) => ({ x: d, ___orig___: d })));
 </script>
 
-<BaseMark_TickX
-    type="tick-x"
-    data={dataWrapped}
-    channels={['x', 'y']}
-    {...{ x: 'x', ...channels }}
->
+<BaseMark_TickX type="tick-x" data={dataWrapped} channels={['x', 'y']} {...{ x, ...channels }}>
     <g class="tick-x">
         {#each data as datum}
             <line
