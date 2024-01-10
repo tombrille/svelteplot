@@ -1,32 +1,6 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */ /* Import only what you need from Bulma */
-@import 'bulma/sass/utilities/_all';
-@import 'bulma/sass/base/_all';
-@import 'bulma/sass/elements/_all';
-@import 'bulma/sass/form/_all';
-@import 'bulma/sass/components/_all';
-@import 'bulma/sass/grid/_all';
-@import 'bulma/sass/helpers/_all';
-@import 'bulma/sass/layout/_all';
-
-figure.svelteplot {
-    h2 {
-        font-weight: bold;
-        font-size: 22px;
-        margin-bottom: 0;
-    }
-    h2 + h3 {
-        margin-top: 0;
-    }
-    figcaption {
-        color: gray;
-        font-size: small;
-    }
-}
-
-.content h2 {
-    font-size: 1.5rem !important;
-}
-.content figure {
-    margin: 1em 0 !important;
-    text-align: left;
+@media (min-width: 1240px) {
+  .theme-default-sidebar {
+    padding-left: 3vw!important;
+    width: 22vw !important;
+  }
 }

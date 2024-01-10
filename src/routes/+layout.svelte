@@ -14,7 +14,9 @@
 
 <svelte:head></svelte:head>
 
-<div class="container mt-3">
+{@render children()}
+
+<!-- <div class="container mt-3">
     <div class="columns">
         <div class="column is-2">
             <div class="mb-5">
@@ -43,30 +45,8 @@
             {@render children()}
         </div>
     </div>
-</div>
+</div> -->
 
 <style>
-    :root {
-        --system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    }
-
-    :global(body) {
-        font-family: var(--system-ui);
-    }
-
-    .menu-label {
-        text-transform: none;
-        font-weight: bold;
-    }
-
-    .menu-list li a {
-        font-weight: 500;
-        font-size: 0.9rem;
-        color: #777;
-    }
-
-    .menu-list li a.is-active {
-        color: #222;
-    }
+   
 </style>

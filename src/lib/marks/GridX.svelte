@@ -42,7 +42,7 @@
 >
     <g class="grid-x">
         {#each autoTicks as tick}
-            <g class="x-tick" transform="translate({plot.xScale(tick)},{plot.margins.top})">
+            <g class="x-tick" transform="translate({plot.xScale(tick) + (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{plot.margins.top})">
                 <line
                     class="grid"
                     style={getBaseStyles(tick, channels)}
