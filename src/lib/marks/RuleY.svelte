@@ -14,14 +14,14 @@
 
     let { y, x1, x2 } = $derived(channels);
 
-    let dataWrapped = $derived(y ? data : data.map((d) => ({ y: d, ___orig___: d })));
+    let dataWrapped = $derived(y ? data : data.map((d) => ({ __y: d, ___orig___: d })));
 </script>
 
 <BaseMark_RuleY
     type="rule-y"
     data={dataWrapped}
     channels={['y', 'x1', 'x2']}
-    {...{ y: 'y', ...channels }}
+    {...{ y: '__y', ...channels }}
 >
     <g class="rule-y">
         {#each data as datum}

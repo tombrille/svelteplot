@@ -17,6 +17,9 @@ import {
     isStringOrNull
 } from '$lib/helpers/typeChecks.js';
 import { uniq } from 'underscore';
+import isDataRecord from '$lib/helpers/isDataRecord.js';
+
+const FUNCTION = '(function)';
 
 export class Scale {
     readonly name: ScaleName | undefined = undefined;
@@ -58,12 +61,21 @@ export class Scale {
     readonly manualActiveMarks: Mark[] = $derived(
         this.activeMarks.filter((mark) => !mark.automatic)
     );
+
+    readonly propNames: string[] = $derived(
+        uniq(
+            this.manualActiveMarks.map((mark) => 
+                this.possibleChannels.filter(
+                    (channel) => mark.channels.has(channel) && 
+                    (typeof mark.props[channel] === 'string' || typeof mark.props[channel] === 'function') 
+                    && !String(mark.props[channel]).startsWith('__')
+                ).map(channel => typeof mark.props[channel] === 'string' ? mark.props[channel] : FUNCTION)
+            ).flat(2)
+        )
+    )
+
     readonly autoTitle = $derived(
-        this.manualActiveMarks.length === 1 &&
-            typeof this.manualActiveMarks[0].props?.[this.name as 'x' | 'y'] === 'string' &&
-            !this.manualActiveMarks[0]?.data?.__wrapped__
-            ? this.manualActiveMarks[0].props?.[this.name as 'x' | 'y']
-            : null
+        this.propNames.length === 1 && this.propNames[0] !== FUNCTION ? this.propNames[0] : null
     );
 
     readonly uniqueMarkProps = $derived(

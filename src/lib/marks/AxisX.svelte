@@ -68,8 +68,8 @@
                   ? optionsLabel
                   : plot.x.autoTitle
                     ? plot.options.x?.reverse
-                        ? `← ${plot.x.autoTitle}`
-                        : `${plot.x.autoTitle} →`
+                        ? `← ${plot.x.autoTitle}${plot.x.scaleOptions.percent ? ' (%)' : ''}`
+                        : `${plot.x.autoTitle}${plot.x.scaleOptions.percent ? ' (%)' : ''} →`
                     : '')
     );
 </script>

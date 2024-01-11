@@ -51,9 +51,11 @@
                 : optionsLabel !== undefined
                   ? optionsLabel
                   : plot.y.autoTitle
-                    ? `↑ ${plot.y.autoTitle}`
+                    ? `↑ ${plot.y.autoTitle}${plot.y.scaleOptions.percent ? ' (%)' : ''}`
                     : '')
     );
+
+    $inspect(plot.y.propNames);
 </script>
 
 <BaseMark_AxisX type="axis-y" data={ticks} channels={['y']} {automatic}>

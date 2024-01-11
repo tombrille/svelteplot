@@ -5,7 +5,7 @@
     const { alphabet } = getContext<Datasets>('data');
 </script>
 
-<Plot grid y={{ percent: true, label: 'Frequency (%)' }}>
+<Plot grid y={{ percent: true }}>
     <RuleY data={[0]} />
     <BarY data={alphabet} x="letter" y1={0} y2="frequency" />
 </Plot>
