@@ -34,15 +34,20 @@
 
 <BaseMark_GridX
     type="grid-x"
-    data={ticks.length ? ticks.map((tick) => ({ x: tick })) : undefined}
+    data={ticks.length ? ticks.map((tick) => ({ __x: tick })) : undefined}
     channels={['y']}
-    x="x"
+    x="__x"
     {...channels}
     {automatic}
 >
     <g class="grid-x">
         {#each autoTicks as tick}
-            <g class="x-tick" transform="translate({plot.xScale(tick) + (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{plot.margins.top})">
+            <g
+                class="x-tick"
+                transform="translate({plot.xScale(tick) +
+                    (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{plot.margins
+                    .top})"
+            >
                 <line
                     class="grid"
                     style={getBaseStyles(tick, channels)}
@@ -58,6 +63,7 @@
 
 <style>
     .x-tick line.grid {
-        stroke: #d9d9d9;
+        stroke: currentColor;
+        stroke-opacity: 0.1;
     }
 </style>

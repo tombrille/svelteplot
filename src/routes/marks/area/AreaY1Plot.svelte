@@ -1,4 +1,3 @@
-
 <script lang="ts">
     import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
 

@@ -93,9 +93,11 @@ export class Plot {
     readonly height = $derived(
         this._height === 'auto'
             ? this.hasScaleY
-                ? this.y.scaleType === 'band' || this.y.scaleType === 'point'
+                ? this.y.scaleType === 'band'
                     ? this.y.domain.length * 30
-                    : 400
+                    : this.y.scaleType === 'point'
+                      ? this.y.domain.length * 18
+                      : 400
                 : 90
             : this._height
     );

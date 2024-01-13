@@ -26,7 +26,7 @@ export type Datasets = {
     alphabet: {
         letter: string;
         frequency: number;
-    }[],
+    }[];
     cars: {
         name: string;
         'economy (mpg)': number;
@@ -66,7 +66,7 @@ export type Datasets = {
         Close: number;
         'Adj Close': number;
         Volume: number;
-    }[]
+    }[];
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';

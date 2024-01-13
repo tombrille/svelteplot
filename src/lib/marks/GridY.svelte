@@ -19,9 +19,9 @@
 
 <BaseMark
     type="grid-y"
-    data={ticks.length ? ticks.map((tick) => ({ y: tick })) : undefined}
+    data={ticks.length ? ticks.map((tick) => ({ __y: tick })) : undefined}
     channels={['y']}
-    y="y"
+    y="__y"
     {automatic}
 >
     <g class="grid-y">
@@ -43,6 +43,7 @@
 
 <style>
     .y-tick line.grid {
-        stroke: #d9d9d9;
+        stroke: currentColor;
+        stroke-opacity: 0.2;
     }
 </style>

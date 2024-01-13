@@ -19,7 +19,9 @@
         {#each data as datum}
             <line
                 transform="translate({plot.xScale(resolveChannel('x', datum, channels))}, {0})"
-                style:stroke={channels.stroke ? plot.colorScale(resolveChannel('stroke', datum, channels)) : null}
+                style:stroke={channels.stroke
+                    ? plot.colorScale(resolveChannel('stroke', datum, channels))
+                    : null}
                 style={getBaseStyles(datum, channels)}
                 y1={plot.yScale(resolveChannel('y', datum, channels))}
                 y2={plot.yScale(resolveChannel('y', datum, channels)) + plot.yScale.bandwidth()}

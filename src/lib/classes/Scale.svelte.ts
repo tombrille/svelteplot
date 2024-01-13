@@ -64,15 +64,23 @@ export class Scale {
 
     readonly propNames: string[] = $derived(
         uniq(
-            this.manualActiveMarks.map((mark) => 
-                this.possibleChannels.filter(
-                    (channel) => mark.channels.has(channel) && 
-                    (typeof mark.props[channel] === 'string' || typeof mark.props[channel] === 'function') 
-                    && !String(mark.props[channel]).startsWith('__')
-                ).map(channel => typeof mark.props[channel] === 'string' ? mark.props[channel] : FUNCTION)
-            ).flat(2)
+            this.manualActiveMarks
+                .map((mark) =>
+                    this.possibleChannels
+                        .filter(
+                            (channel) =>
+                                mark.channels.has(channel) &&
+                                (typeof mark.props[channel] === 'string' ||
+                                    typeof mark.props[channel] === 'function') &&
+                                !String(mark.props[channel]).startsWith('__')
+                        )
+                        .map((channel) =>
+                            typeof mark.props[channel] === 'string' ? mark.props[channel] : FUNCTION
+                        )
+                )
+                .flat(2)
         )
-    )
+    );
 
     readonly autoTitle = $derived(
         this.propNames.length === 1 && this.propNames[0] !== FUNCTION ? this.propNames[0] : null

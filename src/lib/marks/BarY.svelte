@@ -37,15 +37,9 @@
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
-
 </script>
 
-<BaseMark_BarY
-    type="bar-y"
-    {data}
-    channels={['x', 'y1', 'y2', 'fill', 'stroke']}
-    {...channels}
->
+<BaseMark_BarY type="bar-y" {data} channels={['x', 'y1', 'y2', 'fill', 'stroke']} {...channels}>
     <g class="bars-y">
         {#each data as datum, i}
             {@const cx = resolveChannel('x', datum, channelsWithDefaults)}
@@ -58,10 +52,12 @@
             {#if isValid(cx) && isValid(cy1) && isValid(cy2)}
                 <rect
                     style={getBaseStyles(datum, channels)}
-                    style:fill={maybeFillColor ? plot.colorScale(maybeFillColor) : maybeStrokeColor ? null : 'currentColor'}
-                    style:stroke={maybeStrokeColor
-                        ? plot.colorScale(maybeStrokeColor)
-                        : null}
+                    style:fill={maybeFillColor
+                        ? plot.colorScale(maybeFillColor)
+                        : maybeStrokeColor
+                          ? null
+                          : 'currentColor'}
+                    style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
                     transform="translate({[plot.xScale(cx), miny]})"
                     height={maxy - miny}
                     width={plot.xScale.bandwidth()}

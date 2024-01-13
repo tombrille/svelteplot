@@ -89,7 +89,9 @@
             {@const prevTextLines = t && tickTexts[t - 1]}
             <g
                 class="x-tick"
-                transform="translate({plot.xScale(tick) + (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{anchor === 'bottom'
+                transform="translate({plot.xScale(tick) +
+                    (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{anchor ===
+                'bottom'
                     ? plot.margins.top + plot.plotHeight
                     : plot.margins.top})"
             >
@@ -121,8 +123,8 @@
     text {
         text-anchor: middle;
         font-size: 11px;
-
-        fill: #4a4a4a;
+        opacity: 0.8;
+        fill: currentColor;
     }
 
     text.axis-title {
@@ -130,8 +132,5 @@
     }
     .x-tick line {
         stroke: currentColor;
-    }
-    .x-tick line.grid {
-        stroke: #d9d9d9;
     }
 </style>

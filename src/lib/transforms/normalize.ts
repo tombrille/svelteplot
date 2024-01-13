@@ -1,22 +1,33 @@
-import type { DataRecord } from "$lib/types.js";
-import groupBy from "underscore/modules/groupBy.js";
+import type { DataRecord } from '$lib/types.js';
+import groupBy from 'underscore/modules/groupBy.js';
 
 export function normalizeY({ data, y, y1, y2, stroke, fill, z, ...restProps }) {
-    const groupBy = stroke || fill || z;    
-    const normalizedData = normalize(data, groupBy, ['y', 'y1', 'y2'])
-    
+    const groupBy = stroke || fill || z;
+    const normalizedData = normalize(data, groupBy, ['y', 'y1', 'y2']);
+
     return {
         data: normalizedData,
-        y, y1, y2, stroke, fill, z,
+        y,
+        y1,
+        y2,
+        stroke,
+        fill,
+        z,
         ...restProps
-    }
+    };
 }
 
-function normalize(data: DataRecord[], groupKey: string|null, props: string[]) {
-    const filteredProps = props.filter(p => data[0][p] != null);
+function normalize(data: DataRecord[], groupKey: string | null, props: string[]) {
+    const filteredProps = props.filter((p) => data[0][p] != null);
     const groups = Object.values(groupBy(data, groupKey));
-    return groups.map(data => data.map((datum) => ({
-        ...datum,
-        ...(Object.fromEntries(filteredProps.map(prop => [prop, datum[prop] / data[0][prop]])))
-    }))).flat(1);
+    return groups
+        .map((data) =>
+            data.map((datum) => ({
+                ...datum,
+                ...Object.fromEntries(
+                    filteredProps.map((prop) => [prop, datum[prop] / data[0][prop]])
+                )
+            }))
+        )
+        .flat(1);
 }

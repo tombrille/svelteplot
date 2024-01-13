@@ -40,7 +40,7 @@
                             .format(tickFormat as string)
                             .split('\n')
                   : autoTimeFormat(plot.y, plot.plotHeight)
-              : (d: RawValue) => String(plot.y.scaleOptions.percent ? +(d * 100.0).toFixed(5) :d)
+              : (d: RawValue) => String(plot.y.scaleOptions.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     let optionsLabel = $derived(plot.options.y?.label);
@@ -96,7 +96,8 @@
 <style>
     text {
         font-size: 11px;
-        fill: #4a4a4a;
+        opacity: 0.8;
+        fill: currentColor;
     }
     text.is-left {
         text-anchor: end;

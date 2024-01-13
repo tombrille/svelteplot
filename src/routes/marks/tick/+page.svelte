@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, RuleX, TickX , RuleY, TickY} from '$lib/index.js';
+    import { Plot, RuleX, TickX, RuleY, TickY } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { range } from 'd3-array';
     import { getContext } from 'svelte';
@@ -27,27 +27,20 @@
 
     <b>TickY</b>
 
-     <Plot
-        x={{ label: '', padding: 0.3 }}
-        y={{ grid: true, label: '↑ Population (%)', percent: true }}
-    >
-        <RuleY data={[0]} />
-        <TickY data={penguins} stroke="sex" strokeWidth="2" x={d => `${d.species} / ${d.island}`} y="culmen_depth_mm" />
-    </Plot>
-
     <p>You can set the padding:</p>
 
     padding:<input type="range" min={0} max={1} step={0.01} bind:value={padding} />
-    {padding}
+    {padding}<br />
     align: <input type="range" min={0} max={1} step={0.01} bind:value={align} />
     {align}
 
-    <Plot
-        y={{ label: '↑ Age (years)', domain: uniq(stateage.map((d) => d.age)), padding, align }}
-        x={{ grid: true, label: 'Population (%) →', percent: true }}
-        marginLeft={50}
-    >
-        <RuleX data={[0]} />
-        <TickX data={stateage} y="age" x="pop_share" />
+    <Plot marginTop={20} x={{ label: '', padding, align }} y={{ grid: true }}>
+        <TickY
+            data={penguins}
+            stroke="sex"
+            strokeWidth="2"
+            x={(d) => `${d.species} / ${d.island}`}
+            y="culmen_depth_mm"
+        />
     </Plot>
 </div>

@@ -7,7 +7,7 @@ lastUpdate: 2024-01-10
 <script lang="ts">
     import { Plot, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib/index.js';
     import RuleX from '$lib/marks/RuleX.svelte';
-    import CandlestickExample from '../marks/rule/CandlestickExample.svelte';
+    import CandlestickExample from '../../marks/rule/CandlestickExample.svelte';
 
     let marginLeft = $state(30);
     let marginRight = $state(20);
@@ -43,10 +43,7 @@ This is a nice page
     import { Plot } from 'svelteplot';
 </script>
 
-<Plot>
-    
-</Plot>
+<Plot></Plot>
 ```
 
 Another test:
-
