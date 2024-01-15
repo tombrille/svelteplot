@@ -12,7 +12,8 @@
         "format": "prettier --write .",
         "test:integration": "playwright test",
         "test:unit": "vitest",
-        "prepack": "npx svelte-package"
+        "prepack": "npx svelte-package",
+        "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish"
     },
     "exports": {
         ".": {
