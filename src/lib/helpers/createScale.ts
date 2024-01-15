@@ -20,8 +20,6 @@ import {
 } from './colors.js';
 import { isColorOrNull } from './typeChecks.js';
 import type { ColorScheme, RawValue } from '$lib/types.js';
-import callWithProps from './callWithProps.js';
-import { count, nice } from 'd3-array';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     point: scalePoint,

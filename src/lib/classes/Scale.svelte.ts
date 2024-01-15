@@ -10,14 +10,11 @@ import resolveChannel from '$lib/helpers/resolveChannel.js';
 import { extent } from 'd3-array';
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import {
-    isBooleanOrNull,
-    isColorOrNull,
     isDateOrNull,
     isNumberOrNull,
     isStringOrNull
 } from '$lib/helpers/typeChecks.js';
 import { uniq } from 'underscore';
-import isDataRecord from '$lib/helpers/isDataRecord.js';
 
 const FUNCTION = '(function)';
 

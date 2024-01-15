@@ -1,4 +1,4 @@
-import type { Scale } from '$lib/classes/Scale.svelte';
+import type { Scale } from '$lib/classes/Scale.svelte.js';
 import dayjs from 'dayjs';
 import { isDate } from 'underscore';
 

@@ -1,5 +1,4 @@
-import { CHANNEL_SCALE } from '$lib/contants.js';
-import type { ChannelAccessor, MarkStyleProps, DataRecord, DataRow } from '$lib/types.js';
+import type { ChannelAccessor, MarkStyleProps, DataRow } from '$lib/types.js';
 import resolveChannel from './resolveChannel.js';
 
 const styleProps: Partial<Record<MarkStyleProps, string | null>> = {

@@ -1,4 +1,6 @@
 // Reexport your entry components here
+export { default as Plot } from './Plot.svelte';
+// marks
 export { default as Area } from './marks/Area.svelte';
 export { default as AreaX } from './marks/AreaX.svelte';
 export { default as AreaY } from './marks/AreaY.svelte';
@@ -16,7 +18,6 @@ export { default as GridY } from './marks/GridY.svelte';
 export { default as Line } from './marks/Line.svelte';
 export { default as LineX } from './marks/LineX.svelte';
 export { default as LineY } from './marks/LineY.svelte';
-export { default as Plot } from './Plot.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
