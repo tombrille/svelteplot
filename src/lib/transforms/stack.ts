@@ -89,16 +89,22 @@ function stackXY(byDim: 'x'|'y', data: DataRow[], channels: Partial<Record<Chann
                 const groupKey = values.key;
                 return values
                     .filter((d) => d.data[1].get(groupKey))
-                    .map((d) => ({ ...d.data[1].get(groupKey), [`__${byLow}`]: d[0], [`__${byHigh}`]: d[1] }));
+                    .map((d) => { 
+                        const { [`__${byDim}`]: unused1, [`__${secondDim}`]: unused2, ...datum} = d.data[1].get(groupKey);
+                        return { ...datum, [`__${byLow}`]: d[0], [`__${byHigh}`]: d[1] }
+                    });
             })
             .flat(1);
 
+        console.log({newData})
+        
         return { data: newData, ...channels, [byDim]: undefined, ...{ [byLow]: `__${byLow}`, [byHigh]: `__${byHigh}` } };
     }
     return { data, ...channels };
 }
 
 export function stackY({ data, ...channels }: TransformArg, opts: Partial<StackOptions> = {}): TransformArg {
+    
     return stackXY('y', data, channels, applyDefaults(opts));
 }
 

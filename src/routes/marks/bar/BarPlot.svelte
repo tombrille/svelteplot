@@ -10,3 +10,4 @@
     <RuleY data={[0]} />
     <BarY data={alphabet} x="letter" y="frequency" />
 </Plot>
+

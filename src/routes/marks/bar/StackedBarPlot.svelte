@@ -25,9 +25,3 @@
     <RuleY data={[0]} />
     <BarY {data} x="island" y="count" fill="species" />
 </Plot>
-or
-
-<Plot grid y={{ percent: true }} marginTop={25}>
-    <RuleY data={[0]} />
-    <BarY {...stackY(data, { x: 'island', y: 'count', fill: 'species' })} />
-</Plot>
