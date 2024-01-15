@@ -5,7 +5,7 @@
 
     import { Frame, GridX, GridY, AxisX, AxisY, ColorLegend, SymbolLegend } from '$lib/index.js';
 
-    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte';
+    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte.js';
 
     import mergeDeep from './helpers/mergeDeep.js';
 
