@@ -21,3 +21,7 @@ export { default as RuleY } from './marks/RuleY.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
 export { default as TickX } from './marks/TickX.svelte';
 export { default as TickY } from './marks/TickY.svelte';
+// transforms
+export { stackX, stackY } from './transforms/stack.js';
+export { recordizeX, recordizeY } from './transforms/recordize.js';
+export { renameChannels } from './transforms/rename.js';

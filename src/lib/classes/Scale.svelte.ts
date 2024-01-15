@@ -151,7 +151,6 @@ function inferScaleType(
     if (dataValues.every(isNumberOrNull)) return 'linear';
     if (dataValues.every(isDateOrNull)) return 'time';
     if (dataValues.every(isStringOrNull)) return 'band';
-    console.log('inferScaleType', dataValues, { isPosition, isColor });
     return 'linear';
 }
 

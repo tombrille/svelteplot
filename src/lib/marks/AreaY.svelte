@@ -7,6 +7,7 @@
         Curve
     } from '$lib/types.js';
     import type { CurveFactory } from 'd3-shape';
+    import type{ StackOptions } from '$lib/transforms/stack.js';
     export type AreaYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             x?: ChannelAccessor;
@@ -17,27 +18,21 @@
             sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
             curve: Curve | CurveFactory;
             tension: number;
+            stack?: StackOptions;
         };
 </script>
 
 <script lang="ts">
-    import isDataRecord from '$lib/helpers/isDataRecord.js';
     import Area from './Area.svelte';
+    import { stackY, recordizeY, renameChannels } from '$lib';
 
-    let { data, x, y, y1, y2, ...rest } = $props<AreaYMarkProps>();
-    let dataIsRawValueArray = $derived(!isDataRecord(data[0]));
+    let { data: rawData, stack, ...rawChannels } = $props<AreaYMarkProps>();
+    let { data, ...channels } = $derived(renameChannels(stackY(recordizeY({ data: rawData, ...rawChannels }), stack), { x: 'x1' }));
 
-    let transformedData = $derived(
-        dataIsRawValueArray
-            ? (data.map((value, index) => ({ value, index, ___orig___: value })) as DataRow[])
-            : data
-    );
+    $inspect({data, channels})
 </script>
 
 <Area
-    data={transformedData}
-    x1={dataIsRawValueArray ? 'index' : x}
-    y1={dataIsRawValueArray ? 0 : y ? 0 : y1}
-    y2={dataIsRawValueArray ? 'value' : y ? y : y2}
-    {...rest}
+    {data}
+    {...channels}
 />

@@ -7,15 +7,21 @@
 
 html.dark {
     .svp-code-block-wrapper {
-        .shiki.github-light { display: none; }
+        .shiki.github-light {
+            display: none;
+        }
         background-color: #0f0f0f;
     }
 }
 
 html:not(.dark) {
-    body { background-color: white; }
+    body {
+        background-color: white;
+    }
     .svp-code-block-wrapper {
-        .shiki.github-dark { display: none; }
+        .shiki.github-dark {
+            display: none;
+        }
         background-color: #f2f2f6;
     }
 }
@@ -32,7 +38,7 @@ figure.svelteplot {
         font-size: 16px;
     }
     h2 + h3 {
-        margin-top: 5px!important;
+        margin-top: 5px !important;
     }
     .plot-header {
         margin-bottom: 5px;
@@ -56,8 +62,8 @@ figure.svelteplot {
 }
 
 .dark .svp-live-code--container {
-    --un-border-opacity: 0!important;
-    --un-shadow: none!important;
+    --un-border-opacity: 0 !important;
+    --un-shadow: none !important;
 }
 
 .svp-live-code--container .c-expansion {

@@ -1,11 +1,8 @@
 <script lang="ts">
     import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
-
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
-    import Code from '../../Code.svelte';
-    import { range } from 'd3-array';
-
+   
     const { aapl } = getContext<Datasets>('data');
 </script>
 

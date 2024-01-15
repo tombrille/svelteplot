@@ -15,16 +15,24 @@ export default {
                 {
                     title: 'Features',
                     collapsible: true,
-                    items: [{
-                        title: 'Plot',
-                        to: '/features/plot'
-                    }, {
-                        title: 'Scales',
-                        to: '/features/scales'
-                    }, {
-                        title: 'Interactivity',
-                        to: '/features/interactivity'
-                    }]
+                    items: [
+                        {
+                            title: 'Plot',
+                            to: '/features/plot'
+                        },
+                        {
+                            title: 'Scales',
+                            to: '/features/scales'
+                        },
+                        {
+                            title: 'Transforms',
+                            to: '/features/transforms'
+                        },
+                        {
+                            title: 'Interactivity',
+                            to: '/features/interactivity'
+                        }
+                    ]
                 },
                 {
                     title: 'Marks',
@@ -39,6 +47,14 @@ export default {
                         { title: 'Line', to: '/marks/line' },
                         { title: 'Rule', to: '/guide/marks/rule' },
                         { title: 'Tick', to: '/guide/marks/tick' }
+                    ]
+                },
+                {
+                    title: 'Transforms',
+                    collapsible: true,
+                    items: [
+                        { title: 'Group', to: '/transforms/group' },
+                        { title: 'Stack', to: '/transforms/stack' }
                     ]
                 }
             ]

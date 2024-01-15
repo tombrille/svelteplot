@@ -83,13 +83,13 @@
             curve: maybeCurve(curve, tension),
             ...(x1 != null && x2 != null
                 ? {
-                      // vertical area
+                      // "vertical" area
                       x0: (d) => plot.xScale(resolveChannel('x1', d, channels)),
                       x1: (d) => plot.xScale(resolveChannel('x2', d, channels)),
                       y: (d) => plot.yScale(resolveChannel('y1', d, channels))
                   }
                 : {
-                      // horizontal area
+                      // "horizontal" area
                       x: (d) => plot.xScale(resolveChannel('x1', d, channels)),
                       y0: (d) => plot.yScale(resolveChannel('y1', d, channels)),
                       y1: (d) => plot.yScale(resolveChannel('y2', d, channels))
@@ -117,10 +117,10 @@
             <path
                 d={areaPath(areaData)}
                 style:stroke={stroke
-                    ? plot.colorScale(resolveChannel('color', areaData[0], stroke))
+                    ? plot.colorScale(resolveChannel('stroke', areaData[0], channels))
                     : 'none'}
                 style:fill={fill
-                    ? plot.colorScale(resolveChannel('color', areaData[0], fill))
+                    ? plot.colorScale(resolveChannel('fill', areaData[0], channels))
                     : 'currentColor'}
                 style={getBaseStyles(areaData[0], styleProps)}
             />

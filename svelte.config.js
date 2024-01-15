@@ -1,7 +1,7 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import * as url from 'url';
-import path from "path";
+import path from 'path';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -18,7 +18,7 @@ const config = {
         // See https://kit.svelte.dev/docs/adapters for more information about adapters.
         adapter: adapter(),
         alias: {
-            'svelteplot': '../../src/lib/index.js'
+            svelteplot: '../../src/lib/index.js'
         }
     }
 };

@@ -6,8 +6,6 @@ The dot mark draws circles or other symbols positioned in **x** and **y** as in 
 For example, the chart below shows the roughly-inverse relationship between car horsepower in
 y↑ and fuel efficiency in miles per gallon in x→.
 
-
-
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
@@ -17,7 +15,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
     let fill = $state(false);
 </script>
 
-<input type="checkbox" bind:checked={fill} /> fill symbols<br/>
+<input type="checkbox" bind:checked={fill} /> fill symbols<br />
 
 <Plot grid height={500} testid="cars">
     <Dot
@@ -32,7 +30,6 @@ y↑ and fuel efficiency in miles per gallon in x→.
 ```
 
 dsdsd sd sd sdsd sd
-
 
 ```svelte live
 <script>
@@ -51,13 +48,13 @@ dsdsd sd sd sdsd sd
     />
 </Plot>
 ```
-    
+
 One more
 
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    
+
     const demoData = [
         { x: 0, y: 0, size: 6 },
         { x: 1, y: 1, size: 5 },
@@ -98,12 +95,7 @@ You can also use a point scale for dot dimensions:
 </script>
 
 <Plot grid testid="cars" y={{ type: 'point' }} marginLeft={80}>
-    <Dot
-        data={cars}
-        y={manufactor}
-        x="power (hp)"
-        symbol={manufactor}
-    />
+    <Dot data={cars} y={manufactor} x="power (hp)" symbol={manufactor} />
 </Plot>
 ```
 
@@ -124,7 +116,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 ```
 
 ## DotY
-    
+
 Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
@@ -138,5 +130,3 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
     <DotY data={cars.map((d) => d['economy (mpg)'])} />
 </Plot>
 ```
-
-

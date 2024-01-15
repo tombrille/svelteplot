@@ -3,14 +3,14 @@ import { defaultTheme } from '@sveltepress/theme-default';
 import { defineConfig } from 'vitest/config';
 import sidebar from './config/sidebar.js';
 import * as url from 'url';
- const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-import path from "path";
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+import path from 'path';
 
 export default defineConfig({
     resolve: {
         alias: {
-            svelteplot: path.resolve(__dirname, './src/lib/index.js'),
-        },
+            svelteplot: path.resolve(__dirname, './src/lib/index.js')
+        }
     },
     plugins: [
         sveltepress({

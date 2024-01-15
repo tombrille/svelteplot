@@ -4,14 +4,19 @@
         BaseMarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
+        RawValue,
         DataRow
     } from '$lib/types.js';
+    import type { StackOptions } from '$lib/transforms/stack.js';
+
     export type BarYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             data: DataRow[];
             x?: ChannelAccessor;
+            y?: ChannelAccessor;
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
+            stack: StackOptions;
         };
 </script>
 
@@ -21,34 +26,32 @@
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import resolveChannel from '$lib/helpers/resolveChannel.js';
-    import { isSymbol, maybeSymbol } from '$lib/helpers/symbols.js';
-    import { symbol as d3Symbol } from 'd3-shape';
+    import { stackY } from '$lib/transforms/stack.js';
 
     const BaseMark_BarY = BaseMark<BaseMarkProps & BarYMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data, ...channels } = $props<BarYMarkProps>();
-    let { r = 3, symbol = 'circle' } = $derived(channels);
-    let channelsWithDefaults = $derived({ ...channels, r, symbol });
-
-    $inspect(channelsWithDefaults);
+    let { data: rawData, ...rawChannels } = $props<BarYMarkProps>();
+    let { data, ...channels } = $derived(stackY({ data: rawData, ...rawChannels }));
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
+
+    // need to handle the case that just y is defined
 </script>
 
 <BaseMark_BarY type="bar-y" {data} channels={['x', 'y1', 'y2', 'fill', 'stroke']} {...channels}>
     <g class="bars-y">
         {#each data as datum, i}
-            {@const cx = resolveChannel('x', datum, channelsWithDefaults)}
-            {@const cy1 = resolveChannel('y1', datum, channelsWithDefaults)}
-            {@const cy2 = resolveChannel('y2', datum, channelsWithDefaults)}
+            {@const cx = resolveChannel('x', datum, channels)}
+            {@const cy1 = resolveChannel('y1', datum, channels)}
+            {@const cy2 = resolveChannel('y2', datum, channels)}
             {@const miny = Math.min(plot.yScale(cy1), plot.yScale(cy2))}
             {@const maxy = Math.max(plot.yScale(cy1), plot.yScale(cy2))}
-            {@const maybeFillColor = resolveChannel('fill', datum, channelsWithDefaults)}
-            {@const maybeStrokeColor = resolveChannel('stroke', datum, channelsWithDefaults)}
+            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
+            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
             {#if isValid(cx) && isValid(cy1) && isValid(cy2)}
                 <rect
                     style={getBaseStyles(datum, channels)}

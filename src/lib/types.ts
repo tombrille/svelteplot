@@ -67,6 +67,12 @@ export type Datasets = {
         'Adj Close': number;
         Volume: number;
     }[];
+    riaa: {
+        format: string;
+        group: string;
+        year: Date;
+        revenue: number;
+    }[]
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
@@ -380,3 +386,6 @@ export type Curve =
     | 'step'
     | 'step-after'
     | 'step-before';
+
+type Channels = Partial<Record<ChannelName, ChannelAccessor>>;
+export type TransformArg = Channels & { data: DataRow[] };
