@@ -17,6 +17,7 @@
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
             stack: StackOptions;
+            inset: number;
         };
 </script>
 
@@ -33,7 +34,7 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data: rawData, ...rawChannels } = $props<BarYMarkProps>();
+    let { data: rawData, insetLeft, insetRight, ...rawChannels } = $props<BarYMarkProps>();
     let { data, ...channels } = $derived(stackY(recordizeY({ data: rawData, ...rawChannels })));
 
     function isValid(value: RawValue): value is number | Date | string {

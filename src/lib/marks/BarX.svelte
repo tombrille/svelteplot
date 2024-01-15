@@ -16,6 +16,7 @@
             x1?: ChannelAccessor;
             x2?: ChannelAccessor;
             y?: ChannelAccessor;
+            inset: number;
             stack: StackOptions;
         };
 </script>
@@ -33,7 +34,7 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data: rawData, ...rawChannels } = $props<BarXMarkProps>();
+    let { data: rawData, inset = 0, ...rawChannels } = $props<BarXMarkProps>();
     let { data, ...channels } = $derived(stackX(recordizeX({ data: rawData, ...rawChannels })));
 
     function isValid(value: RawValue): value is number | Date | string {
@@ -62,9 +63,9 @@
                           ? null
                           : 'currentColor'}
                     style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    transform="translate({[minx, plot.yScale(cy)]})"
+                    transform="translate({[minx, plot.yScale(cy)+inset]})"
                     width={maxx - minx}
-                    height={plot.yScale.bandwidth()}
+                    height={plot.yScale.bandwidth()- inset*2}
                 />
             {/if}
         {/each}
