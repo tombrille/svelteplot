@@ -9,6 +9,28 @@ title: Bar mark
 
 Bars are cool. They come in two flavors: [BarY](#BarY) for vertical bars (columns) and [BarX](#BarX) for horizontal bars.
 
+## BarX
+
+Here's a very simple bar chart:
+
+```svelte live
+<script>
+    import { Plot, BarX, RuleX } from '$lib';
+</script>
+
+<Plot y={{type:'band'}} x={{ grid: true }} height={200} marginTop={0}>
+    <BarX data={[1,2,3,4,5]} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot y={{type:'band'}} x={{ grid: true }} height={120}>
+    <BarX data={[1,2,3,4,5]} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
 ## BarY
 
 <BarPlot />
@@ -45,7 +67,7 @@ You can create stacked bar charts, too:
 -   `y1`
 -   `y2`
 
-## BarX
+
 
 -   `y`
 -   `x1`
