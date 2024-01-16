@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { SCALE_TYPES } from './contants.js';
-import type { Plot } from './classes/Plot.svelte';
+import type { Plot } from './classes/Plot.svelte.js';
 import type { MouseEventHandler } from 'svelte/elements';
 
 export type ScaleName =
@@ -72,7 +72,7 @@ export type Datasets = {
         group: string;
         year: Date;
         revenue: number;
-    }[]
+    }[];
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';

@@ -3,8 +3,8 @@
 </script>
 
 <script lang="ts" generics="T extends BaseMarkProps">
-    import type { Plot } from '$lib/classes/Plot.svelte';
-    import { Mark } from '$lib/classes/Mark.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
+    import { Mark } from '$lib/classes/Mark.svelte.js';
     import { getContext, type Snippet } from 'svelte';
 
     const plot = getContext<Plot>('svelteplot');

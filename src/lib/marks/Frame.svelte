@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import type { FrameProps } from '$lib/types.js';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';

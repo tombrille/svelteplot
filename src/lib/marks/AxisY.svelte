@@ -1,8 +1,7 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import type { AxisYMarkProps, BaseMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
-    import { get } from 'underscore';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';

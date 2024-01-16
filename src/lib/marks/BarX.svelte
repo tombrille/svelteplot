@@ -22,7 +22,7 @@
 </script>
 
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
@@ -63,9 +63,9 @@
                           ? null
                           : 'currentColor'}
                     style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    transform="translate({[minx, plot.yScale(cy)+inset]})"
+                    transform="translate({[minx, plot.yScale(cy) + inset]})"
                     width={maxx - minx}
-                    height={plot.yScale.bandwidth()- inset*2}
+                    height={plot.yScale.bandwidth() - inset * 2}
                 />
             {/if}
         {/each}

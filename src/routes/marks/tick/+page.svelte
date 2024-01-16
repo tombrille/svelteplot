@@ -1,7 +1,6 @@
 <script lang="ts">
     import { Plot, RuleX, TickX, RuleY, TickY } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
-    import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import { uniq } from 'underscore';
 

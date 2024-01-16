@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib/index.js';
+    import { Plot } from '$lib';
     import { getContext } from 'svelte';
     import type { Datasets } from '$lib/types.js';
     import Dot from '$lib/marks/Dot.svelte';

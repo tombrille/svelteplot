@@ -13,14 +13,14 @@
 
 {#if stackControls}
     offset: <select bind:value={offset}>
-    {#each ['none', 'wiggle', 'center', 'normalize'] as opt}
-    <option>{opt}</option>
-    {/each}
-</select>
+        {#each ['none', 'wiggle', 'center', 'normalize'] as opt}
+            <option>{opt}</option>
+        {/each}
+    </select>
 {/if}
 
 <Plot marginLeft={0} y={{ axis: false }} color={{ legend: true }} testid="area-y1">
-    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{ offset }}/>
+    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{ offset }} />
 </Plot>
 
-TODO: y domain doesn't update when changing the offset 
+TODO: y domain doesn't update when changing the offset

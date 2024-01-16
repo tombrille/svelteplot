@@ -30,9 +30,10 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
 <script>
     import { Plot, AreaY } from '$lib';
     import { getContext } from 'svelte';
-   
+
     const { aapl } = getContext('data');
 </script>
+
 <Plot grid>
     <AreaY data={aapl} x="Date" y1={120} y2="Close" />
 </Plot>
@@ -44,13 +45,12 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
 </Plot>
 ```
 
-
 Implicit stacking over y
 
 Required channels:
 
-- `x`
-- either `y` for implicit stacking or `y1` and `y2` if you want to control the offsets directly
+-   `x`
+-   either `y` for implicit stacking or `y1` and `y2` if you want to control the offsets directly
 
 You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 
@@ -59,6 +59,7 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
     import { Plot, AreaY, RuleY } from '$lib';
     import { range } from 'd3-array';
 </script>
+
 <Plot testid="area-y-numbers" grid height={200} y={{ ticks: [-1, 0, 1] }}>
     <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5} />
     <RuleY data={[0]} />
@@ -84,21 +85,22 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 
 You can control the stacking for the implicit [stackY](/transforms/stack) transform using the `stack` options:
 
-- `order` - can be one of `none`, `appearance`, `inside-out`, or `sum`.
-- `reverse` - for reversing the order
-- `offset`
+-   `order` - can be one of `none`, `appearance`, `inside-out`, or `sum`.
+-   `reverse` - for reversing the order
+-   `offset`
 
 <StackedAreaPlot stackControls />
 
 ```svelte
 <Plot>
-    <AreaY 
-        data={riaa} 
-        x="year" 
-        y="revenue" 
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
         z="format"
         fill="group"
-        stack={{ order: 'appearance', reverse: false }} />
+        stack={{ order: 'appearance', reverse: false }}
+    />
 </Plot>
 ```
 
@@ -112,14 +114,14 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
 <script>
     import { Plot, AreaX } from '$lib';
     import { getContext } from 'svelte';
-   
+
     const { aapl } = getContext('data');
 </script>
+
 <Plot grid testid="area-x" height={600} maxWidth="300px">
     <AreaX data={aapl} y="Date" x="Close" />
 </Plot>
 ```
-
 
 ## Area
 
@@ -128,9 +130,9 @@ the topline and a <b>RuleY</b> for the baseline:
 
 Required channels for horizontal area charts:
 
-- `x`, `y1`, and `y2` (for horizontal → area charts)
-- `y`, `x1` and `x2` (for vertical area charts)
-- `z` to group multiple areas
+-   `x`, `y1`, and `y2` (for horizontal → area charts)
+-   `y`, `x1` and `x2` (for vertical area charts)
+-   `z` to group multiple areas
 
 <AreaLineRulePlot />
 

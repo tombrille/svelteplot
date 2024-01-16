@@ -7,7 +7,7 @@
         Curve
     } from '$lib/types.js';
     import type { CurveFactory } from 'd3-shape';
-    import type{ StackOptions } from '$lib/transforms/stack.js';
+    import type { StackOptions } from '$lib/transforms/stack.js';
     export type AreaYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             x?: ChannelAccessor;
@@ -27,12 +27,11 @@
     import { stackY, recordizeY, renameChannels } from '$lib';
 
     let { data: rawData, stack, ...rawChannels } = $props<AreaYMarkProps>();
-    let { data, ...channels } = $derived(renameChannels(stackY(recordizeY({ data: rawData, ...rawChannels }), stack), { x: 'x1' }));
+    let { data, ...channels } = $derived(
+        renameChannels(stackY(recordizeY({ data: rawData, ...rawChannels }), stack), { x: 'x1' })
+    );
 
-    $inspect({data, channels})
+    $inspect({ data, channels });
 </script>
 
-<Area
-    {data}
-    {...channels}
-/>
+<Area {data} {...channels} />

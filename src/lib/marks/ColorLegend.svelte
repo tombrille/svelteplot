@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import { getContext } from 'svelte';
     import { symbol as d3Symbol } from 'd3-shape';
     import { maybeSymbol } from '$lib/helpers/symbols.js';

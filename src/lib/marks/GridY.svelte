@@ -1,10 +1,9 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import type { GridYMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { get } from 'underscore';
 
     const plot = getContext<Plot>('svelteplot');
 

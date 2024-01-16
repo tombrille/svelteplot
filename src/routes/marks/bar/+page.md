@@ -18,15 +18,15 @@ Here's a very simple bar chart:
     import { Plot, BarX, RuleX } from '$lib';
 </script>
 
-<Plot y={{type:'band'}} x={{ grid: true }} height={200} marginTop={0}>
-    <BarX data={[1,2,3,4,5]} />
+<Plot y={{ type: 'band' }} x={{ grid: true }} height={200} marginTop={0}>
+    <BarX data={[1, 2, 3, 4, 5]} />
     <RuleX data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot y={{type:'band'}} x={{ grid: true }} height={120}>
-    <BarX data={[1,2,3,4,5]} />
+<Plot y={{ type: 'band' }} x={{ grid: true }} height={120}>
+    <BarX data={[1, 2, 3, 4, 5]} />
     <RuleX data={[0]} />
 </Plot>
 ```
@@ -38,9 +38,9 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
     import { Plot, BarX, RuleX } from '$lib';
 </script>
 
-<Plot y={{type:'band'}} height={200} marginTop={0}>
-    <BarX data={[2.3,4,5,3.7,5.4]} opacity={0.3} />
-    <BarX data={[1,2,3,4,5]} inset={8} />
+<Plot y={{ type: 'band' }} height={200} marginTop={0}>
+    <BarX data={[2.3, 4, 5, 3.7, 5.4]} opacity={0.3} />
+    <BarX data={[1, 2, 3, 4, 5]} inset={8} />
 </Plot>
 ```
 
@@ -50,26 +50,25 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
 
 @code(./BarPlot.svelte)
 
-In its simplest form, you can just pass a few numbers as data to create a bar chart, but remember to set the x scale type to `band`: 
+In its simplest form, you can just pass a few numbers as data to create a bar chart, but remember to set the x scale type to `band`:
 
 ```svelte live
 <script>
     import { Plot, BarY, RuleY } from '$lib';
 </script>
 
-<Plot x={{type:'band'}}>
-    <BarY data={[1,2,3,4,5]} />
+<Plot x={{ type: 'band' }}>
+    <BarY data={[1, 2, 3, 4, 5]} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{type:'band'}}>
-    <BarY data={[1,2,3,4,5]} />
+<Plot x={{ type: 'band' }}>
+    <BarY data={[1, 2, 3, 4, 5]} />
     <RuleY data={[0]} />
 </Plot>
 ```
-
 
 You can create stacked bar charts, too:
 
@@ -80,8 +79,6 @@ You can create stacked bar charts, too:
 -   `x`
 -   `y1`
 -   `y2`
-
-
 
 -   `y`
 -   `x1`

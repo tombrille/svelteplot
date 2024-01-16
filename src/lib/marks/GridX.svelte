@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte';
+    import type { Plot } from '$lib/classes/Plot.svelte.js';
     import type {
         BaseMarkProps,
         GridXMarkProps,

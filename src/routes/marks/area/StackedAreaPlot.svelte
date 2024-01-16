@@ -13,14 +13,14 @@
 </script>
 
 {#if stackControls}
-order: <select bind:value={order}>
-    {#each ['none', 'appearance', 'inside-out', 'sum'] as opt}
-    <option>{opt}</option>
-    {/each}
-</select>
-<label><input type="checkbox" bind:checked={reverse} /> reverse?</label>
+    order: <select bind:value={order}>
+        {#each ['none', 'appearance', 'inside-out', 'sum'] as opt}
+            <option>{opt}</option>
+        {/each}
+    </select>
+    <label><input type="checkbox" bind:checked={reverse} /> reverse?</label>
 {/if}
 
 <Plot color={{ legend: true }} testid="area-y1">
-    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{order, reverse }}/>
+    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{ order, reverse }} />
 </Plot>

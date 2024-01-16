@@ -1,11 +1,5 @@
 <script context="module" lang="ts">
-    import type {
-        MarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        Curve,
-        DataRow
-    } from '$lib/types.js';
+    import type { MarkProps, BaseMarkStyleProps, ChannelAccessor, Curve } from '$lib/types.js';
     export type LineYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             data: RawValue[];
