@@ -89,6 +89,9 @@
 
 <figure data-testid={testid} class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
     <div class="plot-body">
+        <div class="overlay">
+            {#if overlay}{@render overlay(plot)}{/if}
+        </div>
         <svg
             role="document"
             {width}
@@ -121,9 +124,7 @@
             {#if frame}<Frame />{/if}
             {#if children}{@render children(plot)}{/if}
         </svg>
-        <div class="overlay">
-            {#if overlay}{@render overlay(plot)}{/if}
-        </div>
+        
     </div>
 
     {#if plot.options.title || plot.options.subtitle || header || hasLegend}
@@ -168,13 +169,20 @@
     figure .plot-header {
         order: 1;
     }
+    .overlay {
+        z-index: 2;
+    }
     h2,
     h3 {
         margin: 0;
     }
-    svg {
+    .plot-body {
         order: 2;
+        
+    }
+    svg {
         overflow: visible;
+        z-index: 1;
     }
     figure .plot-footer {
         order: 3;
