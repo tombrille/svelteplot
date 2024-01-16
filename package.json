@@ -27,6 +27,7 @@
         "!dist/**/*.spec.*"
     ],
     "devDependencies": {
+        "@sveltejs/package": "^2.2.5",
         "@playwright/test": "^1.40.1",
         "@sveltejs/adapter-auto": "^3.1.0",
         "@sveltejs/kit": "^2.3.2",
@@ -38,9 +39,11 @@
         "@types/d3-shape": "^3.1.6",
         "@typescript-eslint/eslint-plugin": "^6.19.0",
         "@typescript-eslint/parser": "^6.19.0",
+        "@sveltejs/vite-plugin-svelte": "^3.0.1",
+        "@sveltepress/theme-default": "^1.22.3",
+        "@sveltepress/vite": "^0.31.3",
         "bulma": "^0.9.4",
         "d3-dsv": "^3.0.1",
-        "dayjs": "^1.11.10",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-svelte": "^2.35.1",
@@ -62,10 +65,6 @@
     "type": "module",
     "dependencies": {
         "@observablehq/plot": "^0.6.13",
-        "@sveltejs/package": "^2.2.5",
-        "@sveltejs/vite-plugin-svelte": "^3.0.1",
-        "@sveltepress/theme-default": "^1.22.3",
-        "@sveltepress/vite": "^0.31.3",
         "@types/d3-array": "^3.2.1",
         "@types/d3-scale": "^4.0.8",
         "@types/underscore": "^1.11.15",
@@ -77,6 +76,7 @@
         "d3-scale-chromatic": "^3.0.0",
         "d3-shape": "^3.2.0",
         "d3-time-format": "^4.1.0",
+        "dayjs": "^1.11.10",
         "merge-deep": "^3.0.3",
         "underscore": "^1.13.6"
     }
