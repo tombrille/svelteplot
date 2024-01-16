@@ -79,25 +79,24 @@
         }) as typeof DEFAULT_PLOT_OPTIONS;
     });
 
-    function onMouseMove(evt: MouseEventHandler<SVGElement>) {
-        // evt.plot = plot;
+    const onMouseMove: MouseEventHandler<HTMLDivElement> = (evt) => {
         if (onmousemove) onmousemove({ ...evt, plot });
-    }
+    };
 
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 
 <figure data-testid={testid} class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
-    <div class="plot-body">
+    <div
+        role="document"
+        class="plot-body"
+        bind:this={plot.body}
+        on:mousemove={onmousemove ? onMouseMove : null}
+    >
         <div class="overlay">
             {#if overlay}{@render overlay(plot)}{/if}
         </div>
-        <svg
-            role="document"
-            {width}
-            height={plot.height}
-            onmousemove={onmousemove ? onMouseMove : null}
-        >
+        <svg {width} height={plot.height}>
             <!-- automatic grids -->
             {#if (grid && plot.hasScaleX) || x?.grid}<GridX automatic />{/if}
             {#if (grid && plot.hasScaleY) || y?.grid}<GridY automatic />{/if}
@@ -124,7 +123,6 @@
             {#if frame}<Frame />{/if}
             {#if children}{@render children(plot)}{/if}
         </svg>
-        
     </div>
 
     {#if plot.options.title || plot.options.subtitle || header || hasLegend}
@@ -178,7 +176,6 @@
     }
     .plot-body {
         order: 2;
-        
     }
     svg {
         overflow: visible;

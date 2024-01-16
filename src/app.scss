@@ -5,6 +5,16 @@
     }
 }
 
+:root {
+    --svelteplot-tooltip-bg: white; 
+    --svelteplot-tooltip-border: #ccc; 
+}
+
+html.dark {
+    --svelteplot-tooltip-bg: #18181b;
+    --svelteplot-tooltip-border: #333; 
+}
+
 html.dark {
     .svp-code-block-wrapper {
         .shiki.github-light {

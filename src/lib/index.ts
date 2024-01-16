@@ -15,6 +15,7 @@ export { default as DotY } from './marks/DotY.svelte';
 export { default as Frame } from './marks/Frame.svelte';
 export { default as GridX } from './marks/GridX.svelte';
 export { default as GridY } from './marks/GridY.svelte';
+export { default as HTMLTooltip } from './marks/HTMLTooltip.svelte';
 export { default as Line } from './marks/Line.svelte';
 export { default as LineX } from './marks/LineX.svelte';
 export { default as LineY } from './marks/LineY.svelte';

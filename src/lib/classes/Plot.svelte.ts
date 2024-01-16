@@ -127,6 +127,8 @@ export class Plot {
     color = new Scale('color', this);
     symbol = new Scale('symbol', this);
 
+    body: HTMLDivElement | undefined = $state();
+
     readonly colorSymbolRedundant = $derived(
         this.color.uniqueMarkProps.length === 1 &&
             this.symbol.uniqueMarkProps.length === 1 &&
