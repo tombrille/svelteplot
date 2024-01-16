@@ -20,7 +20,7 @@ export function isStringOrNull(v: RawValue) {
 
 export function isColorOrNull(v: RawValue) {
     // todo: maybe not use chroma.js here to save kb
-    return v == null || (typeof v === 'string' && chroma.valid(v));
+    return v == null || (typeof v === 'string' && (chroma.valid(v) || v === 'currentColor'));
 }
 
 export function isOpacityOrNull(v: RawValue) {
