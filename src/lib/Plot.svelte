@@ -88,38 +88,43 @@
 </script>
 
 <figure data-testid={testid} class="svelteplot" bind:clientWidth={width} style:max-width={maxWidth}>
-    <svg
-        role="document"
-        {width}
-        height={plot.height}
-        onmousemove={onmousemove ? onMouseMove : null}
-    >
-        <!-- automatic grids -->
-        {#if (grid && plot.hasScaleX) || x?.grid}<GridX automatic />{/if}
-        {#if (grid && plot.hasScaleY) || y?.grid}<GridY automatic />{/if}
+    <div class="plot-body">
+        <svg
+            role="document"
+            {width}
+            height={plot.height}
+            onmousemove={onmousemove ? onMouseMove : null}
+        >
+            <!-- automatic grids -->
+            {#if (grid && plot.hasScaleX) || x?.grid}<GridX automatic />{/if}
+            {#if (grid && plot.hasScaleY) || y?.grid}<GridY automatic />{/if}
 
-        {#if !plot.hasAxisXMark && (plot.hasScaleX || x?.grid)}
-            <!-- automatic x axis -->
-            {#if plot.options.x.axis === 'bottom' || plot.options.x.axis === 'both'}
-                <AxisX anchor="bottom" automatic />
+            {#if !plot.hasAxisXMark && (plot.hasScaleX || x?.grid)}
+                <!-- automatic x axis -->
+                {#if plot.options.x.axis === 'bottom' || plot.options.x.axis === 'both'}
+                    <AxisX anchor="bottom" automatic />
+                {/if}
+                {#if plot.options.x.axis === 'top' || plot.options.x.axis === 'both'}
+                    <AxisX anchor="top" automatic />
+                {/if}
             {/if}
-            {#if plot.options.x.axis === 'top' || plot.options.x.axis === 'both'}
-                <AxisX anchor="top" automatic />
+            {#if !plot.hasAxisYMark && (plot.hasScaleY || y?.grid)}
+                <!-- automatic y axis -->
+                {#if plot.options.y.axis === 'left' || plot.options.y.axis === 'both'}
+                    <AxisY anchor="left" automatic />
+                {/if}
+                {#if plot.options.y.axis === 'right' || plot.options.y.axis === 'both'}
+                    <AxisY anchor="right" automatic />
+                {/if}
             {/if}
-        {/if}
-        {#if !plot.hasAxisYMark && (plot.hasScaleY || y?.grid)}
-            <!-- automatic y axis -->
-            {#if plot.options.y.axis === 'left' || plot.options.y.axis === 'both'}
-                <AxisY anchor="left" automatic />
-            {/if}
-            {#if plot.options.y.axis === 'right' || plot.options.y.axis === 'both'}
-                <AxisY anchor="right" automatic />
-            {/if}
-        {/if}
-        <!-- automatic frame -->
-        {#if frame}<Frame />{/if}
-        {#if children}{@render children(plot)}{/if}
-    </svg>
+            <!-- automatic frame -->
+            {#if frame}<Frame />{/if}
+            {#if children}{@render children(plot)}{/if}
+        </svg>
+        <div class="overlay">
+            {#if overlay}{@render overlay(plot)}{/if}
+        </div>
+    </div>
 
     {#if plot.options.title || plot.options.subtitle || header || hasLegend}
         <div class="plot-header">
@@ -147,10 +152,6 @@
             {#if footer}{@render footer(plot)}{/if}
         </div>
     {/if}
-
-    <div class="overlay">
-        {#if overlay}{@render overlay(plot)}{/if}
-    </div>
 </figure>
 
 <style>
@@ -159,6 +160,10 @@
         position: relative;
         display: flex;
         flex-direction: column;
+    }
+
+    .plot-body {
+        position: relative;
     }
     figure .plot-header {
         order: 1;
