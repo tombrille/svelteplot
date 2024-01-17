@@ -1,6 +1,6 @@
 {
     "name": "svelteplot",
-    "version": "0.0.1-alpha.25",
+    "version": "0.0.1-alpha.26",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
