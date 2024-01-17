@@ -8,8 +8,10 @@
     } from '$lib/types.js';
     export type AreaMarkProps = MarkProps &
         BaseMarkStyleProps & {
+            x?: ChannelAccessor;
             x1?: ChannelAccessor;
             x2?: ChannelAccessor;
+            y?: ChannelAccessor;
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
             z?: ChannelAccessor;
@@ -39,8 +41,10 @@
         data,
         curve,
         tension,
+        x = null,
         x1 = null,
         x2 = null,
+        y = null,
         y1 = null,
         y2 = null,
         z = null,
@@ -51,9 +55,9 @@
     } = $props<AreaMarkProps>();
 
     let channels = $derived<Record<ChannelName, ChannelAccessor>>({
-        x1,
+        x1: x1 == null ? x : x1,
         x2,
-        y1,
+        y1: y1 == null ? y : y1,
         y2,
         fill,
         stroke,
@@ -81,7 +85,7 @@
     let areaPath = $derived(
         callWithProps(area, [], {
             curve: maybeCurve(curve, tension),
-            ...(x1 != null && x2 != null
+            ...(channels.x1 != null && channels.x2 != null
                 ? {
                       // "vertical" area
                       x0: (d) => plot.xScale(resolveChannel('x1', d, channels)),
@@ -96,17 +100,17 @@
                   })
         })
     );
-
     // $inspect(plot.x.activeMarks[0]?.dataValues)
+    $inspect({ channels, x })
 </script>
 
 <BaseMark_Area
     type="area"
     {data}
     channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke']}
-    {x1}
+    x1={x1 != null ? x1 : x}
     {x2}
-    {y1}
+    y1={y1 != null ? y1 : y}
     {y2}
     {fill}
     {stroke}

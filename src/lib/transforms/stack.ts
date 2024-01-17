@@ -127,8 +127,6 @@ function stackXY(
             })
             .flat(1);
 
-        console.log({ newData });
-
         return {
             data: newData,
             ...channels,

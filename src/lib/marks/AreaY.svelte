@@ -24,11 +24,11 @@
 
 <script lang="ts">
     import Area from './Area.svelte';
-    import { stackY, recordizeY, renameChannels } from '$lib';
+    import { stackY, recordizeY } from '$lib';
 
     let { data: rawData, stack, ...rawChannels } = $props<AreaYMarkProps>();
     let { data, ...channels } = $derived(
-        renameChannels(stackY(recordizeY({ data: rawData, ...rawChannels }), stack), { x: 'x1' })
+        stackY(recordizeY({ data: rawData, ...rawChannels }), stack)
     );
 
     $inspect({ data, channels });
