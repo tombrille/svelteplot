@@ -1,7 +1,7 @@
 ---
 title: A content centered site build tool
 description: Unfortunately, SveltePlot doesn't exist, yet. But maybe it could, so let's discuss!
-heroImage: /android-chrome-192x192.png
+# heroImage: /android-chrome-192x192.png
 tagline: Unfortunately, SveltePlot doesn't exist, yet. But let's discuss if it should!
 actions:
     - label: Read the docs
@@ -9,7 +9,7 @@ actions:
       type: primary
     - label: View on github
       type: flat
-      to: https://github.com/Blackman99/sveltepress
+      to: /features/plot
       external: true
 features:
     - title: Marks
@@ -18,20 +18,20 @@ features:
           type: iconify
           collection: vscode-icons
           name: file-type-markdown
-      link: /guide/markdown/frontmatter/
+      link: /features/scales
     - title: Automatic scales
       description: Preserve the full power of Sveltekit. So that you can do more than SSG.
       icon:
           type: iconify
           collection: logos
           name: svelte-kit
-    - title: Built on top of Svelte5
+    - title: Fully reactive
       description: Feel free to use svelte (3 and 4) in markdown. Explore infinite possibilities.
       icon:
           type: iconify
           collection: vscode-icons
           name: file-type-svelte
-      link: /guide/markdown/svelte-in-markdown/
+      link: /features/interactivity
     - title: TypeScript
       description: All mark components are typed
       icon:

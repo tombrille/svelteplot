@@ -113,22 +113,6 @@ export class Scale {
             inferScaleType(this.dataValues, { isPosition: this.isPosition, isColor: this.isColor })
     );
 
-    // readonly valueType = $derived(
-    //     this.dataValues.every((v) => v == null)
-    //         ? 'null'
-    //         : this.dataValues.every(isColorOrNull)
-    //           ? 'color'
-    //           : this.dataValues.every(isBooleanOrNull)
-    //             ? 'boolean'
-    //             : this.dataValues.every(isStringOrNull)
-    //               ? 'text'
-    //               : this.dataValues.every(isNumberOrNull)
-    //                 ? 'number'
-    //                 : this.dataValues.every(isDateOrNull)
-    //                   ? 'date'
-    //                   : 'mixed'
-    // );
-
     readonly domain = $derived(
         this.scaleOptions.domain || inferScaleDomain(this.dataValues, this.scaleType)
     );

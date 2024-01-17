@@ -1,6 +1,8 @@
 import type { PageLoad } from './$types';
 import { csvParse, autoType } from 'd3-dsv';
 
+export const prerender = true;
+
 export const load: PageLoad = async ({ fetch }) => {
     const [aapl, alphabet, cars, penguins, bls, stateage, stocks, riaa] = await Promise.all(
         (
