@@ -6,13 +6,13 @@
 }
 
 :root {
-    --svelteplot-tooltip-bg: white; 
-    --svelteplot-tooltip-border: #ccc; 
+    --svelteplot-tooltip-bg: white;
+    --svelteplot-tooltip-border: #ccc;
 }
 
 html.dark {
     --svelteplot-tooltip-bg: #18181b;
-    --svelteplot-tooltip-border: #333; 
+    --svelteplot-tooltip-border: #333;
 }
 
 html.dark {

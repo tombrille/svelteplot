@@ -224,6 +224,9 @@ export type ChannelType = ValueOf<typeof SCALE_TYPES>;
 
 export interface MarkProps {
     data: DataRow[];
+    onclick?: MouseEventHandler<SVGPathElement>;
+    onmouseenter?: MouseEventHandler<SVGPathElement>;
+    onmouseleave?: MouseEventHandler<SVGPathElement>;
 }
 
 export type BaseMarkProps = MarkProps & {

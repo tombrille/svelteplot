@@ -19,6 +19,7 @@
             inset: number;
             stack: StackOptions;
         };
+
 </script>
 
 <script lang="ts">
@@ -34,11 +35,15 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data: rawData, inset = 0, ...rawChannels } = $props<BarXMarkProps>();
+    let { data: rawData, inset = 0, onclick, onmouseenter, onmouseleave, ...rawChannels } = $props<BarXMarkProps>();
     let { data, ...channels } = $derived(stackX(recordizeX({ data: rawData, ...rawChannels })));
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
+    }
+
+    function wrapEvent(handler, d) {
+        return handler ? () => handler(d.___orig___ !== undefined ? d.___orig___ : d) : null;
     }
 
     // need to handle the case that just y is defined
@@ -66,6 +71,10 @@
                     transform="translate({[minx, plot.yScale(cy) + inset]})"
                     width={maxx - minx}
                     height={plot.yScale.bandwidth() - inset * 2}
+                    role={onclick ? 'button' : null}
+                    onclick={wrapEvent(onclick, datum)}
+                    onmouseenter={wrapEvent(onmouseenter, datum)}
+                    onmouseleave={wrapEvent(onmouseleave, datum)}
                 />
             {/if}
         {/each}

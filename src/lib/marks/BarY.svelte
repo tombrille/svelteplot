@@ -8,7 +8,7 @@
         DataRow
     } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-
+    import type { MouseEventHandler } from 'svelte/elements';
     export type BarYMarkProps = MarkProps &
         BaseMarkStyleProps & {
             data: DataRow[];
@@ -34,13 +34,24 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data: rawData, insetLeft, insetRight, ...rawChannels } = $props<BarYMarkProps>();
+    let {
+        data: rawData,
+        insetLeft,
+        insetRight,
+        onclick,
+        onmouseenter,
+        onmouseleave,
+        ...rawChannels
+    } = $props<BarYMarkProps>();
     let { data, ...channels } = $derived(stackY(recordizeY({ data: rawData, ...rawChannels })));
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
 
+    function wrapEvent(handler, d) {
+        return handler ? () => handler(d.___orig___ !== undefined ? d.___orig___ : d) : null;
+    }
     // need to handle the case that just y is defined
 </script>
 
@@ -66,6 +77,10 @@
                     transform="translate({[plot.xScale(cx), miny]})"
                     height={maxy - miny}
                     width={plot.xScale.bandwidth()}
+                    role={onclick ? 'button' : null}
+                    onclick={wrapEvent(onclick, datum)}
+                    onmouseenter={wrapEvent(onmouseenter, datum)}
+                    onmouseleave={wrapEvent(onmouseleave, datum)}
                 />
             {/if}
         {/each}
