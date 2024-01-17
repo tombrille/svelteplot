@@ -22,6 +22,7 @@ export { default as LineY } from './marks/LineY.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
+export { default as Text } from './marks/Text.svelte';
 export { default as TickX } from './marks/TickX.svelte';
 export { default as TickY } from './marks/TickY.svelte';
 // transforms

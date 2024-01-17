@@ -46,6 +46,7 @@ export default {
                         { title: 'Grid', to: '/marks/grid' },
                         { title: 'Line', to: '/marks/line' },
                         { title: 'Rule', to: '/marks/rule' },
+                        { title: 'Text', to: '/marks/text' },
                         { title: 'Tick', to: '/marks/tick' }
                     ]
                 },
