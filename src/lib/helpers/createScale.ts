@@ -71,6 +71,7 @@ export function createColorScale(
     range: RawValue[] | null,
     scheme: ColorScheme | null
 ) {
+    console.log('createColorScale', {type, domain})
     if (type === 'identity') return identity;
     if (type === 'band') {
         if (domain.every(isColorOrNull)) {

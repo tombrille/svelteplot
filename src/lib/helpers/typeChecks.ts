@@ -19,6 +19,7 @@ export function isStringOrNull(v: RawValue) {
 }
 
 export function isColorOrNull(v: RawValue) {
+    console.log({v}, chroma.valid(v))
     // todo: maybe not use chroma.js here to save kb
     return v == null || (typeof v === 'string' && (chroma.valid(v) || v === 'currentColor'));
 }

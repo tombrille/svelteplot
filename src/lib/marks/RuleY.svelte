@@ -20,14 +20,22 @@
 <BaseMark_RuleY
     type="rule-y"
     data={dataWrapped}
-    channels={['y', 'x1', 'x2']}
+    channels={['y', 'x1', 'x2', 'stroke']}
     {...{ y: '__y', ...channels }}
 >
     <g class="rule-y">
         {#each data as datum}
+            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
+            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
             <line
                 transform="translate(0,{plot.yScale(resolveChannel('y', datum, channels))})"
                 style={getBaseStyles(datum, channels)}
+                style:fill={maybeFillColor
+                        ? plot.colorScale(maybeFillColor)
+                        : maybeStrokeColor
+                          ? null
+                          : 'currentColor'}
+                style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
                 x1={x1 != null
                     ? plot.xScale(resolveChannel('x1', datum, channels))
                     : plot.margins.left}
@@ -40,7 +48,5 @@
 </BaseMark_RuleY>
 
 <style>
-    .rule-y line {
-        stroke: currentColor;
-    }
+    
 </style>

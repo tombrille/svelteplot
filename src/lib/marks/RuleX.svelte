@@ -20,14 +20,17 @@
 <BaseMark_RuleX
     type="rule-x"
     data={dataWrapped}
-    channels={['x', 'y1', 'y2']}
+    channels={['x', 'y1', 'y2', 'stroke']}
     {...{ x: '__x', ...channels }}
 >
     <g class="rule-x">
         {#each data as datum}
+            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
+            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
             <line
                 transform="translate({plot.xScale(resolveChannel('x', datum, channels))}, {0})"
                 style={getBaseStyles(datum, channels)}
+                style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : 'currentColor'}
                 y1={y1 != null ? plot.yScale(resolveChannel('y1', datum, channels)) : plot.margins.top}
                 y2={y2 != null
                     ? plot.yScale(resolveChannel('y2', datum, channels))
@@ -38,7 +41,5 @@
 </BaseMark_RuleX>
 
 <style>
-    .rule-x line {
-        stroke: currentColor;
-    }
+ 
 </style>
