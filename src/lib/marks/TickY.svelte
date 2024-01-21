@@ -5,7 +5,7 @@
 
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 
     const BaseMark_TickY = BaseMark<BaseMarkProps & TickMarkProps>;
 

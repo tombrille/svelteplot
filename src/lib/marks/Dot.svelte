@@ -22,19 +22,24 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { isSymbol, maybeSymbol } from '$lib/helpers/symbols.js';
+    import { recordizeXY } from '$lib/transforms/recordize.js';
     import { symbol as d3Symbol } from 'd3-shape';
 
     const BaseMark_Dot = BaseMark<BaseMarkProps & DotMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data, ...channels } = $props<DotMarkProps>();
-    let { r = 3, symbol = 'circle' } = $derived(channels);
-    let channelsWithDefaults = $derived({ ...channels, r, symbol });
+    let { data: rawData, ...rawChannels } = $props<DotMarkProps>();
 
-    $inspect(channelsWithDefaults);
+    let { data, ...channels } = recordizeXY({ data: rawData, ...rawChannels });
+
+    $inspect({ data, channels });
+
+    let { r = 3, symbol = 'circle' } = $derived(channels);
+
+    let channelsWithDefaults = $derived({ ...channels, r, symbol });
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
@@ -52,7 +57,7 @@
     type="dot"
     {data}
     channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke']}
-    {...channels}
+    {...channelsWithDefaults}
 >
     <g class="dots">
         {#each data as datum, i}

@@ -1,6 +1,25 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import type { MarkProps, ChannelName } from '$lib/types.js';
 
+export function test(initial: number) {
+    let num = $state(initial);
+    const double = $derived(num * 2);
+
+    return {
+        get value() {
+            return num;
+        },
+        get double() {
+            return double;
+        },
+        addOne() {
+            $effect.root(() => {
+                num += 1;
+            });
+        }
+    };
+}
+
 export class Mark<T extends MarkProps> {
     readonly id: symbol;
     readonly type: string;

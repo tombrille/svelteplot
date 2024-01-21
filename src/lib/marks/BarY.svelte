@@ -5,7 +5,9 @@
         BaseMarkStyleProps,
         ChannelAccessor,
         RawValue,
-        DataRow
+        DataRow,
+        ConstantAccessor,
+        DataRecord
     } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { MouseEventHandler } from 'svelte/elements';
@@ -17,7 +19,7 @@
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
             stack: StackOptions;
-            inset: number;
+            inset: ConstantAccessor<number>;
         };
 </script>
 
@@ -26,7 +28,7 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { stackY } from '$lib/transforms/stack.js';
     import { recordizeY } from '$lib/transforms/recordize.js';
 
@@ -36,14 +38,16 @@
 
     let {
         data: rawData,
-        insetLeft,
-        insetRight,
         onclick,
+        dx,
+        dy,
         onmouseenter,
         onmouseleave,
         ...rawChannels
     } = $props<BarYMarkProps>();
-    let { data, ...channels } = $derived(stackY(recordizeY({ data: rawData, ...rawChannels })));
+    let { data, inset, ...channels } = $derived(
+        stackY(recordizeY({ data: rawData, ...rawChannels }))
+    );
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
@@ -65,6 +69,9 @@
             {@const maxy = Math.max(plot.yScale(cy1), plot.yScale(cy2))}
             {@const maybeFillColor = resolveChannel('fill', datum, channels)}
             {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
+            {@const inset_ = resolveProp(inset, datum as DataRecord, 0) as number}
+            {@const dx_ = resolveProp(dx, datum as DataRecord, 0) as number}
+            {@const dy_ = resolveProp(dy, datum as DataRecord, 0) as number}
             {#if isValid(cx) && isValid(cy1) && isValid(cy2)}
                 <rect
                     style={getBaseStyles(datum, channels)}
@@ -74,9 +81,9 @@
                           ? null
                           : 'currentColor'}
                     style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    transform="translate({[plot.xScale(cx), miny]})"
+                    transform="translate({[plot.xScale(cx) + inset_ + dx_, miny + dy_]})"
                     height={maxy - miny}
-                    width={plot.xScale.bandwidth()}
+                    width={plot.xScale.bandwidth() - inset_ * 2}
                     role={onclick ? 'button' : null}
                     onclick={wrapEvent(onclick, datum)}
                     onmouseenter={wrapEvent(onmouseenter, datum)}

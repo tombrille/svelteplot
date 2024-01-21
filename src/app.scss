@@ -1,13 +1,37 @@
 @media (min-width: 1240px) {
     .theme-default-sidebar {
-        padding-left: 3vw !important;
-        width: 22vw !important;
+        padding-left: 1rem !important;
+        width: 20rem !important;
     }
 }
 
+@media (min-width: 950px) {
+    .header-inner {
+        width: 97vw!important;
+    }
+    .toc {
+        width: 17vw!important;
+    }
+    .toc .title {
+        font-weight: normal!important;
+    }
+    html .toc .item {
+        font-size: 12px;
+    } 
+    html .toc .item:not(.active) {
+        opacity: 0.6;
+    } 
+}
+
 :root {
+    --vp-layout-max-width: 1440px;
     --svelteplot-tooltip-bg: white;
     --svelteplot-tooltip-border: #ccc;
+}
+
+body {
+    font-size: 15px;
+    line-height: 22.5px;
 }
 
 html.dark {

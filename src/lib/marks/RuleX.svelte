@@ -4,7 +4,7 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 
     const BaseMark_RuleX = BaseMark<BaseMarkProps & RuleXMarkProps>;
 
@@ -28,9 +28,7 @@
             <line
                 transform="translate({plot.xScale(resolveChannel('x', datum, channels))}, {0})"
                 style={getBaseStyles(datum, channels)}
-                y1={y1 != null
-                    ? plot.yScale(resolveChannel('y1', datum, channels))
-                    : plot.margins.top}
+                y1={y1 != null ? plot.yScale(resolveChannel('y1', datum, channels)) : plot.margins.top}
                 y2={y2 != null
                     ? plot.yScale(resolveChannel('y2', datum, channels))
                     : plot.plotHeight + plot.margins.top}

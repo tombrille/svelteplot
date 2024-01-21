@@ -12,7 +12,7 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
 
     const plot = getContext<Plot>('svelteplot');

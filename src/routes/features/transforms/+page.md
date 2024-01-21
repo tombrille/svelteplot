@@ -15,7 +15,7 @@ import { stackY } from 'svelteplot';
 
 const inputData = [...];
 
-const { data, ...channels } = stackY({ 
+const { data, ...channels } = stackY({
     data: inputData,
     x: 'date',
     y: 'value',

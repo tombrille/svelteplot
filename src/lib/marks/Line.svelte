@@ -22,7 +22,7 @@
 
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import type { BaseMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
@@ -48,9 +48,7 @@
     let sortedGroups = $derived(
         sort
             ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels)
-                      ? 1
-                      : -1
+                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels) ? 1 : -1
               )
             : groups
     );
@@ -71,9 +69,7 @@
                 stroke={stroke
                     ? plot.colorScale(resolveChannel('stroke', lineData[0], channels))
                     : 'currentColor'}
-                fill={fill
-                    ? plot.colorScale(resolveChannel('fill', lineData[0], channels))
-                    : 'none'}
+                fill={fill ? plot.colorScale(resolveChannel('fill', lineData[0], channels)) : 'none'}
                 style={getBaseStyles(lineData[0], channels)}
             />
         {/each}

@@ -171,10 +171,12 @@ export type GridProps = {
     tickFormat?: (d: any) => string;
 };
 
-export type DataRecord = Record<string, RawValue>;
+export type DataRecord = Record<string, RawValue> & { ___orig___: RawValue | [RawValue, RawValue] };
 export type DataRow = DataRecord | RawValue | [number, number];
 
 export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null | undefined;
+
+export type ConstantAccessor<T> = T | ((d: DataRow) => T) | null | undefined;
 
 export type RawValue = number | Date | boolean | string | null;
 
@@ -185,6 +187,7 @@ export type ChannelName =
     | 'fontSize'
     | 'opacity'
     | 'r'
+    | 'rotate'
     | 'sort'
     | 'stroke'
     | 'strokeDasharray'
@@ -205,6 +208,7 @@ export type MarkStyleProps =
     | 'opacity'
     | 'fill'
     | 'fillOpacity'
+    | 'fontWeight'
     | 'fontSize'
     | 'stroke'
     | 'strokeWidth'
@@ -227,6 +231,18 @@ export interface MarkProps {
     onclick?: MouseEventHandler<SVGPathElement>;
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
+    dx: ConstantAccessor<number>;
+    dy: ConstantAccessor<number>;
+}
+
+export type BaseRectMarkProps = {
+    inset?: ConstantAccessor<number>;
+    insetLeft?: ConstantAccessor<number>;
+    insetRight?: ConstantAccessor<number>;
+    insetTop?: ConstantAccessor<number>;
+    insetBottom?: ConstantAccessor<number>;
+    rx?: ConstantAccessor<number>;
+    ry?: ConstantAccessor<number>;
 }
 
 export type BaseMarkProps = MarkProps & {
@@ -235,15 +251,43 @@ export type BaseMarkProps = MarkProps & {
     automatic: boolean;
 };
 
-export type BaseMarkStyleProps = {
-    fill?: ChannelAccessor;
-    stroke?: ChannelAccessor;
-    opacity?: ChannelAccessor;
-    fillOpacity?: ChannelAccessor;
-    strokeOpacity?: ChannelAccessor;
-    strokeWidth?: ChannelAccessor;
-    strokeDasharray?: ChannelAccessor;
-};
+export type BaseMarkStyleProps = Partial<{
+    fill: ChannelAccessor;
+    fillOpacity: ChannelAccessor;
+    stroke: ChannelAccessor;
+    strokeWidth: ConstantAccessor<number>;
+    strokeOpacity: ChannelAccessor;
+    strokeLinejoin: ConstantAccessor<'bevel' | 'miter' | 'miter-clip' | 'round'>;
+    strokeLinecap: ConstantAccessor<'butt' | 'square' | 'round'>;
+    strokeMiterlimit: ConstantAccessor<number>;
+    opacity: ChannelAccessor;
+    strokeDasharray: ConstantAccessor<string>;
+    strokeDashoffset: ConstantAccessor<number>;
+    mixBlendMode: ConstantAccessor<
+        | 'normal'
+        | 'multiply'
+        | 'screen'
+        | 'overlay'
+        | 'darken'
+        | 'lighten'
+        | 'color-dodge'
+        | 'color-burn'
+        | 'hard-light'
+        | 'soft-light'
+        | 'difference'
+        | 'exclusion'
+        | 'hue'
+        | 'saturation'
+        | 'color'
+        | 'luminosity'
+        | 'plus-darker'
+        | 'plus-lighter'
+    >;
+    imageFilter: ConstantAccessor<string>;
+    shapeRendering: ConstantAccessor<'crispEdges'|'geometricPrecision'|'optimizeSpeed'|'auto'>;
+    paintOrder: ConstantAccessor<string>;
+
+}>;
 
 export type FrameProps = BaseMarkStyleProps;
 

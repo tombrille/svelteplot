@@ -5,7 +5,9 @@
         BaseMarkStyleProps,
         ChannelAccessor,
         RawValue,
-        DataRow
+        DataRow,
+        DataRecord,
+        ConstantAccessor
     } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
@@ -16,10 +18,9 @@
             x1?: ChannelAccessor;
             x2?: ChannelAccessor;
             y?: ChannelAccessor;
-            inset: number;
+            inset: ConstantAccessor<number>;
             stack: StackOptions;
         };
-
 </script>
 
 <script lang="ts">
@@ -27,7 +28,7 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { stackX } from '$lib/transforms/stack.js';
     import { recordizeX } from '$lib/transforms/recordize.js';
 
@@ -35,7 +36,15 @@
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data: rawData, inset = 0, onclick, onmouseenter, onmouseleave, ...rawChannels } = $props<BarXMarkProps>();
+    let {
+        data: rawData,
+        inset = 0,
+        dx, dy,
+        onclick,
+        onmouseenter,
+        onmouseleave,
+        ...rawChannels
+    } = $props<BarXMarkProps>();
     let { data, ...channels } = $derived(stackX(recordizeX({ data: rawData, ...rawChannels })));
 
     function isValid(value: RawValue): value is number | Date | string {
@@ -59,6 +68,9 @@
             {@const maxx = Math.max(plot.xScale(cx1), plot.xScale(cx2))}
             {@const maybeFillColor = resolveChannel('fill', datum, channels)}
             {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
+            {@const inset_ = resolveProp(inset, datum as DataRecord, 0) as number}
+            {@const dx_ = resolveProp(dx, datum as DataRecord, 0) as number}
+            {@const dy_ = resolveProp(dy, datum as DataRecord, 0) as number}
             {#if isValid(cy) && isValid(cx1) && isValid(cx2)}
                 <rect
                     style={getBaseStyles(datum, channels)}
@@ -68,9 +80,9 @@
                           ? null
                           : 'currentColor'}
                     style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    transform="translate({[minx, plot.yScale(cy) + inset]})"
+                    transform="translate({[minx + dx_, plot.yScale(cy) + inset_ + dy_]})"
                     width={maxx - minx}
-                    height={plot.yScale.bandwidth() - inset * 2}
+                    height={plot.yScale.bandwidth() - inset_ * 2}
                     role={onclick ? 'button' : null}
                     onclick={wrapEvent(onclick, datum)}
                     onmouseenter={wrapEvent(onmouseenter, datum)}

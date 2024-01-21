@@ -11,7 +11,7 @@
     import { get } from 'underscore';
 
     import BaseMark from './BaseMark.svelte';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
 
     const BaseMark_GridX = BaseMark<BaseMarkProps & GridXMarkProps>;

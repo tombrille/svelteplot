@@ -4,14 +4,34 @@
         BaseMarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
-        DataRow
+        DataRow,
+        ConstantAccessor,
+        DataRecord
     } from '$lib/types.js';
+
+    type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+
     export type TextMarkProps = MarkProps &
         BaseMarkStyleProps & {
-            data: DataRow[];
+            data: DataRecord[];
             x?: ChannelAccessor;
             y?: ChannelAccessor;
-            text?: ChannelAccessor;
+            rotate?: ChannelAccessor | ConstantAccessor<number>;
+            fontSize?: ChannelAccessor | ConstantAccessor<number>;
+            // constant options
+            text: ConstantAccessor<string>;
+            textAnchor?: ConstantAccessor<'start' | 'middle' | 'end'>;
+            lineAnchor?: ConstantAccessor<'top' | 'bottom' | 'middle'>;
+            frameAnchor?: ConstantAccessor<'top' | 'middle' | 'bottom' | 'left' | 'right'>;
+            lineWidth?: ConstantAccessor<number>;
+            // textOverflow: ConstantAccessor<number>;
+            monospace?: ConstantAccessor<boolean>;
+            fontFamily?: ConstantAccessor<string>;
+            fontStyle?: ConstantAccessor<string>;
+            fontVariant?: ConstantAccessor<string>;
+            fontWeight?: ConstantAccessor<
+                'normal' | 'light' | 'lighter' | 'bold' | 'bolder' | number | GlobalCSSValues
+            >;
         };
 </script>
 
@@ -20,25 +40,25 @@
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
-    
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
+
     const BaseMark_Text = BaseMark<BaseMarkProps & TextMarkProps>;
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { data, ...channels } = $props<TextMarkProps>();
+    let { data, text, x, y, fill, stroke, fontSize, rotate, ...otherProps } =
+        $props<TextMarkProps>();
+    let channels = $derived({ x, y, fill, stroke, fontSize, rotate });
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
-
-
 </script>
 
 <BaseMark_Text
     type="text"
     {data}
-    channels={['x', 'y', 'text', 'fill', 'stroke']}
+    channels={['x', 'y', 'fill', 'stroke', 'fontSize', 'rotate']}
     {...channels}
 >
     <g class="text">
@@ -50,19 +70,22 @@
             <!-- {@const radius =
                 typeof r === 'number'
                     ? r
-                    : plot.radiusScale(resolveChannel('r', datum, channels))}
+                    : plot.radiusScale(resolveProp('r', datum, channels))}
             {@const size = radius * radius * Math.PI} -->
-           
+
             {#if isValid(cx) && isValid(cy)}
                 <text
-                    style={getBaseStyles(datum, channels)}
-                    style:fill={maybeFillColor ? plot.colorScale(maybeFillColor) : maybeStrokeColor ? null : 'currentColor'}
-                    style:stroke={maybeStrokeColor
-                        ? plot.colorScale(maybeStrokeColor)
-                        : null}
+                    style={getBaseStyles(datum, otherProps)}
+                    style:fill={maybeFillColor
+                        ? plot.colorScale(maybeFillColor)
+                        : maybeStrokeColor
+                          ? null
+                          : 'currentColor'}
+                    style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
                     dominant-baseline="central"
                     transform="translate({[plot.xScale(cx), plot.yScale(cy)]})"
-                >{resolveChannel('text', datum, channels)}</text>
+                    >{resolveProp(text, datum, '')}</text
+                >
             {/if}
         {/each}
     </g>

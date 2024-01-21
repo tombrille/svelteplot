@@ -4,8 +4,6 @@ title: Plot
 
 The <b>Plot</b> component is the base for each $lib. It takes care of creating the shared scales.
 
-
-
 ```svelte live
 <script>
     import { Plot, Line, Frame } from '$lib';
@@ -113,36 +111,26 @@ List of all plot options you can pass via props on the `<Plot />` component:
 -   `x` - options for the x scale
 -   `y` - options for the y scale
 
-
 ## Reactive scales test
 
 ```svelte live
 <script lang="ts">
-  import { getContext } from 'svelte';
-  import { Plot, Dot,  RuleY } from '$lib';
+    import { getContext } from 'svelte';
+    import { Plot, Dot, RuleY } from '$lib';
 
-  const { penguins } = getContext('data');
-  let filter = $state(true);
+    const { penguins } = getContext('data');
+    let filter = $state(true);
 
-  const justGentoo = penguins.filter(d => d.species === 'Gentoo');
-  const others = penguins.filter(d => d.species !== 'Gentoo');
+    const justGentoo = penguins.filter((d) => d.species === 'Gentoo');
+    const others = penguins.filter((d) => d.species !== 'Gentoo');
 </script>
 
 <label><input type="checkbox" bind:checked={filter} /> show all</label>
 
 <Plot grid>
     {#if !filter}
-    <Dot data={others} 
-      fill="gray"
-      x="culmen_length_mm" 
-      y="culmen_depth_mm" 
-    />
+        <Dot data={others} fill="gray" x="culmen_length_mm" y="culmen_depth_mm" />
     {/if}
-    <Dot data={justGentoo} 
-      fill="red"
-      x="culmen_length_mm" 
-      y="culmen_depth_mm"
-    />
+    <Dot data={justGentoo} fill="red" x="culmen_length_mm" y="culmen_depth_mm" />
 </Plot>
-
 ```

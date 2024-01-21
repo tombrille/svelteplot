@@ -83,16 +83,24 @@
         if (onmousemove) onmousemove({ ...evt, plot });
     };
 
+    $inspect({
+        xvalues: plot.x.dataValues,
+        xdomain: plot.x.domain
+    });
+
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
 
-<figure 
-    data-testid={testid} class="svelteplot" 
+<figure
+    data-testid={testid}
+    class="svelteplot"
     data-reactive-hack-x={plot.x.dataValues.length}
     data-reactive-hack-y={plot.y.dataValues.length}
     data-reactive-hack-color={plot.color.dataValues.length}
     data-reactive-hack-symbol={plot.symbol.dataValues.length}
-    bind:clientWidth={width} style:max-width={maxWidth}>
+    bind:clientWidth={width}
+    style:max-width={maxWidth}
+>
     <div
         role="document"
         class="plot-body"

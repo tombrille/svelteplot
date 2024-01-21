@@ -1,5 +1,5 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import resolveChannel from '$lib/helpers/resolveChannel.js';
+import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 import type {
     BaseMarkStyleProps,
     ChannelAccessor,
@@ -92,6 +92,8 @@ function stackXY(
             [`__${byDim}`]: resolveChannel(byDim, d, channels)
         })) as DataRecord[];
 
+        console.log({ resolvedData });
+
         const indexed = index(
             resolvedData,
             (d) => d[`__${secondDim}`],
@@ -126,7 +128,6 @@ function stackXY(
                     });
             })
             .flat(1);
-
         return {
             data: newData,
             ...channels,

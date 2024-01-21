@@ -1,13 +1,13 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type { FrameProps } from '$lib/types.js';
+    import type { BaseRectMarkProps, FrameProps } from '$lib/types.js';
     import BaseMark from './BaseMark.svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
 
     const plot = getContext<Plot>('svelteplot');
 
-    let { ...styleProps } = $props<FrameProps>();
+    let { rx, ry, ...styleProps } = $props<FrameProps & BaseRectMarkProps>();
 
     let styleProps2 = $derived({
         ...styleProps,

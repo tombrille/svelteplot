@@ -1,11 +1,34 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import type { ChannelName, ChannelAccessor, DataRow, RawValue } from '$lib/types.js';
+import type {
+    ChannelName,
+    ChannelAccessor,
+    DataRow,
+    RawValue,
+    DataRecord,
+    ConstantAccessor
+} from '$lib/types.js';
 import isRawValue from './isRawValue.js';
 
 type ChannelAlias = { channel: ChannelName };
 
-export default function (
+export function resolveProp<T>(
+    accessor: ConstantAccessor<T>,
+    datum: DataRecord,
+    _defaultValue: RawValue = null
+): RawValue {
+    if (typeof accessor === 'function') {
+        // datum.___orig___ exists if an array of raw values was used as dataset and got
+        // "recordized" by the recordize transform. We want to hide this wrapping to the user
+        // so we're passing the original value to accessor functions instead of our wrapped record
+        return accessor(datum.___orig___ ? datum.___orig___ : datum);
+    } else if (typeof accessor === 'string' && datum[accessor] !== undefined) {
+        return datum[accessor];
+    }
+    return isRawValue(accessor) ? accessor : _defaultValue;
+}
+
+export function resolveChannel(
     channel: ChannelName,
     datum: DataRow,
     channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
@@ -19,12 +42,12 @@ export default function (
             : maybeAccessor;
     if (isDataRecord(accessor) && accessor.channel)
         throw new Error('multiple channel aliases are not allowed');
-    if ((channel === 'x' || channel === 'y') && Array.isArray(datum) && accessor === null) {
-        // special case for [[x0,y0], [x1,y1], ...] format
-        return datum[channel === 'x' ? 0 : 1];
-    } else if (isDataRecord(datum)) {
+    if (isDataRecord(datum)) {
         // use accessor function
         if (typeof accessor === 'function')
+            // datum.___orig___ exists if an array of raw values was used as dataset and got
+            // "recordized" by the recordize transform. We want to hide this wrapping to the user
+            // so we're passing the original value to accessor functions instead of our wrapped record
             return accessor(datum.___orig___ ? datum.___orig___ : datum);
         // use accessor string
         if (typeof accessor === 'string' && datum[accessor] !== undefined) return datum[accessor];

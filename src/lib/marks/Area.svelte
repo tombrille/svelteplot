@@ -4,7 +4,10 @@
         BaseMarkStyleProps,
         ChannelAccessor,
         ChannelName,
-        Curve
+        Curve,
+
+        DataRecord
+
     } from '$lib/types.js';
     export type AreaMarkProps = MarkProps &
         BaseMarkStyleProps & {
@@ -23,7 +26,7 @@
 
 <script lang="ts">
     import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import resolveChannel from '$lib/helpers/resolveChannel.js';
+    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import type { BaseMarkProps } from '$lib/types.js';
     import { getContext } from 'svelte';
     import BaseMark from './BaseMark.svelte';
@@ -51,6 +54,7 @@
         fill = null,
         stroke = null,
         sort = null,
+        dx, dy,
         ...styleProps
     } = $props<AreaMarkProps>();
 
@@ -101,7 +105,7 @@
         })
     );
     // $inspect(plot.x.activeMarks[0]?.dataValues)
-    $inspect({ channels, x })
+    $inspect({ channels, x });
 </script>
 
 <BaseMark_Area
@@ -118,6 +122,8 @@
 >
     <g class="areas">
         {#each sortedGroups as areaData}
+            {@const dx_ = resolveProp(dx, areaData[0] as DataRecord, 0) as number}
+            {@const dy_ = resolveProp(dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(areaData)}
                 style:stroke={stroke
@@ -127,6 +133,7 @@
                     ? plot.colorScale(resolveChannel('fill', areaData[0], channels))
                     : 'currentColor'}
                 style={getBaseStyles(areaData[0], styleProps)}
+                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}
     </g>

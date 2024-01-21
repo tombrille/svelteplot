@@ -6,7 +6,7 @@ import type {
     ScaleName
 } from '$lib/types.js';
 import type { Plot } from './Plot.svelte.js';
-import resolveChannel from '$lib/helpers/resolveChannel.js';
+import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 import { extent } from 'd3-array';
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import { isDateOrNull, isNumberOrNull, isStringOrNull } from '$lib/helpers/typeChecks.js';
