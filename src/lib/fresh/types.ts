@@ -1,3 +1,4 @@
+import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { MouseEventHandler } from 'svelte/elements';
 
 export type ScaleType =
@@ -42,7 +43,7 @@ export type ScaledChannelName =
     | 'y1'
     | 'y2';
 
-export type RawValue = number | Date | boolean | string | null;
+export type RawValue = number | Date | boolean | string;
 
 export type ScaleOptions = {
     type: ScaleType | 'auto';
@@ -112,7 +113,13 @@ export type LegendScaleOptions = ScaleOptions & {
 };
 
 export type PlotOptions = {
+    /**
+     * The plot title, shown in a H2 tag above the SVG element
+     */
     title: string;
+    /**
+     * The plot subtitle, shown in a H3 tag above the SVG element
+     */
     subtitle: string;
     caption: string;
     maxWidth?: string;
@@ -164,7 +171,7 @@ export type DataRecord = Record<string, RawValue> & {
     ___cache___?: Map<symbol, RawValue>;
 };
 
-export type DataRow = DataRecord | RawValue | [number, number];
+export type DataRow = DataRecord | RawValue | [number, number] | null;
 
 type PlotScale = {
     type: ScaleType;
@@ -172,8 +179,10 @@ type PlotScale = {
     range: RawValue[];
     autoTitle?: string;
     skip: Set<symbol>;
-    fn: (d: RawValue) => RawValue;
+    fn: ScaleLinear<RawValue, number> & ScaleBand<RawValue> & ScaleOrdinal<string|Date, number> & ScaleOrdinal<string|Date, string>
 };
+
+
 
 export type CurveName =
     | 'basis'

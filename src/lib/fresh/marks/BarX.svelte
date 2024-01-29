@@ -1,7 +1,7 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { renameChannels, stackX, recordizeX } from '$lib/index.js';
+    import { stackX, recordizeX } from '$lib/index.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -9,24 +9,25 @@
         PlotContext,
         DataRecord,
         BaseMarkStyleProps,
-        ConstantAccessor,
         RectMarkProps,
         ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
+    import type { DataRow } from '$lib/types.js';
 
-    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
+    type BarXProps =
         BaseMarkStyleProps & {
-            data: DataRecord[];
+            data: DataRow[];
             x?: ChannelAccessor;
             x1?: ChannelAccessor;
             x2?: ChannelAccessor;
             y?: ChannelAccessor;
             stack?: StackOptions
-        } & RectMarkProps
-    >();
+        } & RectMarkProps;
+
+    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<BarXProps>();
 
     let args = $derived(stackX(recordizeX({ data, ...options }), stack));
 
@@ -42,7 +43,7 @@
             {@const y_ = resolveChannel('y', datum, args)}
             {@const x1_ = resolveChannel('x1', datum, args)}
             {@const x2_ = resolveChannel('x2', datum, args)}
-            {@const x1 = (useScale.x1 ? plot.scales.x.fn(x1_) : x1_) as number}
+            {@const x1 = (useScale.x1 ? plot.scales.x.fn(x1_ as number) : x1_) as number}
             {@const x2 = (useScale.x2 ? plot.scales.x.fn(x2_) : x2_) as number}
             {@const y = (useScale.y ? plot.scales.y.fn(y_) : y_) as number}
             {@const minx = Math.min(x1 as number, x2 as number)}

@@ -36,13 +36,18 @@
 
     type AreaProps = BaseMarkStyleProps & {
         data: DataRecord[];
+        /**
+         * Lorem ipsum
+         */
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
         y1?: ChannelAccessor;
         y2?: ChannelAccessor;
     } & AreaMarkProps;
 
-    let { data, curve = 'linear', tension = 0, ...options } = $props<AreaProps>();
+    let { data,
+        /** the curve */
+        curve = 'linear', tension = 0, ...options } = $props<AreaProps>();
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());

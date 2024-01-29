@@ -444,4 +444,4 @@ export type Curve =
 
 type Channels = Partial<Record<ScaledChannelName, ChannelAccessor>>;
 
-export type TransformArg<T, K> = T & Channels & { data: K[] };
+export type TransformArg<T, K> = Partial<T> & Channels & { data: K[] };

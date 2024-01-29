@@ -31,9 +31,9 @@ export function recordizeX<T>(
  * in which the values are interpreted as y channel and their index as yx
  */
 export function recordizeY<T>(
-    { data, ...channels }: TransformArg<T>,
+    { data, ...channels }: TransformArg<T, DataRow>,
     { withIndex } = { withIndex: true }
-): TransformArg<T> {
+): TransformArg<T, DataRecord> {
     if (!data) return { data, ...channels };
     const dataIsRawValueArray =
         !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.y == null;

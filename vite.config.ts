@@ -15,11 +15,17 @@ export default defineConfig({
     plugins: [
         sveltepress({
             theme: defaultTheme({
+                
                 logo: '/favicon.png',
                 github: 'https://github.com/svelteplot/svelteplot',
                 themeColor: {
                     light: '#ffffff',
-                    dark: '#18181b'
+                    dark: '#18181b',
+                    primary: '#ed277c',
+                    gradient: {
+                        start: '#ed277c',
+                        end: '#bf1e2d'
+                    }
                 },
                 highlighter: {
                     themeLight: 'github-light',
@@ -44,7 +50,7 @@ export default defineConfig({
 
             siteConfig: {
                 title: 'SveltePlot',
-                description: 'Demo of an imaginary new visualization toolkit'
+                description: 'The Svelte framework for exploratory data visualization'
             }
         })
     ],

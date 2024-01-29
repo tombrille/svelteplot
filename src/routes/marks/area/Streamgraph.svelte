@@ -20,7 +20,7 @@
     </select>
 {/if}
 
-<Plot marginLeft={0} y={{ axis: false }} color={{ legend: true }} testid="area-y1">
+<Plot title="Hi" marginLeft={0} y={{ axis: false }} color={{ legend: true }} testid="area-y1">
     <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{ offset }} />
 </Plot>
 

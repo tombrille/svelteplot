@@ -1,12 +1,15 @@
 ---
 title: A content centered site build tool
-description: Unfortunately, SveltePlot doesn't exist, yet. But maybe it could, so let's discuss!
-# heroImage: /android-chrome-192x192.png
-tagline: Unfortunately, SveltePlot doesn't exist, yet. But let's discuss if it should!
+description: The Svelte framework for exploratory data visualization
+heroImage: /logo.png
+tagline: Inspired by Observable Plot & build on top of D3!
 actions:
-    - label: Read the docs
+    - label: Get started
       to: /guide/introduction
       type: primary
+    - label: What is SveltePlot?
+      to: /guide/introduction
+      type: flat
     - label: View on github
       type: flat
       to: /features/plot
@@ -44,4 +47,17 @@ features:
           type: iconify
           collection: emojione
           name: artist-palette
+    - title: Written in Svelte5 & TypeScript
+      description: All components and props are fully reactive, typed and documented! 
+      icon:
+          type: iconify
+          collection: emojione
+          name: artist-palette
 ---
+
+<style>
+  :global(.intro .description) {
+    font-size: 3.5rem;
+    line-height: 1.1;
+  }
+</style>
