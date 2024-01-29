@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
     import type {
         PlotContext,
         DataRecord,
@@ -22,6 +22,7 @@
             r?: ChannelAccessor;
             fill?: ChannelAccessor;
             stroke?: ChannelAccessor;
+            children?: Snippet;
             dx?: ConstantAccessor<number>;
             dy?: ConstantAccessor<number>;
         }

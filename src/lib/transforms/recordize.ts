@@ -1,14 +1,14 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import type { DataRecord, DataRow, TransformArg } from '$lib/types.js';
+import type { ChannelAccessor, DataRecord, DataRow, TransformArg } from '$lib/types.js';
 
 /*
  * This transform takes an array of raw values as input and returns data records
  * in which the values are interpreted as x channel and their index as y
  */
 export function recordizeX<T>(
-    { data, ...channels }: TransformArg<T>,
+    { data, ...channels }: TransformArg<T, DataRow>,
     { withIndex } = { withIndex: true }
-): TransformArg<T> {
+): TransformArg<T & { x: ChannelAccessor; y: ChannelAccessor }, DataRecord> {
     const dataIsRawValueArray =
         !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.x == null;
     if (dataIsRawValueArray) {

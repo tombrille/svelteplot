@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
+    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/fresh/index.js';
+    import type { StackOffset } from '$lib/transforms/stack.js';
 
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
@@ -8,7 +9,7 @@
 
     let { stackControls } = $props<{ stackControls: boolean }>();
 
-    let offset = $state('wiggle');
+    let offset: StackOffset = $state('wiggle');
 </script>
 
 {#if stackControls}

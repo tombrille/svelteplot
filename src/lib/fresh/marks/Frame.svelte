@@ -6,7 +6,12 @@
     import type { BaseMarkStyleProps } from '../types.js';
     import { resolveProp } from '../helpers/resolve.js';
 
-    let { ...options } = $props<BaseMarkStyleProps & RectMarkProps>();
+    let { automatic, ...options } = $props<
+        BaseMarkStyleProps &
+            RectMarkProps & {
+                automatic: boolean;
+            }
+    >();
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());
@@ -15,7 +20,7 @@
     let dy = $derived(resolveProp(options.dy, null, 0));
 </script>
 
-<Mark type="frame">
+<Mark type="frame" {automatic}>
     <rect
         transform={dx || dy ? `translate(${dx},${dy})` : null}
         style={getBaseStyles(null, options)}

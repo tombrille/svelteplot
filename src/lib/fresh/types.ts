@@ -136,18 +136,19 @@ export type PlotOptions = {
 export type GenericMarkOptions = Record<string, any>;
 
 export type MarkType =
+    | 'area'
+    | 'axisX'
+    | 'axisY'
     | 'barX'
     | 'barY'
     | 'dot'
-    | 'ruleX'
-    | 'ruleY'
-    | 'axisX'
-    | 'axisY'
+    | 'frame'
     | 'gridX'
     | 'gridY'
-    | 'area'
-    | 'tick'
-    | 'frame';
+    | 'line'
+    | 'ruleX'
+    | 'ruleY'
+    | 'tick';
 
 export type Mark<T> = {
     id: symbol;

@@ -443,4 +443,5 @@ export type Curve =
     | 'step-before';
 
 type Channels = Partial<Record<ScaledChannelName, ChannelAccessor>>;
-export type TransformArg<T> = T & Channels & { data: DataRow[] };
+
+export type TransformArg<T, K> = T & Channels & { data: K[] };

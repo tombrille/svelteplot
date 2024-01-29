@@ -193,7 +193,7 @@
             <GridY automatic />
         {/if}
         {#if plotOptions.frame}
-            <Frame />
+            <Frame automatic />
         {/if}
         <slot />
     </svg>

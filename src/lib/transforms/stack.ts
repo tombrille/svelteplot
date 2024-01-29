@@ -20,30 +20,14 @@ import {
 } from 'd3-shape';
 import { index, union } from 'd3-array';
 
-type MarkX = BaseMarkStyleProps & {
-    z?: ChannelAccessor;
-    x?: ChannelAccessor;
-    x1?: ChannelAccessor;
-    x2?: ChannelAccessor;
-    y?: ChannelAccessor;
-};
-
-type MarkY = BaseMarkStyleProps & {
-    z?: ChannelAccessor;
-    y?: ChannelAccessor;
-    y1?: ChannelAccessor;
-    y2?: ChannelAccessor;
-    x?: ChannelAccessor;
-};
-
 const DEFAULT_STACK_OPTIONS: StackOptions = {
     order: null,
     offset: null,
     reverse: false
 };
 
-type StackOrder = 'none' | 'appearance' | 'inside-out' | 'sum';
-type StackOffset = 'none' | 'wiggle' | 'center' | 'normalize';
+export type StackOrder = 'none' | 'appearance' | 'inside-out' | 'sum';
+export type StackOffset = 'none' | 'wiggle' | 'center' | 'normalize';
 
 export type StackOptions = {
     offset: null | StackOffset;
@@ -139,10 +123,7 @@ function stackXY(
     return { data, ...channels };
 }
 
-export function stackY(
-    { data, ...channels }: TransformArg,
-    opts: Partial<StackOptions> = {}
-): TransformArg {
+export function stackY<T>({ data, ...channels }: T, opts: Partial<StackOptions> = {}): T {
     return stackXY('y', data, channels, applyDefaults(opts));
 }
 

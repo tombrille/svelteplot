@@ -8,6 +8,7 @@
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+        stack?: Partial<StackOptions>
     };
 </script>
 
@@ -30,28 +31,23 @@
         ChannelAccessor
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
+    import { getUsedScales } from '../helpers/scales.js';
+    import type { StackOptions } from '$lib/transforms/stack.js';
 
-    let {
-        data,
-        stroke,
-        fill,
-        curve = 'linear',
-        tension = 0,
-        ...options
-    } = $props<
-        BaseMarkStyleProps & {
-            data: DataRecord[];
-            x1?: ChannelAccessor;
-            x2?: ChannelAccessor;
-            y1?: ChannelAccessor;
-            y2?: ChannelAccessor;
-        } & AreaMarkProps
-    >();
+    type AreaProps = BaseMarkStyleProps & {
+        data: DataRecord[];
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+    } & AreaMarkProps;
+
+    let { data, curve = 'linear', tension = 0, ...options } = $props<AreaProps>();
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());
 
-    let groupByKey = $derived(options.z || fill || stroke);
+    let groupByKey = $derived(options.z || options.fill || options.stroke);
 
     let groups = $derived(
         groupByKey ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d))) : [data]
@@ -68,7 +64,7 @@
             : groups
     );
 
-    let areaPath = $derived(
+    let areaPath: (d: DataRecord[]) => string = $derived(
         callWithProps(area, [], {
             curve: maybeCurve(curve, tension),
             ...(options.x1 != null && options.x2 != null
@@ -93,19 +89,23 @@
     {data}
     channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke']}
     required={['x1', 'y1']}
-    {fill}
-    {stroke}
     {...options}
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="areas">
         {#each sortedGroups as areaData}
+            {@const fill_ = resolveChannel('fill', areaData[0], options)}
+            {@const stroke_ = resolveChannel('stroke', areaData[0], options)}
+            {@const fill = (useScale.fill ? plot.scales.color.fn(fill_) : fill_) as string}
+            {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
             {@const dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
             {@const dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(areaData)}
                 style={getBaseStyles(areaData[0], options)}
+                style:fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
+                style:stroke={stroke_ ? stroke : null}
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}

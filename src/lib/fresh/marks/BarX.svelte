@@ -1,7 +1,7 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { renameChannels, stackX, recordizeX } from '$lib';
+    import { renameChannels, stackX, recordizeX } from '$lib/index.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -15,18 +15,20 @@
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
+    import type { StackOptions } from '$lib/transforms/stack.js';
 
-    let { data, onclick, onmouseenter, onmouseleave, ...options } = $props<
+    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
         BaseMarkStyleProps & {
             data: DataRecord[];
             x?: ChannelAccessor;
             x1?: ChannelAccessor;
             x2?: ChannelAccessor;
             y?: ChannelAccessor;
+            stack?: StackOptions
         } & RectMarkProps
     >();
 
-    let args = $derived(stackX(recordizeX({ data, ...options })));
+    let args = $derived(stackX(recordizeX({ data, ...options }), stack));
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());

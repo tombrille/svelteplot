@@ -1,11 +1,12 @@
+import type { DataRecord } from '$lib/fresh/types.js';
 import type { ScaledChannelName, TransformArg } from '$lib/types.js';
 
-type RenameChannelsOptions = Record<ScaledChannelName, ScaledChannelName>;
+type RenameChannelsOptions = Partial<Record<ScaledChannelName, ScaledChannelName>>;
 
-export function renameChannels(
-    { data, ...channels }: TransformArg,
+export function renameChannels<T>(
+    { data, ...channels }: TransformArg<T, DataRecord>,
     options: RenameChannelsOptions
-): TransformArg {
+): TransformArg<T, DataRecord> {
     const newChannels = channels;
     for (const [from, to] of Object.entries(options) as [ScaledChannelName, ScaledChannelName][]) {
         if (newChannels[from] !== undefined) {

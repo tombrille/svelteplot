@@ -24,7 +24,7 @@
 
 <script lang="ts">
     import Area from './Area.svelte';
-    import { stackX, recordizeX } from '$lib';
+    import { stackX, recordizeX } from '$lib/index.js';
 
     let { data: rawData, stack, ...rawChannels } = $props<AreaXMarkProps>();
     let { data, ...channels } = $derived(

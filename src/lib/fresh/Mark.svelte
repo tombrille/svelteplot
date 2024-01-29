@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
     import { deepEqual } from 'fast-equals';
 
     import { CHANNEL_SCALE } from '$lib/contants.js';
@@ -22,12 +22,13 @@
         ...options
     } = $props<
         {
-            data: DataRecord[];
+            data?: DataRecord[];
             automatic?: boolean;
             type: MarkType;
-            channels: ScaledChannelName[];
-            required: ScaledChannelName[];
-        } & Record<ChannelName, ChannelAccessor>
+            channels?: ScaledChannelName[];
+            required?: ScaledChannelName[];
+            children?: Snippet;
+        } & Partial<Record<ChannelName, ChannelAccessor>>
     >();
 
     const { addMark, updateMark, removeMark } = getContext<PlotContext>('svelteplot');

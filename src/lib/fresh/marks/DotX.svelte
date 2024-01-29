@@ -1,10 +1,17 @@
-<script>
+<script lang="ts">
     import Dot from './Dot.svelte';
-    import { recordizeX } from '$lib';
+    import { recordizeX } from '$lib/index.js';
+    import type { BaseMarkStyleProps, DataRow } from '../types.js';
+    import type { ChannelAccessor } from '$lib/types.js';
 
-    let { data, ...options } = $props();
+    type DotXProps = BaseMarkStyleProps & {
+        data: DataRow[];
+        x?: ChannelAccessor;
+    };
 
-    let args = $derived(recordizeX({ data, ...options, y: 0 }, { withIndex: false }));
+    let { data, ...options } = $props<DotXProps>();
+
+    let args = $derived(recordizeX<DotXProps>({ data, ...options, y: 0 }, { withIndex: false }));
 </script>
 
 <Dot {...args}>dot</Dot>
