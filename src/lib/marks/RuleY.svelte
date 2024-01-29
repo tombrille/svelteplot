@@ -30,12 +30,7 @@
             <line
                 transform="translate(0,{plot.yScale(resolveChannel('y', datum, channels))})"
                 style={getBaseStyles(datum, channels)}
-                style:fill={maybeFillColor
-                        ? plot.colorScale(maybeFillColor)
-                        : maybeStrokeColor
-                          ? null
-                          : 'currentColor'}
-                style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
+                style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : 'currentColor'}
                 x1={x1 != null
                     ? plot.xScale(resolveChannel('x1', datum, channels))
                     : plot.margins.left}
@@ -48,5 +43,4 @@
 </BaseMark_RuleY>
 
 <style>
-    
 </style>

@@ -1,36 +1,51 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import type { DataRecord, DataRow, TransformArg } from '$lib/types.js';
 
-// This transform takes an array of raw values as input and returns
-export function recordizeX({ data, ...channels }: TransformArg): TransformArg {
-    const dataIsRawValueArray = !isDataRecord(data[0]) && !Array.isArray(data[0]);
+/*
+ * This transform takes an array of raw values as input and returns data records
+ * in which the values are interpreted as x channel and their index as y
+ */
+export function recordizeX<T>(
+    { data, ...channels }: TransformArg<T>,
+    { withIndex } = { withIndex: true }
+): TransformArg<T> {
+    const dataIsRawValueArray =
+        !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.x == null;
     if (dataIsRawValueArray) {
         return {
             data: data.map((value, index) => ({
                 __value: value,
-                __index: index,
+                ...(withIndex ? { __index: index } : {}),
                 ___orig___: value
             })) as DataRow[],
             ...channels,
             x: '__value',
-            y: '__index'
+            ...(withIndex ? { y: '__index' } : {})
         };
     }
     return { data, ...channels };
 }
 
-export function recordizeY({ data, ...channels }: TransformArg): TransformArg {
+/*
+ * This transform takes an array of raw values as input and returns data records
+ * in which the values are interpreted as y channel and their index as yx
+ */
+export function recordizeY<T>(
+    { data, ...channels }: TransformArg<T>,
+    { withIndex } = { withIndex: true }
+): TransformArg<T> {
     if (!data) return { data, ...channels };
-    const dataIsRawValueArray = !isDataRecord(data[0]) && !Array.isArray(data[0]);
+    const dataIsRawValueArray =
+        !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.y == null;
     if (dataIsRawValueArray) {
         return {
             data: data.map((value, index) => ({
                 __value: value,
-                __index: index,
+                ...(withIndex ? { __index: index } : {}),
                 ___orig___: value
             })) as DataRow[],
             ...channels,
-            x: '__index',
+            ...(withIndex ? { x: '__index' } : {}),
             y: '__value'
         };
     }

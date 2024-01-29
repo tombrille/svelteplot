@@ -6,7 +6,10 @@ function isObject(item: any): item is ObjectType {
     return item && typeof item === 'object' && !Array.isArray(item);
 }
 
-export default function mergeDeep(target: ObjectType, ...sources: ObjectType[]): ObjectType {
+export default function mergeDeep<T extends ObjectType>(
+    target: Partial<T>,
+    ...sources: Partial<T>[]
+): T {
     if (!sources.length) return target;
     const source = sources.shift();
 

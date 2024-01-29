@@ -15,7 +15,7 @@ import { Scale } from './Scale.svelte.js';
 import type { Mark } from './Mark.svelte.js';
 import pick from 'underscore/modules/pick.js';
 
-export const DEFAULT_PLOT_OPTIONS: {
+export type PLOT_OPTIONS = {
     title: string;
     subtitle: string;
     caption: string;
@@ -33,44 +33,48 @@ export const DEFAULT_PLOT_OPTIONS: {
     y: PositionScaleOptions & {
         axis?: AxisYAnchor;
     };
-} = {
-    title: '',
-    subtitle: '',
-    caption: '',
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: 30,
-    marginBottom: 0,
-    radius: { range: [1, 10] },
-    symbol: {},
-    color: {},
-    x: {
-        domain: undefined,
-        grid: false,
-        ticks: undefined,
-        tickSpacing: 80,
-        axis: 'bottom',
-        log: false,
-        reverse: false
-    },
-    y: {
-        domain: undefined,
-        grid: false,
-        ticks: undefined,
-        tickSpacing: 60,
-        axis: 'left',
-        log: false,
-        reverse: false
-    }
 };
 
+export function defaultPlotOptions(): PLOT_OPTIONS {
+    return {
+        title: '',
+        subtitle: '',
+        caption: '',
+        marginLeft: 0,
+        marginRight: 0,
+        marginTop: 30,
+        marginBottom: 0,
+        radius: { range: [1, 10] },
+        symbol: {},
+        color: {},
+        x: {
+            domain: undefined,
+            grid: false,
+            ticks: undefined,
+            tickSpacing: 80,
+            axis: 'bottom',
+            log: false,
+            reverse: false
+        },
+        y: {
+            domain: undefined,
+            grid: false,
+            ticks: undefined,
+            tickSpacing: 60,
+            axis: 'left',
+            log: false,
+            reverse: false
+        }
+    };
+}
+
 export class Plot {
-    width = $state(600);
+    width = $state<number>();
     _height = $state<number | 'auto'>(400);
 
-    options = $state(DEFAULT_PLOT_OPTIONS);
+    options = $state(defaultPlotOptions());
 
-    marks = $state<Mark<BaseMarkProps>[]>([]);
+    marks = $state.frozen<Mark<BaseMarkProps>[]>([]);
 
     readonly hasScaleX = $derived(
         !!this.marks.find((mark) => !mark.automatic && mark.scales.has('x'))
@@ -194,8 +198,8 @@ export class Plot {
         !!this.marks.find((mark) => mark.type === 'axis-y' && !mark.automatic)
     );
 
-    constructor(width: number, height: number, options: Partial<typeof DEFAULT_PLOT_OPTIONS>) {
-        const opts = mergeDeep({}, DEFAULT_PLOT_OPTIONS, options) as typeof DEFAULT_PLOT_OPTIONS;
+    constructor(width: number, height: number, options: Partial<PLOT_OPTIONS>) {
+        const opts = mergeDeep({}, defaultPlotOptions(), options) as PLOT_OPTIONS;
         this.width = width;
         this._height = height;
         this.options = opts;
@@ -203,6 +207,14 @@ export class Plot {
 
     addMark(mark: Mark<BaseMarkProps>) {
         this.marks = [...this.marks, mark];
+    }
+
+    replaceMark(mark: Mark<BaseMarkProps>) {
+        this.marks = this.marks.toSpliced(
+            this.marks.find((d) => d.id === mark.id),
+            1,
+            mark
+        );
     }
 
     removeMark(removeMark: Mark<BaseMarkProps>) {

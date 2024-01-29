@@ -1,34 +1,30 @@
-import type { ScaleName, ChannelName } from './types.js';
+import type { ScaleName, ScaledChannelName } from './types.js';
 
 export const SCALE_TYPES: Record<ScaleName, symbol> = {
     opacity: Symbol('opacity'),
     color: Symbol('color'),
     x: Symbol('position'),
     y: Symbol('position'),
-    angle: Symbol('angle'),
     symbol: Symbol('symbol'),
-    radius: Symbol('radius'),
-    width: Symbol('width'),
-    fontSize: Symbol('width')
+    r: Symbol('radius'),
+    length: Symbol('length')
 };
 
-export const CHANNEL_SCALE: Record<ChannelName, ScaleName> = {
+export const CHANNEL_SCALE: Record<ScaledChannelName, ScaleName> = {
     x: 'x',
     x1: 'x',
     x2: 'x',
     y: 'y',
     y1: 'y',
     y2: 'y',
-    rotate: 'angle',
-    r: 'radius',
+    r: 'r',
+    length: 'length',
     symbol: 'symbol',
     fill: 'color',
     stroke: 'color',
     opacity: 'opacity',
     fillOpacity: 'opacity',
-    strokeOpacity: 'opacity',
-    strokeWidth: 'width',
-    fontSize: 'fontSize'
+    strokeOpacity: 'opacity'
 };
 
 // export const CHANNEL_MAP: Record<ScaleName, ValueOf<typeof SCALE_TYPES>> = {

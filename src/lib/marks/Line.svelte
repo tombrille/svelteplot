@@ -3,7 +3,7 @@
         MarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
-        ChannelName,
+        ScaledChannelName,
         Curve,
         DataRow
     } from '$lib/types.js';
@@ -48,7 +48,9 @@
     let sortedGroups = $derived(
         sort
             ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels) ? 1 : -1
+                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels)
+                      ? 1
+                      : -1
               )
             : groups
     );
@@ -69,7 +71,9 @@
                 stroke={stroke
                     ? plot.colorScale(resolveChannel('stroke', lineData[0], channels))
                     : 'currentColor'}
-                fill={fill ? plot.colorScale(resolveChannel('fill', lineData[0], channels)) : 'none'}
+                fill={fill
+                    ? plot.colorScale(resolveChannel('fill', lineData[0], channels))
+                    : 'none'}
                 style={getBaseStyles(lineData[0], channels)}
             />
         {/each}

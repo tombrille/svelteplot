@@ -1,49 +1,73 @@
 ---
-title: Introduction
+title: What is SveltePlot?
 description: How to use SveltePlot
 lastUpdate: 2024-01-10
 ---
 
 <script lang="ts">
-    import { Plot, Frame, Dot, DotX, DotY, GridX, GridY } from '$lib/index.js';
-    import RuleX from '$lib/marks/RuleX.svelte';
-    import CandlestickExample from '../../marks/rule/CandlestickExample.svelte';
-
-    let marginLeft = $state(30);
-    let marginRight = $state(20);
-    let marginTop = $state(5);
-    let marginBottom = $state(20);
-
-    const demoData = [
-        { x: 0, y: 0, size: 6 },
-        { x: 1, y: 1, size: 5 },
-        { x: 2, y: 2, size: 3 },
-        { x: 4, y: 3, size: 6 },
-        { x: 5, y: 1, size: 5 },
-        { x: 6, y: 2, size: 3 },
-        { x: 8, y: 0.25, size: 6 },
-        { x: 9, y: 2, size: 5 },
-        { x: 11, y: 1, size: 3 }
-    ];
-
-    let cutoff = $state(demoData.length);
-    let maxRad = $state(6);
-    let hasFrame = $state(true);
-    let useData = $derived(demoData.slice(0, cutoff));
+    
 </script>
 
-This is a nice page
+SveltePlot is a free, open-source Svelte framework for visualizing tabular data, focused on accelerating exploratory data analysis. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as Svelte 5 components.
 
-## Hello world
+You can use SveltePlot to create charts with a consise and minimal API.
 
-<CandlestickExample />
-
-```svelte
+```svelte live
 <script>
-    import { Plot } from 'svelteplot';
+    import { Plot, Dot, Frame, GridY, AxisX, AxisY } from '$lib/fresh';
+    import DotX from '$lib/fresh/marks/DotX.svelte';
+    import RuleY from '$lib/fresh/RuleY.svelte';
+    import Mark from '$lib/fresh/Mark.svelte';
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let olympians = $state(false);
+
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });
+
+    let showGrid = $state(true);
+    let showRule = $state(false);
+    let showFrame = $state(false);
+    let log = $state(false);
+    let truncate = $state(false);
+    let plotClose = $state(true);
+    let height = $state(450);
+
+    function jitter() {
+        return (Math.random() - 0.5) * 3;
+    }
 </script>
 
-<Plot></Plot>
-```
+<label><input type="checkbox" bind:checked={showGrid} /> show grid</label>
+<label><input type="checkbox" bind:checked={showRule} /> show rule</label>
+<label><input type="checkbox" bind:checked={showFrame} /> show frame</label>
+<label><input type="checkbox" bind:checked={log} /> log</label>
+<label><input type="checkbox" bind:checked={truncate} /> truncate data</label>
+<label><input type="checkbox" bind:checked={plotClose} /> plot close</label>
+<label>height <input type="number" bind:value={height} /></label>
 
-Another test:
+{#if olympians}
+    <Plot
+        frame={showFrame}
+        grid={showGrid}
+        x={{ type: log ? 'log' : 'linear', insetLeft: 30, grid: true }}
+        {height}
+        inset={10}
+    >
+        <Dot
+            data={truncate ? olympians.slice(0, 1000) : olympians}
+            x="height"
+            dx={jitter}
+            dy={jitter}
+            y={plotClose ? 'weight' : 'date_of_birth'}
+            stroke="sex"
+            symbol="sex"
+        />
+        {#if showRule}
+            <RuleY data={[0]} />
+        {/if}
+    </Plot>
+{/if}
+```

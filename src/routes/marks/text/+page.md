@@ -18,6 +18,7 @@ Useful for showing SVG labels!
         x="culmen_length_mm"
         y="culmen_depth_mm"
         fill="species"
+        fontWeight={(d) => (d.species === 'Gentoo' ? 'bold' : 'normal')}
         text={(d) => d.island.charAt(0)}
     />
 </Plot>
@@ -34,3 +35,15 @@ Useful for showing SVG labels!
     />
 </Plot>
 ```
+
+## Text options
+
+The following channels are required:
+
+-   **text** - the text contents (a string, possibly with multiple lines)
+-   **x** - the horizontal position; bound to the _x_ scale
+-   **y** - the vertical position; bound to the _y_ scale
+
+## Text options
+
+-   **fontSize** - the font size in pixels

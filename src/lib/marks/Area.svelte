@@ -3,11 +3,9 @@
         MarkProps,
         BaseMarkStyleProps,
         ChannelAccessor,
-        ChannelName,
+        ScaledChannelName,
         Curve,
-
         DataRecord
-
     } from '$lib/types.js';
     export type AreaMarkProps = MarkProps &
         BaseMarkStyleProps & {
@@ -54,11 +52,12 @@
         fill = null,
         stroke = null,
         sort = null,
-        dx, dy,
+        dx,
+        dy,
         ...styleProps
     } = $props<AreaMarkProps>();
 
-    let channels = $derived<Record<ChannelName, ChannelAccessor>>({
+    let channels = $derived<Record<ScaledChannelName, ChannelAccessor>>({
         x1: x1 == null ? x : x1,
         x2,
         y1: y1 == null ? y : y1,

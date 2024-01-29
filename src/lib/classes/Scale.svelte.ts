@@ -1,5 +1,5 @@
 import type {
-    ChannelName,
+    ScaledChannelName,
     ColorScaleType,
     PositionScaleType,
     RawValue,
@@ -17,10 +17,14 @@ const FUNCTION = '(function)';
 export class Scale {
     readonly name: ScaleName | undefined = undefined;
     readonly plot: Plot | undefined = $state(undefined);
+    readonly possibleChannels;
 
     constructor(name: ScaleName, plot: Plot) {
         this.name = name;
         this.plot = plot;
+        this.possibleChannels = Object.entries(CHANNEL_SCALE)
+            .filter(([, channel]) => channel === name)
+            .map(([prop]) => prop as ScaledChannelName);
     }
 
     // readonly type: ScaleType = SCALE_TYPES.position;
@@ -35,12 +39,6 @@ export class Scale {
         this.plot && (this.name === 'x' || this.name === 'y')
             ? this.scaleOptions?.domain || null
             : null
-    );
-
-    readonly possibleChannels = $derived(
-        Object.entries(CHANNEL_SCALE)
-            .filter(([, channel]) => channel === this.name)
-            .map(([prop]) => prop as ChannelName)
     );
 
     readonly activeMarks: Mark[] = $derived(
@@ -91,19 +89,10 @@ export class Scale {
         )
     );
 
-    readonly dataValues = $derived([
-        ...this.activeMarks
-            // only check marks with data
-            .filter((mark) => mark.props.data.length)
-            .map((mark) =>
-                this.possibleChannels.map((prop) =>
-                    mark.props.data.map((row) => resolveChannel(prop, row, mark.props))
-                )
-            )
-            .flat(3)
-            .filter((d) => d != null),
-        ...(this.forceDomain || [])
-    ]);
+    // this is very expensive computing...
+    readonly dataValues = $derived(
+        getDataValues(this.activeMarks, this.possibleChannels, this.forceDomain, this.name)
+    );
 
     readonly isPosition = $derived(this.name === 'x' || this.name === 'y');
     readonly isColor = $derived(this.name === 'color');
@@ -145,4 +134,21 @@ function inferScaleDomain(dataValues: RawValue[], scaleType: PositionScaleType |
     ) {
         return extent(dataValues as number[]);
     }
+}
+
+function getDataValues(activeMarks, possibleChannels, forceDomain, scaleName) {
+    console.log('getDataValues', scaleName, activeMarks.length, { forceDomain });
+    return [
+        ...activeMarks
+            // only check marks with data
+            .filter((mark) => mark.props.data.length)
+            .map((mark) =>
+                possibleChannels.map((prop) =>
+                    mark.props.data.map((row) => resolveChannel(prop, row, mark.props))
+                )
+            )
+            .flat(3)
+            .filter((d) => d != null),
+        ...(forceDomain || [])
+    ];
 }

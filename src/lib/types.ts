@@ -3,16 +3,33 @@ import type { SCALE_TYPES } from './contants.js';
 import type { Plot } from './classes/Plot.svelte.js';
 import type { MouseEventHandler } from 'svelte/elements';
 
-export type ScaleName =
+declare module 'underscore/modules/isEqual' {
+    const isEqual: (a: any, b: any) => boolean;
+    export = isEqual;
+}
+
+export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
+
+/**
+ * these are all the channels that are (potentially) bound to scales
+ */
+export type ScaledChannelName =
+    | 'fill'
+    | 'fillOpacity'
     | 'opacity'
-    | 'color'
-    | 'x'
-    | 'y'
-    | 'angle'
-    | 'radius'
+    | 'r'
+    | 'length'
+    | 'stroke'
+    | 'strokeOpacity'
     | 'symbol'
-    | 'width'
-    | 'fontSize';
+    | 'x'
+    | 'x1'
+    | 'x2'
+    | 'y'
+    | 'y1'
+    | 'y2';
+
+export type ChannelName = ScaledChannelName | 'z' | 'sort';
 
 export type Datasets = {
     aapl: {
@@ -88,7 +105,16 @@ export type PositionScaleOptions = Partial<{
     reverse?: boolean;
 }>;
 
-export type ScaleType = 'linear' | 'pow' | 'sqrt' | 'log' | 'symlog' | 'time' | 'point' | 'band';
+export type ScaleType =
+    | 'auto'
+    | 'linear'
+    | 'pow'
+    | 'sqrt'
+    | 'log'
+    | 'symlog'
+    | 'time'
+    | 'point'
+    | 'band';
 
 export type PositionScaleType = ScaleType | ('point' | 'band');
 
@@ -171,7 +197,9 @@ export type GridProps = {
     tickFormat?: (d: any) => string;
 };
 
-export type DataRecord = Record<string, RawValue> & { ___orig___: RawValue | [RawValue, RawValue] };
+export type DataRecord = Record<string, RawValue> & {
+    ___orig___?: RawValue | [RawValue, RawValue];
+};
 export type DataRow = DataRecord | RawValue | [number, number];
 
 export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null | undefined;
@@ -179,28 +207,6 @@ export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null | und
 export type ConstantAccessor<T> = T | ((d: DataRow) => T) | null | undefined;
 
 export type RawValue = number | Date | boolean | string | null;
-
-export type ChannelName =
-    | 'angle'
-    | 'fill'
-    | 'fillOpacity'
-    | 'fontSize'
-    | 'opacity'
-    | 'r'
-    | 'rotate'
-    | 'sort'
-    | 'stroke'
-    | 'strokeDasharray'
-    | 'strokeOpacity'
-    | 'symbol'
-    | 'width'
-    | 'x'
-    | 'x1'
-    | 'x2'
-    | 'y'
-    | 'y1'
-    | 'y2'
-    | 'z';
 
 // list of all prossible style props on marks
 export type MarkStyleProps =
@@ -218,6 +224,7 @@ export type MarkStyleProps =
     | 'angle'
     | 'radius'
     | 'symbol'
+    | 'textAnchor'
     | 'width';
 
 export type MarkProps2 = 'x' | 'y' | 'r' | 'rotate' | 'symbol';
@@ -243,11 +250,11 @@ export type BaseRectMarkProps = {
     insetBottom?: ConstantAccessor<number>;
     rx?: ConstantAccessor<number>;
     ry?: ConstantAccessor<number>;
-}
+};
 
 export type BaseMarkProps = MarkProps & {
     type: string;
-    channels: ChannelName[];
+    channels: ScaledChannelName[];
     automatic: boolean;
 };
 
@@ -284,9 +291,10 @@ export type BaseMarkStyleProps = Partial<{
         | 'plus-lighter'
     >;
     imageFilter: ConstantAccessor<string>;
-    shapeRendering: ConstantAccessor<'crispEdges'|'geometricPrecision'|'optimizeSpeed'|'auto'>;
+    shapeRendering: ConstantAccessor<
+        'crispEdges' | 'geometricPrecision' | 'optimizeSpeed' | 'auto'
+    >;
     paintOrder: ConstantAccessor<string>;
-
 }>;
 
 export type FrameProps = BaseMarkStyleProps;
@@ -434,5 +442,5 @@ export type Curve =
     | 'step-after'
     | 'step-before';
 
-type Channels = Partial<Record<ChannelName, ChannelAccessor>>;
-export type TransformArg = Channels & { data: DataRow[] };
+type Channels = Partial<Record<ScaledChannelName, ChannelAccessor>>;
+export type TransformArg<T> = T & Channels & { data: DataRow[] };

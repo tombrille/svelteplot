@@ -1,5 +1,6 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
-import type { MarkProps, ChannelName } from '$lib/types.js';
+import type { MarkProps, ScaledChannelName, ScaleName } from '$lib/types.js';
+import { isEqual } from 'underscore';
 
 export function test(initial: number) {
     let num = $state(initial);
@@ -24,28 +25,31 @@ export class Mark<T extends MarkProps> {
     readonly id: symbol;
     readonly type: string;
     readonly automatic: boolean;
+    readonly channels: Set<ScaledChannelName> = new Set();
 
-    channels = $state<Set<ChannelName>>(new Set());
+    props = $state.frozen<T>();
 
-    props = $state<T>();
+    readonly scales = $state.frozen<Set<ScaleName>>();
 
-    readonly scales = $derived(
-        new Set(
+    constructor(type: string, channels: ScaledChannelName[], automatic: boolean, props: T) {
+        this.id = Symbol();
+        this.type = type;
+        this.automatic = automatic;
+        this.channels = new Set(channels);
+        this.update(props);
+    }
+
+    update(props: T) {
+        if (isEqual(props, this.props)) return;
+        this.props = props;
+        this.scales = new Set(
             Array.from(this.channels.values())
                 .filter(
                     (channel) =>
                         this.props[channel] != null && !(typeof this.props[channel] === 'number')
                 )
                 .map((channel) => CHANNEL_SCALE[channel])
-        )
-    );
-
-    constructor(type: string, channels: ChannelName[], automatic: boolean, props: T) {
-        this.id = Symbol();
-        this.type = type;
-        this.automatic = automatic;
-        this.channels = new Set(channels);
-        this.props = props;
+        );
     }
 
     toString() {

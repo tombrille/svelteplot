@@ -22,14 +22,14 @@
     // console.log(type, { data, rest });
     plot.addMark(mark);
 
-    $effect(() => {
-        // update mark channels
-        mark.channels = new Set(channels);
-    });
+    $inspect({ rest: { ...rest } });
+    $inspect({ data: data });
 
     $effect(() => {
-        // update mark channels
-        mark.props = { data, ...rest };
+        // console.log('update..', {...rest})
+        // mark.props = { data, ...rest };
+        mark.update({ data, ...rest });
+        // plot.replaceMark(mark);
     });
 
     $effect(() => {

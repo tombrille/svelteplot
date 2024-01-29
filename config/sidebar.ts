@@ -9,6 +9,10 @@ export default {
                         {
                             title: 'Introduction',
                             to: '/guide/introduction'
+                        },
+                        {
+                            title: 'Differences to Plot',
+                            to: '/guide/differences-to-plot'
                         }
                     ]
                 },

@@ -3,7 +3,7 @@ import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 import type {
     BaseMarkStyleProps,
     ChannelAccessor,
-    ChannelName,
+    ScaledChannelName,
     DataRow,
     DataRecord,
     TransformArg
@@ -70,7 +70,7 @@ const STACK_OFFSET: Record<StackOffset, Function | null> = {
 function stackXY(
     byDim: 'x' | 'y',
     data: DataRow[],
-    channels: Partial<Record<ChannelName, ChannelAccessor>>,
+    channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     options: StackOptions
 ) {
     const groupBy = channels.z ? 'z' : channels.fill ? 'fill' : channels.stroke ? 'stroke' : true;
@@ -91,8 +91,6 @@ function stackXY(
             __group: groupBy === true ? 'G' : resolveChannel(groupBy, d, channels),
             [`__${byDim}`]: resolveChannel(byDim, d, channels)
         })) as DataRecord[];
-
-        console.log({ resolvedData });
 
         const indexed = index(
             resolvedData,
@@ -132,6 +130,9 @@ function stackXY(
             data: newData,
             ...channels,
             [byDim]: undefined,
+            ...(typeof channels[byDim] === 'string'
+                ? { [`__${byDim}_stackOrigField`]: channels[byDim] }
+                : {}),
             ...{ [byLow]: `__${byLow}`, [byHigh]: `__${byHigh}` }
         };
     }

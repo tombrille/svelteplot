@@ -9,12 +9,30 @@
     --svelteplot-bg: #fff;
 }
 
+.content h1.page-title {
+    padding-bottom: 1rem !important;
+}
+
+.content h2 {
+    margin-top: 4rem !important;
+    padding-top: 2rem !important;
+}
+
+.sidebar-group.nested {
+    padding-left: 0;
+}
+.sidebar-group.nested .sidebar-group.nested {
+    padding-left: 1rem;
+}
+
 html.dark {
     --svelteplot-bg: #1b1b1f;
-    body { background-color: var(--svelteplot-bg)!important; }
+    body {
+        background-color: var(--svelteplot-bg) !important;
+    }
 
     .theme-default-sidebar {
-        background-color: #161618!important;
+        background-color: #161618 !important;
     }
 }
 
@@ -26,29 +44,29 @@ html.dark {
 }
 
 .nav-links {
-    font-size: 15px!important;
+    font-size: 15px !important;
     background-color: var(--svelteplot-bg);
     box-shadow: 0px 0px 7px 4px var(--svelteplot-bg);
 }
 
 @media (min-width: 950px) {
     .header-inner {
-        width: 97vw!important;
+        width: 97vw !important;
     }
     .toc {
-        width: 17vw!important;
+        width: 17vw !important;
     }
     .toc .title {
-        font-weight: normal!important;
+        font-weight: normal !important;
     }
     html .toc .item {
         font-size: 12px;
-    } 
+    }
     html .toc .item:not(.active) {
         opacity: 0.6;
-    } 
+    }
     main {
-        padding-top: 90px!important;
+        padding-top: 90px !important;
     }
 }
 

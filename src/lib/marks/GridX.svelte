@@ -5,7 +5,7 @@
         GridXMarkProps,
         GridOptions,
         ChannelAccessor,
-        ChannelName
+        ScaledChannelName
     } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { get } from 'underscore';

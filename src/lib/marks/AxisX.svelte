@@ -22,7 +22,6 @@
         tickFormat = null,
         automatic = false,
         title = null,
-        tickFontSize = null,
         fill = null,
         ...styleProps
     } = $props<AxisXMarkProps & AxisMarkOptions>();

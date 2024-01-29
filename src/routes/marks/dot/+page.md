@@ -8,7 +8,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
     const manufactor = (d) => d.name.split(' ')[0];
@@ -17,7 +17,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
 
-<Plot grid height={500} testid="cars">
+<Plot grid height={500} testid="cars1">
     <Dot
         data={cars}
         x="economy (mpg)"
@@ -33,7 +33,7 @@ dsdsd sd sd sdsd sd
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 </script>
@@ -53,42 +53,31 @@ One more
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
-
-    const demoData = [
-        { x: 0, y: 0, size: 6 },
-        { x: 1, y: 1, size: 5 },
-        { x: 2, y: 2, size: 1 },
-        { x: 4, y: 3, size: 8 },
-        { x: 5, y: 1, size: 5 },
-        { x: 6, y: 2, size: 3 },
-        { x: 8, y: 0.25, size: 20 },
-        { x: 9, y: 2, size: 5 },
-        { x: 11, y: 1, size: 3 }
-    ];
+    import { Plot, Dot } from '$lib/fresh';
+    import { getContext } from 'svelte';
+    const { penguins } = getContext('data');
 
     let maxRad = $state(10);
 </script>
 
 max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
 
-<Plot grid radius={{ range: [1, maxRad] }}>
+<Plot grid r={{ range: [0, maxRad] }}>
     <Dot
-        data={demoData}
-        x="x"
-        y="y"
-        r="size"
-        fill={(d) => (d.x < 5 ? 'red' : 'blue')}
-        stroke="black"
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        r={(d) => Math.pow(d.culmen_length_mm * d.culmen_depth_mm, 4)}
+        fill="sex"
     />
 </Plot>
 ```
 
-You can also use a point scale for dot dimensions:
+You can also use a point scale for dot dimensions to create dot plots:
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
     const manufactor = (d) => d.name.split(' ')[0];
@@ -105,7 +94,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotX } from '$lib';
+    import { Plot, DotX } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
 </script>
@@ -121,7 +110,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotY } from '$lib';
+    import { Plot, DotY } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
 </script>

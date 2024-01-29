@@ -134,7 +134,21 @@ Required channels for horizontal area charts:
 -   `y`, `x1` and `x2` (for vertical area charts)
 -   `z` to group multiple areas
 
-<AreaLineRulePlot />
+```svelte live
+<script lang="ts">
+    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
+    import type { Datasets } from '$lib/types.js';
+    import { getContext } from 'svelte';
+
+    const { aapl } = getContext<Datasets>('data');
+</script>
+
+<Plot grid testid="area-line-rule">
+    <Area data={aapl} x1="Date" y1={0} y2="Close" opacity={0.25} />
+    <Line data={aapl} x="Date" y="Close" />
+    <RuleY data={[0]} />
+</Plot>
+```
 
 ```svelte
 <Plot grid>

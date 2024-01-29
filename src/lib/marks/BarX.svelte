@@ -39,7 +39,8 @@
     let {
         data: rawData,
         inset = 0,
-        dx, dy,
+        dx,
+        dy,
         onclick,
         onmouseenter,
         onmouseleave,

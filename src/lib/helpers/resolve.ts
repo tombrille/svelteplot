@@ -1,7 +1,7 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import type {
-    ChannelName,
+    ScaledChannelName,
     ChannelAccessor,
     DataRow,
     RawValue,
@@ -10,7 +10,7 @@ import type {
 } from '$lib/types.js';
 import isRawValue from './isRawValue.js';
 
-type ChannelAlias = { channel: ChannelName };
+type ChannelAlias = { channel: ScaledChannelName };
 
 export function resolveProp<T>(
     accessor: ConstantAccessor<T>,
@@ -22,16 +22,16 @@ export function resolveProp<T>(
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
         // so we're passing the original value to accessor functions instead of our wrapped record
         return accessor(datum.___orig___ ? datum.___orig___ : datum);
-    } else if (typeof accessor === 'string' && datum[accessor] !== undefined) {
+    } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
         return datum[accessor];
     }
     return isRawValue(accessor) ? accessor : _defaultValue;
 }
 
 export function resolveChannel(
-    channel: ChannelName,
+    channel: ScaledChannelName,
     datum: DataRow,
-    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
+    channels: Partial<Record<ScaledChannelName, ChannelAccessor | ChannelAlias>>
 ): RawValue {
     const scale = CHANNEL_SCALE[channel];
     const maybeAccessor: ChannelAccessor | ChannelAlias =

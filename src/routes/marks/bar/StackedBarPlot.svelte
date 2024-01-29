@@ -1,9 +1,8 @@
 <script lang="ts">
+    import { Plot, BarX } from '$lib/fresh';
     import type { Datasets } from '$lib/types.js';
-    import { Plot, BarY, RuleY } from '$lib';
     import { getContext } from 'svelte';
     import { rollups } from 'd3-array';
-    import { stackY } from '$lib/transforms/stack.js';
 
     const { penguins } = getContext<Datasets>('data');
 
@@ -17,11 +16,9 @@
             .map(([species, group]) => group.map(([island, count]) => ({ species, island, count })))
             .flat(1)
     );
-
-    $inspect(stackY(data, { x: 'island', y: 'count', fill: 'species' }));
 </script>
 
-<Plot grid y={{ percent: true }} marginTop={25}>
-    <RuleY data={[0]} />
-    <BarY {data} x="island" y="count" fill="species" />
+<Plot grid y={{}} x={{ nice: true, axis: 'top' }} marginLeft={70} marginTop={40}>
+    <!-- <RuleY data={[0]} />  -->
+    <BarX {data} y="island" x="count" fill="species" />
 </Plot>

@@ -5,7 +5,7 @@
 
     import { Frame, GridX, GridY, AxisX, AxisY, ColorLegend, SymbolLegend } from '$lib/index.js';
 
-    import { DEFAULT_PLOT_OPTIONS, Plot } from './classes/Plot.svelte.js';
+    import { Plot, defaultPlotOptions, type PLOT_OPTIONS } from './classes/Plot.svelte.js';
 
     import mergeDeep from './helpers/mergeDeep.js';
 
@@ -62,7 +62,7 @@
     $effect(() => {
         plot.width = width;
         plot._height = height;
-        plot.options = mergeDeep({}, DEFAULT_PLOT_OPTIONS, {
+        plot.options = mergeDeep({}, defaultPlotOptions(), {
             marginBottom,
             marginLeft,
             marginRight,
@@ -76,17 +76,14 @@
             title,
             subtitle,
             caption
-        }) as typeof DEFAULT_PLOT_OPTIONS;
+        }) as PLOT_OPTIONS;
     });
 
     const onMouseMove: MouseEventHandler<HTMLDivElement> = (evt) => {
         if (onmousemove) onmousemove({ ...evt, plot });
     };
 
-    $inspect({
-        xvalues: plot.x.dataValues,
-        xdomain: plot.x.domain
-    });
+    $inspect({ fd: plot.x.dataValues });
 
     let hasLegend = $derived(color?.legend || symbol?.legend);
 </script>
