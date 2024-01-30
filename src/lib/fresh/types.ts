@@ -1,3 +1,8 @@
+/** 
+ * @license        
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch 
+ */
 import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
@@ -216,6 +221,16 @@ export type PlotOptions = {
      */
     header: Snippet;
     footer: Snippet;
+    /**
+     * The underlay snippet is useful for adding a layer of custom HTML markup
+     * behind the SVG body of your plot, e.g. for a watermark or background image.
+     */
+    underlay: Snippet;
+    /**
+     * The overlay snippet is useful for adding a layer of custom HTML markup
+     * in front of the SVG body of your plot, e.g. for HTML tooltips.
+     */
+    overlay: Snippet;
     /**
      * if you set testid, the plot container will get a data-testid attribute which
      * can be useful for automatic testing

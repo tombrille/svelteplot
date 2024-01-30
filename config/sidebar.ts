@@ -4,15 +4,19 @@ export default {
             items: [
                 {
                     title: 'Guide',
-                    collapsible: true,
+                    collapsible: false,
                     items: [
                         {
                             title: 'Introduction',
-                            to: '/guide/introduction'
+                            to: '/guide/introduction/'
                         },
                         {
                             title: 'Differences to Plot',
-                            to: '/guide/differences-to-plot'
+                            to: '/guide/differences-to-plot/'
+                        },
+                        {
+                            title: 'Getting started',
+                            to: '/guide/getting-started/'
                         }
                     ]
                 },
@@ -22,19 +26,19 @@ export default {
                     items: [
                         {
                             title: 'Plot',
-                            to: '/features/plot'
+                            to: '/features/plot/'
                         },
                         {
                             title: 'Scales',
-                            to: '/features/scales'
+                            to: '/features/scales/'
                         },
                         {
                             title: 'Transforms',
-                            to: '/features/transforms'
+                            to: '/features/transforms/'
                         },
                         {
                             title: 'Interactivity',
-                            to: '/features/interactivity'
+                            to: '/features/interactivity/'
                         }
                     ]
                 },
@@ -42,24 +46,24 @@ export default {
                     title: 'Marks',
                     collapsible: true,
                     items: [
-                        { title: 'Area', to: '/marks/area' },
-                        { title: 'Axis', to: '/marks/axis' },
-                        { title: 'Bar', to: '/marks/bar' },
-                        { title: 'Dot', to: '/marks/dot' },
-                        { title: 'Frame', to: '/marks/frame' },
-                        { title: 'Grid', to: '/marks/grid' },
-                        { title: 'Line', to: '/marks/line' },
-                        { title: 'Rule', to: '/marks/rule' },
-                        { title: 'Text', to: '/marks/text' },
-                        { title: 'Tick', to: '/marks/tick' }
+                        { title: 'Area', to: '/marks/area/' },
+                        { title: 'Axis', to: '/marks/axis/' },
+                        { title: 'Bar', to: '/marks/bar/' },
+                        { title: 'Dot', to: '/marks/dot/' },
+                        { title: 'Frame', to: '/marks/frame/' },
+                        { title: 'Grid', to: '/marks/grid/' },
+                        { title: 'Line', to: '/marks/line/' },
+                        { title: 'Rule', to: '/marks/rule/' },
+                        { title: 'Text', to: '/marks/text/' },
+                        { title: 'Tick', to: '/marks/tick/' }
                     ]
                 },
                 {
                     title: 'Transforms',
                     collapsible: true,
                     items: [
-                        { title: 'Group', to: '/transforms/group' },
-                        { title: 'Stack', to: '/transforms/stack' }
+                        { title: 'Group', to: '/transforms/group/' },
+                        { title: 'Stack', to: '/transforms/stack/' }
                     ]
                 }
             ]

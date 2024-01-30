@@ -1,4 +1,9 @@
 <script context="module" lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     export type LineMarkProps = {
         z?: ChannelAccessor;
         stroke?: ChannelAccessor;
@@ -97,5 +102,6 @@
     .lines path {
         stroke-width: 1.4px;
         fill: none;
+        stroke-linejoin: round;
     }
 </style>

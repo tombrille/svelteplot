@@ -1,4 +1,9 @@
 <script lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     import { setContext } from 'svelte';
     import type { ScaleName } from '$lib/types.js';
     import type { PlotOptions, GenericMarkOptions, Mark, PlotScales } from './types.js';
@@ -9,7 +14,7 @@
 
     let width = $state(500);
 
-    let { header, footer, ...initialOpts } = $props<Partial<PlotOptions>>();
+    let { header, footer, overlay, underlay, testid, ...initialOpts } = $props<Partial<PlotOptions>>();
 
     // information that influences the default plot options
     type PlotOptionsParameters = {
@@ -122,7 +127,7 @@
 
     let height = $derived(
         plotOptions.height === 'auto'
-            ? (isOneDimensional && explicitScales.has('x')
+            ? (isOneDimensional && explicitScales.has('x') || !explicitMarks.length
                   ? 60
                   : preScales.y.type === 'band'
                     ? preScales.y.domain.length * 30
@@ -174,10 +179,9 @@
 <!--
     @component
     The Plot component is the container for your plot. It collects the marks and computes the shared scales.
-    
 -->
 
-<figure bind:clientWidth={width} style:max-width={plotOptions.maxWidth}>
+<figure bind:clientWidth={width} style:max-width={plotOptions.maxWidth} data-testid={testid}>
     {#if plotOptions.title || plotOptions.subtitle || header || plotOptions.color.legend || plotOptions.symbol.legend}
         <div class="plot-header">
             {#if plotOptions.title}<h2>{plotOptions.title}</h2>{/if}
@@ -192,6 +196,7 @@
         </div>
     {/if}
     <div class="plot-body">
+        {#if underlay}<div class="plot-underlay">{@render underlay()}</div>{/if}
         <svg {width} {height}>
             {#if !hasExplicitAxisX}
                 {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
@@ -218,8 +223,9 @@
             {#if plotOptions.frame}
                 <Frame automatic />
             {/if}
-            <slot />
+            <slot {width} {height} options={plotOptions} />
         </svg>
+        {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}
     </div>
     {#if plotOptions.caption || footer}
         <figcaption class="plot-footer">
@@ -237,6 +243,22 @@
     figure {
         margin: 0;
         padding: 0;
+    }
+
+    .plot-body {
+        position: relative;
+    }
+
+    .plot-overlay, .plot-underlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .plot-underlay {
+        z-index: -1;
     }
 
     .plot-header {

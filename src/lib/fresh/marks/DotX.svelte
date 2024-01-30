@@ -1,4 +1,9 @@
 <script lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     import Dot from './Dot.svelte';
     import { recordizeX } from '$lib/index.js';
     import type { BaseMarkStyleProps, DataRow } from '../types.js';

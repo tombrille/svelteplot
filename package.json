@@ -1,6 +1,15 @@
 {
     "name": "svelteplot",
     "version": "0.0.1-alpha.26",
+    "license": "AGPL-3.0-or-later",
+    "author": {
+        "name": "Gregor Aisch",
+        "email": "gregor@datawrapper.de"
+    },
+    "private": true,
+    "publishConfig": {
+        "access": "private"
+    },
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",

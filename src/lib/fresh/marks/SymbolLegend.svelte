@@ -1,4 +1,9 @@
 <script lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     import { getContext } from 'svelte';
     import { symbol as d3Symbol } from 'd3-shape';
     import { maybeSymbol } from '$lib/helpers/symbols.js';

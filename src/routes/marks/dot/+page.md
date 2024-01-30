@@ -80,7 +80,7 @@ You can also use a point scale for dot dimensions to create dot plots:
     import { Plot, Dot } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
-    const manufactor = (d) => d.name.split(' ')[0];
+     const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <Plot grid testid="cars" y={{ type: 'point' }} marginLeft={80}>

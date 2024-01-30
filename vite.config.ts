@@ -50,7 +50,9 @@ export default defineConfig({
             siteConfig: {
                 title: 'SveltePlot',
                 description: 'The Svelte framework for exploratory data visualization'
-            }
+            },
+
+            addInspect: true,
         })
     ],
 

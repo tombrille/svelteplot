@@ -1,3 +1,8 @@
+/** 
+ * @license        
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch 
+ */
 import { ticks as ticksArray } from 'd3-array';
 
 export function getLogTicks(domain: [number, number], count = 6) {

@@ -1,3 +1,8 @@
+/** 
+ * @license        
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch 
+ */
 export { default as Area } from './marks/Area.svelte';
 export { default as AreaX } from './marks/AreaX.svelte';
 export { default as AreaY } from './marks/AreaY.svelte';

@@ -1,3 +1,8 @@
+/** 
+ * @license        
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch 
+ */
 import {
     scaleBand,
     scaleLinear,
@@ -232,7 +237,7 @@ export function createScale<T extends ScaleOptions>(
     // construct domain from data values
     const valueArr = [...dataValues.values()];
     const type: ScaleType =
-        scaleOptions.type === 'auto' ? inferScaleType(name, valueArr) : scaleOptions.type;
+        scaleOptions.type === 'auto' ? inferScaleType(name, valueArr, markTypes) : scaleOptions.type;
 
     const domain = scaleOptions.domain
         ? scaleOptions.domain
@@ -332,7 +337,7 @@ export function createScale<T extends ScaleOptions>(
     };
 }
 
-function inferScaleType(name: ScaleName, dataValues: RawValue[]): ScaleType {
+function inferScaleType(name: ScaleName, dataValues: RawValue[], markTypes: Set<MarkType>): ScaleType {
     if (name === 'color') {
         if (!dataValues.length) return 'ordinal';
         if (dataValues.every(isNumberOrNull)) return 'linear';
@@ -341,6 +346,11 @@ function inferScaleType(name: ScaleName, dataValues: RawValue[]): ScaleType {
         return 'ordinal';
     }
     if (name === 'symbol') return 'ordinal';
+    // for positional scales, try to pick a scale that's required by the mark types
+    if ((name === 'x' || name === 'y') && markTypes.size === 1) {
+        if (name === 'y' && markTypes.has('barX')) return 'band';
+        if (name === 'x' && markTypes.has('barY')) return 'band';
+    }
     if (!dataValues.length) return 'linear';
     if (dataValues.length === 1) return 'point';
     if (dataValues.every(isNumberOrNull)) return name === 'r' ? 'sqrt' : 'linear';

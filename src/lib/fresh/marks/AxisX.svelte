@@ -1,4 +1,9 @@
 <script lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import type {

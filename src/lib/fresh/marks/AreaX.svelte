@@ -1,4 +1,9 @@
 <script lang="ts">
+    /** 
+     * @license        
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch 
+     */
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels, stackX, recordizeX } from '$lib/index.js';
     import type { DataRecord, BaseMarkStyleProps, ChannelAccessor } from '../types.js';
