@@ -8,8 +8,6 @@
         ChannelAccessor
     } from '../types.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
-    import { maybeSymbol } from '../helpers/symbols.js';
-    import { symbol as d3Symbol } from 'd3-shape';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
@@ -19,12 +17,16 @@
             data: DataRecord[];
             x: ChannelAccessor;
             y: ChannelAccessor;
-            r?: ChannelAccessor;
             fill?: ChannelAccessor;
             stroke?: ChannelAccessor;
             children?: Snippet;
             dx?: ConstantAccessor<number>;
             dy?: ConstantAccessor<number>;
+            text: ConstantAccessor<string>;
+            /**
+             * the line anchor for vertical position; top, bottom, or middle
+             */
+            lineAnchor?: ConstantAccessor<'bottom'|'top'|'middle'>;
         }
     >();
 
@@ -35,8 +37,10 @@
         return value !== null && !Number.isNaN(value);
     }
 
-    function getSymbolPath(symbolType, size) {
-        return d3Symbol(maybeSymbol(symbolType), size)();
+    const LINE_ANCHOR = {
+        bottom: 'auto',
+        middle: 'central',
+        top: 'hanging'
     }
 </script>
 
@@ -49,37 +53,32 @@
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
         {#each data as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
                 {@const _x = resolveChannel('x', datum, options)}
                 {@const _y = resolveChannel('y', datum, options)}
-                {@const _r = resolveChannel('r', datum, { r: 3, ...options })}
                 {@const _fill = resolveChannel('fill', datum, options)}
                 {@const _stroke = resolveChannel('stroke', datum, options)}
-                {#if isValid(_x) && isValid(_y) && isValid(_r)}
+                {#if isValid(_x) && isValid(_y)}
                     {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                     {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
                     {@const dx = resolveProp(options.dx, datum, 0) as number}
-                    {@const dy = resolveProp(options.dx, datum, 0)}
-                    {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
-                    {@const size = r * r * Math.PI}
-                    {@const symbol_ = resolveChannel('symbol', datum, {
-                        symbol: 'circle',
-                        ...options
-                    })}
-                    {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
+                    {@const dy = resolveProp(options.dy, datum, 0)}
                     {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
                     {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
-                    <path
-                        d={getSymbolPath(symbol, size)}
-                        transform="translate({x + dx}, {y + dy})"
-                        data-symbol={symbol}
+                    <text
                         style={getBaseStyles(datum, options)}
-                        style:fill={_fill ? fill : null}
-                        style:stroke={_stroke ? stroke : fill ? null : 'currentColor'}
-                    />
+                        style:fill={_fill
+                            ? fill
+                            : _stroke
+                            ? null
+                            : 'currentColor'}
+                        style:stroke={_stroke ? stroke : null}
+                        dominant-baseline={LINE_ANCHOR[resolveProp(options.lineAnchor, datum, 'middle') || 'middle']}
+                        transform="translate({[x + dx, y + dy]})"
+                        >{resolveProp(options.text, datum, '')}</text
+                    >
                 {/if}
             {/if}
         {/each}
@@ -87,9 +86,13 @@
 </Mark>
 
 <style>
-    path {
+    text {
+        text-anchor: middle;
         fill: none;
         stroke: none;
+        font-size: 13px;
+        font-weight: 500;
         stroke-width: 1.6px;
+        paint-order: stroke fill;
     }
 </style>

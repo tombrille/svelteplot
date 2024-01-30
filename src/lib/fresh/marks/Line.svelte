@@ -63,7 +63,7 @@
         callWithProps(line, [], {
             curve: maybeCurve(curve, tension),
             x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
-            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
+            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options))
         })
     );
 </script>

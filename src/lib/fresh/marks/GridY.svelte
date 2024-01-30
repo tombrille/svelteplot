@@ -9,7 +9,7 @@
         data = [],
         automatic,
         ...options
-    } = $props<{ data?: RawValue[]; automatic: boolean } & BaseMarkStyleProps>();
+    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkStyleProps>();
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());

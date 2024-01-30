@@ -15,7 +15,6 @@ export default defineConfig({
     plugins: [
         sveltepress({
             theme: defaultTheme({
-                
                 logo: '/favicon.png',
                 github: 'https://github.com/svelteplot/svelteplot',
                 themeColor: {

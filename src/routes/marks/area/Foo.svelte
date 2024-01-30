@@ -1,10 +1,10 @@
 <script lang="ts">
     type FooType = {
         /** foo prop */
-        foo: string
-    } 
+        foo: string;
+    };
 
-    let { foo } = $props<FooType>()
+    let { foo } = $props<FooType>();
 </script>
 
 <!--

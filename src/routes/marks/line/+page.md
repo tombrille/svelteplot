@@ -11,26 +11,26 @@ AAPL demo:
     import { getContext } from 'svelte';
 
     const { aapl } = getContext<Datasets>('data');
-
 </script>
+
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" /> 
+    <Line data={aapl} x="Date" y="Adj Close" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" /> 
+    <Line data={aapl} x="Date" y="Adj Close" />
 </Plot>
 ```
 
 The following channels are supported:
 
-- **x** - bound to x scale
-- **y** - bound to y scale
-- **z**
-- **stroke** - bound to color scale
-- **sort**
+-   **x** - bound to x scale
+-   **y** - bound to y scale
+-   **z**
+-   **stroke** - bound to color scale
+-   **sort**
 
 BLS Demo:
 
@@ -41,7 +41,6 @@ BLS Demo:
     import { getContext } from 'svelte';
 
     const { bls } = getContext<Datasets>('data');
-
 </script>
 
 <Plot grid>
@@ -51,7 +50,7 @@ BLS Demo:
         y="unemployment"
         z="division"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => /, MI /.test(d.division) ? 'red': '#ccc'}
+        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#99999955')}
     />
 </Plot>
 ```
@@ -64,7 +63,7 @@ BLS Demo:
         y="unemployment"
         z="division"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => /, MI /.test(d.division) ? 'red': '#ccc'}
+        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#ccc')}
     />
 </Plot>
 ```
@@ -74,7 +73,6 @@ BLS Demo:
 Convenience wrapper
 
 ## LineY
-
 
 ## More examples
 
@@ -87,18 +85,18 @@ Line with symbols:
     import { getContext } from 'svelte';
 
     const { aapl } = getContext<Datasets>('data');
-
 </script>
+
 <Plot height={200} grid>
-    <Line data={aapl.slice(-100)} x="Date" y="Adj Close" /> 
-    <Dot data={aapl.slice(-100)} x="Date" y="Adj Close" fill="currentColor" /> 
+    <Line data={aapl.slice(-100)} x="Date" y="Adj Close" />
+    <Dot data={aapl.slice(-100)} x="Date" y="Adj Close" fill="currentColor" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" /> 
-    <Dot data={aapl} x="Date" y="Adj Close" fill="currentColor" /> 
+    <Line data={aapl} x="Date" y="Adj Close" />
+    <Dot data={aapl} x="Date" y="Adj Close" fill="currentColor" />
 </Plot>
 ```
 
@@ -111,18 +109,18 @@ symbol on last point only:
     import { getContext } from 'svelte';
 
     const { aapl } = getContext<Datasets>('data');
-
 </script>
+
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" /> 
-    <Dot data={aapl.slice(-1)} x="Date" y="Adj Close" r={3} fill="currentColor" /> 
+    <Line data={aapl} x="Date" y="Adj Close" />
+    <Dot data={aapl.slice(-1)} x="Date" y="Adj Close" r={3} fill="currentColor" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" /> 
+    <Line data={aapl} x="Date" y="Adj Close" />
     <!-- assumes data is sorted -->
-    <Dot data={aapl.slice(-1)} x="Date" y="Adj Close" r={3} fill="currentColor" /> 
+    <Dot data={aapl.slice(-1)} x="Date" y="Adj Close" r={3} fill="currentColor" />
 </Plot>
 ```

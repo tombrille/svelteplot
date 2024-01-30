@@ -9,7 +9,7 @@
     let { automatic, ...options } = $props<
         BaseMarkStyleProps &
             RectMarkProps & {
-                automatic: boolean;
+                automatic?: boolean;
             }
     >();
 
@@ -24,6 +24,7 @@
     <rect
         transform={dx || dy ? `translate(${dx},${dy})` : null}
         style={getBaseStyles(null, options)}
+        style:stroke={options.fill ? null : resolveProp(options.stroke, {}) || 'currentColor'}
         x={plot.options.marginLeft}
         y={plot.options.marginTop}
         rx={resolveProp(options.rx, null, null)}
@@ -35,7 +36,7 @@
 
 <style>
     rect {
-        stroke: currentColor;
+        stroke: none;
         fill: none;
     }
 </style>

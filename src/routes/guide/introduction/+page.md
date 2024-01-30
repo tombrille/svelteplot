@@ -33,6 +33,8 @@ You can use SveltePlot to create charts with a consise and minimal API.
     let plotClose = $state(true);
     let height = $state(450);
 
+    let w = $state(100);
+
     function jitter() {
         return (Math.random() - 0.5) * 3;
     }
@@ -45,6 +47,7 @@ You can use SveltePlot to create charts with a consise and minimal API.
 <label><input type="checkbox" bind:checked={truncate} /> truncate data</label>
 <label><input type="checkbox" bind:checked={plotClose} /> plot close</label>
 <label>height <input type="number" bind:value={height} /></label>
+<label>max age <input type="range" max={70} bind:value={w} /> {w} years</label>
 
 {#if olympians}
     <Plot
@@ -57,6 +60,7 @@ You can use SveltePlot to create charts with a consise and minimal API.
         <Dot
             data={truncate ? olympians.slice(0, 1000) : olympians}
             x="height"
+            filter={(d) => d.date_of_birth > new Date(2024 - w, 1, 1)}
             dx={jitter}
             dy={jitter}
             y={plotClose ? 'weight' : 'date_of_birth'}

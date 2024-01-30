@@ -21,19 +21,22 @@ import {
     quantitativeScheme
 } from './colors.js';
 import { isDateOrNull, isNumberOrNull, isStringOrNull, isColorOrNull } from './typeChecks.js';
-import type { ColorScheme, RawValue } from '$lib/types.js';
+import {  type ColorScheme  } from '$lib/types.js';
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
 import type {
+    ChannelAccessor,
     GenericMarkOptions,
     Mark,
     MarkType,
     PlotOptions,
     PlotState,
+    RawValue,
     ScaleName,
     ScaleOptions,
-    ScaleType
+    ScaleType,
+    ScaledChannelName
 } from '../types.js';
 import isDataRecord from './isDataRecord.js';
 import callWithProps from './callWithProps.js';
@@ -142,14 +145,18 @@ export function createScale<T extends ScaleOptions>(
     // gather all marks that use channels which support this scale
     const dataValues = new Set<RawValue>();
     const markTypes = new Set<MarkType>();
-    const skip = new Set<symbol>();
+    const skip = new Map<ScaledChannelName, Set<symbol>>();
+    let manualActiveMarks = 0;
     const propNames = new Set<string>();
+    const uniqueScaleProps = new Set<string | ChannelAccessor>();
 
     for (const mark of marks) {
         if (mark.data.length > 0) {
             for (const channel of mark.channels) {
                 // channelOptions can be passed as prop, but most often users will just
                 // pass the channel accessor or constant value, so we may need to wrap
+
+                if (!skip.has(channel)) skip.set(channel, new Set());
 
                 const channelOptions = isDataRecord(mark.options[channel])
                     ? mark.options[channel]
@@ -183,7 +190,7 @@ export function createScale<T extends ScaleOptions>(
                     }
 
                     if (allValuesAreOutputType) {
-                        skip.add(mark.id);
+                        (skip.get(channel) as Set<symbol>).add(mark.id);
                     }
 
                     // if (name === 'y' && channel === 'y'  && mark.type === 'dot') {
@@ -195,11 +202,13 @@ export function createScale<T extends ScaleOptions>(
                         !channelOptions.value.startsWith('__') &&
                         mark.data[0][channelOptions.value] !== undefined
                     ) {
-                        console.log('propNames.add', channelOptions.value);
                         propNames.add(channelOptions.value);
                     }
 
+                    uniqueScaleProps.add(channelOptions.value);
+
                     if (channelOptions.value != null && !allValuesAreOutputType) {
+                        manualActiveMarks++;
                         markTypes.add(mark.type);
 
                         // active mark channel
@@ -317,6 +326,8 @@ export function createScale<T extends ScaleOptions>(
         range,
         fn,
         skip,
+        manualActiveMarks,
+        uniqueScaleProps,
         autoTitle: propNames.size === 1 ? [...propNames.values()][0] : null
     };
 }
@@ -374,28 +385,16 @@ function getScaleRange(
                   : [];
 }
 
+const channelNames: ScaledChannelName[] = ['x', 'x1', 'x2', 'y', 'y1', 'y2', 'r', 'fill', 'stroke', 'symbol'];
+
 export function getUsedScales(
     plot: PlotState,
     options: GenericMarkOptions,
     mark: Mark<GenericMarkOptions>
-) {
-    // todo: move to helpers, reused in every mark
-    return {
-        x: !plot.scales.x.skip.has(mark.id) && toChannelOption('x', options.x).scale !== null,
-        x1: !plot.scales.x.skip.has(mark.id) && toChannelOption('x1', options.x1).scale !== null,
-        x2: !plot.scales.x.skip.has(mark.id) && toChannelOption('x2', options.x2).scale !== null,
-        y: !plot.scales.y.skip.has(mark.id) && toChannelOption('y', options.y).scale !== null,
-        y1: !plot.scales.y.skip.has(mark.id) && toChannelOption('y1', options.y1).scale !== null,
-        y2: !plot.scales.y.skip.has(mark.id) && toChannelOption('y2', options.y2).scale !== null,
-        r: !plot.scales.r.skip.has(mark.id) && toChannelOption('r', options.r).scale !== null,
-        fill:
-            !plot.scales.color.skip.has(mark.id) &&
-            toChannelOption('fill', options.fill).scale !== null,
-        stroke:
-            !plot.scales.color.skip.has(mark.id) &&
-            toChannelOption('stroke', options.stroke).scale !== null,
-        symbol:
-            !plot.scales.symbol.skip.has(mark.id) &&
-            toChannelOption('symbol', options.symbol).scale !== null
-    };
+): { [k in ScaledChannelName]: boolean } {
+    return Object.fromEntries(channelNames.map((channel) => {
+        const scale = CHANNEL_SCALE[channel];
+        const skipMarks = plot.scales[scale].skip.get(channel) || new Set();
+        return [channel, !skipMarks.has(mark.id) && toChannelOption(channel, options[channel]).scale !== null]
+    }));
 }

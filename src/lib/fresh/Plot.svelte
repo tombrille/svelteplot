@@ -1,17 +1,15 @@
 <script lang="ts">
     import { setContext } from 'svelte';
-    import { CHANNEL_SCALE } from '$lib/contants.js';
-    import stringify from '@aitodotai/json-stringify-pretty-compact';
-    import type { RawValue, ScaleName, ScaleType } from '$lib/types.js';
-    import type { PlotOptions, GenericMarkOptions, Mark, MarkType, PlotScales } from './types.js';
+    import type { ScaleName } from '$lib/types.js';
+    import type { PlotOptions, GenericMarkOptions, Mark, PlotScales } from './types.js';
 
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
-    import { GridX, GridY, Frame, AxisX, AxisY } from './index.js';
+    import { GridX, GridY, Frame, AxisX, AxisY, ColorLegend, SymbolLegend } from './index.js';
 
     let width = $state(500);
 
-    let { ...initialOpts } = $props<Partial<PlotOptions>>();
+    let { header, footer, ...initialOpts } = $props<Partial<PlotOptions>>();
 
     // information that influences the default plot options
     type PlotOptionsParameters = {
@@ -138,19 +136,24 @@
     let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
     let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
-    let plotState = $derived({
-        options: plotOptions,
-        width,
-        height,
-        plotHeight,
-        plotWidth,
-        scales: computeScales(plotOptions, width, height, hasFilledDotMarks, marks)
+    let plotState = $derived.call(() => {
+        const scales = computeScales(plotOptions, width, height, hasFilledDotMarks, marks);
+        const colorSymbolRedundant =
+            scales.color.uniqueScaleProps.size === 1 &&
+            scales.symbol.uniqueScaleProps.size === 1 &&
+            [...scales.color.uniqueScaleProps.values()][0] ===
+                [...scales.symbol.uniqueScaleProps.values()][0];
+        return {
+            options: plotOptions,
+            width,
+            height,
+            plotHeight,
+            plotWidth,
+            scales,
+            colorSymbolRedundant,
+            hasFilledDotMarks
+        };
     });
-
-    $inspect({ scales: plotState.scales.y });
-
-    // just for logging
-    let marksWoData = $derived(marks.map((mark) => ({ ...mark, data: mark.data.length })));
 
     setContext('svelteplot', {
         addMark(mark: Mark<GenericMarkOptions>) {
@@ -168,38 +171,63 @@
     });
 </script>
 
-<figure bind:clientWidth={width} style:max-width={plotOptions.maxWidth}>
-    <svg {width} {height}>
-        {#if !hasExplicitAxisX}
-            {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
-                <AxisX anchor="top" automatic />
-            {/if}
-            {#if plotOptions.x.axis === 'bottom' || plotOptions.x.axis === 'both'}
-                <AxisX anchor="bottom" automatic />
-            {/if}
-        {/if}
-        {#if !hasExplicitAxisY}
-            {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
-                <AxisY anchor="left" automatic />
-            {/if}
-            {#if plotOptions.y.axis === 'right' || plotOptions.y.axis === 'both'}
-                <AxisY anchor="right" automatic />
-            {/if}
-        {/if}
-        {#if !hasExplicitGridX && (plotOptions.grid || plotOptions.x.grid)}
-            <GridX automatic />
-        {/if}
-        {#if !hasExplicitGridY && (plotOptions.grid || plotOptions.y.grid)}
-            <GridY automatic />
-        {/if}
-        {#if plotOptions.frame}
-            <Frame automatic />
-        {/if}
-        <slot />
-    </svg>
-</figure>
+<!--
+    @component
+    The Plot component is the container for your plot. It collects the marks and computes the shared scales.
+    
+-->
 
-{JSON.stringify(plotOptions.x.domain)}
+<figure bind:clientWidth={width} style:max-width={plotOptions.maxWidth}>
+    {#if plotOptions.title || plotOptions.subtitle || header || plotOptions.color.legend || plotOptions.symbol.legend}
+        <div class="plot-header">
+            {#if plotOptions.title}<h2>{plotOptions.title}</h2>{/if}
+            {#if plotOptions.subtitle}<h3>{plotOptions.subtitle}</h3>{/if}
+            {#if header}{@render header()}{/if}
+            {#if plotOptions.color.legend}
+                <ColorLegend />
+            {/if}
+            {#if plotOptions.symbol.legend}
+                <SymbolLegend />
+            {/if}
+        </div>
+    {/if}
+    <div class="plot-body">
+        <svg {width} {height}>
+            {#if !hasExplicitAxisX}
+                {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
+                    <AxisX anchor="top" automatic />
+                {/if}
+                {#if plotOptions.x.axis === 'bottom' || plotOptions.x.axis === 'both'}
+                    <AxisX anchor="bottom" automatic />
+                {/if}
+            {/if}
+            {#if !hasExplicitAxisY}
+                {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
+                    <AxisY anchor="left" automatic />
+                {/if}
+                {#if plotOptions.y.axis === 'right' || plotOptions.y.axis === 'both'}
+                    <AxisY anchor="right" automatic />
+                {/if}
+            {/if}
+            {#if !hasExplicitGridX && (plotOptions.grid || plotOptions.x.grid)}
+                <GridX automatic />
+            {/if}
+            {#if !hasExplicitGridY && (plotOptions.grid || plotOptions.y.grid)}
+                <GridY automatic />
+            {/if}
+            {#if plotOptions.frame}
+                <Frame automatic />
+            {/if}
+            <slot />
+        </svg>
+    </div>
+    {#if plotOptions.caption || footer}
+        <figcaption class="plot-footer">
+            {#if plotOptions.caption}<div>{plotOptions.caption}</div>{/if}
+            {#if footer}{@render footer()}{/if}
+        </figcaption>
+    {/if}
+</figure>
 
 <style>
     :root {
@@ -209,5 +237,34 @@
     figure {
         margin: 0;
         padding: 0;
+    }
+
+    .plot-header {
+        margin-top: 2rem;
+    }
+
+    .plot-header h2,
+    .plot-header h3 {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+    }
+
+    .plot-header h3 {
+        font-weight: 500;
+    }
+
+    .plot-header h2 + h3 {
+        margin-top: 0.35rem !important;
+    }
+
+    .plot-footer {
+        margin-bottom: 2rem;
+    }
+
+    .plot-footer > div {
+        font-size: 12px;
+        font-style: italic;
+        opacity: 0.7;
     }
 </style>

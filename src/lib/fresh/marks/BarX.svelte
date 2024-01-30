@@ -17,15 +17,14 @@
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
 
-    type BarXProps =
-        BaseMarkStyleProps & {
-            data: DataRow[];
-            x?: ChannelAccessor;
-            x1?: ChannelAccessor;
-            x2?: ChannelAccessor;
-            y?: ChannelAccessor;
-            stack?: StackOptions
-        } & RectMarkProps;
+    type BarXProps = BaseMarkStyleProps & {
+        data: DataRow[];
+        x?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y?: ChannelAccessor;
+        stack?: StackOptions;
+    } & RectMarkProps;
 
     let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<BarXProps>();
 

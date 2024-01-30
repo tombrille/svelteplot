@@ -11,7 +11,19 @@ title: Frame mark
 The <b>frame</b> mark can be used to add a rectangle outside your plot boundaries. The
 easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 
-<FramePlot1 />
+```svelte live
+<script lang="ts">
+    import { Plot, Line } from '$lib/fresh/index.js';
+    import type { Datasets } from '$lib/types.js';
+    import { getContext } from 'svelte';
+
+    const { aapl } = getContext<Datasets>('data');
+</script>
+
+<Plot grid frame>
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
 
 ```svelte
 <Plot grid frame>

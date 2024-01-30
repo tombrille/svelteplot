@@ -1,4 +1,5 @@
 import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
+import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
 
 export type ScaleType =
@@ -46,9 +47,22 @@ export type ScaledChannelName =
 export type RawValue = number | Date | boolean | string;
 
 export type ScaleOptions = {
+    /**
+     * Override the automatic scale type detection.
+     */
     type: ScaleType | 'auto';
+    /**
+     * Set a custom domain for the scale instead of auto-computing the domain
+     * from the mark data channels.
+     */
     domain?: RawValue[];
+    /**
+     * Set a custom range for the scale.
+     */
     range?: RawValue[];
+    /**
+     * Reverse the scale.
+     */
     reverse: boolean;
     label?: string;
     interval?: string | number;
@@ -99,13 +113,33 @@ export type AxisXAnchor = 'bottom' | 'top' | 'both';
 export type AxisYAnchor = 'left' | 'right' | 'both';
 
 export type XScaleOptions = ScaleOptions & {
+    /**
+     * Activate the implicit GridX mark. For more control over the grid styling
+     * and layering, add an explicit GridX mark to your plot instead of using the
+     * implicit grids.
+     */
     grid: boolean;
-    axis: AxisXAnchor | null;
+    /**
+     * Controls the position of the implicit AxisX mark, or set to false to disable
+     * the implicit AxisX mark. For more control over the axis styling and layering
+     * add an explicit AxisX mark to your plot instead of using the implicit axes.
+     */
+    axis: AxisXAnchor | false;
 };
 
 export type YScaleOptions = ScaleOptions & {
+    /**
+     * Activate the implicit GridY mark. For more control over the grid styling
+     * and layering, add an explicit GridY mark to your plot instead of using the
+     * implicit grids.
+     */
     grid: boolean;
-    axis: AxisYAnchor | null;
+    /**
+     * Controls the position of the implicit AxisY mark, or set to false to disable
+     * the implicit AxisY mark. For more control over the axis styling and layering
+     * add an explicit AxisY mark to your plot instead of using the implicit axes.
+     */
+    axis: AxisYAnchor | false;
 };
 
 export type LegendScaleOptions = ScaleOptions & {
@@ -114,30 +148,79 @@ export type LegendScaleOptions = ScaleOptions & {
 
 export type PlotOptions = {
     /**
-     * The plot title, shown in a H2 tag above the SVG element
+     * The plot title, rendered as H2 tag above the SVG element. Instead of
+     * using the title, you can also pass a "header" snippet and render your
+     * own custom title markup.
      */
     title: string;
     /**
-     * The plot subtitle, shown in a H3 tag above the SVG element
+     * The plot subtitle, rendered as H3 tag above the SVG element. Instead of
+     * using the subtitle, you can also pass a "header" snippet and render your
+     * own custom title markup.
      */
     subtitle: string;
+    /**
+     * The plot caption, rendered as FIGCAPTION tag below the SVG element. Instead of
+     * using the caption, you can also pass a "footer" snippet and render your
+     * own custom title markup.
+     */
     caption: string;
+    /**
+     * By default, the plot will extend to fit 100% of the parent container width. By
+     * setting the maxWidth style property you can limit the width of your plot.
+     */
     maxWidth?: string;
     height: 'auto' | number;
+    /**
+     * Left margin of the plot, in px.
+     */
     marginLeft: number;
+    /**
+     * Right margin of the plot, in px.
+     */
     marginRight: number;
+    /**
+     * Top margin of the plot, in px.
+     */
     marginTop: number;
+    /**
+     * Bottom margin of the plot, in px.
+     */
     marginBottom: number;
+    /**
+     * Activates the implicit GridX and GridY marks.
+     */
     grid: boolean;
+    /**
+     * Activates the implicit frame marks
+     */
     frame: boolean;
+    /**
+     * Convenience shortcut for setting both the x and y scale insets.
+     */
     inset: number;
-    x: XScaleOptions;
-    y: YScaleOptions;
+    /**
+     * Options for the shared x scale.
+     */
+    x: Partial<XScaleOptions>;
+    y: Partial<YScaleOptions>;
     r: ScaleOptions;
     color: ColorScaleOptions;
     opacity: ScaleOptions;
     symbol: LegendScaleOptions;
     length: ScaleOptions;
+    children: Snippet;
+    /**
+     * You can use the header snippet to render a custom title and subtitle for
+     * your plot, or place a legend above the visualization.
+     */
+    header: Snippet;
+    footer: Snippet;
+    /**
+     * if you set testid, the plot container will get a data-testid attribute which
+     * can be useful for automatic testing
+     */
+    testid: string;
 };
 
 export type GenericMarkOptions = Record<string, any>;
@@ -178,11 +261,20 @@ type PlotScale = {
     domain: RawValue[];
     range: RawValue[];
     autoTitle?: string;
-    skip: Set<symbol>;
-    fn: ScaleLinear<RawValue, number> & ScaleBand<RawValue> & ScaleOrdinal<string|Date, number> & ScaleOrdinal<string|Date, string>
+    /**
+     * The number of marks that are using this scale.
+     */
+    manualActiveMarks: number;
+    /**
+     * Set of accessors used in channels that are bound to this scale.
+     */
+    uniqueScaleProps: Set<ChannelAccessor>;
+    skip: Map<ScaledChannelName, Set<symbol>>;
+    fn: ScaleLinear<RawValue, number> &
+        ScaleBand<RawValue> &
+        ScaleOrdinal<string | Date, number> &
+        ScaleOrdinal<string | Date, string>;
 };
-
-
 
 export type CurveName =
     | 'basis'
@@ -219,6 +311,15 @@ export type PlotState = {
     plotWidth: number;
     plotHeight: number;
     scales: PlotScales;
+    /**
+     * True if there's a color scale and a symbol scale and both are bound to the same
+     * single channel accessor.
+     */
+    colorSymbolRedundant: boolean;
+    /**
+     * True if the plot is using filled dot marks.
+     */
+    hasFilledDotMarks: boolean;
 };
 
 export type PlotContext = {
@@ -229,6 +330,10 @@ export type PlotContext = {
 };
 
 export type BaseMarkStyleProps = Partial<{
+    /**
+     * Filter the data without modifying the inferred scales
+     */
+    filter?: ConstantAccessor<boolean>;
     dx: ConstantAccessor<number>;
     dy: ConstantAccessor<number>;
     fill: ConstantAccessor<string>;

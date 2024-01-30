@@ -104,6 +104,8 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 </Plot>
 ```
 
+Streamgraph example:
+
 <Streamgraph stackControls />
 
 ## AreaX

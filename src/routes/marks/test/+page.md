@@ -11,7 +11,6 @@ This is a page with a single chart or easier debugging.
     import { getContext } from 'svelte';
 
     const { bls } = getContext<Datasets>('data');
-
 </script>
 
 <Plot grid>
@@ -21,7 +20,7 @@ This is a page with a single chart or easier debugging.
         y="unemployment"
         z="division"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => /, MI /.test(d.division) ? 'red': '#ccc'}
+        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#ccc')}
     />
 </Plot>
 ```

@@ -2,18 +2,23 @@
 title: Plot
 ---
 
-The <b>Plot</b> component is the base for each $lib. It takes care of creating the shared scales.
+The <b>Plot</b> component is the base for each plot. It takes care of creating the shared scales.
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib';
+    import { Plot, Line } from '$lib/fresh';
     import { getContext } from 'svelte';
 
     const { aapl } = getContext('data');
 </script>
 
 <Plot grid frame testid="first">
-    <Frame />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot grid frame>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -22,7 +27,7 @@ You can style plots to look like ggplot:
 
 ```svelte live
 <script>
-    import { Plot, Line, GridX, GridY, Frame } from '$lib';
+    import { Plot, Line, GridX, GridY, Frame } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -39,7 +44,7 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib';
+    import { Plot, Line, Frame } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -68,7 +73,7 @@ to add events and scoped styles.
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib';
+    import { Plot, Line, Frame } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -78,16 +83,21 @@ to add events and scoped styles.
         <figcaption>Custom caption above the plot</figcaption>
     {/snippet}
     {#snippet footer()}
-        <h2>
-            Headline below plot with
+        <h4>
+            Centered headline below plot with
             <a href="#/" on:click={() => alert('works')}>custom link</a>
-        </h2>
+        </h4>
     {/snippet}
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 
 <style>
-    h2 a {
+    h4 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 1.15rem;
+    }
+    h4 a {
         color: magenta;
         text-decoration: underline;
     }
@@ -116,21 +126,38 @@ List of all plot options you can pass via props on the `<Plot />` component:
 ```svelte live
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { Plot, Dot, RuleY } from '$lib';
+    import { Plot, Dot, RuleY } from '$lib/fresh';
 
     const { penguins } = getContext('data');
-    let filter = $state(true);
+    let filter = $state(false);
+    let minWeight = $state(8000);
 
     const justGentoo = penguins.filter((d) => d.species === 'Gentoo');
     const others = penguins.filter((d) => d.species !== 'Gentoo');
 </script>
 
-<label><input type="checkbox" bind:checked={filter} /> show all</label>
+<label><input type="checkbox" bind:checked={filter} /> just Gentoo</label><br />
+<label
+    >min weight: <input type="range" min={3000} max={8000} bind:value={minWeight} />
+    ({minWeight})</label
+>
 
 <Plot grid>
     {#if !filter}
-        <Dot data={others} fill="gray" x="culmen_length_mm" y="culmen_depth_mm" />
+        <Dot
+            data={others}
+            fill="gray"
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            filter={(d) => d.body_mass_g < minWeight}
+        />
     {/if}
-    <Dot data={justGentoo} fill="red" x="culmen_length_mm" y="culmen_depth_mm" />
+    <Dot
+        data={justGentoo}
+        fill="red"
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        filter={(d) => d.body_mass_g < minWeight}
+    /> />
 </Plot>
 ```

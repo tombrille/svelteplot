@@ -15,3 +15,6 @@ export { default as Line } from './marks/Line.svelte';
 export { default as Plot } from './Plot.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
+export { default as Text } from './marks/Text.svelte';
+export { default as ColorLegend } from './marks/ColorLegend.svelte';
+export { default as SymbolLegend } from './marks/SymbolLegend.svelte';

@@ -8,7 +8,7 @@
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-        stack?: Partial<StackOptions>
+        stack?: Partial<StackOptions>;
     };
 </script>
 
@@ -45,9 +45,13 @@
         y2?: ChannelAccessor;
     } & AreaMarkProps;
 
-    let { data,
+    let {
+        data,
         /** the curve */
-        curve = 'linear', tension = 0, ...options } = $props<AreaProps>();
+        curve = 'linear',
+        tension = 0,
+        ...options
+    } = $props<AreaProps>();
 
     const { state } = getContext<PlotContext>('svelteplot');
     let plot = $derived(state());

@@ -38,7 +38,7 @@ dsdsd sd sd sdsd sd
     const { penguins } = getContext('data');
 </script>
 
-<Plot grid height={500} symbol={{ legend: true }} testid="penguins">
+<Plot grid height={500} color={{ legend: true }} testid="penguins">
     <Dot
         data={penguins}
         x="culmen_length_mm"

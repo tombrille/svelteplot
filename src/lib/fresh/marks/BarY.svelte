@@ -24,7 +24,7 @@
             y?: ChannelAccessor;
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
-            stack?: StackOptions
+            stack?: StackOptions;
         } & RectMarkProps
     >();
 

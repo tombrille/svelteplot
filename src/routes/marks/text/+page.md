@@ -6,20 +6,27 @@ Useful for showing SVG labels!
 
 ```svelte live
 <script>
-    import { Plot, Dot, Text } from '$lib';
+    import { Plot, Dot, Text } from '$lib/fresh';
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 </script>
 
 <Plot grid height={500} color={{ legend: true }} testid="penguins">
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" r="3" opacity={0.2} />
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" fill="currentColor" r={3} />
     <Text
         data={penguins}
         x="culmen_length_mm"
         y="culmen_depth_mm"
         fill="species"
+        stroke="var(--svelteplot-bg)"
+        strokeWidth={5}
+        strokeOpacity={0.7}
+        dx={-3}
+        dy={-6}
+        textAnchor="start"
+        lineAnchor="bottom"
         fontWeight={(d) => (d.species === 'Gentoo' ? 'bold' : 'normal')}
-        text={(d) => d.island.charAt(0)}
+        text={(d) => d.island}
     />
 </Plot>
 ```

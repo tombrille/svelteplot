@@ -2,7 +2,7 @@
 title: A content centered site build tool
 description: The Svelte framework for exploratory data visualization
 heroImage: /logo.png
-tagline: Inspired by Observable Plot & build on top of D3!
+tagline: Inspired by Observable Plot, built on top of D3!
 actions:
     - label: Get started
       to: /guide/introduction
@@ -48,7 +48,7 @@ features:
           collection: emojione
           name: artist-palette
     - title: Written in Svelte5 & TypeScript
-      description: All components and props are fully reactive, typed and documented! 
+      description: All components and props are fully reactive, typed and documented!
       icon:
           type: iconify
           collection: emojione
