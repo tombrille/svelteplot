@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  * Copyright (C) 2024  Gregor Aisch
  */
+// SVG marks
 export { default as Area } from './marks/Area.svelte';
 export { default as AreaX } from './marks/AreaX.svelte';
 export { default as AreaY } from './marks/AreaY.svelte';
@@ -25,6 +26,13 @@ export { default as RuleY } from './marks/RuleY.svelte';
 export { default as Text } from './marks/Text.svelte';
 export { default as TickX } from './marks/TickX.svelte';
 export { default as TickY } from './marks/TickY.svelte';
+
+// HTML marks
 export { default as ColorLegend } from './marks/ColorLegend.svelte';
 export { default as HTMLTooltip } from './marks/HTMLTooltip.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
+
+// transforms
+export { stackX, stackY } from './transforms/stack.js';
+export { recordizeX, recordizeY } from './transforms/recordize.js';
+export { renameChannels } from './transforms/rename.js';
