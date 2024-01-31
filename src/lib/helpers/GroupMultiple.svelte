@@ -1,10 +1,8 @@
 <script lang="ts">
-    import type { DataRow } '$lib/types.js';
-
-    let { data = [], ...rest } = $props<{ data: DataRow[] }>();
+    let { count, ...rest } = $props<{ count: number }>();
 </script>
 
-{#if data.length !== 1}
+{#if count > 1}
     <g {...rest}><slot /></g>
 {:else}
     <slot />

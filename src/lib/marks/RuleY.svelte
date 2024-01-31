@@ -5,6 +5,7 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import Mark from '../Mark.svelte';
+    import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
     import { recordizeY } from '$lib/transforms/recordize.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
@@ -42,7 +43,7 @@
 <Mark type="ruleY" channels={['y', 'x1', 'x2', 'stroke']} {...args} let:mark>
     {@const useScale = getUsedScales(plot, args, mark)}
 
-    <g class="rule-y">
+    <GroupMultiple class="rule-y" count={args.data.length}>
         {#each args.data as datum}
             {@const y_ = resolveChannel('y', datum, args)}
             {#if isValid(y_)}
@@ -68,7 +69,7 @@
                 />
             {/if}
         {/each}
-    </g>
+    </GroupMultiple>
 </Mark>
 
 <style>

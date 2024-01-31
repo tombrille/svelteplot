@@ -1,3 +1,8 @@
+/**
+ * @license
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch
+ */
 import type { DataRecord } from '$lib/types.js';
 import groupBy from 'underscore/modules/groupBy.js';
 

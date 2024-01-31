@@ -48,7 +48,9 @@ html:not(.dark) .svp-action--flat {
 .sidebar-group.nested .sidebar-group.nested {
     padding-left: 1rem;
 }
-
+.svp-code-block--hl {
+    background-color: rgb(216 26 90 / 0.15)!important;
+}
 .theme-default-sidebar .sidebar-logo {
     z-index: 1;
     font-size: 1.25rem;

@@ -9,6 +9,7 @@ import type { MouseEventHandler } from 'svelte/elements';
 
 export type MarkType =
     | 'area'
+    | 'arrow'
     | 'axisX'
     | 'axisY'
     | 'barX'
@@ -22,6 +23,10 @@ export type MarkType =
     | 'ruleY'
     | 'tickX'
     | 'tickY';
+
+
+export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
+
 
 export type ScaleType =
     | 'linear'
@@ -45,9 +50,14 @@ export type ScaleType =
     | 'diverging-sqrt'
     | 'diverging-symlog';
 
-export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
-
-export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter';
+export type Mark<T> = {
+    id: symbol;
+    type: MarkType;
+    channels: ScaledChannelName[];
+    scales: Set<ScaleName>;
+    data: DataRecord[];
+    options: T;
+};
 
 export type ScaledChannelName =
     | 'fill'
@@ -64,6 +74,8 @@ export type ScaledChannelName =
     | 'y'
     | 'y1'
     | 'y2';
+
+export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter';
 
 export type RawValue = number | Date | boolean | string;
 
@@ -272,14 +284,6 @@ export type PlotOptions = {
 
 export type GenericMarkOptions = Record<string, any>;
 
-export type Mark<T> = {
-    id: symbol;
-    type: MarkType;
-    channels: ScaledChannelName[];
-    scales: Set<ScaleName>;
-    data: DataRecord[];
-    options: T;
-};
 
 export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
