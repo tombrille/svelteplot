@@ -1,3 +1,7 @@
+<!--
+    @component
+    Line mark, useful for line charts
+-->
 <script context="module" lang="ts">
     /**
      * @license
