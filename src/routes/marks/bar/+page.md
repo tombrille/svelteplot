@@ -15,7 +15,7 @@ Here's a very simple bar chart:
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX } from '$lib/fresh';
+    import { Plot, BarX, RuleX } from '$lib';
 </script>
 
 <Plot y={{ type: 'band' }} x={{ grid: true }} height={200} marginTop={0}>
@@ -35,7 +35,7 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX } from '$lib/fresh';
+    import { Plot, BarX, RuleX } from '$lib';
 </script>
 
 <Plot y={{ type: 'band' }} height={200} marginTop={0}>

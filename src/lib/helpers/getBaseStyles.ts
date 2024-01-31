@@ -1,3 +1,4 @@
+import type { Channels } from '$lib/types.js';
 import type { ChannelAccessor, MarkStyleProps, DataRow } from '$lib/types.js';
 import { resolveProp } from './resolve.js';
 
@@ -18,7 +19,7 @@ const styleDefaults: Partial<Record<MarkStyleProps, string | null>> = {
     fontWeight: 'normal'
 };
 
-export default function (datum: DataRow, props: Partial<Record<MarkStyleProps, ChannelAccessor>>) {
+export default function (datum: DataRow, props: Partial<Channels>) {
     return (Object.entries(styleProps) as [MarkStyleProps, string][])
         .filter(([key, cssKey]) => cssKey && props[key] != null)
         .map(

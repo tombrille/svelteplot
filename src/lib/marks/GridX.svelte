@@ -1,69 +1,69 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type {
-        BaseMarkProps,
-        GridXMarkProps,
-        GridOptions,
-        ChannelAccessor,
-        ScaledChannelName
-    } from '$lib/types.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import { getContext } from 'svelte';
-    import { get } from 'underscore';
-
-    import BaseMark from './BaseMark.svelte';
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
+    import Mark from '../Mark.svelte';
+    import type { PlotContext, BaseMarkStyleProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { resolveChannel } from '../helpers/resolve.js';
 
-    const BaseMark_GridX = BaseMark<BaseMarkProps & GridXMarkProps>;
+    let {
+        data = [],
+        automatic,
+        ...options
+    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkStyleProps>();
 
-    const plot = getContext<Plot>('svelteplot');
-
-    let { ticks = [], automatic = false, ...channels } = $props<GridXMarkProps & GridOptions>();
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80)))
-    );
-    $inspect(autoTickCount);
-
-    let autoTicks = $derived(
-        ticks.length > 0 ? ticks : get(plot, 'options.x.ticks', plot.xScale.ticks(autoTickCount))
+        Math.max(2, Math.round(plot.plotWidth / plot.options.x.tickSpacing))
     );
 
-    let { y1, y2 } = $derived(channels);
+    let ticks: RawValue[] = $derived(
+        data.length > 0
+            ? // use custom tick values if user passed any as prop
+              data
+            : // use custom scale tick values if user passed any as plot scale option
+              plot.options.x.ticks ||
+                  // fall back to auto-generated ticks
+                  plot.scales.x.fn.ticks(autoTickCount)
+    );
 </script>
 
-<BaseMark_GridX
-    type="grid-x"
-    data={ticks.length ? ticks.map((tick) => ({ __x: tick })) : undefined}
-    channels={['y']}
-    x="__x"
-    {...channels}
+<Mark
+    type="gridX"
+    data={data.length ? data.map((tick) => ({ __x: tick })) as DataRecord[] : []}
+    channels={['y1', 'y2', 'x', 'stroke']}
+    {...{ ...options, x: '__x' }}
     {automatic}
+    let:mark
 >
     <g class="grid-x">
-        {#each autoTicks as tick}
-            <g
-                class="x-tick"
-                transform="translate({plot.xScale(tick) +
-                    (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{plot.margins
-                    .top})"
-            >
-                <line
-                    class="grid"
-                    style={getBaseStyles(tick, channels)}
-                    y1={y1 ? plot.yScale(resolveChannel('y1', tick, channels)) : 0}
-                    y2={y2
-                        ? plot.yScale(resolveChannel('y2', tick, channels))
-                        : plot.height - plot.margins.top - plot.margins.bottom}
-                />
-            </g>
+        {#each ticks as tick}
+            {@const x =
+                plot.scales.x.fn(tick) +
+                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
+            {@const y1_ = resolveChannel('y1', tick, options) as number}
+            {@const y2_ = resolveChannel('y2', tick, options) as number}
+            {@const y1 = options.y1 != null ? plot.scales.y.fn(y1_) as number : 0}
+            {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) as number : plot.height - plot.options.marginTop - plot.options.marginBottom}
+            <line
+                transform="translate({x},{plot.options.marginTop})"
+                style={getBaseStyles(tick, options)}
+                {y1}
+                {y2}
+            />
         {/each}
     </g>
-</BaseMark_GridX>
+</Mark>
 
 <style>
-    .x-tick line.grid {
+    line {
         stroke: currentColor;
-        stroke-opacity: 0.1;
+        stroke-opacity: 0.2;
     }
 </style>

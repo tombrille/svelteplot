@@ -52,7 +52,7 @@ export default defineConfig({
                 description: 'The Svelte framework for exploratory data visualization'
             },
 
-            addInspect: true,
+            addInspect: true
         })
     ],
 

@@ -4,7 +4,6 @@ title: Differences to Observable Plot
 
 SveltePlot is heavily inspired by Observable Plot, but in some regards it is different.
 
-
 ## Reactive plotting
 
 As the name suggests, SveltePlot is written in Svelte, so all the marks are reactive components, and the _data_ and _channel_ definitions are just their props. Whenever you change mark options, like a channel or the data, the plot will update, re-using the existing DOM.
@@ -13,41 +12,39 @@ Take the following example, where you can filter the data using the [filter](/tr
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib/fresh';
+    import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
     let min = $state(0);
-     const manufactor = (d) => d.name.split(' ')[0];
+    const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>
 
 <Plot grid testid="cars" color={{ type: 'linear', scheme: 'turbo' }} marginLeft={50}>
-    <Dot data={cars} 
-        filter={d => d['economy (mpg)'] > min} 
-        y="weight (lb)" 
+    <Dot
+        data={cars}
+        filter={(d) => d['economy (mpg)'] > min}
+        y="weight (lb)"
         x="power (hp)"
         r={4}
         symbol={manufactor}
-        stroke='economy (mpg)' />
+        stroke="economy (mpg)"
+    />
 </Plot>
 ```
-
 
 ## Everything is a channel
 
 In Observable Plot, there's a distinction between _channels_ and _non-channels_. Channels can be defined using keys or function, while the non-channels can only be assigned constant values. That means, for instance, that for the text mark, you can set the `fontSize` as a function but not the `fontWeight`.
 
-In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant valye. The only difference is that in some cases, the channels are bound to a _scale_. 
+In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant valye. The only difference is that in some cases, the channels are bound to a _scale_.
 
-Like Observable Plot, SveltePlot tries to automatically detect wether or not to map values to a scale. Consider the following example, where the *fill* channel is mapped to the `"species"` key, while the *stroke* channel is mapped to a function returning either `"red"` or `"blue"`. SveltePlot will bind the fill channel to the color scale, but not the stroke channel, since it already maps to valid colors.
+Like Observable Plot, SveltePlot tries to automatically detect wether or not to map values to a scale. Consider the following example, where the _fill_ channel is mapped to the `"species"` key, while the _stroke_ channel is mapped to a function returning either `"red"` or `"blue"`. SveltePlot will bind the fill channel to the color scale, but not the stroke channel, since it already maps to valid colors.
 
 ```svelte
 <Plot>
-    <Dot 
-        data={penguins} 
-        fill="species"
-        stroke={d => d.sex === 'M' ? 'red' : 'blue'} />
+    <Dot data={penguins} fill="species" stroke={(d) => (d.sex === 'M' ? 'red' : 'blue')} />
 </Plot>
 ```
 
@@ -57,7 +54,7 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib/fresh';
+    import { Plot, Line } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     const { aapl } = getContext<Datasets>('data');
@@ -90,9 +87,7 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
     <defs>
         <filter id="neon"><!-- ... --></filter>
     </defs>
-    <circle 
-        cx={width * 0.5} cy={height * 0.5} r="130" 
-        opacity="0.1" fill="currentColor" />
+    <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
     <g filter="url(#neon)">
         <Line data={aapl} x="Date" y="Adj Close" />
     </g>
@@ -105,10 +100,9 @@ SveltePlot also lets you throw in custom HTML markup using the _overlay_ and _un
 
 Since the markup is defined in your code and passed as [snippet](https://svelte-5-preview.vercel.app/docs/snippets), you can also make use of the scoped styles and other Svelte features!
 
-
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib/fresh';
+    import { Plot, Line } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     const { aapl } = getContext<Datasets>('data');
@@ -116,8 +110,10 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
 
 <Plot grid testid="overlay">
     {#snippet overlay()}
-        <p>Occaecat tempor mollit <strong>labore proident</strong> officia eu sit tempor deserunt commodo.
-In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.</p>
+        <p>
+            Occaecat tempor mollit <strong>labore proident</strong> officia eu sit tempor deserunt
+            commodo. In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.
+        </p>
     {/snippet}
     {#snippet underlay()}
         <div class="bg" />
@@ -125,10 +121,9 @@ In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.</p>
     <Line data={aapl} x="Date" y="Adj Close" strokeWidth={2} />
 </Plot>
 
-
 <style>
     p {
-        position:relative;
+        position: relative;
         top: 1em;
         left: 3em;
         padding: 1ex 1em;
@@ -152,7 +147,6 @@ In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.</p>
         background: transparent url(/logo.png) no-repeat center center;
         background-size: contain;
     }
-    
 </style>
 ```
 
@@ -168,8 +162,10 @@ In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.</p>
 </Plot>
 
 <style>
-    p { /* fire away */ }
-    .bg {  
+    p {
+        /* fire away */
+    }
+    .bg {
         background: transparent url(/logo.png) no-repeat center center;
         background-size: contain;
         /* ... */

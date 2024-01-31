@@ -6,7 +6,7 @@ Useful for showing SVG labels!
 
 ```svelte live
 <script>
-    import { Plot, Dot, Text } from '$lib/fresh';
+    import { Plot, Dot, Text } from '$lib';
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 </script>

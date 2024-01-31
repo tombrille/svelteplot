@@ -8,7 +8,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib/fresh';
+    import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
     const manufactor = (d) => d.name.split(' ')[0];
@@ -33,7 +33,7 @@ dsdsd sd sd sdsd sd
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib/fresh';
+    import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 </script>
@@ -53,7 +53,7 @@ One more
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib/fresh';
+    import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 
@@ -77,10 +77,10 @@ You can also use a point scale for dot dimensions to create dot plots:
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib/fresh';
+    import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
-     const manufactor = (d) => d.name.split(' ')[0];
+    const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <Plot grid testid="cars" y={{ type: 'point' }} marginLeft={80}>
@@ -94,7 +94,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotX } from '$lib/fresh';
+    import { Plot, DotX } from '$lib';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
 </script>
@@ -110,7 +110,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotY } from '$lib/fresh';
+    import { Plot, DotY } from '$lib';
     import { getContext } from 'svelte';
     const { cars } = getContext('data');
 </script>

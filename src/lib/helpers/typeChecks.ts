@@ -1,3 +1,9 @@
+/**
+ * @license
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch
+ */
+
 import type { RawValue } from '$lib/types.js';
 import { isDate, isFinite } from 'underscore';
 import { isSymbol } from './symbols.js';
@@ -23,8 +29,13 @@ export function isSymbolOrNull(v: RawValue) {
     return v == null || ((typeof v === 'string' || typeof v === 'function') && isSymbol(v));
 }
 
+const CSS_VAR = /^var\(--([a-z-0-9,\s]+)\)$/;
+
 export function isColorOrNull(v: RawValue) {
-    return v == null || (typeof v === 'string' && (v === 'currentColor' || color(v) !== null));
+    return (
+        v == null ||
+        (typeof v === 'string' && (v === 'currentColor' || CSS_VAR.test(v) || color(v) !== null))
+    );
 }
 
 export function isOpacityOrNull(v: RawValue) {

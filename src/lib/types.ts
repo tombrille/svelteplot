@@ -1,18 +1,54 @@
+/**
+ * @license
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch
+ */
+import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
-import type { SCALE_TYPES } from './contants.js';
-import type { Plot } from './classes/Plot.svelte.js';
 import type { MouseEventHandler } from 'svelte/elements';
 
-declare module 'underscore/modules/isEqual' {
-    const isEqual: (a: any, b: any) => boolean;
-    export = isEqual;
-}
+export type MarkType =
+    | 'area'
+    | 'axisX'
+    | 'axisY'
+    | 'barX'
+    | 'barY'
+    | 'dot'
+    | 'frame'
+    | 'gridX'
+    | 'gridY'
+    | 'line'
+    | 'ruleX'
+    | 'ruleY'
+    | 'tickX'
+    | 'tickY';
+
+export type ScaleType =
+    | 'linear'
+    | 'pow'
+    | 'sqrt'
+    | 'log'
+    | 'symlog'
+    | 'time'
+    | 'point'
+    | 'ordinal'
+    | 'sequential'
+    | 'band'
+    | 'categorical'
+    | 'cyclical'
+    | 'threshold'
+    | 'quantile'
+    | 'quantize'
+    | 'diverging'
+    | 'diverging-log'
+    | 'diverging-pow'
+    | 'diverging-sqrt'
+    | 'diverging-symlog';
 
 export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
 
-/**
- * these are all the channels that are (potentially) bound to scales
- */
+export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter';
+
 export type ScaledChannelName =
     | 'fill'
     | 'fillOpacity'
@@ -29,245 +65,319 @@ export type ScaledChannelName =
     | 'y1'
     | 'y2';
 
-export type ChannelName = ScaledChannelName | 'z' | 'sort';
+export type RawValue = number | Date | boolean | string;
 
-export type Datasets = {
-    aapl: {
-        Date: Date;
-        High: number;
-        Low: number;
-        Open: number;
-        Close: number;
-        'Adj Close': number;
-    }[];
-    alphabet: {
-        letter: string;
-        frequency: number;
-    }[];
-    cars: {
-        name: string;
-        'economy (mpg)': number;
-        cylinders: number;
-        'displacement (cc)': number;
-        'power (hp)': number;
-        'weight (lb)': number;
-        '0-60 mph (s)': number;
-        year: number;
-    }[];
-    penguins: {
-        species: string;
-        island: string;
-        culmen_length_mm: number;
-        culmen_depth_mm: number;
-        flipper_length_mm: number;
-        body_mass_g: number;
-        sex: string;
-    }[];
-    bls: {
-        division: string;
-        date: Date;
-        unemployment: number;
-    }[];
-    stageage: {
-        state: string;
-        age: string;
-        population: number;
-        pop_share: number;
-    }[];
-    stocks: {
-        Symbol: string;
-        Date: Date;
-        Open: number;
-        High: number;
-        Low: number;
-        Close: number;
-        'Adj Close': number;
-        Volume: number;
-    }[];
-    riaa: {
-        format: string;
-        group: string;
-        year: Date;
-        revenue: number;
-    }[];
+export type ScaleOptions = {
+    /**
+     * Override the automatic scale type detection.
+     */
+    type: ScaleType | 'auto';
+    /**
+     * Set a custom domain for the scale instead of auto-computing the domain
+     * from the mark data channels.
+     */
+    domain?: RawValue[];
+    /**
+     * Set a custom range for the scale.
+     */
+    range?: RawValue[];
+    /**
+     * Reverse the scale.
+     */
+    reverse: boolean;
+    label?: string;
+    interval?: string | number;
+    // quantitative scales
+    clamp: boolean;
+    nice: boolean;
+    zero: boolean;
+    round: boolean;
+    percent: boolean;
+    transform?: (d: RawValue) => RawValue;
+    // point & band scales
+    /**
+     * set the padding for band scales
+     */
+    padding: number;
+    /**
+     * set the align for band or point scales
+     */
+    align: number;
+    // band scales
+    /**
+     * set the inner padding for band scales
+     */
+    paddingInner?: number;
+    /**
+     * set the outer padding for band scales
+     */
+    paddingOuter?: number;
+    // position scales
+    insetLeft?: number;
+    insetRight?: number;
+    insetTop?: number;
+    insetBottom?: number;
+    ticks?: (number | Date)[];
+    tickSpacing: number;
+    // log scales
+    base?: number;
+};
+
+export type ColorScaleOptions = ScaleOptions & {
+    legend: boolean;
+    type:
+        | ScaleType
+        | 'categorical'
+        | 'sequential'
+        | 'cyclical'
+        | 'threshold'
+        | 'quantile'
+        | 'quantize'
+        | 'diverging'
+        | 'diverging-log'
+        | 'diverging-pow'
+        | 'diverging-sqrt'
+        | 'diverging-symlog';
+    scheme: string;
+    interpolate: (d: any) => typeof d;
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
 export type AxisYAnchor = 'left' | 'right' | 'both';
 
-export type PositionScaleOptions = Partial<{
-    label?: string | null;
-    domain?: [number, number] | null;
-    grid?: boolean;
-    ticks?: RawValue[];
-    tickSpacing?: number;
-    log?: boolean;
-    reverse?: boolean;
-}>;
+export type XScaleOptions = ScaleOptions & {
+    /**
+     * Activate the implicit GridX mark. For more control over the grid styling
+     * and layering, add an explicit GridX mark to your plot instead of using the
+     * implicit grids.
+     */
+    grid: boolean;
+    /**
+     * Controls the position of the implicit AxisX mark, or set to false to disable
+     * the implicit AxisX mark. For more control over the axis styling and layering
+     * add an explicit AxisX mark to your plot instead of using the implicit axes.
+     */
+    axis: AxisXAnchor | false;
+};
 
-export type ScaleType =
-    | 'auto'
-    | 'linear'
-    | 'pow'
-    | 'sqrt'
-    | 'log'
-    | 'symlog'
-    | 'time'
-    | 'point'
-    | 'band';
+export type YScaleOptions = ScaleOptions & {
+    /**
+     * Activate the implicit GridY mark. For more control over the grid styling
+     * and layering, add an explicit GridY mark to your plot instead of using the
+     * implicit grids.
+     */
+    grid: boolean;
+    /**
+     * Controls the position of the implicit AxisY mark, or set to false to disable
+     * the implicit AxisY mark. For more control over the axis styling and layering
+     * add an explicit AxisY mark to your plot instead of using the implicit axes.
+     */
+    axis: AxisYAnchor | false;
+};
 
-export type PositionScaleType = ScaleType | ('point' | 'band');
+export type LegendScaleOptions = ScaleOptions & {
+    legend: boolean;
+};
 
-export type ColorScaleType =
-    | ScaleType
-    | (
-          | 'categorical'
-          | 'sequential'
-          | 'sequentialSymlog'
-          | 'sequentialLog'
-          | 'sequentialPow'
-          | 'sequentialSqrt'
-          | 'sequentialQuantile'
-          | 'cyclical'
-          | 'threshold'
-          | 'quantile'
-          | 'quantize'
-          | 'diverging'
-          | 'divergingLog'
-          | 'divergingPow'
-          | 'divergingSqrt'
-          | 'divergingSymlog'
-      );
-
-/*
- * these are the props that can be set by the user on the <Plot> element directly
- */
-export type PlotProps = {
-    testid?: string;
-    height?: number | 'auto';
-    marginTop?: number;
-    marginBottom?: number;
-    marginLeft?: number;
-    marginRight?: number;
+export type PlotOptions = {
+    /**
+     * The plot title, rendered as H2 tag above the SVG element. Instead of
+     * using the title, you can also pass a "header" snippet and render your
+     * own custom title markup.
+     */
+    title: string;
+    /**
+     * The plot subtitle, rendered as H3 tag above the SVG element. Instead of
+     * using the subtitle, you can also pass a "header" snippet and render your
+     * own custom title markup.
+     */
+    subtitle: string;
+    /**
+     * The plot caption, rendered as FIGCAPTION tag below the SVG element. Instead of
+     * using the caption, you can also pass a "footer" snippet and render your
+     * own custom title markup.
+     */
+    caption: string;
+    /**
+     * By default, the plot will extend to fit 100% of the parent container width. By
+     * setting the maxWidth style property you can limit the width of your plot.
+     */
     maxWidth?: string;
-    inset?: number;
-    grid?: boolean;
-    frame?: boolean;
-    title?: string;
-    subtitle?: string;
-    caption?: string;
-    // events
-    onmousemove?: MouseEventHandler<SVGElement>;
-    // snippets
-    header?: Snippet<Plot>;
-    footer?: Snippet<Plot>;
-    children?: Snippet<Plot>;
-    overlay?: Snippet<Plot>;
-    // options for scales
-    radius?: { range?: [number, number] };
-    x?: PositionScaleOptions & {
-        type?: PositionScaleType;
-        axis?: AxisXAnchor | { anchor: AxisXAnchor; tickSpacing: number };
-    };
-    y?: PositionScaleOptions & {
-        type?: PositionScaleType;
-        axis?: AxisYAnchor | { anchor: AxisYAnchor; tickSpacing: number };
-    };
-    symbol?: {
-        range?: string[];
-        legend?: boolean;
-    } | null;
-    color?: {
-        type?: ColorScaleType;
-        range?: string[];
-        domain: RawValue[];
-        scheme?: ColorScheme;
-        legend?: boolean;
-    } | null;
+    height: 'auto' | number;
+    /**
+     * Convenience option for setting all four margins at once, in px.
+     */
+    margin: number;
+    /**
+     * Left margin of the plot, in px.
+     */
+    marginLeft: number;
+    /**
+     * Right margin of the plot, in px.
+     */
+    marginRight: number;
+    /**
+     * Top margin of the plot, in px.
+     */
+    marginTop: number;
+    /**
+     * Bottom margin of the plot, in px.
+     */
+    marginBottom: number;
+    /**
+     * Activates the implicit GridX and GridY marks.
+     */
+    grid: boolean;
+    /**
+     * Activates the implicit frame marks
+     */
+    frame: boolean;
+    /**
+     * Convenience shortcut for setting both the x and y scale insets.
+     */
+    inset: number;
+    /**
+     * Options for the shared x scale.
+     */
+    x: Partial<XScaleOptions>;
+    y: Partial<YScaleOptions>;
+    r: ScaleOptions;
+    color: ColorScaleOptions;
+    opacity: ScaleOptions;
+    symbol: LegendScaleOptions;
+    length: ScaleOptions;
+    children: Snippet;
+    /**
+     * You can use the header snippet to render a custom title and subtitle for
+     * your plot, or place a legend above the visualization.
+     */
+    header: Snippet;
+    footer: Snippet;
+    /**
+     * The underlay snippet is useful for adding a layer of custom HTML markup
+     * behind the SVG body of your plot, e.g. for a watermark or background image.
+     */
+    underlay: Snippet;
+    /**
+     * The overlay snippet is useful for adding a layer of custom HTML markup
+     * in front of the SVG body of your plot, e.g. for HTML tooltips.
+     */
+    overlay: Snippet;
+    /**
+     * if you set testid, the plot container will get a data-testid attribute which
+     * can be useful for automatic testing
+     */
+    testid: string;
 };
 
-export type Margins = {
-    top: number;
-    left: number;
-    bottom: number;
-    right: number;
-};
+export type GenericMarkOptions = Record<string, any>;
 
-export type GridProps = {
-    tickFormat?: (d: any) => string;
+export type Mark<T> = {
+    id: symbol;
+    type: MarkType;
+    channels: ScaledChannelName[];
+    scales: Set<ScaleName>;
+    data: DataRecord[];
+    options: T;
 };
 
 export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
+    ___cache___?: Map<symbol, RawValue>;
 };
-export type DataRow = DataRecord | RawValue | [number, number];
+
+export type DataRow = DataRecord | RawValue | [number, number] | null;
+
+type PlotScale = {
+    type: ScaleType;
+    domain: RawValue[];
+    range: RawValue[];
+    autoTitle?: string;
+    /**
+     * The number of marks that are using this scale.
+     */
+    manualActiveMarks: number;
+    /**
+     * Set of accessors used in channels that are bound to this scale.
+     */
+    uniqueScaleProps: Set<ChannelAccessor>;
+    skip: Map<ScaledChannelName, Set<symbol>>;
+    fn: ScaleLinear<RawValue, number> &
+        ScaleBand<RawValue> &
+        ScaleOrdinal<string | Date, number> &
+        ScaleOrdinal<string | Date, string>;
+};
+
+export type CurveName =
+    | 'basis'
+    | 'basis-closed'
+    | 'basis-open'
+    | 'bundle'
+    | 'bump-x'
+    | 'bump-y'
+    | 'cardinal'
+    | 'cardinal-closed'
+    | 'cardinal-open'
+    | 'catmull-rom'
+    | 'catmull-rom-closed'
+    | 'catmull-rom-open'
+    | 'linear'
+    | 'linear-closed'
+    | 'monotone-x'
+    | 'monotone-y'
+    | 'natural'
+    | 'step'
+    | 'step-after'
+    | 'step-before';
+
+export type PlotScales = Record<ScaleName, PlotScale>;
 
 export type ChannelAccessor = RawValue | ((d: DataRow) => RawValue) | null | undefined;
 
 export type ConstantAccessor<T> = T | ((d: DataRow) => T) | null | undefined;
 
-export type RawValue = number | Date | boolean | string | null;
-
-// list of all prossible style props on marks
-export type MarkStyleProps =
-    | 'strokeDasharray'
-    | 'opacity'
-    | 'fill'
-    | 'fillOpacity'
-    | 'fontWeight'
-    | 'fontSize'
-    | 'stroke'
-    | 'strokeWidth'
-    | 'strokeOpacity'
-    | 'x'
-    | 'y'
-    | 'angle'
-    | 'radius'
-    | 'symbol'
-    | 'textAnchor'
-    | 'width';
-
-export type MarkProps2 = 'x' | 'y' | 'r' | 'rotate' | 'symbol';
-
-export type ValueOf<T> = T[keyof T];
-
-export type ChannelType = ValueOf<typeof SCALE_TYPES>;
-
-export interface MarkProps {
-    data: DataRow[];
-    onclick?: MouseEventHandler<SVGPathElement>;
-    onmouseenter?: MouseEventHandler<SVGPathElement>;
-    onmouseleave?: MouseEventHandler<SVGPathElement>;
-    dx: ConstantAccessor<number>;
-    dy: ConstantAccessor<number>;
-}
-
-export type BaseRectMarkProps = {
-    inset?: ConstantAccessor<number>;
-    insetLeft?: ConstantAccessor<number>;
-    insetRight?: ConstantAccessor<number>;
-    insetTop?: ConstantAccessor<number>;
-    insetBottom?: ConstantAccessor<number>;
-    rx?: ConstantAccessor<number>;
-    ry?: ConstantAccessor<number>;
+export type PlotState = {
+    width: number;
+    height: number;
+    options: PlotOptions;
+    plotWidth: number;
+    plotHeight: number;
+    scales: PlotScales;
+    body: HTMLDivElement;
+    /**
+     * True if there's a color scale and a symbol scale and both are bound to the same
+     * single channel accessor.
+     */
+    colorSymbolRedundant: boolean;
+    /**
+     * True if the plot is using filled dot marks.
+     */
+    hasFilledDotMarks: boolean;
 };
 
-export type BaseMarkProps = MarkProps & {
-    type: string;
-    channels: ScaledChannelName[];
-    automatic: boolean;
+export type PlotContext = {
+    addMark: (mark: Mark<GenericMarkOptions>) => void;
+    updateMark: (mark: Mark<GenericMarkOptions>) => void;
+    removeMark: (mark: Mark<GenericMarkOptions>) => void;
+    getPlotState: () => PlotState;
 };
 
 export type BaseMarkStyleProps = Partial<{
-    fill: ChannelAccessor;
-    fillOpacity: ChannelAccessor;
-    stroke: ChannelAccessor;
+    /**
+     * Filter the data without modifying the inferred scales
+     */
+    filter?: ConstantAccessor<boolean>;
+    dx: ConstantAccessor<number>;
+    dy: ConstantAccessor<number>;
+    fill: ConstantAccessor<string>;
+    fillOpacity: ConstantAccessor<number>;
+    stroke: ConstantAccessor<string>;
     strokeWidth: ConstantAccessor<number>;
-    strokeOpacity: ChannelAccessor;
+    strokeOpacity: ConstantAccessor<number>;
     strokeLinejoin: ConstantAccessor<'bevel' | 'miter' | 'miter-clip' | 'round'>;
     strokeLinecap: ConstantAccessor<'butt' | 'square' | 'round'>;
     strokeMiterlimit: ConstantAccessor<number>;
-    opacity: ChannelAccessor;
+    opacity: ConstantAccessor<number>;
     strokeDasharray: ConstantAccessor<string>;
     strokeDashoffset: ConstantAccessor<number>;
     mixBlendMode: ConstantAccessor<
@@ -295,78 +405,25 @@ export type BaseMarkStyleProps = Partial<{
         'crispEdges' | 'geometricPrecision' | 'optimizeSpeed' | 'auto'
     >;
     paintOrder: ConstantAccessor<string>;
+    onclick?: MouseEventHandler<SVGPathElement>;
+    onmouseenter?: MouseEventHandler<SVGPathElement>;
+    onmouseleave?: MouseEventHandler<SVGPathElement>;
 }>;
 
-export type FrameProps = BaseMarkStyleProps;
-
-export type GridOptions = {
-    ticks?: RawValue[];
-    strokeDasharray?: ChannelAccessor;
-    stroke?: ChannelAccessor;
-    strokeWidth?: ChannelAccessor;
+export type RectMarkProps = {
+    rx?: ConstantAccessor<number>;
+    ry?: ConstantAccessor<number>;
 };
 
-export type GridXMarkProps = Partial<MarkProps> &
-    GridOptions & {
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        automatic?: boolean;
-    };
-
-export type GridYMarkProps = Partial<MarkProps> &
-    GridOptions & {
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        automatic?: boolean;
-    };
-
-export type AxisMarkOptions = {
-    ticks?: RawValue[];
-    automatic?: boolean;
-    tickSize?: number;
-    tickPadding?: number;
-    tickFormat?: ((d: RawValue) => string) | string;
-    tickFontSize?: ChannelAccessor;
-    title?: string;
-    stroke?: ChannelAccessor;
-    fill?: ChannelAccessor;
+export type Channels = {
+    [K in ChannelName]: ChannelAccessor | ConstantAccessor<string | number | boolean>;
 };
 
-export type AxisXMarkProps = AxisMarkOptions & {
-    anchor?: 'top' | 'bottom';
-};
+export type TransformArg<K> = Channels & { data: K[] };
 
-export type AxisYMarkProps = AxisMarkOptions & {
-    anchor?: 'left' | 'right';
-};
+export type TransformArgsRow = Partial<Channels> & { data: DataRow[] };
+export type TransformArgsRecord = Partial<Channels> & { data: DataRecord[] };
 
-type RuleMarkProps = {
-    stroke?: ChannelAccessor;
-    opacity?: ChannelAccessor;
-    strokeOpacity?: ChannelAccessor;
-    strokeDasharray?: ChannelAccessor;
-    strokeWidth?: ChannelAccessor;
-};
-
-export type RuleXMarkProps = MarkProps &
-    RuleMarkProps & {
-        x?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-    };
-
-export type RuleYMarkProps = MarkProps &
-    RuleMarkProps & {
-        y?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-    };
-
-export type TickMarkProps = MarkProps & {
-    x?: ChannelAccessor;
-    y?: ChannelAccessor;
-    stroke?: ChannelAccessor;
-};
 
 export type ColorScheme =
     | 'brbg'
@@ -420,28 +477,21 @@ export type ColorScheme =
     | 'set3'
     | 'tableau10';
 
-export type Curve =
-    | 'basis'
-    | 'basis-closed'
-    | 'basis-open'
-    | 'bundle'
-    | 'bump-x'
-    | 'bump-y'
-    | 'cardinal'
-    | 'cardinal-closed'
-    | 'cardinal-open'
-    | 'catmull-rom'
-    | 'catmull-rom-closed'
-    | 'catmull-rom-open'
-    | 'linear'
-    | 'linear-closed'
-    | 'monotone-x'
-    | 'monotone-y'
-    | 'natural'
-    | 'step'
-    | 'step-after'
-    | 'step-before';
-
-type Channels = Partial<Record<ScaledChannelName, ChannelAccessor>>;
-
-export type TransformArg<T, K> = Partial<T> & Channels & { data: K[] };
+// list of all prossible style props on marks
+export type MarkStyleProps =
+    | 'strokeDasharray'
+    | 'opacity'
+    | 'fill'
+    | 'fillOpacity'
+    | 'fontWeight'
+    | 'fontSize'
+    | 'stroke'
+    | 'strokeWidth'
+    | 'strokeOpacity'
+    | 'x'
+    | 'y'
+    | 'angle'
+    | 'radius'
+    | 'symbol'
+    | 'textAnchor'
+    | 'width';

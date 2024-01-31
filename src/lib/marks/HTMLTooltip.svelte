@@ -1,4 +1,13 @@
+<!--
+    @component
+    For showing custom HTML tooltips positioned at x/y coordinates
+-->
 <script context="module" lang="ts">
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import type { ChannelAccessor, DataRow } from '$lib/types.js';
 
     export type HTMLTooltipMarkProps = {
@@ -11,11 +20,15 @@
 
 <script lang="ts">
     import { getContext } from 'svelte';
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
+    import { symbol as d3Symbol, symbol } from 'd3-shape';
+    import { maybeSymbol } from '$lib/helpers/symbols.js';
+    import type { PlotContext } from '../types.js';
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
+
     import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
-
-    const plot = getContext<Plot>('svelteplot');
 
     let { data, x, y, r } = $props<HTMLTooltipMarkProps>();
 
@@ -48,8 +61,8 @@
 
     let tree = $derived(
         quadtree()
-            .x((d) => plot.xScale(resolveChannel('x', d, { x, y, r })))
-            .y((d) => plot.yScale(resolveChannel('y', d, { x, y, r })))
+            .x((d) => plot.scales.x.fn(resolveChannel('x', d, { x, y, r })))
+            .y((d) => plot.scales.y.fn(resolveChannel('y', d, { x, y, r })))
             .addAll(data)
     );
 </script>
@@ -57,8 +70,8 @@
 <div
     class="tooltip"
     class:hide={!!!datum}
-    style:left="{tooltipX ? plot.xScale(tooltipX) : 0}px"
-    style:top="{tooltipY ? plot.yScale(tooltipY) : 0}px"
+    style:left="{tooltipX ? plot.scales.x.fn(tooltipX) : 0}px"
+    style:top="{tooltipY ? plot.scales.y.fn(tooltipY) : 0}px"
 >
     <div class="tooltip-body">
         <slot {datum} />

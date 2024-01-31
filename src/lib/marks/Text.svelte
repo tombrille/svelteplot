@@ -1,95 +1,92 @@
-<script context="module" lang="ts">
+<script lang="ts">
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import { getContext, type Snippet } from 'svelte';
     import type {
-        MarkProps,
-        BaseMarkProps,
+        PlotContext,
+        DataRecord,
         BaseMarkStyleProps,
-        ChannelAccessor,
-        DataRow,
         ConstantAccessor,
-        DataRecord
-    } from '$lib/types.js';
+        ChannelAccessor
+    } from '../types.js';
+    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
+    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { getUsedScales } from '../helpers/scales.js';
+    import Mark from '../Mark.svelte';
 
-    type GlobalCSSValues = 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
-
-    export type TextMarkProps = MarkProps &
+    let { data, ...options } = $props<
         BaseMarkStyleProps & {
             data: DataRecord[];
-            x?: ChannelAccessor;
-            y?: ChannelAccessor;
-            rotate?: ChannelAccessor | ConstantAccessor<number>;
-            fontSize?: ChannelAccessor | ConstantAccessor<number>;
-            // constant options
+            x: ChannelAccessor;
+            y: ChannelAccessor;
+            fill?: ChannelAccessor;
+            stroke?: ChannelAccessor;
+            children?: Snippet;
+            dx?: ConstantAccessor<number>;
+            dy?: ConstantAccessor<number>;
             text: ConstantAccessor<string>;
-            textAnchor?: ConstantAccessor<'start' | 'middle' | 'end'>;
-            lineAnchor?: ConstantAccessor<'top' | 'bottom' | 'middle'>;
-            frameAnchor?: ConstantAccessor<'top' | 'middle' | 'bottom' | 'left' | 'right'>;
-            lineWidth?: ConstantAccessor<number>;
-            // textOverflow: ConstantAccessor<number>;
-            monospace?: ConstantAccessor<boolean>;
-            fontFamily?: ConstantAccessor<string>;
-            fontStyle?: ConstantAccessor<string>;
-            fontVariant?: ConstantAccessor<string>;
-            fontWeight?: ConstantAccessor<
-                'normal' | 'light' | 'lighter' | 'bold' | 'bolder' | number | GlobalCSSValues
-            >;
-        };
-</script>
+            /**
+             * the line anchor for vertical position; top, bottom, or middle
+             */
+            lineAnchor?: ConstantAccessor<'bottom' | 'top' | 'middle'>;
+        }
+    >();
 
-<script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import { getContext } from 'svelte';
-    import BaseMark from './BaseMark.svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
-
-    const BaseMark_Text = BaseMark<BaseMarkProps & TextMarkProps>;
-
-    const plot = getContext<Plot>('svelteplot');
-
-    let { data, text, x, y, fill, stroke, fontSize, rotate, ...otherProps } =
-        $props<TextMarkProps>();
-    let channels = $derived({ x, y, fill, stroke, fontSize, rotate });
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
     }
+
+    const LINE_ANCHOR = {
+        bottom: 'auto',
+        middle: 'central',
+        top: 'hanging'
+    };
 </script>
 
-<BaseMark_Text
-    type="text"
+<Mark
+    type="dot"
+    required={['x', 'y']}
+    channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke']}
     {data}
-    channels={['x', 'y', 'fill', 'stroke', 'fontSize', 'rotate']}
-    {...channels}
+    {...options}
+    let:mark
 >
-    <g class="text">
-        {#each data as datum, i}
-            {@const cx = resolveChannel('x', datum, channels)}
-            {@const cy = resolveChannel('y', datum, channels)}
-            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
-            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
-            <!-- {@const radius =
-                typeof r === 'number'
-                    ? r
-                    : plot.radiusScale(resolveProp('r', datum, channels))}
-            {@const size = radius * radius * Math.PI} -->
-
-            {#if isValid(cx) && isValid(cy)}
-                <text
-                    style={getBaseStyles(datum, otherProps)}
-                    style:fill={maybeFillColor
-                        ? plot.colorScale(maybeFillColor)
-                        : maybeStrokeColor
-                          ? null
-                          : 'currentColor'}
-                    style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    dominant-baseline="central"
-                    transform="translate({[plot.xScale(cx), plot.yScale(cy)]})"
-                    >{resolveProp(text, datum, '')}</text
-                >
+    {@const useScale = getUsedScales(plot, options, mark)}
+    <g class="dots" data-use-x={useScale.x ? 1 : 0}>
+        {#each data as datum}
+            {#if options.filter == null || resolveProp(options.filter, datum)}
+                {@const _x = resolveChannel('x', datum, options)}
+                {@const _y = resolveChannel('y', datum, options)}
+                {@const _fill = resolveChannel('fill', datum, options)}
+                {@const _stroke = resolveChannel('stroke', datum, options)}
+                {#if isValid(_x) && isValid(_y)}
+                    {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
+                    {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
+                    {@const dx = resolveProp(options.dx, datum, 0) as number}
+                    {@const dy = resolveProp(options.dy, datum, 0)}
+                    {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
+                    {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
+                    <text
+                        style={getBaseStyles(datum, options)}
+                        style:fill={_fill ? fill : _stroke ? null : 'currentColor'}
+                        style:stroke={_stroke ? stroke : null}
+                        dominant-baseline={LINE_ANCHOR[
+                            resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
+                        ]}
+                        transform="translate({[x + dx, y + dy]})"
+                        >{resolveProp(options.text, datum, '')}</text
+                    >
+                {/if}
             {/if}
         {/each}
     </g>
-</BaseMark_Text>
+</Mark>
 
 <style>
     text {
@@ -99,5 +96,6 @@
         font-size: 13px;
         font-weight: 500;
         stroke-width: 1.6px;
+        paint-order: stroke fill;
     }
 </style>

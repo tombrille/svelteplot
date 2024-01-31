@@ -6,7 +6,7 @@ AAPL demo:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib/fresh';
+    import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
@@ -36,7 +36,7 @@ BLS Demo:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib/fresh';
+    import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
@@ -72,7 +72,43 @@ BLS Demo:
 
 Convenience wrapper
 
+```svelte live
+<script lang="ts">
+    import { Plot, LineX } from '$lib';
+    import { range } from 'd3-array';
+</script>
+
+<Plot grid x={{ nice: true }} maxWidth="180px">
+    <LineX data={range(Math.PI * 100).map((i) => Math.sin(i / 20))} />
+</Plot>
+```
+
+```svelte
+<Plot grid x={{ nice: true }}>
+    <LineX data={range(Math.PI * 100).map((i) => Math.sin(i / 20))} />
+</Plot>
+```
+
 ## LineY
+
+Convenience wrapper for wrapping a list of numbers over their indices
+
+```svelte live
+<script lang="ts">
+    import { Plot, LineY, AreaY } from '$lib';
+    import { range } from 'd3-array';
+</script>
+
+<Plot grid y={{ nice: true }} height={150}>
+    <LineY data={range(Math.PI * 100).map((i) => Math.sin(i / 10))} />
+</Plot>
+```
+
+```svelte
+<Plot grid y={{ nice: true }}>
+    <LineY data={range(Math.PI * 100).map((i) => Math.sin(i / 50))} />
+</Plot>
+```
 
 ## More examples
 
@@ -80,7 +116,7 @@ Line with symbols:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot } from '$lib/fresh';
+    import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
@@ -104,7 +140,7 @@ symbol on last point only:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot } from '$lib/fresh';
+    import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 

@@ -1,87 +1,107 @@
 <script context="module" lang="ts">
-    import type {
-        MarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        ScaledChannelName,
-        Curve,
-        DataRow
-    } from '$lib/types.js';
-    export type LineMarkProps = MarkProps &
-        BaseMarkStyleProps & {
-            data: DataRow[];
-            x?: ChannelAccessor;
-            y?: ChannelAccessor;
-            z?: ChannelAccessor;
-            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-            // static
-            curve: Curve | CurveFactory;
-            tension: number;
-        };
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    export type LineMarkProps = {
+        data: DataRecord[];
+        z?: ChannelAccessor;
+        stroke?: ChannelAccessor;
+        dx?: ConstantAccessor<number>;
+        dy?: ConstantAccessor<number>;
+        curve?: CurveName | CurveFactory;
+        tension?: number;
+        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+    };
 </script>
 
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
-    import type { BaseMarkProps } from '$lib/types.js';
+    import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import BaseMark from './BaseMark.svelte';
+    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
+    import { groupBy } from 'underscore';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { line, type CurveFactory } from 'd3-shape';
-    import { groupBy } from 'underscore';
+    import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
 
-    const BaseMark_Line = BaseMark<BaseMarkProps & LineMarkProps>;
+    import type {
+        CurveName,
+        PlotContext,
+        DataRecord,
+        BaseMarkStyleProps,
+        ConstantAccessor,
+        ChannelAccessor
+    } from '../types.js';
+    import type { RawValue } from '$lib/types.js';
+    import { getUsedScales } from '../helpers/scales.js';
 
-    const plot = getContext<Plot>('svelteplot');
+    type LineProps = BaseMarkStyleProps & {
+        x?: ChannelAccessor;
+        y?: ChannelAccessor;
+    } & LineMarkProps;
 
-    let { data, curve, tension, ...channels } = $props<LineMarkProps>();
+    let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
 
-    let { sort, z, fill, stroke } = $derived(channels);
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
+
+    let groupByKey = $derived(options.z || options.stroke);
 
     let groups = $derived(
-        z || fill || stroke
-            ? Object.values(groupBy(data, (d) => resolveChannel('z', d, channels)))
-            : [data]
+        groupByKey ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d))) : [data]
     );
 
+    // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
     let sortedGroups = $derived(
-        sort
+        options.sort
             ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels)
+                  resolveChannel('sort', a[0], options) > resolveChannel('sort', b[0], options)
                       ? 1
                       : -1
               )
             : groups
     );
 
-    let linePath = $derived(
-        line()
-            .curve(maybeCurve(curve, tension))
-            .x((d) => plot.xScale(resolveChannel('x', d, channels)))
-            .y((d) => plot.yScale(resolveChannel('y', d, channels)))
+    let linePath: (d: DataRecord[]) => string = $derived(
+        callWithProps(line, [], {
+            curve: maybeCurve(curve, tension),
+            x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
+            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options))
+        })
     );
 </script>
 
-<BaseMark_Line type="line" {data} channels={['x', 'y', 'color']} {...channels}>
+<Mark
+    type="line"
+    {data}
+    channels={['x', 'y', 'stroke']}
+    required={['x', 'y']}
+    {...options}
+    let:mark
+>
+    {@const useScale = getUsedScales(plot, options, mark)}
     <g class="lines">
         {#each sortedGroups as lineData}
+            {@const stroke_ = resolveChannel('stroke', lineData[0], options)}
+            {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+            {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+            {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
             <path
                 d={linePath(lineData)}
-                stroke={stroke
-                    ? plot.colorScale(resolveChannel('stroke', lineData[0], channels))
-                    : 'currentColor'}
-                fill={fill
-                    ? plot.colorScale(resolveChannel('fill', lineData[0], channels))
-                    : 'none'}
-                style={getBaseStyles(lineData[0], channels)}
+                style={getBaseStyles(lineData[0], options)}
+                style:stroke={stroke_ ? stroke : 'currentColor'}
+                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}
     </g>
-</BaseMark_Line>
+</Mark>
 
 <style>
     .lines path {
         stroke-width: 1.4px;
+        fill: none;
+        stroke-linejoin: round;
     }
 </style>

@@ -13,7 +13,7 @@ easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib/fresh/index.js';
+    import { Plot, Line } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
@@ -37,7 +37,7 @@ If you need more customization options, you can add the frame manually by explic
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Frame, Line } from '$lib/fresh/index.js';
+    import { Plot, Frame, Line } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     const { aapl } = getContext<Datasets>('data');
@@ -47,17 +47,11 @@ If you need more customization options, you can add the frame manually by explic
     <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
-
 ```
 
 ```svelte
 <Plot grid inset={20}>
-    <Frame 
-        fill="yellow" 
-        fillOpacity="0.2" 
-        stroke="magenta" 
-        strokeWidth="2" 
-        strokeDasharray="4,4" />
+    <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

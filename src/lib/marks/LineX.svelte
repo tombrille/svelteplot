@@ -1,27 +1,10 @@
-<script context="module" lang="ts">
-    import type { CurveFactory } from 'd3-shape';
-    import type {
-        MarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        Curve,
-        RawValue
-    } from '$lib/types.js';
-    export type LineXMarkProps = MarkProps &
-        BaseMarkStyleProps & {
-            data: RawValue[];
-            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-            // static
-            curve?: Curve | CurveFactory;
-            tension?: number;
-        };
-</script>
-
 <script lang="ts">
-    import wrapValueArray from '$lib/helpers/wrapValueArray.js';
-    import Line from './Line.svelte';
+    import Line, { type LineMarkProps } from './Line.svelte';
+    import { recordizeX } from '$lib/index.js';
+    import type { BaseMarkStyleProps } from '../types.js';
 
-    let { data, ...rest } = $props<LineXMarkProps>();
+    let { data, ...rest } = $props<LineMarkProps>();
+    let args = $derived(recordizeX<LineMarkProps>({ data, ...rest }));
 </script>
 
-<Line data={wrapValueArray(data)} x="value" y="index" {...rest} />
+<Line {...args} />

@@ -1,47 +1,89 @@
+/**
+ * @license
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch
+ */
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
+import isRawValue from '$lib/helpers/isRawValue.js';
 import type {
+    ScaleName,
+    ChannelName,
     ScaledChannelName,
     ChannelAccessor,
     DataRow,
     RawValue,
     DataRecord,
     ConstantAccessor
-} from '$lib/types.js';
-import isRawValue from './isRawValue.js';
+} from '../types.js';
 
 type ChannelAlias = { channel: ScaledChannelName };
 
 export function resolveProp<T>(
     accessor: ConstantAccessor<T>,
-    datum: DataRecord,
-    _defaultValue: RawValue = null
-): RawValue {
+    datum: DataRecord | null,
+    _defaultValue: T | null = null
+): T | null {
     if (typeof accessor === 'function') {
         // datum.___orig___ exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
         // so we're passing the original value to accessor functions instead of our wrapped record
-        return accessor(datum.___orig___ ? datum.___orig___ : datum);
+        return datum == null ? accessor() : accessor(datum.___orig___ ? datum.___orig___ : datum);
     } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
-        return datum[accessor];
+        return datum[accessor] as T;
     }
     return isRawValue(accessor) ? accessor : _defaultValue;
 }
 
+type ChannelOptions = {
+    value: ChannelAccessor;
+    scale?: ScaleName | null;
+    channel?: ScaledChannelName | null;
+};
+
+export function toChannelOption(
+    name: ScaledChannelName,
+    channel: ChannelAccessor | ChannelAlias
+): ChannelOptions {
+    const isPositionScale = CHANNEL_SCALE[name] === 'x' || CHANNEL_SCALE[name] === 'y';
+    return isDataRecord(channel)
+        ? (channel as ChannelOptions)
+        : {
+              value: channel,
+              scale:
+                  (!isPositionScale && typeof channel === 'number') ||
+                  typeof channel === 'undefined'
+                      ? null
+                      : CHANNEL_SCALE[name],
+              channel: null
+          };
+}
+
 export function resolveChannel(
-    channel: ScaledChannelName,
+    channel: ChannelName,
     datum: DataRow,
-    channels: Partial<Record<ScaledChannelName, ChannelAccessor | ChannelAlias>>
+    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
 ): RawValue {
     const scale = CHANNEL_SCALE[channel];
-    const maybeAccessor: ChannelAccessor | ChannelAlias =
+    // the z channel has an automatic alias mechanism
+    const accessor: ChannelAccessor | ChannelAlias =
         channel === 'z' ? channels.z || channels.fill || channels.stroke : channels[channel];
-    const accessor =
-        isDataRecord(maybeAccessor) && maybeAccessor?.channel
-            ? channels[maybeAccessor?.channel]
-            : maybeAccessor;
-    if (isDataRecord(accessor) && accessor.channel)
-        throw new Error('multiple channel aliases are not allowed');
+    const channelOptions = toChannelOption(channel, accessor);
+
+    if (channelOptions.channel) {
+        // users can pass { channel: 'fill' } as accessor to re-use an existing channel
+        return resolveChannel(channelOptions.channel, datum, channels);
+    }
+
+    return resolve(datum, channelOptions.value, channel, scale);
+}
+
+function resolve(
+    datum: DataRow,
+    accessor: ChannelAccessor,
+    channel: ChannelName,
+    scale: ScaleName
+) {
     if (isDataRecord(datum)) {
         // use accessor function
         if (typeof accessor === 'function')

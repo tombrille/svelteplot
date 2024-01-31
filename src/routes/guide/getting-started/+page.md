@@ -2,11 +2,9 @@
 title: Getting started
 ---
 
-## Try online 
+## Try online
 
 You can use SveltePlot inside any platform that supports Svelte 5, such as StackBlitz, SvelteLab, or the regular Svelte REPLs.
-
-
 
 ```svelte
 <script>
@@ -26,10 +24,11 @@ pnpm add svelteplot
 
 ```svelte live
 <script>
-    import { Plot, BarX } from '$lib/fresh/index';
+    import { Plot, BarX } from '$lib/index';
 </script>
+
 <Plot grid>
-    <BarX data={[1,2,3,4]} />
+    <BarX data={[1, 2, 3, 4]} />
 </Plot>
 ```
 
@@ -39,7 +38,7 @@ pnpm add svelteplot
 </script>
 
 <Plot grid>
-    <BarX data={[1,2,3,4]} />
+    <BarX data={[1, 2, 3, 4]} />
 </Plot>
 ```
 
@@ -51,4 +50,4 @@ All you need for this is to clone this starter repo (TODO) and run `npm run buil
 
 ## Use SveltePlot in React, Vue, etc.
 
-I wouldn't recommend this. Just use [Observable Plot](https://observablehq.com/plot/getting-started#plot-in-react) directly. 
+I wouldn't recommend this. Just use [Observable Plot](https://observablehq.com/plot/getting-started#plot-in-react) directly.

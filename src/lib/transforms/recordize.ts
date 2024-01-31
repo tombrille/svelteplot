@@ -1,14 +1,20 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import type { ChannelAccessor, DataRecord, DataRow, TransformArg } from '$lib/types.js';
+import type {
+    ChannelAccessor,
+    DataRecord,
+    DataRow,
+    TransformArgsRow,
+    TransformArgsRecord
+} from '$lib/types.js';
 
 /*
  * This transform takes an array of raw values as input and returns data records
  * in which the values are interpreted as x channel and their index as y
  */
-export function recordizeX<T>(
-    { data, ...channels }: TransformArg<T, DataRow>,
+export function recordizeX(
+    { data, ...channels }: TransformArgsRow,
     { withIndex } = { withIndex: true }
-): TransformArg<T & { x: ChannelAccessor; y: ChannelAccessor }, DataRecord> {
+): TransformArgsRecord {
     const dataIsRawValueArray =
         !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.x == null;
     if (dataIsRawValueArray) {
@@ -17,23 +23,23 @@ export function recordizeX<T>(
                 __value: value,
                 ...(withIndex ? { __index: index } : {}),
                 ___orig___: value
-            })) as DataRow[],
+            })) as DataRecord[],
             ...channels,
             x: '__value',
             ...(withIndex ? { y: '__index' } : {})
         };
     }
-    return { data, ...channels };
+    return { data: data as DataRecord[], ...channels };
 }
 
 /*
  * This transform takes an array of raw values as input and returns data records
  * in which the values are interpreted as y channel and their index as yx
  */
-export function recordizeY<T>(
-    { data, ...channels }: TransformArg<T, DataRow>,
+export function recordizeY(
+    { data, ...channels }: TransformArgsRow,
     { withIndex } = { withIndex: true }
-): TransformArg<T, DataRecord> {
+): TransformArgsRecord {
     if (!data) return { data, ...channels };
     const dataIsRawValueArray =
         !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.y == null;
@@ -43,13 +49,13 @@ export function recordizeY<T>(
                 __value: value,
                 ...(withIndex ? { __index: index } : {}),
                 ___orig___: value
-            })) as DataRow[],
+            })) as DataRecord[],
             ...channels,
             ...(withIndex ? { x: '__index' } : {}),
             y: '__value'
         };
     }
-    return { data, ...channels };
+    return { data: data as DataRecord[], ...channels };
 }
 
 /**
@@ -57,7 +63,7 @@ export function recordizeY<T>(
  * as dataset to marks that support it. It transforms the arrays into records, so
  * the rest of our code doesn't have to deal with this case anymore.
  */
-export function recordizeXY({ data, ...channels }: TransformArg): TransformArg {
+export function recordizeXY({ data, ...channels }: TransformArgsRow): TransformArgsRecord {
     if (!data) return { data, ...channels };
     if (
         !isDataRecord(data[0]) &&

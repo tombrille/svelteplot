@@ -14,8 +14,8 @@ You can use SveltePlot to create charts with a consise and minimal API.
 
 ```svelte live
 <script>
-    import { Plot, Dot, Frame, GridY, AxisX, AxisY, RuleY, DotX } from '$lib/fresh';
-    import Mark from '$lib/fresh/Mark.svelte';
+    import { Plot, Dot, Frame, GridY, AxisX, AxisY, RuleY, DotX } from '$lib';
+    import Mark from '$lib/Mark.svelte';
     import { csv } from 'd3-fetch';
     import { autoType } from 'd3-dsv';
 

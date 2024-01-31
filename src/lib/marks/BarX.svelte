@@ -1,103 +1,87 @@
-<script context="module" lang="ts">
-    import type {
-        MarkProps,
-        BaseMarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        RawValue,
-        DataRow,
-        DataRecord,
-        ConstantAccessor
-    } from '$lib/types.js';
-    import type { StackOptions } from '$lib/transforms/stack.js';
-
-    export type BarXMarkProps = MarkProps &
-        BaseMarkStyleProps & {
-            data: DataRow[];
-            x?: ChannelAccessor;
-            x1?: ChannelAccessor;
-            x2?: ChannelAccessor;
-            y?: ChannelAccessor;
-            inset: ConstantAccessor<number>;
-            stack: StackOptions;
-        };
-</script>
-
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import BaseMark from './BaseMark.svelte';
+    import { stackX, recordizeX } from '$lib/index.js';
+    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
-    import { stackX } from '$lib/transforms/stack.js';
-    import { recordizeX } from '$lib/transforms/recordize.js';
+    import { getUsedScales } from '../helpers/scales.js';
+    import type {
+        PlotContext,
+        DataRecord,
+        BaseMarkStyleProps,
+        RectMarkProps,
+        ChannelAccessor
+    } from '../types.js';
+    import { isValid } from '../helpers/isValid.js';
+    import { wrapEvent } from '../helpers/wrapEvent.js';
+    import type { StackOptions } from '$lib/transforms/stack.js';
+    import type { DataRow } from '$lib/types.js';
 
-    const BaseMark_BarX = BaseMark<BaseMarkProps & BarXMarkProps>;
+    type BarXProps = BaseMarkStyleProps & {
+        data: DataRow[];
+        x?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y?: ChannelAccessor;
+        stack?: StackOptions;
+    } & RectMarkProps;
 
-    const plot = getContext<Plot>('svelteplot');
+    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<BarXProps>();
 
-    let {
-        data: rawData,
-        inset = 0,
-        dx,
-        dy,
-        onclick,
-        onmouseenter,
-        onmouseleave,
-        ...rawChannels
-    } = $props<BarXMarkProps>();
-    let { data, ...channels } = $derived(stackX(recordizeX({ data: rawData, ...rawChannels })));
+    let args = $derived(stackX(recordizeX({ data, ...options }), stack));
 
-    function isValid(value: RawValue): value is number | Date | string {
-        return value !== null && !Number.isNaN(value);
-    }
-
-    function wrapEvent(handler, d) {
-        return handler ? () => handler(d.___orig___ !== undefined ? d.___orig___ : d) : null;
-    }
-
-    // need to handle the case that just y is defined
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 </script>
 
-<BaseMark_BarX type="bar-x" {data} channels={['y', 'x1', 'x2', 'fill', 'stroke']} {...channels}>
+<Mark type="barX" channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity']} {...args} let:mark>
+    {@const useScale = getUsedScales(plot, args, mark)}
+
     <g class="bars-x">
-        {#each data as datum}
-            {@const cy = resolveChannel('y', datum, channels)}
-            {@const cx1 = resolveChannel('x1', datum, channels)}
-            {@const cx2 = resolveChannel('x2', datum, channels)}
-            {@const minx = Math.min(plot.xScale(cx1), plot.xScale(cx2))}
-            {@const maxx = Math.max(plot.xScale(cx1), plot.xScale(cx2))}
-            {@const maybeFillColor = resolveChannel('fill', datum, channels)}
-            {@const maybeStrokeColor = resolveChannel('stroke', datum, channels)}
-            {@const inset_ = resolveProp(inset, datum as DataRecord, 0) as number}
-            {@const dx_ = resolveProp(dx, datum as DataRecord, 0) as number}
-            {@const dy_ = resolveProp(dy, datum as DataRecord, 0) as number}
-            {#if isValid(cy) && isValid(cx1) && isValid(cx2)}
+        {#each args.data as datum}
+            {@const y_ = resolveChannel('y', datum, args)}
+            {@const x1_ = resolveChannel('x1', datum, args)}
+            {@const x2_ = resolveChannel('x2', datum, args)}
+            {@const x1 = (useScale.x1 ? plot.scales.x.fn(x1_ as number) : x1_) as number}
+            {@const x2 = (useScale.x2 ? plot.scales.x.fn(x2_) : x2_) as number}
+            {@const y = (useScale.y ? plot.scales.y.fn(y_) : y_) as number}
+            {@const minx = Math.min(x1 as number, x2 as number)}
+            {@const maxx = Math.max(x1 as number, x2 as number)}
+            {@const fill_ = resolveChannel('fill', datum, args)}
+            {@const stroke_ = resolveChannel('stroke', datum, args)}
+            {@const fill = (useScale.fill ? plot.scales.color.fn(fill_) : fill_) as string}
+            {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+            {@const inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
+            {@const dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
+            {@const dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
+            {#if isValid(y) && isValid(x1) && isValid(x2)}
                 <rect
-                    style={getBaseStyles(datum, channels)}
-                    style:fill={maybeFillColor
-                        ? plot.colorScale(maybeFillColor)
-                        : maybeStrokeColor
-                          ? null
-                          : 'currentColor'}
-                    style:stroke={maybeStrokeColor ? plot.colorScale(maybeStrokeColor) : null}
-                    transform="translate({[minx + dx_, plot.yScale(cy) + inset_ + dy_]})"
+                    style={getBaseStyles(datum, args)}
+                    style:fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
+                    style:stroke={stroke_ ? stroke : null}
+                    transform="translate({[minx + dx, y + inset + dy]})"
                     width={maxx - minx}
-                    height={plot.yScale.bandwidth() - inset_ * 2}
+                    height={plot.scales.y.fn.bandwidth() - inset * 2}
                     role={onclick ? 'button' : null}
-                    onclick={wrapEvent(onclick, datum)}
-                    onmouseenter={wrapEvent(onmouseenter, datum)}
-                    onmouseleave={wrapEvent(onmouseleave, datum)}
+                    rx={resolveProp(args.rx, datum, null)}
+                    ry={resolveProp(args.ry, datum, null)}
+                    onclick={onclick && wrapEvent(onclick, datum)}
+                    onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
+                    onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
                 />
             {/if}
         {/each}
     </g>
-</BaseMark_BarX>
+</Mark>
 
 <style>
     rect {
-        fill: none;
         stroke: none;
-        stroke-width: 1.6px;
+        fill: none;
     }
 </style>

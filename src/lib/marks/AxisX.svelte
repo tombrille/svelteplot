@@ -1,57 +1,80 @@
 <script lang="ts">
-    // external
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import { getContext } from 'svelte';
-    import dayjs from 'dayjs';
-    // types
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type { BaseMarkProps, RawValue, AxisXMarkProps, AxisMarkOptions } from '$lib/types.js';
-    import BaseMark from './BaseMark.svelte';
+    import Mark from '../Mark.svelte';
+    import type {
+        PlotContext,
+        BaseMarkStyleProps,
+        RawValue,
+        DataRecord,
+        ConstantAccessor
+    } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
+    import { resolveChannel } from '../helpers/resolve.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-
-    const BaseMark_AxisX = BaseMark<BaseMarkProps & AxisXMarkProps>;
-
-    const plot = getContext<Plot>('svelteplot');
+    import dayjs from 'dayjs';
+    import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
 
     let {
-        ticks = [],
+        data = [],
+        automatic = false,
+        title,
         anchor = 'bottom',
         tickSize = 6,
         tickPadding = 3,
-        tickFormat = null,
-        automatic = false,
-        title = null,
-        fill = null,
-        ...styleProps
-    } = $props<AxisXMarkProps & AxisMarkOptions>();
+        tickFontSize = 11,
+        tickFormat,
+        ...options
+    } = $props<
+        {
+            data?: RawValue[];
+            automatic?: boolean;
+            title?: string;
+            anchor?: 'top' | 'bottom';
+            tickSize?: number;
+            tickPadding?: number;
+            tickFontSize?: ConstantAccessor<number>;
+            tickFormat?: string | ((d: RawValue) => string);
+        } & BaseMarkStyleProps
+    >();
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.plotWidth / (plot.options?.x?.tickSpacing || 80)))
+        Math.max(2, Math.round(plot.plotWidth / plot.options.x.tickSpacing))
     );
 
-    $inspect(autoTickCount);
-
-    let autoTicks = $derived(
-        ticks.length > 0 ? ticks : plot.options?.x?.ticks ?? plot.xScale.ticks(autoTickCount)
+    let ticks: RawValue[] = $derived(
+        data.length > 0
+            ? // use custom tick values if user passed any as prop
+              data
+            : // use custom scale tick values if user passed any as plot scale option
+              plot.options.x.ticks ||
+                  // fall back to auto-generated ticks
+                  plot.scales.x.fn.ticks(autoTickCount)
     );
 
     let useTickFormat = $derived(
         typeof tickFormat === 'function'
             ? tickFormat
-            : plot.x.scaleType === 'time'
+            : plot.scales.x.type === 'time'
               ? typeof tickFormat === 'string'
                   ? (d: Date) =>
                         dayjs(d)
                             .format(tickFormat as string)
                             .split('\n')
-                  : autoTimeFormat(plot.x, plot.plotWidth)
-              : (d: RawValue) => String(plot.x.scaleOptions.percent ? +(d * 100.0).toFixed(5) : d)
+                  : autoTimeFormat(plot.scales.x, plot.plotWidth)
+              : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     let tickTexts = $derived(
         removeIdenticalLines(
-            autoTicks
+            ticks
                 .map(useTickFormat)
                 .map((tick: string | string[]) => (Array.isArray(tick) ? tick : [tick]))
         )
@@ -65,37 +88,51 @@
                 ? null
                 : optionsLabel !== undefined
                   ? optionsLabel
-                  : plot.x.autoTitle
+                  : plot.scales.x.autoTitle
                     ? plot.options.x?.reverse
-                        ? `← ${plot.x.autoTitle}${plot.x.scaleOptions.percent ? ' (%)' : ''}`
-                        : `${plot.x.autoTitle}${plot.x.scaleOptions.percent ? ' (%)' : ''} →`
+                        ? `← ${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''}`
+                        : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
                     : '')
     );
 </script>
 
-<BaseMark_AxisX type="axis-x" data={ticks} channels={['x']} {automatic}>
+<Mark
+    type="axisX"
+    data={data.length ? data.map((tick) => ({ __x: tick })) as DataRecord[] : []}
+    channels={['x']}
+    {...{ ...options, x: '__x' }}
+    {automatic}
+>
     <g class="axis-x">
         {#if useTitle}
             <text
-                x={plot.plotWidth + plot.margins.left}
-                y={plot.height - 10}
+                style={getBaseStyles(null, options)}
+                x={plot.plotWidth + plot.options.marginLeft}
+                y={anchor === 'top' ? 13 : plot.height - 13}
                 class="axis-title"
-                dominant-baseline="hanging">{useTitle}</text
+                dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
             >
         {/if}
-        {#each autoTicks as tick, t}
+        {#each ticks as tick, t}
             {@const textLines = tickTexts[t]}
             {@const prevTextLines = t && tickTexts[t - 1]}
+            {@const x =
+                plot.scales.x.fn(tick) +
+                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
             <g
-                class="x-tick"
-                transform="translate({plot.xScale(tick) +
-                    (plot.xScale.bandwidth ? plot.xScale.bandwidth() * 0.5 : 0)},{anchor ===
-                'bottom'
-                    ? plot.margins.top + plot.plotHeight
-                    : plot.margins.top})"
+                class="tick"
+                transform="translate({x},{anchor === 'bottom'
+                    ? plot.options.marginTop + plot.plotHeight
+                    : plot.options.marginTop})"
             >
+                {#if tickSize}
+                    <line
+                        style={getBaseStyles(tick, options)}
+                        y2={anchor === 'bottom' ? tickSize : -tickSize}
+                    />
+                {/if}
                 <text
-                    style={getBaseStyles(tick, { fill, fontSize: tickFontSize })}
+                    style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                 >
@@ -109,27 +146,22 @@
                         {/each}
                     {/if}
                 </text>
-                <line
-                    style={getBaseStyles(tick, styleProps)}
-                    y2={anchor === 'bottom' ? tickSize : -tickSize}
-                />
             </g>
         {/each}
     </g>
-</BaseMark_AxisX>
+</Mark>
 
 <style>
+    line {
+        stroke: currentColor;
+    }
     text {
         text-anchor: middle;
         font-size: 11px;
         opacity: 0.8;
         fill: currentColor;
     }
-
     text.axis-title {
         text-anchor: end;
-    }
-    .x-tick line {
-        stroke: currentColor;
     }
 </style>

@@ -6,7 +6,7 @@ The <b>Plot</b> component is the base for each plot. It takes care of creating t
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib/fresh';
+    import { Plot, Line } from '$lib';
     import { getContext } from 'svelte';
 
     const { aapl } = getContext('data');
@@ -27,7 +27,7 @@ You can style plots to look like ggplot:
 
 ```svelte live
 <script>
-    import { Plot, Line, GridX, GridY, Frame } from '$lib/fresh';
+    import { Plot, Line, GridX, GridY, Frame } from '$lib';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -44,7 +44,7 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib/fresh';
+    import { Plot, Line, Frame } from '$lib';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -64,7 +64,6 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
-
 
 ## Plot options
 
@@ -89,11 +88,11 @@ TODO: List all the options
 
 The Plot component provides 4 entry points for snippets for adding custom markup to the plot.
 
-- **children** - any component used as child of the Plot component will be inserted into the `svg` element inside the plot body.
-- **header** - HTML div container rendered before the plot body, useful for adding a custom headline or HTML legend marks  
-- **footer** - HTML div container rendered after the plot body, useful for customizing the footer or showing a legend below the plot
-- **overlay** - HTML div container floating in front of the plot body, useful for HTML tooltips or for positioning a legend inside the plot area
-- **underlay** - similar to the overlay container, but rendered behind the plot body. Useful for background images or things like watermarks (like in [this example](/guide/differences-to-plot#Custom-HTML))
+-   **children** - any component used as child of the Plot component will be inserted into the `svg` element inside the plot body.
+-   **header** - HTML div container rendered before the plot body, useful for adding a custom headline or HTML legend marks
+-   **footer** - HTML div container rendered after the plot body, useful for customizing the footer or showing a legend below the plot
+-   **overlay** - HTML div container floating in front of the plot body, useful for HTML tooltips or for positioning a legend inside the plot area
+-   **underlay** - similar to the overlay container, but rendered behind the plot body. Useful for background images or things like watermarks (like in [this example](/guide/differences-to-plot#Custom-HTML))
 
 For more flexibility, you can also use the <code>header</code> and <code>footer</code> snippet/slots
 to render custom elements inside the figure element above and below the plot. This also allows you
@@ -101,7 +100,7 @@ to add events and scoped styles.
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib/fresh';
+    import { Plot, Line, Frame } from '$lib';
     import { getContext } from 'svelte';
     const { aapl } = getContext('data');
 </script>
@@ -137,7 +136,7 @@ to add events and scoped styles.
 ```svelte live
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { Plot, Dot, RuleY } from '$lib/fresh';
+    import { Plot, Dot, RuleY } from '$lib';
 
     const { penguins } = getContext('data');
     let filter = $state(false);

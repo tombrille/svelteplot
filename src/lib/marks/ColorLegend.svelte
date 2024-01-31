@@ -1,16 +1,29 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import { getContext } from 'svelte';
-    import { symbol as d3Symbol } from 'd3-shape';
+    import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
+    import type { PlotContext } from '../types.js';
 
-    const plot = getContext<Plot>('svelteplot');
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 </script>
 
-{#if plot.color.manualActiveMarks.length > 0}
+<!--
+    @component
+    The ColorLegend is an HTML mark that can be placed in the header, footer and overlay
+    snippets. You can activate an implicit ColorLegend above the chart using the global
+    color.legend scale option.
+-->
+
+{#if plot.scales.color.manualActiveMarks > 0}
     <div class="color-legend">
-        {#each plot.colorScale.domain() as value}
-            {@const symbolV = plot.symbolScale(value)}
+        {#each plot.scales.color.domain as value}
+            {@const symbolV = plot.scales.symbol.fn(value)}
             {@const symbolType = maybeSymbol(symbolV)}
             <div class="item">
                 <div class="swatch">
@@ -18,12 +31,16 @@
                         >{#if plot.colorSymbolRedundant}
                             <path
                                 transform="translate(7.5,7.5)"
-                                fill={plot.hasFilledDotMarks ? plot.colorScale(value) : 'none'}
-                                stroke={plot.hasFilledDotMarks ? null : plot.colorScale(value)}
+                                style:fill={plot.hasFilledDotMarks
+                                    ? plot.scales.color.fn(value)
+                                    : 'none'}
+                                style:stroke={plot.hasFilledDotMarks
+                                    ? null
+                                    : plot.scales.color.fn(value)}
                                 d={d3Symbol(symbolType, 40)()}
                             />
                         {:else}
-                            <rect fill={plot.colorScale(value)} width="15" height="15" />
+                            <rect style:fill={plot.scales.color.fn(value)} width="15" height="15" />
                         {/if}</svg
                     >
                 </div>

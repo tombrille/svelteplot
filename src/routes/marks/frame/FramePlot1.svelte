@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, Line } from '$lib/fresh/index.js';
+    import { Plot, Line } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 

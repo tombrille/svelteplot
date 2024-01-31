@@ -1,42 +1,50 @@
 <script lang="ts">
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type { BaseRectMarkProps, FrameProps } from '$lib/types.js';
-    import BaseMark from './BaseMark.svelte';
+    import type { PlotContext, DataRecord, RectMarkProps } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import type { BaseMarkStyleProps } from '../types.js';
+    import { resolveProp } from '../helpers/resolve.js';
 
-    const plot = getContext<Plot>('svelteplot');
+    let { automatic, ...options } = $props<
+        BaseMarkStyleProps &
+            RectMarkProps & {
+                automatic?: boolean;
+            }
+    >();
 
-    let { rx, ry, ...styleProps } = $props<FrameProps & BaseRectMarkProps>();
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
-    let styleProps2 = $derived({
-        ...styleProps,
-        ...(!styleProps.fill && !styleProps.stroke ? { stroke: 'currentColor' } : {})
-    });
+    let dx = $derived(resolveProp(options.dx, null, 0));
+    let dy = $derived(resolveProp(options.dy, null, 0));
 </script>
 
-<BaseMark type="frame" data={[]} channels={[]}>
+<Mark type="frame" {automatic}>
     <rect
-        class="frame"
-        style={getBaseStyles(null, styleProps2)}
-        x={plot.margins.left}
-        y={plot.margins.top}
+        transform={dx || dy ? `translate(${dx},${dy})` : null}
+        style={getBaseStyles(null, options)}
+        style:stroke={options.stroke
+            ? resolveProp(options.stroke, {})
+            : options.fill
+              ? null
+              : 'currentColor'}
+        x={plot.options.marginLeft}
+        y={plot.options.marginTop}
+        rx={resolveProp(options.rx, null, null)}
+        ry={resolveProp(options.ry, null, null)}
         width={plot.plotWidth}
         height={plot.plotHeight}
     />
-</BaseMark>
-
-<!-- 
-<text
-    style="font-size: 40px;text-anchor:middle"
-    dominant-baseline="central"
-    opacity={0.1}
-    transform="translate({plot.margins.left + plot.plotWidth * 0.5}, {plot.margins.top +
-        plot.plotHeight * 0.5})">{plot.plotWidth} x {plot.plotHeight}</text
-> -->
+</Mark>
 
 <style>
-    .frame {
+    rect {
         stroke: none;
         fill: none;
     }

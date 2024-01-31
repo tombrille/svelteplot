@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, BarX } from '$lib/fresh';
+    import { Plot, BarX } from '$lib';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { rollups } from 'd3-array';

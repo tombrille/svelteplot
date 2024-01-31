@@ -83,5 +83,17 @@
   "/Users/gka/projects/svelteplot/src/routes/guide/getting-started/+page.md-7": "LiveCode3c37a2b0f89.svelte",
   "/Users/gka/projects/svelteplot/src/routes/features/plot/+page.md-17": "LiveCodec37a2b0f890.svelte",
   "/Users/gka/projects/svelteplot/src/routes/features/plot/+page.md-19": "LiveCode37a2b0f890a.svelte",
-  "/Users/gka/projects/svelteplot/src/routes/marks/frame/+page.md-6": "LiveCode7a2b0f890a7.svelte"
+  "/Users/gka/projects/svelteplot/src/routes/marks/frame/+page.md-6": "LiveCode7a2b0f890a7.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/test/+page.md-3": "LiveCodea2b0f890a7c.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-11": "LiveCode2b0f890a7c6.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-20": "LiveCodeb0f890a7c67.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-15": "LiveCode0f890a7c670.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-18": "LiveCodef890a7c6704.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-21": "LiveCode890a7c6704d.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-19": "LiveCode90a7c6704da.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/line/+page.md-22": "LiveCode0a7c6704da2.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/tick/+page.md-2": "LiveCodea7c6704da21.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/tick/+page.md-8": "LiveCode7c6704da210.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/features/interactivity/+page.md-6": "LiveCodec6704da2101.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/features/interactivity/+page.md-8": "LiveCode6704da2101e.svelte"
 }

@@ -1,35 +1,26 @@
-<script context="module" lang="ts">
-    import type {
-        MarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        DataRow,
-        Curve
-    } from '$lib/types.js';
-    import type { CurveFactory } from 'd3-shape';
-    import type { StackOptions } from '$lib/transforms/stack.js';
-    export type AreaXMarkProps = MarkProps &
-        BaseMarkStyleProps & {
-            x?: ChannelAccessor;
-            x1?: ChannelAccessor;
-            x2?: ChannelAccessor;
-            y?: ChannelAccessor;
-            z?: ChannelAccessor;
-            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-            curve: Curve | CurveFactory;
-            tension: number;
-            stack?: StackOptions;
-        };
-</script>
-
 <script lang="ts">
-    import Area from './Area.svelte';
-    import { stackX, recordizeX } from '$lib/index.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import Area, { type AreaMarkProps } from './Area.svelte';
+    import { renameChannels, stackX, recordizeX } from '$lib/index.js';
+    import type { DataRecord, BaseMarkStyleProps, ChannelAccessor } from '../types.js';
 
-    let { data: rawData, stack, ...rawChannels } = $props<AreaXMarkProps>();
-    let { data, ...channels } = $derived(
-        stackX(recordizeX({ data: rawData, ...rawChannels }), stack)
+    type AreaXProps = BaseMarkStyleProps & {
+        data: DataRecord[];
+        x?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y?: ChannelAccessor;
+    } & AreaMarkProps;
+
+    let { data, stack, ...options } = $props<AreaXProps>();
+
+    let args = $derived(
+        renameChannels<AreaXProps>(stackX(recordizeX({ data, ...options }), stack), { y: 'y1' })
     );
 </script>
 
-<Area {data} {...channels} />
+<Area {...args}></Area>

@@ -1,8 +1,22 @@
 <script lang="ts">
-    import type { RawValue } from '$lib/types.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import Dot from './Dot.svelte';
+    import { recordizeX } from '$lib/index.js';
+    import type { BaseMarkStyleProps, DataRow } from '../types.js';
+    import type { ChannelAccessor } from '$lib/types.js';
 
-    let { data, ...rest } = $props<{ data: RawValue[] }>();
+    type DotXProps = BaseMarkStyleProps & {
+        data: DataRow[];
+        x?: ChannelAccessor;
+    };
+
+    let { data, ...options } = $props<DotXProps>();
+
+    let args = $derived(recordizeX<DotXProps>({ data, ...options, y: 0 }, { withIndex: false }));
 </script>
 
-<Dot {data} x={(d) => d} y={0} {...rest} />
+<Dot {...args}>dot</Dot>

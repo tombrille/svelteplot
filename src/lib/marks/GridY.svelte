@@ -1,47 +1,68 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type { GridYMarkProps } from '$lib/types.js';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
     import { getContext } from 'svelte';
-    import BaseMark from './BaseMark.svelte';
+    import Mark from '../Mark.svelte';
+    import type { PlotContext, BaseMarkStyleProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { resolveChannel } from '../helpers/resolve.js';
 
-    const plot = getContext<Plot>('svelteplot');
+    let {
+        data = [],
+        automatic,
+        ...options
+    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkStyleProps>();
 
-    let { ticks = [], automatic = false, ...styleProps } = $props<GridYMarkProps>();
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
-    let autoTickCount = $derived(plot.plotHeight / (plot.options.y?.tickSpacing || 80));
+    let autoTickCount = $derived(
+        Math.max(2, Math.round(plot.plotHeight / plot.options.y.tickSpacing))
+    );
 
-    let autoTicks = $derived(
-        ticks.length > 0 ? ticks : plot.options.y?.ticks || plot.yScale.ticks(autoTickCount)
+    let ticks: RawValue[] = $derived(
+        data.length > 0
+            ? // use custom tick values if user passed any as prop
+              data
+            : // use custom scale tick values if user passed any as plot scale option
+              plot.options.y.ticks ||
+                  // fall back to auto-generated ticks
+                  plot.scales.y.fn.ticks(autoTickCount)
     );
 </script>
 
-<BaseMark
-    type="grid-y"
-    data={ticks.length ? ticks.map((tick) => ({ __y: tick })) : undefined}
-    channels={['y']}
-    y="__y"
+<Mark
+    type="gridY"
+    data={data.length ? data.map((tick) => ({ __y: tick })) as DataRecord[] : []}
+    channels={['x1', 'x2', 'y', 'stroke']}
+    {...{ ...options, y: '__y' }}
     {automatic}
+    let:mark
 >
-    <g class="grid-y">
-        {#each autoTicks as tick}
-            <g
-                class="y-tick"
-                transform="translate({plot.margins.left},{plot.yScale(tick) +
-                    (plot.yScale.bandwidth ? plot.yScale.bandwidth() * 0.5 : 0)})"
-            >
-                <line
-                    style={getBaseStyles(tick, styleProps)}
-                    class="grid"
-                    x2={plot.width - plot.margins.right - plot.margins.left}
-                />
-            </g>
+    <g class="grid-x">
+        {#each ticks as tick}
+            {@const y =
+                plot.scales.y.fn(tick) +
+                (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
+            {@const x1_ = resolveChannel('x1', tick, options) as number}
+            {@const x2_ = resolveChannel('x2', tick, options) as number}
+            {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
+            {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.width - plot.options.marginLeft - plot.options.marginRight}
+            <line
+                transform="translate({plot.options.marginLeft},{y})"
+                style={getBaseStyles(tick, options)}
+                {x1}
+                {x2}
+            />
         {/each}
     </g>
-</BaseMark>
+</Mark>
 
 <style>
-    .y-tick line.grid {
+    line {
         stroke: currentColor;
         stroke-opacity: 0.2;
     }

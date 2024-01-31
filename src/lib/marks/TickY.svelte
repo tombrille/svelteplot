@@ -1,34 +1,66 @@
 <script lang="ts">
-    import type { Plot } from '$lib/classes/Plot.svelte.js';
-    import type { BaseMarkProps, TickMarkProps } from '$lib/types.js';
+    import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-
-    import BaseMark from './BaseMark.svelte';
+    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
+    import type { PlotContext, BaseMarkStyleProps, ChannelAccessor, DataRow } from '../types.js';
+    import { recordizeY } from '$lib/index.js';
+    import { getUsedScales } from '../helpers/scales.js';
+    import { isValid } from '../helpers/isValid.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
 
-    const BaseMark_TickY = BaseMark<BaseMarkProps & TickMarkProps>;
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
-    const plot = getContext<Plot>('svelteplot');
+    let {
+        data = [],
+        filter,
+        ...options
+    } = $props<
+        BaseMarkStyleProps & {
+            data: DataRow[];
+            /**
+             * the vertical position; bound to the x scale
+             */
+            y?: ChannelAccessor;
+            /**
+             * the horizontal position; bound to the x scale, which must be band. If the x channel
+             * is not specified, the tick will span the full horizontal extent of the frame.
+             */
+            x?: ChannelAccessor;
+            stroke?: ChannelAccessor;
+        }
+    >();
 
-    let { data = [], ...channels } = $props<TickMarkProps>();
+    let args = $derived(recordizeY({ data, ...options }, { withIndex: false }));
 </script>
 
-<BaseMark_TickY type="tick-y" {data} channels={['x', 'y', 'stroke']} {...channels}>
+<Mark type="tickY" channels={['x', 'y', 'stroke']} {...args} let:mark>
+    {@const useScale = getUsedScales(plot, options, mark)}
     <g class="tick-y">
-        {#each data as datum}
-            <line
-                transform="translate(0, {plot.yScale(resolveChannel('y', datum, channels))})"
-                style:stroke={channels.stroke
-                    ? plot.colorScale(resolveChannel('stroke', datum, channels))
-                    : null}
-                style={getBaseStyles(datum, channels)}
-                x1={plot.xScale(resolveChannel('x', datum, channels))}
-                x2={plot.xScale(resolveChannel('x', datum, channels)) + plot.xScale.bandwidth()}
-            />
+        {#each args.data as datum}
+            {@const y_ = resolveChannel('y', datum, args)}
+            {@const x_ = resolveChannel('x', datum, args)}
+            {#if isValid(y_) && (isValid(x_) || args.x == null) && (args.filter == null || resolveProp(args.filter, datum))}
+                {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const x1 = (args.x != null ? 
+                    (useScale.x ? plot.scales.x.fn(x_) : x_) : plot.options.marginLeft) as number}
+                {@const x2 = (args.x != null ? (useScale.x ? Number(plot.scales.x.fn(x_)) + plot.scales.x.fn.bandwidth() : y_) : plot.options.marginLeft + plot.plotWidth) as number}
+                {@const stroke_ = resolveChannel('stroke', datum, args) as string}
+                <line
+                    transform="translate({0}, {y})"
+                    style={getBaseStyles(datum, args)}
+                    style:stroke={stroke_
+                        ? useScale.stroke
+                            ? plot.scales.color.fn(stroke_)
+                            : stroke_
+                        : null}
+                    {x1}
+                    {x2}
+                />
+            {/if}
         {/each}
     </g>
-</BaseMark_TickY>
+</Mark>
 
 <style>
     .tick-y line {

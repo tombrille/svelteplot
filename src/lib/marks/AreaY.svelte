@@ -1,37 +1,38 @@
-<script context="module" lang="ts">
-    import type {
-        MarkProps,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        DataRow,
-        Curve
-    } from '$lib/types.js';
-    import type { CurveFactory } from 'd3-shape';
-    import type { StackOptions } from '$lib/transforms/stack.js';
-    export type AreaYMarkProps = MarkProps &
-        BaseMarkStyleProps & {
-            x?: ChannelAccessor;
-            y?: ChannelAccessor;
-            y1?: ChannelAccessor;
-            y2?: ChannelAccessor;
-            z?: ChannelAccessor;
-            sort?: ChannelAccessor | { channel: 'stroke' | 'fill' };
-            curve: Curve | CurveFactory;
-            tension: number;
-            stack?: StackOptions;
-        };
-</script>
-
 <script lang="ts">
-    import Area from './Area.svelte';
-    import { stackY, recordizeY } from '$lib';
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import Area, { type AreaMarkProps } from './Area.svelte';
+    import { renameChannels, stackY, recordizeY } from '$lib/index.js';
+    import type { DataRecord, BaseMarkStyleProps, ChannelAccessor } from '../types.js';
 
-    let { data: rawData, stack, ...rawChannels } = $props<AreaYMarkProps>();
-    let { data, ...channels } = $derived(
-        stackY(recordizeY({ data: rawData, ...rawChannels }), stack)
+    /**
+     * AreaY mark foo
+     */
+    type AreaYProps = BaseMarkStyleProps & {
+        data: DataRecord[];
+        x?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        /**
+         * this some extensive help for the y channel
+         */
+        y?: ChannelAccessor;
+    } & AreaMarkProps;
+
+    let { data, stack, ...options } = $props<AreaYProps>();
+
+    let args = $derived(
+        renameChannels<AreaYProps>(stackY(recordizeY({ data, ...options }), stack), { x: 'x1' })
     );
-
-    $inspect({ data, channels });
 </script>
 
-<Area {data} {...channels} />
+<!--
+@component
+The AreaY component can be used for foobar
+
+-->
+
+<Area {...args}></Area>

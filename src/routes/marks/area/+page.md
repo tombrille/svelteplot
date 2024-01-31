@@ -28,7 +28,7 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
 
 ```svelte live
 <script>
-    import { Plot, AreaY } from '$lib/fresh/index';
+    import { Plot, AreaY } from '$lib/index';
     import { getContext } from 'svelte';
 
     const { aapl } = getContext('data');
@@ -56,7 +56,7 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 
 ```svelte live
 <script>
-    import { Plot, AreaY, RuleY } from '$lib/fresh';
+    import { Plot, AreaY, RuleY } from '$lib';
     import { range } from 'd3-array';
 </script>
 
@@ -114,7 +114,7 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
 
 ```svelte live
 <script>
-    import { Plot, AreaX } from '$lib/fresh';
+    import { Plot, AreaX } from '$lib';
     import { getContext } from 'svelte';
 
     const { aapl } = getContext('data');
@@ -138,7 +138,7 @@ Required channels for horizontal area charts:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/fresh/index.js';
+    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 

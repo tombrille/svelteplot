@@ -1,4 +1,9 @@
-import type { DataRecord } from '$lib/types.js';
+/**
+ * @license
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024  Gregor Aisch
+ */
+import type { DataRecord } from '../types.js';
 
 export default function (value: any): value is DataRecord {
     if (typeof value !== 'object' || value === null) return false;
