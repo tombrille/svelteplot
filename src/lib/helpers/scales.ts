@@ -70,7 +70,6 @@ export function computeScales(
     plotHasFilledDotMarks: boolean,
     marks: Mark<GenericMarkOptions>[]
 ) {
-    // console.log('computeScales', { plotOptions, marks });
     const x = createScale(
         'x',
         plotOptions.x,
@@ -197,10 +196,6 @@ export function createScale<T extends ScaleOptions>(
                         (skip.get(channel) as Set<symbol>).add(mark.id);
                     }
 
-                    // if (name === 'y' && channel === 'y'  && mark.type === 'dot') {
-                    //     console.log(mark.type, { channelOptions, useScale, isOutputType, allValuesAreOutputType });
-                    // }
-
                     if (
                         typeof channelOptions.value === 'string' &&
                         !channelOptions.value.startsWith('__') &&
@@ -316,9 +311,7 @@ export function createScale<T extends ScaleOptions>(
                   }
                 : {})
         };
-        if (name === 'x') console.log({ type, scaleOptions, scaleProps }, scaleOptions.align);
 
-        // if (name === 'y') console.log({ scaleProps, type });
         fn = callWithProps(Scales[type], [], scaleProps);
         if (type === 'band' || type === 'point') {
             fn.ticks = () => domain;

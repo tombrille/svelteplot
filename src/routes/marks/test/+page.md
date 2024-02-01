@@ -24,7 +24,7 @@ This is a page with a single chart or easier debugging.
     inset={10}
     x={{ type: 'log',
         label: 'Population', 
-        tickFormat: '.0s'
+        base: 5,
     }}
     y={{ label: 'Inequality' }}
     color={{
@@ -40,11 +40,10 @@ This is a page with a single chart or easier debugging.
         y1="R90_10_1980"
         x2="POP_2015"
         y2="R90_10_2015"
+        sort={{ channel: 'stroke' }}
         bend
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
-    <Dot data={metros} x="POP_2015"
-        y="R90_10_2015" />
     <Text
         data={metros}
         x="POP_2015"

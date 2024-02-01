@@ -148,7 +148,7 @@
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                 >
-                    {#if t === 0 || t === ticks.length-1 || tickLabelSpace >= estLabelWidth * 2}
+                    {#if data.length > 0 || t === 0 || t === ticks.length-1 || tickLabelSpace >= estLabelWidth * 2}
                         {#if typeof textLines === 'string' || textLines.length === 1}
                             {textLines}
                         {:else}

@@ -71,6 +71,7 @@ export function resolveChannel(
     const channelOptions = toChannelOption(channel, accessor);
 
     if (channelOptions.channel) {
+        // console.log(resolveChannel(channelOptions.channel, datum, channels))
         // users can pass { channel: 'fill' } as accessor to re-use an existing channel
         return resolveChannel(channelOptions.channel, datum, channels);
     }

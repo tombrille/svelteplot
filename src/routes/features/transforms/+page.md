@@ -22,7 +22,6 @@ const { data, ...channels } = stackY({
     z: 'group'
 });
 
-console.log({ data, channels });
 ```
 
 In the returned `data` array, each item will have new properties `__y1` and `__y2` which store the lower and upper offsets as calculated by the stack transform. Since we no longer want to map `y` to `value`, the `channels` now maps `y1` to `__y1` and `y2` to `__y2`
