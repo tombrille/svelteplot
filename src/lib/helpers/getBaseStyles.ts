@@ -20,7 +20,7 @@ const styleDefaults: Partial<Record<MarkStyleProps, string | null>> = {
 };
 
 export default function (datum: DataRow, props: Partial<Channels>) {
-    return (Object.entries(styleProps) as [MarkStyleProps, string][])
+    return (props.style ? `${props.style};` : '') + (Object.entries(styleProps) as [MarkStyleProps, string][])
         .filter(([key, cssKey]) => cssKey && props[key] != null)
         .map(
             ([key, cssKey]) =>

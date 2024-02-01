@@ -88,6 +88,8 @@
 
     let optionsLabel = $derived(plot.options?.x?.label);
 
+    let isQuantitative = $derived(plot.scales.x.type !== 'point' && plot.scales.x.type !== 'band');
+
     let useTitle = $derived(
         title ||
             (optionsLabel === null
@@ -127,15 +129,17 @@
                 (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)) : null}
             {@const tickLabelSpace = Math.abs(nextX - x)}
             {@const textLines = tickTexts[t]}
+            {@const dx = resolveProp(options.dx, tick, 0)}
+            {@const dy = resolveProp(options.dy, tick, 0)}
             {@const prevTextLines = t && tickTexts[t - 1]}
             {@const estLabelWidth = max(textLines.map(t => t.length)) * resolveProp(tickFontSize, tick) * 0.6}
             <g
                 class="tick"
                 data-tick-space={tickLabelSpace}
                 data-tick-width={estLabelWidth}
-                transform="translate({x},{anchor === 'bottom'
+                transform="translate({x + dx},{(anchor === 'bottom'
                     ? plot.options.marginTop + plot.plotHeight
-                    : plot.options.marginTop})"
+                    : plot.options.marginTop) + dy})"
             >
                 {#if tickSize}
                     <line
@@ -144,6 +148,7 @@
                     />
                 {/if}
                 <text
+                    style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
                     style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}

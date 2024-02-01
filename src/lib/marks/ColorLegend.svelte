@@ -5,12 +5,22 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import { getContext } from 'svelte';
+    import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
+    
     import type { PlotContext } from '../types.js';
+
+    let { width = 250 } = $props<{ width?: number }>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
+
+    let legendTitle = $derived(plot.options.color.label || plot.scales.color.autoTitle);
+
+    const randId = Math.round(Math.random() * 1e6).toFixed(32);
+
+    $inspect(plot.scales.color)
 </script>
 
 <!--
@@ -22,31 +32,50 @@
 
 {#if plot.scales.color.manualActiveMarks > 0}
     <div class="color-legend">
-        {#each plot.scales.color.domain as value}
-            {@const symbolV = plot.scales.symbol.fn(value)}
-            {@const symbolType = maybeSymbol(symbolV)}
-            <div class="item">
-                <div class="swatch">
-                    <svg width="15" height="15"
-                        >{#if plot.colorSymbolRedundant}
-                            <path
-                                transform="translate(7.5,7.5)"
-                                style:fill={plot.hasFilledDotMarks
-                                    ? plot.scales.color.fn(value)
-                                    : 'none'}
-                                style:stroke={plot.hasFilledDotMarks
-                                    ? null
-                                    : plot.scales.color.fn(value)}
-                                d={d3Symbol(symbolType, 40)()}
-                            />
-                        {:else}
-                            <rect style:fill={plot.scales.color.fn(value)} width="15" height="15" />
-                        {/if}</svg
-                    >
+        {#if legendTitle}
+        <div class="title">{legendTitle}</div>
+        {/if}
+        {#if plot.scales.color.type === 'ordinal'}
+            {#each plot.scales.color.domain as value}
+                {@const symbolV = plot.scales.symbol.fn(value)}
+                {@const symbolType = maybeSymbol(symbolV)}
+                <div class="item">
+                    <div class="swatch">
+                        <svg width="15" height="15"
+                            >{#if plot.colorSymbolRedundant}
+                                <path
+                                    transform="translate(7.5,7.5)"
+                                    style:fill={plot.hasFilledDotMarks
+                                        ? plot.scales.color.fn(value)
+                                        : 'none'}
+                                    style:stroke={plot.hasFilledDotMarks
+                                        ? null
+                                        : plot.scales.color.fn(value)}
+                                    d={d3Symbol(symbolType, 40)()}
+                                />
+                            {:else}
+                                <rect style:fill={plot.scales.color.fn(value)} width="15" height="15" />
+                            {/if}</svg
+                        >
+                    </div>
+                    <span class="item-label">{value}</span>
                 </div>
-                <span class="item-label">{value}</span>
-            </div>
-        {/each}
+            {/each}
+        {:else}
+            {@const domain = plot.scales.color.domain}
+            {@const ticks = new Set([domain[0], ...plot.scales.color.fn.ticks(Math.ceil(width/5)), domain[1]])}
+            <Plot maxWidth="240px" margins={1} marginTop={6} marginBottom={20} height={38} x={{ domain: plot.scales.color.domain }}>
+                <defs>
+                    <linearGradient id="gradient-{randId}" x2="1">
+                        {#each ticks as t}
+                        <stop offset="{100 * (t - domain[0]) / (domain[1] - domain[0])}%" stop-color={plot.scales.color.fn(t)} />
+                        {/each}
+                    </linearGradient>
+                </defs>
+                <Frame dy={-5} stroke={null} fill="url(#gradient-{randId})" />
+                <AxisX tickSize={18} dy={-17} />
+            </Plot>
+        {/if}
     </div>
 {/if}
 
@@ -56,6 +85,9 @@
         font-size: 12px;
         display: inline-block;
         margin-right: 2em;
+    }
+    .title {
+        font-weight: bold;
     }
     .item {
         margin: 0 1em 0.5ex 0;
