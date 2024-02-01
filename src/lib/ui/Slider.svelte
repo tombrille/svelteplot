@@ -5,7 +5,7 @@
         min = 0,
         max = 100,
         step = 1
-    } = $props<{ label: string; value: number; min: Number; max: number }>();
+    } = $props<{ label: string; value: number; min?: Number; max?: number; step?: number }>();
 </script>
 
 <label>
@@ -22,4 +22,5 @@
     .value {
         opacity: 0.5;
     }
+    input { width: 15ex }
 </style>

@@ -14,7 +14,7 @@ Rules can be used for highlighting certain axis values, most commonly zero. They
 </script>
 
 <Plot height={350}>
-    <RuleY data={[0,100]} />
+    <RuleY data={[0, 100]} />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -22,7 +22,7 @@ Rules can be used for highlighting certain axis values, most commonly zero. They
 ```svelte
 <Plot>
     <RuleY data={[0]} /> // [svp! hl]
-    <Line data={aapl} x="Date" y="Close" /> 
+    <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 

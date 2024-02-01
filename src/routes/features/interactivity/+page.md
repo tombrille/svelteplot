@@ -106,18 +106,28 @@ You can even put another tiny plot inside the HTML tooltips:
     {#snippet overlay()}
         <HTMLTooltip data={penguins} let:datum x="culmen_length_mm" y="culmen_depth_mm">
             <div style="width: 150px">
-                <Plot inset={4} margins={0} x={{ label: null, axis: false }} y={{ label: null, axis: false }} height={130}>
-                    <Dot data={penguins} 
-                        x="culmen_length_mm" 
+                <Plot
+                    inset={4}
+                    margins={0}
+                    x={{ label: null, axis: false }}
+                    y={{ label: null, axis: false }}
+                    height={130}
+                >
+                    <Dot
+                        data={penguins}
+                        x="culmen_length_mm"
                         y="culmen_depth_mm"
                         stroke="species"
                         r={2}
-                        opacity={0.2} />
-                    <Dot data={[datum]} 
-                        x="culmen_length_mm" 
+                        opacity={0.2}
+                    />
+                    <Dot
+                        data={[datum]}
+                        x="culmen_length_mm"
                         y="culmen_depth_mm"
                         r={4}
-                        fill="currentColor" />
+                        fill="currentColor"
+                    />
                 </Plot>
             </div>
         </HTMLTooltip>

@@ -1,10 +1,8 @@
 # SveltePlot
 
-SveltePlot is a rewrite of Observable Plot in Svelte, by Gregor Aisch. It is (for now) licensed under AGPL v3.
+SveltePlot is a rewrite of [Observable Plot](https://github.com/observablehq/plot) in Svelte, by Gregor Aisch. It is licensed under AGPL v3.
 
-
-
-Original copyright 
+Since part of this code is modified from the Observable Plot code, here's the original copyright
 
 ```
 Copyright 2020-2023 Observable, Inc.

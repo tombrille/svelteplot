@@ -47,6 +47,7 @@ export default {
                     collapsible: true,
                     items: [
                         { title: 'Area', to: '/marks/area/' },
+                        { title: 'Arrow', to: '/marks/arrow/' },
                         { title: 'Axis', to: '/marks/axis/' },
                         { title: 'Bar', to: '/marks/bar/' },
                         { title: 'Dot', to: '/marks/dot/' },

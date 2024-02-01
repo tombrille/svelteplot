@@ -116,7 +116,9 @@
 
     let isOneDimensional = $derived(!explicitScales.has('x') || !explicitScales.has('y'));
 
-    let plotOptions = $derived(extendPlotOptions(initialOpts, { explicitScales, margins: initialOpts.margins }));
+    let plotOptions = $derived(
+        extendPlotOptions(initialOpts, { explicitScales, margins: initialOpts.margins })
+    );
 
     let hasFilledDotMarks = $derived(
         !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)

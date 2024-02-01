@@ -24,9 +24,7 @@ export type MarkType =
     | 'tickX'
     | 'tickY';
 
-
 export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
-
 
 export type ScaleType =
     | 'linear'
@@ -284,7 +282,6 @@ export type PlotOptions = {
 
 export type GenericMarkOptions = Record<string, any>;
 
-
 export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
     ___cache___?: Map<symbol, RawValue>;
@@ -427,7 +424,6 @@ export type TransformArg<K> = Channels & { data: K[] };
 
 export type TransformArgsRow = Partial<Channels> & { data: DataRow[] };
 export type TransformArgsRecord = Partial<Channels> & { data: DataRecord[] };
-
 
 export type ColorScheme =
     | 'brbg'

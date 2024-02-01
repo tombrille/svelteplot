@@ -96,5 +96,7 @@
   "/Users/gka/projects/svelteplot/src/routes/marks/tick/+page.md-8": "LiveCode7c6704da210.svelte",
   "/Users/gka/projects/svelteplot/src/routes/features/interactivity/+page.md-6": "LiveCodec6704da2101.svelte",
   "/Users/gka/projects/svelteplot/src/routes/features/interactivity/+page.md-8": "LiveCode6704da2101e.svelte",
-  "/Users/gka/projects/svelteplot/src/routes/marks/rule/+page.md-2": "LiveCode27de3d029f3.svelte"
+  "/Users/gka/projects/svelteplot/src/routes/marks/rule/+page.md-2": "LiveCode27de3d029f3.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/arrow/+page.md-2": "LiveCode77b514d8003.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/arrow/+page.md-3": "LiveCode7b514d80032.svelte"
 }
