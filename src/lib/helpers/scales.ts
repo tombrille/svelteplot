@@ -293,9 +293,9 @@ export function createScale<T extends ScaleOptions>(
         const scaleProps = {
             domain,
             range,
-            ...(type === 'linear' || type === 'log'
+            ...((type === 'linear' || type === 'log') && scaleOptions.nice 
                 ? {
-                      nice: scaleOptions.nice ? niceTickCount : false
+                      nice: scaleOptions.nice ? niceTickCount : true
                   }
                 : {}),
             ...(type === 'linear'
@@ -306,7 +306,7 @@ export function createScale<T extends ScaleOptions>(
                 : {}),
             ...(type === 'log'
                 ? {
-                      base: scaleOptions.base || 2
+                      base: scaleOptions.base || 10
                   }
                 : {}),
             ...(type === 'band' || type === 'point'
@@ -324,7 +324,7 @@ export function createScale<T extends ScaleOptions>(
             fn.ticks = () => domain;
         }
         if (type === 'log') {
-            fn.ticks = (count: number) => getLogTicks(domain, count);
+            // fn.ticks = (count: number) => getLogTicks(domain, count);
         }
     }
 

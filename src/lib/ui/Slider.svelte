@@ -22,5 +22,7 @@
     .value {
         opacity: 0.5;
     }
-    input { width: 15ex }
+    input {
+        width: 15ex;
+    }
 </style>

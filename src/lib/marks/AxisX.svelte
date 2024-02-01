@@ -14,9 +14,11 @@
         ConstantAccessor
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { resolveChannel } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
+    import { max } from 'd3-array';
+    import { format } from 'd3-format';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
 
     let {
@@ -59,16 +61,20 @@
                   plot.scales.x.fn.ticks(autoTickCount)
     );
 
+    let tickFmt = $derived(tickFormat || plot.options.x.tickFormat);
+
     let useTickFormat = $derived(
-        typeof tickFormat === 'function'
-            ? tickFormat
+        typeof tickFmt === 'function'
+            ? tickFmt
             : plot.scales.x.type === 'time'
-              ? typeof tickFormat === 'string'
+              ? typeof tickFmt === 'string'
                   ? (d: Date) =>
                         dayjs(d)
-                            .format(tickFormat as string)
+                            .format(tickFmt as string)
                             .split('\n')
                   : autoTimeFormat(plot.scales.x, plot.plotWidth)
+              : typeof tickFmt === 'string' 
+                ? format(tickFmt) 
               : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
@@ -114,13 +120,19 @@
             >
         {/if}
         {#each ticks as tick, t}
-            {@const textLines = tickTexts[t]}
-            {@const prevTextLines = t && tickTexts[t - 1]}
             {@const x =
                 plot.scales.x.fn(tick) +
                 (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
+            {@const nextX = t < ticks.length-1 ? (plot.scales.x.fn(ticks[t+1]) +
+                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)) : null}
+            {@const tickLabelSpace = Math.abs(nextX - x)}
+            {@const textLines = tickTexts[t]}
+            {@const prevTextLines = t && tickTexts[t - 1]}
+            {@const estLabelWidth = max(textLines.map(t => t.length)) * resolveProp(tickFontSize, tick) * 0.6}
             <g
                 class="tick"
+                data-tick-space={tickLabelSpace}
+                data-tick-width={estLabelWidth}
                 transform="translate({x},{anchor === 'bottom'
                     ? plot.options.marginTop + plot.plotHeight
                     : plot.options.marginTop})"
@@ -136,14 +148,16 @@
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                 >
-                    {#if typeof textLines === 'string' || textLines.length === 1}
-                        {textLines}
-                    {:else}
-                        {#each textLines as line, i}
-                            <tspan x="0" dy={i ? 12 : 0}
-                                >{!prevTextLines || prevTextLines[i] !== line ? line : ''}</tspan
-                            >
-                        {/each}
+                    {#if t === 0 || t === ticks.length-1 || tickLabelSpace >= estLabelWidth * 2}
+                        {#if typeof textLines === 'string' || textLines.length === 1}
+                            {textLines}
+                        {:else}
+                            {#each textLines as line, i}
+                                <tspan x="0" dy={i ? 12 : 0}
+                                    >{!prevTextLines || prevTextLines[i] !== line ? line : ''}</tspan
+                                >
+                            {/each}
+                        {/if}
                     {/if}
                 </text>
             </g>

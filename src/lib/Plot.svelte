@@ -52,6 +52,7 @@
                 padding: 0.1,
                 align: 0.5,
                 tickSpacing: 80,
+                tickFormat: '.0s',
                 grid: false
             },
             y: {
@@ -66,6 +67,7 @@
                 padding: 0.1,
                 align: 0.5,
                 tickSpacing: 80,
+                tickFormat: '.0s',
                 grid: false
             },
             opacity: {

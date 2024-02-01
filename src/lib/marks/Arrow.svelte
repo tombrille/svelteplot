@@ -14,8 +14,6 @@
         ChannelAccessor
     } from '../types.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
-    import { maybeSymbol } from '../helpers/symbols.js';
-    import { symbol as d3Symbol } from 'd3-shape';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';

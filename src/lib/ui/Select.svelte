@@ -1,11 +1,13 @@
 <script lang="ts">
-    
-    let { label = '', value, options } = $props<{
+    let {
+        label = '',
+        value,
+        options
+    } = $props<{
         label?: string;
         value: any;
-        options: any[]
+        options: any[];
     }>();
-
 </script>
 
 <label
@@ -18,5 +20,7 @@
 >
 
 <style>
-    label { margin-right: 1em; }
+    label {
+        margin-right: 1em;
+    }
 </style>
