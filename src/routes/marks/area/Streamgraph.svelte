@@ -2,7 +2,7 @@
     import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
     import type { StackOffset } from '$lib/transforms/stack.js';
 
-    import type { Datasets } from '$lib/types.js';s.js';s.js';
+    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
     const { riaa } = getContext<Datasets>('data');

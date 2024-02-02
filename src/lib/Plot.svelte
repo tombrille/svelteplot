@@ -20,9 +20,14 @@
     type PlotOptionsParameters = {
         explicitScales: Set<ScaleName>;
         margins?: number;
+        inset?: number;
     };
 
-    function defaultPlotOptions({ explicitScales, margins }: PlotOptionsParameters): PlotOptions {
+    function defaultPlotOptions({
+        explicitScales,
+        margins,
+        inset
+    }: PlotOptionsParameters): PlotOptions {
         const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
         const oneDimX = isOneDimensional && explicitScales.has('x');
         const oneDimY = isOneDimensional && explicitScales.has('y');
@@ -52,7 +57,7 @@
                 padding: 0.1,
                 align: 0.5,
                 tickSpacing: 80,
-                tickFormat: '.0s',
+                tickFormat: 'auto',
                 grid: false
             },
             y: {
@@ -67,7 +72,7 @@
                 padding: 0.1,
                 align: 0.5,
                 tickSpacing: 80,
-                tickFormat: '.0s',
+                tickFormat: 'auto',
                 grid: false
             },
             opacity: {
@@ -119,7 +124,11 @@
     let isOneDimensional = $derived(!explicitScales.has('x') || !explicitScales.has('y'));
 
     let plotOptions = $derived(
-        extendPlotOptions(initialOpts, { explicitScales, margins: initialOpts.margins })
+        extendPlotOptions(initialOpts, {
+            explicitScales,
+            margins: initialOpts.margins,
+            inset: initialOpts.inset
+        })
     );
 
     let hasFilledDotMarks = $derived(

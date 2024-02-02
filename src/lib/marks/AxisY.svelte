@@ -12,6 +12,7 @@
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
     import type { ConstantAccessor } from '$lib/types.js';
+    import { fade } from 'svelte/transition';
 
     let {
         data = [],
@@ -118,6 +119,7 @@
                 (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
             <g
                 class="tick"
+                in:fade
                 transform="translate({dx +
                     plot.options.marginLeft +
                     (anchor === 'left' ? 0 : plot.plotWidth)},{y + dy})"

@@ -59,17 +59,22 @@ based on the Gregorian calendar.
 </script>
 
 <Plot
-    x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true, reverse: true }}
+    x={{ 
+        type: 'time',
+        domain: [
+            new Date('2021-01-01'), 
+            new Date('2022-01-01')
+        ], grid: true }}
     marginTop={0}
-    marginLeft={10}
-    marginRight={10}
+    marginLeft={20}
+    marginRight={20}
     height={70}
     testid="linear"
 />
 ```
 
 ```svelte
-<Plot x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true, reverse: true }} />
+<Plot x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true }} />
 ```
 
 ## Logarithmic scales

@@ -18,8 +18,10 @@
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
     import { max } from 'd3-array';
-    import { format } from 'd3-format';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
+    import { derived } from 'svelte/store';
+    import { fade } from 'svelte/transition';
+    import numeral from 'numeral';
 
     let {
         data = [],
@@ -67,22 +69,27 @@
         typeof tickFmt === 'function'
             ? tickFmt
             : plot.scales.x.type === 'time'
-              ? typeof tickFmt === 'string'
+              ? typeof tickFmt === 'string' && tickFmt !== 'auto'
                   ? (d: Date) =>
                         dayjs(d)
                             .format(tickFmt as string)
                             .split('\n')
                   : autoTimeFormat(plot.scales.x, plot.plotWidth)
-              : typeof tickFmt === 'string' 
-                ? format(tickFmt) 
-              : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
+              : typeof tickFmt === 'string'
+                ? (d: number) => numeral(d).format(tickFmt === 'auto' ? '0.[00]a' : tickFmt)
+                : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
-    let tickTexts = $derived(
+    function splitTick(tick: string | string[]) {
+        return Array.isArray(tick) ? tick : [tick];
+    }
+
+    let formattedTicks = $derived(
         removeIdenticalLines(
-            ticks
-                .map(useTickFormat)
-                .map((tick: string | string[]) => (Array.isArray(tick) ? tick : [tick]))
+            ticks.map((tick) => ({
+                value: tick,
+                text: splitTick(useTickFormat(tick))
+            }))
         )
     );
 
@@ -121,22 +128,26 @@
                 dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
             >
         {/if}
-        {#each ticks as tick, t}
+        {#each formattedTicks as tick, t}
             {@const x =
-                plot.scales.x.fn(tick) +
+                plot.scales.x.fn(tick.value) +
                 (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
-            {@const nextX = t < ticks.length-1 ? (plot.scales.x.fn(ticks[t+1]) +
-                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)) : null}
+            {@const nextX =
+                t < formattedTicks.length - 1
+                    ? plot.scales.x.fn(formattedTicks[t + 1].value) +
+                      (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                    : null}
             {@const tickLabelSpace = Math.abs(nextX - x)}
-            {@const textLines = tickTexts[t]}
+            {@const textLines = tick.text}
             {@const dx = resolveProp(options.dx, tick, 0)}
             {@const dy = resolveProp(options.dy, tick, 0)}
-            {@const prevTextLines = t && tickTexts[t - 1]}
-            {@const estLabelWidth = max(textLines.map(t => t.length)) * resolveProp(tickFontSize, tick) * 0.6}
+            {@const prevTextLines = t && formattedTicks[t - 1].text}
+            {@const estLabelWidth =
+                max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.4}
             <g
                 class="tick"
-                data-tick-space={tickLabelSpace}
-                data-tick-width={estLabelWidth}
+                data-tick={tick}
+                in:fade
                 transform="translate({x + dx},{(anchor === 'bottom'
                     ? plot.options.marginTop + plot.plotHeight
                     : plot.options.marginTop) + dy})"
@@ -153,13 +164,15 @@
                     y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                     dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                 >
-                    {#if data.length > 0 || t === 0 || t === ticks.length-1 || tickLabelSpace >= estLabelWidth * 2}
+                    {#if data.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
                         {#if typeof textLines === 'string' || textLines.length === 1}
                             {textLines}
                         {:else}
                             {#each textLines as line, i}
                                 <tspan x="0" dy={i ? 12 : 0}
-                                    >{!prevTextLines || prevTextLines[i] !== line ? line : ''}</tspan
+                                    >{!prevTextLines || prevTextLines[i] !== line
+                                        ? line
+                                        : ''}</tspan
                                 >
                             {/each}
                         {/if}

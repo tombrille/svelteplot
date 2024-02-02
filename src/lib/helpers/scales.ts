@@ -288,7 +288,7 @@ export function createScale<T extends ScaleOptions>(
         const scaleProps = {
             domain,
             range,
-            ...((type === 'linear' || type === 'log') && scaleOptions.nice 
+            ...((type === 'linear' || type === 'log') && scaleOptions.nice
                 ? {
                       nice: scaleOptions.nice ? niceTickCount : true
                   }

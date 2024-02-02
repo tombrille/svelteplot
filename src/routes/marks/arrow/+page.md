@@ -18,48 +18,151 @@ Metro dataset:
 </script>
 
 {#if metros}
-<Plot
-    grid="true"
-    marginRight={20}
-    inset={10}
-    x={{ type: 'log', nice: false, label: 'Population', 
-        domain: [150000, 21e6],
-        tickFormat: '0a',
-        ticks: [200e3, 2e6, 20e6] }}
-    y={{ label: 'Inequality' }}
-    color={{
-        scheme: 'BuRd',
-        label: 'Change in inequality from 1980 to 2015',
-        legend: true,
-        tickFormat: '+f'
-    }}
->
-    <Arrow
-        data={metros}
-        x1="POP_1980"
-        y1="R90_10_1980"
-        x2="POP_2015"
-        y2="R90_10_2015"
-        bend
-        stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
-    />
-    <Text
-        data={metros}
-        x="POP_2015"
-        y="R90_10_2015"
-        filter="highlight"
-        text="nyt_display"
-        fill="currentColor"
-        stroke="var(--svelteplot-bg)"
-        strokeWidth={4}
-        lineAnchor="bottom"
-        dy={-6}
-    />
-</Plot>
+    <Plot
+        grid="true"
+        marginRight={20}
+        inset={10}
+        x={{ type: 'log', label: 'Population' }}
+        y={{ label: 'Inequality' }}
+        color={{
+            scheme: 'BuRd',
+            label: 'Change in inequality from 1980 to 2015',
+            legend: true,
+            tickFormat: '+f'
+        }}
+    >
+        <Arrow
+            data={metros}
+            x1="POP_1980"
+            y1="R90_10_1980"
+            x2="POP_2015"
+            y2="R90_10_2015"
+            bend
+            stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
+        />
+        <Text
+            data={metros}
+            x="POP_2015"
+            y="R90_10_2015"
+            filter="highlight"
+            text="nyt_display"
+            fill="currentColor"
+            stroke="var(--svelteplot-bg)"
+            strokeWidth={4}
+            lineAnchor="bottom"
+            dy={-6}
+        />
+    </Plot>
 {:else}
-loading...
+    loading...
 {/if}
 ```
+
+Another thing you can use the arrow mark for is drawing network diagrams:
+
+```svelte live
+<script lang="ts">
+    import { Plot, Arrow, Dot } from '$lib/index.js';
+    import { json } from 'd3-fetch';
+    import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
+
+    let links = $state([]);
+    let nodes = $state([]);
+
+    async function loadNetwork() {
+        const graph = await json('/data/miserables.json');
+        links = graph.links.map((d) => ({ ...d }));
+        nodes = graph.nodes.map((d) => ({ ...d }));
+        forceSimulation(nodes)
+            .alphaTarget(0.3)
+            .force(
+                'link',
+                forceLink(links).id((d) => d.id)
+            )
+            .force('charge', forceManyBody())
+            .force('center', forceCenter());
+    }
+
+    $effect(async () => {
+        if (!nodes.length) loadNetwork();
+    });
+</script>
+
+<Plot inset={10} color={{ type: 'categorical' }} height={550}>
+    <Arrow
+        data={links}
+        x1={(d) => d.source.x}
+        y1={(d) => d.source.y}
+        x2={(d) => d.target.x}
+        y2={(d) => d.target.y}
+        bend
+        insetStart={(d) => d.source.id.length * 1.1}
+        insetEnd={(d) => d.target.id.length * 1.1}
+        opacity="0.2"
+    />
+    <Dot
+        data={nodes}
+        r={(d) => d.id.length}
+        stroke="var(--svelteplot-bg)"
+        fill="group"
+        x="x"
+        y="y"
+    />
+</Plot>
+```
+
+```svelte
+<script lang="ts">
+    import { Plot, Arrow, Dot } from 'svelteplot';
+    import { json } from 'd3-fetch';
+    import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
+
+    let links = $state([]);
+    let nodes = $state([]);
+
+    async function loadNetwork() {
+        const graph = await json('/data/miserables.json');
+        links = graph.links.map((d) => ({ ...d }));
+        nodes = graph.nodes.map((d) => ({ ...d }));
+        forceSimulation(nodes)
+            .alphaTarget(0.3)
+            .force(
+                'link',
+                forceLink(links).id((d) => d.id)
+            )
+            .force('charge', forceManyBody())
+            .force('center', forceCenter());
+    }
+
+    $effect(async () => {
+        if (!nodes.length) loadNetwork();
+    });
+</script>
+
+<Plot inset={10} color={{ type: 'categorical' }}>
+    <Arrow
+        data={links}
+        x1={(d) => d.source.x}
+        y1={(d) => d.source.y}
+        x2={(d) => d.target.x}
+        y2={(d) => d.target.y}
+        bend
+        insetStart={(d) => d.source.id.length * 1.1}
+        insetEnd={(d) => d.target.id.length * 1.1}
+        opacity="0.2"
+    />
+    <Dot
+        data={nodes}
+        r={(d) => d.id.length}
+        stroke="var(--svelteplot-bg)"
+        fill="group"
+        x="x"
+        y="y"
+    />
+</Plot>
+```
+
+## Arrow options
 
 Options:
 
@@ -93,7 +196,7 @@ Options:
     let headAngle = $state(40);
 </script>
 
-<Plot title="Arrow options" frame grid margin={20} inset={40}>
+<Plot frame grid margin={20} inset={40}>
     {#snippet header()}
         <div style:margin-top="1em">
             <Slider label="inset" bind:value={inset} />

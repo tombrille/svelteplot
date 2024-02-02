@@ -19,7 +19,7 @@ import {
     quantitativeScheme
 } from './colors.js';
 import { isColorOrNull } from './typeChecks.js';
-import type { ColorScheme, RawValue } '$lib/types.js';
+import type { ColorScheme, RawValue } from '$lib/types.js';
 
 const Scales: Record<string, (domain: number[], range: [number, number]) => (val: any) => any> = {
     point: scalePoint,

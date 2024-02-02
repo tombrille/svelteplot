@@ -9,87 +9,8 @@
     --svelteplot-bg: #fff;
 }
 
-.sidebar-logo a.nav-item {
-    padding-left: 0 !important;
-
-    img {
-        height: 24px;
-    }
-}
-
 html:not(.dark) .svp-action--flat {
     background-color: #eeeef8;
-}
-
-.content {
-    h1.page-title {
-        padding-bottom: 1rem !important;
-        font-weight: 600;
-    }
-
-    h2 {
-        margin-top: 4rem !important;
-        padding-top: 2rem !important;
-        font-weight: 600;
-    }
-
-    code {
-        white-space: nowrap;
-    }
-
-    pre code {
-        white-space: pre-wrap;
-    }
-}
-
-.sidebar-group.nested {
-    padding-left: 0;
-}
-.sidebar-group.nested .sidebar-group.nested {
-    padding-left: 1rem;
-}
-.svp-code-block--hl {
-    background-color: rgb(216 26 90 / 0.15) !important;
-}
-.theme-default-sidebar .sidebar-logo {
-    z-index: 1;
-    font-size: 1.25rem;
-    background-color: #f1f3f5 !important;
-    box-shadow: 0 2px 5px #f1f3f5;
-}
-
-html.dark {
-    --svelteplot-bg: #1b1b1f;
-    body {
-        background-color: var(--svelteplot-bg) !important;
-    }
-
-    .theme-default-sidebar {
-        background-color: #161618 !important;
-    }
-    .theme-default-sidebar .sidebar-logo {
-        background-color: #161618 !important;
-        box-shadow: 0 2px 5px #161618;
-    }
-}
-
-.theme-default-sidebar .links {
-    font-size: 14px;
-    a.link {
-        opacity: 0.7;
-        &.active {
-            opacity: 1;
-        }
-        .active-icon {
-            display: none;
-        }
-    }
-}
-
-.nav-links {
-    font-size: 15px !important;
-    background-color: var(--svelteplot-bg);
-    box-shadow: 0px 0px 7px 4px var(--svelteplot-bg);
 }
 
 @media (min-width: 950px) {
@@ -119,37 +40,6 @@ html.dark {
     --svelteplot-tooltip-border: #ccc;
 }
 
-body {
-    font-size: 15px;
-    line-height: 22.5px;
-}
-
-html.dark {
-    --svelteplot-tooltip-bg: #18181b;
-    --svelteplot-tooltip-border: #333;
-}
-
-html.dark {
-    .svp-code-block-wrapper {
-        .shiki.github-light {
-            display: none;
-        }
-        background-color: #0f0f0f;
-    }
-}
-
-html:not(.dark) {
-    body {
-        background-color: white;
-    }
-    .svp-code-block-wrapper {
-        .shiki.github-dark {
-            display: none;
-        }
-        background-color: #f2f2f6;
-    }
-}
-
 figure.svelteplot {
     h2 {
         border-top: 0;
@@ -176,20 +66,143 @@ figure.svelteplot {
     }
 }
 
-.svp-live-code--demo {
-    padding: 0;
-}
+html {
+    body {
+        font-size: 15px;
+        line-height: 22.5px;
+    }
 
-.svp-live-code--container {
-    --un-border-opacity: 0;
-    --un-shadow: none;
-}
+    .admonition-heading {
+        display: none !important;
+    }
 
-.dark .svp-live-code--container {
-    --un-border-opacity: 0 !important;
-    --un-shadow: none !important;
-}
+    .admonition-content p:first-child {
+        margin-top: 0 !important;
+    }
 
-.svp-live-code--container .c-expansion {
-    display: none;
+    .svp-live-code--demo {
+        padding: 0;
+    }
+
+    .svp-live-code--container {
+        --un-border-opacity: 0;
+        --un-shadow: none;
+    }
+
+    .svp-live-code--container .c-expansion {
+        display: none;
+    }
+
+    .theme-default-sidebar .links {
+        font-size: 14px;
+        a.link {
+            opacity: 0.7;
+            &.active {
+                opacity: 1;
+            }
+            .active-icon {
+                display: none;
+            }
+        }
+    }
+
+    .nav-links {
+        font-size: 15px !important;
+        background-color: var(--svelteplot-bg);
+        box-shadow: 0px 0px 7px 4px var(--svelteplot-bg);
+    }
+
+    .content {
+        h1.page-title {
+            padding-bottom: 1rem !important;
+            font-weight: 600;
+        }
+
+        h2 {
+            margin-top: 4rem !important;
+            padding-top: 2rem !important;
+            font-weight: 600;
+        }
+
+        code {
+            white-space: nowrap;
+        }
+
+        pre code {
+            white-space: pre-wrap;
+        }
+    }
+
+    .sidebar-logo a.nav-item {
+        padding-left: 0 !important;
+
+        img {
+            height: 24px;
+        }
+    }
+
+    .sidebar-group.nested {
+        padding-left: 0;
+    }
+    .sidebar-group.nested .sidebar-group.nested {
+        padding-left: 1rem;
+    }
+    .svp-code-block--hl {
+        background-color: rgb(216 26 90 / 0.15) !important;
+    }
+    .theme-default-sidebar .sidebar-logo {
+        z-index: 1;
+        font-size: 1.25rem;
+        background-color: #f1f3f5 !important;
+        box-shadow: 0 2px 5px #f1f3f5;
+    }
+
+    &.dark {
+        --svelteplot-tooltip-bg: #18181b;
+        --svelteplot-tooltip-border: #333;
+
+        --svelteplot-bg: #1b1b1f;
+        body {
+            background-color: var(--svelteplot-bg) !important;
+        }
+
+        .feature-item {
+            background-color: #0f0f11 !important;
+            .icon {
+                --un-bg-opacity: 0 !important;
+            }
+        }
+
+        .theme-default-sidebar {
+            background-color: #161618 !important;
+        }
+        .theme-default-sidebar .sidebar-logo {
+            background-color: #161618 !important;
+            box-shadow: 0 2px 5px #161618;
+        }
+
+        .svp-code-block-wrapper {
+            .shiki.github-light {
+                display: none;
+            }
+            background-color: #0f0f0f;
+        }
+
+        .svp-live-code--container {
+            --un-border-opacity: 0 !important;
+            --un-shadow: none !important;
+        }
+    }
+
+    &:not(.dark) {
+        body {
+            background-color: white;
+        }
+        .svp-code-block-wrapper {
+            .shiki.github-dark {
+                display: none;
+            }
+            background-color: #f2f2f6;
+        }
+    }
 }

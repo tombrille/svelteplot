@@ -8,15 +8,15 @@ export default {
                     items: [
                         {
                             title: 'Introduction',
-                            to: '/guide/introduction/'
-                        },
-                        {
-                            title: 'Differences to Plot',
-                            to: '/guide/differences-to-plot/'
+                            to: '/introduction/'
                         },
                         {
                             title: 'Getting started',
-                            to: '/guide/getting-started/'
+                            to: '/getting-started/'
+                        },
+                        {
+                            title: 'Differences to Plot',
+                            to: '/differences-to-plot/'
                         }
                     ]
                 },

@@ -2,6 +2,10 @@
 title: Getting started
 ---
 
+:::warning
+Unfortunately, SveltePlot **is not ready for use** yet. Most of the existing features are implemented only half-way and there are countless bugs in the reactive data flows.
+:::
+
 ## Try online
 
 You can use SveltePlot inside any platform that supports Svelte 5, such as StackBlitz, SvelteLab, or the regular Svelte REPLs.

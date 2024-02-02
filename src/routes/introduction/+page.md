@@ -4,9 +4,9 @@ description: How to use SveltePlot
 lastUpdate: 2024-01-10
 ---
 
-<script lang="ts">
-    
-</script>
+:::caution
+SveltePlot is still in a very, very early alpha stage, so early that it's **not recommended** to use it, yet. Also, it's built using Svelte 5, which itself is not released, yet.
+:::
 
 SveltePlot is a free, open-source Svelte framework for visualizing tabular data, focused on accelerating exploratory data analysis. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as Svelte 5 components.
 

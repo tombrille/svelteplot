@@ -73,13 +73,10 @@
         return a == null ? Number(b) : a;
     }
 
-
     let sorted = $derived(
         options.sort
             ? data.toSorted((a, b) =>
-                  resolveChannel('sort', a, options) > resolveChannel('sort', b, options)
-                      ? 1
-                      : -1
+                  resolveChannel('sort', a, options) > resolveChannel('sort', b, options) ? 1 : -1
               )
             : data
     );

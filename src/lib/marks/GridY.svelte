@@ -9,6 +9,7 @@
     import type { PlotContext, BaseMarkStyleProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { resolveChannel } from '../helpers/resolve.js';
+    import { fade } from 'svelte/transition';
 
     let {
         data = [],
@@ -52,6 +53,7 @@
             {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
             {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.width - plot.options.marginLeft - plot.options.marginRight}
             <line
+                in:fade
                 transform="translate({plot.options.marginLeft},{y})"
                 style={getBaseStyles(tick, options)}
                 {x1}

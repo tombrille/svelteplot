@@ -4,30 +4,26 @@ description: The Svelte framework for exploratory data visualization
 heroImage: /logo.png
 tagline: Inspired by Observable Plot, built on top of D3!
 actions:
-    - label: Get started
-      to: /guide/introduction
-      type: primary
     - label: What is SveltePlot?
-      to: /guide/introduction
+      to: /introduction
+      type: primary
+    - label: Getting started
       type: flat
-    - label: View on github
-      type: flat
-      to: /features/plot
-      external: true
+      to: /getting-started
 features:
     - title: Marks
       description: To help you can start writing with minimal configuration.
       icon:
           type: iconify
-          collection: vscode-icons
-          name: file-type-markdown
+          collection: carbon
+          name: roadmap
       link: /features/scales
     - title: Automatic scales
       description: Preserve the full power of Sveltekit. So that you can do more than SSG.
       icon:
           type: iconify
-          collection: logos
-          name: svelte-kit
+          collection: ri
+          name: ruler-line
     - title: Fully reactive
       description: Feel free to use svelte (3 and 4) in markdown. Explore infinite possibilities.
       icon:
@@ -36,11 +32,11 @@ features:
           name: file-type-svelte
       link: /features/interactivity
     - title: TypeScript
-      description: All mark components are typed
+      description: All components are fully typed and documented to integrate with VSCode
       icon:
           type: iconify
-          collection: logos
-          name: typescript-icon
+          collection: nonicons
+          name: typescript-16
     - title: Theme Customizable
       description: Feel free to use default theme, community themes or write your own.
       icon:
@@ -51,13 +47,14 @@ features:
       description: All components and props are fully reactive, typed and documented!
       icon:
           type: iconify
-          collection: emojione
-          name: artist-palette
+          collection: ri
+          name: svelte-line
 ---
 
 <style>
   :global(.intro .description) {
-    font-size: 3.5rem;
-    line-height: 1.1;
+    font-size: 3.5rem!important;
+    font-weight: 700!important;
+    line-height: 1.1!important;
   }
 </style>

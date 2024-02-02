@@ -50,7 +50,7 @@
 </script>
 
 <Mark
-    type="dot"
+    type="text"
     required={['x', 'y']}
     channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke']}
     {data}
@@ -58,7 +58,7 @@
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="dots" data-use-x={useScale.x ? 1 : 0}>
+    <g class="text" data-use-x={useScale.x ? 1 : 0}>
         {#each data as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
                 {@const _x = resolveChannel('x', datum, options)}

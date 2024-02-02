@@ -82,8 +82,8 @@
                         transform="translate({x + dx}, {y + dy})"
                         data-symbol={symbol}
                         style={getBaseStyles(datum, options)}
-                        style:fill={_fill ? fill : null}
-                        style:stroke={_stroke ? stroke : fill ? null : 'currentColor'}
+                        style:fill={_fill != null ? fill : null}
+                        style:stroke={_stroke != null ? stroke : fill ? null : 'currentColor'}
                     />
                 {/if}
             {/if}

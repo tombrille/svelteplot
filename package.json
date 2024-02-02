@@ -22,7 +22,8 @@
         "test:integration": "playwright test",
         "test:unit": "vitest",
         "prepack": "npx svelte-package",
-        "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish"
+        "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish",
+        "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/"
     },
     "exports": {
         ".": {
@@ -60,6 +61,7 @@
         "bulma": "^0.9.4",
         "d3-dsv": "^3.0.1",
         "d3-fetch": "^3.0.1",
+        "d3-force": "^3.0.0",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-svelte": "^2.35.1",
@@ -81,8 +83,6 @@
     "types": "./dist/index.d.ts",
     "type": "module",
     "dependencies": {
-        "@observablehq/plot": "^0.6.13",
-        "chroma-js": "^2.4.2",
         "d3-array": "^3.2.4",
         "d3-color": "^3.1.0",
         "d3-format": "^3.1.0",
@@ -96,6 +96,7 @@
         "dayjs": "^1.11.10",
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
+        "numeral": "^2.0.6",
         "underscore": "^1.13.6"
     }
 }

@@ -8,7 +8,7 @@
     import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
-    
+
     import type { PlotContext } from '../types.js';
 
     let { width = 250 } = $props<{ width?: number }>();
@@ -17,10 +17,8 @@
     let plot = $derived(getPlotState());
 
     let legendTitle = $derived(plot.options.color.label || plot.scales.color.autoTitle);
-
+    let scaleType = $derived(plot.scales.color.type);
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
-
-    $inspect(plot.scales.color)
 </script>
 
 <!--
@@ -33,9 +31,9 @@
 {#if plot.scales.color.manualActiveMarks > 0}
     <div class="color-legend">
         {#if legendTitle}
-        <div class="title">{legendTitle}</div>
+            <div class="title">{legendTitle}</div>
         {/if}
-        {#if plot.scales.color.type === 'ordinal'}
+        {#if scaleType === 'ordinal' || scaleType === 'categorical'}
             {#each plot.scales.color.domain as value}
                 {@const symbolV = plot.scales.symbol.fn(value)}
                 {@const symbolType = maybeSymbol(symbolV)}
@@ -54,7 +52,11 @@
                                     d={d3Symbol(symbolType, 40)()}
                                 />
                             {:else}
-                                <rect style:fill={plot.scales.color.fn(value)} width="15" height="15" />
+                                <rect
+                                    style:fill={plot.scales.color.fn(value)}
+                                    width="15"
+                                    height="15"
+                                />
                             {/if}</svg
                         >
                     </div>
@@ -63,12 +65,26 @@
             {/each}
         {:else}
             {@const domain = plot.scales.color.domain}
-            {@const ticks = new Set([domain[0], ...plot.scales.color.fn.ticks(Math.ceil(width/5)), domain[1]])}
-            <Plot maxWidth="240px" margins={1} marginTop={6} marginBottom={20} height={38} x={{ domain: plot.scales.color.domain }}>
+            {@const ticks = new Set([
+                domain[0],
+                ...plot.scales.color.fn.ticks(Math.ceil(width / 5)),
+                domain[1]
+            ])}
+            <Plot
+                maxWidth="240px"
+                margins={1}
+                marginTop={6}
+                marginBottom={20}
+                height={38}
+                x={{ domain: plot.scales.color.domain }}
+            >
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         {#each ticks as t}
-                        <stop offset="{100 * (t - domain[0]) / (domain[1] - domain[0])}%" stop-color={plot.scales.color.fn(t)} />
+                            <stop
+                                offset="{(100 * (t - domain[0])) / (domain[1] - domain[0])}%"
+                                stop-color={plot.scales.color.fn(t)}
+                            />
                         {/each}
                     </linearGradient>
                 </defs>

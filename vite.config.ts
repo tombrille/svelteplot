@@ -37,14 +37,26 @@ export default defineConfig({
                     },
                     {
                         title: 'Guide',
-                        to: '/guide/introduction'
+                        to: '/introduction'
                     },
                     {
                         title: 'Blog post',
                         to: 'https://vis4.net/blog'
                     }
                 ],
-                sidebar
+                sidebar,
+                preBuildIconifyIcons: {
+                    carbon: ['ruler-alt', 'roadmap'],
+                    ri: ['svelte-line', 'ruler-line'],
+                    nonicons: ['typescript-16'],
+                    emojione: ['artist-palette'],
+                    'vscode-icons': [
+                        'file-type-svelte',
+                        'arrow-both',
+                        'file-type-markdown',
+                        'file-type-vite'
+                    ]
+                }
             }),
 
             siteConfig: {
@@ -52,7 +64,7 @@ export default defineConfig({
                 description: 'The Svelte framework for exploratory data visualization'
             },
 
-            addInspect: true
+            addInspect: false
         })
     ],
 
