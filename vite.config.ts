@@ -38,10 +38,6 @@ export default defineConfig({
                     {
                         title: 'Guide',
                         to: '/introduction'
-                    },
-                    {
-                        title: 'Blog post',
-                        to: 'https://vis4.net/blog'
                     }
                 ],
                 sidebar,

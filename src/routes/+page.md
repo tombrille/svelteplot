@@ -24,6 +24,7 @@ features:
           type: iconify
           collection: ri
           name: ruler-line
+      link: /features/scales
     - title: Fully reactive
       description: Feel free to use svelte (3 and 4) in markdown. Explore infinite possibilities.
       icon:
@@ -37,18 +38,21 @@ features:
           type: iconify
           collection: nonicons
           name: typescript-16
+      link: /features/scales
     - title: Theme Customizable
       description: Feel free to use default theme, community themes or write your own.
       icon:
           type: iconify
           collection: emojione
           name: artist-palette
+      link: /features/scales
     - title: Written in Svelte5 & TypeScript
       description: All components and props are fully reactive, typed and documented!
       icon:
           type: iconify
           collection: ri
           name: svelte-line
+      link: /features/scales
 ---
 
 <style>

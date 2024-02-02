@@ -96,6 +96,7 @@
                 d={linePath(lineData)}
                 style={getBaseStyles(lineData[0], options)}
                 style:stroke={stroke_ ? stroke : 'currentColor'}
+                fill="none"
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}
