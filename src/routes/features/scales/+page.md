@@ -59,12 +59,11 @@ based on the Gregorian calendar.
 </script>
 
 <Plot
-    x={{ 
+    x={{
         type: 'time',
-        domain: [
-            new Date('2021-01-01'), 
-            new Date('2022-01-01')
-        ], grid: true }}
+        domain: [new Date('2021-01-01'), new Date('2022-01-01')],
+        grid: true
+    }}
     marginTop={0}
     marginLeft={20}
     marginRight={20}
@@ -130,14 +129,15 @@ But you can turn them off:
     import { getContext } from 'svelte';
 
     const { aapl } = getContext<Datasets>('data');
-
-    let nearestDataPoint = $state<Datasets['aapl'][0] | null>(aapl.at(-1));
 </script>
 
-<Plot grid height={250} y={{ axis: false }} marginLeft={0} testid="axis-off">
+<Plot x={{ axis: false }} y={{ axis: false }} margins={0} testid="axis-off">
     <Line data={aapl} x="Date" y="Close" />
-    {#if nearestDataPoint}
-        <Dot fill="black" r={4} data={[nearestDataPoint]} x="Date" y="Close" />
-    {/if}
+</Plot>
+```
+
+```svelte
+<Plot margins={0} x={{ axis: false }} y={{ axis: false }}>
+    <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

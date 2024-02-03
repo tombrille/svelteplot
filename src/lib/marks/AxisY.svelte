@@ -13,6 +13,7 @@
     import dayjs from 'dayjs';
     import type { ConstantAccessor } from '$lib/types.js';
     import { fade } from 'svelte/transition';
+    import { autoTicks } from '$lib/helpers/autoTicks.js';
 
     let {
         data = [],
@@ -57,9 +58,14 @@
             ? // use custom tick values if user passed any as prop
               data
             : // use custom scale tick values if user passed any as plot scale option
-              plot.options.y.ticks ||
-                  // fall back to auto-generated ticks
-                  plot.scales.y.fn.ticks(autoTickCount)
+              autoTicks(
+                  plot.scales.y.type,
+                  plot.options.y.ticks,
+                  plot.options.y.interval,
+                  plot.scales.y.domain,
+                  plot.scales.y.fn,
+                  autoTickCount
+              )
     );
 
     let useTickFormat = $derived(

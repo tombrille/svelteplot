@@ -10,6 +10,7 @@
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { resolveChannel } from '../helpers/resolve.js';
     import { fade } from 'svelte/transition';
+    import { autoTicks } from '$lib/helpers/autoTicks.js';
 
     let {
         data = [],
@@ -29,9 +30,14 @@
             ? // use custom tick values if user passed any as prop
               data
             : // use custom scale tick values if user passed any as plot scale option
-              plot.options.x.ticks ||
-                  // fall back to auto-generated ticks
-                  plot.scales.x.fn.ticks(autoTickCount)
+              autoTicks(
+                  plot.scales.x.type,
+                  plot.options.x.ticks,
+                  plot.options.x.interval,
+                  plot.scales.x.domain,
+                  plot.scales.x.fn,
+                  autoTickCount
+              )
     );
 </script>
 

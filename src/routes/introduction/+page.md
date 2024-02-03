@@ -8,7 +8,7 @@ lastUpdate: 2024-01-10
 SveltePlot is still in a very, very early alpha stage, so early that it's **not recommended** to use it, yet. Also, it's built using Svelte 5, which itself is not released, yet.
 :::
 
-SveltePlot is a free, open-source Svelte framework for visualizing tabular data, focused on accelerating exploratory data analysis. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as Svelte 5 components.
+SveltePlot is a free, open-source Svelte framework for visualizing tabular data, focused on accelerating exploratory data analysis. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as Svelte 5 components (you can find out about the [differences here](/differences-to-plot))
 
 You can use SveltePlot to create charts with a consise and minimal API.
 
@@ -53,6 +53,7 @@ You can use SveltePlot to create charts with a consise and minimal API.
     <Plot
         frame={showFrame}
         grid={showGrid}
+        color={{ legend: true }}
         x={{ type: log ? 'log' : 'linear', insetLeft: 30, grid: true }}
         {height}
         inset={10}

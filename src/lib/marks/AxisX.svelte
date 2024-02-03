@@ -22,6 +22,8 @@
     import { derived } from 'svelte/store';
     import { fade } from 'svelte/transition';
     import numeral from 'numeral';
+    import { maybeTimeInterval } from '$lib/helpers/time.js';
+    import { autoTicks } from '$lib/helpers/autoTicks.js';
 
     let {
         data = [],
@@ -58,9 +60,14 @@
             ? // use custom tick values if user passed any as prop
               data
             : // use custom scale tick values if user passed any as plot scale option
-              plot.options.x.ticks ||
-                  // fall back to auto-generated ticks
-                  plot.scales.x.fn.ticks(autoTickCount)
+              autoTicks(
+                  plot.scales.x.type,
+                  plot.options.x.ticks,
+                  plot.options.x.interval,
+                  plot.scales.x.domain,
+                  plot.scales.x.fn,
+                  autoTickCount
+              )
     );
 
     let tickFmt = $derived(tickFormat || plot.options.x.tickFormat);
@@ -92,6 +99,8 @@
             }))
         )
     );
+
+    console.log(maybeTimeInterval('month').range(new Date(2000, 0, 1), new Date(2011, 0, 1)));
 
     let optionsLabel = $derived(plot.options?.x?.label);
 

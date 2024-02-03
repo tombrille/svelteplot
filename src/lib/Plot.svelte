@@ -13,7 +13,7 @@
 
     let width = $state(500);
 
-    let { header, footer, overlay, underlay, testid, ...initialOpts } =
+    let { header, footer, overlay, underlay, debug, testid, ...initialOpts } =
         $props<Partial<PlotOptions>>();
 
     // information that influences the default plot options
@@ -191,6 +191,10 @@
         getPlotState() {
             return plotState;
         }
+    });
+
+    $effect(() => {
+        if (debug) console.log(plotState.options.x);
     });
 </script>
 

@@ -229,7 +229,8 @@ export function createScale<T extends ScaleOptions>(
     }
     // const valueType =
     // construct domain from data values
-    const valueArr = [...dataValues.values()];
+    const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
+
     const type: ScaleType =
         scaleOptions.type === 'auto'
             ? inferScaleType(name, valueArr, markTypes)
@@ -333,7 +334,7 @@ export function createScale<T extends ScaleOptions>(
     };
 }
 
-function inferScaleType(
+export function inferScaleType(
     name: ScaleName,
     dataValues: RawValue[],
     markTypes: Set<MarkType>
@@ -349,7 +350,7 @@ function inferScaleType(
     // for positional scales, try to pick a scale that's required by the mark types
     if ((name === 'x' || name === 'y') && markTypes.size === 1) {
         if (name === 'y' && (markTypes.has('barX') || markTypes.has('tickX'))) return 'band';
-        if ((name === 'x' && markTypes.has('barY')) || markTypes.has('tickY')) return 'band';
+        if (name === 'x' && (markTypes.has('barY') || markTypes.has('tickY'))) return 'band';
     }
     if (!dataValues.length) return 'linear';
     if (dataValues.length === 1) return 'point';

@@ -1,0 +1,50 @@
+import type { RawValue, ScaleOptions, ScaleType } from '$lib/types.js';
+import { maybeTimeInterval } from './time.js';
+import { range as rangei } from 'd3-array';
+
+export function maybeInterval(
+    interval: null | number | string | (<T>(d: T) => T),
+    type: ScaleType
+) {
+    if (interval == null) return;
+    if (typeof interval === 'number') {
+        if (0 < interval && interval < 1 && Number.isInteger(1 / interval))
+            interval = -1 / interval;
+        const n = Math.abs(interval);
+        return interval < 0
+            ? {
+                  floor: (d) => Math.floor(d * n) / n,
+                  offset: (d) => (d * n + 1) / n, // note: no optional step for simplicity
+                  range: (lo, hi) => rangei(Math.ceil(lo * n), hi * n).map((x) => x / n)
+              }
+            : {
+                  floor: (d) => Math.floor(d / n) * n,
+                  offset: (d) => d + n, // note: no optional step for simplicity
+                  range: (lo, hi) => rangei(Math.ceil(lo / n), hi / n).map((x) => x * n)
+              };
+    }
+    if (typeof interval === 'string')
+        return (type === 'time' ? maybeTimeInterval : maybeUtcInterval)(interval);
+    if (typeof interval.floor !== 'function')
+        throw new Error('invalid interval; missing floor method');
+    if (typeof interval.offset !== 'function')
+        throw new Error('invalid interval; missing offset method');
+    return interval;
+}
+
+export function autoTicks(
+    type: ScaleType,
+    ticks: RawValue[],
+    interval: string | number | null,
+    domain: RawValue[],
+    scaleFn,
+    count: number
+) {
+    return ticks
+        ? ticks
+        : interval
+          ? maybeInterval(interval, type).range(domain[0], domain[1])
+          : typeof scaleFn.ticks === 'function'
+            ? scaleFn.ticks(count)
+            : [];
+}
