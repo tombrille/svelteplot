@@ -1,3 +1,7 @@
+<!--
+    @component
+    For horizontal bar charts using a band scale as y axis
+-->
 <script lang="ts">
     /**
      * @license

@@ -46,7 +46,7 @@ The automatic ticks can be customized using the <b>tickSpacing</b> option:
 </Plot>
 ```
 
-You can turn off all axes 
+You can turn off all axes
 
 ```svelte live
 <script lang="ts">
@@ -79,7 +79,15 @@ You can turn off all axes
 
 <p>
     This allows you to use a plot as tiny chart
-    <Plot x={{ axis: false }} y={{ axis: false }} inset={3} maxWidth="50px" height={25} margins={0} testid="axis-off">
+    <Plot
+        x={{ axis: false }}
+        y={{ axis: false }}
+        inset={3}
+        maxWidth="50px"
+        height={25}
+        margins={0}
+        testid="axis-off"
+    >
         <Line data={aapl.slice(-60)} x="Date" y="Close" />
         <Dot data={aapl.slice(-1)} x="Date" y="Close" r={2} fill="currentColor" />
     </Plot>, inside a text paragraph or table -- often referred to as sparklines.

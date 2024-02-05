@@ -15,6 +15,7 @@
     } from '../types.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { coalesce } from '../helpers/index.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import {
@@ -67,10 +68,6 @@
 
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && !Number.isNaN(value);
-    }
-
-    function coalesce(a: number | undefined | null, b: number | null) {
-        return a == null ? Number(b) : a;
     }
 
     let sorted = $derived(

@@ -1,0 +1,112 @@
+---
+title: Bin transform
+---
+
+The bin transform groups quantitative or temporal data — continuous measurements such as heights, weights, or temperatures — into discrete bins. You can then compute summary statistics for each bin, such as a count, sum, or proportion.
+
+For example, here is a histogram showing the distribution of weights of Olympic athletes.
+
+```svelte live
+<script>
+    import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let olympians = $state(false);
+
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });    
+</script>
+
+<Plot height={300}>
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' } )} />
+</Plot>
+```
+
+```svelte
+<Plot height={300}>
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' } )} />
+</Plot>
+```
+
+By default, the binX transform will set the  _insetRight_ channel to 1, but you can disable this by explicitly setting the it to zero:
+
+```svelte live
+<script>
+    import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let olympians = $state(false);
+
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });    
+</script>
+<Plot height={200}>
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} insetRight="0" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot height={200}>
+    <RectY {...binX(
+        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
+        { thresholds: [0,35,40,41,45,53,80] }
+    )} insetLeft="0" insetRight="0" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+You can define _thresholds_ as a number 
+
+```svelte live
+<script>
+    import { Plot, RectY, RuleY, binX } from '$lib';
+    import Slider from '$lib/ui/Slider.svelte'; 
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let thresholds = $state(20);
+    let olympians = $state(false);
+
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });  
+    
+</script>
+<Slider min={10} max={100} step={10} label="thresholds" bind:value={thresholds} />
+<Plot grid marginLeft={50} height={200}>
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' }, { thresholds })} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+Or as arbitrary bin bounds:
+
+```svelte live
+<script>
+    import { Plot, RectY, RuleY, binX } from '$lib';
+    import { getContext } from 'svelte';
+    const { penguins } = getContext('data');
+</script>
+<Plot height={200}>
+    <RectY {...binX(
+        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
+        { thresholds: [0,35,40,41,45,53,80] }
+    )} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot height={200}>
+    <RectY {...binX(
+        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
+        { thresholds: [0,35,40,41,45,53,80] }
+    )} />
+    <RuleY data={[0]} />
+</Plot>
+```

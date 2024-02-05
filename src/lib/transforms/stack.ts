@@ -86,6 +86,8 @@ function stackXY(
             (d) => d.__group
         );
 
+        
+
         const stackOrder = (series: number[][]) => {
             const f = STACK_ORDER[options.order || 'none'];
             return options.reverse ? f(series).reverse() : f(series);
@@ -119,7 +121,7 @@ function stackXY(
             ...channels,
             [byDim]: undefined,
             ...(typeof channels[byDim] === 'string'
-                ? { [`__${byDim}_stackOrigField`]: channels[byDim] }
+                ? { [`__${byDim}_origField`]: channels[byDim] }
                 : {}),
             ...{ [byLow]: `__${byLow}`, [byHigh]: `__${byHigh}` }
         };

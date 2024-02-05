@@ -220,10 +220,10 @@ export function createScale<T extends ScaleOptions>(
             // special handling of marks using the stackX/stackY transform
             if (
                 (name === 'x' || name === 'y') &&
-                mark.options[`__${name}_stackOrigField`] &&
-                !mark.options[`__${name}_stackOrigField`].startsWith('__')
+                mark.options[`__${name}_origField`] &&
+                !mark.options[`__${name}_origField`].startsWith('__')
             ) {
-                propNames.add(mark.options[`__${name}_stackOrigField`]);
+                propNames.add(mark.options[`__${name}_origField`]);
             }
         }
     }

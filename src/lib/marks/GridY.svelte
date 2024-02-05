@@ -30,7 +30,7 @@
             ? // use custom tick values if user passed any as prop
               data
             : // use custom scale tick values if user passed any as plot scale option
-             autoTicks(
+              autoTicks(
                   plot.scales.y.type,
                   plot.options.y.ticks,
                   plot.options.y.interval,

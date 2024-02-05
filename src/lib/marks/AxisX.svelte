@@ -100,8 +100,6 @@
         )
     );
 
-    console.log(maybeTimeInterval('month').range(new Date(2000, 0, 1), new Date(2011, 0, 1)));
-
     let optionsLabel = $derived(plot.options?.x?.label);
 
     let isQuantitative = $derived(plot.scales.x.type !== 'point' && plot.scales.x.type !== 'band');
