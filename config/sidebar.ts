@@ -54,6 +54,7 @@ export default {
                         { title: 'Frame', to: '/marks/frame/' },
                         { title: 'Grid', to: '/marks/grid/' },
                         { title: 'Line', to: '/marks/line/' },
+                        { title: 'Rect', to: '/marks/rect/' },
                         { title: 'Rule', to: '/marks/rule/' },
                         { title: 'Text', to: '/marks/text/' },
                         { title: 'Tick', to: '/marks/tick/' }
@@ -63,7 +64,9 @@ export default {
                     title: 'Transforms',
                     collapsible: true,
                     items: [
+                        { title: 'Bin', to: '/transforms/bin/' },
                         { title: 'Group', to: '/transforms/group/' },
+                        { title: 'Interval', to: '/transforms/interval/' },
                         { title: 'Stack', to: '/transforms/stack/' }
                     ]
                 }

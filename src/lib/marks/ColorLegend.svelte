@@ -16,7 +16,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let legendTitle = $derived(plot.options.color.label || plot.scales.color.autoTitle);
+    let legendTitle = $derived(plot.options.color.label);
     let scaleType = $derived(plot.scales.color.type);
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>

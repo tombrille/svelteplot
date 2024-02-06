@@ -45,6 +45,8 @@
             inset: isOneDimensional ? 10 : 0,
             grid: false,
             frame: false,
+            projection: null,
+            aspectRatio: null,
             x: {
                 type: 'auto',
                 axis: oneDimY ? null : 'bottom',
@@ -71,7 +73,7 @@
                 percent: false,
                 padding: 0.1,
                 align: 0.5,
-                tickSpacing: 80,
+                tickSpacing: 40,
                 tickFormat: 'auto',
                 grid: false
             },
@@ -136,25 +138,32 @@
     );
 
     let preScales: PlotScales = $derived(
-        computeScales(plotOptions, 400, 400, hasFilledDotMarks, marks)
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks)
     );
+
+    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
     let height = $derived(
         plotOptions.height === 'auto'
-            ? ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                  ? 60
-                  : preScales.y.type === 'band'
-                    ? preScales.y.domain.length * 30
-                    : preScales.y.type === 'point'
-                      ? preScales.y.domain.length * 18
-                      : 400) +
+            ? plotOptions.aspectRatio
+                ? ((plotWidth / Math.abs(preScales.x.domain[1] - preScales.x.domain[0])) *
+                      Math.abs(preScales.y.domain[1] - preScales.y.domain[0])) /
+                      plotOptions.aspectRatio +
+                  plotOptions.marginTop +
+                  plotOptions.marginBottom
+                : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
+                      ? 60
+                      : preScales.y.type === 'band'
+                        ? preScales.y.domain.length * 30
+                        : preScales.y.type === 'point'
+                          ? preScales.y.domain.length * 18
+                          : 300) +
                   plotOptions.marginTop +
                   plotOptions.marginBottom
             : plotOptions.height
     );
 
     let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
-    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
     let plotBody: HTMLDivElement | undefined = $state(null);
 

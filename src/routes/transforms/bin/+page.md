@@ -16,21 +16,21 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 
     $effect(async () => {
         olympians = await csv('/data/olympians.csv', autoType);
-    });    
+    });
 </script>
 
 <Plot height={300}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' } )} />
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} />
 </Plot>
 ```
 
 ```svelte
 <Plot height={300}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' } )} />
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} />
 </Plot>
 ```
 
-By default, the binX transform will set the  _insetRight_ channel to 1, but you can disable this by explicitly setting the it to zero:
+You can also bin and group at the same time:
 
 ```svelte live
 <script>
@@ -42,8 +42,33 @@ By default, the binX transform will set the  _insetRight_ channel to 1, but you 
 
     $effect(async () => {
         olympians = await csv('/data/olympians.csv', autoType);
-    });    
+    });
 </script>
+
+<Plot height={300} grid marginLeft={40} color={{ legend: true }}>
+    <RectY
+        {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })}
+        stack={{ offset: 'center' }}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+By default, the binX transform will set the _insetRight_ channel to 1, but you can disable this by explicitly setting the it to zero:
+
+```svelte live
+<script>
+    import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let olympians = $state(false);
+
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });
+</script>
+
 <Plot height={200}>
     <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} insetRight="0" />
     <RuleY data={[0]} />
@@ -52,20 +77,24 @@ By default, the binX transform will set the  _insetRight_ channel to 1, but you 
 
 ```svelte
 <Plot height={200}>
-    <RectY {...binX(
-        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
-        { thresholds: [0,35,40,41,45,53,80] }
-    )} insetLeft="0" insetRight="0" />
+    <RectY
+        {...binX(
+            { data: penguins, x: 'culmen_length_mm', y: 'count' },
+            { thresholds: [0, 35, 40, 41, 45, 53, 80] }
+        )}
+        insetLeft="0"
+        insetRight="0"
+    />
     <RuleY data={[0]} />
 </Plot>
 ```
 
-You can define _thresholds_ as a number 
+You can define _thresholds_ as a number
 
 ```svelte live
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
-    import Slider from '$lib/ui/Slider.svelte'; 
+    import Slider from '$lib/ui/Slider.svelte';
     import { csv } from 'd3-fetch';
     import { autoType } from 'd3-dsv';
 
@@ -74,9 +103,9 @@ You can define _thresholds_ as a number
 
     $effect(async () => {
         olympians = await csv('/data/olympians.csv', autoType);
-    });  
-    
+    });
 </script>
+
 <Slider min={10} max={100} step={10} label="thresholds" bind:value={thresholds} />
 <Plot grid marginLeft={50} height={200}>
     <RectY {...binX({ data: olympians, x: 'weight', y: 'count' }, { thresholds })} />
@@ -92,21 +121,46 @@ Or as arbitrary bin bounds:
     import { getContext } from 'svelte';
     const { penguins } = getContext('data');
 </script>
+
 <Plot height={200}>
-    <RectY {...binX(
-        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
-        { thresholds: [0,35,40,41,45,53,80] }
-    )} />
+    <RectY
+        {...binX(
+            { data: penguins, x: 'culmen_length_mm', y: 'count' },
+            { thresholds: [0, 35, 40, 41, 45, 53, 80] }
+        )}
+    />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
 <Plot height={200}>
-    <RectY {...binX(
-        { data: penguins, x: 'culmen_length_mm', y: 'count' }, 
-        { thresholds: [0,35,40,41,45,53,80] }
-    )} />
+    <RectY
+        {...binX(
+            { data: penguins, x: 'culmen_length_mm', y: 'count' },
+            { thresholds: [0, 35, 40, 41, 45, 53, 80] }
+        )}
+    />
     <RuleY data={[0]} />
+</Plot>
+```
+
+## BinY
+
+```svelte live
+<script>
+    import { Plot, RectX, RuleX, binY } from '$lib';
+    import { csv } from 'd3-fetch';
+    import { autoType } from 'd3-dsv';
+
+    let olympians = $state(false);
+    $effect(async () => {
+        olympians = await csv('/data/olympians.csv', autoType);
+    });
+</script>
+
+<Plot grid>
+    <RectX {...binY({ data: olympians, y: 'weight', x: 'count' }, { reverse: true })} />
+    <RuleX data={[0]} />
 </Plot>
 ```

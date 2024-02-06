@@ -11,6 +11,7 @@
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
+    import numeral from 'numeral';
     import type { ConstantAccessor } from '$lib/types.js';
     import { fade } from 'svelte/transition';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
@@ -68,20 +69,21 @@
               )
     );
 
+    let tickFmt = $derived(tickFormat || plot.options.y.tickFormat);
+
     let useTickFormat = $derived(
-        typeof tickFormat === 'function'
-            ? tickFormat
+        typeof tickFmt === 'function'
+            ? tickFmt
             : plot.scales.y.type === 'time'
-              ? typeof tickFormat === 'string'
+              ? typeof tickFmt === 'string' && tickFmt !== 'auto'
                   ? (d: Date) =>
                         dayjs(d)
-                            .format(tickFormat as string)
+                            .format(tickFmt as string)
                             .split('\n')
                   : autoTimeFormat(plot.scales.y, plot.plotHeight)
-              : (d: RawValue) =>
-                    typeof d === 'string'
-                        ? d
-                        : String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
+              : typeof tickFmt === 'string'
+                ? (d: number) => numeral(d).format(tickFmt === 'auto' ? '0.[00]a' : tickFmt)
+                : (d: RawValue) => String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     let optionsLabel = $derived(plot.options.y.label);

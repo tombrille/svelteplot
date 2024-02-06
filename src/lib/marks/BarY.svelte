@@ -10,7 +10,7 @@
      */
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackY, recordizeY } from '$lib/index.js';
+    import { intervalY, stackY, recordizeY } from '$lib/index.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -18,9 +18,10 @@
         PlotContext,
         DataRecord,
         BaseMarkStyleProps,
-        ConstantAccessor,
         RectMarkProps,
-        ChannelAccessor
+        ChannelAccessor,
+        DataRow
+
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
@@ -28,19 +29,26 @@
 
     let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
         BaseMarkStyleProps & {
-            data: DataRecord[];
+            data: DataRow[];
             x?: ChannelAccessor;
             y?: ChannelAccessor;
             y1?: ChannelAccessor;
             y2?: ChannelAccessor;
             stack?: StackOptions;
+            /**
+             * Converts y into y1/y2 ranges based on the provided interval. Disables the
+             * implicit stacking
+             */
+            interval?: number | string;
         } & RectMarkProps
     >();
 
-    let args = $derived(stackY(recordizeY({ data, ...options }), stack));
-
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
+
+    let args = $derived(stackY(intervalY(recordizeY({ data, ...options }), { plot }), stack));
+
+    $inspect(args)
 </script>
 
 <Mark type="barY" channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity']} {...args} let:mark>
@@ -65,8 +73,8 @@
             {#if isValid(x) && isValid(y1) && isValid(y2)}
                 <rect
                     style={getBaseStyles(datum, args)}
-                    style:fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
-                    style:stroke={stroke_ ? stroke : null}
+                    fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
+                    stroke={stroke_ ? stroke : null}
                     transform="translate({[x + inset + dx, miny + dy]})"
                     width={plot.scales.x.fn.bandwidth() - inset * 2}
                     height={maxy - miny}
@@ -82,9 +90,3 @@
     </g>
 </Mark>
 
-<style>
-    rect {
-        stroke: none;
-        fill: none;
-    }
-</style>

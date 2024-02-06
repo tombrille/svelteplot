@@ -10,7 +10,7 @@
      */
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackX, recordizeX } from '$lib/index.js';
+    import { stackX, recordizeX, intervalX, } from '$lib/index.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -37,10 +37,10 @@
 
     let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<BarXProps>();
 
-    let args = $derived(stackX(recordizeX({ data, ...options }), stack));
-
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
+
+    let args = $derived(stackX(intervalX(recordizeX({ data, ...options }), { plot }), stack));
 </script>
 
 <Mark type="barX" channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity']} {...args} let:mark>

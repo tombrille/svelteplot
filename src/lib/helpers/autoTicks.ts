@@ -1,4 +1,4 @@
-import type { RawValue, ScaleOptions, ScaleType } from '$lib/types.js';
+import type { RawValue, ScaleType } from '$lib/types.js';
 import { maybeTimeInterval } from './time.js';
 import { range as rangei } from 'd3-array';
 

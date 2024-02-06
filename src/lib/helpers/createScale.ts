@@ -87,7 +87,7 @@ export function createColorScale(
     } else if (type === 'linear') {
         const colorInterpolator = isQuantitativeScheme(scheme)
             ? quantitativeScheme(scheme)
-            : quantitativeScheme('blues');
+            : quantitativeScheme('rdylbu');
         return scaleSequential(domain, colorInterpolator);
     }
     return (d) => d;

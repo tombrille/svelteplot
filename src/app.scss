@@ -14,6 +14,12 @@ html:not(.dark) .svp-action--flat {
 }
 
 @media (min-width: 950px) {
+    .content {
+        width: 46vw !important;
+        p {
+            line-height: 1.75rem !important;
+        }
+    }
     .header-inner {
         width: 97vw !important;
     }
@@ -68,8 +74,8 @@ figure.svelteplot {
 
 html {
     body {
-        font-size: 15px;
-        line-height: 22.5px;
+        font-size: 16px;
+        line-height: 28px;
     }
 
     .admonition-heading {

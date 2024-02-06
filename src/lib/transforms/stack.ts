@@ -20,7 +20,8 @@ import {
     stackOrderAppearance,
     stackOrderAscending,
     stackOrderInsideOut,
-    stackOrderNone
+    stackOrderNone,
+    stackOffsetDiverging
 } from 'd3-shape';
 import { index, union } from 'd3-array';
 
@@ -31,7 +32,7 @@ const DEFAULT_STACK_OPTIONS: StackOptions = {
 };
 
 export type StackOrder = 'none' | 'appearance' | 'inside-out' | 'sum';
-export type StackOffset = 'none' | 'wiggle' | 'center' | 'normalize';
+export type StackOffset = 'none' | 'wiggle' | 'center' | 'normalize' | 'diverging';
 
 export type StackOptions = {
     offset: null | StackOffset;
@@ -50,6 +51,7 @@ const STACK_ORDER: Record<StackOrder, Function> = {
 
 const STACK_OFFSET: Record<StackOffset, Function | null> = {
     none: null,
+    diverging: stackOffsetDiverging,
     wiggle: stackOffsetWiggle,
     center: stackOffsetSilhouette,
     normalize: stackOffsetExpand
@@ -69,7 +71,7 @@ function stackXY(
     const byHigh: 'x2' | 'y2' = `${byDim}2`;
 
     if (
-        channels[byDim] !== undefined &&
+        channels[byDim] != null &&
         channels[`${byLow}`] === undefined &&
         channels[`${byHigh}`] === undefined
     ) {
@@ -85,8 +87,6 @@ function stackXY(
             (d) => d[`__${secondDim}`],
             (d) => d.__group
         );
-
-        
 
         const stackOrder = (series: number[][]) => {
             const f = STACK_ORDER[options.order || 'none'];

@@ -7,7 +7,12 @@
     import Rect from './Rect.svelte';
     import { renameChannels, stackY, recordizeY } from '$lib/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import type { DataRecord, BaseMarkStyleProps, ChannelAccessor, RectMarkProps } from '../types.js';
+    import type {
+        DataRecord,
+        BaseMarkStyleProps,
+        ChannelAccessor,
+        RectMarkProps
+    } from '../types.js';
 
     type RectYProps = BaseMarkStyleProps & {
         data: DataRecord[];
@@ -22,8 +27,6 @@
     let { data, stack, ...options } = $props<RectYProps>();
 
     let args = $derived(stackY(recordizeY({ data, ...options }), stack));
-
-     $inspect({ args });
 </script>
 
 <Rect {...args}></Rect>

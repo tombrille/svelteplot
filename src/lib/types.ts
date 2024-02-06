@@ -73,7 +73,7 @@ export type ScaledChannelName =
     | 'y1'
     | 'y2';
 
-export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter';
+export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter' | 'interval';
 
 export type RawValue = number | Date | boolean | string;
 
@@ -183,6 +183,7 @@ export type YScaleOptions = ScaleOptions & {
      * add an explicit AxisY mark to your plot instead of using the implicit axes.
      */
     axis: AxisYAnchor | false;
+    tickFormat: string | ((d: RawValue) => string);
 };
 
 export type LegendScaleOptions = ScaleOptions & {
@@ -246,6 +247,16 @@ export type PlotOptions = {
      * Convenience shortcut for setting both the x and y scale insets.
      */
     inset: number;
+    /**
+     * Geo-projection
+     */
+    projection: string | null;
+    /**
+     * if not null, computes a default height such that a variation of one
+     * unit in the x dimension is represented by the corresponding number
+     * of pixels as a variation in the y dimension of one unit.
+     */
+    aspectRatio: number | null;
     /**
      * Options for the shared x scale.
      */

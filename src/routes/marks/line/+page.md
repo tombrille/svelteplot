@@ -110,6 +110,20 @@ Convenience wrapper for wrapping a list of numbers over their indices
 </Plot>
 ```
 
+LineY can automatically group?
+
+```svelte live
+<script lang="ts">
+    import { Plot, LineY } from '$lib';
+    import { getContext } from 'svelte';
+    const { riaa } = getContext<Datasets>('data');
+</script>
+
+<Plot grid y={{ nice: true }} height={350}>
+    <LineY data={riaa} x="year" y="revenue" z="format" stroke="group" />
+</Plot>
+```
+
 ## More examples
 
 Line with symbols:

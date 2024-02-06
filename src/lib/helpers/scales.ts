@@ -263,7 +263,7 @@ export function createScale<T extends ScaleOptions>(
                   : ordinalScheme(scheme)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'linear') {
-            const scheme_ = scheme || 'blues';
+            const scheme_ = scheme || 'turbo';
             if (isDivergingScheme(scheme_)) {
                 // diverging
                 const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));

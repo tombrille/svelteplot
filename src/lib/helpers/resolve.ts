@@ -97,6 +97,12 @@ function resolve(
         // fallback to channel name as accessor
         if (accessor === null && datum[channel] !== undefined) return datum[channel];
         return isRawValue(accessor) ? accessor : null;
+    } else if (
+        Array.isArray(datum) &&
+        (typeof accessor === 'string' || typeof accessor === 'number') &&
+        datum[accessor] != null
+    ) {
+        return datum[accessor];
     } else {
         // return single value or accessor
         return typeof accessor === 'function'
