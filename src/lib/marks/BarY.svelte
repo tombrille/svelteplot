@@ -21,7 +21,6 @@
         RectMarkProps,
         ChannelAccessor,
         DataRow
-
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
@@ -48,7 +47,7 @@
 
     let args = $derived(stackY(intervalY(recordizeY({ data, ...options }), { plot }), stack));
 
-    $inspect(args)
+    $inspect(args);
 </script>
 
 <Mark type="barY" channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity']} {...args} let:mark>
@@ -89,4 +88,3 @@
         {/each}
     </g>
 </Mark>
-

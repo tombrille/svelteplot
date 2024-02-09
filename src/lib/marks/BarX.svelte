@@ -10,7 +10,7 @@
      */
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX, } from '$lib/index.js';
+    import { stackX, recordizeX, intervalX } from '$lib/index.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';

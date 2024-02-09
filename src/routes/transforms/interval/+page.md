@@ -49,7 +49,6 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 
 The meaning of the interval mark option depends on the associated mark, such as line, bar, rect, or dot. For example, for the [barY mark](/marks/bar), the interval option affects converts a singular y value into an interval [y1, y2]. In the contrived example below, notice that the vertical↕︎ extent of each bar spans an interval of 5 million, rather than extending to y = 0.
 
-
 ```svelte live
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
@@ -60,18 +59,21 @@ The meaning of the interval mark option depends on the associated mark, such as 
     const { aapl } = getContext<Datasets>('data');
 </script>
 
-<Plot marginLeft={40} 
-    x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>
+<Plot marginLeft={40} x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>
     <BarY data={aapl.slice(-40)} x="Date" y="Volume" interval={5e6} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot marginLeft={40} x={{ 
-    /* force date ticks for band scale */
-    tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') 
-}} grid>
+<Plot
+    marginLeft={40}
+    x={{
+        /* force date ticks for band scale */
+        tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n')
+    }}
+    grid
+>
     <BarY data={aapl.slice(-40)} x="Date" y="Volume" interval={5e6} />
     <RuleY data={[0]} />
 </Plot>

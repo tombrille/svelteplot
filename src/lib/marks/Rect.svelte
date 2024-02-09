@@ -20,7 +20,7 @@
         DataRecord,
         BaseMarkStyleProps,
         RectMarkProps,
-        ChannelAccessor,
+        ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
@@ -41,7 +41,9 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(intervalY(intervalX(recordizeY<Props>({ data, ...options }), { plot }), { plot }));
+    let args = $derived(
+        intervalY(intervalX(recordizeY<Props>({ data, ...options }), { plot }), { plot })
+    );
 </script>
 
 <Mark

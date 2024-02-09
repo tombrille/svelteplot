@@ -278,7 +278,7 @@ export type PlotOptions = {
      * The underlay snippet is useful for adding a layer of custom HTML markup
      * behind the SVG body of your plot, e.g. for a watermark or background image.
      */
-    underlay: Snippet;
+    underlay: Snippet<[PlotOptions]>;
     /**
      * The overlay snippet is useful for adding a layer of custom HTML markup
      * in front of the SVG body of your plot, e.g. for HTML tooltips.

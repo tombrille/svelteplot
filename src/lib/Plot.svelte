@@ -227,7 +227,7 @@
         </div>
     {/if}
     <div class="plot-body" bind:this={plotBody}>
-        {#if underlay}<div class="plot-underlay">{@render underlay()}</div>{/if}
+        {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
         <svg {width} {height}>
             {#if !hasExplicitAxisX}
                 {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
