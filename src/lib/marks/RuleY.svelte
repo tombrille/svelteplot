@@ -14,13 +14,13 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
 
-    type RuleYOptions = BaseMarkStyleProps & {
+    type RuleYOptions = BaseMarkProps & {
         data: DataRecord[];
         y?: ChannelAccessor;
         x1?: ChannelAccessor;

@@ -6,12 +6,12 @@
      */
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels, stackY, recordizeY } from '$lib/index.js';
-    import type { DataRecord, BaseMarkStyleProps, ChannelAccessor } from '../types.js';
+    import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
 
     /**
      * AreaY mark foo
      */
-    type AreaYProps = BaseMarkStyleProps & {
+    type AreaYProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         x1?: ChannelAccessor;

@@ -6,7 +6,7 @@
         CurveName,
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
         DataRow
@@ -24,7 +24,7 @@
         filter,
         ...options
     } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRow[];
             /**
              * the horizontal position; bound to the x scale

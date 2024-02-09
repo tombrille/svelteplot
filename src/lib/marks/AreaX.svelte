@@ -6,9 +6,9 @@
      */
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels, stackX, recordizeX } from '$lib/index.js';
-    import type { DataRecord, BaseMarkStyleProps, ChannelAccessor } from '../types.js';
+    import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
 
-    type AreaXProps = BaseMarkStyleProps & {
+    type AreaXProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         x1?: ChannelAccessor;

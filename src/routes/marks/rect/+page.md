@@ -18,7 +18,11 @@ The interval transform may be used to convert a single value in x or y (or both)
 </script>
 
 {#if seattle}
-    <Plot aspectRatio={1} y={{ ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }} testid="seattle-temp">
+    <Plot
+        aspectRatio={1}
+        y={{ ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }}
+        testid="seattle-temp"
+    >
         <Rect
             data={seattle}
             filter={(d) => d.date.getUTCFullYear() === 2015}

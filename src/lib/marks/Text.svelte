@@ -8,7 +8,7 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
@@ -18,7 +18,7 @@
     import Mark from '../Mark.svelte';
 
     let { data, ...options } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRecord[];
             x: ChannelAccessor;
             y: ChannelAccessor;

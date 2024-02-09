@@ -19,6 +19,8 @@ export const CHANNEL_SCALE: Record<ScaledChannelName, ScaleName> = {
     y2: 'y',
     r: 'r',
     length: 'length',
+    fx: 'fx',
+    fy: 'fy',
     symbol: 'symbol',
     fill: 'color',
     stroke: 'color',

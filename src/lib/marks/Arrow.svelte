@@ -9,7 +9,7 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
@@ -26,7 +26,7 @@
     } from '../helpers/arrowPath.js';
 
     let { data, ...options } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRecord[];
             sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
             x1: ChannelAccessor;

@@ -24,7 +24,7 @@ export type MarkType =
     | 'tickX'
     | 'tickY';
 
-export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol';
+export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol' | 'fx' | 'fy';
 
 export type ScaleType =
     | 'linear'
@@ -66,6 +66,8 @@ export type ScaledChannelName =
     | 'stroke'
     | 'strokeOpacity'
     | 'symbol'
+    | 'fx'
+    | 'fy'
     | 'x'
     | 'x1'
     | 'x2'
@@ -267,6 +269,8 @@ export type PlotOptions = {
     opacity: ScaleOptions;
     symbol: LegendScaleOptions;
     length: ScaleOptions;
+    fx: Partial<ScaleOptions>;
+    fy: Partial<ScaleOptions>;
     children: Snippet;
     /**
      * You can use the header snippet to render a custom title and subtitle for
@@ -352,6 +356,8 @@ export type PlotState = {
     width: number;
     height: number;
     options: PlotOptions;
+    facetWidth: number;
+    facetHeight: number;
     plotWidth: number;
     plotHeight: number;
     scales: PlotScales;
@@ -374,11 +380,13 @@ export type PlotContext = {
     getPlotState: () => PlotState;
 };
 
-export type BaseMarkStyleProps = Partial<{
+export type BaseMarkProps = Partial<{
     /**
      * Filter the data without modifying the inferred scales
      */
     filter?: ConstantAccessor<boolean>;
+    fx: ChannelAccessor;
+    fy: ChannelAccessor;
     dx: ConstantAccessor<number>;
     dy: ConstantAccessor<number>;
     fill: ConstantAccessor<string>;

@@ -16,7 +16,7 @@ import {
 } from 'd3-scale';
 import { extent } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
-import { getLogTicks } from './getLogTicks.js';
+// import { getLogTicks } from './getLogTicks.js';
 import {
     categoricalSchemes,
     isCategoricalScheme,
@@ -133,7 +133,25 @@ export function computeScales(
         height,
         plotHasFilledDotMarks
     );
-    return { x, y, r, color, opacity, length, symbol };
+    const fx = createScale(
+        'fx',
+        plotOptions.fx,
+        marks,
+        plotOptions,
+        width,
+        height,
+        plotHasFilledDotMarks
+    );
+    const fy = createScale(
+        'fy',
+        plotOptions.fy,
+        marks,
+        plotOptions,
+        width,
+        height,
+        plotHasFilledDotMarks
+    );
+    return { x, y, r, color, opacity, length, symbol, fx, fy };
 }
 
 export function createScale<T extends ScaleOptions>(
@@ -158,7 +176,6 @@ export function createScale<T extends ScaleOptions>(
             for (const channel of mark.channels) {
                 // channelOptions can be passed as prop, but most often users will just
                 // pass the channel accessor or constant value, so we may need to wrap
-
                 if (!skip.has(channel)) skip.set(channel, new Set());
 
                 const channelOptions = isDataRecord(mark.options[channel])
@@ -227,6 +244,7 @@ export function createScale<T extends ScaleOptions>(
             }
         }
     }
+
     // const valueType =
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
@@ -368,7 +386,7 @@ function getScaleRange(
     height: number,
     plotHasFilledDotMarks: boolean
 ) {
-    const { marginBottom, marginTop, marginLeft, marginRight, inset } = plotOptions;
+    const {  inset } = plotOptions;
     const { insetLeft, insetRight, insetTop, insetBottom } = scaleOptions;
     return name === 'opacity'
         ? [0, 1]
@@ -376,13 +394,13 @@ function getScaleRange(
           ? [0, 10]
           : name === 'x'
             ? [
-                  marginLeft + (insetLeft || inset || 0),
-                  width - marginRight - (insetRight || inset || 0)
+                    (insetLeft || inset || 0),
+                  width  - (insetRight || inset || 0)
               ]
             : name === 'y'
               ? [
-                    height - marginBottom - (insetBottom || inset || 0),
-                    marginTop + (insetTop || inset || 0)
+                    height - (insetBottom || inset || 0),
+                     (insetTop || inset || 0)
                 ]
               : name === 'r'
                 ? [0, 10]

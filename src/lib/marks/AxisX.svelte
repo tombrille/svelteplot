@@ -8,7 +8,7 @@
     import Mark from '../Mark.svelte';
     import type {
         PlotContext,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         RawValue,
         DataRecord,
         ConstantAccessor
@@ -45,14 +45,14 @@
             tickPadding?: number;
             tickFontSize?: ConstantAccessor<number>;
             tickFormat?: string | ((d: RawValue) => string);
-        } & BaseMarkStyleProps
+        } & BaseMarkProps
     >();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.plotWidth / plot.options.x.tickSpacing))
+        Math.max(2, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
     );
 
     let ticks: RawValue[] = $derived(

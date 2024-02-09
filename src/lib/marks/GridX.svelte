@@ -6,7 +6,7 @@
      */
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkStyleProps, RawValue, DataRecord } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { resolveChannel } from '../helpers/resolve.js';
     import { fade } from 'svelte/transition';
@@ -16,13 +16,13 @@
         data = [],
         automatic,
         ...options
-    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkStyleProps>();
+    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkProps>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.plotWidth / plot.options.x.tickSpacing))
+        Math.max(2, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
     );
 
     let ticks: RawValue[] = $derived(
@@ -57,7 +57,7 @@
             {@const y1_ = resolveChannel('y1', tick, options) as number}
             {@const y2_ = resolveChannel('y2', tick, options) as number}
             {@const y1 = options.y1 != null ? plot.scales.y.fn(y1_) as number : 0}
-            {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) as number : plot.height - plot.options.marginTop - plot.options.marginBottom}
+            {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) as number : plot.facetHeight}
             <line
                 in:fade
                 transform="translate({x},{plot.options.marginTop})"

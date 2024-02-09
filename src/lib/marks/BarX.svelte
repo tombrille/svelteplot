@@ -17,7 +17,7 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         RectMarkProps,
         ChannelAccessor
     } from '../types.js';
@@ -26,7 +26,7 @@
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
 
-    type BarXProps = BaseMarkStyleProps & {
+    type BarXProps = BaseMarkProps & {
         data: DataRow[];
         x?: ChannelAccessor;
         x1?: ChannelAccessor;
@@ -82,4 +82,3 @@
         {/each}
     </g>
 </Mark>
-

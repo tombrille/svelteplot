@@ -2,7 +2,7 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
-    import type { PlotContext, BaseMarkStyleProps, ChannelAccessor, DataRow } from '../types.js';
+    import type { PlotContext, BaseMarkProps, ChannelAccessor, DataRow } from '../types.js';
     import { recordizeY } from '$lib/index.js';
     import { getUsedScales } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
@@ -16,7 +16,7 @@
         filter,
         ...options
     } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRow[];
             /**
              * the vertical position; bound to the x scale

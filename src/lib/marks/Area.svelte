@@ -31,7 +31,7 @@
         CurveName,
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
@@ -39,7 +39,7 @@
     import { getUsedScales } from '../helpers/scales.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
-    type AreaProps = BaseMarkStyleProps & {
+    type AreaProps = BaseMarkProps & {
         data: DataRecord[];
         /**
          * Lorem ipsum
@@ -116,7 +116,11 @@
             {@const dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
             {@const dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
-                d={areaPath(options.filter == null ? areaData : areaData.filter(d => resolveProp(options.filter, d)))}
+                d={areaPath(
+                    options.filter == null
+                        ? areaData
+                        : areaData.filter((d) => resolveProp(options.filter, d))
+                )}
                 style={getBaseStyles(areaData[0], options)}
                 fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
                 stroke={stroke_ ? stroke : null}

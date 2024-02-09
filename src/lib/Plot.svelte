@@ -6,6 +6,7 @@
      */
     import { setContext } from 'svelte';
     import type { PlotOptions, GenericMarkOptions, Mark, PlotScales, ScaleName } from './types.js';
+    import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
@@ -99,7 +100,9 @@
             },
             color: { type: 'auto' },
             length: { type: 'linear' },
-            symbol: { type: 'ordinal' }
+            symbol: { type: 'ordinal' },
+            fx: { type: 'band' },
+            fy: { type: 'band' }
         };
     }
 
@@ -167,8 +170,11 @@
 
     let plotBody: HTMLDivElement | undefined = $state(null);
 
+    let facetWidth:number|null = $state(null);
+    let facetHeight:number|null = $state(null);
+
     let plotState = $derived.call(() => {
-        const scales = computeScales(plotOptions, width, height, hasFilledDotMarks, marks);
+        const scales = computeScales(plotOptions, facetWidth || width, facetHeight || height, hasFilledDotMarks, marks);
         const colorSymbolRedundant =
             scales.color.uniqueScaleProps.size === 1 &&
             scales.symbol.uniqueScaleProps.size === 1 &&
@@ -178,6 +184,8 @@
             options: plotOptions,
             width,
             height,
+            facetWidth,
+            facetHeight,
             plotHeight,
             plotWidth,
             scales,
@@ -199,6 +207,10 @@
         },
         getPlotState() {
             return plotState;
+        },
+        updateDimensions(w: number, h :number) {
+           facetWidth = w;
+           facetHeight = h;
         }
     });
 
@@ -229,32 +241,34 @@
     <div class="plot-body" bind:this={plotBody}>
         {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
         <svg {width} {height}>
-            {#if !hasExplicitAxisX}
-                {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
-                    <AxisX anchor="top" automatic />
+            <FacetGrid marks={explicitMarks}>
+                {#if !hasExplicitAxisX}
+                    {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
+                        <AxisX anchor="top" automatic />
+                    {/if}
+                    {#if plotOptions.x.axis === 'bottom' || plotOptions.x.axis === 'both'}
+                        <AxisX anchor="bottom" automatic />
+                    {/if}
                 {/if}
-                {#if plotOptions.x.axis === 'bottom' || plotOptions.x.axis === 'both'}
-                    <AxisX anchor="bottom" automatic />
+                {#if !hasExplicitAxisY}
+                    {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
+                        <AxisY anchor="left" automatic />
+                    {/if}
+                    {#if plotOptions.y.axis === 'right' || plotOptions.y.axis === 'both'}
+                        <AxisY anchor="right" automatic />
+                    {/if}
                 {/if}
-            {/if}
-            {#if !hasExplicitAxisY}
-                {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
-                    <AxisY anchor="left" automatic />
+                {#if !hasExplicitGridX && (plotOptions.grid || plotOptions.x.grid)}
+                    <GridX automatic />
                 {/if}
-                {#if plotOptions.y.axis === 'right' || plotOptions.y.axis === 'both'}
-                    <AxisY anchor="right" automatic />
+                {#if !hasExplicitGridY && (plotOptions.grid || plotOptions.y.grid)}
+                    <GridY automatic />
                 {/if}
-            {/if}
-            {#if !hasExplicitGridX && (plotOptions.grid || plotOptions.x.grid)}
-                <GridX automatic />
-            {/if}
-            {#if !hasExplicitGridY && (plotOptions.grid || plotOptions.y.grid)}
-                <GridY automatic />
-            {/if}
-            {#if plotOptions.frame}
-                <Frame automatic />
-            {/if}
-            <slot {width} {height} options={plotOptions} />
+                {#if plotOptions.frame}
+                    <Frame automatic />
+                {/if}
+                <slot {width} {height} options={plotOptions} />
+            </FacetGrid>
         </svg>
         {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}
     </div>

@@ -7,14 +7,9 @@
     import Rect from './Rect.svelte';
     import { renameChannels, stackY, recordizeY } from '$lib/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import type {
-        DataRecord,
-        BaseMarkStyleProps,
-        ChannelAccessor,
-        RectMarkProps
-    } from '../types.js';
+    import type { DataRecord, BaseMarkProps, ChannelAccessor, RectMarkProps } from '../types.js';
 
-    type RectYProps = BaseMarkStyleProps & {
+    type RectYProps = BaseMarkProps & {
         data: DataRecord[];
         y?: ChannelAccessor;
         y1?: ChannelAccessor;

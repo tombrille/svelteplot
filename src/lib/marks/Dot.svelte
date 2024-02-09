@@ -8,7 +8,7 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
@@ -20,7 +20,7 @@
     import Mark from '../Mark.svelte';
 
     let { data, ...options } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRecord[];
             x: ChannelAccessor;
             y: ChannelAccessor;
@@ -43,12 +43,16 @@
     function getSymbolPath(symbolType, size) {
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
+
+    const getFacets = getContext('facet');
+    const { fx, fy } = $derived(getFacets());
+
 </script>
 
 <Mark
     type="dot"
     required={['x', 'y']}
-    channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke']}
+    channels={['x', 'y', 'fx', 'fy', 'r', 'symbol', 'fill', 'stroke']}
     {data}
     {...options}
     let:mark
@@ -58,6 +62,8 @@
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
         {#each data as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
+            {#if (options.fx == null || resolveChannel('fx', datum, options) === fx) 
+                && (options.fy == null || resolveChannel('fy', datum, options) === fy) }
                 {@const _x = resolveChannel('x', datum, options)}
                 {@const _y = resolveChannel('y', datum, options)}
                 {@const _r = resolveChannel('r', datum, { r: 3, ...options })}
@@ -85,6 +91,7 @@
                         style:fill={_fill != null ? fill : null}
                         style:stroke={_stroke != null ? stroke : fill ? null : 'currentColor'}
                     />
+                {/if}
                 {/if}
             {/if}
         {/each}

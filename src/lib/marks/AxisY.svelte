@@ -6,7 +6,7 @@
      */
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkStyleProps, RawValue, DataRecord } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -38,7 +38,7 @@
             tickSize?: number;
             tickPadding?: number;
             tickFormat?: string | ((d: RawValue) => string);
-        } & BaseMarkStyleProps
+        } & BaseMarkProps
     >();
 
     const LINE_ANCHOR = {
@@ -51,7 +51,7 @@
     let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.plotHeight / plot.options.y.tickSpacing))
+        Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
     );
 
     let ticks: RawValue[] = $derived(

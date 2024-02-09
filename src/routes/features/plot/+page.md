@@ -61,7 +61,7 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 ```
 
 ```svelte
-<Plot frame 
+<Plot frame
     title="This is a plot title"
     subtitle="This is a subtitle"
     caption="This is the caption"">

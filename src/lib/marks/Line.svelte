@@ -34,14 +34,14 @@
         CurveName,
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
 
-    type LineProps = BaseMarkStyleProps & {
+    type LineProps = BaseMarkProps & {
         x?: ChannelAccessor;
         y?: ChannelAccessor;
     } & LineMarkProps;
@@ -73,7 +73,7 @@
             curve: maybeCurve(curve, tension),
             x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
             y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
-            defined: ((d) => !isNaN(resolveChannel('y', d, options) as number))
+            defined: (d) => !isNaN(resolveChannel('y', d, options) as number)
         })
     );
 </script>
@@ -94,7 +94,11 @@
             {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
             {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
             <path
-                d={linePath(options.filter == null ? lineData : lineData.filter(d => resolveProp(options.filter, d)))}
+                d={linePath(
+                    options.filter == null
+                        ? lineData
+                        : lineData.filter((d) => resolveProp(options.filter, d))
+                )}
                 style={getBaseStyles(lineData[0], options)}
                 stroke={stroke_ ? stroke : 'currentColor'}
                 fill="none"

@@ -17,7 +17,7 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         RectMarkProps,
         ChannelAccessor,
         DataRow
@@ -27,7 +27,7 @@
     import type { StackOptions } from '$lib/transforms/stack.js';
 
     let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
-        BaseMarkStyleProps & {
+        BaseMarkProps & {
             data: DataRow[];
             x?: ChannelAccessor;
             y?: ChannelAccessor;

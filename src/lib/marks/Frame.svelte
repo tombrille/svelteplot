@@ -8,11 +8,11 @@
     import { getContext } from 'svelte';
     import type { PlotContext, DataRecord, RectMarkProps } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import type { BaseMarkStyleProps } from '../types.js';
+    import type { BaseMarkProps } from '../types.js';
     import { resolveProp } from '../helpers/resolve.js';
 
     let { automatic, ...options } = $props<
-        BaseMarkStyleProps &
+        BaseMarkProps &
             RectMarkProps & {
                 automatic?: boolean;
             }
@@ -38,8 +38,8 @@
         y={plot.options.marginTop}
         rx={resolveProp(options.rx, null, null)}
         ry={resolveProp(options.ry, null, null)}
-        width={plot.plotWidth}
-        height={plot.plotHeight}
+        width={plot.facetWidth}
+        height={plot.facetHeight}
     />
 </Mark>
 

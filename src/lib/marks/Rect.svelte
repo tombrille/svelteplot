@@ -18,14 +18,14 @@
     import type {
         PlotContext,
         DataRecord,
-        BaseMarkStyleProps,
+        BaseMarkProps,
         RectMarkProps,
         ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
 
-    type Props = BaseMarkStyleProps & {
+    type Props = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         x1?: ChannelAccessor;
