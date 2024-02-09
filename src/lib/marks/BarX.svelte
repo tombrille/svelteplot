@@ -66,8 +66,8 @@
             {#if isValid(y) && isValid(x1) && isValid(x2)}
                 <rect
                     style={getBaseStyles(datum, args)}
-                    style:fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
-                    style:stroke={stroke_ ? stroke : null}
+                    fill={fill_ != null ? fill : stroke_ != null ? null : 'currentColor'}
+                    stroke={stroke_ ? stroke : null}
                     transform="translate({[minx + dx, y + inset + dy]})"
                     width={maxx - minx}
                     height={plot.scales.y.fn.bandwidth() - inset * 2}
@@ -83,9 +83,3 @@
     </g>
 </Mark>
 
-<style>
-    rect {
-        stroke: none;
-        fill: none;
-    }
-</style>

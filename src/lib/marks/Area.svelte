@@ -116,10 +116,10 @@
             {@const dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
             {@const dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
-                d={areaPath(areaData)}
+                d={areaPath(options.filter == null ? areaData : areaData.filter(d => resolveProp(options.filter, d)))}
                 style={getBaseStyles(areaData[0], options)}
-                style:fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
-                style:stroke={stroke_ ? stroke : null}
+                fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
+                stroke={stroke_ ? stroke : null}
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}

@@ -13,6 +13,22 @@ title: Area mark
 
 The **area mark** draws the region between a baseline (x1, y1) and a topline (x2, y2) as in an area chart. Often the baseline represents y = 0, and because the area mark interpolates between adjacent data points, typically both the x and y scales are quantitative or temporal.
 
+Supplying undefined values is not the same as filtering the data: the latter will interpolate between the data points. Observe the conspicuous straight lines below!
+
+```svelte live
+<script lang="ts">
+    import { Plot, AreaY, LineY, RuleY } from '$lib/index';
+    import { getContext } from 'svelte';
+
+    const { aapl } = getContext('data');
+</script>
+<Plot grid>
+    <AreaY data={aapl} filter={(d) => d.Date.getUTCMonth() >= 3} x="Date" y="Close" fillOpacity={0.3} />
+    <LineY data={aapl} y={(d) => d.Date.getUTCMonth() < 3 ? NaN : d.Close} x="Date" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
 ## AreaY
 
 <AreaY1Plot />

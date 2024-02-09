@@ -51,6 +51,7 @@ You can use SveltePlot to create charts with a consise and minimal API.
 
 {#if olympians}
     <Plot
+        testid="olympians"
         frame={showFrame}
         grid={showGrid}
         color={{ legend: true }}

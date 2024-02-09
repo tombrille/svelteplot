@@ -127,7 +127,6 @@
                 (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
             <g
                 class="tick"
-                in:fade
                 transform="translate({dx +
                     plot.options.marginLeft +
                     (anchor === 'left' ? 0 : plot.plotWidth)},{y + dy})"

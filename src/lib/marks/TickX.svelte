@@ -57,10 +57,10 @@
                 <line
                     transform="translate({x}, {0})"
                     style={getBaseStyles(datum, args)}
-                    style:stroke={stroke_
-                        ? useScale.stroke
+                    stroke={stroke_
+                        ? (useScale.stroke
                             ? plot.scales.color.fn(stroke_)
-                            : stroke_
+                            : stroke_) as string
                         : null}
                     {y1}
                     {y2}

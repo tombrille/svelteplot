@@ -300,14 +300,14 @@
         row-gap: 0.35rem;
     }
 
-    .plot-header h2,
-    .plot-header h3 {
+    .plot-header :global(h2),
+    .plot-header :global(h3) {
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
     }
 
-    .plot-header h3 {
+    .plot-header :global(h3) {
         font-weight: 500;
     }
 
@@ -315,7 +315,7 @@
         margin-bottom: 2rem;
     }
 
-    .plot-footer > div {
+    .plot-footer :global(> div) {
         font-size: 12px;
         font-style: italic;
         opacity: 0.7;

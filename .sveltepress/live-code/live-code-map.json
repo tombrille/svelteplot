@@ -199,5 +199,10 @@
   "/Users/gka/projects/svelteplot/src/routes/marks/rect/+page.md-2": "LiveCode3277fd557fb.svelte",
   "/Users/gka/projects/svelteplot/src/routes/transforms/interval/+page.md-3": "LiveCode277fd557fb8.svelte",
   "/Users/gka/projects/svelteplot/src/routes/transforms/interval/+page.md-5": "LiveCode77fd557fb83.svelte",
-  "/Users/gka/projects/svelteplot/src/routes/transforms/interval/+page.md-8": "LiveCode7fd557fb833.svelte"
+  "/Users/gka/projects/svelteplot/src/routes/transforms/interval/+page.md-8": "LiveCode7fd557fb833.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/area/+page.md-4": "LiveCodefd557fb833b.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/area/+page.md-9": "LiveCoded557fb833b0.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/area/+page.md-15": "LiveCode557fb833b09.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/area/+page.md-28": "LiveCode57fb833b09d.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/area/+page.md-33": "LiveCode7fb833b09de.svelte"
 }

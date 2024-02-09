@@ -12,7 +12,7 @@ The <b>Plot</b> component is the base for each plot. It takes care of creating t
     const { aapl } = getContext('data');
 </script>
 
-<Plot grid frame testid="first">
+<Plot grid frame testid="aapl-line-frame">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -32,7 +32,7 @@ You can style plots to look like ggplot:
     const { aapl } = getContext('data');
 </script>
 
-<Plot inset={10}>
+<Plot inset={10} testid="ggplot">
     <Frame fill="#eaeaea" />
     <GridX stroke="#fff" strokeOpacity="1" />
     <GridY stroke="#fff" strokeOpacity="1" />
@@ -50,9 +50,10 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 </script>
 
 <Plot
-    title="Apple stocks"
-    subtitle="Daily stocks"
-    caption="Source: Lorem Ipsum"
+    frame
+    title="This is a plot title"
+    subtitle="This is a subtitle"
+    caption="This is the caption"
     testid="with-title"
 >
     <Line data={aapl} x="Date" y="Close" />
@@ -60,7 +61,10 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 ```
 
 ```svelte
-<Plot title="Apple stocks" subtitle="Daily stocks" caption="Source: Lorem Ipsum">
+<Plot frame 
+    title="This is a plot title"
+    subtitle="This is a subtitle"
+    caption="This is the caption"">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

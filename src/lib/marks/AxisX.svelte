@@ -159,7 +159,6 @@
             <g
                 class="tick"
                 data-tick={tick}
-                in:fade
                 transform="translate({x + dx},{(anchor === 'bottom'
                     ? plot.options.marginTop + plot.plotHeight
                     : plot.options.marginTop) + dy})"

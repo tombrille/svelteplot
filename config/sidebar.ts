@@ -65,6 +65,7 @@ export default {
                     collapsible: true,
                     items: [
                         { title: 'Bin', to: '/transforms/bin/' },
+                        { title: 'Filter', to: '/transforms/filter/' },
                         { title: 'Group', to: '/transforms/group/' },
                         { title: 'Interval', to: '/transforms/interval/' },
                         { title: 'Stack', to: '/transforms/stack/' }

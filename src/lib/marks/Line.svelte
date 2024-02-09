@@ -72,7 +72,8 @@
         callWithProps(line, [], {
             curve: maybeCurve(curve, tension),
             x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
-            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options))
+            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
+            defined: ((d) => !isNaN(resolveChannel('y', d, options) as number))
         })
     );
 </script>
@@ -93,9 +94,9 @@
             {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
             {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
             <path
-                d={linePath(lineData)}
+                d={linePath(options.filter == null ? lineData : lineData.filter(d => resolveProp(options.filter, d)))}
                 style={getBaseStyles(lineData[0], options)}
-                style:stroke={stroke_ ? stroke : 'currentColor'}
+                stroke={stroke_ ? stroke : 'currentColor'}
                 fill="none"
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
@@ -104,7 +105,8 @@
 </Mark>
 
 <style>
-    .lines path {
+    /* todo: remove :global */
+    .lines :global(path) {
         stroke-width: 1.4px;
         fill: none;
         stroke-linejoin: round;

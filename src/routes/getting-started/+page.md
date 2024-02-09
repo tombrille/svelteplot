@@ -31,7 +31,7 @@ pnpm add svelteplot
     import { Plot, BarX } from '$lib/index';
 </script>
 
-<Plot grid>
+<Plot grid testid="four-bars">
     <BarX data={[1, 2, 3, 4]} />
 </Plot>
 ```
