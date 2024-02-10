@@ -10,7 +10,8 @@ AAPL demo:
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid>
@@ -40,7 +41,8 @@ BLS Demo:
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { bls } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { bls } = $derived(getData());
 </script>
 
 <Plot grid>
@@ -116,7 +118,8 @@ LineY can automatically group?
 <script lang="ts">
     import { Plot, LineY } from '$lib';
     import { getContext } from 'svelte';
-    const { riaa } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { riaa } = $derived(getData());
 </script>
 
 <Plot grid y={{ nice: true }} height={350}>
@@ -134,7 +137,8 @@ Line with symbols:
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot height={200} grid>
@@ -158,7 +162,8 @@ symbol on last point only:
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid>

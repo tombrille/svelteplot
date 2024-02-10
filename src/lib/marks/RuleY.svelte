@@ -64,7 +64,7 @@
                     style={getBaseStyles(datum, args)}
                     style:stroke={stroke_ ? stroke : 'currentColor'}
                     x1={(inset || insetLeft) + (x1_ != null ? x1 : plot.options.marginLeft)}
-                    x2={(x2_ != null ? x2 : plot.plotWidth + plot.options.marginLeft) -
+                    x2={(x2_ != null ? x2 : plot.facetWidth + plot.options.marginLeft) -
                         (inset || insetRight)}
                 />
             {/if}

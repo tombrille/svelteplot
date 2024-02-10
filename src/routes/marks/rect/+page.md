@@ -7,14 +7,10 @@ The interval transform may be used to convert a single value in x or y (or both)
 ```svelte live
 <script>
     import { Plot, Rect } from '$lib';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
+    import { getContext } from 'svelte';
 
-    let seattle = $state(false);
-
-    $effect(async () => {
-        seattle = await csv('/data/seattle.csv', autoType);
-    });
+    const getData = getContext('data');
+    let { seattle } = $derived(getData());
 </script>
 
 {#if seattle}

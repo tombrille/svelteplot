@@ -44,9 +44,8 @@
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
 
-    const getFacets = getContext('facet');
-    const { fx, fy } = $derived(getFacets());
-
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -62,36 +61,35 @@
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
         {#each data as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
-            {#if (options.fx == null || resolveChannel('fx', datum, options) === fx) 
-                && (options.fy == null || resolveChannel('fy', datum, options) === fy) }
-                {@const _x = resolveChannel('x', datum, options)}
-                {@const _y = resolveChannel('y', datum, options)}
-                {@const _r = resolveChannel('r', datum, { r: 3, ...options })}
-                {@const _fill = resolveChannel('fill', datum, options)}
-                {@const _stroke = resolveChannel('stroke', datum, options)}
-                {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                    {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
-                    {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                    {@const dx = resolveProp(options.dx, datum, 0) as number}
-                    {@const dy = resolveProp(options.dx, datum, 0)}
-                    {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
-                    {@const size = r * r * Math.PI}
-                    {@const symbol_ = resolveChannel('symbol', datum, {
-                        symbol: 'circle',
-                        ...options
-                    })}
-                    {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
-                    {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
-                    {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
-                    <path
-                        d={getSymbolPath(symbol, size)}
-                        transform="translate({x + dx}, {y + dy})"
-                        data-symbol={symbol}
-                        style={getBaseStyles(datum, options)}
-                        style:fill={_fill != null ? fill : null}
-                        style:stroke={_stroke != null ? stroke : fill ? null : 'currentColor'}
-                    />
-                {/if}
+                {#if testFacet(datum, mark.options)}
+                    {@const _x = resolveChannel('x', datum, options)}
+                    {@const _y = resolveChannel('y', datum, options)}
+                    {@const _r = resolveChannel('r', datum, { r: 3, ...options })}
+                    {@const _fill = resolveChannel('fill', datum, options)}
+                    {@const _stroke = resolveChannel('stroke', datum, options)}
+                    {#if isValid(_x) && isValid(_y) && isValid(_r)}
+                        {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
+                        {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
+                        {@const dx = resolveProp(options.dx, datum, 0) as number}
+                        {@const dy = resolveProp(options.dx, datum, 0)}
+                        {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
+                        {@const size = r * r * Math.PI}
+                        {@const symbol_ = resolveChannel('symbol', datum, {
+                            symbol: 'circle',
+                            ...options
+                        })}
+                        {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
+                        {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
+                        {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
+                        <path
+                            d={getSymbolPath(symbol, size)}
+                            transform="translate({x + dx}, {y + dy})"
+                            data-symbol={symbol}
+                            style={getBaseStyles(datum, options)}
+                            style:fill={_fill != null ? fill : null}
+                            style:stroke={_stroke != null ? stroke : fill ? null : 'currentColor'}
+                        />
+                    {/if}
                 {/if}
             {/if}
         {/each}

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { alphabet } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { alphabet } = $derived(getData());
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>

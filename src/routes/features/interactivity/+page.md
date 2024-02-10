@@ -35,7 +35,8 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
     import { getContext } from 'svelte';
     import { Plot, Dot, HTMLTooltip } from '$lib';
 
-    const { penguins } = getContext('data');
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 
     const speciesImages = {
         Adelie: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg/346px-Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg',
@@ -85,7 +86,9 @@ You can even put another tiny plot inside the HTML tooltips:
     import { getContext } from 'svelte';
     import { Plot, Dot, HTMLTooltip, BarX } from '$lib';
     import isEqual from 'underscore/modules/isEqual.js';
-    const { penguins } = getContext('data');
+
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 
     const speciesImages = {
         Adelie: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg/346px-Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg',

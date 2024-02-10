@@ -11,7 +11,8 @@ Ticks are useful for showing one-dimensional distributions, as in the "barcode" 
     import { getContext } from 'svelte';
     import { uniq } from 'underscore';
 
-    const { stateage } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { stateage } = $derived(getData());
 </script>
 
 <Plot x={{ grid: true, percent: true }} marginLeft={50}>
@@ -38,11 +39,11 @@ Shows a horizontal bar for each x position.
 ```svelte live
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
     import { uniq } from 'underscore';
 
-    const { stateage } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { stateage } = $derived(getData());
 
     let padding = $state(0.3);
     let align = $state(0.5);
@@ -57,7 +58,7 @@ Shows a horizontal bar for each x position.
     {align}</label
 >
 
-<Plot x={{ padding: 0.4 }} y={{ grid: true, percent: true }} marginLeft={50}>
+<Plot x={{ padding, align }} y={{ grid: true, percent: true }} marginLeft={50}>
     <RuleY data={[0]} />
     <TickY data={stateage} x="age" y="pop_share" />
 </Plot>
@@ -67,5 +68,23 @@ Shows a horizontal bar for each x position.
 <Plot y={{ grid: true, percent: true }} marginLeft={50}>
     <RuleY data={[0]} />
     <TickY data={stateage} x="age" y="pop_share" />
+</Plot>
+```
+
+Same idea but with facet:
+
+```svelte live
+<script lang="ts">
+    import { Plot, RuleY, TickY } from '$lib/index.js';
+    import { getContext } from 'svelte';
+    import { uniq } from 'underscore';
+
+    const getData = getContext('data');
+    let { stateage } = $derived(getData());
+</script>
+
+<Plot x={{ insetLeft: 10, insetRight: 10 }} y={{ grid: true, percent: true }} marginLeft={50}>
+    <RuleY data={[0]} />
+    <TickY data={stateage} fx="age" y="pop_share" />
 </Plot>
 ```

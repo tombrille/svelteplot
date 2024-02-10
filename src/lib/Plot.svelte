@@ -14,7 +14,7 @@
 
     let width = $state(500);
 
-    let { header, footer, overlay, underlay, debug, testid, ...initialOpts } =
+    let { header, footer, overlay, underlay, debug, testid, facet, ...initialOpts } =
         $props<Partial<PlotOptions>>();
 
     // information that influences the default plot options
@@ -48,6 +48,7 @@
             frame: false,
             projection: null,
             aspectRatio: null,
+            facet: {},
             x: {
                 type: 'auto',
                 axis: oneDimY ? null : 'bottom',
@@ -170,11 +171,17 @@
 
     let plotBody: HTMLDivElement | undefined = $state(null);
 
-    let facetWidth:number|null = $state(null);
-    let facetHeight:number|null = $state(null);
+    let facetWidth: number | null = $state(null);
+    let facetHeight: number | null = $state(null);
 
     let plotState = $derived.call(() => {
-        const scales = computeScales(plotOptions, facetWidth || width, facetHeight || height, hasFilledDotMarks, marks);
+        const scales = computeScales(
+            plotOptions,
+            facetWidth || width,
+            facetHeight || height,
+            hasFilledDotMarks,
+            marks
+        );
         const colorSymbolRedundant =
             scales.color.uniqueScaleProps.size === 1 &&
             scales.symbol.uniqueScaleProps.size === 1 &&
@@ -208,9 +215,14 @@
         getPlotState() {
             return plotState;
         },
-        updateDimensions(w: number, h :number) {
-           facetWidth = w;
-           facetHeight = h;
+        getTopLevelFacet() {
+            // we need to expose the facet options to allow marks to
+            // react to state changes by updating the fx and fy channels
+            return facet;
+        },
+        updateDimensions(w: number, h: number) {
+            facetWidth = w;
+            facetHeight = h;
         }
     });
 

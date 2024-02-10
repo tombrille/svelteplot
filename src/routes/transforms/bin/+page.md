@@ -2,6 +2,10 @@
 title: Bin transform
 ---
 
+:::caution
+The bin transform in SveltePlot takes different options than the bin transform in Plot.
+:::
+
 The bin transform groups quantitative or temporal data — continuous measurements such as heights, weights, or temperatures — into discrete bins. You can then compute summary statistics for each bin, such as a count, sum, or proportion.
 
 For example, here is a histogram showing the distribution of weights of Olympic athletes.
@@ -9,14 +13,10 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
-
-    let olympians = $state(false);
-
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
+    import { getContext } from 'svelte';
+    
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 </script>
 
 <Plot height={300}>
@@ -35,14 +35,10 @@ You can also bin and group at the same time:
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
+    import { getContext } from 'svelte';
 
-    let olympians = $state(false);
-
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 </script>
 
 <Plot height={300} grid marginLeft={40} color={{ legend: true }}>
@@ -59,14 +55,10 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
-
-    let olympians = $state(false);
-
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
+    import { getContext } from 'svelte';
+    
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 </script>
 
 <Plot height={200}>
@@ -95,15 +87,12 @@ You can define _thresholds_ as a number
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
+    import { getContext } from 'svelte';
+    
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 
     let thresholds = $state(20);
-    let olympians = $state(false);
-
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
 </script>
 
 <Slider min={10} max={100} step={10} label="thresholds" bind:value={thresholds} />
@@ -119,7 +108,9 @@ Or as arbitrary bin bounds:
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
     import { getContext } from 'svelte';
-    const { penguins } = getContext('data');
+    
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 </script>
 
 <Plot height={200}>
@@ -150,13 +141,10 @@ Or as arbitrary bin bounds:
 ```svelte live
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
-
-    let olympians = $state(false);
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
+    import { getContext } from 'svelte';
+    
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 </script>
 
 <Plot grid>

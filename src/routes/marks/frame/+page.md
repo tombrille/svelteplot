@@ -12,12 +12,12 @@ The <b>frame</b> mark can be used to add a rectangle outside your plot boundarie
 easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 
 ```svelte live
-<script lang="ts">
-    import { Plot, Line } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
+<script>
+    import { Plot, Line } from '$lib';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid frame>
@@ -36,11 +36,12 @@ If you need more customization options, you can add the frame manually by explic
     > mark to your plot:
 
 ```svelte live
-<script lang="ts">
-    import { Plot, Frame, Line } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
+<script>
+    import { Plot, Frame, Line } from '$lib';
     import { getContext } from 'svelte';
-    const { aapl } = getContext<Datasets>('data');
+
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="frame-demo" inset={20}>

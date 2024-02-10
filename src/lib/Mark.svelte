@@ -16,7 +16,8 @@
         PlotContext,
         ChannelName,
         GenericMarkOptions,
-        ChannelAccessor
+        ChannelAccessor,
+        BaseMarkProps
     } from './types.js';
 
     let {
@@ -33,10 +34,14 @@
             channels?: ScaledChannelName[];
             required?: ScaledChannelName[];
             children?: Snippet;
-        } & Partial<Record<ChannelName, ChannelAccessor>>
+        } & Partial<Record<ChannelName, ChannelAccessor>> &
+            Partial<BaseMarkProps>
     >();
 
-    const { addMark, updateMark, removeMark } = getContext<PlotContext>('svelteplot');
+    const { addMark, updateMark, removeMark, getTopLevelFacet } =
+        getContext<PlotContext>('svelteplot');
+
+    let facet = $derived(getTopLevelFacet());
 
     const mark: Mark<GenericMarkOptions> = {
         id: Symbol(),
@@ -48,14 +53,20 @@
                 .map((channel) => CHANNEL_SCALE[channel])
         ),
         data,
-        options: { ...options }
+        options: {
+            ...options
+        }
     };
+
+    let mark2 = $state(mark);
+    let facetMode = $derived(options.facet || 'auto');
 
     addMark(mark);
 
     $effect(() => {
         if (deepEqual(options, mark.options)) return;
         mark.options = { ...options };
+        mark2.options = mark.options;
         updateMark(mark);
     });
 
@@ -74,7 +85,19 @@
     $effect(() => {
         if (deepEqual(data, mark.data)) return;
         mark.data = data;
+        mark2.data = data;
         updateMark(mark);
+    });
+
+    $effect(() => {
+        if (
+            facet &&
+            facet.data &&
+            ((facetMode === 'auto' && facet.data === data) || facetMode === 'include')
+        ) {
+            mark.options = { fx: facet.x, fy: facet.y, ...options };
+            mark2.options = mark.options;
+        }
     });
 
     $effect(() => {
@@ -91,7 +114,7 @@
         {/each}
     </text>
 {:else}
-    <slot {mark} />
+    <slot mark={mark2} />
 {/if}
 
 <style>

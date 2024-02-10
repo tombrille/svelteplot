@@ -54,7 +54,9 @@
     let groupByKey = $derived(options.z || options.stroke);
 
     let groups = $derived(
-        groupByKey ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d))) : [data]
+        groupByKey && data.length > 0
+            ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d)))
+            : [data]
     );
 
     // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
@@ -86,26 +88,30 @@
     {...options}
     let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="lines">
-        {#each sortedGroups as lineData}
-            {@const stroke_ = resolveChannel('stroke', lineData[0], options)}
-            {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-            {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-            {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
-            <path
-                d={linePath(
-                    options.filter == null
-                        ? lineData
-                        : lineData.filter((d) => resolveProp(options.filter, d))
-                )}
-                style={getBaseStyles(lineData[0], options)}
-                stroke={stroke_ ? stroke : 'currentColor'}
-                fill="none"
-                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-            />
-        {/each}
-    </g>
+    {#if data.length > 0}
+        {@const useScale = getUsedScales(plot, options, mark)}
+        <g class="lines">
+            {#each sortedGroups as lineData}
+                {@const stroke_ = resolveChannel('stroke', lineData[0], options)}
+                {@const d = { useScale, options }}
+
+                {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+                {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+                {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
+                <path
+                    d={linePath(
+                        options.filter == null
+                            ? lineData
+                            : lineData.filter((d) => resolveProp(options.filter, d))
+                    )}
+                    style={getBaseStyles(lineData[0], options)}
+                    stroke={stroke_ ? stroke : 'currentColor'}
+                    fill="none"
+                    transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                />
+            {/each}
+        </g>
+    {/if}
 </Mark>
 
 <style>

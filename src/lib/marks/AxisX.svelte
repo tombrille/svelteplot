@@ -121,6 +121,9 @@
                         : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
                     : '')
     );
+
+    const { getFacetState } = getContext('facet');
+    let { lastX, lastY } = $derived(getFacetState());
 </script>
 
 <Mark
@@ -130,68 +133,70 @@
     {...{ ...options, x: '__x' }}
     {automatic}
 >
-    <g class="axis-x">
-        {#if useTitle}
-            <text
-                style={getBaseStyles(null, options)}
-                x={plot.plotWidth + plot.options.marginLeft}
-                y={anchor === 'top' ? 13 : plot.height - 13}
-                class="axis-title"
-                dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
-            >
-        {/if}
-        {#each formattedTicks as tick, t}
-            {@const x =
-                plot.scales.x.fn(tick.value) +
-                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
-            {@const nextX =
-                t < formattedTicks.length - 1
-                    ? plot.scales.x.fn(formattedTicks[t + 1].value) +
-                      (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
-                    : null}
-            {@const tickLabelSpace = Math.abs(nextX - x)}
-            {@const textLines = tick.text}
-            {@const dx = resolveProp(options.dx, tick, 0)}
-            {@const dy = resolveProp(options.dy, tick, 0)}
-            {@const prevTextLines = t && formattedTicks[t - 1].text}
-            {@const estLabelWidth =
-                max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.2}
-            <g
-                class="tick"
-                data-tick={tick}
-                transform="translate({x + dx},{(anchor === 'bottom'
-                    ? plot.options.marginTop + plot.plotHeight
-                    : plot.options.marginTop) + dy})"
-            >
-                {#if tickSize}
-                    <line
-                        style={getBaseStyles(tick, options)}
-                        y2={anchor === 'bottom' ? tickSize : -tickSize}
-                    />
-                {/if}
+    {#if lastY}
+        <g class="axis-x">
+            {#if lastX && useTitle}
                 <text
-                    style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
-                    style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
-                    y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
-                    dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
+                    style={getBaseStyles(null, options)}
+                    x={plot.plotWidth + plot.options.marginLeft}
+                    y={anchor === 'top' ? 13 : plot.facetHeight - 13}
+                    class="axis-title"
+                    dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
                 >
-                    {#if data.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
-                        {#if typeof textLines === 'string' || textLines.length === 1}
-                            {textLines}
-                        {:else}
-                            {#each textLines as line, i}
-                                <tspan x="0" dy={i ? 12 : 0}
-                                    >{!prevTextLines || prevTextLines[i] !== line
-                                        ? line
-                                        : ''}</tspan
-                                >
-                            {/each}
-                        {/if}
+            {/if}
+            {#each formattedTicks as tick, t}
+                {@const x =
+                    plot.scales.x.fn(tick.value) +
+                    (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
+                {@const nextX =
+                    t < formattedTicks.length - 1
+                        ? plot.scales.x.fn(formattedTicks[t + 1].value) +
+                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        : null}
+                {@const tickLabelSpace = Math.abs(nextX - x)}
+                {@const textLines = tick.text}
+                {@const dx = resolveProp(options.dx, tick, 0)}
+                {@const dy = resolveProp(options.dy, tick, 0)}
+                {@const prevTextLines = t && formattedTicks[t - 1].text}
+                {@const estLabelWidth =
+                    max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.2}
+                <g
+                    class="tick"
+                    data-tick={tick}
+                    transform="translate({x + dx},{(anchor === 'bottom'
+                        ? plot.options.marginTop + plot.facetHeight
+                        : plot.options.marginTop) + dy})"
+                >
+                    {#if tickSize}
+                        <line
+                            style={getBaseStyles(tick, options)}
+                            y2={anchor === 'bottom' ? tickSize : -tickSize}
+                        />
                     {/if}
-                </text>
-            </g>
-        {/each}
-    </g>
+                    <text
+                        style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
+                        style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
+                        y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
+                        dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
+                    >
+                        {#if data.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
+                            {#if typeof textLines === 'string' || textLines.length === 1}
+                                {textLines}
+                            {:else}
+                                {#each textLines as line, i}
+                                    <tspan x="0" dy={i ? 12 : 0}
+                                        >{!prevTextLines || prevTextLines[i] !== line
+                                            ? line
+                                            : ''}</tspan
+                                    >
+                                {/each}
+                            {/if}
+                        {/if}
+                    </text>
+                </g>
+            {/each}
+        </g>
+    {/if}
 </Mark>
 
 <style>

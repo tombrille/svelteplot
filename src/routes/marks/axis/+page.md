@@ -5,11 +5,12 @@ title: Axis mark
 By default SveltePlot will create axis marks automatically:
 
 ```svelte live
-<script lang="ts">
-    import { Plot, Line } from '$lib/index.js';
+<script>
+    import { Plot, Line } from '$lib';
     import { getContext } from 'svelte';
-    import type { Datasets } from '$lib/types.js';
-    const { aapl } = getContext<Datasets>('data');
+
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="axis">
@@ -49,12 +50,12 @@ The automatic ticks can be customized using the <b>tickSpacing</b> option:
 You can turn off all axes
 
 ```svelte live
-<script lang="ts">
+<script>
     import { Plot, Line, Dot } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot x={{ axis: false }} y={{ axis: false }} height={200} margins={0} testid="axis-off">
@@ -71,10 +72,10 @@ You can turn off all axes
 ```svelte live
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <p>

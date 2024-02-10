@@ -61,7 +61,7 @@
                         ? (useScale.stroke
                             ? plot.scales.color.fn(stroke_)
                             : stroke_) as string
-                        : null}
+                        : 'currentColor'}
                     {y1}
                     {y2}
                 />

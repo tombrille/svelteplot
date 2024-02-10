@@ -98,6 +98,9 @@
                     ? `↑ ${plot.scales.y.autoTitle}${plot.options.y.percent ? ' (%)' : ''}`
                     : '')
     );
+
+    const { getFacetState } = getContext('facet');
+    let { firstX, firstY } = $derived(getFacetState());
 </script>
 
 <Mark
@@ -107,47 +110,49 @@
     {...{ ...options, y: '__y' }}
     {automatic}
 >
-    <g class="axis-y">
-        {#if useTitle}
-            <text
-                style={getBaseStyles(null, options)}
-                style:text-anchor={anchor === 'left' ? 'start' : 'end'}
-                x={anchor === 'left' ? 0 : plot.width}
-                y={5}
-                class="axis-title"
-                dominant-baseline="hanging">{useTitle}</text
-            >
-        {/if}
-        {#each ticks as tick, t}
-            {@const tickText = useTickFormat(tick)}
-            {@const dx = resolveProp(options.dx, tick, 0) as number}
-            {@const dy = resolveProp(options.dy, tick, 0) as number}
-            {@const y =
-                plot.scales.y.fn(tick) +
-                (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
-            <g
-                class="tick"
-                transform="translate({dx +
-                    plot.options.marginLeft +
-                    (anchor === 'left' ? 0 : plot.plotWidth)},{y + dy})"
-            >
-                {#if tickSize}
-                    <line
-                        style={getBaseStyles(tick, options)}
-                        x2={anchor === 'left' ? -tickSize : tickSize}
-                    />
-                {/if}
-
+    {#if firstX}
+        <g class="axis-y">
+            {#if firstY && useTitle}
                 <text
-                    class:is-left={anchor === 'left'}
-                    style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
-                    x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
-                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                    >{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
+                    style={getBaseStyles(null, options)}
+                    style:text-anchor={anchor === 'left' ? 'start' : 'end'}
+                    x={anchor === 'left' ? 0 : plot.width}
+                    y={5}
+                    class="axis-title"
+                    dominant-baseline="hanging">{useTitle}</text
                 >
-            </g>
-        {/each}
-    </g>
+            {/if}
+            {#each ticks as tick, t}
+                {@const tickText = useTickFormat(tick)}
+                {@const dx = resolveProp(options.dx, tick, 0) as number}
+                {@const dy = resolveProp(options.dy, tick, 0) as number}
+                {@const y =
+                    plot.scales.y.fn(tick) +
+                    (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
+                <g
+                    class="tick"
+                    transform="translate({dx +
+                        plot.options.marginLeft +
+                        (anchor === 'left' ? 0 : plot.plotWidth)},{y + dy})"
+                >
+                    {#if tickSize}
+                        <line
+                            style={getBaseStyles(tick, options)}
+                            x2={anchor === 'left' ? -tickSize : tickSize}
+                        />
+                    {/if}
+
+                    <text
+                        class:is-left={anchor === 'left'}
+                        style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
+                        x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
+                        dominant-baseline={LINE_ANCHOR[lineAnchor]}
+                        >{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
+                    >
+                </g>
+            {/each}
+        </g>
+    {/if}
 </Mark>
 
 <style>

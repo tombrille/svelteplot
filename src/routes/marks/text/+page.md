@@ -8,7 +8,9 @@ Useful for showing SVG labels!
 <script>
     import { Plot, Dot, Text } from '$lib';
     import { getContext } from 'svelte';
-    const { penguins } = getContext('data');
+
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 </script>
 
 <Plot grid height={500} color={{ legend: true }} testid="penguins">

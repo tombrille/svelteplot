@@ -9,7 +9,8 @@ The <b>Plot</b> component is the base for each plot. It takes care of creating t
     import { Plot, Line } from '$lib';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid frame testid="aapl-line-frame">
@@ -29,7 +30,8 @@ You can style plots to look like ggplot:
 <script>
     import { Plot, Line, GridX, GridY, Frame } from '$lib';
     import { getContext } from 'svelte';
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot inset={10} testid="ggplot">
@@ -46,7 +48,8 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 <script>
     import { Plot, Line, Frame } from '$lib';
     import { getContext } from 'svelte';
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot
@@ -106,7 +109,8 @@ to add events and scoped styles.
 <script>
     import { Plot, Line, Frame } from '$lib';
     import { getContext } from 'svelte';
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid>
@@ -133,45 +137,4 @@ to add events and scoped styles.
         text-decoration: underline;
     }
 </style>
-```
-
-## Reactive scales test
-
-```svelte live
-<script lang="ts">
-    import { getContext } from 'svelte';
-    import { Plot, Dot, RuleY } from '$lib';
-
-    const { penguins } = getContext('data');
-    let filter = $state(false);
-    let minWeight = $state(8000);
-
-    const justGentoo = penguins.filter((d) => d.species === 'Gentoo');
-    const others = penguins.filter((d) => d.species !== 'Gentoo');
-</script>
-
-<label><input type="checkbox" bind:checked={filter} /> just Gentoo</label><br />
-<label
-    >min weight: <input type="range" min={3000} max={8000} bind:value={minWeight} />
-    ({minWeight})</label
->
-
-<Plot grid>
-    {#if !filter}
-        <Dot
-            data={others}
-            fill="gray"
-            x="culmen_length_mm"
-            y="culmen_depth_mm"
-            filter={(d) => d.body_mass_g < minWeight}
-        />
-    {/if}
-    <Dot
-        data={justGentoo}
-        fill="red"
-        x="culmen_length_mm"
-        y="culmen_depth_mm"
-        filter={(d) => d.body_mass_g < minWeight}
-    /> />
-</Plot>
 ```

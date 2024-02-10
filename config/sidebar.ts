@@ -33,6 +33,10 @@ export default {
                             to: '/features/scales/'
                         },
                         {
+                            title: 'Facets',
+                            to: '/features/facets/'
+                        },
+                        {
                             title: 'Transforms',
                             to: '/features/transforms/'
                         },

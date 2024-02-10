@@ -46,8 +46,6 @@
     let plot = $derived(getPlotState());
 
     let args = $derived(stackY(intervalY(recordizeY({ data, ...options }), { plot }), stack));
-
-    $inspect(args);
 </script>
 
 <Mark type="barY" channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity']} {...args} let:mark>

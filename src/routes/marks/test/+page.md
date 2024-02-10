@@ -2,21 +2,39 @@
 title: Test
 ---
 
-This is a page with a single chart or easier debugging.
+```svelte live
+<script>
+    import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
+    import Mark from '$lib/Mark.svelte';
+
+    import { getContext } from 'svelte';
+    const getData = getContext('olympians');
+    let olympians = $derived(getData());
+</script>
+
+{#if olympians}
+    <Plot>
+        <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
+        <RuleY data={[0]} />
+    </Plot>
+{/if}
+```
 
 ```svelte live
 <script>
-    import { Plot, Dot, Frame } from '$lib/index';
+    import { Plot, RectY, RuleY, binX } from '$lib';
+    import Mark from '$lib/Mark.svelte';
+
     import { getContext } from 'svelte';
-    const { penguins } = getContext('data');
+
+    const getData = getContext('olympians');
+    let olympians = $derived(getData());
 </script>
 
-<Plot grid title="Facets" height={600} margins={0} testid="simple-bars">
-    <Frame />
-    <Dot data={penguins} 
-        x="culmen_length_mm" 
-        y="culmen_depth_mm" 
-        stroke="species"
-        fy="island" fx="sex" />
-</Plot>
+{#if olympians}
+    <Plot grid>
+        <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex', fy: 'sex' })} />
+        <RuleY data={[0]} />
+    </Plot>
+{/if}
 ```

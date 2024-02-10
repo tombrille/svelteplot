@@ -65,8 +65,8 @@ const Scales: Record<
 
 export function computeScales(
     plotOptions: PlotOptions,
-    width: number,
-    height: number,
+    plotWidth: number,
+    plotHeight: number,
     plotHasFilledDotMarks: boolean,
     marks: Mark<GenericMarkOptions>[]
 ) {
@@ -75,8 +75,8 @@ export function computeScales(
         plotOptions.x,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const y = createScale(
@@ -84,8 +84,8 @@ export function computeScales(
         plotOptions.y,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const r = createScale(
@@ -93,8 +93,8 @@ export function computeScales(
         plotOptions.r,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const color = createScale(
@@ -102,8 +102,8 @@ export function computeScales(
         plotOptions.color,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const opacity = createScale(
@@ -111,8 +111,8 @@ export function computeScales(
         plotOptions.opacity,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const length = createScale(
@@ -120,8 +120,8 @@ export function computeScales(
         plotOptions.length,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const symbol = createScale(
@@ -129,8 +129,8 @@ export function computeScales(
         plotOptions.symbol,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const fx = createScale(
@@ -138,8 +138,8 @@ export function computeScales(
         plotOptions.fx,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     const fy = createScale(
@@ -147,8 +147,8 @@ export function computeScales(
         plotOptions.fy,
         marks,
         plotOptions,
-        width,
-        height,
+        plotWidth,
+        plotHeight,
         plotHasFilledDotMarks
     );
     return { x, y, r, color, opacity, length, symbol, fx, fy };
@@ -159,8 +159,8 @@ export function createScale<T extends ScaleOptions>(
     scaleOptions: T,
     marks: Mark<GenericMarkOptions>[],
     plotOptions: PlotOptions,
-    width: number,
-    height: number,
+    plotWidth: number,
+    plotHeight: number,
     plotHasFilledDotMarks: boolean
 ) {
     // gather all marks that use channels which support this scale
@@ -172,12 +172,12 @@ export function createScale<T extends ScaleOptions>(
     const uniqueScaleProps = new Set<string | ChannelAccessor>();
 
     for (const mark of marks) {
-        if (mark.data.length > 0) {
-            for (const channel of mark.channels) {
-                // channelOptions can be passed as prop, but most often users will just
-                // pass the channel accessor or constant value, so we may need to wrap
-                if (!skip.has(channel)) skip.set(channel, new Set());
+        for (const channel of mark.channels) {
+            // channelOptions can be passed as prop, but most often users will just
+            // pass the channel accessor or constant value, so we may need to wrap
+            if (!skip.has(channel)) skip.set(channel, new Set());
 
+            if (mark.data.length > 0) {
                 const channelOptions = isDataRecord(mark.options[channel])
                     ? mark.options[channel]
                     : { value: mark.options[channel], scale: CHANNEL_SCALE[channel] };
@@ -233,14 +233,18 @@ export function createScale<T extends ScaleOptions>(
                         }
                     }
                 }
-            }
-            // special handling of marks using the stackX/stackY transform
-            if (
-                (name === 'x' || name === 'y') &&
-                mark.options[`__${name}_origField`] &&
-                !mark.options[`__${name}_origField`].startsWith('__')
-            ) {
-                propNames.add(mark.options[`__${name}_origField`]);
+
+                // special handling of marks using the stackX/stackY transform
+                if (
+                    (name === 'x' || name === 'y') &&
+                    mark.options[`__${name}_origField`] &&
+                    !mark.options[`__${name}_origField`].startsWith('__')
+                ) {
+                    propNames.add(mark.options[`__${name}_origField`]);
+                }
+            } else {
+                // also skip marks without data to prevent exceptions
+                (skip.get(channel) as Set<symbol>).add(mark.id);
             }
         }
     }
@@ -262,7 +266,14 @@ export function createScale<T extends ScaleOptions>(
 
     let range =
         scaleOptions?.range ||
-        getScaleRange(name, scaleOptions, plotOptions, width, height, plotHasFilledDotMarks);
+        getScaleRange(
+            name,
+            scaleOptions,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks
+        );
 
     if (scaleOptions.reverse) range.reverse();
 
@@ -382,11 +393,11 @@ function getScaleRange(
     name: ScaleName,
     scaleOptions: ScaleOptions,
     plotOptions: PlotOptions,
-    width: number,
-    height: number,
+    plotWidth: number,
+    plotHeight: number,
     plotHasFilledDotMarks: boolean
 ) {
-    const {  inset } = plotOptions;
+    const { marginBottom, marginTop, marginLeft, marginRight, inset } = plotOptions;
     const { insetLeft, insetRight, insetTop, insetBottom } = scaleOptions;
     return name === 'opacity'
         ? [0, 1]
@@ -394,13 +405,13 @@ function getScaleRange(
           ? [0, 10]
           : name === 'x'
             ? [
-                    (insetLeft || inset || 0),
-                  width  - (insetRight || inset || 0)
+                  marginLeft + (insetLeft || inset || 0),
+                  marginLeft + plotWidth - (insetRight || inset || 0)
               ]
             : name === 'y'
               ? [
-                    height - (insetBottom || inset || 0),
-                     (insetTop || inset || 0)
+                    plotHeight + marginTop - (insetBottom || inset || 0),
+                    marginTop + (insetTop || inset || 0)
                 ]
               : name === 'r'
                 ? [0, 10]

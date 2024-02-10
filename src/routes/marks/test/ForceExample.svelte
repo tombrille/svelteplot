@@ -14,7 +14,6 @@
             const graph = await json('/data/miserables.json');
             links = graph.links.map((d) => ({ ...d }));
             nodes = graph.nodes.map((d) => ({ ...d }));
-            // console.log(nodes)
             simulation = forceSimulation(nodes)
                 .alphaTarget(0.3)
                 .force(
@@ -23,9 +22,7 @@
                 )
                 .force('charge', forceManyBody())
                 .force('center', forceCenter(0, 50))
-                .on('tick', () => {
-                    // console.log('tick', {...graph.nodes[0]});
-                });
+                .on('tick', () => {});
         }
     }
 

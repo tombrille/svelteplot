@@ -16,14 +16,10 @@ You can use SveltePlot to create charts with a consise and minimal API.
 <script>
     import { Plot, Dot, Frame, GridY, AxisX, AxisY, RuleY, DotX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
 
-    let olympians = $state(false);
-
-    $effect(async () => {
-        olympians = await csv('/data/olympians.csv', autoType);
-    });
+    import { getContext } from 'svelte';
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
 
     let showGrid = $state(true);
     let showRule = $state(false);
@@ -34,10 +30,6 @@ You can use SveltePlot to create charts with a consise and minimal API.
     let height = $state(450);
 
     let w = $state(100);
-
-    function jitter() {
-        return (Math.random() - 0.5) * 3;
-    }
 </script>
 
 <label><input type="checkbox" bind:checked={showGrid} /> show grid</label>
@@ -63,8 +55,6 @@ You can use SveltePlot to create charts with a consise and minimal API.
             data={truncate ? olympians.slice(0, 1000) : olympians}
             x="height"
             filter={(d) => d.date_of_birth > new Date(2024 - w, 1, 1)}
-            dx={jitter}
-            dy={jitter}
             y={plotClose ? 'weight' : 'date_of_birth'}
             stroke="sex"
             symbol="sex"
@@ -75,3 +65,76 @@ You can use SveltePlot to create charts with a consise and minimal API.
     </Plot>
 {/if}
 ```
+
+```svelte
+<Plot color={{ legend: true }} x={{  grid: true }} inset={10}>
+    <Dot data={olympians} x="height" y="weight" stroke="sex" symbol="sex" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+We can use the [binX transform](/transforms/bin) to compute a weight distribution.
+
+```svelte live
+<script>
+    import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
+    import Mark from '$lib/Mark.svelte';
+    import { getContext } from 'svelte';
+
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
+</script>
+
+{#if olympians}
+    <Plot>
+        <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
+        <RuleY data={[0]} />
+    </Plot>
+{/if}
+```
+
+```svelte
+<Plot>
+    <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+Or we can use the built-in [faceting](/features/facets) to look at the distributions separately:
+
+```svelte live
+<script>
+    import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
+    import Mark from '$lib/Mark.svelte';
+
+    import { getContext } from 'svelte';
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
+</script>
+
+{#if olympians}
+    <Plot grid>
+        <RectY
+            {...binX({ data: olympians, x: 'weight', y1: 0, y2: 'count', fill: 'sex', fy: 'sex' })}
+        />
+        <RuleY data={[0]} />
+    </Plot>
+{/if}
+```
+
+```svelte
+<Plot>
+    <RectY {...binX({ 
+        data: olympians,
+        x: 'weight', 
+        y: 'count', 
+        fill: 'sex', 
+        fy: 'sex' 
+    })} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+## What can SveltePlot do?
+
+As of now, SveltePlot only implements a subset of Plots features.

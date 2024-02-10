@@ -10,7 +10,8 @@ import type {
     ScaledChannelName,
     DataRow,
     DataRecord,
-    TransformArg
+    TransformArg,
+    ChannelName
 } from '$lib/types.js';
 import {
     stack,
@@ -23,7 +24,7 @@ import {
     stackOrderNone,
     stackOffsetDiverging
 } from 'd3-shape';
-import { index, union } from 'd3-array';
+import { index, union, groups as d3Groups } from 'd3-array';
 
 const DEFAULT_STACK_OPTIONS: StackOptions = {
     order: null,
@@ -63,8 +64,13 @@ function stackXY(
     channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     options: StackOptions
 ) {
-    const groupBy = channels.z ? 'z' : channels.fill ? 'fill' : channels.stroke ? 'stroke' : true;
+    // we need to stack the data for each facet separately
+    const groupFacetsBy = [
+        channels.fx != null ? 'fx' : null,
+        channels.fy != null ? 'fy' : null
+    ].filter((d) => d !== null) as ChannelName[];
 
+    const groupBy = channels.z ? 'z' : channels.fill ? 'fill' : channels.stroke ? 'stroke' : true;
     const secondDim = byDim === 'x' ? 'y' : 'x';
 
     const byLow: 'x1' | 'y1' = `${byDim}1`;
@@ -75,49 +81,75 @@ function stackXY(
         channels[`${byLow}`] === undefined &&
         channels[`${byHigh}`] === undefined
     ) {
+        // resolve all channels for easier computation below
         const resolvedData = data.map((d) => ({
             ...(isDataRecord(d) ? d : { __orig: d }),
             [`__${secondDim}`]: resolveChannel(secondDim, d, channels),
             __group: groupBy === true ? 'G' : resolveChannel(groupBy, d, channels),
+            __facet:
+                groupFacetsBy.length > 0
+                    ? groupFacetsBy
+                          .map((channel) => String(resolveChannel(channel, d, channels)))
+                          .join('---')
+                    : 'F',
             [`__${byDim}`]: resolveChannel(byDim, d, channels)
         })) as DataRecord[];
 
-        const indexed = index(
-            resolvedData,
-            (d) => d[`__${secondDim}`],
-            (d) => d.__group
-        );
+        // the final data ends up here
+        const out = [];
 
-        const stackOrder = (series: number[][]) => {
-            const f = STACK_ORDER[options.order || 'none'];
-            return options.reverse ? f(series).reverse() : f(series);
-        };
+        // first we group the dataset by facets to avoid stacking of rows that are
+        // in separate panels
+        const groups = d3Groups(resolvedData, (d) => d.__facet);
+        for (const [, facetData] of groups) {
+            // now we index the data on the second dimension, e.g. over x
+            // when stacking over y
+            const indexed = index(
+                facetData,
+                (d) => d[`__${secondDim}`],
+                (d) => d.__group
+            );
 
-        const series = stack()
-            .order(stackOrder)
-            .offset(STACK_OFFSET[options.offset])
-            .keys(union(resolvedData.map((d) => d.__group) as string[]))
-            .value(([, group], key) => (group.get(key) ? group.get(key)[`__${byDim}`] : 0))(
-            indexed
-        );
+            const stackOrder = (series: number[][]) => {
+                const f = STACK_ORDER[options.order || 'none'];
+                return options.reverse ? f(series).reverse() : f(series);
+            };
 
-        const newData = series
-            .map((values) => {
-                const groupKey = values.key;
-                return values
-                    .filter((d) => d.data[1].get(groupKey))
-                    .map((d) => {
-                        const {
-                            [`__${byDim}`]: unused1,
-                            [`__${secondDim}`]: unused2,
-                            ...datum
-                        } = d.data[1].get(groupKey);
-                        return { ...datum, [`__${byLow}`]: d[0], [`__${byHigh}`]: d[1] };
-                    });
-            })
-            .flat(1);
+            // now stack the values for each index
+            const series = stack()
+                .order(stackOrder)
+                .offset(STACK_OFFSET[options.offset])
+                .keys(union(facetData.map((d) => d.__group) as string[]))
+                .value(([, group], key) => (group.get(key) ? group.get(key)[`__${byDim}`] : 0))(
+                indexed
+            );
+
+            // and combine it all back into a flat array
+            const newData = series
+                .map((values) => {
+                    const groupKey = values.key;
+                    return values
+                        .filter((d) => d.data[1].get(groupKey))
+                        .map((d) => {
+                            const {
+                                [`__${byDim}`]: unused1,
+                                [`__${secondDim}`]: unused2,
+                                ...datum
+                            } = d.data[1].get(groupKey);
+                            // cleanup our internal keys
+                            delete datum.__group;
+                            delete datum.__facet;
+                            return { ...datum, [`__${byLow}`]: d[0], [`__${byHigh}`]: d[1] };
+                        });
+                })
+                .flat(1);
+
+            // which we then add to the output data
+            out.push(newData);
+        }
+
         return {
-            data: newData,
+            data: out.flat(1),
             ...channels,
             [byDim]: undefined,
             ...(typeof channels[byDim] === 'string'

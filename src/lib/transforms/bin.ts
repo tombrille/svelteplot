@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  * Copyright (C) 2024  Gregor Aisch
  */
-import isDataRecord from '$lib/helpers/isDataRecord.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { DataRecord, RawValue } from '$lib/types.js';
-import type { ScaledChannelName, TransformArg } from '$lib/types.js';
+import type { DataRecord } from '$lib/types.js';
+import type { TransformArg } from '$lib/types.js';
 
 import {
     bin as d3Bin,
@@ -75,15 +74,9 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
     const groupByPropName =
         groupBy !== true && typeof channels[groupBy] === 'string' ? channels[groupBy] : '__group';
 
-    if (groupBy !== true) newChannels[groupBy] = groupByPropName;
+    console.log({ groupBy });
 
-    // const foo = data.map((d) => d);
-    // const resolvedData = data.map((d) => ({
-    //         ...(isDataRecord(d) ? d : { __orig: d }),
-    //         // [`__${secondDim}`]: resolveChannel(secondDim, d, channels),
-    //         __group: groupBy === true ? 'G' : resolveChannel(groupBy, d, channels),
-    //         // [`__${byDim}`]: resolveChannel(byDim, d, channels)
-    //     })) as DataRecord[];
+    if (groupBy !== true) newChannels[groupBy] = groupByPropName;
 
     const newData = [];
     bin(data).forEach((group) => {
@@ -104,13 +97,13 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
             for (const k of outputs) {
                 if (Reducers[channels[k]]) {
                     // we have a named reducer like 'count'
-                    newRecord[`__${k}`] = Reducers[channels[k]](group);
+                    newRecord[`__${k}`] = Reducers[channels[k]](items);
                     newChannels[k] = `__${k}`;
                     newChannels[`__${k}_origField`] = channels[k];
                 } else if (typeof channels[k] === 'function') {
                     // console.log({k}, channels[k](group))
                     // custom reducer function
-                    newRecord[`__${k}`] = channels[k](group);
+                    newRecord[`__${k}`] = channels[k](items);
                     newChannels[k] = `__${k}`;
                 }
             }

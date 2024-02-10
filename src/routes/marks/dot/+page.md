@@ -10,7 +10,10 @@ y↑ and fuel efficiency in miles per gallon in x→.
 <script>
     import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
-    const { cars } = getContext('data');
+
+    const getData = getContext('data');
+    let { cars } = $derived(getData());
+
     const manufactor = (d) => d.name.split(' ')[0];
     let fill = $state(false);
 </script>
@@ -35,7 +38,8 @@ dsdsd sd sd sdsd sd
 <script>
     import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
-    const { penguins } = getContext('data');
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 </script>
 
 <Plot grid height={500} color={{ legend: true }} testid="penguins">
@@ -55,7 +59,8 @@ One more
 <script>
     import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
-    const { penguins } = getContext('data');
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 
     let maxRad = $state(10);
 </script>
@@ -79,7 +84,8 @@ You can also use a point scale for dot dimensions to create dot plots:
 <script>
     import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
-    const { cars } = getContext('data');
+    const getData = getContext('data');
+    let { cars } = $derived(getData());
     const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
@@ -96,7 +102,8 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 <script>
     import { Plot, DotX } from '$lib';
     import { getContext } from 'svelte';
-    const { cars } = getContext('data');
+    const getData = getContext('data');
+    let { cars } = $derived(getData());
 </script>
 
 <Plot testid="dotx">
@@ -112,7 +119,8 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 <script>
     import { Plot, DotY } from '$lib';
     import { getContext } from 'svelte';
-    const { cars } = getContext('data');
+    const getData = getContext('data');
+    let { cars } = $derived(getData());
 </script>
 
 <Plot testid="doty">

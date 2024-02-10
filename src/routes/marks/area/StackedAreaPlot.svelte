@@ -4,7 +4,8 @@
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { riaa } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { riaa } = $derived(getData());
 
     let { stackControls } = $props<{ stackControls: boolean }>();
 

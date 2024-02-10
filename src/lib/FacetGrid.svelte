@@ -13,34 +13,45 @@
         marks: Mark<GenericMarkOptions>[];
     }>();
 
-    let facetXValues = $derived(plot.scales.fx.domain.length ? plot.scales.fx.domain : [true]);
-    let facetYValues = $derived(plot.scales.fy.domain.length ? plot.scales.fy.domain : [true]);
+    let useFacetX = $derived(plot.scales.fx.domain.length > 0);
+    let useFacetY = $derived(plot.scales.fy.domain.length > 0);
+
+    let facetXValues = $derived(useFacetX ? plot.scales.fx.domain : [true]);
+    let facetYValues = $derived(useFacetY ? plot.scales.fy.domain : [true]);
 
     // create band scales for fx and fy
-    let facetXScale = $derived(scaleBand().padding(0.2).domain(facetXValues).range([plot.options.marginLeft, plot.options.marginLeft + plot.plotWidth]));
-    let facetYScale = $derived(scaleBand().padding(0.2).domain(facetYValues).range([plot.options.marginTop, plot.options.marginTop + plot.plotHeight]));
-
-    function mutateScaleRange(scale, range) {
-        return {
-            ...scale,
-            range,
-            fn: scale.fn.copy().range(range)
-        }
-    }
+    let facetXScale = $derived(
+        scaleBand().paddingInner(0.2).domain(facetXValues).range([0, plot.plotWidth])
+    );
+    let facetYScale = $derived(
+        scaleBand().paddingInner(0.2).domain(facetYValues).range([0, plot.plotHeight])
+    );
 
     $effect(() => {
         updateDimensions(
-            facetXScale.bandwidth(),
-            facetYScale.bandwidth(),
+            useFacetX ? facetXScale.bandwidth() : plot.plotWidth,
+            useFacetY ? facetYScale.bandwidth() : plot.plotHeight
         );
     });
 </script>
 
-{#each facetXValues as facetX}
-    {#each facetYValues as facetY}
-        <g transform="translate({facetXScale(facetX)}, {facetYScale(facetY)})">
-            <Facet fx={facetX} fy={facetY}>
-            {@render children()}
+{#each facetXValues as facetX, i}
+    {#each facetYValues as facetY, j}
+        <g
+            class="facet"
+            transform="translate({useFacetX ? facetXScale(facetX) : 0}, {useFacetY
+                ? facetYScale(facetY)
+                : 0})"
+        >
+            <Facet
+                fx={facetX}
+                fy={facetY}
+                firstX={i === 0}
+                lastX={i === facetXValues.length - 1}
+                firstY={j === 0}
+                lastY={j === facetYValues.length - 1}
+            >
+                {@render children()}
             </Facet>
         </g>
     {/each}

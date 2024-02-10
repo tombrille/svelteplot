@@ -3,7 +3,8 @@
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="frame-demo" inset={20}>

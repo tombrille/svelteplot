@@ -260,6 +260,18 @@ export type PlotOptions = {
      */
     aspectRatio: number | null;
     /**
+     * Top-level faceting options
+     */
+    facet: Partial<{
+        /**
+         * The data to facet by. Turns on automatic faceting for all marks that
+         * use the exact same data (===)
+         */
+        data: DataRecord[];
+        x: ChannelAccessor;
+        y: ChannelAccessor;
+    }>;
+    /**
      * Options for the shared x scale.
      */
     x: Partial<XScaleOptions>;
@@ -378,6 +390,7 @@ export type PlotContext = {
     updateMark: (mark: Mark<GenericMarkOptions>) => void;
     removeMark: (mark: Mark<GenericMarkOptions>) => void;
     getPlotState: () => PlotState;
+    getTopLevelFacet: () => PlotOptions['facet'];
 };
 
 export type BaseMarkProps = Partial<{
@@ -385,6 +398,7 @@ export type BaseMarkProps = Partial<{
      * Filter the data without modifying the inferred scales
      */
     filter?: ConstantAccessor<boolean>;
+    facet?: 'auto' | 'include' | 'exclude';
     fx: ChannelAccessor;
     fy: ChannelAccessor;
     dx: ConstantAccessor<number>;

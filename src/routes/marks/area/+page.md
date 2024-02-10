@@ -20,7 +20,8 @@ Supplying undefined values is not the same as filtering the data: the latter wil
     import { Plot, AreaY, LineY, RuleY } from '$lib/index';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid>
@@ -54,7 +55,8 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
     import { Plot, AreaY } from '$lib/index';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid>
@@ -140,7 +142,8 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
     import { Plot, AreaX } from '$lib';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="area-x" height={600} maxWidth="300px">
@@ -165,7 +168,8 @@ Required channels for horizontal area charts:
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="area-line-rule">

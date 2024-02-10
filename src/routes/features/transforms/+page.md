@@ -32,7 +32,8 @@ In the returned `data` array, each item will have new properties `__y1` and `__y
     import { getContext } from 'svelte';
     import { rollups } from 'd3-array';
 
-    const { penguins } = getContext('data');
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 
     let data = $derived(
         rollups(
@@ -57,7 +58,8 @@ More text here
 ```svelte
 <script>
     import { Plot, BarY, RuleY, stackY } from 'svelteplot';
-    const { penguins } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { penguins } = $derived(getData());
 </script>
 
 <Plot grid>

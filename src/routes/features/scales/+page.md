@@ -1,5 +1,6 @@
 ---
 title: Scales
+datasets: aapl, penguins
 ---
 
 A core feature of SveltePlot are automatically inferred scales.
@@ -11,8 +12,8 @@ numbers, such as temperatures. Below, the first domain value (x = 0) corresponds
 side of the plot while the second (x = 100) corresponds to the right side.
 
 ```svelte live
-<script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib/index.js';
+<script>
+    import { Plot, GridX, GridY, Line } from '$lib';
 </script>
 
 <Plot
@@ -32,8 +33,8 @@ side of the plot while the second (x = 100) corresponds to the right side.
 Scales can be reversed using the **reverse** option:
 
 ```svelte live
-<script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib/index.js';
+<script>
+    import { Plot, GridX, GridY, Line } from '$lib';
 </script>
 
 <Plot
@@ -54,8 +55,8 @@ If the domain is dates, SveltePlot will default to a UTC scale. This is a linear
 based on the Gregorian calendar.
 
 ```svelte live
-<script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib/index.js';
+<script>
+    import { Plot, GridX, GridY, Line } from '$lib';
 </script>
 
 <Plot
@@ -81,8 +82,8 @@ based on the Gregorian calendar.
 SveltePlot will automatically detect a scale type, but you can also set it explicitly using the **type** scale option:
 
 ```svelte live
-<script lang="ts">
-    import { Plot, GridX, GridY, Line } from '$lib/index.js';
+<script>
+    import { Plot, GridX, GridY, Line } from '$lib';
 </script>
 
 <Plot
@@ -102,14 +103,14 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
 By default, SveltePlot will create axis marks automatically:
 
 ```svelte live
-<script lang="ts">
+<script>
     import { Plot, Line, Dot } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 
-    let nearestDataPoint = $state<Datasets['aapl'][0] | null>(aapl.at(-1));
+    let nearestDataPoint = $state(aapl.at(-1));
 </script>
 
 <Plot grid height={250} testid="axis-off">
@@ -123,12 +124,12 @@ By default, SveltePlot will create axis marks automatically:
 But you can turn them off:
 
 ```svelte live
-<script lang="ts">
+<script>
     import { Plot, Line, Dot } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot x={{ axis: false }} y={{ axis: false }} margins={0} testid="axis-off">

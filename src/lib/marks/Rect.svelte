@@ -14,7 +14,7 @@
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
-    import { coalesce } from '../helpers/index.js';
+    import { coalesce, testFilter } from '../helpers/index.js';
     import type {
         PlotContext,
         DataRecord,
@@ -44,19 +44,22 @@
     let args = $derived(
         intervalY(intervalX(recordizeY<Props>({ data, ...options }), { plot }), { plot })
     );
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="rect"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'opacity']}
+    channels={['x1', 'x2', 'y1', 'y2', 'fx', 'fy', 'fill', 'stroke', 'opacity']}
     {...args}
     let:mark
 >
     {@const useScale = getUsedScales(plot, args, mark)}
     <g class="rect">
         {#each args.data as datum}
-            {#if options.filter == null || resolveProp(options.filter, datum)}
+            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const x1_ = resolveChannel('x1', datum, args)}
                 {@const x2_ = resolveChannel('x2', datum, args)}
                 {@const y1_ = resolveChannel('y1', datum, args)}

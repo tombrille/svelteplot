@@ -9,8 +9,9 @@ flag on the Plot:
 <script lang="ts">
     import { Plot, Line } from '$lib/index.js';
     import { getContext } from 'svelte';
-    import type { Datasets } from '$lib/types.js';
-    const { aapl } = getContext<Datasets>('data');
+
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="grid">

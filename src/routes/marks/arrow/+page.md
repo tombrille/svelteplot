@@ -7,14 +7,10 @@ Metro dataset:
 ```svelte live
 <script lang="ts">
     import { Plot, Arrow, Dot, Text } from '$lib/index.js';
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
+    import { getContext } from 'svelte';
 
-    let metros = $state(false);
-
-    $effect(async () => {
-        metros = await csv('/data/metros.csv', autoType);
-    });
+    const getData = getContext('data');
+    let { metros } = $derived(getData());
 </script>
 
 {#if metros}
@@ -22,6 +18,7 @@ Metro dataset:
         grid="true"
         marginRight={20}
         inset={10}
+        height={450}
         x={{ type: 'log', label: 'Population' }}
         y={{ label: 'Inequality' }}
         color={{
@@ -178,7 +175,7 @@ Options:
 ```svelte live
 <script lang="ts">
     import { Plot, Arrow, Dot } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
+
     import { getContext } from 'svelte';
     import Slider from '$lib/ui/Slider.svelte';
     import Select from '$lib/ui/Select.svelte';

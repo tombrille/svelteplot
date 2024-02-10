@@ -14,7 +14,8 @@ Take the following example, where you can filter the data using the [filter](/tr
 <script>
     import { Plot, Dot } from '$lib';
     import { getContext } from 'svelte';
-    const { cars } = getContext('data');
+    const getData = getContext('data');
+    let { cars } = $derived(getData('data'));
     let min = $state(0);
     const manufactor = (d) => d.name.split(' ')[0];
 </script>
@@ -118,9 +119,9 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid let:width let:height>
@@ -166,9 +167,9 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot grid testid="overlay">

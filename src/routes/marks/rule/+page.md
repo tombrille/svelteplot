@@ -10,7 +10,8 @@ Rules can be used for highlighting certain axis values, most commonly zero. They
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const { aapl } = getContext<Datasets>('data');
+    const getData = getContext('data');
+    let { aapl } = $derived(getData());
 </script>
 
 <Plot height={350}>
