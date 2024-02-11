@@ -101,3 +101,52 @@ You can turn off all axes
     }
 </style>
 ```
+
+Ordinal axis:
+
+```svelte live
+<script>
+    import { Plot, RuleY } from '$lib';
+</script>
+
+<Plot x={{ domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+```
+
+```svelte
+<Plot x={{ domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+```
+
+And on a point scale:
+
+```svelte live
+<script>
+    import { Plot, RuleY } from '$lib';
+</script>
+
+<Plot x={{ type: 'point', domain: 'These are some ordinal ticks on a point scale'.split(' ') }} />
+```
+
+```svelte
+<Plot
+    x={{
+        type: 'point',
+        domain: 'These are some ordinal ticks on a point scale'.split(' ')
+    }}
+/>
+```
+
+## AxisX
+
+You can explicitly add an x axis using the `AxisX` mark component:
+
+```svelte live
+<script>
+    import { Plot, AxisX } from '$lib';
+</script>
+
+<Plot x={{ domain: [0, 100] }}>
+    <AxisX stroke="red" fill="green" />
+</Plot>
+```
+
+## AxisY

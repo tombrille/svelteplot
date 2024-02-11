@@ -5,9 +5,16 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import Rect from './Rect.svelte';
-    import { renameChannels, stackY, recordizeY } from '$lib/index.js';
+    import { renameChannels, intervalX, stackY, recordizeY } from '$lib/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import type { DataRecord, BaseMarkProps, ChannelAccessor, RectMarkProps } from '../types.js';
+    import type {
+        DataRecord,
+        BaseMarkProps,
+        ChannelAccessor,
+        RectMarkProps,
+        PlotContext
+    } from '../types.js';
+    import { getContext } from 'svelte';
 
     type RectYProps = BaseMarkProps & {
         data: DataRecord[];
@@ -17,11 +24,16 @@
         x1?: ChannelAccessor;
         x2?: ChannelAccessor;
         stack?: StackOptions;
+        interval?: number | string;
     } & RectMarkProps;
 
     let { data, stack, ...options } = $props<RectYProps>();
 
-    let args = $derived(stackY(recordizeY({ data, ...options }), stack));
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
+
+    let args = $derived(stackY(intervalX(recordizeY({ data, ...options }), { plot }), stack));
+    $inspect(args);
 </script>
 
 <Rect {...args}></Rect>

@@ -75,21 +75,23 @@
     let useTickFormat = $derived(
         typeof tickFmt === 'function'
             ? tickFmt
-            : plot.scales.x.type === 'time'
-              ? typeof tickFmt === 'string' && tickFmt !== 'auto'
-                  ? (d: Date) =>
-                        dayjs(d)
-                            .format(tickFmt as string)
-                            .split('\n')
-                  : autoTimeFormat(plot.scales.x, plot.plotWidth)
-              : typeof tickFmt === 'string'
-                ? (d: number) =>
-                      numeral(d).format(
-                          tickFmt === 'auto'
-                              ? `0.[00]${plot.options.x.percent ? '%' : 'a'}`
-                              : tickFmt
-                      )
-                : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
+            : plot.scales.x.type === 'band' || plot.scales.x.type === 'point'
+              ? (d) => d
+              : plot.scales.x.type === 'time'
+                ? typeof tickFmt === 'string' && tickFmt !== 'auto'
+                    ? (d: Date) =>
+                          dayjs(d)
+                              .format(tickFmt as string)
+                              .split('\n')
+                    : autoTimeFormat(plot.scales.x, plot.plotWidth)
+                : typeof tickFmt === 'string'
+                  ? (d: number) =>
+                        numeral(d).format(
+                            tickFmt === 'auto'
+                                ? `0.[00]${plot.options.x.percent ? '%' : 'a'}`
+                                : tickFmt
+                        )
+                  : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     function splitTick(tick: string | string[]) {
@@ -175,7 +177,11 @@
                     {/if}
                     <text
                         style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
-                        style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
+                        style={getBaseStyles(tick, {
+                            ...options,
+                            fontSize: tickFontSize,
+                            stroke: null
+                        })}
                         y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
                         dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
                     >
