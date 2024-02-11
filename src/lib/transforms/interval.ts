@@ -30,6 +30,7 @@ function interval<T>(dim: 'x' | 'y', plot: PlotState, { data, ...options }: Tran
         return {
             data: newData,
             ...options,
+            interval: undefined,
             [`${dim}1`]: `__${dim}1`,
             [`${dim}2`]: `__${dim}2`
         };

@@ -67,7 +67,7 @@ You can use SveltePlot to create charts with a consise and minimal API.
 ```
 
 ```svelte
-<Plot color={{ legend: true }} x={{  grid: true }} inset={10}>
+<Plot color={{ legend: true }} x={{ grid: true }} inset={10}>
     <Dot data={olympians} x="height" y="weight" stroke="sex" symbol="sex" />
     <RuleY data={[0]} />
 </Plot>
@@ -124,13 +124,15 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 
 ```svelte
 <Plot>
-    <RectY {...binX({ 
-        data: olympians,
-        x: 'weight', 
-        y: 'count', 
-        fill: 'sex', 
-        fy: 'sex' 
-    })} />
+    <RectY
+        {...binX({
+            data: olympians,
+            x: 'weight',
+            y: 'count',
+            fill: 'sex',
+            fy: 'sex'
+        })}
+    />
     <RuleY data={[0]} />
 </Plot>
 ```

@@ -23,8 +23,7 @@ export function maybeInterval(
                   range: (lo, hi) => rangei(Math.ceil(lo / n), hi / n).map((x) => x * n)
               };
     }
-    if (typeof interval === 'string')
-        return (type === 'time' ? maybeTimeInterval : maybeUtcInterval)(interval);
+    if (typeof interval === 'string') return maybeTimeInterval(interval);
     if (typeof interval.floor !== 'function')
         throw new Error('invalid interval; missing floor method');
     if (typeof interval.offset !== 'function')

@@ -71,7 +71,8 @@ function stackXY(
     ].filter((d) => d !== null) as ChannelName[];
 
     const groupBy = channels.z ? 'z' : channels.fill ? 'fill' : channels.stroke ? 'stroke' : true;
-    const secondDim = byDim === 'x' ? 'y' : 'x';
+    const secondDim =
+        byDim === 'x' ? (channels.y1 != null ? 'y1' : 'y') : channels.x1 != null ? 'x1' : 'x';
 
     const byLow: 'x1' | 'y1' = `${byDim}1`;
     const byHigh: 'x2' | 'y2' = `${byDim}2`;

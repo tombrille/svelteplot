@@ -14,7 +14,7 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
     import { getContext } from 'svelte';
-    
+
     const getData = getContext('data');
     let { olympians } = $derived(getData());
 </script>
@@ -56,7 +56,7 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
     import { getContext } from 'svelte';
-    
+
     const getData = getContext('data');
     let { olympians } = $derived(getData());
 </script>
@@ -88,7 +88,7 @@ You can define _thresholds_ as a number
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
     import { getContext } from 'svelte';
-    
+
     const getData = getContext('data');
     let { olympians } = $derived(getData());
 
@@ -108,7 +108,7 @@ Or as arbitrary bin bounds:
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
     import { getContext } from 'svelte';
-    
+
     const getData = getContext('data');
     let { penguins } = $derived(getData());
 </script>
@@ -142,7 +142,7 @@ Or as arbitrary bin bounds:
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
     import { getContext } from 'svelte';
-    
+
     const getData = getContext('data');
     let { olympians } = $derived(getData());
 </script>

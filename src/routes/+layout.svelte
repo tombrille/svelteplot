@@ -13,6 +13,7 @@
         'alphabet',
         'bls',
         'cars',
+        'crimea',
         'metros',
         'olympians',
         'penguins',
