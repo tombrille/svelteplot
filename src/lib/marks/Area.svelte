@@ -20,7 +20,7 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { groupBy } from 'underscore';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { area, type CurveFactory } from 'd3-shape';
@@ -101,7 +101,7 @@
 <Mark
     type="area"
     {data}
-    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke']}
+    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'fillOpacity', 'strokeOpacity']}
     required={['x1', 'y1']}
     {...options}
     let:mark
@@ -109,12 +109,8 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="areas">
         {#each sortedGroups as areaData}
-            {@const fill_ = resolveChannel('fill', areaData[0], options)}
-            {@const stroke_ = resolveChannel('stroke', areaData[0], options)}
-            {@const       fill = (useScale.fill ? plot.scales.color.fn(fill_) : fill_) as string}
-            {@const       stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-            {@const       dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
-            {@const       dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
+            {@const   dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
+            {@const   dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(
                     options.filter == null
@@ -122,8 +118,7 @@
                         : areaData.filter((d) => resolveProp(options.filter, d))
                 )}
                 style={getBaseStyles(areaData[0], options)}
-                fill={fill_ ? fill : stroke_ ? null : 'currentColor'}
-                stroke={stroke_ ? stroke : null}
+                {...resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}

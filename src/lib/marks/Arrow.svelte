@@ -13,7 +13,7 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { coalesce } from '../helpers/index.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -37,7 +37,7 @@
             /**
              * the bend angle, in degrees; defaults to 0°; true for 22.5°
              */
-            bend?: ConstantAccessor<number>;
+            bend?: ConstantAccessor<number> | true;
             /**
              * the arrowhead angle, in degrees; defaults to 60°
              */
@@ -82,13 +82,13 @@
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'y1', 'x2', 'y2', 'stroke']}
+    channels={['x1', 'y1', 'x2', 'y2', 'stroke', 'strokeOpacity']}
     data={sorted}
     {...options}
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-    {@const       sweep = maybeSweep(options.sweep) as SweepFunc}
+    {@const          sweep = maybeSweep(options.sweep) as SweepFunc}
     <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
         {#each sorted as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
@@ -96,24 +96,21 @@
                 {@const _x2 = resolveChannel('x2', datum, options)}
                 {@const _y1 = resolveChannel('y1', datum, options)}
                 {@const _y2 = resolveChannel('y2', datum, options)}
-                {@const _stroke = resolveChannel('stroke', datum, options)}
-                {@const       strokeWidth = resolveProp(options.strokeWidth, datum, 1) as number}
-                {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2) && (options.stroke == null || isValid(_stroke))}
-                    {@const       x1 = (useScale.x1 ? plot.scales.x.fn(_x1) : _x1) as number}
-                    {@const       y1 = (useScale.y1 ? plot.scales.y.fn(_y1) : _y1) as number}
-                    {@const       x2 = (useScale.x2 ? plot.scales.x.fn(_x2) : _x2) as number}
-                    {@const       y2 = (useScale.y2 ? plot.scales.y.fn(_y2) : _y2) as number}
-                    {@const       dx = resolveProp(options.dx, datum, 0) as number}
+                {@const strokeWidth = resolveProp(options.strokeWidth, datum, 1) as number}
+                {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
+                    {@const          x1 = (useScale.x1 ? plot.scales.x.fn(_x1) : _x1) as number}
+                    {@const          y1 = (useScale.y1 ? plot.scales.y.fn(_y1) : _y1) as number}
+                    {@const          x2 = (useScale.x2 ? plot.scales.x.fn(_x2) : _x2) as number}
+                    {@const          y2 = (useScale.y2 ? plot.scales.y.fn(_y2) : _y2) as number}
+                    {@const          dx = resolveProp(options.dx, datum, 0) as number}
                     {@const dy = resolveProp(options.dx, datum, 0)}
                     {@const inset = resolveProp(options.inset, datum, 0)}
                     {@const insetStart = resolveProp(options.insetStart, datum)}
                     {@const insetEnd = resolveProp(options.insetEnd, datum)}
-                    {@const       headAngle = resolveProp(options.headAngle, datum, 60) as number}
-                    {@const       headLength = resolveProp(options.headLength, datum, 8) as number}
-                    {@const       bend = resolveProp(options.bend, datum, 0) as number|boolean}
-                    {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
+                    {@const          headAngle = resolveProp(options.headAngle, datum, 60) as number}
+                    {@const          headLength = resolveProp(options.headLength, datum, 8) as number}
+                    {@const          bend = resolveProp(options.bend, datum, 0) as number|boolean}
                     <path
-                        data-stroke={_stroke}
                         d={arrowPath(
                             x1,
                             y1,
@@ -129,7 +126,7 @@
                         )}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
                         style={getBaseStyles(datum, options)}
-                        style:stroke={_stroke != null ? stroke : 'currentColor'}
+                        {...resolveScaledStyles(datum, options, useScale, plot, 'stroke')}
                     />
                 {/if}
             {/if}
@@ -139,7 +136,6 @@
 
 <style>
     path {
-        fill: none;
         stroke-width: 1.6px;
         stroke-linecap: round;
         stroke-linejoin: round;

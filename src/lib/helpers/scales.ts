@@ -68,7 +68,8 @@ export function computeScales(
     plotWidth: number,
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
-    marks: Mark<GenericMarkOptions>[]
+    marks: Mark<GenericMarkOptions>[], 
+    foo
 ) {
     const x = createScale(
         'x',
@@ -190,8 +191,6 @@ export function createScale<T extends ScaleOptions>(
                     // typeof channelOptions.value !== 'number' &&
                     typeof channelOptions.value !== 'undefined';
 
-                if (name === 'opacity') console.log({channel, useScale})
-
                 if (useScale) {
                     const isOutputType =
                         name === 'color'
@@ -225,10 +224,6 @@ export function createScale<T extends ScaleOptions>(
 
                     uniqueScaleProps.add(channelOptions.value);
 
-                    if (name === 'opacity') {
-                        console.log({allValuesAreOutputType})
-                    }
-
                     if (channelOptions.value != null && !allValuesAreOutputType) {
                         manualActiveMarks++;
                         markTypes.add(mark.type);
@@ -254,6 +249,8 @@ export function createScale<T extends ScaleOptions>(
             }
         }
     }
+
+    // if (name === 'color') console.)
 
     // const valueType =
     // construct domain from data values

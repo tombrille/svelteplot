@@ -45,7 +45,6 @@
                             .filter((id) => !datasets[id].length)
                             .map((id) => {
                                 return new Promise((resolve) => {
-                                    console.log('load', `/data/${id}.csv`);
                                     csv(`/data/${id}.csv`, autoType).then((data) => {
                                         resolve([id, data]);
                                     });

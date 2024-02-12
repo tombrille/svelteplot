@@ -134,7 +134,6 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
                     newChannels[k] = `__${k}`;
                     // newChannels[`__${k}_origField`] = channels[k];
                 } else if (typeof options[k] === 'function') {
-                    // console.log({k}, channels[k](group))
                     // custom reducer function
                     newRecord[`__${k}`] = options[k](items);
                     newChannels[k] = `__${k}`;
@@ -263,7 +262,6 @@ export function bin<T>(
                         newChannels[k] = `__${k}`;
                         // newChannels[`__${k}_origField`] = channels[k];
                     } else if (typeof options[k] === 'function') {
-                        // console.log({k}, channels[k](group))
                         // custom reducer function
                         newRecord[`__${k}`] = options[k](groupY);
                         newChannels[k] = `__${k}`;

@@ -68,7 +68,7 @@
                 {#if isValid(_x) && isValid(_y)}
                     {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                     {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                    {@const       dx = resolveProp(options.dx, datum, 0) as number}
+                    {@const          dx = resolveProp(options.dx, datum, 0) as number}
                     {@const dy = resolveProp(options.dy, datum, 0)}
                     {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
                     {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}

@@ -34,7 +34,7 @@ Metro dataset:
             y1="R90_10_1980"
             x2="POP_2015"
             y2="R90_10_2015"
-            bend
+            bend 
             stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
         />
         <Text
@@ -59,7 +59,7 @@ Another thing you can use the arrow mark for is drawing network diagrams:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Arrow, Dot } from '$lib/index.js';
+    import { Plot, Arrow, Dot, RuleX, RuleY } from '$lib/index.js';
     import { json } from 'd3-fetch';
     import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
 
@@ -95,8 +95,10 @@ Another thing you can use the arrow mark for is drawing network diagrams:
         bend
         insetStart={(d) => d.source.id.length * 1.1}
         insetEnd={(d) => d.target.id.length * 1.1}
-        opacity="0.2"
+        opacity={0.2}
     />
+    <RuleX data={[0]} />
+    <RuleY data={[0]} />
     <Dot
         data={nodes}
         r={(d) => d.id.length}

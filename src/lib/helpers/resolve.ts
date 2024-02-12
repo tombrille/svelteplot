@@ -137,8 +137,9 @@ export function resolveScaledStyles(
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    console.log({useScale})
     return {
+        fill: 'none',
+        stroke: 'none',
         ...(defaultColorProp && channels[opositeColor[defaultColorProp]] == null
             ? { [defaultColorProp]: 'currentColor' }
             : {}),

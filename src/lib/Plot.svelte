@@ -8,6 +8,8 @@
     import type { PlotOptions, GenericMarkOptions, Mark, PlotScales, ScaleName } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
+    const id = Math.ceil(Math.random()*10e8).toString(36);
+
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
     import { GridX, GridY, Frame, AxisX, AxisY, ColorLegend, SymbolLegend } from './index.js';
@@ -141,8 +143,10 @@
         !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
     );
 
+$inspect({id, l: marks.length});
+
     let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks)
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, 'pre')
     );
 
     let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
@@ -180,7 +184,8 @@
             facetWidth || width,
             facetHeight || height,
             hasFilledDotMarks,
-            marks
+            marks,
+            'post'
         );
         const colorSymbolRedundant =
             scales.color.uniqueScaleProps.size === 1 &&
@@ -226,11 +231,7 @@
         }
     });
 
-    $effect(() => {
-        if (debug) console.log(plotState.options.x);
-    });
-
-    $inspect(plotState.scales.opacity);
+    $inspect(plotState.scales.color);
 </script>
 
 <!--

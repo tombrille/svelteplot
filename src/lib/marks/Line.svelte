@@ -95,9 +95,9 @@
                 {@const stroke_ = resolveChannel('stroke', lineData[0], options)}
                 {@const d = { useScale, options }}
 
-                {@const       stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-                {@const       dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-                {@const       dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
+                {@const          stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+                {@const          dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+                {@const          dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
                 <path
                     d={linePath(
                         options.filter == null
