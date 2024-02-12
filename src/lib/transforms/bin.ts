@@ -74,8 +74,6 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
     const groupByPropName =
         groupBy !== true && typeof channels[groupBy] === 'string' ? channels[groupBy] : '__group';
 
-    console.log({ groupBy });
-
     if (groupBy !== true) newChannels[groupBy] = groupByPropName;
 
     const newData = [];

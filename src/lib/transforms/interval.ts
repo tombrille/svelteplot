@@ -29,6 +29,8 @@ function interval<T>(dim: 'x' | 'y', plot: PlotState, { data, ...options }: Tran
         });
         return {
             data: newData,
+            // set default inset
+            [`inset${dim === 'x' ? 'Right' : 'Bottom'}`]: 1,
             ...options,
             interval: undefined,
             [`${dim}1`]: `__${dim}1`,

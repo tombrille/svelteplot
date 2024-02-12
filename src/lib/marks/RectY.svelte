@@ -33,7 +33,6 @@
     let plot = $derived(getPlotState());
 
     let args = $derived(stackY(intervalX(recordizeY({ data, ...options }), { plot }), stack));
-    $inspect(args);
 </script>
 
 <Rect {...args}></Rect>

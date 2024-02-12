@@ -252,7 +252,6 @@ export function createScale<T extends ScaleOptions>(
     // const valueType =
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
-
     const type: ScaleType =
         scaleOptions.type === 'auto'
             ? inferScaleType(name, valueArr, markTypes)

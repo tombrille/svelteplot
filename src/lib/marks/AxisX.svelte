@@ -141,7 +141,7 @@
                 <text
                     style={getBaseStyles(null, options)}
                     x={plot.plotWidth + plot.options.marginLeft}
-                    y={anchor === 'top' ? 13 : plot.facetHeight - 13}
+                    y={anchor === 'top' ? 13 : plot.height - 13}
                     class="axis-title"
                     dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
                 >

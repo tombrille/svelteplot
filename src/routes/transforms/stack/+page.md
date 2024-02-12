@@ -61,8 +61,6 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 
     const getData = getContext('data');
     let { crimea } = $derived(getData());
-
-    $inspect(crimea);
 </script>
 
 <Plot grid color={{ legend: true }}>

@@ -29,7 +29,6 @@
     );
 
     let prevDatasetIds: string[] = [];
-    $inspect(datasetIds);
 
     let allLoaded = $derived(!datasetIds.length || datasetIds.every((id) => datasets[id].length));
 

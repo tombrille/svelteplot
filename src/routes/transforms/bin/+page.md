@@ -50,7 +50,7 @@ You can also bin and group at the same time:
 </Plot>
 ```
 
-By default, the binX transform will set the _insetRight_ channel to 1, but you can disable this by explicitly setting the it to zero:
+By default, the binX transform will set the _insetRight_ channel to 1, but you can disable this by explicitly setting it to zero:
 
 ```svelte live
 <script>

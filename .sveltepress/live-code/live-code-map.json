@@ -232,5 +232,12 @@
   "/Users/gka/projects/svelteplot/src/routes/introduction/+page.md-10": "LiveCodebc9a7d96bfc.svelte",
   "/Users/gka/projects/svelteplot/src/routes/transforms/bin/+page.md-4": "LiveCodec9a7d96bfc4.svelte",
   "/Users/gka/projects/svelteplot/src/routes/transforms/bin/+page.md-12": "LiveCode9a7d96bfc40.svelte",
-  "/Users/gka/projects/svelteplot/src/routes/transforms/bin/+page.md-17": "LiveCodea7d96bfc40f.svelte"
+  "/Users/gka/projects/svelteplot/src/routes/transforms/bin/+page.md-17": "LiveCodea7d96bfc40f.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/axis/+page.md-14": "LiveCode4baff4f72e2.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/axis/+page.md-17": "LiveCodebaff4f72e2d.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/marks/axis/+page.md-21": "LiveCodeaff4f72e2df.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/transforms/stack/+page.md-3": "LiveCodeff4f72e2df6.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/transforms/stack/+page.md-6": "LiveCodef4f72e2df6e.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/transforms/stack/+page.md-9": "LiveCode4f72e2df6e8.svelte",
+  "/Users/gka/projects/svelteplot/src/routes/transforms/stack/+page.md-11": "LiveCodef72e2df6e8e.svelte"
 }

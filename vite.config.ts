@@ -27,8 +27,8 @@ export default defineConfig({
                     }
                 },
                 highlighter: {
-                    themeLight: 'github-light',
-                    themeDark: 'github-dark'
+                    themeLight: 'vitesse-light', // 'github-light',
+                    themeDark: 'night-owl', // 'github-dark'
                 },
                 navbar: [
                     {

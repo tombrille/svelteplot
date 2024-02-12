@@ -86,7 +86,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 </script>
 
 {#if olympians}
-    <Plot>
+    <Plot grid>
         <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
         <RuleY data={[0]} />
     </Plot>
@@ -94,7 +94,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 ```
 
 ```svelte
-<Plot>
+<Plot grid>
     <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
     <RuleY data={[0]} />
 </Plot>

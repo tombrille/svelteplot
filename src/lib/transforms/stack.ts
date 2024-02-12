@@ -77,6 +77,8 @@ function stackXY(
     const byLow: 'x1' | 'y1' = `${byDim}1`;
     const byHigh: 'x2' | 'y2' = `${byDim}2`;
 
+    
+
     if (
         channels[byDim] != null &&
         channels[`${byLow}`] === undefined &&
@@ -132,11 +134,7 @@ function stackXY(
                     return values
                         .filter((d) => d.data[1].get(groupKey))
                         .map((d) => {
-                            const {
-                                [`__${byDim}`]: unused1,
-                                [`__${secondDim}`]: unused2,
-                                ...datum
-                            } = d.data[1].get(groupKey);
+                            const datum = d.data[1].get(groupKey);
                             // cleanup our internal keys
                             delete datum.__group;
                             delete datum.__facet;

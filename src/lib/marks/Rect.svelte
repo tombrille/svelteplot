@@ -47,6 +47,8 @@
 
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
+
+    $inspect({ x: plot.scales.x, p: plot.scales.x.fn(30)})
 </script>
 
 <Mark
@@ -59,6 +61,7 @@
     {@const useScale = getUsedScales(plot, args, mark)}
     <g class="rect">
         {#each args.data as datum}
+            
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const x1_ = resolveChannel('x1', datum, args)}
                 {@const x2_ = resolveChannel('x2', datum, args)}
@@ -89,6 +92,7 @@
                 {@const insetT = coalesce(insetTop, inset, 0)}
                 {@const insetR = coalesce(insetRight, inset, 0)}
                 {@const insetB = coalesce(insetBottom, inset, 0)}
+<g  data-x2={x2_} data-x2s={plot.scales.x.fn(+x2_)}  />
                 {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     <rect
                         style={getBaseStyles(datum, { ...args, fill: null, stroke: null })}
