@@ -77,8 +77,6 @@ function stackXY(
     const byLow: 'x1' | 'y1' = `${byDim}1`;
     const byHigh: 'x2' | 'y2' = `${byDim}2`;
 
-    
-
     if (
         channels[byDim] != null &&
         channels[`${byLow}`] === undefined &&

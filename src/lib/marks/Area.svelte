@@ -111,10 +111,10 @@
         {#each sortedGroups as areaData}
             {@const fill_ = resolveChannel('fill', areaData[0], options)}
             {@const stroke_ = resolveChannel('stroke', areaData[0], options)}
-            {@const fill = (useScale.fill ? plot.scales.color.fn(fill_) : fill_) as string}
-            {@const stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-            {@const dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
-            {@const dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
+            {@const       fill = (useScale.fill ? plot.scales.color.fn(fill_) : fill_) as string}
+            {@const       stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+            {@const       dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
+            {@const       dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(
                     options.filter == null

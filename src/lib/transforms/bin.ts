@@ -4,7 +4,7 @@
  * Copyright (C) 2024  Gregor Aisch
  */
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { DataRecord } from '$lib/types.js';
+import type { ChannelAccessor, DataRecord, RawValue } from '$lib/types.js';
 import type { TransformArg } from '$lib/types.js';
 
 import {
@@ -22,13 +22,41 @@ import {
 
 type NamedThresholdsGenerator = 'auto' | 'scott' | 'sturges' | 'freedman-diaconis';
 
-type BinOptions = {
+type BinBaseOptions = {
     domain?: [number, number];
     thresholds?: NamedThresholdsGenerator | number | number[] | ThresholdCountGenerator;
-    interval: number | string;
-    cumulative: false | 1 | -1;
+    interval?: number | string;
+    cumulative?: false | 1 | -1;
     reverse?: boolean;
 };
+
+type Reducer = 'count' | 'first' | 'last' | ((group: DataRecord[]) => RawValue);
+
+type AdditionalOutputChannels = Partial<{
+    fill: Reducer;
+    stroke: Reducer;
+    r: Reducer;
+    fillOpacity: Reducer;
+    strokeOpacity: Reducer;
+}>;
+
+type BinXOptions = BinBaseOptions &
+    AdditionalOutputChannels &
+    Partial<{
+        y: Reducer;
+        y1: Reducer;
+        y2: Reducer;
+    }>;
+
+type BinYOptions = BinBaseOptions &
+    AdditionalOutputChannels &
+    Partial<{
+        x: Reducer;
+        x1: Reducer;
+        x2: Reducer;
+    }>;
+
+type BinOptions = BinBaseOptions & AdditionalOutputChannels;
 
 const ThresholdGenerators: { [k in NamedThresholdsGenerator]: ThresholdCountGenerator } = {
     auto: thresholdScott,
@@ -59,7 +87,14 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
     bin.value((d) => resolveChannel(byDim, d, channels));
 
     // y, y1, y2, fill, stroke, etc are outputs
-    const outputs = [...(byDim === 'x' ? ['y', 'y1', 'y2'] : ['x', 'x1', 'x2']), 'fill', 'stroke'];
+    const outputs = [
+        ...(byDim === 'x' ? ['y', 'y1', 'y2'] : ['x', 'x1', 'x2']),
+        'fill',
+        'stroke',
+        'r',
+        'fillOpacity',
+        'strokeOpacity'
+    ];
 
     const newChannels = {
         [byDim === 'x' ? 'insetRight' : 'insetBottom']: 1,
@@ -93,15 +128,15 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
             };
 
             for (const k of outputs) {
-                if (Reducers[channels[k]]) {
+                if (Reducers[options[k]]) {
                     // we have a named reducer like 'count'
-                    newRecord[`__${k}`] = Reducers[channels[k]](items);
+                    newRecord[`__${k}`] = Reducers[options[k]](items);
                     newChannels[k] = `__${k}`;
-                    newChannels[`__${k}_origField`] = channels[k];
-                } else if (typeof channels[k] === 'function') {
+                    // newChannels[`__${k}_origField`] = channels[k];
+                } else if (typeof options[k] === 'function') {
                     // console.log({k}, channels[k](group))
                     // custom reducer function
-                    newRecord[`__${k}`] = channels[k](items);
+                    newRecord[`__${k}`] = options[k](items);
                     newChannels[k] = `__${k}`;
                 }
             }
@@ -120,7 +155,7 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
  */
 export function binX<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,
-    options: BinOptions = { thresholds: 'auto' }
+    options: BinXOptions = { thresholds: 'auto' }
 ): TransformArg<T, DataRecord> {
     return binBy('x', { data, ...channels }, options);
 }
@@ -133,7 +168,111 @@ export function binX<T>(
  */
 export function binY<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,
-    options: BinOptions = { thresholds: 'auto' }
+    options: BinYOptions = { thresholds: 'auto' }
 ): TransformArg<T, DataRecord> {
     return binBy('y', { data, ...channels }, options);
+}
+
+export function bin<T>(
+    { data, ...channels }: TransformArg<T, DataRecord>,
+    options: BinOptions = { thresholds: 'auto' }
+): TransformArg<T, DataRecord> {
+    const { domain, thresholds = 'auto' } = options;
+
+    const binX = d3Bin();
+    const binY = d3Bin();
+
+    if (domain) {
+        // this really doesn't make sense...
+        binX.domain(domain);
+        binY.domain(domain);
+    }
+
+    // channels.x is the input
+    binX.value((d) => resolveChannel('x', d, channels));
+    binY.value((d) => resolveChannel('y', d, channels));
+
+    if (thresholds) {
+        // when binning in x and y, we need to ensure we are using consistent thresholds
+        const t =
+            typeof thresholds === 'string' && ThresholdGenerators[thresholds] !== undefined
+                ? ThresholdGenerators[thresholds]
+                : thresholds;
+
+        binX.thresholds(t);
+        binY.thresholds(t);
+
+        const yThresholds = binY(data)
+            .slice(1)
+            .map((g) => g.x0);
+        binY.thresholds(yThresholds);
+    }
+
+    // y, y1, y2, fill, stroke, etc are outputs
+    const outputs = ['fill', 'stroke', 'r', 'opacity', 'fillOpacity', 'strokeOpacity'];
+
+    const newChannels = {
+        inset: 0.5,
+        ...channels,
+        x: '__x',
+        x1: '__x1',
+        x2: '__x2',
+        y: '__y',
+        y1: '__y1',
+        y2: '__y2',
+        __x_origField: typeof channels.x === 'string' ? channels.x : null,
+        __y_origField: typeof channels.y === 'string' ? channels.y : null
+    };
+
+    const groupBy = channels.z ? 'z' : channels.fill ? 'fill' : channels.stroke ? 'stroke' : true;
+    const groupByPropName =
+        groupBy !== true && typeof channels[groupBy] === 'string' ? channels[groupBy] : '__group';
+
+    if (groupBy !== true) newChannels[groupBy] = groupByPropName;
+
+    // consistent intervals
+
+    const newData = [];
+    binX(data).forEach((groupX) => {
+        const newRecordBaseX = {
+            __x1: groupX.x0,
+            __x2: groupX.x1,
+            __x: (groupX.x0 + groupX.x1) * 0.5
+        };
+
+        binY(groupX).forEach((groupY) => {
+            const newRecordBaseY = {
+                ...newRecordBaseX,
+                __y1: groupY.x0,
+                __y2: groupY.x1,
+                __y: (groupY.x0 + groupX.x1) * 0.5
+            };
+
+            const groups = d3Groups(groupY, (d) => resolveChannel(groupBy, d, channels));
+
+            for (const [groupKey, items] of groups) {
+                const newRecord = {
+                    ...newRecordBaseY,
+                    [groupByPropName]: groupKey || 'G'
+                };
+
+                for (const k of outputs) {
+                    if (Reducers[options[k]]) {
+                        // we have a named reducer like 'count'
+                        newRecord[`__${k}`] = Reducers[options[k]](items);
+                        newChannels[k] = `__${k}`;
+                        // newChannels[`__${k}_origField`] = channels[k];
+                    } else if (typeof options[k] === 'function') {
+                        // console.log({k}, channels[k](group))
+                        // custom reducer function
+                        newRecord[`__${k}`] = options[k](groupY);
+                        newChannels[k] = `__${k}`;
+                    }
+                }
+                newData.push(newRecord);
+            }
+        });
+    });
+
+    return { data: options.reverse ? newData.toReversed() : newData, ...newChannels };
 }

@@ -54,10 +54,10 @@
             {@const y =
                 plot.scales.y.fn(tick) +
                 (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
-            {@const x1_ = resolveChannel('x1', tick, options) as number}
-            {@const x2_ = resolveChannel('x2', tick, options) as number}
-            {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
-            {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.facetWidth}
+            {@const       x1_ = resolveChannel('x1', tick, options) as number}
+            {@const       x2_ = resolveChannel('x2', tick, options) as number}
+            {@const       x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
+            {@const       x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.facetWidth}
             <line
                 in:fade
                 transform="translate({plot.options.marginLeft},{y})"

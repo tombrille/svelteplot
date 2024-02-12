@@ -41,4 +41,4 @@ export { stackX, stackY } from './transforms/stack.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';
 export { intervalX, intervalY } from './transforms/interval.js';
-export { binX, binY } from './transforms/bin.js';
+export { bin, binX, binY } from './transforms/bin.js';

@@ -1,4 +1,4 @@
-import type { PageLoad } from './$types.js';
+import type { PageLoad } from '../../marks/test/$types.js';
 
 export const load: PageLoad = () => {
     return { datasets: ['olympians'] };

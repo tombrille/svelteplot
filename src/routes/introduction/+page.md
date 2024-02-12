@@ -53,11 +53,11 @@ You can use SveltePlot to create charts with a consise and minimal API.
     >
         <Dot
             data={truncate ? olympians.slice(0, 1000) : olympians}
-            x="height"
+            x="weight"
+            opacity="0.5"
             filter={(d) => d.date_of_birth > new Date(2024 - w, 1, 1)}
-            y={plotClose ? 'weight' : 'date_of_birth'}
+            y={plotClose ? 'height' : 'date_of_birth'}
             stroke="sex"
-            symbol="sex"
         />
         {#if showRule}
             <RuleY data={[0]} />
@@ -68,9 +68,32 @@ You can use SveltePlot to create charts with a consise and minimal API.
 
 ```svelte
 <Plot color={{ legend: true }} x={{ grid: true }} inset={10}>
-    <Dot data={olympians} x="height" y="weight" stroke="sex" symbol="sex" />
+    <Dot data={olympians} x="weight" y="height" stroke="sex" symbol="sex" />
     <RuleY data={[0]} />
 </Plot>
+```
+
+This scatterplot suffers from overplotting: many dots are drawn in the same spot, so it’s hard to perceive density. We can fix this by applying a [bin transform](/transforms/bin) to group athletes of similar height and weight (and sex), and then use opacity to encode the number of athletes in the bin.
+
+```svelte live
+<script>
+    import { Plot, Rect, bin } from '$lib';
+    import Mark from '$lib/Mark.svelte';
+    import { getContext } from 'svelte';
+
+    const getData = getContext('data');
+    let { olympians } = $derived(getData());
+
+    let args = $derived(
+        bin({ data: olympians, x: 'weight', y: 'height', fill: 'sex' }, { fillOpacity: 'count' })
+    );
+</script>
+
+{#if olympians}
+    <Plot>
+        <Rect {...args} inset={0} />
+    </Plot>
+{/if}
 ```
 
 We can use the [binX transform](/transforms/bin) to compute a weight distribution.
@@ -87,7 +110,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 
 {#if olympians}
     <Plot grid>
-        <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
+        <RectY {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })} />
         <RuleY data={[0]} />
     </Plot>
 {/if}
@@ -95,7 +118,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 
 ```svelte
 <Plot grid>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })} />
+    <RectY {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -115,7 +138,7 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 {#if olympians}
     <Plot grid>
         <RectY
-            {...binX({ data: olympians, x: 'weight', y1: 0, y2: 'count', fill: 'sex', fy: 'sex' })}
+            {...binX({ data: olympians, x: 'weight', fill: 'sex', fy: 'sex' }, { y: 'count' })}
         />
         <RuleY data={[0]} />
     </Plot>
@@ -125,13 +148,15 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 ```svelte
 <Plot>
     <RectY
-        {...binX({
-            data: olympians,
-            x: 'weight',
-            y: 'count',
-            fill: 'sex',
-            fy: 'sex'
-        })}
+        {...binX(
+            {
+                data: olympians,
+                x: 'weight',
+                fill: 'sex',
+                fy: 'sex'
+            },
+            { y: 'count' }
+        )}
     />
     <RuleY data={[0]} />
 </Plot>

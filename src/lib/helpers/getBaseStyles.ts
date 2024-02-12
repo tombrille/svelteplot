@@ -1,17 +1,17 @@
 import type { Channels } from '$lib/types.js';
-import type { ChannelAccessor, MarkStyleProps, DataRow } from '$lib/types.js';
+import type { MarkStyleProps, DataRow } from '$lib/types.js';
 import { resolveProp } from './resolve.js';
 
 const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
-    fill: 'fill',
-    stroke: 'stroke',
+    // fill: 'fill',
+    // stroke: 'stroke',
     strokeWidth: 'stroke-width',
     strokeDasharray: 'stroke-dasharray',
-    fillOpacity: 'fill-opacity',
-    strokeOpacity: 'stroke-opacity',
+    // fillOpacity: 'fill-opacity',
+    // strokeOpacity: 'stroke-opacity',
     fontSize: 'font-size',
     fontWeight: 'font-weight',
-    opacity: 'opacity',
+    // opacity: 'opacity',
     textAnchor: 'text-anchor'
 };
 

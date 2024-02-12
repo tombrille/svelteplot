@@ -190,6 +190,8 @@ export function createScale<T extends ScaleOptions>(
                     // typeof channelOptions.value !== 'number' &&
                     typeof channelOptions.value !== 'undefined';
 
+                if (name === 'opacity') console.log({channel, useScale})
+
                 if (useScale) {
                     const isOutputType =
                         name === 'color'
@@ -222,6 +224,10 @@ export function createScale<T extends ScaleOptions>(
                     }
 
                     uniqueScaleProps.add(channelOptions.value);
+
+                    if (name === 'opacity') {
+                        console.log({allValuesAreOutputType})
+                    }
 
                     if (channelOptions.value != null && !allValuesAreOutputType) {
                         manualActiveMarks++;
@@ -432,8 +438,11 @@ const channelNames: ScaledChannelName[] = [
     'y1',
     'y2',
     'r',
+    'opacity',
     'fill',
+    'fillOpacity',
     'stroke',
+    'strokeOpacity',
     'symbol'
 ];
 

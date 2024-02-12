@@ -161,7 +161,7 @@
                         ? preScales.y.domain.length * 30
                         : preScales.y.type === 'point'
                           ? preScales.y.domain.length * 18
-                          : 300) +
+                          : 350) +
                   plotOptions.marginTop +
                   plotOptions.marginBottom
             : plotOptions.height
@@ -229,6 +229,8 @@
     $effect(() => {
         if (debug) console.log(plotState.options.x);
     });
+
+    $inspect(plotState.scales.opacity);
 </script>
 
 <!--

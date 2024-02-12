@@ -6,6 +6,9 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
+import type { MarkStyleProps, PlotContext, PlotState } from '$lib/types.js';
+import { isValid } from './isValid.js';
+
 import type {
     ScaleName,
     ChannelName,
@@ -112,4 +115,42 @@ function resolve(
                 ? datum
                 : null;
     }
+}
+
+const styleProps: Partial<{ [key in ScaledChannelName]: string }> = {
+    fill: 'fill',
+    stroke: 'stroke',
+    fillOpacity: 'fill-opacity',
+    strokeOpacity: 'stroke-opacity',
+    opacity: 'opacity'
+};
+
+const opositeColor = {
+    fill: 'stroke',
+    stroke: 'fill'
+};
+
+export function resolveScaledStyles(
+    datum: DataRecord,
+    channels: Record<ScaledChannelName, ChannelAccessor>,
+    useScale: Record<ScaledChannelName, boolean>,
+    plot: PlotState,
+    defaultColorProp: 'fill' | 'stroke' | null = null
+) {
+    console.log({useScale})
+    return {
+        ...(defaultColorProp && channels[opositeColor[defaultColorProp]] == null
+            ? { [defaultColorProp]: 'currentColor' }
+            : {}),
+        ...Object.fromEntries(
+            Object.entries(styleProps)
+                .filter(([key]) => channels[key] != null)
+                .map(([key, cssAttr]) => [key, cssAttr, resolveProp(channels[key], datum)])
+                .filter(([, , value]) => isValid(value))
+                .map(([key, cssAttr, value]) => {
+                    if (useScale[key]) return [cssAttr, plot.scales[CHANNEL_SCALE[key]].fn(value)];
+                    return [cssAttr, value];
+                })
+        )
+    };
 }
