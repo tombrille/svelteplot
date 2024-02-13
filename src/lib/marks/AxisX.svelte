@@ -48,7 +48,7 @@
     let plot = $derived(getPlotState());
 
     let autoTickCount = $derived(
-        Math.max(2, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
+        Math.max(3, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
     );
 
     let ticks: RawValue[] = $derived(

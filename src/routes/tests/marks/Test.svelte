@@ -1,9 +1,7 @@
 <script lang="ts">
     import { Plot, Arrow } from '$lib/index.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { metros } = $derived(getData());
+    import { page } from '$app/stores';
+    let { metros } = $derived($page.data.data);
 </script>
 
 <Plot
@@ -26,6 +24,7 @@
         x2="POP_2015"
         y2="R90_10_2015"
         bend
+        opacity={0.2}
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
 </Plot>

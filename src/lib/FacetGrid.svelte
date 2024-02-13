@@ -22,10 +22,10 @@
 
     // create band scales for fx and fy
     let facetXScale = $derived(
-        scaleBand().paddingInner(0.1).domain(facetXValues).range([0, plot.plotWidth])
+        scaleBand().paddingInner(0.1).domain(facetXValues).rangeRound([0, plot.plotWidth])
     );
     let facetYScale = $derived(
-        scaleBand().paddingInner(0.1).domain(facetYValues).range([0, plot.plotHeight])
+        scaleBand().paddingInner(0.1).domain(facetYValues).rangeRound([0, plot.plotHeight])
     );
 
     // setContext('facet', { getFacetState() { return {} }})

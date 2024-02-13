@@ -10,16 +10,32 @@ SveltePlot is still in a very, very early alpha stage, so early that it's **not 
 
 SveltePlot is a free, open-source Svelte framework for visualizing tabular data, focused on accelerating exploratory data analysis. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as Svelte 5 components (you can find out about the [differences here](/differences-to-plot))
 
-You can use SveltePlot to create charts with a consise and minimal API.
+You can use SveltePlot to create charts with a concise and minimal API.
 
 ```svelte live
 <script>
+    import { Plot, Dot } from '$lib';
+    import { loadCSV } from '$lib/helpers';
+    import { page } from '$app/stores';
+
+    let { olympians } = $derived($page.data.data);
+</script>
+
+<Plot
+    testid="olympians"
+    grid
+    color={{ legend: true }}
+    x={{ type: 'linear', insetLeft: 30, grid: true }}
+    inset={10}
+>
+    <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
+</Plot>
+```
+
+```svelte --live
+<script>
     import { Plot, Dot, Frame, GridY, AxisX, AxisY, RuleY, DotX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
 
     let showGrid = $state(true);
     let showRule = $state(false);
@@ -79,10 +95,8 @@ This scatterplot suffers from overplotting: many dots are drawn in the same spot
 <script>
     import { Plot, Rect, bin } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 
     let args = $derived(
         bin({ data: olympians, x: 'weight', y: 'height', fill: 'sex' }, { fillOpacity: 'count' })
@@ -102,10 +116,8 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 <script>
     import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 {#if olympians}
@@ -129,10 +141,8 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 <script>
     import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 {#if olympians}

@@ -177,7 +177,7 @@ export function createScale<T extends ScaleOptions>(
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
             if (!skip.has(channel)) skip.set(channel, new Set());
-
+    
             if (mark.data.length > 0) {
                 const channelOptions = isDataRecord(mark.options[channel])
                     ? mark.options[channel]
@@ -191,7 +191,10 @@ export function createScale<T extends ScaleOptions>(
                     // typeof channelOptions.value !== 'number' &&
                     typeof channelOptions.value !== 'undefined';
 
+                if (name === 'opacity') console.log({channel, useScale})
+
                 if (useScale) {
+                    
                     if (name === 'opacity' && looksLikeOpacity(channelOptions.value)) {
                         // special handling for opacity scales, where any accessor that looks like
                         // a number between 0 and 1 will be interpreted as output type

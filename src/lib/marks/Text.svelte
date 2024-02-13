@@ -51,7 +51,7 @@
 <Mark
     type="text"
     required={['x', 'y']}
-    channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke']}
+    channels={['x', 'y', 'r', 'symbol', 'fill', 'stroke', 'opacity', 'strokeOpacity', 'fillOpacity']}
     {data}
     {...options}
     let:mark

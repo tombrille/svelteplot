@@ -5,10 +5,8 @@ title: Facets
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib/index';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 </script>
 
 {#if penguins.length}
@@ -45,10 +43,8 @@ Apply top-level facet options automatically:
 ```svelte --live
 <script>
     import { Plot, Dot, Frame } from '$lib/index';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 </script>
 
 {#if penguins.length}

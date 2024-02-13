@@ -29,11 +29,10 @@ In the returned `data` array, each item will have new properties `__y1` and `__y
 ```svelte live
 <script>
     import { Plot, BarY, RuleY, stackY } from '$lib';
-    import { getContext } from 'svelte';
     import { rollups } from 'd3-array';
 
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 
     let data = $derived(
         rollups(

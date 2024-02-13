@@ -139,7 +139,6 @@ export function resolveScaledStyles(
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    // console.log({ useScale });
     return Object.entries({
         ...getBaseStylesObject(datum, channels),
         fill: 'none',

@@ -100,7 +100,19 @@
 <Mark
     type="area"
     {data}
-    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'fillOpacity', 'strokeOpacity']}
+    channels={[
+        'x1',
+        'x2',
+        'y1',
+        'y2',
+        'fx',
+        'fy',
+        'fill',
+        'stroke',
+        'opacity',
+        'fillOpacity',
+        'strokeOpacity'
+    ]}
     required={['x1', 'y1']}
     {...options}
     let:mark
@@ -108,8 +120,8 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="areas">
         {#each sortedGroups as areaData}
-            {@const         dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
-            {@const         dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
+            {@const dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
+            {@const dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(
                     options.filter == null

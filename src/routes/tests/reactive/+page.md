@@ -2,24 +2,6 @@
 title: Reactive playground
 ---
 
-<script>
-    // preload shared datasets
-    import { setContext } from 'svelte'; 
-    import { csv } from 'd3-fetch';
-    import { autoType } from 'd3-dsv';
-
-    let penguins = $state([]);
-    let aapl = $state([]);
-
-    $effect(async () => {
-        [penguins, aapl] = await Promise.all([
-            csv('/data/penguins.csv', autoType),
-            csv('/data/aapl.csv', autoType),
-        ]);
-    });
-    setContext('data', () => ({ aapl, penguins }));
-</script>
-
 Plot scales react to mark data changes
 
 ```svelte live
@@ -73,6 +55,7 @@ Plot reacts to channel changes:
     let { penguins } = $derived(getData());
 
     let filter = $state(false);
+    let facet = $state(false);
     let minWeight = $state(8000);
 
     let justGentoo = $derived(penguins.filter((d) => d.species === 'Gentoo'));
@@ -84,6 +67,8 @@ Plot reacts to channel changes:
 
 <p>But filtering data should:</p>
 <label><input type="checkbox" bind:checked={filter} /> just Gentoo</label><br />
+
+<label><input type="checkbox" bind:checked={facet} /> facet</label><br />
 
 {#if penguins.length}
     <Plot grid>
@@ -99,6 +84,7 @@ Plot reacts to channel changes:
         <Dot
             data={justGentoo}
             fill="red"
+            fx={facet ? 'sex' : null}
             x="culmen_length_mm"
             y="culmen_depth_mm"
             filter={(d) => d.body_mass_g < minWeight}

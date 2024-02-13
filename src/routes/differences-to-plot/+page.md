@@ -13,9 +13,8 @@ Take the following example, where you can filter the data using the [filter](/tr
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { cars } = $derived(getData('data'));
+    import { page } from '$app/stores';
+    let { cars } = $derived($page.data.data);
     let min = $state(0);
     const manufactor = (d) => d.name.split(' ')[0];
 </script>
@@ -77,7 +76,7 @@ Here's an example where we're binding a dataset to a line mark that gets updated
     color={{ type: 'categorical' }}
     height={250}
 >
-    <RuleY data={[0]} opacity={0.5} />
+    <RuleY data={[0]} />
     {#if rand.length > 1}
         <AreaY data={rand} x="x" y="y" fill="currentColor" opacity={0.1} />
         <LineY data={rand} x="x" y="y" stroke="currentColor" />
@@ -119,9 +118,8 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid let:width let:height>
@@ -167,9 +165,8 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid testid="overlay">

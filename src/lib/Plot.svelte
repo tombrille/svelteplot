@@ -174,7 +174,7 @@
     let facetWidth: number | null = $state(null);
     let facetHeight: number | null = $state(null);
 
-    let plotState = $derived.call(() => {
+    let plotState = $derived.call((x) => {
         const scales = computeScales(
             plotOptions,
             facetWidth || width,
@@ -222,10 +222,11 @@
             return facet;
         },
         updateDimensions(w: number, h: number) {
-            facetWidth = w;
-            facetHeight = h;
+            if (facetWidth !== w) facetWidth = w;
+            if (facetHeight !== h) facetHeight = h;
         }
     });
+
 </script>
 
 <!--

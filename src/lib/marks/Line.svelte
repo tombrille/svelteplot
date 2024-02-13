@@ -107,7 +107,7 @@
 <Mark
     type="line"
     {data}
-    channels={['x', 'y', 'stroke', 'strokeOpacity', 'fx', 'fy']}
+    channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy']}
     required={['x', 'y']}
     {...options}
     let:mark

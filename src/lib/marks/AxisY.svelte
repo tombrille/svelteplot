@@ -124,8 +124,8 @@
             {/if}
             {#each ticks as tick, t}
                 {@const tickText = useTickFormat(tick)}
-                {@const                dx = resolveProp(options.dx, tick, 0) as number}
-                {@const                dy = resolveProp(options.dy, tick, 0) as number}
+                {@const dx = resolveProp(options.dx, tick, 0) as number}
+                {@const dy = resolveProp(options.dy, tick, 0) as number}
                 {@const y =
                     plot.scales.y.fn(tick) +
                     (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}

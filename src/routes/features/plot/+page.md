@@ -7,10 +7,8 @@ The <b>Plot</b> component is the base for each plot. It takes care of creating t
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid frame testid="aapl-line-frame">
@@ -29,9 +27,8 @@ You can style plots to look like ggplot:
 ```svelte live
 <script>
     import { Plot, Line, GridX, GridY, Frame } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot inset={10} testid="ggplot">
@@ -47,9 +44,8 @@ You can pass **title**, **subtitle**, and **caption** directly as Plot propertie
 ```svelte live
 <script>
     import { Plot, Line, Frame } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot
@@ -108,9 +104,8 @@ to add events and scoped styles.
 ```svelte live
 <script>
     import { Plot, Line, Frame } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid>

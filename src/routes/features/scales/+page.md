@@ -121,10 +121,8 @@ By default, SveltePlot will create axis marks automatically:
 ```svelte --live
 <script>
     import { Plot, Line, Dot } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 
     let nearestDataPoint = $state(aapl.at(-1));
 </script>
@@ -142,10 +140,8 @@ But you can turn them off:
 ```svelte --live
 <script>
     import { Plot, Line, Dot } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot x={{ axis: false }} y={{ axis: false }} margins={0} testid="axis-off">

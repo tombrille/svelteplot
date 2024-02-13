@@ -58,6 +58,7 @@
         'r',
         'symbol',
         'fill',
+        'opacity',
         'stroke',
         'fillOpacity',
         'strokeOpacity'
@@ -78,8 +79,8 @@
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
                         {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                         {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                        {@const                dx = resolveProp(options.dx, datum, 0) as number}
-                        {@const dy = resolveProp(options.dx, datum, 0)}
+                        {@const dx = +resolveProp(options.dx, datum, 0) as number}
+                        {@const dy = +resolveProp(options.dx, datum, 0)}
                         {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
                         {@const size = r * r * Math.PI}
                         {@const symbol_ = resolveChannel('symbol', datum, {
