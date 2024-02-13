@@ -44,6 +44,30 @@ with the axes marks.
 </Plot>
 ```
 
+In the following bar chart we put two grids, one below the bars and one above:
+
+```svelte live
+<script>
+    import { Plot, BarX, RuleX, GridX } from '$lib';
+</script>
+
+<Plot marginTop={0}>
+    <GridX />
+    <BarX data={[1.5, 2.5, 4.5, 4.7, 6.2, 6.8]} />
+    <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.4} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot marginTop={0}>
+    <GridX />
+    <BarX data={[1.5, 2.5, 4.5, 4.7, 6.2, 6.8]} />
+    <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.4} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
 The automatic ticks can be customized using the **tickSpacing** option:
 
 ```svelte
@@ -51,3 +75,11 @@ The automatic ticks can be customized using the **tickSpacing** option:
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+## GridX
+
+For showing vertical grid lines spread along the x axis.
+
+## GridY
+
+For showing horizontal grid lines spread along the x axis.

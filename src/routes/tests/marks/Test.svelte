@@ -16,7 +16,7 @@
     color={{
         scheme: 'BuRd',
         label: 'Change in inequality from 1980 to 2015',
-        legend: true,
+        legend: true
     }}
 >
     <Arrow

@@ -12,27 +12,32 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     fontSize: 'font-size',
     fontWeight: 'font-weight',
     // opacity: 'opacity',
-    textAnchor: 'text-anchor'
+    textAnchor: 'text-anchor',
+    cursor: 'cursor'
 };
 
 const styleDefaults: Partial<Record<MarkStyleProps, string | null>> = {
     fontWeight: 'normal'
 };
 
-export default function (datum: DataRow, props: Partial<Channels>) {
-    return (
-        (props.style ? `${props.style};` : '') +
+export function getBaseStylesObject(datum: DataRow, props: Partial<Channels>) {
+    return Object.fromEntries(
         (Object.entries(styleProps) as [MarkStyleProps, string][])
             .filter(([key, cssKey]) => cssKey && props[key] != null)
-            .map(
-                ([key, cssKey]) =>
-                    `${cssKey}: ${maybeToPixel(cssKey, resolveProp(props[key], datum, styleDefaults[key] || null))}`
-            )
-            .join(';')
+            .map(([key, cssKey]) => [
+                cssKey,
+                maybeToPixel(cssKey, resolveProp(props[key], datum, styleDefaults[key] || null))
+            ])
     );
 }
 
-function maybeToPixel(cssKey: string, value: string | number) {
+export default function (datum: DataRow, props: Partial<Channels>) {
+    return Object.entries(getBaseStylesObject(datum, props))
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(';');
+}
+
+export function maybeToPixel(cssKey: string, value: string | number) {
     if (cssKey === 'font-size' || cssKey === 'stroke-width') {
         return typeof value === 'number' ? `${value}px` : value;
     }

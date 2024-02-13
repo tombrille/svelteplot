@@ -1,9 +1,25 @@
 ---
 title: Scales
-datasets: aapl, penguins
 ---
 
-A core feature of SveltePlot are automatically inferred scales.
+A core feature of SveltePlot are automatically inferred scales. SveltePlot tries to automatically detect whether or not to map certain channels to scales, but you can also fine-tune this behavior.
+
+For the positional channels such as x, x1, or y, Plot assumes that you'll always want to map the values to a scale, not matter how they're specified. In the following example, both
+
+```svelte live
+<script>
+    import { Plot, RuleY } from '$lib';
+</script>
+
+<Plot x={{ domain: [0, 10] }} y={{ domain: [0, 5] }}>
+    <RuleY
+        data={[1, 2, 3, 4, 5]}
+        stroke="red"
+        strokeWidth={(d) => d}
+        strokeOpacity={{ scale: null, value: (d) => d / 9 }}
+    />
+</Plot>
+```
 
 ## Continuous scales
 
@@ -11,7 +27,7 @@ The domain of a quantitative scale is a continuous extent [min, max] where min a
 numbers, such as temperatures. Below, the first domain value (x = 0) corresponds to the left
 side of the plot while the second (x = 100) corresponds to the right side.
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, GridX, GridY, Line } from '$lib';
 </script>
@@ -32,7 +48,7 @@ side of the plot while the second (x = 100) corresponds to the right side.
 
 Scales can be reversed using the **reverse** option:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, GridX, GridY, Line } from '$lib';
 </script>
@@ -54,7 +70,7 @@ Scales can be reversed using the **reverse** option:
 If the domain is dates, SveltePlot will default to a UTC scale. This is a linear scale with ticks
 based on the Gregorian calendar.
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, GridX, GridY, Line } from '$lib';
 </script>
@@ -81,7 +97,7 @@ based on the Gregorian calendar.
 
 SveltePlot will automatically detect a scale type, but you can also set it explicitly using the **type** scale option:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, GridX, GridY, Line } from '$lib';
 </script>
@@ -102,7 +118,7 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
 
 By default, SveltePlot will create axis marks automatically:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, Dot } from '$lib';
     import { getContext } from 'svelte';
@@ -123,7 +139,7 @@ By default, SveltePlot will create axis marks automatically:
 
 But you can turn them off:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, Dot } from '$lib';
     import { getContext } from 'svelte';
@@ -142,3 +158,7 @@ But you can turn them off:
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+## Color scales
+
+Foobar

@@ -12,7 +12,7 @@ title: Facets
 </script>
 
 {#if penguins.length}
-    <Plot frame grid title="Facets" height={600} inset={10} margins={30} testid="simple-bars">
+    <Plot frame grid height={600} inset={10} margins={30} marginBottom={40}>
         <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" r={2} opacity={0.1} />
         <Dot
             data={penguins}
@@ -27,7 +27,7 @@ title: Facets
 ```
 
 ```svelte
-<Plot frame grid title="Facets" height={600} inset={10} margins={30} testid="simple-bars">
+<Plot frame grid height={600} inset={10} margins={30}>
     <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" r={2} opacity={0.1} />
     <Dot
         data={penguins}
@@ -42,7 +42,7 @@ title: Facets
 
 Apply top-level facet options automatically:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Dot, Frame } from '$lib/index';
     import { getContext } from 'svelte';

@@ -2,6 +2,10 @@
 title: Line mark
 ---
 
+<script>
+    import CurveDemo from './CurveDemo.svelte';
+</script>
+
 AAPL demo:
 
 ```svelte live
@@ -177,5 +181,78 @@ symbol on last point only:
     <Line data={aapl} x="Date" y="Adj Close" />
     <!-- assumes data is sorted -->
     <Dot data={aapl.slice(-1)} x="Date" y="Adj Close" r={3} fill="currentColor" />
+</Plot>
+```
+
+Here you can play around with the curve and tension parameters:
+
+<CurveDemo />
+
+The line mark can be used for a connection scatterplot:
+
+```svelte live
+<script>
+    import { Plot, Line, Dot, Text } from '$lib';
+    import { getContext } from 'svelte';
+
+    const getData = getContext('data');
+    let { driving } = $derived(getData());
+</script>
+
+<Plot
+    inset={10}
+    grid
+    x={{ label: 'Miles driven (per person-year) →' }}
+    y={{ label: '↑ Cost of gasoline ($ per gallon)' }}
+>
+    <Line data={driving} x="miles" y="gas" curve="catmull-rom" marker />
+    <Text data={driving} x="miles" y="gas" text="year" dy="-8" filter={(d) => d.year % 5 === 0} />
+</Plot>
+```
+
+## Markers
+
+As you see in the previous plot, lines can show markers by setting the **marker** channel. The markers are automatically colored by stroke and scaled with the stroke-width of the lines. The following options are possible:
+
+- *dot* - a filled circle without a stroke and 2.5px radius
+- *circle* - a filled circle with a white stroke and 3px radius
+- *circle-stroke* - a hollow circle with a colored stroke and a white fill and 3px radius
+- *arrow* - an arrowhead with auto orientation
+- *arrow-reverse* - an reversed arrowhead with auto orientation
+- *tick* - a small perpendicular line
+- *tick-x* - a small horizontal line
+- *tick-y* - a small vertical line
+
+```svelte live
+<script>
+    import { Plot, Line } from '$lib';
+    import { getContext } from 'svelte';
+    import Select from '$lib/ui/Select.svelte';
+    import Slider from '$lib/ui/Slider.svelte';
+
+    let marker = $state('circle');
+    let strokeWidth = $state(1.5);
+    const options = ['dot','circle','circle-stroke','arrow','arrow-reverse','tick','tick-x','tick-y'];
+
+    const getData = getContext('data');
+    let { crimea } = $derived(getData());
+</script>
+
+<Select label="marker" bind:value={marker} {options} />
+<Slider label="stroke width" bind:value={strokeWidth} min={0.5} max={4} step={0.1} />
+<Plot inset={10} frame grid marginBottom={50}>
+    <Line data={crimea} x="date" fx="cause" y="deaths" stroke="cause" {strokeWidth} {marker} />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <Line
+        data={crimea}
+        x="date"
+        y="deaths"
+        stroke="cause"
+        {strokeWidth}
+        {marker} />
 </Plot>
 ```

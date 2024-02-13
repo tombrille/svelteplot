@@ -7,10 +7,9 @@
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { resolveChannel } from '../helpers/resolve.js';
-    import { fade } from 'svelte/transition';
+    import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
+    import { getUsedScales } from '$lib/helpers/scales.js';
 
     let {
         data = [],
@@ -44,24 +43,24 @@
 <Mark
     type="gridY"
     data={data.length ? data.map((tick) => ({ __y: tick })) as DataRecord[] : []}
-    channels={['x1', 'x2', 'y', 'stroke']}
+    channels={['x1', 'x2', 'y', 'stroke', 'strokeOpacity']}
     {...{ ...options, y: '__y' }}
     {automatic}
     let:mark
 >
+    {@const useScale = getUsedScales(plot, options, mark)}
     <g class="grid-x">
         {#each ticks as tick}
             {@const y =
                 plot.scales.y.fn(tick) +
                 (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
-            {@const          x1_ = resolveChannel('x1', tick, options) as number}
-            {@const          x2_ = resolveChannel('x2', tick, options) as number}
-            {@const          x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
-            {@const          x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.facetWidth}
+            {@const              x1_ = resolveChannel('x1', tick, options) as number}
+            {@const              x2_ = resolveChannel('x2', tick, options) as number}
+            {@const              x1 = options.x1 != null ? plot.scales.x.fn(x1_) as number : 0}
+            {@const              x2 = options.x2 != null ? plot.scales.x.fn(x2_) as number : plot.facetWidth}
             <line
-                in:fade
                 transform="translate({plot.options.marginLeft},{y})"
-                style={getBaseStyles(tick, options)}
+                style={resolveScaledStyles(tick, options, useScale, plot, 'stroke')}
                 {x1}
                 {x2}
             />

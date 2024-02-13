@@ -6,7 +6,7 @@
 import { CHANNEL_SCALE } from '$lib/contants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
-import type { MarkStyleProps, PlotContext, PlotState } from '$lib/types.js';
+import type { PlotState } from '$lib/types.js';
 import { isValid } from './isValid.js';
 
 import type {
@@ -19,6 +19,7 @@ import type {
     DataRecord,
     ConstantAccessor
 } from '../types.js';
+import { getBaseStylesObject } from './getBaseStyles.js';
 
 type ChannelAlias = { channel: ScaledChannelName };
 
@@ -49,12 +50,13 @@ export function toChannelOption(
     channel: ChannelAccessor | ChannelAlias
 ): ChannelOptions {
     const isPositionScale = CHANNEL_SCALE[name] === 'x' || CHANNEL_SCALE[name] === 'y';
+    const isOpacityScale = CHANNEL_SCALE[name] === 'opacity';
     return isDataRecord(channel)
         ? (channel as ChannelOptions)
         : {
               value: channel,
               scale:
-                  (!isPositionScale && typeof channel === 'number') ||
+                  (!isPositionScale && !isOpacityScale && typeof channel === 'number') ||
                   typeof channel === 'undefined'
                       ? null
                       : CHANNEL_SCALE[name],
@@ -117,7 +119,7 @@ function resolve(
     }
 }
 
-const styleProps: Partial<{ [key in ScaledChannelName]: string }> = {
+const scaledStyleProps: Partial<{ [key in ScaledChannelName]: string }> = {
     fill: 'fill',
     stroke: 'stroke',
     fillOpacity: 'fill-opacity',
@@ -137,21 +139,25 @@ export function resolveScaledStyles(
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    return {
+    // console.log({ useScale });
+    return Object.entries({
+        ...getBaseStylesObject(datum, channels),
         fill: 'none',
         stroke: 'none',
         ...(defaultColorProp && channels[opositeColor[defaultColorProp]] == null
             ? { [defaultColorProp]: 'currentColor' }
             : {}),
         ...Object.fromEntries(
-            Object.entries(styleProps)
+            Object.entries(scaledStyleProps)
                 .filter(([key]) => channels[key] != null)
-                .map(([key, cssAttr]) => [key, cssAttr, resolveProp(channels[key], datum)])
+                .map(([key, cssAttr]) => [key, cssAttr, resolveChannel(key, datum, channels)])
                 .filter(([, , value]) => isValid(value))
                 .map(([key, cssAttr, value]) => {
                     if (useScale[key]) return [cssAttr, plot.scales[CHANNEL_SCALE[key]].fn(value)];
                     return [cssAttr, value];
                 })
         )
-    };
+    })
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(';');
 }

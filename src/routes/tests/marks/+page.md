@@ -6,10 +6,4 @@ title: Test
     import Test from './Test.svelte';
 </script>
 
-
 <Test />
-
-
-
-
-

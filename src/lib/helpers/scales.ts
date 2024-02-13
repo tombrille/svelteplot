@@ -68,7 +68,7 @@ export function computeScales(
     plotWidth: number,
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
-    marks: Mark<GenericMarkOptions>[], 
+    marks: Mark<GenericMarkOptions>[],
     foo
 ) {
     const x = createScale(
@@ -192,45 +192,52 @@ export function createScale<T extends ScaleOptions>(
                     typeof channelOptions.value !== 'undefined';
 
                 if (useScale) {
-                    const isOutputType =
-                        name === 'color'
-                            ? isColorOrNull
-                            : name === 'symbol'
-                              ? isSymbolOrNull
-                              : false;
-
-                    let allValuesAreOutputType = !!isOutputType && mark.data.length > 0;
-
-                    if (isOutputType) {
-                        for (const datum of mark.data) {
-                            const val = resolveProp(channelOptions.value, datum);
-                            allValuesAreOutputType =
-                                allValuesAreOutputType && val !== null && isOutputType(val);
-                            if (!allValuesAreOutputType) break;
-                        }
-                    }
-
-                    if (allValuesAreOutputType) {
+                    if (name === 'opacity' && looksLikeOpacity(channelOptions.value)) {
+                        // special handling for opacity scales, where any accessor that looks like
+                        // a number between 0 and 1 will be interpreted as output type
                         (skip.get(channel) as Set<symbol>).add(mark.id);
-                    }
+                    } else {
+                        const isOutputType =
+                            name === 'color'
+                                ? isColorOrNull
+                                : name === 'symbol'
+                                  ? isSymbolOrNull
+                                  : false;
 
-                    if (
-                        typeof channelOptions.value === 'string' &&
-                        !channelOptions.value.startsWith('__') &&
-                        mark.data[0][channelOptions.value] !== undefined
-                    ) {
-                        propNames.add(channelOptions.value);
-                    }
+                        let allValuesAreOutputType = !!isOutputType && mark.data.length > 0;
 
-                    uniqueScaleProps.add(channelOptions.value);
+                        if (isOutputType) {
+                            for (const datum of mark.data) {
+                                const val = resolveProp(channelOptions.value, datum);
+                                allValuesAreOutputType =
+                                    allValuesAreOutputType && val !== null && isOutputType(val);
+                                if (!allValuesAreOutputType) break;
+                            }
+                        }
 
-                    if (channelOptions.value != null && !allValuesAreOutputType) {
-                        manualActiveMarks++;
-                        markTypes.add(mark.type);
+                        if (allValuesAreOutputType) {
+                            (skip.get(channel) as Set<symbol>).add(mark.id);
+                        }
 
-                        // active mark channel
-                        for (const datum of mark.data) {
-                            dataValues.add(resolveProp(channelOptions.value, datum));
+                        if (
+                            typeof channelOptions.value === 'string' &&
+                            !looksLikeANumber(channelOptions.value) &&
+                            !channelOptions.value.startsWith('__') &&
+                            mark.data[0][channelOptions.value] !== undefined
+                        ) {
+                            propNames.add(channelOptions.value);
+                        }
+
+                        uniqueScaleProps.add(channelOptions.value);
+
+                        if (channelOptions.value != null && !allValuesAreOutputType) {
+                            manualActiveMarks++;
+                            markTypes.add(mark.type);
+
+                            // active mark channel
+                            for (const datum of mark.data) {
+                                dataValues.add(resolveProp(channelOptions.value, datum));
+                            }
                         }
                     }
                 }
@@ -249,10 +256,6 @@ export function createScale<T extends ScaleOptions>(
             }
         }
     }
-
-    // if (name === 'color') console.)
-
-    // const valueType =
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
     const type: ScaleType =
@@ -458,4 +461,19 @@ export function getUsedScales(
             ];
         })
     );
+}
+
+function looksLikeANumber(input: string | number) {
+    return (
+        Number.isFinite(input) ||
+        (typeof input === 'string' && input.trim().length > 0 && Number.isFinite(+input))
+    );
+}
+
+function isWithin(number: number, min: number, max: number) {
+    return Number.isFinite(number) && number >= min && number <= max;
+}
+
+function looksLikeOpacity(input: string | number) {
+    return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }

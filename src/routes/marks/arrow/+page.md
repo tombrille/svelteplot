@@ -34,7 +34,7 @@ Metro dataset:
             y1="R90_10_1980"
             x2="POP_2015"
             y2="R90_10_2015"
-            bend 
+            bend
             stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
         />
         <Text

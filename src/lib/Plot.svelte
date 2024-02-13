@@ -8,8 +8,6 @@
     import type { PlotOptions, GenericMarkOptions, Mark, PlotScales, ScaleName } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
-    const id = Math.ceil(Math.random()*10e8).toString(36);
-
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
     import { GridX, GridY, Frame, AxisX, AxisY, ColorLegend, SymbolLegend } from './index.js';
@@ -77,7 +75,7 @@
                 percent: false,
                 padding: 0.1,
                 align: 0.5,
-                tickSpacing: 40,
+                tickSpacing: 50,
                 tickFormat: 'auto',
                 grid: false
             },
@@ -142,8 +140,6 @@
     let hasFilledDotMarks = $derived(
         !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
     );
-
-$inspect({id, l: marks.length});
 
     let preScales: PlotScales = $derived(
         computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, 'pre')
@@ -230,8 +226,6 @@ $inspect({id, l: marks.length});
             facetHeight = h;
         }
     });
-
-    $inspect(plotState.scales.color);
 </script>
 
 <!--

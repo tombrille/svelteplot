@@ -22,7 +22,6 @@
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { groupBy } from 'underscore';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
@@ -109,16 +108,15 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="areas">
         {#each sortedGroups as areaData}
-            {@const   dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
-            {@const   dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
+            {@const       dx_ = resolveProp(options.dx, areaData[0] as DataRecord, 0) as number}
+            {@const       dy_ = resolveProp(options.dy, areaData[0] as DataRecord, 0) as number}
             <path
                 d={areaPath(
                     options.filter == null
                         ? areaData
                         : areaData.filter((d) => resolveProp(options.filter, d))
                 )}
-                style={getBaseStyles(areaData[0], options)}
-                {...resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
+                style={resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
                 transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
             />
         {/each}

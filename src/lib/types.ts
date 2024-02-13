@@ -514,6 +514,7 @@ export type ColorScheme =
 export type MarkStyleProps =
     | 'strokeDasharray'
     | 'opacity'
+    | 'cursor'
     | 'fill'
     | 'fillOpacity'
     | 'fontWeight'

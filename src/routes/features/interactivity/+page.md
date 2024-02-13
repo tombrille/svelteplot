@@ -15,16 +15,35 @@ Click the bar chart!
     let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked)}` : 'Click the bars');
 </script>
 
-<Plot x={{ type: 'band', axis: false }} y={{ grid: true }} {title}>
+<Plot x={{ axis: false }} y={{ grid: true }} {title}>
     <BarY
         data={[-2, -1, 2, 4, 6, 9, 5]}
-        fill="currentColor"
-        opacity={(d) => (!clicked || clicked === d ? 1 : 0.5)}
+        cursor="pointer"
+        opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
         onclick={(d) => (clicked = d)}
     />
     <RuleY data={[0]} />
 </Plot>
 ```
+
+```svelte
+<Plot x={{ axis: false }} y={{ grid: true }} {title}>
+    <BarY
+        data={[-2, -1, 2, 4, 6, 9, 5]}
+        cursor="pointer"
+        opacity={{
+            scale: null,
+            value: (d) => (!clicked || clicked === d ? 1 : 0.5)
+        }}
+        onclick={(d) => (clicked = d)}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+:::note
+Note how we're wrapping the `opacity` channel accessor in a `scale: null, value: accessor` object to disable the automatic opacity scale.
+:::
 
 ## Tooltips
 

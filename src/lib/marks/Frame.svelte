@@ -7,7 +7,6 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import type { PlotContext, DataRecord, RectMarkProps } from '../types.js';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import type { BaseMarkProps } from '../types.js';
     import { resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
 
@@ -28,8 +27,7 @@
 <Mark type="frame" {automatic}>
     <rect
         transform={dx || dy ? `translate(${dx},${dy})` : null}
-        style={getBaseStyles(null, options)}
-        {...resolveScaledStyles({}, options, {}, plot, 'stroke')}
+        style={resolveScaledStyles({}, options, {}, plot, 'stroke')}
         x={plot.options.marginLeft}
         y={plot.options.marginTop}
         rx={resolveProp(options.rx, null, null)}

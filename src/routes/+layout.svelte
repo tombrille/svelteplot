@@ -14,6 +14,7 @@
         'bls',
         'cars',
         'crimea',
+        'driving',
         'metros',
         'olympians',
         'penguins',

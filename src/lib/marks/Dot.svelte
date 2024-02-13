@@ -13,9 +13,8 @@
         ChannelAccessor
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { maybeSymbol } from '../helpers/symbols.js';
+    import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
 
@@ -51,7 +50,18 @@
 <Mark
     type="dot"
     required={['x', 'y']}
-    channels={['x', 'y', 'fx', 'fy', 'r', 'symbol', 'fill', 'stroke', 'fillOpacity', 'strokeOpacity']}
+    channels={[
+        'x',
+        'y',
+        'fx',
+        'fy',
+        'r',
+        'symbol',
+        'fill',
+        'stroke',
+        'fillOpacity',
+        'strokeOpacity'
+    ]}
     {data}
     {...options}
     let:mark
@@ -68,7 +78,7 @@
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
                         {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                         {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                        {@const          dx = resolveProp(options.dx, datum, 0) as number}
+                        {@const              dx = resolveProp(options.dx, datum, 0) as number}
                         {@const dy = resolveProp(options.dx, datum, 0)}
                         {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
                         {@const size = r * r * Math.PI}
@@ -81,8 +91,7 @@
                             d={getSymbolPath(symbol, size)}
                             transform="translate({x + dx}, {y + dy})"
                             data-symbol={symbol}
-                            style={getBaseStyles(datum, options)}
-                            {...resolveScaledStyles(datum, options, useScale, plot, 'stroke')}
+                            style={resolveScaledStyles(datum, options, useScale, plot, 'stroke')}
                         />
                     {/if}
                 {/if}

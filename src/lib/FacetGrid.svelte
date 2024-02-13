@@ -3,6 +3,7 @@
     import type { PlotContext, GenericMarkOptions, Mark } from './types.js';
     import { scaleBand } from 'd3-scale';
     import Facet from './Facet.svelte';
+    import BaseAxisX from './marks/helpers/BaseAxisX.svelte';
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
     // we need the plot context for the overall width & height
@@ -21,11 +22,13 @@
 
     // create band scales for fx and fy
     let facetXScale = $derived(
-        scaleBand().paddingInner(0.2).domain(facetXValues).range([0, plot.plotWidth])
+        scaleBand().paddingInner(0.1).domain(facetXValues).range([0, plot.plotWidth])
     );
     let facetYScale = $derived(
-        scaleBand().paddingInner(0.2).domain(facetYValues).range([0, plot.plotHeight])
+        scaleBand().paddingInner(0.1).domain(facetYValues).range([0, plot.plotHeight])
     );
+
+    // setContext('facet', { getFacetState() { return {} }})
 
     $effect(() => {
         updateDimensions(
@@ -34,6 +37,24 @@
         );
     });
 </script>
+
+{#if facetXValues.length > 1}
+    <g transform="translate({plot.options.marginLeft}, 0)">
+        <BaseAxisX
+            scaleFn={facetXScale}
+            scaleType="band"
+            ticks={facetXValues}
+            tickFormat={(d) => d}
+            tickSize={4}
+            tickPadding={5}
+            anchor="top"
+            options={{}}
+            height={plot.plotHeight}
+            marginTop={plot.options.marginTop}
+            {plot}
+        />
+    </g>
+{/if}
 
 {#each facetXValues as facetX, i}
     {#each facetYValues as facetY, j}

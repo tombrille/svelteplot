@@ -12,8 +12,7 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-    import { resolveChannel, resolveProp } from '../helpers/resolve.js';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
 
@@ -68,14 +67,10 @@
                 {#if isValid(_x) && isValid(_y)}
                     {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                     {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                    {@const          dx = resolveProp(options.dx, datum, 0) as number}
-                    {@const dy = resolveProp(options.dy, datum, 0)}
-                    {@const fill = useScale.fill ? plot.scales.color.fn(_fill) : _fill}
-                    {@const stroke = useScale.stroke ? plot.scales.color.fn(_stroke) : _stroke}
+                    {@const dx = +resolveProp(options.dx, datum, 0)}
+                    {@const dy = +resolveProp(options.dy, datum, 0)}
                     <text
-                        style={getBaseStyles(datum, options)}
-                        style:fill={_fill ? fill : _stroke ? null : 'currentColor'}
-                        style:stroke={_stroke ? stroke : null}
+                        style={resolveScaledStyles(datum, options, useScale, plot, 'fill')}
                         dominant-baseline={LINE_ANCHOR[
                             resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
                         ]}
@@ -93,7 +88,7 @@
         text-anchor: middle;
         fill: none;
         stroke: none;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         stroke-width: 1.6px;
         paint-order: stroke fill;

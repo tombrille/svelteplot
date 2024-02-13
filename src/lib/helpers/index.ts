@@ -8,3 +8,7 @@ export function coalesce(a: number | undefined | null, b: number | null) {
 export function testFilter(datum: DataRecord, options: Partial<BaseMarkProps>) {
     return options.filter == null || resolveProp(options.filter, datum);
 }
+
+export function randomId() {
+    return Math.ceil(1e9 + Math.random() * 1e9).toString(36);
+}
