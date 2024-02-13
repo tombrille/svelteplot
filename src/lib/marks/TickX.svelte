@@ -49,10 +49,10 @@
             {@const y_ = resolveChannel('y', datum, args)}
             {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
                 {@const x = useScale.x ? plot.scales.x.fn(x_) : x_}
-                {@const              y1 = (args.y != null ? 
+                {@const                y1 = (args.y != null ? 
                     (useScale.y ? plot.scales.y.fn(y_) : y_) : plot.options.marginTop) as number}
-                {@const              y2 = (args.y != null ? (useScale.y ? Number(plot.scales.y.fn(y_)) + plot.scales.y.fn.bandwidth() : y_) : plot.options.marginTop + plot.plotHeight) as number}
-                {@const              stroke_ = resolveChannel('stroke', datum, args) as string}
+                {@const                y2 = (args.y != null ? (useScale.y ? Number(plot.scales.y.fn(y_)) + plot.scales.y.fn.bandwidth() : y_) : plot.options.marginTop + plot.plotHeight) as number}
+                {@const                stroke_ = resolveChannel('stroke', datum, args) as string}
                 <line
                     transform="translate({x}, {0})"
                     style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}

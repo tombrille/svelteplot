@@ -117,58 +117,72 @@
         <g class="lines">
             {#each sortedGroups as lineData, i}
                 {#if testFacet(lineData[0], mark.options)}
-                {@const d = { useScale, options }}
-                {@const  dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-                {@const  dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
-                {@const  marker = resolveProp(options.marker, lineData[0] as DataRecord) as string}
-                {@const  markerStart = resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
-                {@const  markerMid = resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
-                {@const  markerEnd = resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
-                {@const markerColor_ = resolveChannel('stroke', lineData[0], options) || 'currentColor' }
-                {@const markerColor = useScale.stroke ? plot.scales.color.fn(markerColor_) : markerColor_ }
-                {@const strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
-                <g stroke-width={strokeWidth}>
-                    {#if markerStart}
-                        <Marker
-                            id={`marker-start-${id}-${i}`}
-                            shape={marker === true ? 'dot' : marker}
-                            color={markerColor}
+                    {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+                    {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
+                    {@const marker = resolveProp(options.marker, lineData[0] as DataRecord) as string}
+                    {@const markerStart = resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
+                    {@const markerMid = resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
+                    {@const markerEnd = resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
+                    {@const markerColor_ =
+                        resolveChannel('stroke', lineData[0], options) || 'currentColor'}
+                    {@const markerColor = useScale.stroke
+                        ? plot.scales.color.fn(markerColor_)
+                        : markerColor_}
+                    {@const strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
+                    <g stroke-width={strokeWidth}>
+                        {#if markerStart}
+                            <Marker
+                                id={`marker-start-${id}-${i}`}
+                                shape={marker === true ? 'dot' : marker}
+                                color={markerColor}
+                            />
+                        {/if}
+                        {#if markerMid}
+                            <Marker
+                                id={`marker-mid-${id}-${i}`}
+                                shape={marker === true ? 'circle' : marker}
+                                color={markerColor}
+                            />
+                        {/if}
+                        {#if markerEnd}
+                            <Marker
+                                id={`marker-end-${id}-${i}`}
+                                shape={marker === true ? 'circle' : marker}
+                                color={markerColor}
+                            />
+                        {/if}
+                        {#if marker}
+                            <Marker
+                                id={`marker-${id}-${i}`}
+                                shape={marker === true ? 'circle' : marker}
+                                color={markerColor}
+                            />
+                        {/if}
+                        <path
+                            marker-start={markerStart || marker
+                                ? `url(#marker-${markerStart ? 'start-' : ''}${id}-${i})`
+                                : null}
+                            marker-mid={markerMid || marker
+                                ? `url(#marker-${markerMid ? 'mid-' : ''}${id}-${i})`
+                                : null}
+                            marker-end={markerEnd || marker
+                                ? `url(#marker-${markerEnd ? 'end-' : ''}${id}-${i})`
+                                : null}
+                            d={linePath(
+                                options.filter == null
+                                    ? lineData
+                                    : lineData.filter((d) => resolveProp(options.filter, d))
+                            )}
+                            style={resolveScaledStyles(
+                                lineData[0],
+                                options,
+                                useScale,
+                                plot,
+                                'stroke'
+                            )}
+                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
                         />
-                    {/if}
-                    {#if markerMid}
-                        <Marker
-                            id={`marker-mid-${id}-${i}`}
-                            shape={marker === true ? 'circle' : marker}
-                            color={markerColor}
-                        />
-                    {/if}
-                    {#if markerEnd}
-                        <Marker
-                            id={`marker-end-${id}-${i}`}
-                            shape={marker === true ? 'circle' : marker}
-                            color={markerColor}
-                        />
-                    {/if}
-                    {#if marker}
-                        <Marker
-                            id={`marker-${id}-${i}`}
-                            shape={marker === true ? 'circle' : marker}
-                            color={markerColor}
-                        />
-                    {/if}
-                    <path
-                        marker-start={markerStart || marker ? `url(#marker-${markerStart ? 'start-' : ''}${id}-${i})` : null}
-                        marker-mid={markerMid || marker ? `url(#marker-${markerMid ? 'mid-' : ''}${id}-${i})` : null}
-                        marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id}-${i})` : null}
-                        d={linePath(
-                            options.filter == null
-                                ? lineData
-                                : lineData.filter((d) => resolveProp(options.filter, d))
-                        )}
-                        style={resolveScaledStyles(lineData[0], options, useScale, plot, 'stroke')}
-                        transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                    />
-                </g>
+                    </g>
                 {/if}
             {/each}
         </g>

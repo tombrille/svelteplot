@@ -11,11 +11,21 @@
 </script>
 
 <script lang="ts">
-    let { id, shape, color, strokeWidth } = $props<{ id: string; color: string; strokeWidth: number; shape: MarkerShape }>();
+    let { id, shape, color, strokeWidth } = $props<{
+        id: string;
+        color: string;
+        strokeWidth: number;
+        shape: MarkerShape;
+    }>();
 
-    const tickMarker = (orient: number|'auto') => ({
-        viewBox: '-3 -3 6 6', path: 'M0,-3v6', width: 6, height: 6, orient, color: 'stroke'
-    })
+    const tickMarker = (orient: number | 'auto') => ({
+        viewBox: '-3 -3 6 6',
+        path: 'M0,-3v6',
+        width: 6,
+        height: 6,
+        orient,
+        color: 'stroke'
+    });
 
     const MARKERS: Record<
         MarkerShape,
@@ -30,7 +40,7 @@
         }
     > = {
         circle: { width: 6.67, height: 6.67, orient: 0, color: 'fill', bg: 'stroke' },
-        dot: { width: 6.67, height: 6.67, orient: 0, color: 'fill'},
+        dot: { width: 6.67, height: 6.67, orient: 0, color: 'fill' },
         'circle-stroke': { width: 6.67, height: 6.67, orient: 0, color: 'stroke', bg: 'fill' },
         tick: tickMarker('auto'),
         'tick-x': tickMarker(90),
@@ -59,12 +69,11 @@
     function maybePixel(value: string | number) {
         return typeof value === 'number' ? `${value}px` : value;
     }
-
 </script>
 
 <marker
     {id}
-    viewBox={ MARKERS[shape].viewBox || '-5 -5 10 10'}
+    viewBox={MARKERS[shape].viewBox || '-5 -5 10 10'}
     markerWidth={MARKERS[shape].width}
     orient={MARKERS[shape].orient}
     markerHeight={MARKERS[shape].height}
@@ -77,5 +86,3 @@
         <path d={MARKERS[shape].path} />
     {/if}
 </marker>
-
-

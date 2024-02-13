@@ -214,14 +214,14 @@ The line mark can be used for a connection scatterplot:
 
 As you see in the previous plot, lines can show markers by setting the **marker** channel. The markers are automatically colored by stroke and scaled with the stroke-width of the lines. The following options are possible:
 
-- *dot* - a filled circle without a stroke and 2.5px radius
-- *circle* - a filled circle with a white stroke and 3px radius
-- *circle-stroke* - a hollow circle with a colored stroke and a white fill and 3px radius
-- *arrow* - an arrowhead with auto orientation
-- *arrow-reverse* - an reversed arrowhead with auto orientation
-- *tick* - a small perpendicular line
-- *tick-x* - a small horizontal line
-- *tick-y* - a small vertical line
+-   _dot_ - a filled circle without a stroke and 2.5px radius
+-   _circle_ - a filled circle with a white stroke and 3px radius
+-   _circle-stroke_ - a hollow circle with a colored stroke and a white fill and 3px radius
+-   _arrow_ - an arrowhead with auto orientation
+-   _arrow-reverse_ - an reversed arrowhead with auto orientation
+-   _tick_ - a small perpendicular line
+-   _tick-x_ - a small horizontal line
+-   _tick-y_ - a small vertical line
 
 ```svelte live
 <script>
@@ -232,7 +232,16 @@ As you see in the previous plot, lines can show markers by setting the **marker*
 
     let marker = $state('circle');
     let strokeWidth = $state(1.5);
-    const options = ['dot','circle','circle-stroke','arrow','arrow-reverse','tick','tick-x','tick-y'];
+    const options = [
+        'dot',
+        'circle',
+        'circle-stroke',
+        'arrow',
+        'arrow-reverse',
+        'tick',
+        'tick-x',
+        'tick-y'
+    ];
 
     const getData = getContext('data');
     let { crimea } = $derived(getData());
@@ -247,12 +256,6 @@ As you see in the previous plot, lines can show markers by setting the **marker*
 
 ```svelte
 <Plot>
-    <Line
-        data={crimea}
-        x="date"
-        y="deaths"
-        stroke="cause"
-        {strokeWidth}
-        {marker} />
+    <Line data={crimea} x="date" y="deaths" stroke="cause" {strokeWidth} {marker} />
 </Plot>
 ```
