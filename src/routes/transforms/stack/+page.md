@@ -8,11 +8,10 @@ For example, below is a stacked area chart of [deaths in the Crimean War](https:
 
 ```svelte live
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import { Plot, AreaY } from '$lib';
+        import { Plot, AreaY } from '$lib';
 
-    const getData = getContext('data');
-    let { crimea } = $derived(getData());
+    import { page } from '$app/stores';
+    let { crimea } = $derived($page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -30,11 +29,10 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 
 ```svelte live
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import { Plot, Area, stackY } from '$lib';
+        import { Plot, Area, stackY } from '$lib';
 
-    const getData = getContext('data');
-    let { crimea } = $derived(getData());
+    import { page } from '$app/stores';
+    let { crimea } = $derived($page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -56,11 +54,10 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 
 ```svelte live
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import { Plot, RectY } from '$lib';
+        import { Plot, RectY } from '$lib';
 
-    const getData = getContext('data');
-    let { crimea } = $derived(getData());
+    import { page } from '$app/stores';
+    let { crimea } = $derived($page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -76,11 +73,10 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 
 ```svelte live
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import { Plot, Area, stackY } from '$lib';
+        import { Plot, Area, stackY } from '$lib';
 
-    const getData = getContext('data');
-    let { riaa } = $derived(getData());
+    import { page } from '$app/stores';
+    let { riaa } = $derived($page.data.data);
 </script>
 
 <Plot grid title="Stack transform">

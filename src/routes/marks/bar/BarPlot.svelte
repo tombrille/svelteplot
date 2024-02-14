@@ -2,8 +2,8 @@
     import { Plot, BarY, RuleY } from '$lib';
     import { getContext } from 'svelte';
 
-    const getData = getContext('data');
-    let { alphabet } = $derived(getData());
+    import { page } from '$app/stores';
+    let { alphabet } = $derived($page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>

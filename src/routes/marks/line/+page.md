@@ -12,10 +12,9 @@ AAPL demo:
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid>
@@ -43,10 +42,9 @@ BLS Demo:
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { bls } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { bls } = $derived($page.data.data);
 </script>
 
 <Plot grid>
@@ -121,9 +119,8 @@ LineY can automatically group?
 ```svelte live
 <script lang="ts">
     import { Plot, LineY } from '$lib';
-    import { getContext } from 'svelte';
-    const getData = getContext('data');
-    let { riaa } = $derived(getData());
+        import { page } from '$app/stores';
+    let { riaa } = $derived($page.data.data);
 </script>
 
 <Plot grid y={{ nice: true }} height={350}>
@@ -139,10 +136,9 @@ Line with symbols:
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot height={200} grid>
@@ -164,10 +160,9 @@ symbol on last point only:
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid>
@@ -193,10 +188,9 @@ The line mark can be used for a connection scatterplot:
 ```svelte live
 <script>
     import { Plot, Line, Dot, Text } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { driving } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { driving } = $derived($page.data.data);
 </script>
 
 <Plot
@@ -226,8 +220,7 @@ As you see in the previous plot, lines can show markers by setting the **marker*
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-    import Select from '$lib/ui/Select.svelte';
+        import Select from '$lib/ui/Select.svelte';
     import Slider from '$lib/ui/Slider.svelte';
 
     let marker = $state('circle');
@@ -243,8 +236,8 @@ As you see in the previous plot, lines can show markers by setting the **marker*
         'tick-y'
     ];
 
-    const getData = getContext('data');
-    let { crimea } = $derived(getData());
+    import { page } from '$app/stores';
+    let { crimea } = $derived($page.data.data);
 </script>
 
 <Select label="marker" bind:value={marker} {options} />

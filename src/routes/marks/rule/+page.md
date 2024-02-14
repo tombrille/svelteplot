@@ -8,10 +8,9 @@ Rules can be used for highlighting certain axis values, most commonly zero. They
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot height={350}>

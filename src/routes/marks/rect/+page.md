@@ -7,10 +7,9 @@ The interval transform may be used to convert a single value in x or y (or both)
 ```svelte live
 <script>
     import { Plot, Rect } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { seattle } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { seattle } = $derived($page.data.data);
 </script>
 
 {#if seattle}

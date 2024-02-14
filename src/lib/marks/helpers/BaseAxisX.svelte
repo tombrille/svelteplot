@@ -64,14 +64,13 @@
                 : null}
         {@const tickLabelSpace = Math.abs(nextX - x)}
         {@const textLines = tick.text}
-        {@const dx = resolveProp(options.dx, tick, 0)}
-        {@const dy = resolveProp(options.dy, tick, 0)}
+        {@const dx = +resolveProp(options.dx, tick, 0)}
+        {@const dy = +resolveProp(options.dy, tick, 0)}
         {@const prevTextLines = t && formattedTicks[t - 1].text}
         {@const estLabelWidth =
             max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.2}
         <g
             class="tick"
-            data-tick={tick}
             transform="translate({x + dx},{(anchor === 'bottom' ? marginTop + height : marginTop) +
                 dy})"
         >

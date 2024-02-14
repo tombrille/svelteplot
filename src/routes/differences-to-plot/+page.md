@@ -34,7 +34,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 </Plot>
 ```
 
-Here's an example where we're binding a dataset to a line mark that gets updated in real-time:
+Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being recreated, when the scales update:
 
 ```svelte live
 <script lang="ts">
@@ -97,11 +97,125 @@ Here's an example where we're binding a dataset to a line mark that gets updated
 </Plot>
 ```
 
+### Responsive plot design
+
+Being a reactive framework, SveltePlot also makes it easier to design responsive plots, or -- in other words -- plots that react to their width. Note that again, changing the width of the plot doesn't lead to a full re-rendering.
+
+In the following example, we're switching from the implicit y axis to a custom AxisY mark when the plot width goes below 600 pixels. The custom AxisY is configured to display the tick labels "inside" the plot.
+
+```svelte live
+<script>
+    import { Plot, Line, AxisY } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+
+    let plot = $state(null);
+    let plotWidth = $derived(plot ? plot.getWidth() : 400);
+    let isMobile = $derived(plotWidth < 600)
+</script>
+
+<Plot grid 
+    bind:this={plot}
+    marginRight={isMobile ? 0 : 20}
+    marginLeft={isMobile ? 0 : 40}
+    x={{ 
+        insetLeft: isMobile ? 25 : 10,
+        tickFormat: isMobile ? '\'YY': 'YYYY'
+    }}
+    height={isMobile ? 300 : 400}
+    inset={isMobile ? 5 : 10}>
+    {#if isMobile}
+        <!-- custom axisy on mobile -->
+        <AxisY
+            tickSize={0} 
+            tickPadding={0} 
+            dy={-5}
+            lineAnchor="bottom"
+            textAnchor="start" />
+        {/if}
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<script>
+    import { Plot, Line, AxisY } from 'svelteplot';
+    let aapl = $state([/** data **/]);
+   
+    // bind plot reference
+    let plot = $state(null);
+    // get current plot width and define a mobile breakpoint
+    let plotWidth = $derived(plot ? plot.getWidth() : 500);
+    let isMobile = $derived(plotWidth < 600);
+</script>
+
+<Plot grid 
+    bind:this={plot}
+    marginRight={isMobile ? 0 : 20}
+    marginLeft={isMobile ? 0 : 40}
+    x={{ 
+        insetLeft: isMobile ? 25 : 10,
+        tickFormat: isMobile ? '\'YY': 'YYYY'
+    }}
+    height={isMobile ? 300 : 400}
+    inset={isMobile ? 5 : 10}>
+    {#if isMobile}
+        <!-- custom y axis on mobile -->
+        <AxisY
+            tickSize={0} 
+            tickPadding={0} 
+            dy={-5}
+            lineAnchor="bottom"
+            textAnchor="start" />
+        {/if}
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+## Events!
+
+Another difference to Observable Plot is that you can pass event handlers to the marks.
+
+```svelte live
+<script>
+    import { Plot, RuleY, BarY } from '$lib';
+
+    let clicked = $state();
+
+    let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked)}` : 'Click the bars');
+</script>
+
+<Plot x={{ axis: false }} y={{ grid: true }} {title}>
+    <BarY
+        data={[-2, -1, 2, 4, 6, 9, 5]}
+        cursor="pointer"
+        opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
+        onclick={(d) => (clicked = d)}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot x={{ axis: false }} y={{ grid: true }} {title}>
+    <BarY
+        data={[-2, -1, 2, 4, 6, 9, 5]}
+        cursor="pointer"
+        opacity={{
+            scale: null,
+            value: (d) => (!clicked || clicked === d ? 1 : 0.5)
+        }}
+        onclick={(d) => (clicked = d)}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
+
 ## Everything is a channel
 
 In Observable Plot, there's a distinction between _channels_ and _non-channels_. Channels can be defined using keys or function, while the non-channels can only be assigned constant values. That means, for instance, that for the text mark, you can set the `fontSize` as a function but not the `fontWeight`.
 
-In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant valye. The only difference is that in some cases, the channels are bound to a _scale_.
+In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant value. The only difference is that in some cases, the channels are bound to a _scale_.
 
 Like Observable Plot, SveltePlot tries to automatically detect wether or not to map values to a scale. Consider the following example, where the _fill_ channel is mapped to the `"species"` key, while the _stroke_ channel is mapped to a function returning either `"red"` or `"blue"`. SveltePlot will bind the fill channel to the color scale, but not the stroke channel, since it already maps to valid colors.
 

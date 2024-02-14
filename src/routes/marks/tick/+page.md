@@ -8,11 +8,10 @@ Ticks are useful for showing one-dimensional distributions, as in the "barcode" 
 <script lang="ts">
     import { Plot, RuleX, TickX } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-    import { uniq } from 'underscore';
+        import { uniq } from 'underscore';
 
-    const getData = getContext('data');
-    let { stateage } = $derived(getData());
+    import { page } from '$app/stores';
+    let { stateage } = $derived($page.data.data);
 </script>
 
 <Plot x={{ grid: true, percent: true }} marginLeft={50}>
@@ -39,11 +38,10 @@ Shows a horizontal bar for each x position.
 ```svelte live
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
-    import { getContext } from 'svelte';
-    import { uniq } from 'underscore';
+        import { uniq } from 'underscore';
 
-    const getData = getContext('data');
-    let { stateage } = $derived(getData());
+    import { page } from '$app/stores';
+    let { stateage } = $derived($page.data.data);
 
     let padding = $state(0.3);
     let align = $state(0.5);
@@ -76,11 +74,10 @@ Same idea but with facet:
 ```svelte live
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
-    import { getContext } from 'svelte';
-    import { uniq } from 'underscore';
+        import { uniq } from 'underscore';
 
-    const getData = getContext('data');
-    let { stateage } = $derived(getData());
+    import { page } from '$app/stores';
+    let { stateage } = $derived($page.data.data);
 </script>
 
 <Plot x={{ insetLeft: 10, insetRight: 10 }} y={{ grid: true, percent: true }} marginLeft={50}>

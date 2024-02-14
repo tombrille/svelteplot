@@ -7,10 +7,8 @@ Metro dataset:
 ```svelte live
 <script lang="ts">
     import { Plot, Arrow, Dot, Text } from '$lib/index.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { metros } = $derived(getData());
+    import { page } from '$app/stores';
+    let { metros } = $derived($page.data.data);
 </script>
 
 {#if metros}
@@ -178,7 +176,7 @@ Options:
 <script lang="ts">
     import { Plot, Arrow, Dot } from '$lib/index.js';
 
-    import { getContext } from 'svelte';
+
     import Slider from '$lib/ui/Slider.svelte';
     import Select from '$lib/ui/Select.svelte';
 

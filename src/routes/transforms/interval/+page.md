@@ -10,11 +10,10 @@ The interval transform is often used for time-series bar charts. For example, co
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-    import dayjs from 'dayjs';
+        import dayjs from 'dayjs';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot marginLeft={40} x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>
@@ -29,11 +28,10 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 <script lang="ts">
     import { Plot, RectY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-    import dayjs from 'dayjs';
+        import dayjs from 'dayjs';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot marginLeft={40} x={{ type: 'time' }} grid>
@@ -55,11 +53,10 @@ The meaning of the interval mark option depends on the associated mark, such as 
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-    import dayjs from 'dayjs';
+        import dayjs from 'dayjs';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot marginLeft={40} x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>

@@ -57,8 +57,8 @@ More text here
 ```svelte
 <script>
     import { Plot, BarY, RuleY, stackY } from 'svelteplot';
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 </script>
 
 <Plot grid>

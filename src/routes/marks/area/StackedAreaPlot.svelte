@@ -1,11 +1,7 @@
 <script lang="ts">
     import { Plot, AreaY } from '$lib/index.js';
-
-    import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { riaa } = $derived(getData());
+    import { page } from '$app/stores';
+    let { riaa } = $derived($page.data.data);
 
     let { stackControls } = $props<{ stackControls: boolean }>();
 

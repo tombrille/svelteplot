@@ -7,11 +7,10 @@ Plot scales react to mark data changes
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-    import Slider from '$lib/ui/Slider.svelte';
+        import Slider from '$lib/ui/Slider.svelte';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 
     let cutoff = $state(0);
 
@@ -29,11 +28,10 @@ Plot reacts to channel changes:
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-    import Select from '$lib/ui/Select.svelte';
+        import Select from '$lib/ui/Select.svelte';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
     let y = $state('Close');
 </script>
 
@@ -48,11 +46,10 @@ Plot reacts to channel changes:
 ```svelte live
 <script lang="ts">
     import Slider from '$lib/ui/Slider.svelte';
-    import { getContext } from 'svelte';
-    import { Plot, Dot, RuleY } from '$lib';
+        import { Plot, Dot, RuleY } from '$lib';
 
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 
     let filter = $state(false);
     let facet = $state(false);

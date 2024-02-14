@@ -8,10 +8,9 @@ flag on the Plot:
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib/index.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid testid="grid">

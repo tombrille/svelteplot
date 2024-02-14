@@ -3,8 +3,8 @@
     import { getContext } from 'svelte';
     import { rollups } from 'd3-array';
 
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 
     let data = $derived(
         rollups(

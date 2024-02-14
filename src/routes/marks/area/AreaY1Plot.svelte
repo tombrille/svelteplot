@@ -1,11 +1,7 @@
 <script lang="ts">
-    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
-
-    import type { Datasets } from '$lib/types.js';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { Plot, AreaY } from '$lib/index.js';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot testid="area-y1">

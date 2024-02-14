@@ -14,10 +14,9 @@ easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid frame>
@@ -38,10 +37,9 @@ If you need more customization options, you can add the frame manually by explic
 ```svelte live
 <script>
     import { Plot, Frame, Line } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid testid="frame-demo" inset={20}>

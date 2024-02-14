@@ -93,6 +93,8 @@ html {
     .svp-live-code--container {
         --un-border-opacity: 0;
         --un-shadow: none;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 
     .svp-live-code--container .c-expansion {

@@ -13,10 +13,9 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 <Plot height={300}>
@@ -35,10 +34,9 @@ You can also bin and group at the same time:
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 <Plot height={300} grid marginLeft={40} color={{ legend: true }}>
@@ -55,10 +53,9 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 <Plot height={200}>
@@ -87,10 +84,9 @@ You can define _thresholds_ as a number
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 
     let thresholds = $state(20);
 </script>
@@ -107,10 +103,9 @@ Or as arbitrary bin bounds:
 ```svelte live
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { penguins } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
 </script>
 
 <Plot height={200}>
@@ -141,10 +136,9 @@ Or as arbitrary bin bounds:
 ```svelte live
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
-    import { getContext } from 'svelte';
-
-    const getData = getContext('data');
-    let { olympians } = $derived(getData());
+    
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
 </script>
 
 <Plot grid>

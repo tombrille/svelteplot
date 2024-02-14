@@ -227,6 +227,10 @@
         }
     });
 
+    export function getWidth() {
+        return width;
+    }
+
 </script>
 
 <!--

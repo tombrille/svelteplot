@@ -3,8 +3,8 @@
     import type { Datasets } from '$lib/types.js';
     import { getContext } from 'svelte';
 
-    const getData = getContext('data');
-    let { aapl } = $derived(getData());
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid frame>
