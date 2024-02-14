@@ -23,7 +23,7 @@ export function sort(
                         (a.__sortkey > b.__sortkey ? 1 : a.__sortkey < b.__sortkey ? -1 : 0) *
                         (options.reverse || sort?.order === 'descending' ? -1 : 1)
                 ),
-                // .map(({ __sortkey, ...d }) => d),
+            // .map(({ __sortkey, ...d }) => d),
             ...channels
         };
     }

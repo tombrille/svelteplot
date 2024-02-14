@@ -35,7 +35,19 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(sort({...sort(recordizeY({ data, sort: { channel: 'x' }, ...options })), sort: { channel: 'y'}}) as Props);
+    let args = $derived(
+        options.sort
+            ? // user has defined a custom sorting
+              sort(recordizeY({ data, ...options }))
+            : // sort by x and y
+              (sort({
+                  ...sort({
+                      ...recordizeY({ data, ...options }),
+                      sort: { channel: 'x' }
+                  }),
+                  sort: { channel: 'y' }
+              }) as Props)
+    );
 
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
@@ -54,22 +66,22 @@
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y_ = resolveChannel('y', datum, args)}
-                {@const    x1 = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
-                {@const    x2 = (x1 + plot.scales.x.fn.bandwidth()) as number}
-                {@const    y1 = (useScale.y ? plot.scales.y.fn(y_) : y_) as number}
-                {@const    y2 = (y1 + plot.scales.y.fn.bandwidth()) as number}
+                {@const x1 = useScale.x ? plot.scales.x.fn(x_) : x_}
+                {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
+                {@const y1 = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
 
-                {@const    miny = Math.min(y1 as number, y2 as number)}
-                {@const    maxy = Math.max(y1 as number, y2 as number)}
-                {@const    minx = Math.min(x1 as number, x2 as number)}
-                {@const    maxx = Math.max(x1 as number, x2 as number)}
-                {@const    inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
-                {@const    insetLeft = resolveProp(args.insetLeft, datum as DataRecord) as number}
-                {@const    insetRight = resolveProp(args.insetRight, datum as DataRecord) as number}
-                {@const    insetTop = resolveProp(args.insetTop, datum as DataRecord) as number}
-                {@const    insetBottom = resolveProp(args.insetBottom, datum as DataRecord) as number}
-                {@const    dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
-                {@const    dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
+                {@const miny = Math.min(y1, y2)}
+                {@const maxy = Math.max(y1, y2)}
+                {@const minx = Math.min(x1, x2)}
+                {@const maxx = Math.max(x1, x2)}
+                {@const inset = resolveProp(args.inset, datum, 0)}
+                {@const insetLeft = resolveProp(args.insetLeft, datum)}
+                {@const insetRight = resolveProp(args.insetRight, datum)}
+                {@const insetTop = resolveProp(args.insetTop, datum)}
+                {@const insetBottom = resolveProp(args.insetBottom, datum)}
+                {@const dx = resolveProp(args.dx, datum, 0)}
+                {@const dy = resolveProp(args.dy, datum, 0)}
                 {@const insetL = coalesce(insetLeft, inset) || 0}
                 {@const insetT = coalesce(insetTop, inset) || 0}
                 {@const insetR = coalesce(insetRight, inset) || 0}

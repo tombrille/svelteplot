@@ -2,7 +2,9 @@
 title: Cell mark
 ---
 
-Simpsons ratings!
+The **cell mark** draws rectangles positioned in two ordinal dimensions. Hence, the plot’s _x_ and _y_ scales are [band scales](https://observablehq.com/plot/features/scales). Cells typically also have a **fill** color encoding.
+
+For example, the heatmap below shows the decline of _The Simpsons_ after Season 9: high IMDb ratings are dark green, while low ratings are dark pink.
 
 ```svelte live
 <script>
@@ -10,8 +12,6 @@ Simpsons ratings!
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-
-    $inspect(simpsons)
 </script>
 
 <Plot
@@ -21,7 +21,7 @@ Simpsons ratings!
     marginTop={40}
     x={{ type: 'band', axis: 'top' }}
     y={{ type: 'band' }}
-    color={{ type: 'linear', scheme: 'PiYG', legend: true }}
+    color={{ type: 'linear', scheme: 'PiYG' }}
     testid="simpsons"
 >
     <Cell data={simpsons} x="episode" y="season" fill="imdb_rating" inset={0.5} />
