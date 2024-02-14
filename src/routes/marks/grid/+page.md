@@ -8,7 +8,7 @@ flag on the Plot:
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib/index.js';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>

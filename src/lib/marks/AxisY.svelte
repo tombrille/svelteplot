@@ -74,16 +74,18 @@
     let useTickFormat = $derived(
         typeof tickFmt === 'function'
             ? tickFmt
-            : plot.scales.y.type === 'time'
-              ? typeof tickFmt === 'string' && tickFmt !== 'auto'
-                  ? (d: Date) =>
-                        dayjs(d)
-                            .format(tickFmt as string)
-                            .split('\n')
-                  : autoTimeFormat(plot.scales.y, plot.plotHeight)
-              : typeof tickFmt === 'string'
-                ? (d: number) => numeral(d).format(tickFmt === 'auto' ? '0.[00]a' : tickFmt)
-                : (d: RawValue) => String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
+            : plot.scales.y.type === 'band' || plot.scales.y.type === 'point'
+              ? (d) => d
+              : plot.scales.y.type === 'time'
+                ? typeof tickFmt === 'string' && tickFmt !== 'auto'
+                    ? (d: Date) =>
+                          dayjs(d)
+                              .format(tickFmt as string)
+                              .split('\n')
+                    : autoTimeFormat(plot.scales.y, plot.plotHeight)
+                : typeof tickFmt === 'string'
+                  ? (d: number) => numeral(d).format(tickFmt === 'auto' ? '0.[00]a' : tickFmt)
+                  : (d: RawValue) => String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
     let optionsLabel = $derived(plot.options.y.label);
@@ -124,8 +126,8 @@
             {/if}
             {#each ticks as tick, t}
                 {@const tickText = useTickFormat(tick)}
-                {@const dx = resolveProp(options.dx, tick, 0) as number}
-                {@const dy = resolveProp(options.dy, tick, 0) as number}
+                {@const  dx = resolveProp(options.dx, tick, 0) as number}
+                {@const  dy = resolveProp(options.dy, tick, 0) as number}
                 {@const y =
                     plot.scales.y.fn(tick) +
                     (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}

@@ -87,7 +87,7 @@
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-    {@const sweep = maybeSweep(options.sweep) as SweepFunc}
+    {@const  sweep = maybeSweep(options.sweep) as SweepFunc}
     <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
         {#each sorted as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
@@ -95,20 +95,20 @@
                 {@const _x2 = resolveChannel('x2', datum, options)}
                 {@const _y1 = resolveChannel('y1', datum, options)}
                 {@const _y2 = resolveChannel('y2', datum, options)}
-                {@const strokeWidth = resolveProp(options.strokeWidth, datum, 1) as number}
+                {@const  strokeWidth = resolveProp(options.strokeWidth, datum, 1) as number}
                 {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
-                    {@const x1 = (useScale.x1 ? plot.scales.x.fn(_x1) : _x1) as number}
-                    {@const y1 = (useScale.y1 ? plot.scales.y.fn(_y1) : _y1) as number}
-                    {@const x2 = (useScale.x2 ? plot.scales.x.fn(_x2) : _x2) as number}
-                    {@const y2 = (useScale.y2 ? plot.scales.y.fn(_y2) : _y2) as number}
-                    {@const dx = resolveProp(options.dx, datum, 0) as number}
+                    {@const  x1 = (useScale.x1 ? plot.scales.x.fn(_x1) : _x1) as number}
+                    {@const  y1 = (useScale.y1 ? plot.scales.y.fn(_y1) : _y1) as number}
+                    {@const  x2 = (useScale.x2 ? plot.scales.x.fn(_x2) : _x2) as number}
+                    {@const  y2 = (useScale.y2 ? plot.scales.y.fn(_y2) : _y2) as number}
+                    {@const  dx = resolveProp(options.dx, datum, 0) as number}
                     {@const dy = resolveProp(options.dx, datum, 0)}
                     {@const inset = resolveProp(options.inset, datum, 0)}
                     {@const insetStart = resolveProp(options.insetStart, datum)}
                     {@const insetEnd = resolveProp(options.insetEnd, datum)}
-                    {@const headAngle = resolveProp(options.headAngle, datum, 60) as number}
-                    {@const headLength = resolveProp(options.headLength, datum, 8) as number}
-                    {@const bend = resolveProp(options.bend, datum, 0) as number|boolean}
+                    {@const  headAngle = resolveProp(options.headAngle, datum, 60) as number}
+                    {@const  headLength = resolveProp(options.headLength, datum, 8) as number}
+                    {@const  bend = resolveProp(options.bend, datum, 0) as number|boolean}
                     <path
                         d={arrowPath(
                             x1,

@@ -45,6 +45,7 @@ import type {
 import isDataRecord from './isDataRecord.js';
 import callWithProps from './callWithProps.js';
 import { interpolateRound } from 'd3-interpolate';
+import { coalesce } from './index.js';
 
 const Scales: Record<
     ScaleType,
@@ -177,7 +178,7 @@ export function createScale<T extends ScaleOptions>(
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
             if (!skip.has(channel)) skip.set(channel, new Set());
-    
+
             if (mark.data.length > 0) {
                 const channelOptions = isDataRecord(mark.options[channel])
                     ? mark.options[channel]
@@ -191,10 +192,7 @@ export function createScale<T extends ScaleOptions>(
                     // typeof channelOptions.value !== 'number' &&
                     typeof channelOptions.value !== 'undefined';
 
-                if (name === 'opacity') console.log({channel, useScale})
-
                 if (useScale) {
-                    
                     if (name === 'opacity' && looksLikeOpacity(channelOptions.value)) {
                         // special handling for opacity scales, where any accessor that looks like
                         // a number between 0 and 1 will be interpreted as output type
@@ -345,7 +343,7 @@ export function createScale<T extends ScaleOptions>(
             ...(type === 'band' || type === 'point'
                 ? {
                       align: scaleOptions.align,
-                      padding: scaleOptions.padding == null ? 0.15 : scaleOptions.padding
+                      padding: coalesce(scaleOptions.padding, plotOptions.padding, 0.15)
                   }
                 : {})
         };
@@ -386,8 +384,16 @@ export function inferScaleType(
     if (name === 'symbol') return 'ordinal';
     // for positional scales, try to pick a scale that's required by the mark types
     if ((name === 'x' || name === 'y') && markTypes.size === 1) {
-        if (name === 'y' && (markTypes.has('barX') || markTypes.has('tickX'))) return 'band';
-        if (name === 'x' && (markTypes.has('barY') || markTypes.has('tickY'))) return 'band';
+        if (
+            name === 'y' &&
+            (markTypes.has('barX') || markTypes.has('tickX') || markTypes.has('cell'))
+        )
+            return 'band';
+        if (
+            name === 'x' &&
+            (markTypes.has('barY') || markTypes.has('tickY') || markTypes.has('cell'))
+        )
+            return 'band';
     }
     if (!dataValues.length) return 'linear';
     if (dataValues.length === 1) return 'point';

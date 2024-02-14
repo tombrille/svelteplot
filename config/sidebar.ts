@@ -54,6 +54,7 @@ export default {
                         { title: 'Arrow', to: '/marks/arrow/' },
                         { title: 'Axis', to: '/marks/axis/' },
                         { title: 'Bar', to: '/marks/bar/' },
+                        { title: 'Cell', to: '/marks/cell/' },
                         { title: 'Dot', to: '/marks/dot/' },
                         { title: 'Frame', to: '/marks/frame/' },
                         { title: 'Grid', to: '/marks/grid/' },

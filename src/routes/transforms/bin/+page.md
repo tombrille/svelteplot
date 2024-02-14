@@ -13,7 +13,7 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
@@ -34,7 +34,7 @@ You can also bin and group at the same time:
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
@@ -53,7 +53,7 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 ```svelte live
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
@@ -84,7 +84,7 @@ You can define _thresholds_ as a number
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
-    
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 
@@ -103,7 +103,7 @@ Or as arbitrary bin bounds:
 ```svelte live
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>
@@ -136,7 +136,7 @@ Or as arbitrary bin bounds:
 ```svelte live
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>

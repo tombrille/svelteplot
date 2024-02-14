@@ -7,7 +7,7 @@ Useful for showing SVG labels!
 ```svelte live
 <script>
     import { Plot, Dot, Text } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>

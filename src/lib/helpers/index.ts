@@ -2,8 +2,13 @@ import type { BaseMarkProps, DataRecord } from '$lib/types.js';
 import { resolveProp } from './resolve.js';
 import { csvParse, autoType } from 'd3-dsv';
 
-export function coalesce(a: number | undefined | null, b: number | null) {
-    return a == null ? Number(b) : a;
+export function coalesce(...args: (number | undefined | null)[]) {
+    for (const arg of args) {
+        if (arg !== null && arg !== undefined) {
+            return +arg;
+        }
+    }
+    return null; // Return null if all arguments are null or undefined
 }
 
 export function testFilter(datum: DataRecord, options: Partial<BaseMarkProps>) {

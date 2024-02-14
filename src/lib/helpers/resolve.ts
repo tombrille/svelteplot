@@ -134,7 +134,7 @@ const opositeColor = {
 
 export function resolveScaledStyles(
     datum: DataRecord,
-    channels: Record<ScaledChannelName, ChannelAccessor>,
+    channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     useScale: Record<ScaledChannelName, boolean>,
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null

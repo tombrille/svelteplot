@@ -111,28 +111,25 @@ In the following example, we're switching from the implicit y axis to a custom A
 
     let plot = $state(null);
     let plotWidth = $derived(plot ? plot.getWidth() : 400);
-    let isMobile = $derived(plotWidth < 600)
+    let isMobile = $derived(plotWidth < 600);
 </script>
 
-<Plot grid 
+<Plot
+    grid
     bind:this={plot}
     marginRight={isMobile ? 0 : 20}
     marginLeft={isMobile ? 0 : 40}
-    x={{ 
+    x={{
         insetLeft: isMobile ? 25 : 10,
-        tickFormat: isMobile ? '\'YY': 'YYYY'
+        tickFormat: isMobile ? "'YY" : 'YYYY'
     }}
     height={isMobile ? 300 : 400}
-    inset={isMobile ? 5 : 10}>
+    inset={isMobile ? 5 : 10}
+>
     {#if isMobile}
         <!-- custom axisy on mobile -->
-        <AxisY
-            tickSize={0} 
-            tickPadding={0} 
-            dy={-5}
-            lineAnchor="bottom"
-            textAnchor="start" />
-        {/if}
+        <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
+    {/if}
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -140,8 +137,10 @@ In the following example, we're switching from the implicit y axis to a custom A
 ```svelte
 <script>
     import { Plot, Line, AxisY } from 'svelteplot';
-    let aapl = $state([/** data **/]);
-   
+    let aapl = $state([
+        /** data **/
+    ]);
+
     // bind plot reference
     let plot = $state(null);
     // get current plot width and define a mobile breakpoint
@@ -149,25 +148,22 @@ In the following example, we're switching from the implicit y axis to a custom A
     let isMobile = $derived(plotWidth < 600);
 </script>
 
-<Plot grid 
+<Plot
+    grid
     bind:this={plot}
     marginRight={isMobile ? 0 : 20}
     marginLeft={isMobile ? 0 : 40}
-    x={{ 
+    x={{
         insetLeft: isMobile ? 25 : 10,
-        tickFormat: isMobile ? '\'YY': 'YYYY'
+        tickFormat: isMobile ? "'YY" : 'YYYY'
     }}
     height={isMobile ? 300 : 400}
-    inset={isMobile ? 5 : 10}>
+    inset={isMobile ? 5 : 10}
+>
     {#if isMobile}
         <!-- custom y axis on mobile -->
-        <AxisY
-            tickSize={0} 
-            tickPadding={0} 
-            dy={-5}
-            lineAnchor="bottom"
-            textAnchor="start" />
-        {/if}
+        <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
+    {/if}
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

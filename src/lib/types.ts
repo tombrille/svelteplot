@@ -14,11 +14,13 @@ export type MarkType =
     | 'axisY'
     | 'barX'
     | 'barY'
+    | 'cell'
     | 'dot'
     | 'frame'
     | 'gridX'
     | 'gridY'
     | 'line'
+    | 'rect'
     | 'ruleX'
     | 'ruleY'
     | 'tickX'
@@ -250,6 +252,10 @@ export type PlotOptions = {
      */
     inset: number;
     /**
+     * Convenience shortcut for setting both the x and y scale paddings
+     */
+    padding: number;
+    /**
      * Geo-projection
      */
     projection: string | null;
@@ -316,7 +322,7 @@ export type DataRecord = Record<string, RawValue> & {
 
 export type DataRow = DataRecord | RawValue | [number, number] | null;
 
-type PlotScale = {
+export type PlotScale = {
     type: ScaleType;
     domain: RawValue[];
     range: RawValue[];
@@ -447,6 +453,11 @@ export type BaseMarkProps = Partial<{
 export type RectMarkProps = {
     rx?: ConstantAccessor<number>;
     ry?: ConstantAccessor<number>;
+    inset?: ConstantAccessor<number>;
+    insetLeft?: ConstantAccessor<number>;
+    insetTop?: ConstantAccessor<number>;
+    insetRight?: ConstantAccessor<number>;
+    insetBottom?: ConstantAccessor<number>;
 };
 
 export type Channels = {

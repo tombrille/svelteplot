@@ -117,18 +117,18 @@
         <g class="lines">
             {#each sortedGroups as lineData, i}
                 {#if testFacet(lineData[0], mark.options)}
-                    {@const dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-                    {@const dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
-                    {@const marker = resolveProp(options.marker, lineData[0] as DataRecord) as string}
-                    {@const markerStart = resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
-                    {@const markerMid = resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
-                    {@const markerEnd = resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
+                    {@const  dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+                    {@const  dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
+                    {@const  marker = resolveProp(options.marker, lineData[0] as DataRecord) as string}
+                    {@const  markerStart = resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
+                    {@const  markerMid = resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
+                    {@const  markerEnd = resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
                     {@const markerColor_ =
                         resolveChannel('stroke', lineData[0], options) || 'currentColor'}
                     {@const markerColor = useScale.stroke
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}
-                    {@const strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
+                    {@const  strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
                     <g stroke-width={strokeWidth}>
                         {#if markerStart}
                             <Marker

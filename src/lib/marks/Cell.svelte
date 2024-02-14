@@ -1,6 +1,6 @@
 <!--
     @component
-    For arbitrary rectangles, requires quantitative x and y scales 
+    For arbitrary rectangles, requires band x and y scales 
 -->
 <script lang="ts">
     /**
@@ -27,12 +27,7 @@
     type Props = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
         y?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        interval?: number | string;
     } & RectMarkProps;
 
     let { data, onclick, onmouseenter, onmouseleave, ...options } = $props<Props>();
@@ -40,30 +35,16 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(
-        intervalY(intervalX(recordizeY<Props>({ data, ...options }), { plot }), { plot }) as Props
-    );
+    let args = $derived(recordizeY<Props>({ data, ...options }) as Props);
 
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
-    type="rect"
-    required={['x1', 'x2', 'y1', 'y2']}
-    channels={[
-        'x1',
-        'x2',
-        'y1',
-        'y2',
-        'fx',
-        'fy',
-        'fill',
-        'stroke',
-        'opacity',
-        'fillOpacity',
-        'strokeOpacity'
-    ]}
+    type="cell"
+    required={['x', 'y']}
+    channels={['x', 'y', 'fx', 'fy', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}
     let:mark
 >
@@ -71,14 +52,12 @@
     <g class="rect" data-fill={useScale.fillOpacity}>
         {#each args.data as datum}
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const x1_ = resolveChannel('x1', datum, args)}
-                {@const x2_ = resolveChannel('x2', datum, args)}
-                {@const y1_ = resolveChannel('y1', datum, args)}
-                {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const  x1 = (useScale.x1 ? plot.scales.x.fn(x1_) : x1_) as number}
-                {@const  x2 = (useScale.x2 ? plot.scales.x.fn(x2_) : x2_) as number}
-                {@const  y1 = (useScale.y1 ? plot.scales.y.fn(y1_) : y1_) as number}
-                {@const  y2 = (useScale.y2 ? plot.scales.y.fn(y2_) : y2_) as number}
+                {@const x_ = resolveChannel('x', datum, args)}
+                {@const y_ = resolveChannel('y', datum, args)}
+                {@const  x1 = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
+                {@const  x2 = (x1 + plot.scales.x.fn.bandwidth()) as number}
+                {@const  y1 = (useScale.y ? plot.scales.y.fn(y_) : y_) as number}
+                {@const  y2 = (y1 + plot.scales.y.fn.bandwidth()) as number}
 
                 {@const  miny = Math.min(y1 as number, y2 as number)}
                 {@const  maxy = Math.max(y1 as number, y2 as number)}
@@ -95,7 +74,7 @@
                 {@const insetT = coalesce(insetTop, inset) || 0}
                 {@const insetR = coalesce(insetRight, inset) || 0}
                 {@const insetB = coalesce(insetBottom, inset) || 0}
-                <g data-x2={x2_} data-x2s={plot.scales.x.fn(+x2_)} />
+
                 {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     <rect
                         style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}

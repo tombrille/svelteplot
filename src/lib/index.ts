@@ -12,6 +12,7 @@ export { default as AxisX } from './marks/AxisX.svelte';
 export { default as AxisY } from './marks/AxisY.svelte';
 export { default as BarX } from './marks/BarX.svelte';
 export { default as BarY } from './marks/BarY.svelte';
+export { default as Cell } from './marks/Cell.svelte';
 export { default as Dot } from './marks/Dot.svelte';
 export { default as DotX } from './marks/DotX.svelte';
 export { default as DotY } from './marks/DotY.svelte';
@@ -42,3 +43,6 @@ export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';
 export { intervalX, intervalY } from './transforms/interval.js';
 export { bin, binX, binY } from './transforms/bin.js';
+
+// format helpers
+export { formatMonth } from './helpers/formats.js';

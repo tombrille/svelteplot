@@ -5,7 +5,14 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import { setContext } from 'svelte';
-    import type { PlotOptions, GenericMarkOptions, Mark, PlotScales, ScaleName } from './types.js';
+    import type {
+        PlotOptions,
+        GenericMarkOptions,
+        Mark,
+        PlotScales,
+        ScaleName,
+        PlotScale
+    } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '$lib/helpers/mergeDeep.js';
@@ -49,6 +56,7 @@
             projection: null,
             aspectRatio: null,
             facet: {},
+            padding: 0.1,
             x: {
                 type: 'auto',
                 axis: oneDimY ? null : 'bottom',
@@ -58,7 +66,6 @@
                 zero: false,
                 round: false,
                 percent: false,
-                padding: 0.1,
                 align: 0.5,
                 tickSpacing: 80,
                 tickFormat: 'auto',
@@ -73,7 +80,6 @@
                 zero: false,
                 round: false,
                 percent: false,
-                padding: 0.1,
                 align: 0.5,
                 tickSpacing: 50,
                 tickFormat: 'auto',
@@ -147,14 +153,38 @@
 
     let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
+    function heightFromAspect(
+        x: PlotScale,
+        y: PlotScale,
+        aspectRatio: number,
+        plotWidth: number,
+        marginTop: number,
+        marginBottom: number
+    ) {
+        const xDomainExtent =
+            x.type === 'band' || x.type === 'point'
+                ? x.domain.length
+                : Math.abs(x.domain[1] - x.domain[0]);
+        const yDomainExtent =
+            y.type === 'band' || y.type === 'point'
+                ? y.domain.length
+                : Math.abs(y.domain[1] - y.domain[0]);
+        return (
+            ((plotWidth / xDomainExtent) * yDomainExtent) / aspectRatio + marginTop + marginBottom
+        );
+    }
+
     let height = $derived(
         plotOptions.height === 'auto'
             ? plotOptions.aspectRatio
-                ? ((plotWidth / Math.abs(preScales.x.domain[1] - preScales.x.domain[0])) *
-                      Math.abs(preScales.y.domain[1] - preScales.y.domain[0])) /
-                      plotOptions.aspectRatio +
-                  plotOptions.marginTop +
-                  plotOptions.marginBottom
+                ? heightFromAspect(
+                      preScales.x,
+                      preScales.y,
+                      plotOptions.aspectRatio,
+                      plotWidth,
+                      plotOptions.marginTop,
+                      plotOptions.marginBottom
+                  )
                 : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
                       ? 60
                       : preScales.y.type === 'band'
@@ -230,7 +260,6 @@
     export function getWidth() {
         return width;
     }
-
 </script>
 
 <!--

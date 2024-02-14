@@ -7,7 +7,7 @@ Plot scales react to mark data changes
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-        import Slider from '$lib/ui/Slider.svelte';
+    import Slider from '$lib/ui/Slider.svelte';
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
@@ -28,7 +28,7 @@ Plot reacts to channel changes:
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-        import Select from '$lib/ui/Select.svelte';
+    import Select from '$lib/ui/Select.svelte';
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
@@ -46,7 +46,7 @@ Plot reacts to channel changes:
 ```svelte live
 <script lang="ts">
     import Slider from '$lib/ui/Slider.svelte';
-        import { Plot, Dot, RuleY } from '$lib';
+    import { Plot, Dot, RuleY } from '$lib';
 
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);

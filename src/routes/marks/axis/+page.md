@@ -7,7 +7,7 @@ By default SveltePlot will create axis marks automatically:
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -51,7 +51,7 @@ You can turn off all axes
 ```svelte live
 <script>
     import { Plot, Line, Dot } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -70,7 +70,7 @@ You can turn off all axes
 ```svelte live
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>

@@ -8,7 +8,7 @@ For example, below is a stacked area chart of [deaths in the Crimean War](https:
 
 ```svelte live
 <script lang="ts">
-        import { Plot, AreaY } from '$lib';
+    import { Plot, AreaY } from '$lib';
 
     import { page } from '$app/stores';
     let { crimea } = $derived($page.data.data);
@@ -29,7 +29,7 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 
 ```svelte live
 <script lang="ts">
-        import { Plot, Area, stackY } from '$lib';
+    import { Plot, Area, stackY } from '$lib';
 
     import { page } from '$app/stores';
     let { crimea } = $derived($page.data.data);
@@ -54,7 +54,7 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 
 ```svelte live
 <script lang="ts">
-        import { Plot, RectY } from '$lib';
+    import { Plot, RectY } from '$lib';
 
     import { page } from '$app/stores';
     let { crimea } = $derived($page.data.data);
@@ -73,7 +73,7 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 
 ```svelte live
 <script lang="ts">
-        import { Plot, Area, stackY } from '$lib';
+    import { Plot, Area, stackY } from '$lib';
 
     import { page } from '$app/stores';
     let { riaa } = $derived($page.data.data);

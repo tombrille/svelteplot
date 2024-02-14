@@ -12,7 +12,7 @@ AAPL demo:
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -42,7 +42,7 @@ BLS Demo:
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    
+
     import { page } from '$app/stores';
     let { bls } = $derived($page.data.data);
 </script>
@@ -119,7 +119,7 @@ LineY can automatically group?
 ```svelte live
 <script lang="ts">
     import { Plot, LineY } from '$lib';
-        import { page } from '$app/stores';
+    import { page } from '$app/stores';
     let { riaa } = $derived($page.data.data);
 </script>
 
@@ -136,7 +136,7 @@ Line with symbols:
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -160,7 +160,7 @@ symbol on last point only:
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    
+
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -188,7 +188,7 @@ The line mark can be used for a connection scatterplot:
 ```svelte live
 <script>
     import { Plot, Line, Dot, Text } from '$lib';
-    
+
     import { page } from '$app/stores';
     let { driving } = $derived($page.data.data);
 </script>
@@ -220,7 +220,7 @@ As you see in the previous plot, lines can show markers by setting the **marker*
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-        import Select from '$lib/ui/Select.svelte';
+    import Select from '$lib/ui/Select.svelte';
     import Slider from '$lib/ui/Slider.svelte';
 
     let marker = $state('circle');

@@ -176,7 +176,6 @@ Options:
 <script lang="ts">
     import { Plot, Arrow, Dot } from '$lib/index.js';
 
-
     import Slider from '$lib/ui/Slider.svelte';
     import Select from '$lib/ui/Select.svelte';
 
