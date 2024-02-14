@@ -51,6 +51,7 @@ export function toChannelOption(
 ): ChannelOptions {
     const isPositionScale = CHANNEL_SCALE[name] === 'x' || CHANNEL_SCALE[name] === 'y';
     const isOpacityScale = CHANNEL_SCALE[name] === 'opacity';
+
     return isDataRecord(channel)
         ? (channel as ChannelOptions)
         : {
@@ -76,7 +77,6 @@ export function resolveChannel(
     const channelOptions = toChannelOption(channel, accessor);
 
     if (channelOptions.channel) {
-        // users can pass { channel: 'fill' } as accessor to re-use an existing channel
         return resolveChannel(channelOptions.channel, datum, channels);
     }
 

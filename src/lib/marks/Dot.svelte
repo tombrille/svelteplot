@@ -16,6 +16,7 @@
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
     import { getUsedScales } from '../helpers/scales.js';
+    import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
 
     let { data, ...options } = $props<
@@ -45,6 +46,8 @@
 
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
+
+    let args = $derived(sort({ data, sort: { channel: 'r', order: 'descending' }, ...options }));
 </script>
 
 <Mark
@@ -63,14 +66,13 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    {data}
-    {...options}
+    {...args}
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
 
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
-        {#each data as datum}
+        {#each args.data as datum}
             {#if options.filter == null || resolveProp(options.filter, datum)}
                 {#if testFacet(datum, mark.options)}
                     {@const _x = resolveChannel('x', datum, options)}
@@ -79,7 +81,7 @@
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
                         {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                         {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                        {@const  dx = +resolveProp(options.dx, datum, 0) as number}
+                        {@const dx = +resolveProp(options.dx, datum, 0) as number}
                         {@const dy = +resolveProp(options.dx, datum, 0)}
                         {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
                         {@const size = r * r * Math.PI}

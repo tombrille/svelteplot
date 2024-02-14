@@ -267,7 +267,9 @@ export function createScale<T extends ScaleOptions>(
     const domain = scaleOptions.domain
         ? scaleOptions.domain
         : type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical'
-          ? valueArr
+          ? name === 'y'
+              ? valueArr.toReversed()
+              : valueArr
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     let range =
@@ -299,12 +301,15 @@ export function createScale<T extends ScaleOptions>(
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
-            if (isDivergingScheme(scheme_)) {
+            if (
+                scaleOptions.type === 'diverging' ||
+                (scaleOptions.type === 'auto' && isDivergingScheme(scheme_))
+            ) {
                 // diverging
                 const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
                 const domain_ = [-maxabs, 0, maxabs];
                 fn = scaleDiverging(domain_, quantitativeScheme(scheme_));
-            } else if (isQuantitativeScheme(scheme_)) {
+            } else if (scaleOptions.type === 'linear' || isQuantitativeScheme(scheme_)) {
                 // sequential
                 fn = scaleSequential(domain, quantitativeScheme(scheme_));
             } else {

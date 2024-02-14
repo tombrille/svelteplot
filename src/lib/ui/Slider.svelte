@@ -4,13 +4,32 @@
         value,
         min = 0,
         max = 100,
-        step = 1
-    } = $props<{ label: string; value: number; min?: Number; max?: number; step?: number }>();
+        step = 1,
+        type = 'range'
+    } = $props<{
+        label: string;
+        type: 'range' | 'number';
+        value: number;
+        min?: number;
+        max?: number;
+        step?: number;
+    }>();
 </script>
 
 <label>
     <span>{label}:</span>
-    <input type="range" bind:value {min} {max} {step} /> <span class="value">({value})</span>
+    {#if type === 'range'}
+        <input type="range" bind:value {min} {max} {step} />
+        <span class="value">({value})</span>{:else}
+        <input
+            type="number"
+            style:width={`${`${Math.max(Math.abs(min), Math.abs(max))}`.length}rem`}
+            bind:value
+            {min}
+            {max}
+            {step}
+        />
+    {/if}
 </label>
 
 <style>

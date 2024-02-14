@@ -92,6 +92,9 @@
 
     let optionsLabel = $derived(plot.options?.x?.label);
 
+    let scaleType = $derived(plot.scales.x.type);
+    let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
+
     let useTitle = $derived(
         title ||
             (optionsLabel === null
@@ -99,11 +102,15 @@
                 : optionsLabel !== undefined
                   ? optionsLabel
                   : plot.scales.x.autoTitle
-                    ? plot.options.x?.reverse
-                        ? `← ${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''}`
-                        : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
+                    ? isQuantitative
+                        ? plot.options.x?.reverse
+                            ? `← ${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''}`
+                            : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
+                        : plot.scales.x.autoTitle
                     : '')
     );
+
+    let titleAlign = $derived(isQuantitative ? 'right' : 'center');
 
     const { getFacetState } = getContext('facet');
     let { firstX, firstY, lastY } = $derived(getFacetState());
@@ -119,7 +126,13 @@
     {#if firstX && firstY && useTitle}
         <text
             style={getBaseStyles(null, options)}
-            x={plot.plotWidth + plot.options.marginLeft}
+            style:text-anchor={titleAlign === 'right'
+                ? 'end'
+                : titleAlign === 'center'
+                  ? 'center'
+                  : 'start'}
+            x={plot.options.marginLeft +
+                plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
             y={anchor === 'top' ? 13 : plot.height - 13}
             class="x-axis-title"
             dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text

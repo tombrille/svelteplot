@@ -135,6 +135,14 @@ export type ScaleOptions = {
     tickSpacing: number;
     // log scales
     base?: number;
+    // sorting for band and point scales
+    sort?:
+        | ChannelAccessor
+        | ((a: RawValue, b: RawValue) => number)
+        | {
+              channel: string;
+              order: 'ascending' | 'descending';
+          };
 };
 
 export type ColorScaleOptions = ScaleOptions & {

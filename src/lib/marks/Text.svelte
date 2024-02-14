@@ -27,6 +27,7 @@
             dx?: ConstantAccessor<number>;
             dy?: ConstantAccessor<number>;
             text: ConstantAccessor<string>;
+            title: ConstantAccessor<string>;
             /**
              * the line anchor for vertical position; top, bottom, or middle
              */
@@ -72,11 +73,16 @@
             {#if options.filter == null || resolveProp(options.filter, datum)}
                 {@const _x = resolveChannel('x', datum, options)}
                 {@const _y = resolveChannel('y', datum, options)}
-                {@const _fill = resolveChannel('fill', datum, options)}
-                {@const _stroke = resolveChannel('stroke', datum, options)}
+                {@const title = resolveProp(options.title, datum, '')}
                 {#if isValid(_x) && isValid(_y)}
-                    {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
-                    {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
+                    {@const x = useScale.x
+                        ? plot.scales.x.fn(_x) +
+                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        : _x}
+                    {@const y = useScale.y
+                        ? plot.scales.y.fn(_y) +
+                          (plot.scales.y.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        : _y}
                     {@const dx = +resolveProp(options.dx, datum, 0)}
                     {@const dy = +resolveProp(options.dy, datum, 0)}
                     <text
@@ -85,7 +91,8 @@
                             resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
                         ]}
                         transform="translate({[x + dx, y + dy]})"
-                        >{resolveProp(options.text, datum, '')}</text
+                        >{resolveProp(options.text, datum, '')}{#if title}<title>{title}</title
+                            >{/if}</text
                     >
                 {/if}
             {/if}

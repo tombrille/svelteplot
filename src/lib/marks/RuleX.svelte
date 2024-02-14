@@ -52,16 +52,16 @@
             {#if isValid(x_)}
                 {@const y1_ = resolveChannel('y1', datum, args)}
                 {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const  x = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
-                {@const  y1 = (useScale.y1 ? plot.scales.y.fn(y1_) : y1_) as number}
-                {@const  y2 = (useScale.y2 ? plot.scales.y.fn(y2_) : y2_) as number}
+                {@const    x = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
+                {@const    y1 = (useScale.y1 ? plot.scales.y.fn(y1_) : y1_) as number}
+                {@const    y2 = (useScale.y2 ? plot.scales.y.fn(y2_) : y2_) as number}
                 {@const stroke_ = resolveChannel('stroke', datum, args)}
-                {@const  stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-                {@const  inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
-                {@const  insetTop = resolveProp(args.insetTop, datum as DataRecord, 0) as number}
-                {@const  insetBottom = resolveProp(args.insetBottom, datum as DataRecord, 0) as number}
-                {@const  dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
-                {@const  dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
+                {@const    stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
+                {@const    inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
+                {@const    insetTop = resolveProp(args.insetTop, datum as DataRecord, 0) as number}
+                {@const    insetBottom = resolveProp(args.insetBottom, datum as DataRecord, 0) as number}
+                {@const    dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
+                {@const    dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
                 <line
                     transform="translate({x + dx}, {dy})"
                     style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}

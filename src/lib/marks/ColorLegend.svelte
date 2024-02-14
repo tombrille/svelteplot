@@ -76,7 +76,7 @@
                 marginTop={6}
                 marginBottom={20}
                 height={38}
-                x={{ domain: plot.scales.color.domain }}
+                x={{ domain: plot.scales.color.domain, tickSpacing: 40 }}
             >
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">

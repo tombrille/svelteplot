@@ -6,7 +6,7 @@ export function intervalX<T>(args: TransformArg<T>, { plot }: { plot: PlotState 
     return interval('x', plot, args);
 }
 
-export function intervalY<T>(args: TransformArg<T>, { plot, foo }: { plot: PlotState }) {
+export function intervalY<T>(args: TransformArg<T>, { plot }: { plot: PlotState }) {
     return interval('y', plot, args);
 }
 

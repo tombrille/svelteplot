@@ -43,6 +43,7 @@ export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';
 export { intervalX, intervalY } from './transforms/interval.js';
 export { bin, binX, binY } from './transforms/bin.js';
+export { sort, shuffle, reverse } from './transforms/sort.js';
 
 // format helpers
 export { formatMonth } from './helpers/formats.js';
