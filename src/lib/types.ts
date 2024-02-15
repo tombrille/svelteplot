@@ -21,6 +21,7 @@ export type MarkType =
     | 'gridY'
     | 'line'
     | 'rect'
+    | 'regression'
     | 'ruleX'
     | 'ruleY'
     | 'tickX'

@@ -70,14 +70,14 @@
             {@const x_ = resolveChannel('x', datum, args)}
             {@const y1_ = resolveChannel('y1', datum, args)}
             {@const y2_ = resolveChannel('y2', datum, args)}
-            {@const     x = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
-            {@const     y1 = (useScale.y1 ? plot.scales.y.fn(y1_) : y1_) as number}
-            {@const     y2 = (useScale.y2 ? plot.scales.y.fn(y2_) : y2_) as number}
-            {@const     miny = Math.min(y1 as number, y2 as number)}
-            {@const     maxy = Math.max(y1 as number, y2 as number)}
-            {@const     inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
-            {@const     dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
-            {@const     dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
+            {@const       x = (useScale.x ? plot.scales.x.fn(x_) : x_) as number}
+            {@const       y1 = (useScale.y1 ? plot.scales.y.fn(y1_) : y1_) as number}
+            {@const       y2 = (useScale.y2 ? plot.scales.y.fn(y2_) : y2_) as number}
+            {@const       miny = Math.min(y1 as number, y2 as number)}
+            {@const       maxy = Math.max(y1 as number, y2 as number)}
+            {@const       inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
+            {@const       dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
+            {@const       dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
             {#if isValid(x) && isValid(y1) && isValid(y2)}
                 <rect
                     style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}

@@ -77,7 +77,7 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-    let first28 = $derived(simpsons.filter(d => d.season < 29))
+    let first28 = $derived(simpsons.filter((d) => d.season < 29));
 </script>
 
 <Plot
@@ -86,34 +86,32 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
     marginTop={40}
     height={70}
     inset={0}
-    x={{ 
-        type: 'band', 
-        axis: 'top', 
+    x={{
+        type: 'band',
+        axis: 'top',
         label: 'Season',
         ticks: first28.filter((d) => d.episode === 1).map((d) => d.id),
-        tickFormat: (x) => first28.find((d) => d.id === x).season,
+        tickFormat: (x) => first28.find((d) => d.id === x).season
     }}
     color={{ type: 'linear', scheme: 'PiYG' }}
     testid="first28"
 >
-    <CellX data={first28.sort((a,b) => b.id - a.id)} x="id" fill="imdb_rating" />
+    <CellX data={first28.sort((a, b) => b.id - a.id)} x="id" fill="imdb_rating" />
 </Plot>
 ```
 
 ```svelte
 <Plot
-    x={{ 
-        type: 'band', 
-        axis: 'top', 
+    x={{
+        type: 'band',
+        axis: 'top',
         label: 'Season',
         ticks: simpsons.filter((d) => d.episode === 1).map((d) => d.id),
-        tickFormat: (x) => simpsons.find((d) => d.id === x).season,
+        tickFormat: (x) => simpsons.find((d) => d.id === x).season
     }}
-    color={{ type: 'linear', scheme: 'PiYG' }}>
-    <CellX 
-        data={simpsons.sort((a,b) => b.id - a.id)} 
-        x="id" 
-        fill="imdb_rating" />
+    color={{ type: 'linear', scheme: 'PiYG' }}
+>
+    <CellX data={simpsons.sort((a, b) => b.id - a.id)} x="id" fill="imdb_rating" />
 </Plot>
 ```
 
@@ -125,7 +123,7 @@ But better to use a RectX here:
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-    let first28 = $derived(simpsons.filter(d => d.season < 29))
+    let first28 = $derived(simpsons.filter((d) => d.season < 29));
 </script>
 
 <Plot
@@ -134,12 +132,12 @@ But better to use a RectX here:
     marginTop={40}
     height={70}
     inset={0}
-    x={{ 
-        axis: 'top', 
+    x={{
+        axis: 'top',
         label: 'Season'
     }}
     color={{ type: 'linear', scheme: 'PiYG' }}
 >
-    <RectX data={first28.sort((a,b) => b.id - a.id)} x="id" interval="1" fill="imdb_rating" />
+    <RectX data={first28.sort((a, b) => b.id - a.id)} x="id" interval="1" fill="imdb_rating" />
 </Plot>
 ```

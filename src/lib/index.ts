@@ -27,6 +27,8 @@ export { default as Plot } from './Plot.svelte';
 export { default as Rect } from './marks/Rect.svelte';
 export { default as RectX } from './marks/RectX.svelte';
 export { default as RectY } from './marks/RectY.svelte';
+export { default as RegressionX } from './marks/RegressionX.svelte';
+export { default as RegressionY } from './marks/RegressionY.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
 export { default as Text } from './marks/Text.svelte';

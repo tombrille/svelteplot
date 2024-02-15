@@ -73,9 +73,12 @@
             <Plot
                 maxWidth="240px"
                 margins={1}
+                marginLeft={10}
+                marginRight={10}
                 marginTop={6}
                 marginBottom={20}
                 height={38}
+                inset={0}
                 x={{ domain: plot.scales.color.domain, tickSpacing: 40 }}
             >
                 <defs>

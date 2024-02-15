@@ -54,10 +54,10 @@
             {@const x =
                 plot.scales.x.fn(tick) +
                 (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
-            {@const     y1_ = resolveChannel('y1', tick, options) as number}
-            {@const     y2_ = resolveChannel('y2', tick, options) as number}
-            {@const     y1 = options.y1 != null ? plot.scales.y.fn(y1_) as number : 0}
-            {@const     y2 = options.y2 != null ? plot.scales.y.fn(y2_) as number : plot.facetHeight}
+            {@const       y1_ = resolveChannel('y1', tick, options) as number}
+            {@const       y2_ = resolveChannel('y2', tick, options) as number}
+            {@const       y1 = options.y1 != null ? plot.scales.y.fn(y1_) as number : 0}
+            {@const       y2 = options.y2 != null ? plot.scales.y.fn(y2_) as number : plot.facetHeight}
             <line
                 transform="translate({x},{plot.options.marginTop})"
                 style={resolveScaledStyles(tick, options, useScale, plot, 'stroke')}

@@ -252,3 +252,24 @@ As you see in the previous plot, lines can show markers by setting the **marker*
     <Line data={crimea} x="date" y="deaths" stroke="cause" {strokeWidth} {marker} />
 </Plot>
 ```
+
+Simpsons ratings as line
+
+```svelte live
+<script lang="ts">
+    import { Plot, Dot, RuleY } from '$lib';
+    import { page } from '$app/stores';
+    let { simpsons } = $derived($page.data.data);
+</script>
+
+<Plot grid r={{ range: [1, 4] }} color={{ type: 'linear', scheme: 'PiYG' }}>
+    <Dot
+        data={simpsons}
+        x="airdate"
+        fill="imdb_rating"
+        symbol={(d) => (d.episode === 1 ? 'dot' : 'plus')}
+        y="imdb_rating"
+        r="runtime"
+    />
+</Plot>
+```

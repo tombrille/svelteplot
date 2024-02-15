@@ -124,35 +124,32 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 ## More examples
 
-```svelte live
-<script>
-    import { Plot, Dot } from '$lib';
+You can use the color channel for encoding a third quantitative variable.
 
+```svelte live
+<script lang="ts">
+    import { Plot, Dot, RuleY } from '$lib';
     import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
+    let { simpsons } = $derived($page.data.data);
+
+    let decline = $state(false);
 </script>
 
-{#if seattle}
-    <Plot
-        aspectRatio={1}
-        inset={10}
-        y={{
-            ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            tickFormat: (d) =>
-                new Intl.DateTimeFormat('en', { month: 'narrow' }).format(new Date(2000, d, 1))
-        }}
-        testid="seattle-temp"
-        let:width
-    >
-        <Dot
-            data={seattle}
-            symbol="square"
-            r={Math.sqrt(width / 31) * 2}
-            filter={(d) => d.date.getUTCFullYear() === 2015}
-            x={(d) => d.date.getUTCDate()}
-            y={(d) => d.date.getUTCMonth()}
-            fill="temp_max"
-        />
-    </Plot>
-{/if}
+<!-- <button onclick={() => decline = !decline}>change story</button> -->
+
+<Plot
+    grid
+    color={{
+        legend: false,
+        type: 'linear',
+        domain: decline ? null : [1, 10],
+        scheme: 'rdylgn',
+        label: 'IMDB rating'
+    }}
+>
+    <Dot data={simpsons} y="imdb_rating" fill="imdb_rating" x="airdate" />
+    {#if !decline}
+        <RuleY data={[1]} />
+    {/if}
+</Plot>
 ```

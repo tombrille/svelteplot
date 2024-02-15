@@ -15,7 +15,6 @@ You can use SveltePlot to create charts with a concise and minimal API.
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { loadCSV } from '$lib/helpers';
     import { page } from '$app/stores';
 
     let { olympians } = $derived($page.data.data);
