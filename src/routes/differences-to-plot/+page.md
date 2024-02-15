@@ -168,6 +168,66 @@ In the following example, we're switching from the implicit y axis to a custom A
 </Plot>
 ```
 
+## Transitions
+
+Svelte comes with powerful transitions out of the box that we can use in SveltePlot. Here, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to update the plots y domain: 
+
+```svelte live
+<script>
+    import { Plot, RuleY, BarY } from '$lib';
+    import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
+    import { extent } from 'd3-array';
+    import { fade } from 'svelte/transition';
+    import { noise } from '$lib/helpers/noise';
+
+    let data = $state([1,2,3,4,5]);
+
+    const domain = tweened(extent([0, ...data]), {
+		duration: 1000,
+		easing: cubicOut
+	});
+
+    let start = $state(Math.random() * 1e6);
+    $effect(() => {
+       $domain = extent([0, ...data]);
+    });
+</script>
+
+<button onclick={() => data.push(data.at(-1) + (noise(start + data.length*0.1)-0.5)*Math.pow(data.length,0.8))}>add number</button> <button onclick={() => {data = [1,2,3,4,5]; start= Math.random() * 1e6}}>reset</button>
+
+<Plot x={{ axis: false, padding: data.length < 60 ? 0.1 : 0 }} color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
+    <BarY {data} fill={d => d} t={fade} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<script>
+    import { tweened } from 'svelte/motion';
+    import { cubicOut } from 'svelte/easing';
+
+    let data = $state([1,2,3,4,5]);
+
+    const domain = tweened(extent([0, ...data]), {
+        duration: 1000,
+        easing: cubicOut
+    });
+
+    $effect(() => {
+        // update domain whenever data changes
+        $domain = extent([0, ...data]);
+    });
+</script>
+
+<button onclick={d => data.push(Math.random())}>add number</button>
+
+<Plot color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
+    <BarY {data} fill={d => d} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
 ## Events!
 
 Another difference to Observable Plot is that you can pass event handlers to the marks.
