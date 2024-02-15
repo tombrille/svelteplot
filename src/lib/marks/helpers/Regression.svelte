@@ -39,6 +39,7 @@
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { confidenceInterval } from '$lib/helpers/math.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
+    import { isDate } from 'underscore';
 
     const regressions = new Map<RegressionType, typeof regressionLinear>([
         ['linear', regressionLinear],
@@ -124,7 +125,7 @@
                     x: resolveChannel(independent, d, options),
                     y: resolveChannel(dependent, d, options)
                 }))
-                .filter(({ x, y }) => Number.isFinite(x) && Number.isFinite(y)),
+                .filter(({ x, y }) => (Number.isFinite(x) || isDate(x)) && Number.isFinite(y)),
             regression.predict,
             1 - confidence
         )
@@ -138,8 +139,6 @@
               })
             : []
     );
-
-    $inspect({stroke})
 </script>
 
 {#if filteredData.length}
