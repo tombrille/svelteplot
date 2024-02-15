@@ -36,7 +36,7 @@
     let plot = $derived(getPlotState());
 
     let args = $derived(
-        options.sort
+        options.sort !== undefined
             ? // user has defined a custom sorting
               sort(recordizeY({ data, ...options }))
             : // sort by x and y

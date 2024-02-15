@@ -66,3 +66,80 @@ Seattle temperatures
     />
 </Plot>
 ```
+
+## CellX
+
+Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not specified, it defaults to \[0, 1, 2, …\], and if the **fill** option is not specified and **stroke** is not a channel, the fill defaults to the identity function and assumes that _data_ = \[_x₀_, _x₁_, _x₂_, …\].
+
+```svelte live
+<script>
+    import { Plot, CellX, Text } from '$lib';
+
+    import { page } from '$app/stores';
+    let { simpsons } = $derived($page.data.data);
+    let first28 = $derived(simpsons.filter(d => d.season < 29))
+</script>
+
+<Plot
+    padding={0}
+    margins={5}
+    marginTop={40}
+    height={70}
+    inset={0}
+    x={{ 
+        type: 'band', 
+        axis: 'top', 
+        label: 'Season',
+        ticks: first28.filter((d) => d.episode === 1).map((d) => d.id),
+        tickFormat: (x) => first28.find((d) => d.id === x).season,
+    }}
+    color={{ type: 'linear', scheme: 'PiYG' }}
+    testid="first28"
+>
+    <CellX data={first28.sort((a,b) => b.id - a.id)} x="id" fill="imdb_rating" />
+</Plot>
+```
+
+```svelte
+<Plot
+    x={{ 
+        type: 'band', 
+        axis: 'top', 
+        label: 'Season',
+        ticks: simpsons.filter((d) => d.episode === 1).map((d) => d.id),
+        tickFormat: (x) => simpsons.find((d) => d.id === x).season,
+    }}
+    color={{ type: 'linear', scheme: 'PiYG' }}>
+    <CellX 
+        data={simpsons.sort((a,b) => b.id - a.id)} 
+        x="id" 
+        fill="imdb_rating" />
+</Plot>
+```
+
+But better to use a RectX here:
+
+```svelte --live
+<script>
+    import { Plot, RectX, Text } from '$lib';
+
+    import { page } from '$app/stores';
+    let { simpsons } = $derived($page.data.data);
+    let first28 = $derived(simpsons.filter(d => d.season < 29))
+</script>
+
+<Plot
+    padding={0}
+    margins={5}
+    marginTop={40}
+    height={70}
+    inset={0}
+    x={{ 
+        axis: 'top', 
+        label: 'Season'
+    }}
+    color={{ type: 'linear', scheme: 'PiYG' }}
+>
+    <RectX data={first28.sort((a,b) => b.id - a.id)} x="id" interval="1" fill="imdb_rating" />
+</Plot>
+```
