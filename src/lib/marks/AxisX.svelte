@@ -133,7 +133,7 @@
 
 <Mark
     type="axisX"
-    data={data.length ? data.map((tick) => ({ __x: tick })) as DataRecord[] : []}
+    data={data.length ? data.map((tick) => ({ __x: tick })) : []}
     channels={['x']}
     {...{ ...options, x: '__x' }}
     {automatic}

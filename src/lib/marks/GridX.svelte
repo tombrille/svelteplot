@@ -42,7 +42,7 @@
 
 <Mark
     type="gridX"
-    data={data.length ? data.map((tick) => ({ __x: tick })) as DataRecord[] : []}
+    data={data.length ? data.map((tick) => ({ __x: tick })) : []}
     channels={['y1', 'y2', 'x', 'stroke', 'strokeOpacity']}
     {...{ ...options, x: '__x' }}
     {automatic}
