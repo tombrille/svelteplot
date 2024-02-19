@@ -117,8 +117,18 @@
     const { getFacetState } = getContext('facet');
     let { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
 
-    let useFacetAnchor = $derived(facetAnchor !== 'auto' ? facetAnchor : anchor === 'bottom' ? 'bottom-empty' : 'top-empty')
-    let showAxis = $derived(useFacetAnchor === 'top' ? top : useFacetAnchor === 'bottom' ? bottom : useFacetAnchor === 'top-empty' ? topEmpty : bottomEmpty);
+    let useFacetAnchor = $derived(
+        facetAnchor !== 'auto' ? facetAnchor : anchor === 'bottom' ? 'bottom-empty' : 'top-empty'
+    );
+    let showAxis = $derived(
+        useFacetAnchor === 'top'
+            ? top
+            : useFacetAnchor === 'bottom'
+              ? bottom
+              : useFacetAnchor === 'top-empty'
+                ? topEmpty
+                : bottomEmpty
+    );
 </script>
 
 <Mark

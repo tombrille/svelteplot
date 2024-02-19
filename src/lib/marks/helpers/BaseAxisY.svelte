@@ -46,8 +46,8 @@
 <g class="axis-y">
     {#each ticks as tick, t}
         {@const tickText = tickFormat(tick)}
-        {@const        dx = resolveProp(options.dx, tick, 0) as number}
-        {@const        dy = resolveProp(options.dy, tick, 0) as number}
+        {@const dx = resolveProp(options.dx, tick, 0)}
+        {@const dy = resolveProp(options.dy, tick, 0)}
         {@const y = scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)}
         <g
             class="tick"

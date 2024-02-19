@@ -3,18 +3,19 @@
     import { resolveChannel } from './helpers/resolve.js';
     import type { BaseMarkProps, DataRecord, RawValue } from './types.js';
 
-    let { fx, fy, left, top, right, bottom, topEmpty, bottomEmpty, leftEmpty, rightEmpty } = $props<{
-        fx: RawValue;
-        fy: RawValue;
-        left: boolean;
-        top: boolean;
-        right: boolean;
-        bottom: boolean;
-        topEmpty: boolean;
-        bottomEmpty: boolean;
-        leftEmpty: boolean;
-        rightEmpty: boolean;
-    }>();
+    let { fx, fy, left, top, right, bottom, topEmpty, bottomEmpty, leftEmpty, rightEmpty } =
+        $props<{
+            fx: RawValue;
+            fy: RawValue;
+            left: boolean;
+            top: boolean;
+            right: boolean;
+            bottom: boolean;
+            topEmpty: boolean;
+            bottomEmpty: boolean;
+            leftEmpty: boolean;
+            rightEmpty: boolean;
+        }>();
 
     setContext('facet', {
         getTestFacet() {
@@ -26,7 +27,18 @@
             };
         },
         getFacetState() {
-            return { fx, fy, left, top, right, bottom,topEmpty, bottomEmpty, leftEmpty, rightEmpty };
+            return {
+                fx,
+                fy,
+                left,
+                top,
+                right,
+                bottom,
+                topEmpty,
+                bottomEmpty,
+                leftEmpty,
+                rightEmpty
+            };
         }
     });
 </script>

@@ -1,4 +1,3 @@
-
 import { csvParse, autoType } from 'd3-dsv';
 
 async function loadCSV(fetch, dataset: string) {

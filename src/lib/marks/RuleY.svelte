@@ -53,16 +53,16 @@
             {#if isValid(y_)}
                 {@const x1_ = resolveChannel('x1', datum, args)}
                 {@const x2_ = resolveChannel('x2', datum, args)}
-                {@const        y = (useScale.y ? plot.scales.y.fn(y_) : y_) as number}
-                {@const        x1 = (useScale.x1 ? plot.scales.y.fn(x1_) : x1_) as number}
-                {@const        x2 = (useScale.x2 ? plot.scales.y.fn(x2_) : x2_) as number}
+                {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const x1 = useScale.x1 ? plot.scales.y.fn(x1_) : x1_}
+                {@const x2 = useScale.x2 ? plot.scales.y.fn(x2_) : x2_}
                 {@const stroke_ = resolveChannel('stroke', datum, args)}
-                {@const        stroke = (useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_) as string}
-                {@const        inset = resolveProp(args.inset, datum as DataRecord, 0) as number}
-                {@const        insetLeft = resolveProp(args.insetLeft, datum as DataRecord, 0) as number}
-                {@const        insetRight = resolveProp(args.insetRight, datum as DataRecord, 0) as number}
-                {@const        dx = resolveProp(args.dx, datum as DataRecord, 0) as number}
-                {@const        dy = resolveProp(args.dy, datum as DataRecord, 0) as number}
+                {@const stroke = useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_}
+                {@const inset = resolveProp(args.inset, datum, 0)}
+                {@const insetLeft = resolveProp(args.insetLeft, datum, 0)}
+                {@const insetRight = resolveProp(args.insetRight, datum, 0)}
+                {@const dx = resolveProp(args.dx, datum, 0)}
+                {@const dy = resolveProp(args.dy, datum, 0)}
                 <line
                     transform="translate({dx}, {y + dy})"
                     style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}

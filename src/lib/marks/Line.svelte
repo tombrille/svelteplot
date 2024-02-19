@@ -94,7 +94,7 @@
             curve: maybeCurve(curve, tension),
             x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
             y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
-            defined: (d) => !isNaN(resolveChannel('y', d, options) as number)
+            defined: (d) => !isNaN(resolveChannel('y', d, options))
         })
     );
 
@@ -115,18 +115,26 @@
         <g class="lines">
             {#each sortedGroups as lineData, i}
                 {#if testFacet(lineData[0], mark.options)}
-                    {@const        dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-                    {@const        dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
-                    {@const        marker = isSnippet(options.marker) ? options.marker : resolveProp(options.marker, lineData[0] as DataRecord) as string}
-                    {@const        markerStart = isSnippet(options.markerStart) ? options.markerStart : resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
-                    {@const        markerMid = isSnippet(options.markerMid) ? options.markerMid : resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
-                    {@const        markerEnd = isSnippet(options.markerEnd) ? options.markerEnd : resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
+                    {@const dx_ = resolveProp(options.dx, lineData[0], 0)}
+                    {@const dy_ = resolveProp(options.dy, lineData[0], 0)}
+                    {@const marker = isSnippet(options.marker)
+                        ? options.marker
+                        : resolveProp(options.marker, lineData[0])}
+                    {@const markerStart = isSnippet(options.markerStart)
+                        ? options.markerStart
+                        : resolveProp(options.markerStart, lineData[0])}
+                    {@const markerMid = isSnippet(options.markerMid)
+                        ? options.markerMid
+                        : resolveProp(options.markerMid, lineData[0])}
+                    {@const markerEnd = isSnippet(options.markerEnd)
+                        ? options.markerEnd
+                        : resolveProp(options.markerEnd, lineData[0])}
                     {@const markerColor_ =
                         resolveChannel('stroke', lineData[0], options) || 'currentColor'}
                     {@const markerColor = useScale.stroke
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}
-                    {@const        strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
+                    {@const strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4)}
                     <g stroke-width={strokeWidth}>
                         {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
                             {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}-${i}`}
