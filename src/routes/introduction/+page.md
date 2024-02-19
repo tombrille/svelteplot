@@ -18,73 +18,29 @@ You can use SveltePlot to create charts with a concise and minimal API.
     import { page } from '$app/stores';
 
     let { olympians } = $derived($page.data.data);
+
+    let showPlot = $state(false);
+    $effect(() => {
+        showPlot = true;
+    });
 </script>
 
-<Plot
-    testid="olympians"
-    grid
-    color={{ legend: true }}
-    x={{ type: 'linear', insetLeft: 30, grid: true }}
-    inset={10}
->
-    <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
-</Plot>
-```
-
-```svelte --live
-<script>
-    import { Plot, Dot, Frame, GridY, AxisX, AxisY, RuleY, DotX } from '$lib';
-    import Mark from '$lib/Mark.svelte';
-
-    let showGrid = $state(true);
-    let showRule = $state(false);
-    let showFrame = $state(false);
-    let log = $state(false);
-    let truncate = $state(false);
-    let plotClose = $state(true);
-    let height = $state(450);
-
-    let w = $state(100);
-</script>
-
-<label><input type="checkbox" bind:checked={showGrid} /> show grid</label>
-<label><input type="checkbox" bind:checked={showRule} /> show rule</label>
-<label><input type="checkbox" bind:checked={showFrame} /> show frame</label>
-<label><input type="checkbox" bind:checked={log} /> log</label>
-<label><input type="checkbox" bind:checked={truncate} /> truncate data</label>
-<label><input type="checkbox" bind:checked={plotClose} /> plot close</label>
-<label>height <input type="number" bind:value={height} /></label>
-<label>max age <input type="range" max={70} bind:value={w} /> {w} years</label>
-
-{#if olympians}
+{#if showPlot}
     <Plot
         testid="olympians"
-        frame={showFrame}
-        grid={showGrid}
+        grid
         color={{ legend: true }}
-        x={{ type: log ? 'log' : 'linear', insetLeft: 30, grid: true }}
-        {height}
+        x={{ type: 'linear', insetLeft: 30, grid: true }}
         inset={10}
     >
-        <Dot
-            data={truncate ? olympians.slice(0, 1000) : olympians}
-            x="weight"
-            opacity="0.5"
-            filter={(d) => d.date_of_birth > new Date(2024 - w, 1, 1)}
-            y={plotClose ? 'height' : 'date_of_birth'}
-            stroke="sex"
-        />
-        {#if showRule}
-            <RuleY data={[0]} />
-        {/if}
+        <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
     </Plot>
 {/if}
 ```
 
 ```svelte
-<Plot color={{ legend: true }} x={{ grid: true }} inset={10}>
-    <Dot data={olympians} x="weight" y="height" stroke="sex" symbol="sex" />
-    <RuleY data={[0]} />
+<Plot grid color={{ legend: true }} x={{ type: 'linear', insetLeft: 30, grid: true }} inset={10}>
+    <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
 </Plot>
 ```
 

@@ -26,6 +26,7 @@
         automatic = false,
         title,
         anchor = 'bottom',
+        facetAnchor = 'auto',
         tickSize = 6,
         tickPadding = 3,
         tickFontSize = 11,
@@ -37,6 +38,7 @@
             automatic?: boolean;
             title?: string;
             anchor?: 'top' | 'bottom';
+            facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
             tickSize?: number;
             tickPadding?: number;
             tickFontSize?: ConstantAccessor<number>;
@@ -113,7 +115,10 @@
     let titleAlign = $derived(isQuantitative ? 'right' : 'center');
 
     const { getFacetState } = getContext('facet');
-    let { firstX, firstY, lastY } = $derived(getFacetState());
+    let { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
+
+    let useFacetAnchor = $derived(facetAnchor !== 'auto' ? facetAnchor : anchor === 'bottom' ? 'bottom-empty' : 'top-empty')
+    let showAxis = $derived(useFacetAnchor === 'top' ? top : useFacetAnchor === 'bottom' ? bottom : useFacetAnchor === 'top-empty' ? topEmpty : bottomEmpty);
 </script>
 
 <Mark
@@ -123,7 +128,7 @@
     {...{ ...options, x: '__x' }}
     {automatic}
 >
-    {#if firstX && firstY && useTitle}
+    {#if left && top && useTitle}
         <text
             style={getBaseStyles(null, options)}
             style:text-anchor={titleAlign === 'right'
@@ -138,7 +143,7 @@
             dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
         >
     {/if}
-    {#if lastY}
+    {#if showAxis}
         <BaseAxisX
             scaleFn={plot.scales.x.fn}
             scaleType={plot.scales.x.type}

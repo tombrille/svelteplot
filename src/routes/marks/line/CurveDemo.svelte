@@ -24,7 +24,7 @@
 {/if}
 
 <Plot grid testid="curvedemo" height={300}>
-    <LineY data={numbers} {curve} {tension} marker="circle-stroke" />
+    <LineY data={numbers} {curve} {tension} />
     <!-- TODO: use DotY here -->
     <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} symbol="plus" y="value" x="index" />
 </Plot>

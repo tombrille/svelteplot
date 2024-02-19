@@ -2,11 +2,13 @@
     let {
         label = '',
         value,
-        options
+        options,
+        format = (d) => d
     } = $props<{
         label?: string;
         value: any;
         options: any[];
+        format?: (d: any) => string;
     }>();
 </script>
 
@@ -14,7 +16,7 @@
     >{label || ''}
     <select bind:value>
         {#each options as p}
-            <option value={p}>{p}</option>
+            <option value={p}>{format(p)}</option>
         {/each}
     </select></label
 >

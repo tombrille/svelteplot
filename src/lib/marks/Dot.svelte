@@ -14,10 +14,11 @@
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
-    import { symbol as d3Symbol } from 'd3-shape';
+    import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { getUsedScales } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
+    import { isSnippet } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
         BaseMarkProps & {
@@ -27,6 +28,7 @@
             r?: ChannelAccessor;
             fill?: ChannelAccessor;
             stroke?: ChannelAccessor;
+            symbol?: ChannelAccessor | Snippet<[number, string]>;
             children?: Snippet;
             dx?: ConstantAccessor<number>;
             dy?: ConstantAccessor<number>;
@@ -69,32 +71,33 @@
     {...args}
     let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
+    {@const useScale = getUsedScales(plot, args, mark)}
 
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
         {#each args.data as datum}
-            {#if options.filter == null || resolveProp(options.filter, datum)}
+            {#if args.filter == null || resolveProp(args.filter, datum)}
                 {#if testFacet(datum, mark.options)}
-                    {@const _x = resolveChannel('x', datum, options)}
-                    {@const _y = resolveChannel('y', datum, options)}
-                    {@const _r = resolveChannel('r', datum, { r: 3, ...options })}
+                    {@const _x = resolveChannel('x', datum, args)}
+                    {@const _y = resolveChannel('y', datum, args)}
+                    {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
                         {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
                         {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
-                        {@const       dx = +resolveProp(options.dx, datum, 0) as number}
-                        {@const dy = +resolveProp(options.dx, datum, 0)}
+                        {@const    dx = +resolveProp(args.dx, datum, 0) as number}
+                        {@const dy = +resolveProp(args.dx, datum, 0)}
                         {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
                         {@const size = r * r * Math.PI}
+
                         {@const symbol_ = resolveChannel('symbol', datum, {
                             symbol: 'circle',
-                            ...options
+                            ...args
                         })}
                         {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
                         <path
                             d={getSymbolPath(symbol, size)}
                             transform="translate({x + dx}, {y + dy})"
                             data-symbol={symbol}
-                            style={resolveScaledStyles(datum, options, useScale, plot, 'stroke')}
+                            style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
                         />
                     {/if}
                 {/if}

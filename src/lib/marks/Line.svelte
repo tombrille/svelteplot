@@ -19,7 +19,7 @@
         /**
          * the marker for the starting point of a line segment
          */
-        markerStart?: boolean | MarkerShape;
+        markerStart?: boolean | MarkerShape | Snippet;
         /**
          * the marker for any intermediate point of a line segment
          */
@@ -58,19 +58,14 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
+
+    type LineProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & LineMarkProps;
+
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
-    import { randomId } from '$lib/helpers/index.js';
-
-    type LineProps = BaseMarkProps & {
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-    } & LineMarkProps;
+    import { isSnippet, randomId } from '$lib/helpers/index.js';
 
     let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
-
-    const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
 
     let groupByKey = $derived(options.z || options.stroke);
 
@@ -79,6 +74,9 @@
             ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d)))
             : [data]
     );
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
     // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
     let sortedGroups = $derived(
@@ -117,47 +115,31 @@
         <g class="lines">
             {#each sortedGroups as lineData, i}
                 {#if testFacet(lineData[0], mark.options)}
-                    {@const       dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
-                    {@const       dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
-                    {@const       marker = resolveProp(options.marker, lineData[0] as DataRecord) as string}
-                    {@const       markerStart = resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
-                    {@const       markerMid = resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
-                    {@const       markerEnd = resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
+                    {@const        dx_ = resolveProp(options.dx, lineData[0] as DataRecord, 0) as number}
+                    {@const        dy_ = resolveProp(options.dy, lineData[0] as DataRecord, 0) as number}
+                    {@const        marker = isSnippet(options.marker) ? options.marker : resolveProp(options.marker, lineData[0] as DataRecord) as string}
+                    {@const        markerStart = isSnippet(options.markerStart) ? options.markerStart : resolveProp(options.markerStart, lineData[0] as DataRecord) as string}
+                    {@const        markerMid = isSnippet(options.markerMid) ? options.markerMid : resolveProp(options.markerMid, lineData[0] as DataRecord) as string}
+                    {@const        markerEnd = isSnippet(options.markerEnd) ? options.markerEnd : resolveProp(options.markerEnd, lineData[0] as DataRecord) as string}
                     {@const markerColor_ =
                         resolveChannel('stroke', lineData[0], options) || 'currentColor'}
                     {@const markerColor = useScale.stroke
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}
-                    {@const       strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
+                    {@const        strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4) as number}
                     <g stroke-width={strokeWidth}>
-                        {#if markerStart}
-                            <Marker
-                                id={`marker-start-${id}-${i}`}
-                                shape={marker === true ? 'dot' : marker}
-                                color={markerColor}
-                            />
-                        {/if}
-                        {#if markerMid}
-                            <Marker
-                                id={`marker-mid-${id}-${i}`}
-                                shape={marker === true ? 'circle' : marker}
-                                color={markerColor}
-                            />
-                        {/if}
-                        {#if markerEnd}
-                            <Marker
-                                id={`marker-end-${id}-${i}`}
-                                shape={marker === true ? 'circle' : marker}
-                                color={markerColor}
-                            />
-                        {/if}
-                        {#if marker}
-                            <Marker
-                                id={`marker-${id}-${i}`}
-                                shape={marker === true ? 'circle' : marker}
-                                color={markerColor}
-                            />
-                        {/if}
+                        {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
+                            {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}-${i}`}
+                            {#if isSnippet(marker)}
+                                {@render marker(markerId, markerColor)}
+                            {:else if marker}
+                                <Marker
+                                    id={markerId}
+                                    shape={marker === true ? 'circle' : marker}
+                                    color={markerColor}
+                                />
+                            {/if}
+                        {/each}
                         <path
                             marker-start={markerStart || marker
                                 ? `url(#marker-${markerStart ? 'start-' : ''}${id}-${i})`
@@ -193,7 +175,6 @@
     /* todo: remove :global */
     .lines :global(path) {
         stroke-width: 1.4px;
-        fill: none;
         stroke-linejoin: round;
     }
 </style>

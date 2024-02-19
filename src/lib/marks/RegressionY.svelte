@@ -7,13 +7,20 @@
 
     let { data, ...options } = $props<RegressionProps>();
 
-    let groupBy: ChannelName|null = options.stroke != null ? 'stroke' : options.z != null ? 'z' : null;
+    let groupBy: ChannelName | null =
+        options.stroke != null ? 'stroke' : options.z != null ? 'z' : null;
     // separate groups
-    let groups = $derived(groupBy !== null ? d3Groups(data, d => resolveChannel(groupBy as ChannelName, d, options)).map(g => g[1]) : [data]);
+    let groups = $derived(
+        groupBy !== null
+            ? d3Groups(data, (d) => resolveChannel(groupBy as ChannelName, d, options)).map(
+                  (g) => g[1]
+              )
+            : [data]
+    );
 </script>
 
 <Mark type="regression">
     {#each groups as group}
-    <Regression data={group} dependent="y" {...options} />
+        <Regression data={group} dependent="y" {...options} />
     {/each}
 </Mark>

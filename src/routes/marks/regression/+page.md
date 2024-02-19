@@ -2,7 +2,7 @@
 title: Regression mark
 ---
 
-Regression
+Regressions are useful if you want to show the relationship between two variables. The following plot shows how the weight of cars depends on their power. The mark is using [d3-regression](https://github.com/harrystevens/d3-regression) for computing the regression lines, except for the `loess2` regression, which is based on the [loess](https://github.com/yongjun21/loess) package.
 
 ```svelte live
 <script lang="ts">
@@ -10,48 +10,44 @@ Regression
     import { page } from '$app/stores';
     import { Select, Slider } from '$lib/ui';
 
-    let { simpsons } = $derived($page.data.data);
+    let { cars } = $derived($page.data.data);
 
     let type = $state('linear');
     let order = $state(3);
     let bandwidth = $state(0.3);
+    let span = $state(0.7);
     let confidence = $state(0.99);
-    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess'];
+    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess', 'loess2'];
 </script>
 
 <Select label="Type" bind:value={type} options={types} />
 {#if type === 'poly'}<Slider label="order" bind:value={order} min={2} max={6} />{/if}
-{#if type === 'loess'}<Slider
-        label="bandwidth"
-        bind:value={bandwidth}
-        min={0}
-        max={0.9}
-        step={0.01}
-    />{/if}
-{#if type !== 'loess'}<Slider
-        label="confidence"
-        bind:value={confidence}
-        min={0.8}
-        max={0.999999}
-        step={0.000001}
-    />{/if}
+{#if type.startsWith('loess')}
+    <Slider label="span" bind:value={span} min={0.1} max={2} step={0.01} />{/if}
+<Select
+    label="confidence:"
+    bind:value={confidence}
+    format={(d) => `${d * 100}%`}
+    options={[0.8, 0.9, 0.95, 0.99, 0.999, 0.9999]}
+/>
 
 <Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="airdate" symbol="plus" stroke="#999" opacity={0.6} />
+    <Dot data={cars} y="weight (lb)" x="power (hp)" symbol="plus" opacity={0.6} />
     <RegressionY
-        data={simpsons}
+        data={cars}
         {type}
         {order}
+        {span}
         {bandwidth}
         {confidence}
         stroke="red"
-        y="imdb_rating"
-        x="airdate"
+        x="power (hp)"
+        y="weight (lb)"
     />
 </Plot>
 ```
 
-Grouping, Simpsons paradox, bla bla
+Sometimes it's useful to look at regression within sub-groups of a dataset, since they can be different from the overall distribution.
 
 ```svelte live
 <script>
@@ -67,7 +63,7 @@ Grouping, Simpsons paradox, bla bla
 </Plot>
 ```
 
-Grouping *and* faceting:
+You can combine the regression mark with grouping _and_ faceting:
 
 ```svelte live
 <script>
@@ -79,30 +75,27 @@ Grouping *and* faceting:
 <Plot grid frame aspectRatio={1} inset={5}>
     <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" fill="#999" opacity={0.2} />
     <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
-    <RegressionY data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" stroke="species" />
+    <RegressionY
+        data={penguins}
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        stroke="species"
+    />
 </Plot>
 ```
 
 ```svelte
 <Plot grid frame aspectRatio={1} inset={5}>
-    <Dot 
-        data={penguins} 
-        x="culmen_length_mm" 
-        y="culmen_depth_mm" 
-        fill="#999" 
-        opacity={0.2} />
-    <Dot 
-        data={penguins} 
-        x="culmen_length_mm" 
-        fx="species" 
-        y="culmen_depth_mm" 
-        fill="species" />
-    <RegressionY 
-        data={penguins} 
-        x="culmen_length_mm" 
-        fx="species" 
-        y="culmen_depth_mm" 
-        stroke="species" />
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" fill="#999" opacity={0.2} />
+    <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
+    <RegressionY
+        data={penguins}
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        stroke="species"
+    />
 </Plot>
 ```
 
@@ -116,21 +109,21 @@ Returns a linear regression mark where y is the dependent variable and x is the 
     import { page } from '$app/stores';
     import { Select, Slider } from '$lib/ui';
 
-    let { simpsons } = $derived($page.data.data);
+    let { cars } = $derived($page.data.data);
 </script>
 
 <Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="id" opacity={0.2} />
-    <RegressionY data={simpsons} type="linear" stroke="blue" y="imdb_rating" x="id" />
-    <RegressionY data={simpsons} type="poly" stroke="red" y="imdb_rating" x="id" />
+    <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
+    <RegressionY data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
+    <RegressionY data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="id" opacity={0.2} />
-    <RegressionY data={simpsons} type="linear" stroke="blue" y="imdb_rating" x="id" />
-    <RegressionY data={simpsons} type="poly" stroke="red" y="imdb_rating" x="id" />
+    <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
+    <RegressionY data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
+    <RegressionY data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
@@ -144,20 +137,20 @@ Returns a linear regression mark where x is the dependent variable and y is the 
     import { page } from '$app/stores';
     import { Select, Slider } from '$lib/ui';
 
-    let { simpsons } = $derived($page.data.data);
+    let { cars } = $derived($page.data.data);
 </script>
 
 <Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="id" opacity={0.2} />
-    <RegressionX data={simpsons} type="linear" stroke="blue" y="imdb_rating" x="id" />
-    <RegressionX data={simpsons} type="poly" stroke="red" y="imdb_rating" x="id" />
+    <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
+    <RegressionX data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
+    <RegressionX data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="id" opacity={0.2} />
-    <RegressionX data={simpsons} type="linear" stroke="blue" y="imdb_rating" x="id" />
-    <RegressionX data={simpsons} type="poly" stroke="red" y="imdb_rating" x="id" />
+    <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
+    <RegressionX data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
+    <RegressionX data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```

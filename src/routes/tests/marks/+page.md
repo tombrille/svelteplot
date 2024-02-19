@@ -2,50 +2,30 @@
 title: Test
 ---
 
-
 ```svelte live
 <script lang="ts">
-    import { Plot, Dot, RuleY, RegressionY } from '$lib';
+    import { Plot, Line } from '$lib';
+    import type { Datasets } from '$lib/types.js';
+
     import { page } from '$app/stores';
-    import { Select, Slider } from '$lib/ui';
-
-    let { simpsons } = $derived($page.data.data);
-
-    let type = $state('linear');
-    let order = $state(3);
-    let bandwidth = $state(0.3);
-    let confidence = $state(0.99);
-    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess'];
+    let { aapl } = $derived($page.data.data);
 </script>
 
-<Select label="Type" bind:value={type} options={types} />
-{#if type === 'poly'}<Slider label="order" bind:value={order} min={2} max={6} />{/if}
-{#if type === 'loess'}<Slider
-        label="bandwidth"
-        bind:value={bandwidth}
-        min={0}
-        max={0.9}
-        step={0.01}
-    />{/if}
-{#if type !== 'loess'}<Slider
-        label="confidence"
-        bind:value={confidence}
-        min={0.8}
-        max={0.999999}
-        step={0.000001}
-    />{/if}
-
-<Plot grid>
-    <Dot data={simpsons} y="imdb_rating" x="airdate" symbol="plus" stroke="#999" opacity={0.6} />
-    <RegressionY
-        data={simpsons}
-        {type}
-        {order}
-        {bandwidth}
-        {confidence}
-        stroke="red"
-        y="imdb_rating"
-        x="airdate"
-    />
+<Plot grid height={300}>
+    <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
+        {#snippet marker(id, color)}
+            <marker
+                {id}
+                fill="var(--svelteplot-bg)"
+                stroke={color}
+                markerWidth="6"
+                markerHeight="6"
+                viewBox="-4 -8 8 8"
+                orient="auto"
+            >
+                <path d="M-3,-6 L0,0 L3,-6h-6z" />
+            </marker>
+        {/snippet}
+    </Line>
 </Plot>
 ```

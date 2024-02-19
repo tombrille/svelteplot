@@ -1,15 +1,15 @@
 ---
-title: A content centered site build tool
-description: The Svelte framework for exploratory data visualization
+title: Reactive data visualization
+description: A Svelte framework for reactive data visualization
 heroImage: /logo.png
-tagline: Inspired by Observable Plot, built on top of D3!
+tagline: Inspired by Observable Plot, written in Svelte 5, built on top of D3.js!
 actions:
-    - label: What is SveltePlot?
-      to: /introduction
-      type: primary
     - label: Getting started
       type: flat
       to: /getting-started
+    - label: Why SveltePlot?
+      to: /why-svelteplot
+      type: primary
 features:
     - title: Marks
       description: To help you can start writing with minimal configuration.
@@ -55,9 +55,19 @@ features:
       link: /features/scales
 ---
 
+<script>
+  import { preloadData, preloadCode } from '$app/navigation';
+
+  $effect(() => {
+    preloadCode('/getting-started');
+    preloadData('/introduction');
+  });
+  
+</script>
+
 <style>
   :global(.intro .description) {
-    font-size: 3.5rem!important;
+    font-size: 3rem!important;
     font-weight: 700!important;
     line-height: 1.1!important;
   }

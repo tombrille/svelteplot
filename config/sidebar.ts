@@ -7,16 +7,16 @@ export default {
                     collapsible: false,
                     items: [
                         {
-                            title: 'Introduction',
-                            to: '/introduction/'
-                        },
-                        {
                             title: 'Getting started',
                             to: '/getting-started/'
                         },
                         {
-                            title: 'Differences to Plot',
-                            to: '/differences-to-plot/'
+                            title: 'Why SveltePlot?',
+                            to: '/why-svelteplot/'
+                        },
+                        {
+                            title: 'Introduction',
+                            to: '/introduction/'
                         }
                     ]
                 },

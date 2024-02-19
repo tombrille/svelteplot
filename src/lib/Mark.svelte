@@ -43,6 +43,9 @@
 
     let facet = $derived(getTopLevelFacet());
 
+    const { getFacetState } = getContext('facet');
+    let { left, top } = $derived(getFacetState());
+
     const mark: Mark<GenericMarkOptions> = {
         id: Symbol(),
         type,
@@ -54,7 +57,8 @@
         ),
         data,
         options: {
-            ...options
+            ...options,
+            __firstFacet: left && top
         }
     };
 
@@ -64,8 +68,9 @@
     addMark(mark);
 
     $effect(() => {
-        if (deepEqual(options, mark.options)) return;
-        mark.options = { ...options };
+        const opts = { ...options, __firstFacet: left && top };
+        if (deepEqual(opts, mark.options)) return;
+        mark.options = opts;
         mark2.options = mark.options;
         updateMark(mark);
     });

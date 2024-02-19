@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     import type { BaseMarkProps, ChannelAccessor, PlotContext } from '../../types.js';
 
-    type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';
+    type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess' | 'loess2';
 
     export type RegressionProps = BaseMarkProps & {
         x: ChannelAccessor;
@@ -17,8 +17,11 @@
          * it may have little predictive power for data outside of your domain.
          */
         order: number;
+        // for log
         base: number;
-        bandwidth: number;
+        // for loess
+        span: number;
+        // for confidence bands
         confidence: number;
     };
 </script>
@@ -36,6 +39,7 @@
         regressionPow,
         regressionLoess
     } from 'd3-regression';
+    import regressionLoess2 from '$lib/helpers/regressionLoess.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { confidenceInterval } from '$lib/helpers/math.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
@@ -48,7 +52,8 @@
         ['exp', regressionExp],
         ['log', regressionLog],
         ['pow', regressionPow],
-        ['loess', regressionLoess]
+        ['loess', regressionLoess],
+        ['loess2', regressionLoess2]
     ]);
 
     function maybeRegression(name: string) {
@@ -66,7 +71,7 @@
         type = 'linear',
         order = 3,
         base = 2.71828,
-        bandwidth = 0.3,
+        span = 0.3,
         confidence = 0.99,
         ...options
     } = $props<
@@ -78,7 +83,7 @@
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
 
-    let filteredData = $derived(data.filter(d => testFacet(d, options)));
+    let filteredData = $derived(data.filter((d) => testFacet(d, options)));
 
     let independent: 'x' | 'y' = $derived(dependent === 'x' ? 'y' : 'x');
 
@@ -90,8 +95,9 @@
             y: (d) => resolveChannel(dependent, d, options),
             ...(type === 'poly' ? { order } : {}),
             ...(type === 'log' ? { base } : {}),
-            ...(type !== 'loess' ? { domain: plot.scales[independent].domain } : {}),
-            ...(type === 'loess' ? { bandwidth } : {})
+            ...(!type.startsWith('loess') ? { domain: plot.scales[independent].domain } : {}),
+            ...(type === 'loess' ? { bandwidth: span } : {}),
+            ...(type === 'loess2' ? { span } : {})
         })(filteredData)
     );
 
@@ -104,19 +110,23 @@
     ]);
 
     let regrData = $derived(
-        type !== 'loess'
-            ? regrPoints.map((__x) => {
-                  // const __x = x;
-                  const __y = regression.predict(__x);
-                  return { __x, __y };
-              })
-            : regression.map(([__x, __y]) => ({
-                  __x: plot.scales[independent].type === 'time' ? new Date(__x) : __x,
-                  __y,
-              }))
+        regression.predictMany
+            ? regression.predictMany(regrPoints).map((__y, i) => ({ __x: regrPoints[i], __y }))
+            : regression.predict
+              ? regrPoints.map((__x) => {
+                    // const __x = x;
+                    const __y = regression.predict(__x);
+                    return { __x, __y };
+                })
+              : regression.map(([__x, __y]) => ({
+                    __x: plot.scales[independent].type === 'time' ? new Date(__x) : __x,
+                    __y
+                }))
     );
 
-    let stroke = $derived(options.stroke != null ? resolveChannel('stroke', filteredData[0], options) : null)
+    let stroke = $derived(
+        options.stroke != null ? resolveChannel('stroke', filteredData[0], options) : null
+    );
 
     let confBandGen = $derived(
         confidenceInterval(
@@ -132,7 +142,7 @@
     );
 
     let confBandData = $derived(
-        type !== 'loess'
+        regression.predict
             ? regrPoints.map((x) => {
                   const { x: __x, left, right } = confBandGen(x);
                   return { __x, __y1: left, __y2: right };
@@ -144,7 +154,14 @@
 {#if filteredData.length}
     <Line
         data={regrData}
-        {...{ ...options, fx: null, fy: null, stroke, x: dependent === 'y' ? '__x' : '__y', y: dependent === 'y' ? '__y' : '__x' }}
+        {...{
+            ...options,
+            fx: null,
+            fy: null,
+            stroke,
+            x: dependent === 'y' ? '__x' : '__y',
+            y: dependent === 'y' ? '__y' : '__x'
+        }}
     />
     {#if confBandData.length}
         <Area

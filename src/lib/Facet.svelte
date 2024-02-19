@@ -1,9 +1,20 @@
 <script lang="ts">
     import { setContext } from 'svelte';
     import { resolveChannel } from './helpers/resolve.js';
-    import type { BaseMarkProps, DataRecord } from './types.js';
+    import type { BaseMarkProps, DataRecord, RawValue } from './types.js';
 
-    let { fx, fy, firstX, firstY, lastX, lastY } = $props();
+    let { fx, fy, left, top, right, bottom, topEmpty, bottomEmpty, leftEmpty, rightEmpty } = $props<{
+        fx: RawValue;
+        fy: RawValue;
+        left: boolean;
+        top: boolean;
+        right: boolean;
+        bottom: boolean;
+        topEmpty: boolean;
+        bottomEmpty: boolean;
+        leftEmpty: boolean;
+        rightEmpty: boolean;
+    }>();
 
     setContext('facet', {
         getTestFacet() {
@@ -15,7 +26,7 @@
             };
         },
         getFacetState() {
-            return { fx, fy, firstX, firstY, lastX, lastY };
+            return { fx, fy, left, top, right, bottom,topEmpty, bottomEmpty, leftEmpty, rightEmpty };
         }
     });
 </script>

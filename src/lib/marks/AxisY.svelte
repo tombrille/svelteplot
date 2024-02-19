@@ -5,6 +5,7 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import { getContext } from 'svelte';
+    import BaseAxisY from './helpers/BaseAxisY.svelte';
     import Mark from '../Mark.svelte';
     import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
@@ -40,12 +41,6 @@
             tickFormat?: string | ((d: RawValue) => string);
         } & BaseMarkProps
     >();
-
-    const LINE_ANCHOR = {
-        top: 'hanging',
-        center: 'middle',
-        bottom: 'auto'
-    };
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -102,7 +97,7 @@
     );
 
     const { getFacetState } = getContext('facet');
-    let { firstX, firstY } = $derived(getFacetState());
+    let { left, top } = $derived(getFacetState());
 </script>
 
 <Mark
@@ -112,61 +107,39 @@
     {...{ ...options, y: '__y' }}
     {automatic}
 >
-    {#if firstX}
-        <g class="axis-y">
-            {#if firstY && useTitle}
-                <text
-                    style={getBaseStyles(null, options)}
-                    style:text-anchor={anchor === 'left' ? 'start' : 'end'}
-                    x={anchor === 'left' ? 0 : plot.width}
-                    y={5}
-                    class="axis-title"
-                    dominant-baseline="hanging">{useTitle}</text
-                >
-            {/if}
-            {#each ticks as tick, t}
-                {@const tickText = useTickFormat(tick)}
-                {@const       dx = resolveProp(options.dx, tick, 0) as number}
-                {@const       dy = resolveProp(options.dy, tick, 0) as number}
-                {@const y =
-                    plot.scales.y.fn(tick) +
-                    (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
-                <g
-                    class="tick"
-                    transform="translate({dx +
-                        plot.options.marginLeft +
-                        (anchor === 'left' ? 0 : plot.plotWidth)},{y + dy})"
-                >
-                    {#if tickSize}
-                        <line
-                            style={getBaseStyles(tick, options)}
-                            x2={anchor === 'left' ? -tickSize : tickSize}
-                        />
-                    {/if}
-
-                    <text
-                        class:is-left={anchor === 'left'}
-                        style={getBaseStyles(tick, { ...options, fontSize: tickFontSize })}
-                        x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
-                        dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                        >{Array.isArray(tickText) ? tickText.join(' ') : tickText}</text
-                    >
-                </g>
-            {/each}
-        </g>
+    {#if left && top && useTitle}
+        <text
+            style={getBaseStyles(null, options)}
+            style:text-anchor={anchor === 'left' ? 'start' : 'end'}
+            x={anchor === 'left' ? 0 : plot.width}
+            y={5}
+            class="axis-title"
+            dominant-baseline="hanging">{useTitle}</text
+        >
+    {/if}
+    {#if left}
+        <BaseAxisY
+            scaleFn={plot.scales.y.fn}
+            scaleType={plot.scales.y.type}
+            tickFormat={useTickFormat}
+            {ticks}
+            marginLeft={plot.options.marginLeft}
+            width={plot.facetWidth}
+            {anchor}
+            {lineAnchor}
+            {tickSize}
+            {tickPadding}
+            {tickFontSize}
+            {options}
+            {plot}
+        />
     {/if}
 </Mark>
 
 <style>
-    line {
-        stroke: currentColor;
-    }
     text {
         font-size: 11px;
         opacity: 0.8;
         fill: currentColor;
-    }
-    text.is-left {
-        text-anchor: end;
     }
 </style>

@@ -1,4 +1,5 @@
 import type { BaseMarkProps, DataRecord } from '$lib/types.js';
+import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
 import { csvParse, autoType } from 'd3-dsv';
 
@@ -32,4 +33,8 @@ export async function loadDatasets(ids: string[], fetch) {
     return Object.fromEntries(
         (await Promise.all(ids.map((id) => loadCSV(fetch, id)))).map((data, i) => [ids[i], data])
     );
+}
+
+export function isSnippet(object: unknown): object is Snippet {
+    return !!object && object[Symbol.for('svelte.snippet')] === true;
 }

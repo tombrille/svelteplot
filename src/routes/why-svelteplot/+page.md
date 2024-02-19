@@ -1,5 +1,5 @@
 ---
-title: Differences to Observable Plot
+title: Why SveltePlot?
 ---
 
 SveltePlot is heavily inspired by Observable Plot, but in some regards it is different.
@@ -97,7 +97,72 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
 </Plot>
 ```
 
-### Responsive plot design
+Simply by being a reactive Svelte framework, SveltePlot supports using **transitions** out of the box! Here, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to smoothly update the plots y domain whenever the data changes:
+
+```svelte live
+<script>
+    import { Plot, RuleY, BarY } from '$lib';
+    import { tweened } from 'svelte/motion';
+    import { cubicOut } from 'svelte/easing';
+    import { extent } from 'd3-array';
+    import { fade } from 'svelte/transition';
+
+    let data = $state([1, 2, 3, 4, 5]);
+
+    const domain = tweened(extent([0, ...data]), {
+        duration: 1000,
+        easing: cubicOut
+    });
+
+    $effect(() => {
+        $domain = extent([0, ...data]);
+    });
+</script>
+
+<button onclick={() => data.push(data.at(-1) + (data.length - 3))}>add number</button>
+<button
+    onclick={() => {
+        data = [1, 2, 3, 4, 5];
+    }}>reset</button
+>
+
+<Plot
+    x={{ axis: false, padding: data.length < 60 ? 0.1 : 0 }}
+    color={{ scheme: 'RdBu' }}
+    y={{ grid: true, domain: $domain }}
+>
+    <BarY {data} fill={(d) => d} t={fade} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<script>
+    import { tweened } from 'svelte/motion';
+    import { cubicOut } from 'svelte/easing';
+
+    let data = $state([1, 2, 3, 4, 5]);
+
+    const domain = tweened(extent([0, ...data]), {
+        duration: 1000,
+        easing: cubicOut
+    });
+
+    $effect(() => {
+        // update domain whenever data changes
+        $domain = extent([0, ...data]);
+    });
+</script>
+
+<button onclick={(d) => data.push(Math.random())}>add number</button>
+
+<Plot color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
+    <BarY {data} fill={(d) => d} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+## Responsive plot design
 
 Being a reactive framework, SveltePlot also makes it easier to design responsive plots, or -- in other words -- plots that react to their width. Note that again, changing the width of the plot doesn't lead to a full re-rendering.
 
@@ -168,66 +233,6 @@ In the following example, we're switching from the implicit y axis to a custom A
 </Plot>
 ```
 
-## Transitions
-
-Svelte comes with powerful transitions out of the box that we can use in SveltePlot. Here, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to update the plots y domain: 
-
-```svelte live
-<script>
-    import { Plot, RuleY, BarY } from '$lib';
-    import { tweened } from 'svelte/motion';
-	import { cubicOut } from 'svelte/easing';
-    import { extent } from 'd3-array';
-    import { fade } from 'svelte/transition';
-    import { noise } from '$lib/helpers/noise';
-
-    let data = $state([1,2,3,4,5]);
-
-    const domain = tweened(extent([0, ...data]), {
-		duration: 1000,
-		easing: cubicOut
-	});
-
-    let start = $state(Math.random() * 1e6);
-    $effect(() => {
-       $domain = extent([0, ...data]);
-    });
-</script>
-
-<button onclick={() => data.push(data.at(-1) + (noise(start + data.length*0.1)-0.5)*Math.pow(data.length,0.8))}>add number</button> <button onclick={() => {data = [1,2,3,4,5]; start= Math.random() * 1e6}}>reset</button>
-
-<Plot x={{ axis: false, padding: data.length < 60 ? 0.1 : 0 }} color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
-    <BarY {data} fill={d => d} t={fade} />
-    <RuleY data={[0]} />
-</Plot>
-```
-
-```svelte
-<script>
-    import { tweened } from 'svelte/motion';
-    import { cubicOut } from 'svelte/easing';
-
-    let data = $state([1,2,3,4,5]);
-
-    const domain = tweened(extent([0, ...data]), {
-        duration: 1000,
-        easing: cubicOut
-    });
-
-    $effect(() => {
-        // update domain whenever data changes
-        $domain = extent([0, ...data]);
-    });
-</script>
-
-<button onclick={d => data.push(Math.random())}>add number</button>
-
-<Plot color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
-    <BarY {data} fill={d => d} />
-    <RuleY data={[0]} />
-</Plot>
-```
-
 ## Events!
 
 Another difference to Observable Plot is that you can pass event handlers to the marks.
@@ -267,9 +272,96 @@ Another difference to Observable Plot is that you can pass event handlers to the
 </Plot>
 ```
 
+## Easy to extend
+
+You can extend SveltePlot by injecting regular Svelte snippets. For instance, the Line mark allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line } from '$lib';
+    import { fly, fade } from 'svelte/transition';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+
+    let shown = $state(false);
+
+    $effect(() => {
+        const t = setInterval(() => {
+            shown = !shown;
+        }, 1000);
+        return () => clearInterval(t);
+    });
+</script>
+
+<Plot grid height={300}>
+    <Line data={aapl.slice(-40)} curve="basis" x="Date" y="Adj Close">
+        {#snippet marker(id, color)}
+            <marker
+                {id}
+                fill="none"
+                stroke={color}
+                markerWidth="6"
+                markerHeight="10"
+                viewBox="-4 -10 8 10"
+                orient="auto"
+            >
+                {#if shown}
+                    <path
+                        in:fly={{ duration: 1000, y: -10 }}
+                        out:fade
+                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3"
+                    />
+                {/if}
+            </marker>
+        {/snippet}
+    </Line>
+</Plot>
+```
+
+```svelte
+<script>
+    // ...
+    import { fly, fade } from 'svelte/transition';
+
+    let shown = $state(false);
+
+    $effect(() => {
+        const t = setInterval(() => {
+            shown = !shown;
+        }, 1000);
+        return () => clearInterval(t);
+    });
+</script>
+
+<Plot grid height={300}>
+    <Line data={aapl.slice(-40)} x="Date" y="Adj Close" curve="basis">
+        {#snippet marker(id, color)}
+            <marker
+                {id}
+                fill="none"
+                stroke={color}
+                markerWidth="6"
+                markerHeight="10"
+                viewBox="-4 -10 8 10"
+                orient="auto"
+            >
+                {#if shown}
+                    <path
+                        in:fly={{ duration: 1000, y: -10 }}
+                        out:fade
+                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3"
+                    />
+                {/if}
+            </marker>
+        {/snippet}
+    </Line>
+</Plot>
+```
+
 ## Everything is a channel
 
-In Observable Plot, there's a distinction between _channels_ and _non-channels_. Channels can be defined using keys or function, while the non-channels can only be assigned constant values. That means, for instance, that for the text mark, you can set the `fontSize` as a function but not the `fontWeight`.
+In Observable Plot, there's a distinction between _channels_ and _non-channels_. Channels can be defined using keys or functions, while the non-channels can only be assigned constant values. That means, for instance, that for the text mark, you can set the `fontSize` as a function but not the `fontWeight`.
 
 In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant value. The only difference is that in some cases, the channels are bound to a _scale_.
 
