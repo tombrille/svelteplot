@@ -1,4 +1,4 @@
-import { loadDatasets } from '$lib/helpers/index.js';
+import { loadDatasets } from '$lib/helpers/csv.js';
 import type { PageLoad } from './$types.js';
 
 export const load: PageLoad = async ({ fetch }) => {
