@@ -43,3 +43,37 @@ The interval transform may be used to convert a single value in x or y (or both)
     </Plot>
 {/if}
 ```
+
+## RectX
+
+RectX can be used for range annotations:
+
+```svelte live
+<script>
+    import { Plot, Line, RectX } from '$lib';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+<Plot>
+    <Line data={aapl} x="Date" y="Close" />
+    <RectX data={[{from: new Date(2014,0,1), to: new Date(2016,0,1) }]} x1="from" x2="to" fillOpacity={0.1} />
+</Plot>
+```
+
+## RectY
+
+RectY can be used for range annotations:
+
+```svelte live
+<script>
+    import { Plot, Line, RectY } from '$lib';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+<Plot>
+    <Line data={aapl} x="Date" y="Close" />
+    <RectY data={[{from: 120, to: 140 }]} y1="from" y2="to" fillOpacity={0.1} />
+</Plot>
+```

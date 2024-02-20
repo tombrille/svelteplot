@@ -56,8 +56,6 @@
                 {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
                 {@const x1 = useScale.x1 ? plot.scales.y.fn(x1_) : x1_}
                 {@const x2 = useScale.x2 ? plot.scales.y.fn(x2_) : x2_}
-                {@const stroke_ = resolveChannel('stroke', datum, args)}
-                {@const stroke = useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_}
                 {@const inset = resolveProp(args.inset, datum, 0)}
                 {@const insetLeft = resolveProp(args.insetLeft, datum, 0)}
                 {@const insetRight = resolveProp(args.insetRight, datum, 0)}
