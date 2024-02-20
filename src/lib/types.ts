@@ -539,6 +539,7 @@ export type MarkStyleProps =
     | 'fillOpacity'
     | 'fontWeight'
     | 'fontSize'
+    | 'fontStyle'
     | 'stroke'
     | 'strokeWidth'
     | 'strokeOpacity'

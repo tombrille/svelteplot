@@ -11,6 +11,7 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     // strokeOpacity: 'stroke-opacity',
     fontSize: 'font-size',
     fontWeight: 'font-weight',
+    fontStyle: 'font-style',
     // opacity: 'opacity',
     textAnchor: 'text-anchor',
     cursor: 'cursor'
