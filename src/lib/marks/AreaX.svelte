@@ -5,7 +5,9 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import Area, { type AreaMarkProps } from './Area.svelte';
-    import { renameChannels, stackX, recordizeX } from '$lib/index.js';
+    import { renameChannels } from '$lib/transforms/rename.js';
+    import { stackX } from '$lib/transforms/stack.js';
+    import { recordizeX } from '$lib/transforms/recordize.js';
     import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
 
     type AreaXProps = BaseMarkProps & {

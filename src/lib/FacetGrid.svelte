@@ -6,7 +6,6 @@
     import BaseAxisX from './marks/helpers/BaseAxisX.svelte';
     import BaseAxisY from './marks/helpers/BaseAxisY.svelte';
     import { resolveChannel } from './helpers/resolve.js';
-    import { uniq } from 'underscore';
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
     // we need the plot context for the overall width & height

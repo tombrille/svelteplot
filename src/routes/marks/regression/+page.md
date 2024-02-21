@@ -2,7 +2,7 @@
 title: Regression mark
 ---
 
-Regressions are useful if you want to show the relationship between two variables. The following plot shows how the weight of cars depends on their power. The mark is using [d3-regression](https://github.com/harrystevens/d3-regression) for computing the regression lines, except for the `loess2` regression, which is based on the [loess](https://github.com/yongjun21/loess) package.
+Regressions are useful if you want to show the relationship between two variables. The following plot shows how the weight of cars depends on their power. The mark is using [d3-regression](https://github.com/harrystevens/d3-regression) for computing the regression lines.
 
 ```svelte live
 <script lang="ts">
@@ -17,7 +17,7 @@ Regressions are useful if you want to show the relationship between two variable
     let bandwidth = $state(0.3);
     let span = $state(0.7);
     let confidence = $state(0.99);
-    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess', 'loess2'];
+    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess'];
 </script>
 
 <Select label="Type" bind:value={type} options={types} />

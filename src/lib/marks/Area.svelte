@@ -21,7 +21,7 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { groupBy } from 'underscore';
+    import groupBy from 'underscore/modules/groupBy.js';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';

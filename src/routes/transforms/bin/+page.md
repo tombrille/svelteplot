@@ -19,13 +19,13 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 </script>
 
 <Plot height={300}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} />
+    <RectY {...binX({ data: olympians, x: 'weight' }, { y: 'count' })} />
 </Plot>
 ```
 
 ```svelte
 <Plot height={300}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} />
+    <RectY {...binX({ data: olympians, x: 'weight'},  { y: 'count' })} />
 </Plot>
 ```
 
@@ -41,7 +41,7 @@ You can also bin and group at the same time:
 
 <Plot height={300} grid marginLeft={40} color={{ legend: true }}>
     <RectY
-        {...binX({ data: olympians, x: 'weight', y: 'count', fill: 'sex' })}
+        {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })}
         stack={{ offset: 'center' }}
     />
     <RuleY data={[0]} />
@@ -59,7 +59,7 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 </script>
 
 <Plot height={200}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' })} insetRight="0" />
+    <RectY {...binX({ data: olympians, x: 'weight' }, { y: 'count' })} insetRight="0" />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -68,7 +68,7 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 <Plot height={200}>
     <RectY
         {...binX(
-            { data: penguins, x: 'culmen_length_mm', y: 'count' },
+            { data: penguins, x: 'culmen_length_mm'}, { y: 'count' },
             { thresholds: [0, 35, 40, 41, 45, 53, 80] }
         )}
         insetLeft="0"
@@ -93,7 +93,27 @@ You can define _thresholds_ as a number
 
 <Slider min={10} max={100} step={10} label="thresholds" bind:value={thresholds} />
 <Plot grid marginLeft={50} height={200}>
-    <RectY {...binX({ data: olympians, x: 'weight', y: 'count' }, { thresholds })} />
+    <RectY {...binX({ data: olympians, x: 'weight' }, { y: 'count', thresholds })} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+You can also define an _interval_:
+
+```svelte live
+<script>
+    import { Plot, RectY, RuleY, binX } from '$lib';
+    import Slider from '$lib/ui/Slider.svelte';
+
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
+
+    let interval = $state(10);
+</script>
+
+<Slider min={1} max={40} step={1} label="interval" bind:value={interval} />
+<Plot grid marginLeft={50} height={200}>
+    <RectY {...binX({ data: olympians, x: 'weight' }, { y: 'count', interval })} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -111,8 +131,8 @@ Or as arbitrary bin bounds:
 <Plot height={200}>
     <RectY
         {...binX(
-            { data: penguins, x: 'culmen_length_mm', y: 'count' },
-            { thresholds: [0, 35, 40, 41, 45, 53, 80] }
+            { data: penguins, x: 'culmen_length_mm' },
+            { y: 'count', thresholds: [0, 35, 40, 41, 45, 53, 80] }
         )}
     />
     <RuleY data={[0]} />
@@ -133,7 +153,7 @@ Or as arbitrary bin bounds:
 
 ## BinY
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
 

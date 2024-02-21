@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     import type { BaseMarkProps, ChannelAccessor, PlotContext } from '../../types.js';
 
-    type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess' | 'loess2';
+    type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';
 
     export type RegressionProps = BaseMarkProps & {
         x: ChannelAccessor;
@@ -39,11 +39,10 @@
         regressionPow,
         regressionLoess
     } from 'd3-regression';
-    import regressionLoess2 from '$lib/helpers/regressionLoess.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { confidenceInterval } from '$lib/helpers/math.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
-    import { isDate } from 'underscore';
+    import isDate from 'underscore/modules/isDate.js';
 
     const regressions = new Map<RegressionType, typeof regressionLinear>([
         ['linear', regressionLinear],
@@ -53,7 +52,6 @@
         ['log', regressionLog],
         ['pow', regressionPow],
         ['loess', regressionLoess],
-        ['loess2', regressionLoess2]
     ]);
 
     function maybeRegression(name: string) {
@@ -97,7 +95,6 @@
             ...(type === 'log' ? { base } : {}),
             ...(!type.startsWith('loess') ? { domain: plot.scales[independent].domain } : {}),
             ...(type === 'loess' ? { bandwidth: span } : {}),
-            ...(type === 'loess2' ? { span } : {})
         })(filteredData)
     );
 

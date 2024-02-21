@@ -41,12 +41,10 @@
     import Marker, { type MarkerShape } from './helpers/Marker.svelte';
     import { getContext, type Snippet } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { groupBy } from 'underscore';
+    import groupBy from 'underscore/modules/groupBy.js';
     import { line, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
-    import { maybeSymbol } from '$lib/helpers/symbols.js';
-    import { symbol as d3Symbol } from 'd3-shape';
 
     const id = randomId();
 

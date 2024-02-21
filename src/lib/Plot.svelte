@@ -17,11 +17,18 @@
 
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
-    import { GridX, GridY, Frame, AxisX, AxisY, ColorLegend, SymbolLegend } from './index.js';
+
+    import AxisX from './marks/AxisX.svelte';
+    import AxisY from './marks/AxisY.svelte';
+    import ColorLegend from './marks/ColorLegend.svelte';
+    import Frame from './marks/Frame.svelte';
+    import GridX from './marks/GridX.svelte';
+    import GridY from './marks/GridY.svelte';
+    import SymbolLegend from './marks/SymbolLegend.svelte';
 
     let width = $state(500);
 
-    let { header, footer, overlay, underlay, debug, testid, facet, ...initialOpts } =
+    let { header, footer, overlay, underlay, testid, facet, ...initialOpts } =
         $props<Partial<PlotOptions>>();
 
     // information that influences the default plot options

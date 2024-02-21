@@ -6,7 +6,7 @@
      */
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue } from '../types.js';
     import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { getUsedScales } from '$lib/helpers/scales.js';

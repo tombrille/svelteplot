@@ -6,9 +6,10 @@
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { ChannelAccessor, DataRecord, RawValue } from '$lib/types.js';
 import type { TransformArg } from '$lib/types.js';
-
+import { maybeInterval } from '$lib/helpers/autoTicks.js';
 import {
     bin as d3Bin,
+    extent,
     groups as d3Groups,
     // bisect,
     // extent,
@@ -72,10 +73,13 @@ const Reducers = {
 };
 
 function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
-    const { domain, thresholds = 'auto' } = options;
+    const { domain, thresholds = 'auto', interval } = options;
     const bin = d3Bin();
     if (domain) bin.domain(domain);
-    if (thresholds)
+    if (interval) {
+        const [lo, hi] = extent(data.map(d => resolveChannel(byDim, d, channels)))
+        bin.thresholds(maybeInterval(interval).range(lo, hi));
+    } else if (thresholds)
         bin.thresholds(
             // use a generator
             typeof thresholds === 'string' && ThresholdGenerators[thresholds] !== undefined
