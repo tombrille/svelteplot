@@ -176,9 +176,12 @@ export function binY<T>(
     return binBy('y', { data, ...channels }, options);
 }
 
+/**
+ * for binning in x and y dimension simulatenously
+ */
 export function bin<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,
-    options: BinOptions = { thresholds: 'auto' }
+    options: BinOptions = { thresholds: 'auto', interval }
 ): TransformArg<T, DataRecord> {
     const { domain, thresholds = 'auto' } = options;
 
@@ -195,7 +198,13 @@ export function bin<T>(
     binX.value((d) => resolveChannel('x', d, channels));
     binY.value((d) => resolveChannel('y', d, channels));
 
-    if (thresholds) {
+    if (interval) {
+        const [xlo, xhi] = extent(data.map(d => resolveChannel('x', d, channels)));
+        const [ylo, yhi] = extent(data.map(d => resolveChannel('y', d, channels)));
+        binX.thresholds(maybeInterval(interval).range(xlo, xhi));
+        binY.thresholds(maybeInterval(interval).range(ylo, yhi));
+    }
+    else if (thresholds) {
         // when binning in x and y, we need to ensure we are using consistent thresholds
         const t =
             typeof thresholds === 'string' && ThresholdGenerators[thresholds] !== undefined
