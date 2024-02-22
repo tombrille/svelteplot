@@ -8,7 +8,7 @@ Unfortunately, SveltePlot **is not ready for use** yet. Most of the existing fea
 
 ## Try online
 
-You can use SveltePlot inside any platform that supports Svelte 5, such as StackBlitz, SvelteLab, or the regular Svelte REPLs.
+You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-o4p5ss?file=src%2Fassets%2Fco2.csv,src%2FApp.svelte&terminal=dev).
 
 ```svelte
 <script>
@@ -17,6 +17,11 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as Stack
 ```
 
 ## Use SveltePlot in Svelte 5 projects
+
+:::warning
+Note that while we're figuring out the best license for SveltePlot, there's no
+recent release on npm, yet.
+:::
 
 Just install SveltePlot via `npm` or `pnpm`, and import and use the components!
 

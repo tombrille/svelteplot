@@ -4,6 +4,7 @@ title: Line mark
 
 <script>
     import CurveDemo from './CurveDemo.svelte';
+    import CO2Decades from './CO2Decades.svelte';
 </script>
 
 AAPL demo:
@@ -71,6 +72,10 @@ BLS Demo:
     />
 </Plot>
 ```
+
+CO2 decades:
+
+<CO2Decades />
 
 ## LineX
 

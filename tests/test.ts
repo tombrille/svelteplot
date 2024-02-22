@@ -20,7 +20,6 @@ test('features/plot', async ({ page }) => {
     await expect(page.getByTestId('with-title')).toHaveScreenshot();
 });
 
-
 // test('features/scales', async ({ page }) => {
 //     await page.goto('/features/scales');
 //     await expect(page.getByTestId('linear')).toHaveScreenshot();

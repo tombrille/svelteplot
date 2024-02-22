@@ -123,7 +123,6 @@ Facetted **ruleY** chart
 
 Facetted **text** chart
 
-
 ```svelte live
 <script>
     import { Plot, Text, AxisX } from '$lib/index';
@@ -143,8 +142,21 @@ Facetted **text** chart
         marginBottom={40}
         marginRight={70}
     >
-        <Text data={penguins} x="culmen_length_mm" y="culmen_depth_mm" text={d => d.island.charAt(0)} opacity={0.1} />
-        <Text data={penguins} x="culmen_length_mm" y="culmen_depth_mm" text={d => d.island.charAt(0)}  fy="species" fx="sex" />
+        <Text
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            text={(d) => d.island.charAt(0)}
+            opacity={0.1}
+        />
+        <Text
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            text={(d) => d.island.charAt(0)}
+            fy="species"
+            fx="sex"
+        />
     </Plot>
 {/if}
 ```

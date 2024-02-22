@@ -14,7 +14,7 @@ import {
     scaleSymlog,
     scalePow
 } from 'd3-scale';
-import { extent } from 'd3-array';
+import { extent, range as d3Range } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
 // import { getLogTicks } from './getLogTicks.js';
 import {
@@ -44,8 +44,9 @@ import type {
 } from '../types.js';
 import isDataRecord from './isDataRecord.js';
 import callWithProps from './callWithProps.js';
-import { interpolateRound } from 'd3-interpolate';
+import { interpolateLab, interpolateRound } from 'd3-interpolate';
 import { coalesce } from './index.js';
+import { maybeInterval } from './autoTicks.js';
 
 const Scales: Record<
     ScaleType,
@@ -289,7 +290,7 @@ export function createScale<T extends ScaleOptions>(
 
     if (name === 'color') {
         // special treatment for color scales
-        const { scheme } = scaleOptions;
+        const { scheme, interpolate } = scaleOptions;
 
         if (type === 'categorical') {
             // categorical scale
@@ -301,7 +302,12 @@ export function createScale<T extends ScaleOptions>(
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
-            if (
+            if (interpolate) {
+                fn = scaleSequential(domain, interpolate);
+            } else if (Array.isArray(scheme_)) {
+                const step = 1/(scheme_.length);
+                fn = scaleSequential(domain, scaleLinear(d3Range(0, 1 + step/2, step), scheme_).interpolate(interpolateLab));
+            } else if (
                 scaleOptions.type === 'diverging' ||
                 (scaleOptions.type === 'auto' && isDivergingScheme(scheme_))
             ) {
