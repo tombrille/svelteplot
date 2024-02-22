@@ -139,7 +139,7 @@ export function resolveScaledStyles(
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    return Object.entries({
+    return `${Object.entries({
         ...getBaseStylesObject(datum, channels),
         fill: 'none',
         stroke: 'none',
@@ -158,5 +158,5 @@ export function resolveScaledStyles(
         )
     })
         .map(([key, value]) => `${key}: ${value}`)
-        .join(';');
+        .join(';')};${channels.style || ''}`;
 }

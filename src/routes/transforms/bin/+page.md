@@ -25,7 +25,7 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 
 ```svelte
 <Plot height={300}>
-    <RectY {...binX({ data: olympians, x: 'weight'},  { y: 'count' })} />
+    <RectY {...binX({ data: olympians, x: 'weight' }, { y: 'count' })} />
 </Plot>
 ```
 
@@ -68,7 +68,8 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 <Plot height={200}>
     <RectY
         {...binX(
-            { data: penguins, x: 'culmen_length_mm'}, { y: 'count' },
+            { data: penguins, x: 'culmen_length_mm' },
+            { y: 'count' },
             { thresholds: [0, 35, 40, 41, 45, 53, 80] }
         )}
         insetLeft="0"

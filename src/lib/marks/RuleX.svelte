@@ -36,11 +36,14 @@
     let plot = $derived(getPlotState());
 
     let args = $derived(recordizeX<RuleXOptions>({ data, ...options }, { withIndex: false }));
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="ruleX"
-    channels={['x', 'y1', 'y2', 'stroke', 'opacity', 'strokeOpacity']}
+    channels={['x', 'y1', 'y2', 'fx', 'fy', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
     let:mark
 >
@@ -48,27 +51,27 @@
 
     <g class="rule-x">
         {#each args.data as datum}
-            {@const x_ = resolveChannel('x', datum, args)}
-            {#if isValid(x_)}
-                {@const y1_ = resolveChannel('y1', datum, args)}
-                {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const x = useScale.x ? plot.scales.x.fn(x_) : x_}
-                {@const y1 = useScale.y1 ? plot.scales.y.fn(y1_) : y1_}
-                {@const y2 = useScale.y2 ? plot.scales.y.fn(y2_) : y2_}
-                {@const stroke_ = resolveChannel('stroke', datum, args)}
-                {@const stroke = useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_}
-                {@const inset = resolveProp(args.inset, datum, 0)}
-                {@const insetTop = resolveProp(args.insetTop, datum, 0)}
-                {@const insetBottom = resolveProp(args.insetBottom, datum, 0)}
-                {@const dx = resolveProp(args.dx, datum, 0)}
-                {@const dy = resolveProp(args.dy, datum, 0)}
-                <line
-                    transform="translate({x + dx}, {dy})"
-                    style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                    y1={(inset || insetTop) + (y1_ != null ? y1 : plot.options.marginTop)}
-                    y2={(y2_ != null ? y2 : plot.plotHeight + plot.options.marginTop) -
-                        (inset || insetBottom)}
-                />
+            {#if testFacet(datum, mark.options)}
+                {@const x_ = resolveChannel('x', datum, args)}
+                {#if isValid(x_)}
+                    {@const y1_ = resolveChannel('y1', datum, args)}
+                    {@const y2_ = resolveChannel('y2', datum, args)}
+                    {@const x = useScale.x ? plot.scales.x.fn(x_) : x_}
+                    {@const y1 = useScale.y1 ? plot.scales.y.fn(y1_) : y1_}
+                    {@const y2 = useScale.y2 ? plot.scales.y.fn(y2_) : y2_}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const insetTop = resolveProp(args.insetTop, datum, 0)}
+                    {@const insetBottom = resolveProp(args.insetBottom, datum, 0)}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    <line
+                        transform="translate({x + dx}, {dy})"
+                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                        y1={(inset || insetTop) + (y1_ != null ? y1 : plot.options.marginTop)}
+                        y2={(y2_ != null ? y2 : plot.facetHeight + plot.options.marginTop) -
+                            (inset || insetBottom)}
+                    />
+                {/if}
             {/if}
         {/each}
     </g>

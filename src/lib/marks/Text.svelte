@@ -47,6 +47,9 @@
         middle: 'central',
         top: 'hanging'
     };
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -56,6 +59,8 @@
         'x',
         'y',
         'r',
+        'fx',
+        'fy',
         'symbol',
         'fill',
         'stroke',
@@ -70,7 +75,7 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="text" data-use-x={useScale.x ? 1 : 0}>
         {#each data as datum}
-            {#if options.filter == null || resolveProp(options.filter, datum)}
+            {#if testFacet(datum, mark.options) && (options.filter == null || resolveProp(options.filter, datum))}
                 {@const _x = resolveChannel('x', datum, options)}
                 {@const _y = resolveChannel('y', datum, options)}
                 {@const title = resolveProp(options.title, datum, '')}

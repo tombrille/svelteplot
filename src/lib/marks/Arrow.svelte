@@ -23,8 +23,10 @@
         type SweepFunc,
         type SweepOption
     } from '../helpers/arrowPath.js';
+    import { wrapEvent } from '$lib/helpers/wrapEvent.js';
+    import { replaceChannels } from '$lib/transforms/rename.js';
 
-    let { data, ...options } = $props<
+    let { data, onmouseenter, onmouseleave, onclick, ...options } = $props<
         BaseMarkProps & {
             data: DataRecord[];
             sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
@@ -66,7 +68,7 @@
     let plot = $derived(getPlotState());
 
     function isValid(value: RawValue): value is number | Date | string {
-        return value !== null && !Number.isNaN(value);
+        return value !== null && (typeof value === 'string' || !Number.isNaN(value));
     }
 
     let sorted = $derived(
@@ -76,56 +78,79 @@
               )
             : data
     );
+
+    $inspect(plot.scales.y);
+
+    let args = $derived(
+        replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
+    );
 </script>
 
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'opacity', 'stroke', 'strokeOpacity']}
-    data={sorted}
-    {...options}
+    {...args}
     let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-    {@const sweep = maybeSweep(options.sweep)}
+    {@const useScale = getUsedScales(plot, args, mark)}
+    {@const sweep = maybeSweep(args.sweep)}
     <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
-        {#each sorted as datum}
-            {#if options.filter == null || resolveProp(options.filter, datum)}
-                {@const _x1 = resolveChannel('x1', datum, options)}
-                {@const _x2 = resolveChannel('x2', datum, options)}
-                {@const _y1 = resolveChannel('y1', datum, options)}
-                {@const _y2 = resolveChannel('y2', datum, options)}
-                {@const strokeWidth = resolveProp(options.strokeWidth, datum, 1)}
+        {#each args.data as datum}
+            {#if args.filter == null || resolveProp(args.filter, datum)}
+                {@const _x1 = resolveChannel('x1', datum, args)}
+                {@const _x2 = resolveChannel('x2', datum, args)}
+                {@const _y1 = resolveChannel('y1', datum, args)}
+                {@const _y2 = resolveChannel('y2', datum, args)}
+                {@const strokeWidth = resolveProp(args.strokeWidth, datum, 1)}
                 {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
                     {@const x1 = useScale.x1 ? plot.scales.x.fn(_x1) : _x1}
                     {@const y1 = useScale.y1 ? plot.scales.y.fn(_y1) : _y1}
                     {@const x2 = useScale.x2 ? plot.scales.x.fn(_x2) : _x2}
                     {@const y2 = useScale.y2 ? plot.scales.y.fn(_y2) : _y2}
-                    {@const dx = resolveProp(options.dx, datum, 0)}
-                    {@const dy = resolveProp(options.dx, datum, 0)}
-                    {@const inset = resolveProp(options.inset, datum, 0)}
-                    {@const insetStart = resolveProp(options.insetStart, datum)}
-                    {@const insetEnd = resolveProp(options.insetEnd, datum)}
-                    {@const headAngle = resolveProp(options.headAngle, datum, 60)}
-                    {@const headLength = resolveProp(options.headLength, datum, 8)}
-                    {@const bend = resolveProp(options.bend, datum, 0)}
-                    <path
-                        d={arrowPath(
-                            x1,
-                            y1,
-                            x2,
-                            y2,
-                            coalesce(insetStart, inset),
-                            coalesce(insetEnd, inset),
-                            headAngle,
-                            headLength,
-                            bend === true ? 22.5 : bend === false ? 0 : bend,
-                            strokeWidth,
-                            sweep
-                        )}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dx, datum, 0)}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const insetStart = resolveProp(args.insetStart, datum)}
+                    {@const insetEnd = resolveProp(args.insetEnd, datum)}
+                    {@const headAngle = resolveProp(args.headAngle, datum, 60)}
+                    {@const headLength = resolveProp(args.headLength, datum, 8)}
+                    {@const bend = resolveProp(args.bend, datum, 0)}
+                    {@const arrPath = arrowPath(
+                        x1,
+                        y1,
+                        x2,
+                        y2,
+                        coalesce(insetStart, inset),
+                        coalesce(insetEnd, inset),
+                        headAngle,
+                        headLength,
+                        bend === true ? 22.5 : bend === false ? 0 : bend,
+                        strokeWidth,
+                        sweep
+                    )}
+                    <g
+                        data-y1={_y1}
+                        data-y1_={y1}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                        style={resolveScaledStyles(datum, options, useScale, plot, 'stroke')}
-                    />
+                        role={onmouseenter || onclick ? 'button' : null}
+                        onclick={onclick && wrapEvent(onclick, datum)}
+                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
+                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                    >
+                        {#if onmouseenter || onclick}
+                            <!-- add invisible path in bg for easier mouse access -->
+                            <path
+                                d={arrPath}
+                                style="fill:none;stroke-width: {(strokeWidth || 1) +
+                                    10}; stroke: red; stroke-opacity:0"
+                            />
+                        {/if}
+                        <path
+                            d={arrPath}
+                            style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                        />
+                    </g>
                 {/if}
             {/if}
         {/each}

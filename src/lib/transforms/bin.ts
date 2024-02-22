@@ -77,7 +77,7 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options) {
     const bin = d3Bin();
     if (domain) bin.domain(domain);
     if (interval) {
-        const [lo, hi] = extent(data.map(d => resolveChannel(byDim, d, channels)))
+        const [lo, hi] = extent(data.map((d) => resolveChannel(byDim, d, channels)));
         bin.thresholds(maybeInterval(interval).range(lo, hi));
     } else if (thresholds)
         bin.thresholds(
@@ -199,12 +199,11 @@ export function bin<T>(
     binY.value((d) => resolveChannel('y', d, channels));
 
     if (interval) {
-        const [xlo, xhi] = extent(data.map(d => resolveChannel('x', d, channels)));
-        const [ylo, yhi] = extent(data.map(d => resolveChannel('y', d, channels)));
+        const [xlo, xhi] = extent(data.map((d) => resolveChannel('x', d, channels)));
+        const [ylo, yhi] = extent(data.map((d) => resolveChannel('y', d, channels)));
         binX.thresholds(maybeInterval(interval).range(xlo, xhi));
         binY.thresholds(maybeInterval(interval).range(ylo, yhi));
-    }
-    else if (thresholds) {
+    } else if (thresholds) {
         // when binning in x and y, we need to ensure we are using consistent thresholds
         const t =
             typeof thresholds === 'string' && ThresholdGenerators[thresholds] !== undefined

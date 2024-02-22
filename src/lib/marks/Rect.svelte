@@ -75,10 +75,30 @@
                 {@const x2_ = resolveChannel('x2', datum, args)}
                 {@const y1_ = resolveChannel('y1', datum, args)}
                 {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const x1 = x1_ == null ? plot.options.marginLeft : useScale.x1 ? plot.scales.x.fn(x1_) : x1_}
-                {@const x2 = x2_ == null ? plot.options.marginLeft + plot.facetWidth : useScale.x2 ? plot.scales.x.fn(x2_) : x2_}
-                {@const y1 = y1_ == null ? plot.options.marginTop : useScale.y1 ? plot.scales.y.fn(y1_) : y1_}
-                {@const y2 = y2_ == null ? plot.options.marginTop + plot.facetHeight : useScale.y2 ? plot.scales.y.fn(y2_) : y2_}
+                {@const x1 =
+                    x1_ == null
+                        ? plot.options.marginLeft
+                        : useScale.x1
+                          ? plot.scales.x.fn(x1_)
+                          : x1_}
+                {@const x2 =
+                    x2_ == null
+                        ? plot.options.marginLeft + plot.facetWidth
+                        : useScale.x2
+                          ? plot.scales.x.fn(x2_)
+                          : x2_}
+                {@const y1 =
+                    y1_ == null
+                        ? plot.options.marginTop
+                        : useScale.y1
+                          ? plot.scales.y.fn(y1_)
+                          : y1_}
+                {@const y2 =
+                    y2_ == null
+                        ? plot.options.marginTop + plot.facetHeight
+                        : useScale.y2
+                          ? plot.scales.y.fn(y2_)
+                          : y2_}
 
                 {@const miny = Math.min(y1, y2)}
                 {@const maxy = Math.max(y1, y2)}

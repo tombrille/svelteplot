@@ -37,11 +37,14 @@
     let plot = $derived(getPlotState());
 
     let args = $derived(recordizeY<RuleYOptions>({ data, ...options }, { withIndex: false }));
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="ruleY"
-    channels={['y', 'x1', 'x2', 'stroke', 'opacity', 'strokeOpacity']}
+    channels={['y', 'x1', 'x2', 'fx', 'fy', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
     let:mark
 >
@@ -49,25 +52,27 @@
 
     <GroupMultiple class="rule-y" count={args.data.length}>
         {#each args.data as datum}
-            {@const y_ = resolveChannel('y', datum, args)}
-            {#if isValid(y_)}
-                {@const x1_ = resolveChannel('x1', datum, args)}
-                {@const x2_ = resolveChannel('x2', datum, args)}
-                {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
-                {@const x1 = useScale.x1 ? plot.scales.y.fn(x1_) : x1_}
-                {@const x2 = useScale.x2 ? plot.scales.y.fn(x2_) : x2_}
-                {@const inset = resolveProp(args.inset, datum, 0)}
-                {@const insetLeft = resolveProp(args.insetLeft, datum, 0)}
-                {@const insetRight = resolveProp(args.insetRight, datum, 0)}
-                {@const dx = resolveProp(args.dx, datum, 0)}
-                {@const dy = resolveProp(args.dy, datum, 0)}
-                <line
-                    transform="translate({dx}, {y + dy})"
-                    style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                    x1={(inset || insetLeft) + (x1_ != null ? x1 : plot.options.marginLeft)}
-                    x2={(x2_ != null ? x2 : plot.facetWidth + plot.options.marginLeft) -
-                        (inset || insetRight)}
-                />
+            {#if testFacet(datum, mark.options)}
+                {@const y_ = resolveChannel('y', datum, args)}
+                {#if isValid(y_)}
+                    {@const x1_ = resolveChannel('x1', datum, args)}
+                    {@const x2_ = resolveChannel('x2', datum, args)}
+                    {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
+                    {@const x1 = useScale.x1 ? plot.scales.y.fn(x1_) : x1_}
+                    {@const x2 = useScale.x2 ? plot.scales.y.fn(x2_) : x2_}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const insetLeft = resolveProp(args.insetLeft, datum, 0)}
+                    {@const insetRight = resolveProp(args.insetRight, datum, 0)}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    <line
+                        transform="translate({dx}, {y + dy})"
+                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                        x1={(inset || insetLeft) + (x1_ != null ? x1 : plot.options.marginLeft)}
+                        x2={(x2_ != null ? x2 : plot.facetWidth + plot.options.marginLeft) -
+                            (inset || insetRight)}
+                    />
+                {/if}
             {/if}
         {/each}
     </GroupMultiple>

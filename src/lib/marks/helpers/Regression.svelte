@@ -51,7 +51,7 @@
         ['exp', regressionExp],
         ['log', regressionLog],
         ['pow', regressionPow],
-        ['loess', regressionLoess],
+        ['loess', regressionLoess]
     ]);
 
     function maybeRegression(name: string) {
@@ -94,7 +94,7 @@
             ...(type === 'poly' ? { order } : {}),
             ...(type === 'log' ? { base } : {}),
             ...(!type.startsWith('loess') ? { domain: plot.scales[independent].domain } : {}),
-            ...(type === 'loess' ? { bandwidth: span } : {}),
+            ...(type === 'loess' ? { bandwidth: span } : {})
         })(filteredData)
     );
 

@@ -59,7 +59,7 @@ This scatterplot suffers from overplotting: many dots are drawn in the same spot
 </script>
 
 {#if olympians}
-    <Plot>
+    <Plot testid="olympians-binned">
         <Rect {...args} inset={0} />
     </Plot>
 {/if}
@@ -76,7 +76,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 </script>
 
 {#if olympians}
-    <Plot grid>
+    <Plot grid testid="olympians-hist">
         <RectY {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })} />
         <RuleY data={[0]} />
     </Plot>
@@ -101,7 +101,7 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 </script>
 
 {#if olympians}
-    <Plot grid>
+    <Plot grid testid="olympians-hist-facet">
         <RectY
             {...binX({ data: olympians, x: 'weight', fill: 'sex', fy: 'sex' }, { y: 'count' })}
         />

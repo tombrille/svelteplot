@@ -1,9 +1,12 @@
 import { expect, test } from '@playwright/test';
 
-// test('introduction', async ({ page }) => {
-//     await page.goto('/introduction');
+// test('why-svelteplot', async ({ page }) => {
+//     await page.goto('/why-svelteplot');
 //     await expect(page.getByTestId('olympians')).toHaveScreenshot();
-// })
+//     // await expect(page.getByTestId('olympians-binned')).toHaveScreenshot();
+//     // await expect(page.getByTestId('olympians-hist')).toHaveScreenshot();
+//     // await expect(page.getByTestId('olympians-hist-facet')).toHaveScreenshot();
+// });
 
 test('getting-started', async ({ page }) => {
     await page.goto('/getting-started');
@@ -16,6 +19,7 @@ test('features/plot', async ({ page }) => {
     await expect(page.getByTestId('ggplot')).toHaveScreenshot();
     await expect(page.getByTestId('with-title')).toHaveScreenshot();
 });
+
 
 // test('features/scales', async ({ page }) => {
 //     await page.goto('/features/scales');

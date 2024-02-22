@@ -95,6 +95,9 @@
                   })
         })
     );
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -120,17 +123,19 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="areas">
         {#each sortedGroups as areaData}
-            {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
-            {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
-            <path
-                d={areaPath(
-                    options.filter == null
-                        ? areaData
-                        : areaData.filter((d) => resolveProp(options.filter, d))
-                )}
-                style={resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
-                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-            />
+            {#if testFacet(areaData[0], mark.options)}
+                {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
+                {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
+                <path
+                    d={areaPath(
+                        options.filter == null
+                            ? areaData
+                            : areaData.filter((d) => resolveProp(options.filter, d))
+                    )}
+                    style={resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
+                    transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                />
+            {/if}
         {/each}
     </g>
 </Mark>
