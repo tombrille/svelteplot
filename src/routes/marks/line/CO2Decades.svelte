@@ -4,6 +4,7 @@
     import { scaleLinear } from 'd3-scale';
     import { interpolateLab } from 'd3-interpolate';
     import { page } from '$app/stores';
+    import { AxisX, AxisY } from '$lib/index.js';
 
     let { co2 } = $derived($page.data.data);
 
@@ -17,8 +18,15 @@
     let co2decades = $derived(co2.map(addDecade));
 
     let lastOfDecade = $derived(
-        groups(co2decades, (d) => d.decadeBaseYear).map(([, v]) => v.at(-1))
+        groups(co2decades, (d) => d.decadeBaseYear)
+            .map(([, v]) => v.at(-1))
+            .map((d) => ({
+                ...d,
+                label: `${Math.max(d.decadeBaseYear, co2[0].date.getFullYear())}-'${String(Math.min(d.decadeBaseYear + 9, co2.at(-1).date.getFullYear())).substring(2)}`
+            }))
     );
+
+    const annotations = [{ x: 0, y: 350, text: 'Sustainable level' }];
 </script>
 
 <Plot
@@ -27,17 +35,19 @@
         grid: true,
         ticks: range(1, 10)
     }}
-    y={{ label: '↑ CO2 concentration (in ppm)' }}
+    y={{ label: '↑ CO2 concentration (in ppm)', interval: 20 }}
     height={550}
     marginTop={25}
     marginBottom={35}
     marginRight={80}
-    color={{ 
+    color={{
         legend: true,
-        scheme: ['#2f8fe3', '#a09ebc', '#c28b81', '#c06146', '#a62a1b'], 
+        scheme: ['#2f8fe3', '#a09ebc', '#c28b81', '#c06146', '#a62a1b'],
         type: 'linear'
     }}
 >
+    <AxisY tickSize={0} />
+
     <RectY
         data={range(310, 420, 20).map((low) => ({ low, high: low + 10 }))}
         y1="low"
@@ -62,8 +72,7 @@
         data={lastOfDecade}
         x="yearInDecade"
         y="average"
-        text={(d) =>
-            `${Math.max(d.decadeBaseYear, co2decades[0].date.getFullYear())}-'${String(Math.min(d.decadeBaseYear + 9, co2decades.at(-1).date.getFullYear())).substring(2)}`}
+        text="label"
         textAnchor="start"
         dx="8"
         stroke="var(--svelteplot-bg)"
@@ -72,7 +81,7 @@
     />
 
     <Text
-        data={[{ x: 0, y: 350, text: 'Sustainable level' }]}
+        data={annotations}
         x="x"
         y="y"
         text="text"

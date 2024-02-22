@@ -290,30 +290,36 @@ export function createScale<T extends ScaleOptions>(
 
     if (name === 'color') {
         // special treatment for color scales
-        const { scheme, interpolate } = scaleOptions;
+        const { scheme, interpolate, pivot } = scaleOptions;
 
         if (type === 'categorical') {
             // categorical scale
-            range = !scheme
-                ? categoricalSchemes.get('observable10')
-                : isCategoricalScheme(scheme)
-                  ? categoricalSchemes.get(scheme)
-                  : ordinalScheme(scheme)(domain.length);
+            range = Array.isArray(scheme)
+                ? scheme
+                : !scheme
+                  ? categoricalSchemes.get('observable10')
+                  : isCategoricalScheme(scheme)
+                    ? categoricalSchemes.get(scheme)
+                    : ordinalScheme(scheme)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
             if (interpolate) {
                 fn = scaleSequential(domain, interpolate);
             } else if (Array.isArray(scheme_)) {
-                const step = 1/(scheme_.length);
-                fn = scaleSequential(domain, scaleLinear(d3Range(0, 1 + step/2, step), scheme_).interpolate(interpolateLab));
+                const step = 1 / scheme_.length;
+                fn = scaleSequential(
+                    domain,
+                    scaleLinear(d3Range(0, 1 + step / 2, step), scheme_).interpolate(interpolateLab)
+                );
             } else if (
                 scaleOptions.type === 'diverging' ||
                 (scaleOptions.type === 'auto' && isDivergingScheme(scheme_))
             ) {
                 // diverging
                 const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
-                const domain_ = [-maxabs, 0, maxabs];
+                const domain_ =
+                    pivot != null ? [domain[0], pivot, domain[1]] : [-maxabs, 0, maxabs];
                 fn = scaleDiverging(domain_, quantitativeScheme(scheme_));
             } else if (scaleOptions.type === 'linear' || isQuantitativeScheme(scheme_)) {
                 // sequential
