@@ -181,9 +181,9 @@ export function binY<T>(
  */
 export function bin<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,
-    options: BinOptions = { thresholds: 'auto', interval }
+    options: BinOptions = { thresholds: 'auto' }
 ): TransformArg<T, DataRecord> {
-    const { domain, thresholds = 'auto' } = options;
+    const { domain, thresholds = 'auto', interval } = options;
 
     const binX = d3Bin();
     const binY = d3Bin();

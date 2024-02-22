@@ -67,7 +67,45 @@ Facetted **line** chart:
 </Plot>
 ```
 
-Facetted **rect** chart
+Facetted **rectX** chart
+
+```svelte live
+<script lang="ts">
+    import { Plot, RectX, RuleX, binY } from '$lib/index.js';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot grid testid="rectx">
+    <RectX
+        {...binY(
+            { data: penguins, y: 'body_mass_g', fill: 'sex', fx: 'sex' },
+            { x: 'count', interval: 200 }
+        )}
+    />
+    <RuleX data={[0]} />
+</Plot>
+```
+
+Facetted **rectY** chart
+
+```svelte live
+<script lang="ts">
+    import { Plot, RectY, RuleY, binX } from '$lib/index.js';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot grid testid="recty" marginRight={80}>
+    <RectY
+        {...binX(
+            { data: penguins, x: 'body_mass_g', fill: 'sex', fy: 'sex' },
+            { y: 'count', interval: 200 }
+        )}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
 
 Facetted **regression** chart
 

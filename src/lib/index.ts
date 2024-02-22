@@ -12,6 +12,7 @@ export { default as AxisX } from './marks/AxisX.svelte';
 export { default as AxisY } from './marks/AxisY.svelte';
 export { default as BarX } from './marks/BarX.svelte';
 export { default as BarY } from './marks/BarY.svelte';
+export { default as BollingerY } from './marks/BollingerY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
 export { default as Dot } from './marks/Dot.svelte';
