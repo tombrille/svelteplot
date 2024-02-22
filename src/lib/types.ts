@@ -528,7 +528,8 @@ export type ColorScheme =
     | 'set1'
     | 'set2'
     | 'set3'
-    | 'tableau10';
+    | 'tableau10'
+    | 'observable10';
 
 // list of all prossible style props on marks
 export type MarkStyleProps =

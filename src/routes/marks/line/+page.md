@@ -73,10 +73,6 @@ BLS Demo:
 </Plot>
 ```
 
-CO2 decades:
-
-<CO2Decades />
-
 ## LineX
 
 Convenience wrapper
@@ -376,13 +372,9 @@ The line mark can be used for a connection scatterplot:
 
 CO2 decades:
 
-```svelte -live
-<script>
-    import { Plot, Line, Dot, Text } from '$lib';
-    import { page } from '$app/stores';
-    let { co2 } = $derived($page.data.data);
-</script>
+<CO2Decades />
 
+```svelte
 <Plot inset={10} grid>
     <Line data={co2} x="date" y="average" />
 </Plot>
