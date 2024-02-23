@@ -36,6 +36,5 @@ export function replaceChannels<T>(
             delete newChannels[from];
         }
     }
-    console.log({ newChannels, options });
     return { data, ...newChannels };
 }

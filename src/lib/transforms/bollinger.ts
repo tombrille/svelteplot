@@ -1,5 +1,5 @@
-import { resolveChannel } from "$lib/helpers/resolve.js";
-import type { DataRecord, TransformArg } from "$lib/types.js";
+import { resolveChannel } from '$lib/helpers/resolve.js';
+import type { DataRecord, TransformArg } from '$lib/types.js';
 
 export type BollingerOptions = {
     /**
@@ -10,24 +10,27 @@ export type BollingerOptions = {
      * the band radius, a number representing a multiple of standard deviations; defaults to 2
      */
     k?: number;
-}
+};
 
 export function bollingerX(
     args: TransformArg<DataRecord>,
-    options: BollingerOptions = { }
+    options: BollingerOptions = {}
 ): TransformArg<DataRecord> {
     return bollingerDim('x', args, options);
 }
 
 export function bollingerY(
     args: TransformArg<DataRecord>,
-    options: BollingerOptions = { }
+    options: BollingerOptions = {}
 ): TransformArg<DataRecord> {
     return bollingerDim('y', args, options);
 }
 
-export function bollingerDim(dim:'x'|'y',  { data, ...channels }: TransformArg<DataRecord>,
-    options: BollingerOptions = { }) {
+export function bollingerDim(
+    dim: 'x' | 'y',
+    { data, ...channels }: TransformArg<DataRecord>,
+    options: BollingerOptions = {}
+) {
     const { n = 20, k = 2 } = options;
     const bands = bollinger(
         data.map((datum: DataRecord) => resolveChannel(dim, datum, channels)) as number[],
@@ -48,7 +51,7 @@ export function bollingerDim(dim:'x'|'y',  { data, ...channels }: TransformArg<D
         [`${otherDim}1`]: '__x',
         [`${dim}1`]: '__lo',
         [`${dim}2`]: '__hi'
-    }
+    };
 }
 
 /**

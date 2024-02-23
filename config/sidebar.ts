@@ -74,7 +74,8 @@ export default {
                 { title: 'Group', to: '/transforms/group/' },
                 { title: 'Interval', to: '/transforms/interval/' },
                 { title: 'Sort', to: '/transforms/sort/' },
-                { title: 'Stack', to: '/transforms/stack/' }
+                { title: 'Stack', to: '/transforms/stack/' },
+                { title: 'Window', to: '/transforms/window/' }
             ]
         }
     ]

@@ -60,10 +60,9 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
 <script>
     import { Plot, Line, bollingerY } from 'svelteplot';
     // import data etc
-    let transformed = $derived(
-        bollingerY({ data: aapl, x: 'Date', y: 'Adj Close' }, { n, k })
-    );
+    let transformed = $derived(bollingerY({ data: aapl, x: 'Date', y: 'Adj Close' }, { n, k }));
 </script>
+
 <Plot grid>
     <Line data={aapl} x="Date" y="Adj Close" />
     <Line {...transformed} y="__hi" stroke="red" />

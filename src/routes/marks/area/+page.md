@@ -159,7 +159,6 @@ Required channels for horizontal area charts:
 ```svelte live
 <script lang="ts">
     import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>

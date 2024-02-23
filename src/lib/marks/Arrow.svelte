@@ -79,8 +79,6 @@
             : data
     );
 
-    $inspect(plot.scales.y);
-
     let args = $derived(
         replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
     );

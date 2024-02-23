@@ -47,6 +47,7 @@ import callWithProps from './callWithProps.js';
 import { interpolateLab, interpolateRound } from 'd3-interpolate';
 import { coalesce } from './index.js';
 import { maybeInterval } from './autoTicks.js';
+import { getLogTicks } from './getLogTicks.js';
 
 const Scales: Record<
     ScaleType,
@@ -370,7 +371,7 @@ export function createScale<T extends ScaleOptions>(
             fn.ticks = () => domain;
         }
         if (type === 'log') {
-            // fn.ticks = (count: number) => getLogTicks(domain, count);
+            fn.ticks = (count: number) => getLogTicks(domain, count);
         }
     }
 

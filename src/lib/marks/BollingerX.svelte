@@ -32,7 +32,6 @@
     } = $props<BollingerXProps>();
 
     let args = $derived(bollingerX(recordizeX({ data, ...options }), { n, k }));
-    $inspect(args)
 </script>
 
 <g class="bollinger">
