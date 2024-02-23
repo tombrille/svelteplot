@@ -12,6 +12,7 @@ export { default as AxisX } from './marks/AxisX.svelte';
 export { default as AxisY } from './marks/AxisY.svelte';
 export { default as BarX } from './marks/BarX.svelte';
 export { default as BarY } from './marks/BarY.svelte';
+export { default as BollingerX } from './marks/BollingerX.svelte';
 export { default as BollingerY } from './marks/BollingerY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
@@ -42,6 +43,7 @@ export { default as HTMLTooltip } from './marks/HTMLTooltip.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
 
 // transforms
+export { bollingerX, bollingerY } from './transforms/bollinger.js';
 export { stackX, stackY } from './transforms/stack.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';

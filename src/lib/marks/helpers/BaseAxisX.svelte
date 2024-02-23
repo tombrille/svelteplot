@@ -51,6 +51,8 @@
         )
     );
 
+    let tickY = $derived(anchor === 'bottom' ? marginTop + height : marginTop);
+
     let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
 </script>
 
@@ -69,11 +71,7 @@
         {@const prevTextLines = t && formattedTicks[t - 1].text}
         {@const estLabelWidth =
             max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.2}
-        <g
-            class="tick"
-            transform="translate({x + dx},{(anchor === 'bottom' ? marginTop + height : marginTop) +
-                dy})"
-        >
+        <g class="tick" transform="translate({x + dx}, {tickY + dy})">
             {#if tickSize}
                 <line
                     style={resolveScaledStyles(tick, options, {}, plot, 'stroke')}

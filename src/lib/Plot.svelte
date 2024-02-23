@@ -273,8 +273,13 @@
     @component
     The Plot component is the container for your plot. It collects the marks and computes the shared scales.
 -->
-
-<figure bind:clientWidth={width} style:max-width={plotOptions.maxWidth} data-testid={testid}>
+{width}
+<figure
+    class="svelteplot"
+    bind:clientWidth={width}
+    style:max-width={plotOptions.maxWidth}
+    data-testid={testid}
+>
     {#if plotOptions.title || plotOptions.subtitle || header || plotOptions.color.legend || plotOptions.symbol.legend}
         <div class="plot-header">
             {#if plotOptions.title}<h2>{plotOptions.title}</h2>{/if}

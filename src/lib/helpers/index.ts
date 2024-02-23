@@ -1,4 +1,4 @@
-import type { BaseMarkProps, DataRecord } from '$lib/types.js';
+import type { BaseMarkProps, DataRecord, RawValue } from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
 
@@ -21,4 +21,8 @@ export function randomId() {
 
 export function isSnippet(object: unknown): object is Snippet {
     return !!object && object[Symbol.for('svelte.snippet')] === true;
+}
+
+export function isValid(value: RawValue): value is number | Date | string {
+    return value !== null && !Number.isNaN(value);
 }

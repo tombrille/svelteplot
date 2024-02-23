@@ -61,7 +61,7 @@
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
-    import { isSnippet, randomId } from '$lib/helpers/index.js';
+    import { isSnippet, isValid, randomId } from '$lib/helpers/index.js';
 
     let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
 
@@ -92,7 +92,7 @@
             curve: maybeCurve(curve, tension),
             x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
             y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
-            defined: (d) => !isNaN(resolveChannel('y', d, options))
+            defined: (d) => isValid(resolveChannel('x', d, options)) && isValid(resolveChannel('y', d, options))
         })
     );
 

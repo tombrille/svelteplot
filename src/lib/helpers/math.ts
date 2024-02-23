@@ -166,29 +166,3 @@ export function confidenceInterval(
         return { x, left: Y - t * se, right: Y + t * se };
     };
 }
-
-/**
- * taken from https://observablehq.com/@d3/bollinger-bands/
- */
-export function bollinger(values: number[], N: number, K: number[]) {
-    let i = 0;
-    let sum = 0;
-    let sum2 = 0;
-    const bands = K.map(() => new Float64Array(values.length).fill(NaN));
-    for (let n = Math.min(N - 1, values.length); i < n; ++i) {
-        const value = values[i];
-        (sum += value), (sum2 += value ** 2);
-    }
-    for (let n = values.length, m = bands.length; i < n; ++i) {
-        const value = values[i];
-        (sum += value), (sum2 += value ** 2);
-        const mean = sum / N;
-        const deviation = Math.sqrt((sum2 - sum ** 2 / N) / (N - 1));
-        for (let j = 0; j < K.length; ++j) {
-            bands[j][i] = mean + deviation * K[j];
-        }
-        const value0 = values[i - N + 1];
-        (sum -= value0), (sum2 -= value0 ** 2);
-    }
-    return bands;
-}

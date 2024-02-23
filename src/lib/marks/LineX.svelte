@@ -19,7 +19,6 @@
         }
     >();
     let args = $derived(recordizeX<LineMarkProps>({ data, ...rest }));
-    let args2 = $derived(interval ? binY(args, { interval }) : args);
 </script>
 
 <Line {...args} />

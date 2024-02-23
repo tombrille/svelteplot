@@ -3,11 +3,11 @@
     line representing a moving average and an area representing volatility as a band
 -->
 <script lang="ts">
-    import { Area, Line, bollingerY, recordizeY } from '$lib/index.js';
+    import { Area, Line, bollingerX, recordizeX } from '$lib/index.js';
     import type { BaseMarkProps, ChannelAccessor, DataRow } from '$lib/types.js';
     import pick from 'underscore/modules/pick.js';
 
-    type BollingerYProps = BaseMarkProps & {
+    type BollingerXProps = BaseMarkProps & {
         data: DataRow[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
@@ -29,20 +29,21 @@
         onmouseenter,
         onmouseleave,
         ...options
-    } = $props<BollingerYProps>();
+    } = $props<BollingerXProps>();
 
-    let args = $derived(bollingerY(recordizeY({ data, ...options }), { n, k }));
+    let args = $derived(bollingerX(recordizeX({ data, ...options }), { n, k }));
+    $inspect(args)
 </script>
 
 <g class="bollinger">
     <Line
-        {...{ x: '__x', y: '__avg', ...pick(args, ['data', 'stroke', 'strokeOpacity', 'opacity']) }}
+        {...{ x: '__avg', y: '__x', ...pick(args, ['data', 'stroke', 'strokeOpacity', 'opacity']) }}
     />
     <Area
         {...{
-            x1: '__x',
-            y1: '__lo',
-            y2: '__hi',
+            y1: '__x',
+            x1: '__lo',
+            x2: '__hi',
             fillOpacity: 0.2,
             ...pick(args, ['data', 'fill', 'fillOpacity', 'opacity'])
         }}

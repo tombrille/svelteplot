@@ -216,15 +216,15 @@ html {
         }
 
         .svp-code-block-wrapper {
-            .shiki.github-light {
-                display: none;
-            }
             background-color: #0f0f0f;
         }
 
         .svp-live-code--container {
             --un-border-opacity: 0 !important;
             --un-shadow: none !important;
+        }
+        .shiki {
+            --shiki-dark-bg: #0f0f0f !important;
         }
     }
 
@@ -233,9 +233,6 @@ html {
             background-color: white;
         }
         .svp-code-block-wrapper {
-            .shiki.github-dark {
-                display: none;
-            }
             background-color: #f2f2f6;
         }
     }

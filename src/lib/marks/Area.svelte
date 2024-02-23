@@ -25,7 +25,7 @@
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
-    import isValid from '$lib/helpers/isValid.js';
+    import { isValid } from '$lib/helpers/index.js';
 
     import type {
         CurveName,
@@ -81,19 +81,17 @@
     let areaPath: (d: DataRecord[]) => string = $derived(
         callWithProps(area, [], {
             curve: maybeCurve(curve, tension),
-            defined: (d: DataRecord) => (
-                options.x1 != null && options.x2 != null ? (
-                    // vertical
-                    isValid(resolveChannel('x1', d, options)) &&
-                    isValid(resolveChannel('y1', d, options)) &&
-                    isValid(resolveChannel('y2', d, options)) 
-                ) : (
-                    // horizontal
-                    isValid(resolveChannel('y1', d, options)) &&
-                    isValid(resolveChannel('x1', d, options)) &&
-                    isValid(resolveChannel('x2', d, options)) 
-                )
-            ),
+            defined: (d: DataRecord) =>
+                options.x1 != null && options.x2 != null
+                    ? // vertical
+
+                      isValid(resolveChannel('y1', d, options)) &&
+                      isValid(resolveChannel('x1', d, options)) &&
+                      isValid(resolveChannel('x2', d, options))
+                    : // horizontal
+                      isValid(resolveChannel('x1', d, options)) &&
+                      isValid(resolveChannel('y1', d, options)) &&
+                      isValid(resolveChannel('y2', d, options)),
             ...(options.x1 != null && options.x2 != null
                 ? {
                       // "vertical" area
