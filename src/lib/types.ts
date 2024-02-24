@@ -6,6 +6,7 @@
 import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
+import type { MarkerShape } from './marks/helpers/Marker.svelte';
 
 export type MarkType =
     | 'area'
@@ -372,6 +373,25 @@ export type CurveName =
     | 'step'
     | 'step-after'
     | 'step-before';
+
+export type MarkerOptions = {
+    /**
+     * the marker for the starting point of a line segment
+     */
+    markerStart?: boolean | MarkerShape | Snippet;
+    /**
+     * the marker for any intermediate point of a line segment
+     */
+    markerMid?: boolean | MarkerShape | Snippet;
+    /**
+     * the marker for the end point of a line segment
+     */
+    markerEnd?: boolean | MarkerShape | Snippet;
+    /**
+     * shorthand for setting the marker on all points
+     */
+    marker?: boolean | MarkerShape | Snippet;
+};
 
 export type PlotScales = Record<ScaleName, PlotScale>;
 

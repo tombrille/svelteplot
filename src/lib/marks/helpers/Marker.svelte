@@ -11,10 +11,9 @@
 </script>
 
 <script lang="ts">
-    let { id, shape, color, strokeWidth } = $props<{
+    let { id, shape, color } = $props<{
         id: string;
         color: string;
-        strokeWidth: number;
         shape: MarkerShape;
     }>();
 
@@ -62,13 +61,10 @@
     };
 
     let markerColors = $derived({
+        fill: 'none',
         [MARKERS[shape].color]: color,
         ...(MARKERS[shape].bg ? { [MARKERS[shape].bg as string]: 'var(--svelteplot-bg)' } : {})
     });
-
-    function maybePixel(value: string | number) {
-        return typeof value === 'number' ? `${value}px` : value;
-    }
 </script>
 
 <marker

@@ -3,6 +3,15 @@
     Line mark, useful for line charts
 -->
 <script context="module" lang="ts">
+    import type {
+        CurveName,
+        PlotContext,
+        DataRecord,
+        BaseMarkProps,
+        ConstantAccessor,
+        ChannelAccessor,
+        MarkerOptions
+    } from '../types.js';
     /**
      * @license
      * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -16,52 +25,25 @@
         dy?: ConstantAccessor<number>;
         curve?: CurveName | CurveFactory;
         tension?: number;
-        /**
-         * the marker for the starting point of a line segment
-         */
-        markerStart?: boolean | MarkerShape | Snippet;
-        /**
-         * the marker for any intermediate point of a line segment
-         */
-        markerMid?: boolean | MarkerShape;
-        /**
-         * the marker for the end point of a line segment
-         */
-        markerEnd?: boolean | MarkerShape;
-        /**
-         * shorthand for setting the marker on all points
-         */
-        marker?: boolean | MarkerShape;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-    };
+    } & MarkerOptions;
 </script>
 
 <script lang="ts">
     import Mark from '../Mark.svelte';
-    import Marker, { type MarkerShape } from './helpers/Marker.svelte';
-    import { getContext, type Snippet } from 'svelte';
+    import MarkerPath from './helpers/MarkerPath.svelte';
+    import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import groupBy from 'underscore/modules/groupBy.js';
     import { line, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
 
-    const id = randomId();
-
-    import type {
-        CurveName,
-        PlotContext,
-        DataRecord,
-        BaseMarkProps,
-        ConstantAccessor,
-        ChannelAccessor
-    } from '../types.js';
-
     type LineProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & LineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
-    import { isSnippet, isValid, randomId } from '$lib/helpers/index.js';
+    import { isValid, randomId } from '$lib/helpers/index.js';
 
     let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
 
@@ -116,62 +98,27 @@
                 {#if testFacet(lineData[0], mark.options)}
                     {@const dx_ = resolveProp(options.dx, lineData[0], 0)}
                     {@const dy_ = resolveProp(options.dy, lineData[0], 0)}
-                    {@const marker = isSnippet(options.marker)
-                        ? options.marker
-                        : resolveProp(options.marker, lineData[0])}
-                    {@const markerStart = isSnippet(options.markerStart)
-                        ? options.markerStart
-                        : resolveProp(options.markerStart, lineData[0])}
-                    {@const markerMid = isSnippet(options.markerMid)
-                        ? options.markerMid
-                        : resolveProp(options.markerMid, lineData[0])}
-                    {@const markerEnd = isSnippet(options.markerEnd)
-                        ? options.markerEnd
-                        : resolveProp(options.markerEnd, lineData[0])}
                     {@const markerColor_ =
                         resolveChannel('stroke', lineData[0], options) || 'currentColor'}
                     {@const markerColor = useScale.stroke
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}
-                    {@const strokeWidth = resolveProp(options.strokeWidth, lineData[0], 1.4)}
-                    <g stroke-width={strokeWidth}>
-                        {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
-                            {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}-${i}`}
-                            {#if isSnippet(marker)}
-                                {@render marker(markerId, markerColor)}
-                            {:else if marker}
-                                <Marker
-                                    id={markerId}
-                                    shape={marker === true ? 'circle' : marker}
-                                    color={markerColor}
-                                />
-                            {/if}
-                        {/each}
-                        <path
-                            marker-start={markerStart || marker
-                                ? `url(#marker-${markerStart ? 'start-' : ''}${id}-${i})`
-                                : null}
-                            marker-mid={markerMid || marker
-                                ? `url(#marker-${markerMid ? 'mid-' : ''}${id}-${i})`
-                                : null}
-                            marker-end={markerEnd || marker
-                                ? `url(#marker-${markerEnd ? 'end-' : ''}${id}-${i})`
-                                : null}
-                            d={linePath(
-                                options.filter == null
-                                    ? lineData
-                                    : lineData.filter((d) => resolveProp(options.filter, d))
-                            )}
-                            style={resolveScaledStyles(
-                                lineData[0],
-                                options,
-                                useScale,
-                                plot,
-                                'stroke'
-                            )}
-                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                        />
-                    </g>
+                    <MarkerPath
+                        markerStart={options.markerStart}
+                        markerMid={options.markerMid}
+                        markerEnd={options.markerEnd}
+                        marker={options.marker}
+                        strokeWidth={options.strokeWidth}
+                        datum={lineData[0]}
+                        color={markerColor}
+                        d={linePath(
+                            options.filter == null
+                                ? lineData
+                                : lineData.filter((d) => resolveProp(options.filter, d))
+                        )}
+                        style={resolveScaledStyles(lineData[0], options, useScale, plot, 'stroke')}
+                        transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                    />
                 {/if}
             {/each}
         </g>

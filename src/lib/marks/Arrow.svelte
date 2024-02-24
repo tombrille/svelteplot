@@ -14,7 +14,7 @@
         ChannelAccessor
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { coalesce } from '../helpers/index.js';
+    import { coalesce, testFilter } from '../helpers/index.js';
     import { getUsedScales } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import {
@@ -82,12 +82,15 @@
     let args = $derived(
         replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
     );
+
+    const { getTestFacet } = getContext('facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'y1', 'x2', 'y2', 'opacity', 'stroke', 'strokeOpacity']}
+    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}
     let:mark
 >
@@ -95,7 +98,7 @@
     {@const sweep = maybeSweep(args.sweep)}
     <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
         {#each args.data as datum}
-            {#if args.filter == null || resolveProp(args.filter, datum)}
+            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const _x1 = resolveChannel('x1', datum, args)}
                 {@const _x2 = resolveChannel('x2', datum, args)}
                 {@const _y1 = resolveChannel('y1', datum, args)}

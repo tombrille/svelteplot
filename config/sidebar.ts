@@ -35,6 +35,10 @@ export default {
                     to: '/features/facets/'
                 },
                 {
+                    title: 'Markers',
+                    to: '/features/markers/'
+                },
+                {
                     title: 'Transforms',
                     to: '/features/transforms/'
                 },
@@ -58,6 +62,7 @@ export default {
                 { title: 'Frame', to: '/marks/frame/' },
                 { title: 'Grid', to: '/marks/grid/' },
                 { title: 'Line', to: '/marks/line/' },
+                { title: 'Link', to: '/marks/link/' },
                 { title: 'Rect', to: '/marks/rect/' },
                 { title: 'Regression', to: '/marks/regression/' },
                 { title: 'Rule', to: '/marks/rule/' },

@@ -11,7 +11,7 @@ import {
     variance,
     deviation,
     quantile,
-    groups as d3Groups,
+    groups as d3Groups
 } from 'd3-array';
 
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -98,17 +98,25 @@ function windowDim(
         : [data];
 
     const out = [];
-    const reduceChannels = [dim, `${dim}1`, `${dim}2`].filter(d => channels[d] != null) as ScaledChannelName[];
+    const reduceChannels = [dim, `${dim}1`, `${dim}2`].filter(
+        (d) => channels[d] != null
+    ) as ScaledChannelName[];
     const shift = anchor === 'start' ? 0 : anchor === 'end' ? k - 1 : (k - 1) >> 1;
     for (const values of groups) {
         // resolve all "x" values
-        const X = values.map((d) => Object.fromEntries(reduceChannels.map(channel => [channel, resolveChannel(channel, d, channels)])) );
+        const X = values.map((d) =>
+            Object.fromEntries(
+                reduceChannels.map((channel) => [channel, resolveChannel(channel, d, channels)])
+            )
+        );
         const L = values.length;
         for (let i = 0; i < L; i++) {
             const s0 = Math.max(0, i - shift);
             const newDatum = { ...values[i] };
             for (const channel of reduceChannels) {
-                const window = X.slice(s0, Math.min(L, i - shift + k)).map(d => d[channel]).filter(isValid);
+                const window = X.slice(s0, Math.min(L, i - shift + k))
+                    .map((d) => d[channel])
+                    .filter(isValid);
                 const reduced = strict && window.length !== k ? null : reduceFn(window);
                 newDatum[`__reduced_${channel}__`] = reduced;
             }
@@ -117,7 +125,11 @@ function windowDim(
     }
     //
     // return
-    return { data: out, ...channels, ...(Object.fromEntries(reduceChannels.map(channel => [channel, `__reduced_${channel}__`]))) };
+    return {
+        data: out,
+        ...channels,
+        ...Object.fromEntries(reduceChannels.map((channel) => [channel, `__reduced_${channel}__`]))
+    };
 }
 
 function percentile(reduce) {

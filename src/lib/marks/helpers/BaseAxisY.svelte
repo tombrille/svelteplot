@@ -45,21 +45,23 @@
 
     let positionedTicks = $derived.by(() => {
         let tickObjects = ticks.map((tick, i) => {
-            return { 
+            return {
                 value: tick,
                 hidden: false,
                 dx: +resolveProp(options.dx, tick, 0),
                 dy: +resolveProp(options.dy, tick, 0),
                 y: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
-                text: tickFormat(tick),
-            }
+                text: tickFormat(tick)
+            };
         });
         const T = tickObjects.length;
-        for (let i=0; i<T; i++) {
+        for (let i = 0; i < T; i++) {
             let j = i;
             // find the preceeding tick that was not hidden
-            do { j--; } while (j >=0 && tickObjects[j].hidden);
-            if (j>=0) {
+            do {
+                j--;
+            } while (j >= 0 && tickObjects[j].hidden);
+            if (j >= 0) {
                 const tickLabelSpace = Math.abs(tickObjects[i].y - tickObjects[j].y);
                 tickObjects[i].hidden = tickLabelSpace < 15;
             }
@@ -70,27 +72,28 @@
 
 <g class="axis-y">
     {#each positionedTicks as tick, t}
-    {#if !tick.hidden}
-        <g
-            class="tick"
-            transform="translate({tick.dx + marginLeft + (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})"
-        >
-            {#if tickSize}
-                <line
-                    style={getBaseStyles(tick.value, options)}
-                    x2={anchor === 'left' ? -tickSize : tickSize}
-                />
-            {/if}
-            <text
-                class:is-left={anchor === 'left'}
-                style={getBaseStyles(tick.value, { ...options, fontSize: tickFontSize })}
-                x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
-                dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text
+        {#if !tick.hidden}
+            <g
+                class="tick"
+                transform="translate({tick.dx +
+                    marginLeft +
+                    (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})"
             >
-         
-        </g>
-           {/if}
+                {#if tickSize}
+                    <line
+                        style={getBaseStyles(tick.value, options)}
+                        x2={anchor === 'left' ? -tickSize : tickSize}
+                    />
+                {/if}
+                <text
+                    class:is-left={anchor === 'left'}
+                    style={getBaseStyles(tick.value, { ...options, fontSize: tickFontSize })}
+                    x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
+                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
+                    >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text
+                >
+            </g>
+        {/if}
     {/each}
 </g>
 
