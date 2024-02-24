@@ -4,29 +4,13 @@ title: Markers
 
 Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
 
-The markers are automatically colored by stroke and scaled with the stroke-width of the lines. The following options are possible:
-
--   _dot_ - a filled circle without a stroke and 2.5px radius
--   _circle_ - a filled circle with a white stroke and 3px radius
--   _circle-stroke_ - a hollow circle with a colored stroke and a white fill and 3px radius
--   _arrow_ - an arrowhead with auto orientation
--   _arrow-reverse_ - an reversed arrowhead with auto orientation
--   _tick_ - a small perpendicular line
--   _tick-x_ - a small horizontal line
--   _tick-y_ - a small vertical line
-
-You can specify the markers separately for the start of the line (**markerStart**), the end of the line (**markerEnd**) or the points in-between (**markerMid**) -- or you can set the **marker** option for all of them.
-
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
     import Select from '$lib/ui/Select.svelte';
     import Slider from '$lib/ui/Slider.svelte';
 
-    let markerStart = $state('dot');
-    let markerMid = $state('tick');
-    let markerEnd = $state('circle-stroke');
-    let strokeWidth = $state(1.5);
+    let marker = $state('circle-stroke');
 
     const options = [
         'dot',
@@ -43,43 +27,42 @@ You can specify the markers separately for the start of the line (**markerStart*
     let { crimea } = $derived($page.data.data);
 </script>
 
-<b>marker</b>
-<Select label="start:" bind:value={markerStart} {options} />
-<Select label="mid:" bind:value={markerMid} {options} />
-<Select label="end:" bind:value={markerEnd} {options} /><br />
-<Slider label="stroke width" bind:value={strokeWidth} min={0.5} max={4} step={0.1} />
+<Select label="Marker:" bind:value={marker} {options} /><br />
 <Plot inset={10} grid>
-    <Line
-        data={crimea}
-        x="date"
-        y="deaths"
-        stroke="cause"
-        {strokeWidth}
-        {markerStart}
-        {markerMid}
-        {markerEnd}
+    <Line data={crimea} x="date" y="deaths" stroke="cause" {marker}
     />
 </Plot>
 ```
 
 ```svelte
 <Plot>
-    <Line
-        data={crimea}
-        x="date"
-        y="deaths"
-        stroke="cause"
-        {strokeWidth}
-        {markerStart}
-        {markerMid}
-        {markerEnd}
-    />
+    <Line data={crimea} x="date" y="deaths" stroke="cause" marker="dot" />
 </Plot>
 ```
 
+The supported marker options are:
+
+-   **markerStart** - the marker for the starting point of a line segment
+-   **markerMid** - the marker for any intermediate point of a line segment
+-   **markerEnd** - the marker for the end point of a line segment
+-   **marker** - shorthand for setting the marker on all points
+
+The following named markers are supported:
+
+-   _dot_ - a filled circle without a stroke and 2.5px radius
+-   _circle_ - a filled circle with a white stroke and 3px radius
+-   _circle-stroke_ - a hollow circle with a colored stroke and a white fill and 3px radius
+-   _arrow_ - an arrowhead with auto orientation
+-   _arrow-reverse_ - an reversed arrowhead with auto orientation
+-   _tick_ - a small perpendicular line
+-   _tick-x_ - a small horizontal line
+-   _tick-y_ - a small vertical line
+
+You can specify the markers separately for the start of the line (**markerStart**), the end of the line (**markerEnd**) or the points in-between (**markerMid**) -- or you can set the **marker** option for all of them.
+
 Note that for the interpolation methods `basis`, `bundle`, and `step`, the marker symbols will not be placed at the location of the data points (shown as **+** below).
 
-```svelte --live
+```svelte live
 <script lang="ts">
     import { Plot, LineY, Dot } from '$lib/index.js';
     import Slider from '$lib/ui/Slider.svelte';
@@ -93,7 +76,7 @@ Note that for the interpolation methods `basis`, `bundle`, and `step`, the marke
     ];
 </script>
 
-<Plot grid>
+<Plot height={250} grid>
     <LineY data={numbers} curve="basis" marker="circle-stroke" />
     <!-- TODO: use DotY here -->
     <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} symbol="plus" y="value" x="index" />
@@ -106,6 +89,8 @@ Note that for the interpolation methods `basis`, `bundle`, and `step`, the marke
     <DotY data={numbers} symbol="plus" />
 </Plot>
 ```
+
+## Custom markers
 
 You can also specify a custom marker icon using the `marker` snippet:
 
@@ -207,7 +192,10 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 {#snippet marker(id, color)}
     <marker {id} fill="none" stroke={color} ... orient="auto">
         {#if shown}
-            <path in:fly={{ duration: 1000, y: -10 }} out:fade d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
+            <path 
+                in:fly={{ duration: 1000, y: -10 }} 
+                out:fade 
+                d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
         {/if}
     </marker>
 {/snippet}
