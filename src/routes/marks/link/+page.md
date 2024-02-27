@@ -4,7 +4,6 @@ title: Link mark
 
 For connecting two points with a line.
 
-
 ```svelte live
 <script lang="ts">
     import { Plot, Link, Dot, Text } from '$lib/index.js';

@@ -22,14 +22,22 @@
     grid
     title="Hi"
     subtitle="This is a subtitle"
-    caption="This is a note below"
+    caption="Source: RIAA"
     marginLeft={0}
     x={{ grid: true }}
     y={{ axis: false }}
     color={{ legend: true }}
     testid="area-y1"
 >
-    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" stack={{ offset }} />
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        curve="basis"
+        fill="group"
+        stack={{ offset }}
+    />
 </Plot>
 
 TODO: y domain doesn't update when changing the offset

@@ -29,8 +29,7 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
 
 <Select label="Marker:" bind:value={marker} {options} /><br />
 <Plot inset={10} grid>
-    <Line data={crimea} x="date" y="deaths" stroke="cause" {marker}
-    />
+    <Line data={crimea} x="date" y="deaths" stroke="cause" {marker} />
 </Plot>
 ```
 
@@ -192,10 +191,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 {#snippet marker(id, color)}
     <marker {id} fill="none" stroke={color} ... orient="auto">
         {#if shown}
-            <path 
-                in:fly={{ duration: 1000, y: -10 }} 
-                out:fade 
-                d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
+            <path in:fly={{ duration: 1000, y: -10 }} out:fade d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
         {/if}
     </marker>
 {/snippet}

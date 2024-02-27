@@ -40,7 +40,7 @@ Regressions are useful if you want to show the relationship between two variable
         {span}
         {bandwidth}
         {confidence}
-        stroke="red"
+        stroke="var(--svp-red)"
         x="power (hp)"
         y="weight (lb)"
     />
@@ -114,8 +114,14 @@ Returns a linear regression mark where y is the dependent variable and x is the 
 
 <Plot grid>
     <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
-    <RegressionY data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
-    <RegressionY data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
+    <RegressionY
+        data={cars}
+        type="linear"
+        stroke="var(--svp-blue)"
+        y="weight (lb)"
+        x="power (hp)"
+    />
+    <RegressionY data={cars} type="poly" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
@@ -142,8 +148,14 @@ Returns a linear regression mark where x is the dependent variable and y is the 
 
 <Plot grid>
     <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
-    <RegressionX data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
-    <RegressionX data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
+    <RegressionX
+        data={cars}
+        type="linear"
+        stroke="var(--svp-blue)"
+        y="weight (lb)"
+        x="power (hp)"
+    />
+    <RegressionX data={cars} type="poly" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 

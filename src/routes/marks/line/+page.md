@@ -135,8 +135,7 @@ You can set the line interpolation using the **interpolation** option.
 
 <CurveDemo />
 
-
-As you see in the previous plot, lines can show [markers](/features/markers) by setting the **marker** channel. 
+As you see in the previous plot, lines can show [markers](/features/markers) by setting the **marker** channel.
 
 ## More examples
 
