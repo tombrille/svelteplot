@@ -24,6 +24,7 @@
     import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
+    import { testFilter } from '$lib/helpers/index.js';
 
     type BarXProps = BaseMarkProps & {
         data: DataRow[];
@@ -52,30 +53,32 @@
 
     <g class="bars-x">
         {#each args.data as datum}
-            {@const y_ = resolveChannel('y', datum, args)}
-            {@const x1_ = resolveChannel('x1', datum, args)}
-            {@const x2_ = resolveChannel('x2', datum, args)}
-            {@const x1 = useScale.x1 ? plot.scales.x.fn(x1_) : x1_}
-            {@const x2 = useScale.x2 ? plot.scales.x.fn(x2_) : x2_}
-            {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
-            {@const minx = Math.min(x1, x2)}
-            {@const maxx = Math.max(x1, x2)}
-            {@const inset = resolveProp(args.inset, datum, 0)}
-            {@const dx = resolveProp(args.dx, datum, 0)}
-            {@const dy = resolveProp(args.dy, datum, 0)}
-            {#if isValid(y) && isValid(x1) && isValid(x2)}
-                <rect
-                    style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}
-                    transform="translate({[minx + dx, y + inset + dy]})"
-                    width={maxx - minx}
-                    height={plot.scales.y.fn.bandwidth() - inset * 2}
-                    role={onclick ? 'button' : null}
-                    rx={resolveProp(args.rx, datum, null)}
-                    ry={resolveProp(args.ry, datum, null)}
-                    onclick={onclick && wrapEvent(onclick, datum)}
-                    onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                    onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
-                />
+            {#if testFilter(datum, args)}
+                {@const y_ = resolveChannel('y', datum, args)}
+                {@const x1_ = resolveChannel('x1', datum, args)}
+                {@const x2_ = resolveChannel('x2', datum, args)}
+                {@const x1 = useScale.x1 ? plot.scales.x.fn(x1_) : x1_}
+                {@const x2 = useScale.x2 ? plot.scales.x.fn(x2_) : x2_}
+                {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const minx = Math.min(x1, x2)}
+                {@const maxx = Math.max(x1, x2)}
+                {@const inset = resolveProp(args.inset, datum, 0)}
+                {@const dx = resolveProp(args.dx, datum, 0)}
+                {@const dy = resolveProp(args.dy, datum, 0)}
+                {#if isValid(y) && isValid(x1) && isValid(x2)}
+                    <rect
+                        style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}
+                        transform="translate({[minx + dx, y + inset + dy]})"
+                        width={maxx - minx}
+                        height={plot.scales.y.fn.bandwidth() - inset * 2}
+                        role={onclick ? 'button' : null}
+                        rx={resolveProp(args.rx, datum, null)}
+                        ry={resolveProp(args.ry, datum, null)}
+                        onclick={onclick && wrapEvent(onclick, datum)}
+                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
+                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                    />
+                {/if}
             {/if}
         {/each}
     </g>

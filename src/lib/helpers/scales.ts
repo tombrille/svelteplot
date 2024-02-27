@@ -14,7 +14,7 @@ import {
     scaleSymlog,
     scalePow
 } from 'd3-scale';
-import { extent, range as d3Range } from 'd3-array';
+import { extent, range as d3Range, ascending } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
 // import { getLogTicks } from './getLogTicks.js';
 import {
@@ -268,7 +268,7 @@ export function createScale<T extends ScaleOptions>(
     const domain = scaleOptions.domain
         ? scaleOptions.domain
         : type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical'
-          ? (name === 'y' ? valueArr.toReversed() : valueArr).toSorted()
+          ? (name === 'y' ? valueArr.toReversed() : valueArr).toSorted(ascending)
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     let range =

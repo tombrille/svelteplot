@@ -18,6 +18,7 @@
         ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
+    import { testFilter } from '$lib/helpers/index.js';
 
     type RuleYOptions = BaseMarkProps & {
         data: DataRecord[];
@@ -52,7 +53,7 @@
 
     <GroupMultiple class="rule-y" count={args.data.length}>
         {#each args.data as datum}
-            {#if testFacet(datum, mark.options)}
+            {#if testFacet(datum, mark.options) && testFilter(datum, mark.options)}
                 {@const y_ = resolveChannel('y', datum, args)}
                 {#if isValid(y_)}
                     {@const x1_ = resolveChannel('x1', datum, args)}

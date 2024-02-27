@@ -6,13 +6,13 @@
     import { recordizeY } from '$lib/index.js';
     import { getUsedScales } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
+    import { testFilter } from '$lib/helpers/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
     let {
         data = [],
-        filter,
         ...options
     } = $props<
         BaseMarkProps & {
@@ -45,10 +45,10 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="tick-y">
         {#each args.data as datum}
-            {#if testFacet(datum, mark.options)}
+            {#if testFacet(datum, mark.options) && testFilter(datum, args)}
                 {@const y_ = resolveChannel('y', datum, args)}
                 {@const x_ = resolveChannel('x', datum, args)}
-                {#if isValid(y_) && (isValid(x_) || args.x == null) && (args.filter == null || resolveProp(args.filter, datum))}
+                {#if isValid(y_) && (isValid(x_) || args.x == null)}
                     {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
                     {@const x1 =
                         args.x != null

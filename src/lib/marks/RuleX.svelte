@@ -16,7 +16,7 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-    import { isValid } from '../helpers/index.js';
+    import { isValid, testFilter } from '../helpers/index.js';
 
     type RuleXOptions = BaseMarkProps & {
         data: DataRecord[];
@@ -51,7 +51,7 @@
 
     <g class="rule-x">
         {#each args.data as datum}
-            {#if testFacet(datum, mark.options)}
+            {#if testFacet(datum, mark.options) && testFilter(datum, mark.options)}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {#if isValid(x_)}
                     {@const y1_ = resolveChannel('y1', datum, args)}

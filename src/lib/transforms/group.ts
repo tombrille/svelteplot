@@ -1,4 +1,5 @@
 import { groupFacetsAndZ } from '$lib/helpers/group.js';
+import { testFilter } from '$lib/helpers/index.js';
 import { reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types.js';
@@ -62,9 +63,9 @@ function groupXYZ(
 ) {
     // group by x or y
     const groups =
-        dim === 'z' ? [[null, data]] : d3Groups(data, (d) => resolveChannel(dim, d, channels));
+        dim === 'z' ? [[null, data]] : d3Groups(data.filter(d => testFilter(d, channels)), (d) => resolveChannel(dim, d, channels));
     const newData: DataRecord[] = [];
-    let newChannels = { ...channels };
+    let newChannels = { ...channels, filter: null };
     if (dim !== 'z') newChannels[dim] = `__${dim}`;
 
     const outputs = [

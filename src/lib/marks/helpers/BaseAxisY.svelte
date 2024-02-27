@@ -1,5 +1,6 @@
 <script lang="ts">
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
+    import { testFilter } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import type { ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
     import { tick } from 'svelte';
@@ -72,7 +73,7 @@
 
 <g class="axis-y">
     {#each positionedTicks as tick, t}
-        {#if !tick.hidden}
+        {#if testFilter(tick.value, options) && !tick.hidden}
             <g
                 class="tick"
                 transform="translate({tick.dx +

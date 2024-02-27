@@ -10,6 +10,7 @@
     import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { getUsedScales } from '$lib/helpers/scales.js';
+    import { testFilter } from '$lib/helpers/index.js';
 
     let {
         data = [],
@@ -51,19 +52,21 @@
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="grid-x">
         {#each ticks as tick}
-            {@const x =
-                plot.scales.x.fn(tick) +
-                (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
-            {@const y1_ = resolveChannel('y1', tick, options)}
-            {@const y2_ = resolveChannel('y2', tick, options)}
-            {@const y1 = options.y1 != null ? plot.scales.y.fn(y1_) : 0}
-            {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) : plot.facetHeight}
-            <line
-                transform="translate({x},{plot.options.marginTop})"
-                style={resolveScaledStyles(tick, options, useScale, plot, 'stroke')}
-                {y1}
-                {y2}
-            />
+            {#if testFilter(tick, options)}
+                {@const x =
+                    plot.scales.x.fn(tick) +
+                    (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)}
+                {@const y1_ = resolveChannel('y1', tick, options)}
+                {@const y2_ = resolveChannel('y2', tick, options)}
+                {@const y1 = options.y1 != null ? plot.scales.y.fn(y1_) : 0}
+                {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) : plot.facetHeight}
+                <line
+                    transform="translate({x},{plot.options.marginTop})"
+                    style={resolveScaledStyles(tick, options, useScale, plot, 'stroke')}
+                    {y1}
+                    {y2}
+                />
+            {/if}
         {/each}
     </g>
 </Mark>
