@@ -131,6 +131,7 @@ const ordinalSchemes = new Map<ColorScheme, SchemeGetter>([
     // sequential (single-hue)
     ['blues', scheme9(schemeBlues, interpolateBlues)],
     ['greens', scheme9(schemeGreens, interpolateGreens)],
+    ['grays', scheme9(schemeGreys, interpolateGreys)],
     ['greys', scheme9(schemeGreys, interpolateGreys)],
     ['oranges', scheme9(schemeOranges, interpolateOranges)],
     ['purples', scheme9(schemePurples, interpolatePurples)],
@@ -249,6 +250,7 @@ const quantitativeSchemes = new Map([
     // sequential (single-hue)
     ['blues', interpolateBlues],
     ['greens', interpolateGreens],
+    ['grays', interpolateGreys],
     ['greys', interpolateGreys],
     ['purples', interpolatePurples],
     ['reds', interpolateReds],
@@ -283,7 +285,7 @@ const quantitativeSchemes = new Map([
 ]);
 
 export function isQuantitativeScheme(scheme: string) {
-    return quantitativeSchemes.has(scheme);
+    return quantitativeSchemes.has(String(scheme).toLowerCase());
 }
 
 export function quantitativeScheme(scheme: string) {
