@@ -18,7 +18,6 @@
     import { getUsedScales } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
-    import { isSnippet } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
         BaseMarkProps & {
@@ -49,7 +48,9 @@
     const { getTestFacet } = getContext('facet');
     let testFacet = $derived(getTestFacet());
 
-    let args = $derived(sort({ data, sort: { channel: 'r', order: 'descending' }, ...options }));
+    let args = $derived(sort({ data, ...options }));
+
+    $inspect(plot.scales.x);
 </script>
 
 <Mark
@@ -81,8 +82,18 @@
                     {@const _y = resolveChannel('y', datum, args)}
                     {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                        {@const x = useScale.x ? plot.scales.x.fn(_x) : _x}
-                        {@const y = useScale.y ? plot.scales.y.fn(_y) : _y}
+                        {@const x = useScale.x
+                            ? plot.scales.x.fn(_x) +
+                              (plot.scales.x.type === 'band'
+                                  ? plot.scales.x.fn.bandwidth() * 0.5
+                                  : 0)
+                            : _x}
+                        {@const y = useScale.y
+                            ? plot.scales.y.fn(_y) +
+                              (plot.scales.y.type === 'band'
+                                  ? plot.scales.y.fn.bandwidth() * 0.5
+                                  : 0)
+                            : _y}
                         {@const dx = +resolveProp(args.dx, datum, 0)}
                         {@const dy = +resolveProp(args.dx, datum, 0)}
                         {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
