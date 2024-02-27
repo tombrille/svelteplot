@@ -1,5 +1,8 @@
+import { loadDatasets } from '$lib/helpers/csv.js';
 import type { PageLoad } from './$types.js';
 
-export const load: PageLoad = () => {
-    return { datasets: ['aapl'] };
+export const load: PageLoad = async ({ fetch }) => {
+    return {
+        data: await loadDatasets(['olympians'], fetch)
+    };
 };

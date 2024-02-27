@@ -91,3 +91,31 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
     />
 </Plot>
 ```
+
+You can pass options to the implicit stack transforms using the mark **stack** option:
+
+```svelte live
+<script>
+    import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
+
+    import { page } from '$app/stores';
+    let { olympians } = $derived($page.data.data);
+</script>
+
+<Plot height={300} grid marginLeft={40} color={{ legend: true }}>
+    <RectY
+        {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })}
+        stack={{ offset: 'center' }}
+    />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot color={{ legend: true }}>
+    <RectY
+        {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })}
+        stack={{ offset: 'center' }}
+    />
+</Plot>
+```
