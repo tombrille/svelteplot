@@ -16,7 +16,7 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-    import { isValid } from '../helpers/isValid.js';
+    import { isValid } from '../helpers/index.js';
 
     type RuleXOptions = BaseMarkProps & {
         data: DataRecord[];

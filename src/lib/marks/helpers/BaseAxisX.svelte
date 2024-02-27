@@ -51,6 +51,8 @@
         )
     );
 
+    let tickRotate = $derived(plot.options.x.tickRotate || 0);
+
     let tickY = $derived(anchor === 'bottom' ? marginTop + height : marginTop);
 
     let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
@@ -71,14 +73,21 @@
         {@const prevTextLines = t && formattedTicks[t - 1].text}
         {@const estLabelWidth =
             max(textLines.map((t) => t.length)) * resolveProp(tickFontSize, tick) * 0.2}
-        <g class="tick" transform="translate({x + dx}, {tickY + dy})">
+        {@const moveDown = (tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
+        <g
+            class="tick"
+            transform="translate({x + dx}, {tickY + dy})"
+            text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}
+        >
             {#if tickSize}
                 <line
                     style={resolveScaledStyles(tick, options, {}, plot, 'stroke')}
                     y2={anchor === 'bottom' ? tickSize : -tickSize}
                 />
             {/if}
+
             <text
+                transform="rotate({tickRotate})"
                 style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
                 style={resolveScaledStyles(
                     tick,
@@ -87,7 +96,8 @@
                     plot,
                     'fill'
                 )}
-                y={(tickSize + tickPadding) * (anchor === 'bottom' ? 1 : -1)}
+                x={tickRotate < 0 ? -moveDown : tickRotate > 0 ? moveDown : 0}
+                y={tickRotate !== 0 ? '-0.35rem' : moveDown}
                 dominant-baseline={anchor === 'bottom' ? 'hanging' : 'auto'}
             >
                 {#if ticks.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
@@ -111,7 +121,6 @@
         stroke: currentColor;
     }
     text {
-        text-anchor: middle;
         font-size: 11px;
         opacity: 0.8;
         fill: currentColor;
