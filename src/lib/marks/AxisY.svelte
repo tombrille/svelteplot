@@ -22,6 +22,7 @@
         automatic = false,
         title,
         anchor = 'left',
+        facetAnchor = 'auto',
         lineAnchor = 'center',
         tickSize = 6,
         tickFontSize = 11,
@@ -34,6 +35,7 @@
             automatic?: boolean;
             title?: string;
             anchor?: 'left' | 'right';
+            facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
             lineAnchor?: 'top' | 'center' | 'bottom';
             tickFontSize?: ConstantAccessor<number>;
             tickSize?: number;
@@ -97,7 +99,23 @@
     );
 
     const { getFacetState } = getContext('facet');
-    let { left, top } = $derived(getFacetState());
+    let { left, leftEmpty, right, rightEmpty, top } = $derived(getFacetState());
+
+    let useFacetAnchor = $derived(
+        facetAnchor !== 'auto' ? facetAnchor : anchor === 'left' ? 'left-empty' : 'right-empty'
+    );
+
+    let showAxis = $state(false);
+    $effect.pre(() => {
+        showAxis =
+            useFacetAnchor === 'left'
+                ? left
+                : useFacetAnchor === 'right'
+                  ? right
+                  : useFacetAnchor === 'left-empty'
+                    ? leftEmpty
+                    : rightEmpty;
+    });
 </script>
 
 <Mark
@@ -117,7 +135,7 @@
             dominant-baseline="hanging">{useTitle}</text
         >
     {/if}
-    {#if left}
+    {#if showAxis}
         <BaseAxisY
             scaleFn={plot.scales.y.fn}
             scaleType={plot.scales.y.type}
