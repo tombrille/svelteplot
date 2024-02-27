@@ -25,6 +25,7 @@
     import GridX from './marks/GridX.svelte';
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
+    import { CHANNEL_SCALE } from './contants.js';
 
     let width = $state(500);
 
@@ -137,10 +138,22 @@
     let hasExplicitGridY = $derived(explicitMarks.find((m) => m.type === 'gridY'));
 
     let explicitScales = $derived(
-        new Set(explicitMarks.map((m) => [...m.scales.values()]).flat(1))
+        new Set(
+            explicitMarks
+                .map((m) =>
+                    [...m.scales.values()].filter((scale) => {
+                        // remove the scales where no input channels are defined for this mark
+                        const channels = Object.entries(CHANNEL_SCALE)
+                            .filter(([, scaleName]) => scale === scaleName)
+                            .map(([channel]) => channel);
+                        return channels.find((channel) => m.options[channel] != null);
+                    })
+                )
+                .flat(1)
+        )
     );
 
-    let isOneDimensional = $derived(!explicitScales.has('x') || !explicitScales.has('y'));
+    let isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
 
     let plotOptions = $derived(
         extendPlotOptions(initialOpts, {
@@ -193,7 +206,7 @@
                       plotOptions.marginBottom
                   )
                 : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                      ? 60
+                      ? preScales.fy.domain.length * 30
                       : preScales.y.type === 'band'
                         ? preScales.y.domain.length * 30
                         : preScales.y.type === 'point'
@@ -364,7 +377,7 @@
     }
 
     .plot-header {
-        margin-top: 2rem;
+        margin-top: 1rem;
         display: flex;
         flex-direction: column;
         row-gap: 0.35rem;
