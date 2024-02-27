@@ -9,8 +9,8 @@
     --svelteplot-bg: #fff;
     --svp-red: #f43f5e;
     --svp-blue: #0092ff;
+    --svp-green: #1bc85f;
 }
-
 
 html:not(.dark) .svp-action--flat {
     background-color: #eeeef8;
@@ -93,6 +93,7 @@ html {
     }
 
     .admonition-content p {
+        font-size: small;
         line-height: 1.5rem !important;
         &:first-child {
             margin-top: 0 !important;
@@ -163,7 +164,7 @@ html {
             font-weight: 300;
 
             select {
-                font-weight: 300; 
+                font-weight: 300;
             }
         }
     }
