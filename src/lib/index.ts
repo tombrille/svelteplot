@@ -44,13 +44,14 @@ export { default as HTMLTooltip } from './marks/HTMLTooltip.svelte';
 export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
 
 // transforms
+export { bin, binX, binY } from './transforms/bin.js';
 export { bollingerX, bollingerY } from './transforms/bollinger.js';
-export { stackX, stackY } from './transforms/stack.js';
+export { groupX, groupY, groupZ } from './transforms/group.js';
+export { intervalX, intervalY } from './transforms/interval.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';
-export { intervalX, intervalY } from './transforms/interval.js';
-export { bin, binX, binY } from './transforms/bin.js';
 export { sort, shuffle, reverse } from './transforms/sort.js';
+export { stackX, stackY } from './transforms/stack.js';
 export { windowX, windowY } from './transforms/window.js';
 
 // format helpers

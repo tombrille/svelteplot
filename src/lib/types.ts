@@ -182,6 +182,10 @@ export type XScaleOptions = ScaleOptions & {
      * add an explicit AxisX mark to your plot instead of using the implicit axes.
      */
     axis: AxisXAnchor | false;
+    /**
+     * rotate the axis ticks
+     */
+    tickRotate: number;
 };
 
 export type YScaleOptions = ScaleOptions & {
@@ -198,6 +202,10 @@ export type YScaleOptions = ScaleOptions & {
      */
     axis: AxisYAnchor | false;
     tickFormat: string | ((d: RawValue) => string);
+    /**
+     * rotate the axis ticks
+     */
+    tickRotate: number;
 };
 
 export type LegendScaleOptions = ScaleOptions & {
@@ -512,6 +520,7 @@ export type ColorScheme =
     | 'buylrd'
     | 'blues'
     | 'greens'
+    | 'grays'
     | 'greys'
     | 'oranges'
     | 'purples'
@@ -556,6 +565,7 @@ export type MarkStyleProps =
     | 'strokeDasharray'
     | 'opacity'
     | 'cursor'
+    | 'blend'
     | 'fill'
     | 'fillOpacity'
     | 'fontWeight'

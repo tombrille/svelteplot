@@ -84,7 +84,8 @@ export function reduceOutputs(
 ) {
     for (const k of outputs) {
         if (options[k] != null) {
-            const values = channels[k] == null ? data : data.map((d) => resolveChannel(k, d, channels));
+            const values =
+                channels[k] == null ? data : data.map((d) => resolveChannel(k, d, channels));
             const reducer = mayberReducer(options[k]);
 
             newDatum[`__${k}`] = reducer(values);

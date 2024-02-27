@@ -1,64 +1,15 @@
 import { isValid } from '$lib/helpers/index.js';
+import { Reducer, mayberReducer, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { DataRecord, RawValue, ScaledChannelName, TransformArg } from '$lib/types.js';
-import {
-    min,
-    max,
-    mode,
-    sum,
-    mean,
-    median,
-    variance,
-    deviation,
-    quantile,
-    groups as d3Groups
-} from 'd3-array';
-
-type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
-// For internal use.
-export type ReducerPercentile =
-    | (`p${Digit}${Digit}` & Record<never, never>) // see https://github.com/microsoft/TypeScript/issues/29729
-    | 'p25'
-    | 'p50'
-    | 'p75';
+import type { DataRecord, ScaledChannelName, TransformArg } from '$lib/types.js';
+import { groups as d3Groups } from 'd3-array';
 
 type WindowOptions = {
     k: number;
     anchor: 'start' | 'middle' | 'end';
-    reduce:
-        | 'mean'
-        | 'median'
-        | 'min'
-        | 'max'
-        | 'mode'
-        | 'sum'
-        | 'deviation'
-        | 'variance'
-        | 'difference'
-        | 'ratio'
-        | 'first'
-        | 'last'
-        | ReducerPercentile;
+    reduce: ReducerName;
     strict: boolean;
 };
-
-const Reducer: Record<WindowOptions['reduce'], (d: Iterable<number | null | undefined>) => number> =
-    {
-        min,
-        max,
-        mode,
-        sum,
-        mode,
-        mean,
-        median,
-        variance,
-        deviation,
-        first: (d: number[]) => d[0],
-        last: (d: number[]) => d.at(-1),
-        difference: (d: number[]) => d.at(-1) - d[0],
-        ratio: (d: number[]) => d.at(-1) / d[0]
-    };
 
 export function windowX(args: TransformArg<DataRecord>, options: WindowOptions) {
     return windowDim('x', args, options);
@@ -77,12 +28,7 @@ function windowDim(
     // we only change the data, but not the
     if (!((k = Math.floor(k)) > 0)) throw new Error(`invalid k: ${k}`);
 
-    const reduceFn =
-        typeof reduce === 'function'
-            ? reduce
-            : (reduce as string).startsWith('p')
-              ? percentile(reduce)
-              : Reducer[reduce];
+    const reduceFn = mayberReducer(reduce);
 
     // group by z, fill or stroke
     const groupBy =
@@ -93,6 +39,7 @@ function windowDim(
               : channels.stroke != null
                 ? 'stroke'
                 : false;
+
     const groups = groupBy
         ? d3Groups(data, (d) => resolveChannel(groupBy, d, channels)).map(([, v]) => v)
         : [data];
@@ -130,9 +77,4 @@ function windowDim(
         ...channels,
         ...Object.fromEntries(reduceChannels.map((channel) => [channel, `__reduced_${channel}__`]))
     };
-}
-
-function percentile(reduce) {
-    const p = +`${reduce}`.slice(1) / 100;
-    return (I, f) => quantile(I, p, f);
 }

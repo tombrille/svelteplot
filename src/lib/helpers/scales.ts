@@ -46,7 +46,6 @@ import isDataRecord from './isDataRecord.js';
 import callWithProps from './callWithProps.js';
 import { interpolateLab, interpolateRound } from 'd3-interpolate';
 import { coalesce } from './index.js';
-import { maybeInterval } from './autoTicks.js';
 import { getLogTicks } from './getLogTicks.js';
 
 const Scales: Record<
@@ -269,9 +268,7 @@ export function createScale<T extends ScaleOptions>(
     const domain = scaleOptions.domain
         ? scaleOptions.domain
         : type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical'
-          ? name === 'y'
-              ? valueArr.toReversed()
-              : valueArr
+          ? (name === 'y' ? valueArr.toReversed() : valueArr).toSorted()
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     let range =
@@ -322,10 +319,18 @@ export function createScale<T extends ScaleOptions>(
                 const domain_ =
                     pivot != null ? [domain[0], pivot, domain[1]] : [-maxabs, 0, maxabs];
                 fn = scaleDiverging(domain_, quantitativeScheme(scheme_));
-            } else if (scaleOptions.type === 'linear' || isQuantitativeScheme(scheme_)) {
+            } else if (
+                scaleOptions.type === 'linear' ||
+                (scaleOptions.type === 'auto' && isQuantitativeScheme(scheme_))
+            ) {
                 // sequential
                 fn = scaleSequential(domain, quantitativeScheme(scheme_));
             } else {
+                console.warn(
+                    'color problem',
+                    { type, scheme_, scaleOptions },
+                    isQuantitativeScheme(scheme_)
+                );
                 // problem
                 fn = () => 'red';
             }
