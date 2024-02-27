@@ -153,7 +153,7 @@ Facetted **ruleY** chart
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot frame marginBottom={5} inset={5} testid="ruley">
+<Plot frame marginBottom={5} maxWidth="200px" inset={5} testid="ruley">
     <!-- <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" fill="#999" opacity={0.2} /> -->
     <RuleY data={penguins} fx="species" stroke="island" y="culmen_depth_mm" />
 </Plot>

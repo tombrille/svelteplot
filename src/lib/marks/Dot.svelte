@@ -49,8 +49,7 @@
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(sort({ data, ...options }));
-
-    $inspect(plot.scales.x);
+    $inspect(args);
 </script>
 
 <Mark

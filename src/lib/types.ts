@@ -186,6 +186,8 @@ export type XScaleOptions = ScaleOptions & {
      * rotate the axis ticks
      */
     tickRotate: number;
+
+    labelAnchor: 'auto'|'left'|'center'|'right';
 };
 
 export type YScaleOptions = ScaleOptions & {
@@ -206,6 +208,8 @@ export type YScaleOptions = ScaleOptions & {
      * rotate the axis ticks
      */
     tickRotate: number;
+
+    labelAnchor: 'auto'|'bottom'|'middle'|'top';
 };
 
 export type LegendScaleOptions = ScaleOptions & {

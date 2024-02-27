@@ -2,7 +2,7 @@
 title: Test filters
 ---
 
-Area:
+`area`:
 
 ```svelte live
 <script lang="ts">
@@ -21,7 +21,7 @@ Area:
 </Plot>
 ```
 
-Arrow:
+`arrow`:
 
 ```svelte live
 <script lang="ts">
@@ -42,7 +42,7 @@ Arrow:
 </Plot>
 ```
 
-Axis:
+`axis`
 
 ```svelte live
 <script>
@@ -55,7 +55,7 @@ Axis:
 </Plot>
 ```
 
-Bar:
+`barx`
 
 ```svelte live
 <script lang="ts">
@@ -73,7 +73,7 @@ Bar:
 </Plot>
 ```
 
-GroupY:
+`groupy`:
 
 ```svelte live
 <script lang="ts">
@@ -90,7 +90,7 @@ GroupY:
 </Plot>
 ```
 
-Cell:
+`cell`:
 
 ```svelte live
 <script>
@@ -119,7 +119,7 @@ Cell:
 </Plot>
 ```
 
-Dot:
+`dot`:
 
 ```svelte live
 <script lang="ts">
@@ -138,20 +138,20 @@ Dot:
 </Plot>
 ```
 
-Grid:
+`grid`:
 
 ```svelte live
 <script>
     import { Plot, GridX, GridY } from '$lib';
 </script>
 
-<Plot height={200} testid="gridp">
+<Plot height={200} testid="grid">
     <GridX data={[1,2,3,4,5]} filter={d => d != 3}/>
     <GridY data={[1,2,3,4,5]} filter={d => d != 3}/>
 </Plot>
 ```
 
-Line:
+`line`:
 
 ```svelte live
 <script lang="ts">
@@ -170,7 +170,7 @@ Line:
 </Plot>
 ```
 
-Link:
+`link`:
 
 ```svelte live
 <script lang="ts">
@@ -191,7 +191,7 @@ Link:
 </Plot>
 ```
 
-RectX:
+`rectx`:
 
 ```svelte live
 <script lang="ts">
@@ -205,7 +205,7 @@ RectX:
 </Plot>
 ```
 
-RectY:
+`recty`:
 
 ```svelte live
 <script lang="ts">
@@ -219,7 +219,7 @@ RectY:
 </Plot>
 ```
 
-Rule:
+`rule`:
 
 ```svelte live
 <script>
@@ -232,7 +232,7 @@ Rule:
 </Plot>
 ```
 
-Text:
+`text`:
 
 ```svelte live
 <script>
@@ -262,7 +262,7 @@ Text:
 </Plot>
 ```
 
-TickX:
+`tickx`:
 
 ```svelte live
 <script lang="ts">
@@ -277,7 +277,7 @@ TickX:
 </Plot>
 ```
 
-TickY:
+`ticky`:
 
 ```svelte live
 <script lang="ts">

@@ -53,7 +53,7 @@
             subtitle: '',
             caption: '',
             height: 'auto',
-            maxWidth: oneDimY ? '60px' : undefined,
+            // maxWidth: oneDimY ? `${60 * e}px` : undefined,
             marginLeft: margins != null ? margins : 30,
             marginRight: margins != null ? margins : oneDimY ? 0 : 30,
             marginTop: margins != null ? margins : oneDimX ? 0 : 35,
@@ -68,6 +68,7 @@
             x: {
                 type: 'auto',
                 axis: oneDimY ? null : 'bottom',
+                labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
                 nice: false,
@@ -82,6 +83,7 @@
             y: {
                 type: 'auto',
                 axis: oneDimX ? null : 'left',
+                labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
                 nice: false,
@@ -196,7 +198,7 @@
 
     let height = $derived(
         plotOptions.height === 'auto'
-            ? plotOptions.aspectRatio
+            ? Math.round(plotOptions.aspectRatio
                 ? heightFromAspect(
                       preScales.x,
                       preScales.y,
@@ -213,7 +215,7 @@
                           ? preScales.y.domain.length * 18
                           : 350) +
                   plotOptions.marginTop +
-                  plotOptions.marginBottom
+                  plotOptions.marginBottom)
             : plotOptions.height
     );
 

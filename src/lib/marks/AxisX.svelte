@@ -30,6 +30,7 @@
         tickSize = 6,
         tickPadding = 3,
         tickFontSize = 11,
+        labelAnchor,
         tickFormat,
         ...options
     } = $props<
@@ -39,6 +40,7 @@
             title?: string;
             anchor?: 'top' | 'bottom';
             facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
+            labelAnchor?: 'auto' | 'left' | 'center' | 'right';
             tickSize?: number;
             tickPadding?: number;
             tickFontSize?: ConstantAccessor<number>;
@@ -112,7 +114,8 @@
                     : '')
     );
 
-    let titleAlign = $derived(isQuantitative ? 'right' : 'center');
+    let useLabelAnchor = $derived(labelAnchor || plot.options?.x?.labelAnchor || 'auto');
+    let titleAlign = $derived(useLabelAnchor === 'auto' ? (isQuantitative ? 'right' : 'center') : useLabelAnchor);
 
     const { getFacetState } = getContext('facet');
     let { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
@@ -143,10 +146,10 @@
     {#if left && top && useTitle}
         <text
             style={getBaseStyles(null, options)}
-            style:text-anchor={titleAlign === 'right'
+            text-anchor={titleAlign === 'right'
                 ? 'end'
                 : titleAlign === 'center'
-                  ? 'center'
+                  ? 'middle'
                   : 'start'}
             x={plot.options.marginLeft +
                 plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
@@ -178,6 +181,5 @@
         font-size: 11px;
         opacity: 0.8;
         fill: currentColor;
-        text-anchor: end;
     }
 </style>

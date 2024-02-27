@@ -9,6 +9,7 @@ export function sort(
     options: { reverse?: boolean } = {}
 ) {
     if (channels.sort) {
+        console.log('sort', channels.sort)
         const { sort } = channels;
         if (isDataRecord(sort) && sort.channel && sort.channel.charAt(0) === '-') {
             sort.channel = sort.channel.substr(1);

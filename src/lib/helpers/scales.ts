@@ -173,8 +173,10 @@ export function createScale<T extends ScaleOptions>(
     let manualActiveMarks = 0;
     const propNames = new Set<string>();
     const uniqueScaleProps = new Set<string | ChannelAccessor>();
+    let sortOrdinalDomain = true;
 
     for (const mark of marks) {
+        if (mark.channels.sort != null) sortOrdinalDomain = false;
         for (const channel of mark.channels) {
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
@@ -260,15 +262,22 @@ export function createScale<T extends ScaleOptions>(
     }
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
+
     const type: ScaleType =
         scaleOptions.type === 'auto'
             ? inferScaleType(name, valueArr, markTypes)
             : scaleOptions.type;
 
+    const isOrdinal = type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical';
+    
+    if (isOrdinal && sortOrdinalDomain) {
+        valueArr.sort(ascending);
+    }
+
     const domain = scaleOptions.domain
         ? scaleOptions.domain
         : type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical'
-          ? (name === 'y' ? valueArr.toReversed() : valueArr).toSorted(ascending)
+          ? (name === 'y' ? valueArr.toReversed() : valueArr)
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     let range =
