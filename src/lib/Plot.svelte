@@ -5,6 +5,7 @@
      * Copyright (C) 2024  Gregor Aisch
      */
     import { setContext } from 'svelte';
+    import { writable } from 'svelte/store';
     import type {
         PlotOptions,
         GenericMarkOptions,
@@ -28,6 +29,10 @@
     import { CHANNEL_SCALE } from './contants.js';
 
     let width = $state(500);
+
+    let autoMarginLeft = writable(0);
+    let autoMarginRight = writable(0);
+    setContext('svelteplot/autoMargins', { autoMarginLeft, autoMarginRight });
 
     let { header, footer, overlay, underlay, testid, facet, ...initialOpts } =
         $props<Partial<PlotOptions>>();
@@ -54,8 +59,8 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: margins != null ? margins : 30,
-            marginRight: margins != null ? margins : oneDimY ? 0 : 30,
+            marginLeft: margins != null ? margins : $autoMarginLeft+1,
+            marginRight: margins != null ? margins : oneDimY ? 0 : $autoMarginRight+1,
             marginTop: margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : 0,

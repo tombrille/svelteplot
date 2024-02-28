@@ -495,3 +495,7 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
     }
 </style>
 ```
+
+## Optimized builds
+
+Observable Plot comes as a big library that loads pretty much all of D3 and Plot, regardless of what you're using it for. 

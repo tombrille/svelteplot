@@ -105,11 +105,9 @@ Works as well with a point scale:
 </script>
 
 <Plot
-    marginRight={20}
     inset={10}
-    marginLeft={120}
     x={{ label: 'Population' }}
-    y={{ label: 'Inequality' }}
+    y={{ label: '' }}
     color={{
         scheme: 'BuRd',
         label: 'Change in inequality from 1980 to 2015',

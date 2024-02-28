@@ -1,9 +1,10 @@
 <script lang="ts">
+    import { getContext } from 'svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { testFilter } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
+    import { max } from 'd3-array';
     import type { ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
-    import { tick } from 'svelte';
 
     let {
         scaleFn,
@@ -17,8 +18,7 @@
         tickFontSize,
         marginLeft,
         width,
-        options,
-        plot
+        options
     } = $props<{
         scaleFn: (d: RawValue) => number;
         scaleType: ScaleType;
@@ -52,7 +52,8 @@
                 dx: +resolveProp(options.dx, tick, 0),
                 dy: +resolveProp(options.dy, tick, 0),
                 y: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
-                text: tickFormat(tick)
+                text: tickFormat(tick),
+                element: null as SVGTextElement|null
             };
         });
         const T = tickObjects.length;
@@ -68,6 +69,20 @@
             }
         }
         return tickObjects;
+    });
+
+    let tickTexts = $state([] as SVGTextElement[]);
+
+    const { autoMarginLeft, autoMarginRight } = getContext('svelteplot/autoMargins')
+
+    $effect(() => {
+        // measure tick label widths
+        const maxLabelWidth = max(positionedTicks.map((tick,i) => {
+            if (tickTexts[i]) return tickTexts[i].getBoundingClientRect().width;
+            return 0;
+        })) + tickPadding + tickSize;
+        if (anchor === 'left') $autoMarginLeft = maxLabelWidth;
+        else $autoMarginRight = maxLabelWidth;
     });
 </script>
 
@@ -87,6 +102,7 @@
                     />
                 {/if}
                 <text
+                    bind:this={tickTexts[t]}
                     class:is-left={anchor === 'left'}
                     style={getBaseStyles(tick.value, { ...options, fontSize: tickFontSize })}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
