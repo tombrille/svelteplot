@@ -60,7 +60,7 @@
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
             marginLeft: margins != null ? margins : $autoMarginLeft+1,
-            marginRight: margins != null ? margins : oneDimY ? 0 : $autoMarginRight+1,
+            marginRight: margins != null ? margins : oneDimY ? 0 : Math.max($autoMarginRight+1,4),
             marginTop: margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : 0,

@@ -132,6 +132,10 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
 
+    import { getContext } from 'svelte';
+    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context'
+    const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
@@ -139,7 +143,7 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
 <Plot height={300} grid marginLeft={40} color={{ legend: true }}>
     <RectY
         {...binX({ data: olympians, x: 'weight', fill: 'sex', y1: 0 }, { y2: 'count' })}
-        blend="screen"
+        blend={$isDark ? 'screen' : 'multiply'}
     />
     <RuleY data={[0]} />
 </Plot>
@@ -149,7 +153,7 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
 <Plot height={300}>
     <RectY
         {...binX({ data: olympians, x: 'weight', fill: 'sex', y1: 0 }, { y2: 'count' })}
-        blend="screen"
+        blend={$isDark ? 'screen' : 'multiply'}
     />
     <RuleY data={[0]} />
 </Plot>
@@ -418,12 +422,15 @@ Requires _input_ channels _x_ and _y_. Valid output channels for `bin()` are _fi
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
-
+    import { getContext } from 'svelte';
+    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context'
+    const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
+    
     let args = $derived(bin({ data: olympians, x: 'weight', y: 'height' }, { fill: 'count' }));
 </script>
 
 {#if olympians}
-    <Plot testid="olympians-binned" color={{ scheme: 'YlGnBu' }}>
+    <Plot testid="olympians-binned" color={{ scheme: $isDark ? 'turbo' : 'YlGnBu' }}>
         <Rect {...args} inset={0} />
     </Plot>
 {/if}

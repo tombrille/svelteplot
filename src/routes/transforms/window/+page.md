@@ -111,29 +111,67 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
 
 ```svelte live
 <script>
-    import { Plot, AreaY, Dot, Line, windowY } from '$lib';
+    import { Plot, AreaY, RectX, Line, windowY, binX, groupZ, Text, last } from '$lib';
     import { page } from '$app/stores';
+    import { Slider } from '$lib/ui';
+    import { groups } from 'd3-array';
 
     let { stocks } = $derived($page.data.data);
     let stocks2 = $derived(stocks.filter((d) => d.Date.getFullYear() < 2016));
+    let k = $state(90);
+    let smoothed = $derived(
+        windowY({ data: stocks, x: 'Date', y: 'Close', z: 'Symbol' }, { k })
+    );
 </script>
 
-<Plot grid y={{ type: 'log', base: 5, domain: [50, 1000] }}>
-    <Dot data={stocks2} r={1.5} x="Date" y="Close" stroke="Symbol" opacity="0.35" />
+<Slider label="k" min={1} max={120} bind:value={k}  />
+<Plot grid y={{ type: 'log', base: 5 }} marginRight={75}>
+    <RectX 
+        {...binX( 
+            { data: stocks, x: 'Date', y1: 'Low', y2: 'High', fill: 'Symbol' },
+            { y1: 'min', y2: 'max', interval: '2 weeks'})} 
+        opacity="0.4"
+        strokeWidth="1.5" />
     <Line
-        {...windowY({ data: stocks2, x: 'Date', y: 'Close', stroke: 'Symbol' }, { k: 90 })}
+        {...smoothed}
+        stroke="Symbol"
         strokeWidth="2"
+        markerEnd="dot"
     />
+    <Text 
+        {...last(smoothed)} 
+        fill="Symbol" 
+        text="Symbol"
+        dx="10"
+        textAnchor="start" />
 </Plot>
 ```
 
 ```svelte
-<Plot>
-    <Line data={stocks} x="Date" y="Close" stroke="Symbol" opacity="0.3" />
+<script>
+    let smoothed = $derived(
+        windowY({ data: stocks2, x: 'Date', y: 'Close', z: 'Symbol' }, { k })
+    );
+</script>
+<Plot grid y={{ type: 'log', base: 5, domain: [50, 1000] }} marginRight={100}>
+    <RuleX 
+        {...binX(
+            { data: stocks2, x: 'Date', y1: 'Low', y2: 'High',  z: 'Symbol' },
+            { y1: 'min', y2: 'max', interval: '3 days'})} 
+        opacity="0.5"
+        strokeWidth="1.5" />
     <Line
-        {...windowY({ data: stocks, x: 'Date', y: 'Close', stroke: 'Symbol' }, { k: 60 })}
-        curve="natural"
+        {...smoothed}
+        stroke="Symbol"
+        strokeWidth="2"
+        markerEnd="dot"
     />
+    <Text 
+        {...last(smoothed)} 
+        fill="Symbol" 
+        text="Symbol"
+        dx="10"
+        textAnchor="start" />
 </Plot>
 ```
 
