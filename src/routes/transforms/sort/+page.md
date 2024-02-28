@@ -77,7 +77,7 @@ To invert the channel sorting, you can either add `order: 'descending` to the so
 </Plot>
 ```
 
-## Sort
+## sort
 
 Sorts the data.
 
@@ -113,9 +113,9 @@ Sorts the data.
 </Plot>
 ```
 
-## Shuffle
+## shuffle
 
-Shuffles the data randomly. If a **seed** option is specified, a [linear congruential generator](https://d3js.org/d3-random#randomLcg) with the given seed is used to generate random numbers; otherwise, Math.random is used.
+Shuffles the data randomly. If a **seed** option is specified, a [linear congruential generator](https://d3js.org/d3-random#randomLcg) with the given seed is used to generate random numbers; otherwise, `Math.random` is used.
 
 ```svelte live
 <script>
@@ -135,6 +135,7 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
 </Plot>
 
 <Slider label="seed" type="number" bind:value={seed} />
+{seed}
 ```
 
 ```svelte
@@ -144,7 +145,7 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
 </Plot>
 ```
 
-## Reverse
+## reverse
 
 The reverse transform reverses the data order:
 

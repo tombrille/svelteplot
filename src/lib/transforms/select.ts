@@ -1,4 +1,4 @@
-import { groupFacetsAndZ } from "$lib/helpers/group.js";
+import { groupFacetsAndZ } from '$lib/helpers/group.js';
 
 /**
  * Keeps only the first item of each group
@@ -21,4 +21,3 @@ export function last({ data, ...channels }) {
     });
     return { data: newData, ...channels };
 }
-

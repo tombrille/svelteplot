@@ -16,7 +16,6 @@ import {
 } from 'd3-scale';
 import { extent, range as d3Range, ascending } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
-// import { getLogTicks } from './getLogTicks.js';
 import {
     categoricalSchemes,
     isCategoricalScheme,
@@ -70,8 +69,7 @@ export function computeScales(
     plotWidth: number,
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
-    marks: Mark<GenericMarkOptions>[],
-    foo
+    marks: Mark<GenericMarkOptions>[]
 ) {
     const x = createScale(
         'x',
@@ -176,7 +174,12 @@ export function createScale<T extends ScaleOptions>(
     let sortOrdinalDomain = true;
 
     for (const mark of marks) {
-        if (mark.channels.sort != null) sortOrdinalDomain = false;
+        // we only sort the scale domain alphabetically, if none of the
+        // marks that map to it are using the `sort` transform. Note that
+        // we're deliberately checking for !== undefined and not for != null
+        // since the explicit sort transforms like shuffle will set the
+        // sort channel to null to we know that there's an explicit order
+        if (mark.channels.sort !== undefined) sortOrdinalDomain = false;
         for (const channel of mark.channels) {
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
@@ -268,8 +271,9 @@ export function createScale<T extends ScaleOptions>(
             ? inferScaleType(name, valueArr, markTypes)
             : scaleOptions.type;
 
-    const isOrdinal = type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical';
-    
+    const isOrdinal =
+        type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical';
+
     if (isOrdinal && sortOrdinalDomain) {
         valueArr.sort(ascending);
     }
@@ -277,7 +281,9 @@ export function createScale<T extends ScaleOptions>(
     const domain = scaleOptions.domain
         ? scaleOptions.domain
         : type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical'
-          ? (name === 'y' ? valueArr.toReversed() : valueArr)
+          ? name === 'y'
+              ? valueArr.toReversed()
+              : valueArr
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     let range =
@@ -401,6 +407,10 @@ export function createScale<T extends ScaleOptions>(
     };
 }
 
+/**
+ * Infer a scale type based on the scale name, the data values mapped to it and
+ * the mark types that are bound to the scale
+ */
 export function inferScaleType(
     name: ScaleName,
     dataValues: RawValue[],
@@ -443,7 +453,7 @@ function getScaleRange(
     plotHeight: number,
     plotHasFilledDotMarks: boolean
 ) {
-    const { marginBottom, marginTop, marginLeft, marginRight, inset } = plotOptions;
+    const { marginTop, marginLeft, inset } = plotOptions;
     const { insetLeft, insetRight, insetTop, insetBottom } = scaleOptions;
     return name === 'opacity'
         ? [0, 1]
@@ -471,7 +481,7 @@ function getScaleRange(
                   : [];
 }
 
-const channelNames: ScaledChannelName[] = [
+const scaledChannelNames: ScaledChannelName[] = [
     'x',
     'x1',
     'x2',
@@ -487,13 +497,19 @@ const channelNames: ScaledChannelName[] = [
     'symbol'
 ];
 
+/**
+ * Mark channels can explicitely or implicitely be exempt from being
+ * mapped to a scale, so everywhere where values are being mapped to
+ * scales, we need to check if the the scale is supposed to be used
+ * not. That's what this function is used for.
+ */
 export function getUsedScales(
     plot: PlotState,
     options: GenericMarkOptions,
     mark: Mark<GenericMarkOptions>
-): { [k in ScaledChannelName]: boolean } {
+) {
     return Object.fromEntries(
-        channelNames.map((channel) => {
+        scaledChannelNames.map((channel) => {
             const scale = CHANNEL_SCALE[channel];
             const skipMarks = plot.scales[scale].skip.get(channel) || new Set();
             return [
@@ -501,7 +517,7 @@ export function getUsedScales(
                 !skipMarks.has(mark.id) && toChannelOption(channel, options[channel]).scale !== null
             ];
         })
-    );
+    ) as { [k in ScaledChannelName]: boolean };
 }
 
 function looksLikeANumber(input: string | number) {

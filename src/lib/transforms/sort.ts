@@ -1,5 +1,5 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
-import { resolveChannel, toChannelOption } from '$lib/helpers/resolve.js';
+import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, DataRow, TransformArg } from '$lib/types.js';
 import { shuffler } from 'd3-array';
 import { randomLcg } from 'd3-random';
@@ -9,10 +9,13 @@ export function sort(
     options: { reverse?: boolean } = {}
 ) {
     if (channels.sort) {
-        console.log('sort', channels.sort)
         const { sort } = channels;
-        if (isDataRecord(sort) && sort.channel && sort.channel.charAt(0) === '-') {
-            sort.channel = sort.channel.substr(1);
+        if (
+            isDataRecord(sort) &&
+            typeof sort.channel === 'string' &&
+            sort.channel.charAt(0) === '-'
+        ) {
+            sort.channel = sort.channel.substring(1);
             sort.order = 'descending';
         }
         // sort data
@@ -22,13 +25,22 @@ export function sort(
                 .toSorted(
                     (a, b) =>
                         (a.__sortkey > b.__sortkey ? 1 : a.__sortkey < b.__sortkey ? -1 : 0) *
-                        (options.reverse || sort?.order === 'descending' ? -1 : 1)
+                        (options.reverse || (isDataRecord(sort) && sort?.order === 'descending')
+                            ? -1
+                            : 1)
                 ),
-            // .map(({ __sortkey, ...d }) => d),
-            ...channels
+
+            ...channels,
+            // set the sort channel to null to disable the implicit alphabetical
+            // ordering of ordinal domains, and also to avoid double sorting in case
+            // this transform is used "outside" a mark
+            sort: null
         };
     }
-    return { data, ...channels };
+    return {
+        data,
+        ...channels
+    };
 }
 
 /**
@@ -41,8 +53,11 @@ export function shuffle(
     const random = randomLcg(options.seed);
     const shuffle = shuffler(random);
     return {
-        data: shuffle(data.slice(0)),
-        ...channels
+        data: shuffle([...data]),
+        ...channels,
+        // set the sort channel to null to disable the implicit
+        // alphabetical ordering of ordinal domains
+        sort: null
     };
 }
 
@@ -52,6 +67,9 @@ export function shuffle(
 export function reverse({ data, ...channels }: TransformArg<DataRow[]>) {
     return {
         data: data.toReversed(),
-        ...channels
+        ...channels,
+        // set the sort channel to null to disable the implicit
+        // alphabetical ordering of ordinal domains
+        sort: null
     };
 }

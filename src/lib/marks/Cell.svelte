@@ -19,7 +19,8 @@
         DataRecord,
         BaseMarkProps,
         RectMarkProps,
-        ChannelAccessor
+        ChannelAccessor,
+        FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
@@ -49,7 +50,7 @@
               }) as Props)
     );
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 
@@ -70,7 +71,6 @@
                 {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
                 {@const y1 = useScale.y ? plot.scales.y.fn(y_) : y_}
                 {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
-
                 {@const miny = Math.min(y1, y2)}
                 {@const maxy = Math.max(y1, y2)}
                 {@const minx = Math.min(x1, x2)}

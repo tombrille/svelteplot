@@ -59,8 +59,9 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: margins != null ? margins : $autoMarginLeft+1,
-            marginRight: margins != null ? margins : oneDimY ? 0 : Math.max($autoMarginRight+1,4),
+            marginLeft: margins != null ? margins : $autoMarginLeft + 1,
+            marginRight:
+                margins != null ? margins : oneDimY ? 0 : Math.max($autoMarginRight + 1, 4),
             marginTop: margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : 0,
@@ -201,26 +202,33 @@
         );
     }
 
+    let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
+    let yDomainCount = $derived(
+        isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
+    );
+
     let height = $derived(
         plotOptions.height === 'auto'
-            ? Math.round(plotOptions.aspectRatio
-                ? heightFromAspect(
-                      preScales.x,
-                      preScales.y,
-                      plotOptions.aspectRatio,
-                      plotWidth,
-                      plotOptions.marginTop,
-                      plotOptions.marginBottom
-                  )
-                : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                      ? preScales.fy.domain.length * 30
-                      : preScales.y.type === 'band'
-                        ? preScales.y.domain.length * 30
-                        : preScales.y.type === 'point'
-                          ? preScales.y.domain.length * 18
-                          : 350) +
-                  plotOptions.marginTop +
-                  plotOptions.marginBottom)
+            ? Math.round(
+                  plotOptions.aspectRatio
+                      ? heightFromAspect(
+                            preScales.x,
+                            preScales.y,
+                            plotOptions.aspectRatio,
+                            plotWidth,
+                            plotOptions.marginTop,
+                            plotOptions.marginBottom
+                        )
+                      : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
+                            ? yFacetCount * 30
+                            : preScales.y.type === 'band'
+                              ? yFacetCount * yDomainCount * 30
+                              : preScales.y.type === 'point'
+                                ? yFacetCount * yDomainCount * 18
+                                : 350) +
+                            plotOptions.marginTop +
+                            plotOptions.marginBottom
+              )
             : plotOptions.height
     );
 
@@ -298,6 +306,7 @@
     class="svelteplot"
     bind:clientWidth={width}
     style:max-width={plotOptions.maxWidth}
+    data-oned={$autoMarginRight}
     data-w={plotState.scales.x.range[1]}
     data-testid={testid}
 >

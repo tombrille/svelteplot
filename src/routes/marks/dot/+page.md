@@ -6,7 +6,7 @@ The dot mark draws circles or other symbols positioned in **x** and **y** as in 
 For example, the chart below shows the roughly-inverse relationship between car horsepower in
 y↑ and fuel efficiency in miles per gallon in x→.
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot } from '$lib';
 
@@ -33,7 +33,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 dsdsd sd sd sdsd sd
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
@@ -53,7 +53,7 @@ dsdsd sd sd sdsd sd
 
 One more
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
@@ -75,7 +75,7 @@ max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
 </Plot>
 ```
 
-You can also use a point scale for dot dimensions to create dot plots, such as this recreation of William S. Clevelands dot plot from [The Elements of Graphing Data (1985)](https://archive.org/details/elementsofgraphi0000clev):
+You can also use a point scale for dot dimensions to create dot plots, such as this recreation of William S. Cleveland's dot plot from [The Elements of Graphing Data (1985)](https://archive.org/details/elementsofgraphi0000clev):
 
 ```svelte live
 <script>
@@ -84,16 +84,29 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
     let { languages } = $derived($page.data.data);
 </script>
 
-<Plot frame inset={10} testid="languages" 
-    x={{ type: 'log', domain: [50,2000], axis: 'both', label: 'NUMBER OF SPEAKERS (MILLIONS)', labelAnchor: 'center' }} 
-    y={{ type: 'point', label: '' }} marginTop={40} marginBottom={40}>
+<Plot
+    frame
+    inset={10}
+    testid="languages"
+    x={{
+        type: 'log',
+        domain: [50, 2000],
+        axis: 'both',
+        label: 'NUMBER OF SPEAKERS (MILLIONS)',
+        labelAnchor: 'center'
+    }}
+    y={{ type: 'point', label: '' }}
+    marginTop={40}
+    marginBottom={40}
+>
     <GridY strokeDasharray="1,3" strokeOpacity="0.5" />
-    <Dot 
-        data={languages.filter(d => d['Total speakers'] >= 70)} 
-        fill="currentColor" 
-        sort={{ channel: '-x' }} 
+    <Dot
+        data={languages.filter((d) => d['Total speakers'] >= 70)}
+        fill="currentColor"
+        sort={{ channel: '-x' }}
         y="Language"
-        x="Total speakers" />
+        x="Total speakers"
+    />
 </Plot>
 ```
 
@@ -101,7 +114,7 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
 
 Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, DotX } from '$lib';
     import { page } from '$app/stores';
@@ -117,7 +130,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
 Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, DotY } from '$lib';
     import { page } from '$app/stores';
@@ -133,7 +146,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 You can use the color channel for encoding a third quantitative variable.
 
-```svelte --live
+```svelte live
 <script lang="ts">
     import { Plot, Dot, RuleY } from '$lib';
     import { page } from '$app/stores';

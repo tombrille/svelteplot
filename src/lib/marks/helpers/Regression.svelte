@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-    import type { BaseMarkProps, ChannelAccessor, PlotContext } from '../../types.js';
+    import type { BaseMarkProps, ChannelAccessor, FacetContext, PlotContext } from '../../types.js';
 
     type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';
 
@@ -78,7 +78,7 @@
         }
     >();
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 
     let filteredData = $derived(data.filter((d) => testFacet(d, options)));

@@ -17,7 +17,8 @@
         ChannelName,
         GenericMarkOptions,
         ChannelAccessor,
-        BaseMarkProps
+        BaseMarkProps,
+        FacetContext
     } from './types.js';
 
     let {
@@ -43,7 +44,7 @@
 
     let facet = $derived(getTopLevelFacet());
 
-    const { getFacetState } = getContext('facet');
+    const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
     let { left, top } = $derived(getFacetState());
 
     const mark: Mark<GenericMarkOptions> = {

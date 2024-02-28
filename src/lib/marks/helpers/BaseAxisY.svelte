@@ -54,7 +54,7 @@
                 dy: +resolveProp(options.dy, tick, 0),
                 y: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
                 text: tickFormat(tick),
-                element: null as SVGTextElement|null
+                element: null as SVGTextElement | null
             };
         });
         const T = tickObjects.length;
@@ -77,15 +77,23 @@
     const { autoMarginLeft, autoMarginRight } = getContext<{
         autoMarginLeft: Writable<number>;
         autoMarginRight: Writable<number>;
-    }>('svelteplot/autoMargins')
+    }>('svelteplot/autoMargins');
 
     $effect(() => {
         // measure tick label widths
-        const maxLabelWidth = Math.ceil(max(positionedTicks.map((tick,i) => {
-            if (tick.hidden || !testFilter(tick.value, options)) return 0;
-            if (tickTexts[i]) return tickTexts[i].getBoundingClientRect().width;
-            return 0;
-        }) as number[])) + tickPadding + tickSize;
+        const maxLabelWidth =
+            Math.ceil(
+                max(
+                    positionedTicks.map((tick, i) => {
+                        if (tick.hidden || !testFilter(tick.value, options)) return 0;
+                        if (tickTexts[i]) return tickTexts[i].getBoundingClientRect().width;
+                        return 0;
+                    }) as number[]
+                )
+            ) +
+            tickPadding +
+            tickSize;
+
         if (anchor === 'left' && $autoMarginLeft !== maxLabelWidth) {
             $autoMarginLeft = maxLabelWidth;
         } else if (anchor === 'right' && $autoMarginRight !== maxLabelWidth) {

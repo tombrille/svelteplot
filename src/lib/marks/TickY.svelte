@@ -2,7 +2,13 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import type { PlotContext, BaseMarkProps, ChannelAccessor, DataRow } from '../types.js';
+    import type {
+        PlotContext,
+        BaseMarkProps,
+        ChannelAccessor,
+        DataRow,
+        FacetContext
+    } from '../types.js';
     import { recordizeY } from '$lib/index.js';
     import { getUsedScales } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
@@ -11,10 +17,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let {
-        data = [],
-        ...options
-    } = $props<
+    let { data = [], ...options } = $props<
         BaseMarkProps & {
             data: DataRow[];
             /**
@@ -32,7 +35,7 @@
 
     let args = $derived(recordizeY({ data, ...options }, { withIndex: false }));
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 

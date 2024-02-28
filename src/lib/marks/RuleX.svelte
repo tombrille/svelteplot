@@ -14,7 +14,8 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor
+        ChannelAccessor,
+        FacetContext
     } from '../types.js';
     import { isValid, testFilter } from '../helpers/index.js';
 
@@ -37,7 +38,7 @@
 
     let args = $derived(recordizeX<RuleXOptions>({ data, ...options }, { withIndex: false }));
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 

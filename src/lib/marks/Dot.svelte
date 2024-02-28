@@ -10,7 +10,8 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor
+        ChannelAccessor,
+        FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
@@ -45,7 +46,7 @@
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(sort({ data, ...options }));

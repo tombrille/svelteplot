@@ -9,7 +9,8 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        DataRow
+        DataRow,
+        FacetContext
     } from '../types.js';
     import { recordizeX } from '$lib/index.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -19,10 +20,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let {
-        data = [],
-        ...options
-    } = $props<
+    let { data = [], ...options } = $props<
         BaseMarkProps & {
             data: DataRow[];
             /**
@@ -40,7 +38,7 @@
 
     let args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 

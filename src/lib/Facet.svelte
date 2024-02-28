@@ -17,7 +17,7 @@
             rightEmpty: boolean;
         }>();
 
-    setContext('facet', {
+    setContext('svelteplot/facet', {
         getTestFacet() {
             return (datum: DataRecord, options: Partial<BaseMarkProps>) => {
                 return (

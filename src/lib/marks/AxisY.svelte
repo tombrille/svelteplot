@@ -7,7 +7,13 @@
     import { getContext } from 'svelte';
     import BaseAxisY from './helpers/BaseAxisY.svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
+    import type {
+        PlotContext,
+        BaseMarkProps,
+        RawValue,
+        DataRecord,
+        FacetContext
+    } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { resolveChannel, resolveProp } from '../helpers/resolve.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -98,7 +104,7 @@
                     : '')
     );
 
-    const { getFacetState } = getContext('facet');
+    const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
     let { left, leftEmpty, right, rightEmpty, top } = $derived(getFacetState());
 
     let useFacetAnchor = $derived(

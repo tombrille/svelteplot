@@ -12,7 +12,8 @@
         BaseMarkProps,
         RawValue,
         DataRecord,
-        ConstantAccessor
+        ConstantAccessor,
+        FacetContext
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -115,9 +116,11 @@
     );
 
     let useLabelAnchor = $derived(labelAnchor || plot.options?.x?.labelAnchor || 'auto');
-    let titleAlign = $derived(useLabelAnchor === 'auto' ? (isQuantitative ? 'right' : 'center') : useLabelAnchor);
+    let titleAlign = $derived(
+        useLabelAnchor === 'auto' ? (isQuantitative ? 'right' : 'center') : useLabelAnchor
+    );
 
-    const { getFacetState } = getContext('facet');
+    const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
     let { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
 
     let useFacetAnchor = $derived(

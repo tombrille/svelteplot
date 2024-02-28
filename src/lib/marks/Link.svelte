@@ -14,7 +14,8 @@
         ChannelAccessor,
         CurveName,
         MarkerOptions,
-        RawValue
+        RawValue,
+        FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { testFilter } from '../helpers/index.js';
@@ -76,7 +77,7 @@
         })
     );
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 

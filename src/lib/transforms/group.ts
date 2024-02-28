@@ -63,7 +63,12 @@ function groupXYZ(
 ) {
     // group by x or y
     const groups =
-        dim === 'z' ? [[null, data]] : d3Groups(data.filter(d => testFilter(d, channels)), (d) => resolveChannel(dim, d, channels));
+        dim === 'z'
+            ? [[null, data]]
+            : d3Groups(
+                  data.filter((d) => testFilter(d, channels)),
+                  (d) => resolveChannel(dim, d, channels)
+              );
     const newData: DataRecord[] = [];
     let newChannels = { ...channels, filter: null };
     if (dim !== 'z') newChannels[dim] = `__${dim}`;

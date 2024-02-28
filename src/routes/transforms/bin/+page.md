@@ -35,17 +35,21 @@ The [binX](#binX) transform takes **x** as input and outputs **x1** and **x2** r
 <script>
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
 
+    import { getContext } from 'svelte';
+    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
+    const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
+
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot color={{ scheme: 'YlGnBu' }}>
-    <RectY {...binX({ data: olympians, x: 'weight' }, { fill: 'count' })} />
+<Plot color={{ scheme: $isDark ? 'turbo' : 'YlGnBu' }}>
+    <RectY {...binX({ data: olympians, x: 'weight', fy: 'sex' }, { fill: 'count' })} />
 </Plot>
 ```
 
 ```svelte
-<Plot>
+<Plot color={{ scheme: $isDark ? 'turbo' : 'YlGnBu' }}>
     <RectY {...binX({ data: olympians, x: 'weight' }, { fill: 'count' })} />
 </Plot>
 ```
@@ -79,7 +83,7 @@ Alternatively, you can also map to the _r_ channel.
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot testid="olympians-binned" y={{ grid: true }} marginRight={50}>
+<Plot testid="olympians-binned" y={{ grid: true }}>
     <DotX
         {...binX(
             { data: olympians, x: 'weight', fy: 'sex', sort: { channel: 'r' } },
@@ -90,7 +94,7 @@ Alternatively, you can also map to the _r_ channel.
 ```
 
 ```svelte
-<Plot y={{ grid: true }} marginRight={50}>
+<Plot y={{ grid: true }}>
     <DotX
         {...binX(
             {
@@ -133,7 +137,7 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
     import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
 
     import { getContext } from 'svelte';
-    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context'
+    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
 
     import { page } from '$app/stores';
@@ -423,9 +427,9 @@ Requires _input_ channels _x_ and _y_. Valid output channels for `bin()` are _fi
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
     import { getContext } from 'svelte';
-    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context'
+    import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
-    
+
     let args = $derived(bin({ data: olympians, x: 'weight', y: 'height' }, { fill: 'count' }));
 </script>
 

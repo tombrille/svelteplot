@@ -187,7 +187,7 @@ export type XScaleOptions = ScaleOptions & {
      */
     tickRotate: number;
 
-    labelAnchor: 'auto'|'left'|'center'|'right';
+    labelAnchor: 'auto' | 'left' | 'center' | 'right';
 };
 
 export type YScaleOptions = ScaleOptions & {
@@ -209,7 +209,7 @@ export type YScaleOptions = ScaleOptions & {
      */
     tickRotate: number;
 
-    labelAnchor: 'auto'|'bottom'|'middle'|'top';
+    labelAnchor: 'auto' | 'bottom' | 'middle' | 'top';
 };
 
 export type LegendScaleOptions = ScaleOptions & {
@@ -433,11 +433,82 @@ export type PlotState = {
 };
 
 export type PlotContext = {
+    /**
+     * Registers a mark with the Plot component along with its
+     * data and the channel mappings.
+     */
     addMark: (mark: Mark<GenericMarkOptions>) => void;
+    /**
+     * Updates a mark after either the data or the channel mappings
+     * have been updated.
+     */
     updateMark: (mark: Mark<GenericMarkOptions>) => void;
+    /**
+     * Unregister a mark from the Plot component after the mark
+     * component has been destroyed.
+     */
     removeMark: (mark: Mark<GenericMarkOptions>) => void;
     getPlotState: () => PlotState;
     getTopLevelFacet: () => PlotOptions['facet'];
+    /**
+     * Updates the plots internal facetWidth and facetHeight dimensions
+     * which are used as range for the positional scales x and y.
+     */
+    updateDimensions: (width: number, height: number) => void;
+};
+
+type FacetState = {
+    fx: RawValue;
+    fy: RawValue;
+    /**
+     * True, if the facet is the leftmost in its row
+     */
+    left: boolean;
+    /**
+     * True, if the facet is the topmost in its column
+     */
+    top: boolean;
+    /**
+     * True, if the facet is the rightmost in its row
+     */
+    right: boolean;
+    /**
+     * True, if the facet is the bottommost in its column
+     */
+    bottom: boolean;
+    /**
+     * True, if the adjacent facet to the top is empty
+     */
+    topEmpty: boolean;
+    /**
+     * True, if the adjacent facet to the bottom is empty
+     */
+    bottomEmpty: boolean;
+    /**
+     * True, if the adjacent facet to the left is empty
+     */
+    leftEmpty: boolean;
+    /**
+     * True, if the adjacent facet to the right is empty
+     */
+    rightEmpty: boolean;
+};
+
+/**
+ * Test if the given data record is visible in the current facet.
+ */
+type TestFacetFunction = (
+    datum: DataRecord,
+    channels: Record<ChannelName, ChannelAccessor>
+) => boolean;
+
+export type FacetContext = {
+    /**
+     * Returns a stateful function that tests whether a specific data
+     * record is visible in the current facet or not.
+     */
+    getTestFacet: () => TestFacetFunction;
+    getFacetState: () => FacetState;
 };
 
 export type BaseMarkProps = Partial<{

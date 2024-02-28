@@ -119,59 +119,40 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
     let { stocks } = $derived($page.data.data);
     let stocks2 = $derived(stocks.filter((d) => d.Date.getFullYear() < 2016));
     let k = $state(90);
-    let smoothed = $derived(
-        windowY({ data: stocks, x: 'Date', y: 'Close', z: 'Symbol' }, { k })
-    );
+    let smoothed = $derived(windowY({ data: stocks, x: 'Date', y: 'Close', z: 'Symbol' }, { k }));
 </script>
 
-<Slider label="k" min={1} max={120} bind:value={k}  />
+<Slider label="k" min={1} max={120} bind:value={k} />
 <Plot grid y={{ type: 'log', base: 5 }} marginRight={75}>
-    <RectX 
-        {...binX( 
+    <RectX
+        {...binX(
             { data: stocks, x: 'Date', y1: 'Low', y2: 'High', fill: 'Symbol' },
-            { y1: 'min', y2: 'max', interval: '2 weeks'})} 
+            { y1: 'min', y2: 'max', interval: '2 weeks' }
+        )}
         opacity="0.4"
-        strokeWidth="1.5" />
-    <Line
-        {...smoothed}
-        stroke="Symbol"
-        strokeWidth="2"
-        markerEnd="dot"
+        strokeWidth="1.5"
     />
-    <Text 
-        {...last(smoothed)} 
-        fill="Symbol" 
-        text="Symbol"
-        dx="10"
-        textAnchor="start" />
+    <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
+    <Text {...last(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
 </Plot>
 ```
 
 ```svelte
 <script>
-    let smoothed = $derived(
-        windowY({ data: stocks2, x: 'Date', y: 'Close', z: 'Symbol' }, { k })
-    );
+    let smoothed = $derived(windowY({ data: stocks2, x: 'Date', y: 'Close', z: 'Symbol' }, { k }));
 </script>
+
 <Plot grid y={{ type: 'log', base: 5, domain: [50, 1000] }} marginRight={100}>
-    <RuleX 
+    <RuleX
         {...binX(
-            { data: stocks2, x: 'Date', y1: 'Low', y2: 'High',  z: 'Symbol' },
-            { y1: 'min', y2: 'max', interval: '3 days'})} 
+            { data: stocks2, x: 'Date', y1: 'Low', y2: 'High', z: 'Symbol' },
+            { y1: 'min', y2: 'max', interval: '3 days' }
+        )}
         opacity="0.5"
-        strokeWidth="1.5" />
-    <Line
-        {...smoothed}
-        stroke="Symbol"
-        strokeWidth="2"
-        markerEnd="dot"
+        strokeWidth="1.5"
     />
-    <Text 
-        {...last(smoothed)} 
-        fill="Symbol" 
-        text="Symbol"
-        dx="10"
-        textAnchor="start" />
+    <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
+    <Text {...last(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
 </Plot>
 ```
 

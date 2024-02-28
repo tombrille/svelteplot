@@ -5,7 +5,7 @@
     import Facet from './Facet.svelte';
     import BaseAxisX from './marks/helpers/BaseAxisX.svelte';
     import BaseAxisY from './marks/helpers/BaseAxisY.svelte';
-    import { resolveChannel } from './helpers/resolve.js';
+    import { getEmptyFacets } from './helpers/facets.js';
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
     // we need the plot context for the overall width & height
@@ -26,49 +26,6 @@
     // any "faceted" data points. this can happen when fx and fy are combined and
     // certain combinations don't yield results
     let emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues));
-
-    function getEmptyFacets(
-        marks: Mark<GenericMarkOptions>[],
-        fxValues: RawValue[],
-        fyValues: RawValue[]
-    ) {
-        const facettedMarks = marks.filter((mark) => {
-            return (
-                mark.options.__firstFacet &&
-                mark.data.length > 0 && // has data
-                !mark.options.automatic && // not an automatic mark
-                (fxValues.length === 1 || mark.options.fx != null) && // uses x faceting
-                (fyValues.length === 1 || mark.options.fy != null)
-            ); // uses y faceting
-        });
-        const facettedData = facettedMarks
-            .map((mark) =>
-                mark.data.map((datum) => {
-                    return {
-                        fx: resolveChannel('fx', datum, mark.options),
-                        fy: resolveChannel('fy', datum, mark.options)
-                    };
-                })
-            )
-            .flat(1);
-        const out = new Map<RawValue, Map<RawValue, boolean>>();
-        for (const fx of fxValues) {
-            out.set(fx, new Map<RawValue, boolean>());
-            for (const fy of fyValues) {
-                // we need to loop over all facetted marks to see if there's any which has
-                // no data for the current fx,fy combination
-                let hasFacettedData = fxValues.length === 1 || fyValues.length === 1;
-                for (const datum of facettedData) {
-                    if (datum.fx === fx && datum.fy === fy) {
-                        hasFacettedData = true;
-                        break;
-                    }
-                }
-                out.get(fx)?.set(fy, !hasFacettedData);
-            }
-        }
-        return out;
-    }
 
     // create band scales for fx and fy
     let facetXScale = $derived(
@@ -113,9 +70,9 @@
             tickFormat={(d) => d}
             tickSize={0}
             tickPadding={5}
-            anchor="top"
+            anchor="right"
             lineAnchor="center"
-            options={{}}
+            options={{ dx: 0, dy: 0 }}
             width={plot.plotWidth}
             marginLeft={plot.options.marginLeft}
             {plot}

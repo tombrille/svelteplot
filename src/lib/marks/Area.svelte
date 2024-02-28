@@ -33,7 +33,8 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor
+        ChannelAccessor,
+        FacetContext
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
@@ -108,7 +109,7 @@
         })
     );
 
-    const { getTestFacet } = getContext('facet');
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
 

@@ -3,7 +3,13 @@
     // for the facet labels
 
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
-    import type { ChannelAccessor, ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
+    import type {
+        ChannelAccessor,
+        ConstantAccessor,
+        PlotState,
+        RawValue,
+        ScaleType
+    } from '$lib/types.js';
     import { resolveScaledStyles, resolveProp } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import { testFilter } from '$lib/helpers/index.js';
@@ -63,11 +69,12 @@
 <g class="axis-x">
     {#each formattedTicks as tick, t}
         {#if testFilter(tick.value, options)}
-            {@const x = scaleFn(tick.value) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)}
+            {@const x =
+                scaleFn(tick.value) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)}
             {@const nextX =
                 t < formattedTicks.length - 1
                     ? scaleFn(formattedTicks[t + 1].value) +
-                    (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)
+                      (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)
                     : null}
             {@const tickLabelSpace = Math.abs(nextX - x)}
             {@const textLines = tick.text}
@@ -109,7 +116,9 @@
                         {:else}
                             {#each textLines as line, i}
                                 <tspan x="0" dy={i ? 12 : 0}
-                                    >{!prevTextLines || prevTextLines[i] !== line ? line : ''}</tspan
+                                    >{!prevTextLines || prevTextLines[i] !== line
+                                        ? line
+                                        : ''}</tspan
                                 >
                             {/each}
                         {/if}
