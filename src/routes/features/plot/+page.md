@@ -2,7 +2,9 @@
 title: Plot
 ---
 
-The <b>Plot</b> component is the base for each plot. It takes care of creating the shared scales.
+The <b>Plot</b> component is the base for each plot. It takes care of creating the shared scales, computes smart default options and implicitly creates the axis, grid, frame, and legend marks.
+
+In the following example, you can see that the `<Plot>` component has added axes, grids, and a frame for us, so we don't have to add them to our plots every time we need them.
 
 ```svelte live
 <script>
@@ -22,7 +24,37 @@ The <b>Plot</b> component is the base for each plot. It takes care of creating t
 </Plot>
 ```
 
-You can style plots to look like ggplot:
+But if we wanted to, we can add these marks individually, and it would look just the same:
+
+```svelte live
+<script>
+    import { Plot, Frame, GridX, GridY, AxisX, AxisY, Line } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot testid="aapl-line-frame">
+    <Frame />
+    <GridX />
+    <GridY />
+    <AxisX />
+    <AxisY />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <Frame />
+    <GridX />
+    <GridY />
+    <AxisX />
+    <AxisY />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+This can be useful if you want to customize the styling of the frame or grids, for instance. So you can style plots to look like [ggplot2](https://ggplot2.tidyverse.org/)'s default theme:
 
 ```svelte live
 <script>
@@ -39,7 +71,7 @@ You can style plots to look like ggplot:
 </Plot>
 ```
 
-You can pass **title**, **subtitle**, and **caption** directly as Plot properties:
+For convenience, you can pass **title**, **subtitle**, and **caption** to the Plot component and it will create headings and a figure caption for you:
 
 ```svelte live
 <script>

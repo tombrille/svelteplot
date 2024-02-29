@@ -299,7 +299,8 @@
 
 <!--
     @component
-    The Plot component is the container for your plot. It collects the marks and computes the shared scales.
+    The Plot component is the container for your plot. It collects the marks and computes
+    the shared scales.
 -->
 
 <figure
