@@ -2,7 +2,7 @@
 title: Why SveltePlot?
 ---
 
-SveltePlot is heavily inspired by Observable Plot, but in some regards it is different.
+SveltePlot is heavily inspired by Observable Plot, but in many regards it is different.
 
 ## Reactive plotting
 
@@ -34,7 +34,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 </Plot>
 ```
 
-Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being recreated, when the scales update:
+Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being re-created when the scales update:
 
 ```svelte live
 <script lang="ts">
@@ -235,7 +235,7 @@ In the following example, we're switching from the implicit y axis to a custom A
 
 ## Events!
 
-Another difference to Observable Plot is that you can pass event handlers to the marks.
+Another difference to Observable Plot is that you can pass event handlers to the marks to make them part of your interactive app.
 
 ```svelte live
 <script>
@@ -276,6 +276,10 @@ Another difference to Observable Plot is that you can pass event handlers to the
 
 You can extend SveltePlot by injecting regular Svelte snippets. For instance, the Line mark allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
 
+:::warning
+this example is currently broken in the static docs builds
+:::
+
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
@@ -296,7 +300,7 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 
 <Plot grid height={300}>
     <Line data={aapl.slice(-40)} curve="basis" x="Date" y="Adj Close">
-        {#snippet marker(id, color)}
+        <!-- {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -314,7 +318,7 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
                     />
                 {/if}
             </marker>
-        {/snippet}
+        {/snippet} -->
     </Line>
 </Plot>
 ```
@@ -495,7 +499,3 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
     }
 </style>
 ```
-
-## Optimized builds
-
-Observable Plot comes as a big library that loads pretty much all of D3 and Plot, regardless of what you're using it for.

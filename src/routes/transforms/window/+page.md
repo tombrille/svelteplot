@@ -111,7 +111,7 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
 
 ```svelte live
 <script>
-    import { Plot, AreaY, RectX, Line, windowY, binX, groupZ, Text, last } from '$lib';
+    import { Plot, AreaY, RectX, Line, windowY, binX, groupZ, Text, selectLast } from '$lib';
     import { page } from '$app/stores';
     import { Slider } from '$lib/ui';
     import { groups } from 'd3-array';
@@ -133,7 +133,7 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
         strokeWidth="1.5"
     />
     <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
-    <Text {...last(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
+    <Text {...selectLast(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
 </Plot>
 ```
 
@@ -152,7 +152,7 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
         strokeWidth="1.5"
     />
     <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
-    <Text {...last(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
+    <Text {...selectLast(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
 </Plot>
 ```
 

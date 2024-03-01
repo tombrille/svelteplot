@@ -70,11 +70,10 @@ function windowDim(
             out.push(newDatum);
         }
     }
-    //
-    // return
     return {
         data: out,
         ...channels,
         ...Object.fromEntries(reduceChannels.map((channel) => [channel, `__reduced_${channel}__`]))
     };
 }
+

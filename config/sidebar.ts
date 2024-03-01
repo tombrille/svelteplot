@@ -78,6 +78,8 @@ export default {
                 { title: 'Filter', to: '/transforms/filter/' },
                 { title: 'Group', to: '/transforms/group/' },
                 { title: 'Interval', to: '/transforms/interval/' },
+                { title: 'Map', to: '/transforms/map/' },
+                { title: 'Select', to: '/transforms/select/' },
                 { title: 'Sort', to: '/transforms/sort/' },
                 { title: 'Stack', to: '/transforms/stack/' },
                 { title: 'Window', to: '/transforms/window/' }

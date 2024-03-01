@@ -1,6 +1,6 @@
 ---
 title: Reactive data visualization
-description: A Svelte framework for reactive data visualization
+description: The best visualizations are built with <span>Svelte.</span>
 heroImage: /logo.png
 tagline: Inspired by Observable Plot, written in Svelte 5, built on top of D3.js!
 actions:
@@ -67,8 +67,8 @@ features:
 
 <style>
   :global(.intro .description) {
-    font-size: 3rem!important;
-    font-weight: 700!important;
+    font-size: 2.8rem!important;
+    font-weight: 600!important;
     line-height: 1.1!important;
   }
 </style>

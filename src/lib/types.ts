@@ -339,7 +339,6 @@ export type GenericMarkOptions = Record<string, any>;
 
 export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
-    ___cache___?: Map<symbol, RawValue>;
 };
 
 export type DataRow = DataRecord | RawValue | [number, number] | null;

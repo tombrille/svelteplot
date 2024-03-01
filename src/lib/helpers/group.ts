@@ -3,9 +3,9 @@ import type { ChannelAccessor, ChannelName, DataRecord } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';
 
 export function groupFacetsAndZ(
-    items: DataRecord,
+    items: DataRecord[],
     channels: Record<ChannelName, ChannelAccessor>,
-    reduce: (items: DataRecord) => any
+    reduce: (items: DataRecord[]) => any
 ) {
     const groupBy = ['fx', 'fy', 'z'].map((groupChannel) => {
         const groupByChannel: ChannelName | false =

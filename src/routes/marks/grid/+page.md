@@ -2,8 +2,7 @@
 title: Grid mark
 ---
 
-You can let SveltePlot create grids automatically for you by setting the `grid`
-flag on the Plot:
+The Grid mark renders the faint grid lines in the background of your plots (the black tick lines and tick labels are rendered by the [Axis](/marks/axis) marks). You can let SveltePlot add the grids automatically for you by setting the `grid` flag on the Plot:
 
 ```svelte live
 <script lang="ts">
@@ -24,7 +23,7 @@ flag on the Plot:
 </Plot>
 ```
 
-You can turn the grids on individually using by adding `grid: true`to the x and y
+You can turn the grids on individually by adding `grid: true` to the x and y
 scale options:
 
 ```svelte
@@ -32,9 +31,20 @@ scale options:
 <Plot y={{ grid: true }} />
 ```
 
-Or you can add the **GridX** and **GridY** marks explicitely for more options, such as
+Or you can add the **GridX** and **GridY** marks explicitly for more options, such as
 layering grids on top of other marks. Note that in this case, custom grid ticks are not synchronized
 with the axes marks.
+
+```svelte live
+<script lang="ts">
+    import { Plot, GridX, GridY } from '$lib/index.js';
+</script>
+
+<Plot x={{ domain: [0, 5] }} y={{ domain: [0, 5] }} testid="custom">
+    <GridX stroke="lime" strokeOpacity="1" />
+    <GridY stroke="magenta" strokeOpacity="1" data={[0, 1.5, 2, 2.5, 4, 5]} />
+</Plot>
+```
 
 ```svelte
 <Plot x={{ domain: [0, 5] }} testid="custom">
@@ -43,7 +53,7 @@ with the axes marks.
 </Plot>
 ```
 
-In the following bar chart we put two grids, one below the bars and one above:
+In the following bar chart, we put two grids, one below the bars and one above:
 
 ```svelte live
 <script>
@@ -74,6 +84,21 @@ The automatic ticks can be customized using the **tickSpacing** option:
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+## Grid options
+
+You can set grid options either through the global scale options or by passing them to the Grid marks directly. The global scale options have the benefit that they will affect both the grid and axis marks at the same time for neatly synchronized ticks and grid lines.
+
+These are the options you can set as scale options on the `x` and `y` scales:
+
+- **grid** - for activating the implicit grid just on the x or y dimension 
+- **tickSpacing** - 
+- **ticks** - for passing custom ticks
+
+If you explicitly add a grid mark to your plot, you can set the following options on the mark component itself:
+
+- **data** - custom ticks
+- 
 
 ## GridX
 
