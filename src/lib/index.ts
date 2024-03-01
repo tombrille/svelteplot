@@ -46,6 +46,7 @@ export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
 // transforms
 export { bin, binX, binY } from './transforms/bin.js';
 export { bollingerX, bollingerY } from './transforms/bollinger.js';
+export { filter } from './transforms/filter.js';
 export { groupX, groupY, groupZ } from './transforms/group.js';
 export { intervalX, intervalY } from './transforms/interval.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';

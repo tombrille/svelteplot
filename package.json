@@ -96,6 +96,6 @@
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
         "underscore": "^1.13.6",
-        "svelte": "5.0.0-next.68"
+        "svelte": "5.0.0-next.69"
     }
 }
