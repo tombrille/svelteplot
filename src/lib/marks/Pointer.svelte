@@ -1,0 +1,64 @@
+<script context="module" lang="ts">
+    /**
+     * @license
+     * SPDX-License-Identifier: AGPL-3.0-or-later
+     * Copyright (C) 2024  Gregor Aisch
+     */
+    import type { ChannelAccessor, DataRow } from '$lib/types.js';
+
+    export type HTMLTooltipMarkProps = {
+        data: DataRow[];
+        x?: ChannelAccessor;
+        y?: ChannelAccessor;
+        z?: ChannelAccessor;
+        maxDistance: number;
+    };
+</script>
+
+<script lang="ts">
+    import { getContext } from 'svelte';
+    import type { PlotContext } from '../types.js';
+    import { groups as d3Groups } from 'd3-array';
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
+
+    import { resolveChannel } from '$lib/helpers/resolve.js';
+    import { quadtree } from 'd3-quadtree';
+
+    let { data, x, y, z, maxDistance = 15 } = $props<HTMLTooltipMarkProps>();
+
+    let selectedData = $state([]);
+
+    function onMouseMove(evt: MouseEvent) {
+        // find data row with minimum distance to 
+        const points = trees.map(tree => tree.find(x != null ? evt.layerX : 0, y != null ? evt.layerY : 0, maxDistance));
+        selectedData = points.filter(d => d != null);
+    }
+
+    $effect(() => {
+        // plot.body?.addEventListener('mouseenter', onMouseEnter);
+        // plot.body?.addEventListener('mouseleave', onMouseLeave);
+        plot.body?.addEventListener('mousemove', onMouseMove);
+
+        return () => {
+            // plot.body?.removeEventListener('mouseenter', onMouseEnter);
+            // plot.body?.removeEventListener('mouseleave', onMouseLeave);
+            plot.body?.removeEventListener('mousemove', onMouseMove);
+        };
+    });
+
+    let groups = d3Groups(data, z != null ? d => resolveChannel('z', d, { x, z }) : () => true);
+
+    let trees = $derived(
+        groups.map(([,items]) => 
+        quadtree()
+            .x(x != null ? (d) => plot.scales.x.fn(resolveChannel('x', d, { x })) : () => 0)
+            .y(y != null ? (d) => plot.scales.y.fn(resolveChannel('y', d, { y })) : () => 0)
+            .addAll(items))
+    );
+</script>
+
+<g class="pointer">
+    <slot data={selectedData} />
+</g>

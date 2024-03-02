@@ -50,7 +50,7 @@
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 
-    let args = $derived(sort({ data, ...options }));
+    let args = $derived(sort({ data, ...options, ...(options.fill === true ? { fill: 'currentColor' } : {}) }));
 </script>
 
 <Mark

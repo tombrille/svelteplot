@@ -63,6 +63,7 @@ export default {
                 { title: 'Grid', to: '/marks/grid/' },
                 { title: 'Line', to: '/marks/line/' },
                 { title: 'Link', to: '/marks/link/' },
+                { title: 'Pointer', to: '/marks/pointer/' },
                 { title: 'Rect', to: '/marks/rect/' },
                 { title: 'Regression', to: '/marks/regression/' },
                 { title: 'Rule', to: '/marks/rule/' },

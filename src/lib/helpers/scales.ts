@@ -403,7 +403,7 @@ export function createScale<T extends ScaleOptions>(
         skip,
         manualActiveMarks,
         uniqueScaleProps,
-        autoTitle: type === 'time' ? null : propNames.size === 1 ? [...propNames.values()][0] : null
+        autoTitle: type === 'time' ? null : propNames.size === 1 ? `${[...propNames.values()][0]}${type === 'log' ? ' (log)' : ''}` : null
     };
 }
 

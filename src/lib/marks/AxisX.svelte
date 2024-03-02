@@ -11,7 +11,6 @@
         PlotContext,
         BaseMarkProps,
         RawValue,
-        DataRecord,
         ConstantAccessor,
         FacetContext
     } from '../types.js';
