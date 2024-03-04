@@ -31,9 +31,11 @@
     let selectedData = $state([]);
 
     function onMouseMove(evt: MouseEvent) {
-        // find data row with minimum distance to 
-        const points = trees.map(tree => tree.find(x != null ? evt.layerX : 0, y != null ? evt.layerY : 0, maxDistance));
-        selectedData = points.filter(d => d != null);
+        // find data row with minimum distance to
+        const points = trees.map((tree) =>
+            tree.find(x != null ? evt.layerX : 0, y != null ? evt.layerY : 0, maxDistance)
+        );
+        selectedData = points.filter((d) => d != null);
     }
 
     $effect(() => {
@@ -48,14 +50,15 @@
         };
     });
 
-    let groups = d3Groups(data, z != null ? d => resolveChannel('z', d, { x, z }) : () => true);
+    let groups = d3Groups(data, z != null ? (d) => resolveChannel('z', d, { x, z }) : () => true);
 
     let trees = $derived(
-        groups.map(([,items]) => 
-        quadtree()
-            .x(x != null ? (d) => plot.scales.x.fn(resolveChannel('x', d, { x })) : () => 0)
-            .y(y != null ? (d) => plot.scales.y.fn(resolveChannel('y', d, { y })) : () => 0)
-            .addAll(items))
+        groups.map(([, items]) =>
+            quadtree()
+                .x(x != null ? (d) => plot.scales.x.fn(resolveChannel('x', d, { x })) : () => 0)
+                .y(y != null ? (d) => plot.scales.y.fn(resolveChannel('y', d, { y })) : () => 0)
+                .addAll(items)
+        )
     );
 </script>
 

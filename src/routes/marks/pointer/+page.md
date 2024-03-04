@@ -4,7 +4,6 @@ title: Pointer mark
 
 Pointer is a mark that doesn't render anything by itself, but you can use it to show marks filtered to data points close to the cursor. You access the filtered data by placing the marks as children of the Pointer mark:
 
-
 ```svelte live
 <script>
     import { Plot, Line, Dot, Text, Pointer } from '$lib';
@@ -15,15 +14,18 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30} let:data>
-        <Text {data} 
+        <Text
+            {data}
             fill="currentColor"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-10" />
+            dy="-10"
+        />
         <Dot {data} x="Date" y="Close" fill />
     </Pointer>
 </Plot>
@@ -33,21 +35,22 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30} let:data>
-        <Text {data} 
+        <Text
+            {data}
             fill="currentColor"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-10" />
+            dy="-10"
+        />
         <Dot {data} x="Date" y="Close" fill />
     </Pointer>
 </Plot>
 ```
-
-
 
 You can create a "crosshair" mark
 
@@ -65,14 +68,13 @@ You can create a "crosshair" mark
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30} let:data>
         <RuleX {data} x="Date" opacity="0.3" />
         <RuleY {data} y="Close" opacity="0.3" />
-        <AxisX data={data.map(d => d.Date)} tickFormat={d => d.getFullYear()} />
-        <AxisY data={data.map(d => d.Close)} tickFormat={d => d.toFixed()} />
+        <AxisX data={data.map((d) => d.Date)} tickFormat={(d) => d.getFullYear()} />
+        <AxisY data={data.map((d) => d.Close)} tickFormat={(d) => d.toFixed()} />
     </Pointer>
 </Plot>
 ```
 
 PointerY
-
 
 ```svelte live
 <script>
@@ -85,15 +87,18 @@ PointerY
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} y="Close" maxDistance={30} let:data>
         <RuleY {data} y="Close" opacity={0.2} />
-        <Text {data} 
+        <Text
+            {data}
             fill="currentColor"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-10" />
+            dy="-10"
+        />
         <Dot {data} x="Date" y="Close" fill />
     </Pointer>
 </Plot>
@@ -110,15 +115,18 @@ PointerY
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" maxDistance={30} let:data>
         <RuleX {data} x="Date" opacity={0.2} />
-        <Text {data} 
+        <Text
+            {data}
             fill="currentColor"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-10" />
+            dy="-10"
+        />
         <Dot {data} x="Date" y="Close" fill />
     </Pointer>
 </Plot>
@@ -131,43 +139,53 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
     import { Plot, Line, RuleX, Dot, Text, Pointer } from '$lib';
     import { page } from '$app/stores';
     let { stocks } = $derived($page.data.data);
-    let stocks2 = $derived(stocks.filter(d => d.Date < new Date(2018,0,1)));
+    let stocks2 = $derived(stocks.filter((d) => d.Date < new Date(2018, 0, 1)));
 </script>
 
 <Plot testid="stocks-line-frame" y={{ type: 'log' }} marginRight={20}>
     <Line data={stocks2} x="Date" y="Close" stroke="Symbol" />
     <Pointer data={stocks2} x="Date" z="Symbol" maxDistance={30} let:data>
-        <Text {data} 
+        <Text
+            {data}
             fill="Symbol"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-7" />
-        <Dot {data} x="Date" y="Close" fill="Symbol" strokeWidth="0.7" stroke="var(--svelteplot-bg)" />
+            dy="-7"
+        />
+        <Dot
+            {data}
+            x="Date"
+            y="Close"
+            fill="Symbol"
+            strokeWidth="0.7"
+            stroke="var(--svelteplot-bg)"
+        />
     </Pointer>
 </Plot>
 ```
+
 ```svelte
 <Plot testid="stocks-line-frame" y={{ type: 'log' }} marginRight={20}>
     <Line data={stocks} x="Date" y="Close" stroke="Symbol" />
     <Pointer data={stocks} x="Date" z="Symbol" maxDistance={30} let:data>
-        <Text {data} 
+        <Text
+            {data}
             fill="Symbol"
             stroke="var(--svelteplot-bg)"
             strokeWidth="3"
-            x="Date" y="Close" 
-            text={d => d.Close.toFixed()}
-            lineAnchor="bottom" 
+            x="Date"
+            y="Close"
+            text={(d) => d.Close.toFixed()}
+            lineAnchor="bottom"
             fontWeight="bold"
-            dy="-7" />
-        <Dot {data} 
-            x="Date" 
-            y="Close" 
-            fill="Symbol" 
-            stroke="var(--svelteplot-bg)" />
+            dy="-7"
+        />
+        <Dot {data} x="Date" y="Close" fill="Symbol" stroke="var(--svelteplot-bg)" />
     </Pointer>
 </Plot>
 ```

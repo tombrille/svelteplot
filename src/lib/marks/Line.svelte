@@ -44,7 +44,7 @@
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales } from '../helpers/scales.js';
-    import { isValid, randomId } from '$lib/helpers/index.js';
+    import { isValid } from '$lib/helpers/index.js';
 
     let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
 

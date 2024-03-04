@@ -2,6 +2,7 @@
 title: Axis mark
 ---
 
+
 By default SveltePlot will create axis marks automatically:
 
 ```svelte live
@@ -113,24 +114,29 @@ Ordinal axis:
 <Plot x={{ domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
 ```
 
-And on a point scale:
+You can rotate tick labels:
 
 ```svelte live
 <script>
     import { Plot, RuleY } from '$lib';
+    import { Slider } from '$lib/ui';
+
+    let tickRotate = $state(-45);
 </script>
 
-<Plot x={{ type: 'point', domain: 'These are some ordinal ticks on a point scale'.split(' ') }} />
+<Slider label="tick angle" min={-90} max={90} step={5} bind:value={tickRotate} />
+<Plot marginBottom={50} x={{ tickRotate, domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
 ```
 
 ```svelte
-<Plot
-    x={{
-        type: 'point',
-        domain: 'These are some ordinal ticks on a point scale'.split(' ')
-    }}
-/>
+<Plot x={{ 
+    tickRotate: -45,
+    domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
 ```
+
+:::warning
+Keep in mind that rotated texts are a lot harder to read, so if possible, avoid rotated axis ticks (e.g. by flipping a column chart to bar chart) or at least limit rotation to 45 degrees.
+:::
 
 ## AxisX
 

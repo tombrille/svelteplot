@@ -32,7 +32,10 @@
 
     let autoMarginLeft = writable(0);
     let autoMarginRight = writable(0);
-    setContext('svelteplot/autoMargins', { autoMarginLeft, autoMarginRight });
+    let autoMarginBottom = writable(0);
+    let autoMarginTop = writable(0);
+
+    setContext('svelteplot/autoMargins', { autoMarginLeft, autoMarginRight, autoMarginBottom, autoMarginTop });
 
     let { header, footer, overlay, underlay, testid, facet, ...initialOpts } =
         $props<Partial<PlotOptions>>();

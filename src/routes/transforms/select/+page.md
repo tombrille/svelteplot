@@ -6,17 +6,18 @@ The select transform filters a mark’s index to show a subset of the data. For 
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY, selectLast, Text } from '$lib';    
+    import { Plot, Line, RuleY, selectLast, Text } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid marginRight={30}>
-    <Text 
-        {...selectLast({data: aapl, x: 'Date', y: 'Close' })} 
+    <Text
+        {...selectLast({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="bottom"
         dy="-5"
-        text={d => d.Close.toFixed(1)} />
+        text={(d) => d.Close.toFixed(1)}
+    />
     <Line data={aapl} x="Date" y="Close" markerEnd />
     <RuleY data={[0]} />
 </Plot>
@@ -24,38 +25,41 @@ The select transform filters a mark’s index to show a subset of the data. For 
 
 ```svelte
 <Plot grid marginRight={30}>
-    <Text 
-        {...selectLast({data: aapl, x: 'Date', y: 'Close' })} 
+    <Text
+        {...selectLast({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="bottom"
         dy="-5"
-        text={d => d.Close.toFixed(1)} />
+        text={(d) => d.Close.toFixed(1)}
+    />
     <Line data={aapl} x="Date" y="Close" markerEnd />
     <RuleY data={[0]} />
 </Plot>
 ```
 
-The select transform uses input order, not natural order by value, to determine the meaning of *first* and *last*. Since this dataset is in reverse chronological order, the first element is the most recent.
+The select transform uses input order, not natural order by value, to determine the meaning of _first_ and _last_. Since this dataset is in reverse chronological order, the first element is the most recent.
 
-Using *selectMinY* and *selectMaxY*, you can label the extreme values.
+Using _selectMinY_ and _selectMaxY_, you can label the extreme values.
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY, selectMinY, selectMaxY, Text } from '$lib';    
+    import { Plot, Line, RuleY, selectMinY, selectMaxY, Text } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid marginRight={30}>
-    <Text 
-        {...selectMinY({data: aapl, x: 'Date', y: 'Close' })} 
+    <Text
+        {...selectMinY({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="top"
         dy="5"
-        text={d => d.Close.toFixed(1)} />
-    <Text 
-        {...selectMaxY({data: aapl, x: 'Date', y: 'Close' })} 
+        text={(d) => d.Close.toFixed(1)}
+    />
+    <Text
+        {...selectMaxY({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="bottom"
         dy="-5"
-        text={d => d.Close.toFixed(1)} />
+        text={(d) => d.Close.toFixed(1)}
+    />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
 </Plot>
@@ -63,16 +67,18 @@ Using *selectMinY* and *selectMaxY*, you can label the extreme values.
 
 ```svelte
 <Plot grid marginRight={30}>
-    <Text 
-        {...selectMinY({data: aapl, x: 'Date', y: 'Close' })} 
+    <Text
+        {...selectMinY({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="top"
         dy="5"
-        text={d => d.Close.toFixed(1)} />
-    <Text 
-        {...selectMaxY({data: aapl, x: 'Date', y: 'Close' })} 
+        text={(d) => d.Close.toFixed(1)}
+    />
+    <Text
+        {...selectMaxY({ data: aapl, x: 'Date', y: 'Close' })}
         lineAnchor="bottom"
         dy="-5"
-        text={d => d.Close.toFixed(1)} />
+        text={(d) => d.Close.toFixed(1)}
+    />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
 </Plot>
@@ -82,17 +88,18 @@ The select transform groups data into series using the **z**, **fill**, or **str
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY, selectLast, Text } from '$lib';    
+    import { Plot, Line, RuleY, selectLast, Text } from '$lib';
     import { page } from '$app/stores';
     let { stocks } = $derived($page.data.data);
 </script>
 
-<Plot grid marginRight={50}> 
-    <Text 
-        {...selectLast({data: stocks, x: 'Date', y: 'Close', fill: 'Symbol' })} 
+<Plot grid marginRight={50}>
+    <Text
+        {...selectLast({ data: stocks, x: 'Date', y: 'Close', fill: 'Symbol' })}
         textAnchor="start"
         dx="5"
-        text="Symbol" />
+        text="Symbol"
+    />
     <Line data={stocks} x="Date" y="Close" stroke="Symbol" markerEnd />
     <RuleY data={[0]} />
 </Plot>
@@ -100,11 +107,12 @@ The select transform groups data into series using the **z**, **fill**, or **str
 
 ```svelte
 <Plot grid marginRight={50}>
-    <Text 
-        {...selectLast({data: stocks, x: 'Date', y: 'Close', fill: 'Symbol' })} 
+    <Text
+        {...selectLast({ data: stocks, x: 'Date', y: 'Close', fill: 'Symbol' })}
         textAnchor="start"
         dx="5"
-        text="Symbol" />
+        text="Symbol"
+    />
     <Line data={stocks} x="Date" y="Close" stroke="Symbol" markerEnd />
     <RuleY data={[0]} />
 </Plot>

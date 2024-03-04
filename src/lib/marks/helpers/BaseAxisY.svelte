@@ -4,8 +4,7 @@
     import { testFilter } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
-    import type { ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
-    import type { Writable } from 'svelte/store';
+    import type { AutoMarginStores, ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
 
     let {
         scaleFn,
@@ -74,10 +73,7 @@
 
     let tickTexts = $state([] as SVGTextElement[]);
 
-    const { autoMarginLeft, autoMarginRight } = getContext<{
-        autoMarginLeft: Writable<number>;
-        autoMarginRight: Writable<number>;
-    }>('svelteplot/autoMargins');
+    const { autoMarginLeft, autoMarginRight } = getContext<AutoMarginStores>('svelteplot/autoMargins');
 
     $effect(() => {
         // measure tick label widths
@@ -94,10 +90,12 @@
             tickPadding +
             tickSize;
 
-        if (anchor === 'left' && $autoMarginLeft !== maxLabelWidth) {
-            $autoMarginLeft = maxLabelWidth;
-        } else if (anchor === 'right' && $autoMarginRight !== maxLabelWidth) {
-            $autoMarginRight = maxLabelWidth;
+        if (!isNaN(maxLabelWidth)) {
+            if (anchor === 'left' && $autoMarginLeft !== maxLabelWidth) {
+                $autoMarginLeft = maxLabelWidth;
+            } else if (anchor === 'right' && $autoMarginRight !== maxLabelWidth) {
+                $autoMarginRight = maxLabelWidth;
+            }
         }
     });
 </script>

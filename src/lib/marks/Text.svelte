@@ -91,14 +91,21 @@
                         : _y}
                     {@const dx = +resolveProp(options.dx, datum, 0)}
                     {@const dy = +resolveProp(options.dy, datum, 0)}
+                    {@const textLines = resolveProp(options.text, datum, '').split('\n')}
                     <text
-                        style={resolveScaledStyles(datum, options, useScale, plot, 'fill')}
                         dominant-baseline={LINE_ANCHOR[
                             resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
                         ]}
                         transform="translate({[x + dx, y + dy]})"
-                        >{resolveProp(options.text, datum, '')}{#if title}<title>{title}</title
-                            >{/if}</text
+                        >{#each textLines as line, l}<tspan x="0" dy={l ? resolveProp(options.fontSize, datum) || 12 : 0}
+                                style={resolveScaledStyles(
+                                    { ...datum, __tspanIndex: l },
+                                    options,
+                                    useScale,
+                                    plot,
+                                    'fill'
+                                )}>{line}</tspan
+                            >{/each}{#if title}<title>{title}</title>{/if}</text
                     >
                 {/if}
             {/if}

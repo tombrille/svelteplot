@@ -91,14 +91,14 @@ You can set grid options either through the global scale options or by passing t
 
 These are the options you can set as scale options on the `x` and `y` scales:
 
-- **grid** - for activating the implicit grid just on the x or y dimension 
-- **tickSpacing** - 
-- **ticks** - for passing custom ticks
+-   **grid** - for activating the implicit grid just on the x or y dimension
+-   **tickSpacing** -
+-   **ticks** - for passing custom ticks
 
 If you explicitly add a grid mark to your plot, you can set the following options on the mark component itself:
 
-- **data** - custom ticks
-- 
+-   **data** - custom ticks
+-
 
 ## GridX
 

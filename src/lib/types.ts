@@ -7,6 +7,7 @@ import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
 import type { MarkerShape } from './marks/helpers/Marker.svelte';
+import type { Writable } from 'svelte/store';
 
 export type MarkType =
     | 'area'
@@ -655,3 +656,10 @@ export type MarkStyleProps =
     | 'symbol'
     | 'textAnchor'
     | 'width';
+
+export type AutoMarginStores = {
+    autoMarginTop: Writable<number>;
+    autoMarginLeft: Writable<number>;
+    autoMarginRight: Writable<number>;
+    autoMarginBottom: Writable<number>;
+}

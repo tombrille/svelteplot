@@ -50,7 +50,9 @@
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 
-    let args = $derived(sort({ data, ...options, ...(options.fill === true ? { fill: 'currentColor' } : {}) }));
+    let args = $derived(
+        sort({ data, ...options, ...(options.fill === true ? { fill: 'currentColor' } : {}) })
+    );
 </script>
 
 <Mark
@@ -83,15 +85,11 @@
                 {#if isValid(_x) && isValid(_y) && isValid(_r)}
                     {@const x = useScale.x
                         ? plot.scales.x.fn(_x) +
-                            (plot.scales.x.type === 'band'
-                                ? plot.scales.x.fn.bandwidth() * 0.5
-                                : 0)
+                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
                         : _x}
                     {@const y = useScale.y
                         ? plot.scales.y.fn(_y) +
-                            (plot.scales.y.type === 'band'
-                                ? plot.scales.y.fn.bandwidth() * 0.5
-                                : 0)
+                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
                         : _y}
                     {@const dx = +resolveProp(args.dx, datum, 0)}
                     {@const dy = +resolveProp(args.dx, datum, 0)}

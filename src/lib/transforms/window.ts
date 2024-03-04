@@ -76,4 +76,3 @@ function windowDim(
         ...Object.fromEntries(reduceChannels.map((channel) => [channel, `__reduced_${channel}__`]))
     };
 }
-
