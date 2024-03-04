@@ -16,7 +16,7 @@
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import { testFilter } from '$lib/helpers/index.js';
@@ -84,12 +84,10 @@
                 {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                 {#if isValid(_x) && isValid(_y) && isValid(_r)}
                     {@const x = useScale.x
-                        ? plot.scales.x.fn(_x) +
-                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        ? projectX('x', plot.scales, _x)
                         : _x}
                     {@const y = useScale.y
-                        ? plot.scales.y.fn(_y) +
-                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
+                        ? projectY('y', plot.scales, _y)
                         : _y}
                     {@const dx = +resolveProp(args.dx, datum, 0)}
                     {@const dy = +resolveProp(args.dx, datum, 0)}

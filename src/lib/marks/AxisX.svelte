@@ -17,6 +17,8 @@
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
+    import advancedFormat from 'dayjs/plugin/advancedFormat';
+    dayjs.extend(advancedFormat)
     import { derived } from 'svelte/store';
     import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
@@ -27,6 +29,7 @@
         title,
         anchor = 'bottom',
         facetAnchor = 'auto',
+        interval,
         tickSize = 6,
         tickPadding = 3,
         tickFontSize = 11,
@@ -39,6 +42,7 @@
             automatic?: boolean;
             title?: string;
             anchor?: 'top' | 'bottom';
+            interval?: string;
             facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
             labelAnchor?: 'auto' | 'left' | 'center' | 'right';
             tickSize?: number;
@@ -63,7 +67,7 @@
               autoTicks(
                   plot.scales.x.type,
                   plot.options.x.ticks,
-                  plot.options.x.interval,
+                  interval || plot.options.x.interval,
                   plot.scales.x.domain,
                   plot.scales.x.fn,
                   autoTickCount

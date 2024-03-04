@@ -14,7 +14,7 @@
         FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
 
     let { data, ...options } = $props<
@@ -82,12 +82,10 @@
                 {@const title = resolveProp(options.title, datum, '')}
                 {#if isValid(_x) && isValid(_y)}
                     {@const x = useScale.x
-                        ? plot.scales.x.fn(_x) +
-                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        ? projectX('x', plot.scales, _x) 
                         : _x}
                     {@const y = useScale.y
-                        ? plot.scales.y.fn(_y) +
-                          (plot.scales.y.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        ? projectY('y', plot.scales, _y)
                         : _y}
                     {@const dx = +resolveProp(options.dx, datum, 0)}
                     {@const dy = +resolveProp(options.dy, datum, 0)}

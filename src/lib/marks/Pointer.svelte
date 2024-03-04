@@ -25,6 +25,7 @@
 
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
+    import { projectX, projectY } from '$lib/helpers/scales.js';
 
     let { data, x, y, z, maxDistance = 15 } = $props<HTMLTooltipMarkProps>();
 
@@ -55,8 +56,8 @@
     let trees = $derived(
         groups.map(([, items]) =>
             quadtree()
-                .x(x != null ? (d) => plot.scales.x.fn(resolveChannel('x', d, { x })) : () => 0)
-                .y(y != null ? (d) => plot.scales.y.fn(resolveChannel('y', d, { y })) : () => 0)
+                .x(x != null ? (d) => projectX('x', plot.scales, resolveChannel('x', d, { x })) : () => 0)
+                .y(y != null ? (d) => projectY('y', plot.scales, resolveChannel('y', d, { y })) : () => 0)
                 .addAll(items)
         )
     );

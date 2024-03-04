@@ -147,8 +147,16 @@ You can explicitly add an x axis using the `AxisX` mark component:
     import { Plot, AxisX } from '$lib';
 </script>
 
-<Plot x={{ domain: [0, 100] }}>
-    <AxisX stroke="red" fill="green" />
+<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022,0,1), new Date(2024,1,1)] }}>
+    <AxisX interval="quarter" tickFormat="[Q]Q"  />
+    <AxisX interval="year" tickSize={0} tickFontSize={15} tickPadding={25}  tickFormat="YYYY" fill="#999" />
+</Plot>
+```
+
+```svelte
+<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022,0,1), new Date(2024,1,1)] }}>
+    <AxisX interval="quarter" tickFormat="[Q]Q"  />
+    <AxisX interval="year" tickSize={0} tickFontSize={15} tickPadding={25}  tickFormat="YYYY" fill="#999" />
 </Plot>
 ```
 

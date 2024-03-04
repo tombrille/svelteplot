@@ -12,7 +12,7 @@
     import { getContext } from 'svelte';
     import { recordizeY, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { coalesce, testFilter } from '../helpers/index.js';
     import type {
         PlotContext,
@@ -67,9 +67,9 @@
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y_ = resolveChannel('y', datum, args)}
-                {@const x1 = useScale.x ? plot.scales.x.fn(x_) : x_}
+                {@const x1 = useScale.x ? projectX('x1', plot.scales, x_): x_}
                 {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
-                {@const y1 = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const y1 = useScale.y ? projectY('y1', plot.scales, y_) : y_}
                 {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
                 {@const miny = Math.min(y1, y2)}
                 {@const maxy = Math.max(y1, y2)}

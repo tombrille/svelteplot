@@ -34,6 +34,7 @@ import type {
     Mark,
     MarkType,
     PlotOptions,
+    PlotScales,
     PlotState,
     RawValue,
     ScaleName,
@@ -539,4 +540,12 @@ function isWithin(number: number, min: number, max: number) {
 
 function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
+}
+
+export function projectX(channel: 'x'|'x1'|'x2', scales: PlotScales, value:RawValue) {
+    return scales.x.fn(value) + (channel === 'x' && scales.x.type === 'band' ? scales.x.fn.bandwidth() * 0.5 : channel === 'x2' && scales.x.type === 'band' ? scales.x.fn.bandwidth() : 0);
+}
+
+export function projectY(channel: 'y'|'y1'|'y2', scales: PlotScales, value:RawValue) {
+    return scales.y.fn(value) + (channel === 'y' && scales.y.type === 'band' ? scales.y.fn.bandwidth() * 0.5 : channel === 'y2' && scales.y.type === 'band' ? scales.y.fn.bandwidth() : 0);
 }

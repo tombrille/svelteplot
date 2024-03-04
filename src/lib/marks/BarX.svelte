@@ -12,7 +12,7 @@
     import { getContext } from 'svelte';
     import { stackX, recordizeX, intervalX } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type {
         PlotContext,
         DataRecord,
@@ -20,11 +20,10 @@
         RectMarkProps,
         ChannelAccessor
     } from '../types.js';
-    import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
-    import { testFilter } from '$lib/helpers/index.js';
+    import { isValid, testFilter } from '$lib/helpers/index.js';
 
     type BarXProps = BaseMarkProps & {
         data: DataRow[];
@@ -57,9 +56,9 @@
                 {@const y_ = resolveChannel('y', datum, args)}
                 {@const x1_ = resolveChannel('x1', datum, args)}
                 {@const x2_ = resolveChannel('x2', datum, args)}
-                {@const x1 = useScale.x1 ? plot.scales.x.fn(x1_) : x1_}
-                {@const x2 = useScale.x2 ? plot.scales.x.fn(x2_) : x2_}
-                {@const y = useScale.y ? plot.scales.y.fn(y_) : y_}
+                {@const x1 = useScale.x1 ? projectX('x1', plot.scales, x1_) : x1_}
+                {@const x2 = useScale.x2 ? projectX('x1', plot.scales, x2_) : x2_}
+                {@const y = useScale.y ? projectY('y', plot.scales, y_) : y_}
                 {@const minx = Math.min(x1, x2)}
                 {@const maxx = Math.max(x1, x2)}
                 {@const inset = resolveProp(args.inset, datum, 0)}

@@ -37,7 +37,7 @@
         FacetContext
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
     type AreaProps = BaseMarkProps & {
@@ -96,15 +96,15 @@
             ...(options.x1 != null && options.x2 != null
                 ? {
                       // "vertical" area
-                      x0: (d) => plot.scales.x.fn(resolveChannel('x1', d, options)),
-                      x1: (d) => plot.scales.x.fn(resolveChannel('x2', d, options)),
-                      y: (d) => plot.scales.y.fn(resolveChannel('y1', d, options))
+                      x0: (d) => projectX('x1', plot.scales, resolveChannel('x1', d, options)),
+                      x1: (d) => projectX('x2', plot.scales, resolveChannel('x2', d, options)),
+                      y: (d) => projectY('y', plot.scales, resolveChannel('y1', d, options))
                   }
                 : {
                       // "horizontal" area
-                      x: (d) => plot.scales.x.fn(resolveChannel('x1', d, options)),
-                      y0: (d) => plot.scales.y.fn(resolveChannel('y1', d, options)),
-                      y1: (d) => plot.scales.y.fn(resolveChannel('y2', d, options))
+                      x: (d) => projectX('x', plot.scales, resolveChannel('x1', d, options)),
+                      y0: (d) => projectY('y1', plot.scales, resolveChannel('y1', d, options)),
+                      y1: (d) => projectY('y2', plot.scales, resolveChannel('y2', d, options))
                   })
         })
     );

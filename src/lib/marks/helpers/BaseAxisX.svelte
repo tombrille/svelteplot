@@ -4,7 +4,7 @@
     import { getContext } from 'svelte';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
     import type {
-    AutoMarginStores,
+        AutoMarginStores,
         ChannelAccessor,
         ConstantAccessor,
         PlotState,

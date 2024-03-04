@@ -43,7 +43,7 @@
     type LineProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & LineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
 
     let { data, curve = 'linear', tension = 0, ...options } = $props<LineProps>();
@@ -73,8 +73,8 @@
     let linePath: (d: DataRecord[]) => string = $derived(
         callWithProps(line, [], {
             curve: maybeCurve(curve, tension),
-            x: (d) => plot.scales.x.fn(resolveChannel('x', d, options)),
-            y: (d) => plot.scales.y.fn(resolveChannel('y', d, options)),
+            x: (d) => projectX('x', plot.scales, resolveChannel('x', d, options)),
+            y: (d) => projectY('y', plot.scales, resolveChannel('y', d, options)),
             defined: (d) =>
                 isValid(resolveChannel('x', d, options)) && isValid(resolveChannel('y', d, options))
         })

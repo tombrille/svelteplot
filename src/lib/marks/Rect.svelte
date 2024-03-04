@@ -12,7 +12,7 @@
     import { getContext } from 'svelte';
     import { recordizeY, intervalX, intervalY } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { coalesce, testFilter } from '../helpers/index.js';
     import type {
         PlotContext,
@@ -80,25 +80,25 @@
                     x1_ == null
                         ? plot.options.marginLeft
                         : useScale.x1
-                          ? plot.scales.x.fn(x1_)
+                          ? projectX('x', plot.scales, x1_)
                           : x1_}
                 {@const x2 =
                     x2_ == null
                         ? plot.options.marginLeft + plot.facetWidth
                         : useScale.x2
-                          ? plot.scales.x.fn(x2_)
+                          ? projectX('x', plot.scales, x2_)
                           : x2_}
                 {@const y1 =
                     y1_ == null
                         ? plot.options.marginTop
                         : useScale.y1
-                          ? plot.scales.y.fn(y1_)
+                          ? projectY('y', plot.scales, y1_)
                           : y1_}
                 {@const y2 =
                     y2_ == null
                         ? plot.options.marginTop + plot.facetHeight
                         : useScale.y2
-                          ? plot.scales.y.fn(y2_)
+                          ? projectY('y', plot.scales, y2_)
                           : y2_}
 
                 {@const miny = Math.min(y1, y2)}

@@ -12,7 +12,7 @@
     import { getContext } from 'svelte';
     import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type {
         PlotContext,
         DataRecord,
@@ -68,9 +68,9 @@
             {@const x_ = resolveChannel('x', datum, args)}
             {@const y1_ = resolveChannel('y1', datum, args)}
             {@const y2_ = resolveChannel('y2', datum, args)}
-            {@const x = useScale.x ? plot.scales.x.fn(x_) : x_}
-            {@const y1 = useScale.y1 ? plot.scales.y.fn(y1_) : y1_}
-            {@const y2 = useScale.y2 ? plot.scales.y.fn(y2_) : y2_}
+            {@const x = useScale.x ? projectX('x1', plot.scales, x_) : x_}
+            {@const y1 = useScale.y1 ? projectY('y1', plot.scales, y1_) : y1_}
+            {@const y2 = useScale.y2 ? projectY('y1', plot.scales, y2_) : y2_}
             {@const miny = Math.min(y1, y2)}
             {@const maxy = Math.max(y1, y2)}
             {@const inset = resolveProp(args.inset, datum, 0)}

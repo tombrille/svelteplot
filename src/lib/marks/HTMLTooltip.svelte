@@ -29,6 +29,7 @@
 
     import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
+    import { projectX, projectY } from '$lib/helpers/scales.js';
 
     let { data, x, y, r } = $props<HTMLTooltipMarkProps>();
 
@@ -61,8 +62,8 @@
 
     let tree = $derived(
         quadtree()
-            .x((d) => plot.scales.x.fn(resolveChannel('x', d, { x, y, r })))
-            .y((d) => plot.scales.y.fn(resolveChannel('y', d, { x, y, r })))
+            .x((d) => projectX('x', plot.scales, resolveChannel('x', d, { x, y, r })))
+            .y((d) => projectY('y', plot.scales, resolveChannel('y', d, { x, y, r })))
             .addAll(data)
     );
 </script>
@@ -70,8 +71,8 @@
 <div
     class="tooltip"
     class:hide={!!!datum}
-    style:left="{tooltipX ? plot.scales.x.fn(tooltipX) : 0}px"
-    style:top="{tooltipY ? plot.scales.y.fn(tooltipY) : 0}px"
+    style:left="{tooltipX ? projectX('x', plot.scales, tooltipX) : 0}px"
+    style:top="{tooltipY ? projectY('y', plot.scales, tooltipY) : 0}px"
 >
     <div class="tooltip-body">
         <slot {datum} />

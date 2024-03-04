@@ -13,7 +13,7 @@
         FacetContext
     } from '../types.js';
     import { recordizeX } from '$lib/index.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
     import { testFilter } from '$lib/helpers/index.js';
 
@@ -50,17 +50,17 @@
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y_ = resolveChannel('y', datum, args)}
                 {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
-                    {@const x = useScale.x ? plot.scales.x.fn(x_) : x_}
+                    {@const x = useScale.x ? projectX('x', plot.scales, x_) : x_}
                     {@const y1 =
                         args.y != null
                             ? useScale.y
-                                ? plot.scales.y.fn(y_)
+                                ? projectY('y1', plot.scales, y_)
                                 : y_
                             : plot.options.marginTop}
                     {@const y2 =
                         args.y != null
                             ? useScale.y
-                                ? Number(plot.scales.y.fn(y_)) + plot.scales.y.fn.bandwidth()
+                                ? Number(projectY('y2', plot.scales, y_))
                                 : y_
                             : plot.options.marginTop + plot.plotHeight}
                     <line

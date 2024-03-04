@@ -16,7 +16,7 @@
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { coalesce, testFilter } from '../helpers/index.js';
-    import { getUsedScales } from '../helpers/scales.js';
+    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import {
         arrowPath,
@@ -107,20 +107,16 @@
                 {@const strokeWidth = resolveProp(args.strokeWidth, datum, 1)}
                 {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
                     {@const x1 = useScale.x1
-                        ? plot.scales.x.fn(_x1) +
-                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        ? projectX('x', plot.scales, _x1)
                         : _x1}
                     {@const y1 = useScale.y1
-                        ? plot.scales.y.fn(_y1) +
-                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
+                        ? projectY('y', plot.scales, _y1)
                         : _y1}
                     {@const x2 = useScale.x2
-                        ? plot.scales.x.fn(_x2) +
-                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        ? projectX('x', plot.scales, _x2)
                         : _x2}
                     {@const y2 = useScale.y2
-                        ? plot.scales.y.fn(_y2) +
-                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
+                        ? projectY('y', plot.scales, _y2)
                         : _y2}
                     {@const dx = resolveProp(args.dx, datum, 0)}
                     {@const dy = resolveProp(args.dx, datum, 0)}
