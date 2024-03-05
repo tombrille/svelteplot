@@ -19,6 +19,7 @@ export type MarkType =
     | 'cell'
     | 'dot'
     | 'frame'
+    | 'geo'
     | 'gridX'
     | 'gridY'
     | 'line'
@@ -662,4 +663,4 @@ export type AutoMarginStores = {
     autoMarginLeft: Writable<number>;
     autoMarginRight: Writable<number>;
     autoMarginBottom: Writable<number>;
-}
+};

@@ -65,7 +65,6 @@
     let tickY = $derived(anchor === 'bottom' ? marginTop + height : marginTop);
 
     let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
-
 </script>
 
 <g class="axis-x">
@@ -84,9 +83,10 @@
             {@const dy = +resolveProp(options.dy, tick, 0)}
             {@const prevTextLines = t && formattedTicks[t - 1].text}
             {@const fontSize = resolveProp(tickFontSize, tick)}
-            {@const estLabelWidth =
-                max(textLines.map((t) => t.length)) * fontSize * 0.2}
-            {@const moveDown = (tickSize + tickPadding + (tickRotate !== 0 ? tickFontSize * 0.35 : 0)) * (anchor === 'bottom' ? 1 : -1)}
+            {@const estLabelWidth = max(textLines.map((t) => t.length)) * fontSize * 0.2}
+            {@const moveDown =
+                (tickSize + tickPadding + (tickRotate !== 0 ? tickFontSize * 0.35 : 0)) *
+                (anchor === 'bottom' ? 1 : -1)}
             <g
                 class="tick"
                 transform="translate({x + dx}, {tickY + dy})"
@@ -111,7 +111,11 @@
                     )}
                     x={0}
                     y={0}
-                    dominant-baseline={tickRotate !== 0 ? 'central' : anchor === 'bottom' ? 'hanging' : 'auto'}
+                    dominant-baseline={tickRotate !== 0
+                        ? 'central'
+                        : anchor === 'bottom'
+                          ? 'hanging'
+                          : 'auto'}
                 >
                     {#if ticks.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
                         {#if typeof textLines === 'string' || textLines.length === 1}

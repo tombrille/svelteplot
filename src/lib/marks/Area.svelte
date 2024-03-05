@@ -25,7 +25,7 @@
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
-    import { isValid } from '$lib/helpers/index.js';
+    import { isValid, maybeData } from '$lib/helpers/index.js';
 
     import type {
         CurveName,
@@ -59,13 +59,15 @@
         ...options
     } = $props<AreaProps>();
 
+    let data2 = $derived(maybeData(data));
+
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
     let groupByKey = $derived(options.z || options.fill || options.stroke);
 
     let groups = $derived(
-        groupByKey ? Object.values(groupBy(data, (d) => resolveProp(groupByKey, d))) : [data]
+        groupByKey ? Object.values(groupBy(data2, (d) => resolveProp(groupByKey, d))) : [data]
     );
 
     // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
@@ -115,7 +117,7 @@
 
 <Mark
     type="area"
-    {data}
+    data={data2}
     channels={[
         'x1',
         'x2',

@@ -24,6 +24,7 @@
     import { isValid } from '../helpers/isValid.js';
     import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
+    import { maybeData } from '$lib/helpers/index.js';
 
     let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
         BaseMarkProps & {
@@ -48,7 +49,7 @@
         stackY(
             intervalY(
                 // by default, sort by x channel (the ordinal labels)
-                sort(recordizeY({ data, sort: { channel: 'x' }, ...options })),
+                sort(recordizeY({ data: maybeData(data), sort: { channel: 'x' }, ...options })),
                 { plot }
             ),
             stack

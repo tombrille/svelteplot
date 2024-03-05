@@ -35,7 +35,12 @@
     let autoMarginBottom = writable(0);
     let autoMarginTop = writable(0);
 
-    setContext('svelteplot/autoMargins', { autoMarginLeft, autoMarginRight, autoMarginBottom, autoMarginTop });
+    setContext('svelteplot/autoMargins', {
+        autoMarginLeft,
+        autoMarginRight,
+        autoMarginBottom,
+        autoMarginTop
+    });
 
     let { header, footer, overlay, underlay, testid, facet, ...initialOpts } =
         $props<Partial<PlotOptions>>();
@@ -43,12 +48,14 @@
     // information that influences the default plot options
     type PlotOptionsParameters = {
         explicitScales: Set<ScaleName>;
+        hasProjection: boolean;
         margins?: number;
         inset?: number;
     };
 
     function defaultPlotOptions({
         explicitScales,
+        hasProjection,
         margins,
         inset
     }: PlotOptionsParameters): PlotOptions {
@@ -62,11 +69,11 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: margins != null ? margins : $autoMarginLeft + 1,
-            marginRight:
+            marginLeft: hasProjection ? 0 : margins != null ? margins : $autoMarginLeft + 1,
+            marginRight: hasProjection ? 0 :
                 margins != null ? margins : oneDimY ? 0 : Math.max($autoMarginRight + 1, 4),
-            marginTop: margins != null ? margins : oneDimX ? 0 : 35,
-            marginBottom: margins != null ? margins : 35,
+            marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : 35,
+            marginBottom: hasProjection ? 0 : margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : 0,
             grid: false,
             frame: false,
@@ -169,6 +176,7 @@
     let plotOptions = $derived(
         extendPlotOptions(initialOpts, {
             explicitScales,
+            hasProjection: !!initialOpts.projection,
             margins: initialOpts.margins,
             inset: initialOpts.inset
         })
@@ -181,6 +189,8 @@
     let preScales: PlotScales = $derived(
         computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, 'pre')
     );
+
+    let hasProjection = $derived(!!preScales.projection);
 
     let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
@@ -212,7 +222,12 @@
 
     let height = $derived(
         plotOptions.height === 'auto'
-            ? Math.round(
+            ?
+            Math.round(
+                preScales.projection && preScales.projection.aspectRatio ?
+                plotWidth * preScales.projection.aspectRatio + plotOptions.marginTop +
+                            plotOptions.marginBottom
+                :
                   plotOptions.aspectRatio
                       ? heightFromAspect(
                             preScales.x,
@@ -241,7 +256,7 @@
 
     let facetWidth: number | null = $state(null);
     let facetHeight: number | null = $state(null);
-
+   
     let plotState = $derived.by((x) => {
         const scales = computeScales(
             plotOptions,
@@ -331,7 +346,7 @@
         {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
         <svg {width} {height}>
             <FacetGrid marks={explicitMarks}>
-                {#if !hasExplicitAxisX}
+                {#if !hasProjection && !hasExplicitAxisX}
                     {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
                         <AxisX anchor="top" automatic />
                     {/if}
@@ -339,7 +354,7 @@
                         <AxisX anchor="bottom" automatic />
                     {/if}
                 {/if}
-                {#if !hasExplicitAxisY}
+                {#if !hasProjection && !hasExplicitAxisY}
                     {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
                         <AxisY anchor="left" automatic />
                     {/if}

@@ -18,7 +18,7 @@
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
     import advancedFormat from 'dayjs/plugin/advancedFormat';
-    dayjs.extend(advancedFormat)
+    dayjs.extend(advancedFormat);
     import { derived } from 'svelte/store';
     import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';

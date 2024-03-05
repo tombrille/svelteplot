@@ -15,11 +15,11 @@
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
-    import { symbol as d3Symbol, symbol } from 'd3-shape';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { symbol as d3Symbol } from 'd3-shape';
+    import { getUsedScales, projectX, projectXY, projectY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
-    import { testFilter } from '$lib/helpers/index.js';
+    import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
         BaseMarkProps & {
@@ -39,10 +39,6 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    function isValid(value: RawValue): value is number | Date | string {
-        return value !== null && !Number.isNaN(value);
-    }
-
     function getSymbolPath(symbolType, size) {
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
@@ -51,7 +47,11 @@
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(
-        sort({ data, ...options, ...(options.fill === true ? { fill: 'currentColor' } : {}) })
+        sort({
+            data: maybeData(data),
+            ...options,
+            ...(options.fill === true ? { fill: 'currentColor' } : {})
+        })
     );
 </script>
 
@@ -83,28 +83,30 @@
                 {@const _y = resolveChannel('y', datum, args)}
                 {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                 {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                    {@const x = useScale.x
-                        ? projectX('x', plot.scales, _x)
-                        : _x}
-                    {@const y = useScale.y
-                        ? projectY('y', plot.scales, _y)
-                        : _y}
-                    {@const dx = +resolveProp(args.dx, datum, 0)}
-                    {@const dy = +resolveProp(args.dx, datum, 0)}
-                    {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
-                    {@const size = r * r * Math.PI}
-
-                    {@const symbol_ = resolveChannel('symbol', datum, {
-                        symbol: 'circle',
-                        ...args
-                    })}
-                    {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
-                    <path
-                        d={getSymbolPath(symbol, size)}
-                        transform="translate({x + dx}, {y + dy})"
-                        data-symbol={symbol}
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                    />
+                    {@const [x, y] =
+                        useScale.x && useScale.y
+                            ? projectXY(plot.scales, _x, _y)
+                            : [
+                                  useScale.x ? projectX('x', plot.scales, _x) : _x,
+                                  useScale.y ? projectY('y', plot.scales, _y) : _y
+                              ]}
+                    {#if isValid(x) && isValid(y)}
+                        {@const dx = +resolveProp(args.dx, datum, 0)}
+                        {@const dy = +resolveProp(args.dx, datum, 0)}
+                        {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
+                        {@const size = r * r * Math.PI}
+                        {@const symbol_ = resolveChannel('symbol', datum, {
+                            symbol: 'circle',
+                            ...args
+                        })}
+                        {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
+                        <path
+                            d={getSymbolPath(symbol, size)}
+                            transform="translate({x + dx}, {y + dy})"
+                            data-symbol={symbol}
+                            style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                        />
+                    {/if}
                 {/if}
             {/if}
         {/each}

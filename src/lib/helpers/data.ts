@@ -6,6 +6,11 @@ async function loadCSV(fetch, dataset: string) {
     return csvParse(text, autoType);
 }
 
+export async function loadJSON(fetch, dataset: string) {
+    const res = await fetch(`/data/${dataset}.json`);
+    return await res.json();
+}
+
 /**
  * helper function used in the SveltePlot docs to load example datasets
  */

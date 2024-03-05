@@ -24,5 +24,21 @@ export function isSnippet(object: unknown): object is Snippet {
 }
 
 export function isValid(value: RawValue): value is number | Date | string {
-    return value !== null && !Number.isNaN(value);
+    return value !== null && value !== undefined && !Number.isNaN(value);
 }
+
+export function maybeData(data: DataRecord[]): DataRecord[] {
+    if (data.type === 'FeatureCollection') return data.features;
+    return data;
+}
+
+const objectToString = Object.prototype.toString;
+
+export function isObject(option: object | RawValue): option is object {
+    return option?.toString === objectToString;
+}
+
+export const constant =
+    <T>(x: T) =>
+    () =>
+        x;

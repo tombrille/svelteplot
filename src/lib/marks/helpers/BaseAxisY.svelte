@@ -4,7 +4,13 @@
     import { testFilter } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
-    import type { AutoMarginStores, ConstantAccessor, PlotState, RawValue, ScaleType } from '$lib/types.js';
+    import type {
+        AutoMarginStores,
+        ConstantAccessor,
+        PlotState,
+        RawValue,
+        ScaleType
+    } from '$lib/types.js';
 
     let {
         scaleFn,
@@ -73,7 +79,8 @@
 
     let tickTexts = $state([] as SVGTextElement[]);
 
-    const { autoMarginLeft, autoMarginRight } = getContext<AutoMarginStores>('svelteplot/autoMargins');
+    const { autoMarginLeft, autoMarginRight } =
+        getContext<AutoMarginStores>('svelteplot/autoMargins');
 
     $effect(() => {
         // measure tick label widths

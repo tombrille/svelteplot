@@ -18,7 +18,7 @@
         FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { testFilter } from '../helpers/index.js';
+    import { maybeData, testFilter } from '../helpers/index.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import MarkerPath from './helpers/MarkerPath.svelte';
@@ -59,10 +59,10 @@
 
     let sorted = $derived(
         options.sort
-            ? data.toSorted((a, b) =>
+            ? maybeData(data).toSorted((a, b) =>
                   resolveChannel('sort', a, options) > resolveChannel('sort', b, options) ? 1 : -1
               )
-            : data
+            : maybeData(data)
     );
 
     let args = $derived(

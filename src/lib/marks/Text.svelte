@@ -16,6 +16,8 @@
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
+    import { sort } from '$lib/index.js';
+    import { maybeData } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
         BaseMarkProps & {
@@ -49,6 +51,8 @@
         top: 'hanging'
     };
 
+    let args = $derived(sort({ data: maybeData(data), ...options }));
+
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
 </script>
@@ -69,24 +73,19 @@
         'strokeOpacity',
         'fillOpacity'
     ]}
-    {data}
-    {...options}
+    {...args}
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="text" data-use-x={useScale.x ? 1 : 0}>
-        {#each data as datum}
+        {#each args.data as datum}
             {#if testFacet(datum, mark.options) && (options.filter == null || resolveProp(options.filter, datum))}
                 {@const _x = resolveChannel('x', datum, options)}
                 {@const _y = resolveChannel('y', datum, options)}
                 {@const title = resolveProp(options.title, datum, '')}
                 {#if isValid(_x) && isValid(_y)}
-                    {@const x = useScale.x
-                        ? projectX('x', plot.scales, _x) 
-                        : _x}
-                    {@const y = useScale.y
-                        ? projectY('y', plot.scales, _y)
-                        : _y}
+                    {@const x = useScale.x ? projectX('x', plot.scales, _x) : _x}
+                    {@const y = useScale.y ? projectY('y', plot.scales, _y) : _y}
                     {@const dx = +resolveProp(options.dx, datum, 0)}
                     {@const dy = +resolveProp(options.dy, datum, 0)}
                     {@const textLines = resolveProp(options.text, datum, '').split('\n')}
@@ -95,7 +94,9 @@
                             resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
                         ]}
                         transform="translate({[x + dx, y + dy]})"
-                        >{#each textLines as line, l}<tspan x="0" dy={l ? resolveProp(options.fontSize, datum) || 12 : 0}
+                        >{#each textLines as line, l}<tspan
+                                x="0"
+                                dy={l ? resolveProp(options.fontSize, datum) || 12 : 0}
                                 style={resolveScaledStyles(
                                     { ...datum, __tspanIndex: l },
                                     options,

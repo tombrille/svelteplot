@@ -89,9 +89,9 @@
             {data}
             x="yearInDecade"
             y="average"
-            text={(d) => `${dayjs(d.date).format('MMM \'YY')}\n${d.average.toFixed(0)}`}
+            text={(d) => `${dayjs(d.date).format("MMM 'YY")}\n${d.average.toFixed(0)}`}
             lineAnchor="bottom"
-            fontWeight={d => d.__tspanIndex ? 'bold' : 'normal'}
+            fontWeight={(d) => (d.__tspanIndex ? 'bold' : 'normal')}
             dy="-20"
             stroke="var(--svelteplot-bg)"
             strokeWidth={3}

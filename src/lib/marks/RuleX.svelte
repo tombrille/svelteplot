@@ -57,9 +57,18 @@
                 {#if isValid(x_)}
                     {@const y1_ = resolveChannel('y1', datum, args)}
                     {@const y2_ = resolveChannel('y2', datum, args)}
-                    {@const x = useScale.x ? plot.scales.x.fn(x_) + (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0) : x_}
-                    {@const y1 = useScale.y1 ? plot.scales.y.fn(y1_) + (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0) : y1_}
-                    {@const y2 = useScale.y2 ? plot.scales.y.fn(y2_) + (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0) : y2_}
+                    {@const x = useScale.x
+                        ? plot.scales.x.fn(x_) +
+                          (plot.scales.x.type === 'band' ? plot.scales.x.fn.bandwidth() * 0.5 : 0)
+                        : x_}
+                    {@const y1 = useScale.y1
+                        ? plot.scales.y.fn(y1_) +
+                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
+                        : y1_}
+                    {@const y2 = useScale.y2
+                        ? plot.scales.y.fn(y2_) +
+                          (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)
+                        : y2_}
                     {@const inset = resolveProp(args.inset, datum, 0)}
                     {@const insetTop = resolveProp(args.insetTop, datum, 0)}
                     {@const insetBottom = resolveProp(args.insetBottom, datum, 0)}

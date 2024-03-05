@@ -56,8 +56,16 @@
     let trees = $derived(
         groups.map(([, items]) =>
             quadtree()
-                .x(x != null ? (d) => projectX('x', plot.scales, resolveChannel('x', d, { x })) : () => 0)
-                .y(y != null ? (d) => projectY('y', plot.scales, resolveChannel('y', d, { y })) : () => 0)
+                .x(
+                    x != null
+                        ? (d) => projectX('x', plot.scales, resolveChannel('x', d, { x }))
+                        : () => 0
+                )
+                .y(
+                    y != null
+                        ? (d) => projectY('y', plot.scales, resolveChannel('y', d, { y }))
+                        : () => 0
+                )
                 .addAll(items)
         )
     );

@@ -7,9 +7,15 @@
 
 :root {
     --svelteplot-bg: #fff;
+    --svp-accent: #d81a5b;
+    --svp-brand: #d81a5b;
     --svp-red: #f43f5e;
     --svp-blue: #0092ff;
     --svp-green: #1bc85f;
+
+    html.dark {
+        --svp-accent: #ff659a;
+    }
 }
 
 html:not(.dark) .svp-action--flat {

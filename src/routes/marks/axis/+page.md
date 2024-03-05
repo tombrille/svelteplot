@@ -2,7 +2,6 @@
 title: Axis mark
 ---
 
-
 By default SveltePlot will create axis marks automatically:
 
 ```svelte live
@@ -125,13 +124,19 @@ You can rotate tick labels:
 </script>
 
 <Slider label="tick angle" min={-90} max={90} step={5} bind:value={tickRotate} />
-<Plot marginBottom={50} x={{ tickRotate, domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+<Plot
+    marginBottom={50}
+    x={{ tickRotate, domain: 'These are some ordinal ticks on a band scale'.split(' ') }}
+/>
 ```
 
 ```svelte
-<Plot x={{ 
-    tickRotate: -45,
-    domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+<Plot
+    x={{
+        tickRotate: -45,
+        domain: 'These are some ordinal ticks on a band scale'.split(' ')
+    }}
+/>
 ```
 
 :::warning
@@ -147,16 +152,30 @@ You can explicitly add an x axis using the `AxisX` mark component:
     import { Plot, AxisX } from '$lib';
 </script>
 
-<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022,0,1), new Date(2024,1,1)] }}>
-    <AxisX interval="quarter" tickFormat="[Q]Q"  />
-    <AxisX interval="year" tickSize={0} tickFontSize={15} tickPadding={25}  tickFormat="YYYY" fill="#999" />
+<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)] }}>
+    <AxisX interval="quarter" tickFormat="[Q]Q" />
+    <AxisX
+        interval="year"
+        tickSize={0}
+        tickFontSize={15}
+        tickPadding={25}
+        tickFormat="YYYY"
+        fill="#999"
+    />
 </Plot>
 ```
 
 ```svelte
-<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022,0,1), new Date(2024,1,1)] }}>
-    <AxisX interval="quarter" tickFormat="[Q]Q"  />
-    <AxisX interval="year" tickSize={0} tickFontSize={15} tickPadding={25}  tickFormat="YYYY" fill="#999" />
+<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)] }}>
+    <AxisX interval="quarter" tickFormat="[Q]Q" />
+    <AxisX
+        interval="year"
+        tickSize={0}
+        tickFontSize={15}
+        tickPadding={25}
+        tickFormat="YYYY"
+        fill="#999"
+    />
 </Plot>
 ```
 

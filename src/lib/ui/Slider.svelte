@@ -42,6 +42,7 @@
         opacity: 0.5;
     }
     input {
+        accent-color: var(--svp-accent);
         width: 15ex;
     }
 </style>

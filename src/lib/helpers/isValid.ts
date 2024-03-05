@@ -10,6 +10,4 @@ import type { RawValue } from '../types.js';
  * @param value
  * @returns
  */
-export function isValid(value: RawValue): value is number | Date | string {
-    return value !== null && !Number.isNaN(value);
-}
+export { isValid } from './index.js'

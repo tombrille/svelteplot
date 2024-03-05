@@ -67,7 +67,7 @@
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y_ = resolveChannel('y', datum, args)}
-                {@const x1 = useScale.x ? projectX('x1', plot.scales, x_): x_}
+                {@const x1 = useScale.x ? projectX('x1', plot.scales, x_) : x_}
                 {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
                 {@const y1 = useScale.y ? projectY('y1', plot.scales, y_) : y_}
                 {@const y2 = y1 + plot.scales.y.fn.bandwidth()}

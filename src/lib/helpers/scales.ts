@@ -47,6 +47,7 @@ import callWithProps from './callWithProps.js';
 import { interpolateLab, interpolateRound } from 'd3-interpolate';
 import { coalesce } from './index.js';
 import { getLogTicks } from './getLogTicks.js';
+import { createProjection } from './projection.js';
 
 const Scales: Record<
     ScaleType,
@@ -153,7 +154,20 @@ export function computeScales(
         plotHeight,
         plotHasFilledDotMarks
     );
-    return { x, y, r, color, opacity, length, symbol, fx, fy };
+    const projection = plotOptions.projection
+        ? createProjection(
+              { projOptions: plotOptions.projection },
+              {
+                  width: plotWidth,
+                  height: plotHeight,
+                  marginBottom: plotOptions.marginBottom,
+                  marginLeft: plotOptions.marginLeft,
+                  marginRight: plotOptions.marginRight,
+                  marginTop: plotOptions.marginTop
+              }
+          )
+        : null;
+    return { x, y, r, color, opacity, length, symbol, fx, fy, projection };
 }
 
 export function createScale<T extends ScaleOptions>(
@@ -264,6 +278,7 @@ export function createScale<T extends ScaleOptions>(
             }
         }
     }
+
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
 
@@ -459,7 +474,6 @@ function getScaleRange(
     plotHeight: number,
     plotHasFilledDotMarks: boolean
 ) {
-    
     const { marginTop, marginLeft, inset } = plotOptions;
     const { insetLeft, insetRight, insetTop, insetBottom } = scaleOptions;
     return name === 'opacity'
@@ -542,10 +556,42 @@ function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }
 
-export function projectX(channel: 'x'|'x1'|'x2', scales: PlotScales, value:RawValue) {
-    return scales.x.fn(value) + (channel === 'x' && scales.x.type === 'band' ? scales.x.fn.bandwidth() * 0.5 : channel === 'x2' && scales.x.type === 'band' ? scales.x.fn.bandwidth() : 0);
+export function projectXY(scales, x, y) {
+    if (scales.projection) {
+        // TODO: pretty sure this is not how projection streams are supposed to be used 
+        // efficiantly, in observable plot, all data points of a mark are projected using
+        // the same stream
+        let x_, y_;
+        const stream = scales.projection.stream({
+            point(px, py) {
+                x_ = px;
+                y_ = py;
+            }
+        });
+        stream.point(x,y);
+        return [x_, y_];
+    }
+    return [projectX('x', scales, x), projectY('y', scales, y)];
 }
 
-export function projectY(channel: 'y'|'y1'|'y2', scales: PlotScales, value:RawValue) {
-    return scales.y.fn(value) + (channel === 'y' && scales.y.type === 'band' ? scales.y.fn.bandwidth() * 0.5 : channel === 'y2' && scales.y.type === 'band' ? scales.y.fn.bandwidth() : 0);
+export function projectX(channel: 'x' | 'x1' | 'x2', scales: PlotScales, value: RawValue) {
+    return (
+        scales.x.fn(value) +
+        (channel === 'x' && scales.x.type === 'band'
+            ? scales.x.fn.bandwidth() * 0.5
+            : channel === 'x2' && scales.x.type === 'band'
+              ? scales.x.fn.bandwidth()
+              : 0)
+    );
+}
+
+export function projectY(channel: 'y' | 'y1' | 'y2', scales: PlotScales, value: RawValue) {
+    return (
+        scales.y.fn(value) +
+        (channel === 'y' && scales.y.type === 'band'
+            ? scales.y.fn.bandwidth() * 0.5
+            : channel === 'y2' && scales.y.type === 'band'
+              ? scales.y.fn.bandwidth()
+              : 0)
+    );
 }

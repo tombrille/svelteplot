@@ -43,6 +43,10 @@ export default {
                     to: '/features/transforms/'
                 },
                 {
+                    title: 'Projections',
+                    to: '/features/projections/'
+                },
+                {
                     title: 'Interactivity',
                     to: '/features/interactivity/'
                 }
