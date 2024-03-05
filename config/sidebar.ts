@@ -64,6 +64,7 @@ export default {
                 { title: 'Cell', to: '/marks/cell/' },
                 { title: 'Dot', to: '/marks/dot/' },
                 { title: 'Frame', to: '/marks/frame/' },
+                { title: 'Geo', to: '/marks/geo/' },
                 { title: 'Grid', to: '/marks/grid/' },
                 { title: 'Line', to: '/marks/line/' },
                 { title: 'Link', to: '/marks/link/' },

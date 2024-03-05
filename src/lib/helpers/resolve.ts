@@ -28,18 +28,6 @@ export function resolveProp<T>(
     datum: DataRecord | null,
     _defaultValue: T | null = null
 ): T | null {
-    if (
-        (accessor === 'longitude' || accessor === 'latitude') &&
-        datum &&
-        datum.type === 'Feature' &&
-        datum.geometry?.type === 'Point'
-    ) {
-        return datum.geometry.coordinates[accessor === 'longitude' ? 0 : 1];
-    } else if (datum && datum.type === 'Feature' && typeof datum.properties === 'object') {
-        // geojson feature
-        datum = datum.properties;
-    }
-
     if (typeof accessor === 'function') {
         // datum.___orig___ exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
@@ -102,18 +90,6 @@ function resolve(
     scale: ScaleName
 ) {
     if (isDataRecord(datum)) {
-        // special handling for geojson features
-        if (
-            (accessor === 'longitude' || accessor === 'latitude') &&
-            datum &&
-            datum.type === 'Feature' &&
-            datum.geometry?.type === 'Point'
-        ) {
-            return datum.geometry.coordinates[accessor === 'longitude' ? 0 : 1];
-        } else if (datum && datum.type === 'Feature' && typeof datum.properties === 'object') {
-            // geojson feature
-            datum = datum.properties;
-        }
         // use accessor function
         if (typeof accessor === 'function')
             // datum.___orig___ exists if an array of raw values was used as dataset and got

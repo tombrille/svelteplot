@@ -31,9 +31,9 @@ title: Projections
         stroke="var(--svp-red)"
         fill="var(--svp-red)"
         fillOpacity="0.2"
-        x="longitude" 
-        y="latitude" 
-        r={d => Math.pow(10, d.mag)} />
+        x={d => d.geometry.coordinates[0]}
+        y={d => d.geometry.coordinates[1]}
+        r={d => Math.pow(10, d.properties.mag)} />
 </Plot>
 ```
 
