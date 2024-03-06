@@ -12,7 +12,8 @@ import {
     scaleOrdinal,
     scalePoint,
     scaleSymlog,
-    scalePow
+    scalePow,
+    scaleQuantile
 } from 'd3-scale';
 import { extent, range as d3Range, ascending } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
@@ -20,6 +21,7 @@ import {
     categoricalSchemes,
     isCategoricalScheme,
     isDivergingScheme,
+    isOrdinalScheme,
     isQuantitativeScheme,
     ordinalScheme,
     quantitativeScheme
@@ -156,7 +158,7 @@ export function computeScales(
     );
     const projection = plotOptions.projection
         ? createProjection(
-              { projOptions: plotOptions.projection },
+              { projOptions: plotOptions.projection, inset: plotOptions.inset },
               {
                   width: plotWidth,
                   height: plotHeight,
@@ -181,6 +183,7 @@ export function createScale<T extends ScaleOptions>(
 ) {
     // gather all marks that use channels which support this scale
     const dataValues = new Set<RawValue>();
+    const allDataValues: RawValue[] = [];
     const markTypes = new Set<MarkType>();
     const skip = new Map<ScaledChannelName, Set<symbol>>();
     let manualActiveMarks = 0;
@@ -258,7 +261,11 @@ export function createScale<T extends ScaleOptions>(
 
                             // active mark channel
                             for (const datum of mark.data) {
-                                dataValues.add(resolveProp(channelOptions.value, datum));
+                                const value = resolveProp(channelOptions.value, datum);
+                                dataValues.add(value);
+                                if (name === 'color' && scaleOptions.type === 'quantile') {
+                                    allDataValues.push(value);
+                                }
                             }
                         }
                     }
@@ -302,24 +309,13 @@ export function createScale<T extends ScaleOptions>(
               : valueArr
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
-    let range =
-        scaleOptions?.range ||
-        getScaleRange(
-            name,
-            scaleOptions,
-            plotOptions,
-            plotWidth,
-            plotHeight,
-            plotHasFilledDotMarks
-        );
-
-    if (scaleOptions.reverse) range.reverse();
+    let range;
 
     let fn;
 
     if (name === 'color') {
         // special treatment for color scales
-        const { scheme, interpolate, pivot } = scaleOptions;
+        const { scheme, interpolate, pivot, n = 9 } = scaleOptions;
 
         if (type === 'categorical') {
             // categorical scale
@@ -331,6 +327,16 @@ export function createScale<T extends ScaleOptions>(
                     ? categoricalSchemes.get(scheme)
                     : ordinalScheme(scheme)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
+        } else if (type === 'quantile') {
+            const scheme_ = scheme || 'turbo';
+            if (isOrdinalScheme(scheme_)) {
+                range = ordinalScheme(scheme_)(n);
+
+                if (scaleOptions.reverse) range.reverse();
+
+                fn = scaleQuantile().domain(allDataValues).range(range);
+
+            }
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
             if (interpolate) {
@@ -370,6 +376,19 @@ export function createScale<T extends ScaleOptions>(
         }
         // otherwise
     } else {
+        range =
+            scaleOptions?.range ||
+            getScaleRange(
+                name,
+                scaleOptions,
+                plotOptions,
+                plotWidth,
+                plotHeight,
+                plotHasFilledDotMarks
+            );
+
+        if (scaleOptions.reverse) range.reverse();
+
         const niceTickCount =
             name === 'x' || name === 'y'
                 ? Math.round(Math.abs(range[0] - range[1]) / scaleOptions.tickSpacing)
@@ -558,7 +577,7 @@ function looksLikeOpacity(input: string | number) {
 
 export function projectXY(scales, x, y) {
     if (scales.projection) {
-        // TODO: pretty sure this is not how projection streams are supposed to be used 
+        // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using
         // the same stream
         let x_, y_;
@@ -568,7 +587,7 @@ export function projectXY(scales, x, y) {
                 y_ = py;
             }
         });
-        stream.point(x,y);
+        stream.point(x, y);
         return [x_, y_];
     }
     return [projectX('x', scales, x), projectY('y', scales, y)];

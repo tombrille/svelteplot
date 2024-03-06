@@ -34,6 +34,7 @@
         y="revenue"
         z="format"
         fill="group"
+        href="/marks/line"
         {curve}
         stack={{ order, reverse }}
     />

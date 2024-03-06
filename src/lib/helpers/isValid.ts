@@ -10,4 +10,4 @@ import type { RawValue } from '../types.js';
  * @param value
  * @returns
  */
-export { isValid } from './index.js'
+export { isValid } from './index.js';

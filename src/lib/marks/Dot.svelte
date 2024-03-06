@@ -49,6 +49,8 @@
     let args = $derived(
         sort({
             data: maybeData(data),
+            // sort by descending radius by default
+            ...(options.r ? { sort: { channel: '-r' } } : {}),
             ...options,
             ...(options.fill === true ? { fill: 'currentColor' } : {})
         })

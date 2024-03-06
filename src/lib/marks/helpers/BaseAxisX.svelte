@@ -53,9 +53,9 @@
 
     let formattedTicks = $derived(
         removeIdenticalLines(
-            ticks.map((tick) => ({
+            ticks.map((tick, i) => ({
                 value: tick,
-                text: splitTick(tickFormat(tick))
+                text: splitTick(tickFormat(tick, i))
             }))
         )
     );

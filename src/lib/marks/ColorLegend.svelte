@@ -7,6 +7,7 @@
     import { getContext } from 'svelte';
     import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
+    import { range as d3Range } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
     import type { PlotContext } from '../types.js';
@@ -63,6 +64,47 @@
                     <span class="item-label">{value}</span>
                 </div>
             {/each}
+        {:else if scaleType === 'quantile'}
+            {@const domain = plot.scales.color.domain}
+            {@const range = plot.scales.color.range}
+            {@const tickLabels = plot.scales.color.fn.quantiles()}
+            {@const ticks = d3Range(
+                domain[0],
+                domain[1],
+                (domain[1] - domain[0]) / range.length
+            ).slice(1)}
+
+            <Plot
+                maxWidth="240px"
+                margins={1}
+                marginLeft={1}
+                marginRight={1}
+                marginTop={6}
+                marginBottom={20}
+                height={38}
+                inset={0}
+                x={{ domain, ticks, tickFormat: (t, i) => tickLabels[i].toFixed(1) }}
+            >
+                <defs>
+                    <linearGradient id="gradient-{randId}" x2="1">
+                        <stop offset="0%" stop-color={range[0]} />
+                        {#each ticks as t, i}
+                            {@const offset = (100 * (t - domain[0])) / (domain[1] - domain[0])}
+                            <stop
+                                offset="{offset - 0.001}%"
+                                stop-color={plot.scales.color.fn(tickLabels[i] - 0.1)}
+                            />
+                            <stop
+                                offset="{offset}%"
+                                stop-color={plot.scales.color.fn(tickLabels[i])}
+                            />
+                        {/each}
+                        <stop offset="100%" stop-color={range.at(-1)} />
+                    </linearGradient>
+                </defs>
+                <Frame dy={-5} stroke={null} fill="url(#gradient-{randId})" />
+                <AxisX tickSize={18} dy={-17} />
+            </Plot>
         {:else}
             {@const domain = plot.scales.color.domain}
             {@const ticks = new Set([
@@ -79,7 +121,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain: plot.scales.color.domain, tickSpacing: 40 }}
+                x={{ domain, tickSpacing: 30 }}
             >
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
@@ -106,7 +148,7 @@
         margin-right: 2em;
     }
     .title {
-        font-weight: bold;
+        font-weight: 500;
     }
     .item {
         margin: 0 1em 0.5ex 0;

@@ -70,8 +70,13 @@
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
             marginLeft: hasProjection ? 0 : margins != null ? margins : $autoMarginLeft + 1,
-            marginRight: hasProjection ? 0 :
-                margins != null ? margins : oneDimY ? 0 : Math.max($autoMarginRight + 1, 4),
+            marginRight: hasProjection
+                ? 0
+                : margins != null
+                  ? margins
+                  : oneDimY
+                    ? 0
+                    : Math.max($autoMarginRight + 1, 4),
             marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: hasProjection ? 0 : margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : 0,
@@ -222,30 +227,29 @@
 
     let height = $derived(
         plotOptions.height === 'auto'
-            ?
-            Math.round(
-                preScales.projection && preScales.projection.aspectRatio ?
-                plotWidth * preScales.projection.aspectRatio + plotOptions.marginTop +
-                            plotOptions.marginBottom
-                :
-                  plotOptions.aspectRatio
-                      ? heightFromAspect(
-                            preScales.x,
-                            preScales.y,
-                            plotOptions.aspectRatio,
-                            plotWidth,
-                            plotOptions.marginTop,
-                            plotOptions.marginBottom
-                        )
-                      : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                            ? yFacetCount * 30
-                            : preScales.y.type === 'band'
-                              ? yFacetCount * yDomainCount * 30
-                              : preScales.y.type === 'point'
-                                ? yFacetCount * yDomainCount * 18
-                                : 350) +
+            ? Math.round(
+                  preScales.projection && preScales.projection.aspectRatio
+                      ? plotWidth * preScales.projection.aspectRatio +
                             plotOptions.marginTop +
                             plotOptions.marginBottom
+                      : plotOptions.aspectRatio
+                        ? heightFromAspect(
+                              preScales.x,
+                              preScales.y,
+                              plotOptions.aspectRatio,
+                              plotWidth,
+                              plotOptions.marginTop,
+                              plotOptions.marginBottom
+                          )
+                        : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
+                              ? yFacetCount * 30
+                              : preScales.y.type === 'band'
+                                ? yFacetCount * yDomainCount * 30
+                                : preScales.y.type === 'point'
+                                  ? yFacetCount * yDomainCount * 18
+                                  : 350) +
+                          plotOptions.marginTop +
+                          plotOptions.marginBottom
               )
             : plotOptions.height
     );
@@ -256,7 +260,7 @@
 
     let facetWidth: number | null = $state(null);
     let facetHeight: number | null = $state(null);
-   
+
     let plotState = $derived.by((x) => {
         const scales = computeScales(
             plotOptions,
@@ -344,7 +348,13 @@
     {/if}
     <div class="plot-body" bind:this={plotBody}>
         {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
-        <svg {width} {height}>
+        <svg
+            {width}
+            {height}
+            fill="currentColor"
+            viewBox="0 0 {width} {height}"
+            font-family="system-ui, sans-serif"
+        >
             <FacetGrid marks={explicitMarks}>
                 {#if !hasProjection && !hasExplicitAxisX}
                     {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}

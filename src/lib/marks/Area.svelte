@@ -141,15 +141,27 @@
             {#if testFacet(areaData[0], mark.options)}
                 {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
                 {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
-                <path
-                    d={areaPath(
-                        options.filter == null
-                            ? areaData
-                            : areaData.filter((d) => resolveProp(options.filter, d))
-                    )}
-                    style={resolveScaledStyles(areaData[0], options, useScale, plot, 'fill')}
-                    transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                />
+                {#snippet el(datum)}
+                    <path
+                        d={areaPath(
+                            options.filter == null
+                                ? areaData
+                                : areaData.filter((d) => resolveProp(options.filter, d))
+                        )}
+                        style={resolveScaledStyles(datum, options, useScale, plot, 'fill')}
+                        transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                    />
+                {/snippet}
+                {#if options.href}
+                    <a
+                        href={resolveProp(options.href, areaData[0], '') as string}
+                        target={resolveProp(options.target, areaData[0], '_self') as string}
+                    >
+                        {@render el(areaData[0])}
+                    </a>
+                {:else}
+                    {@render el(areaData[0])}
+                {/if}
             {/if}
         {/each}
     </g>

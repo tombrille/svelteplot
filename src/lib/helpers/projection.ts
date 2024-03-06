@@ -78,7 +78,7 @@ export function createProjection(
     if (projOptions == null) return;
     // projection function passed as projection option
     if (typeof projOptions.stream === 'function') return projOptions; // d3 projection
-   
+
     let options;
     let domain;
     let clip: Clip = 'frame';
@@ -89,7 +89,7 @@ export function createProjection(
     // Any other options on this object will be passed through to the initializer.
     if (isObject(projOptions)) {
         let inset;
-        
+
         ({
             type: projOptions,
             domain,
@@ -105,9 +105,10 @@ export function createProjection(
     }
 
     let projFactory;
-    let aspectRatio:number = defaultAspectRatio;
+    let aspectRatio: number = defaultAspectRatio;
     // For named projections, retrieve the corresponding projection initializer.
-    if (typeof projOptions !== 'function') ({ type: projFactory, aspectRatio } = namedProjection(projOptions));
+    if (typeof projOptions !== 'function')
+        ({ type: projFactory, aspectRatio } = namedProjection(projOptions));
     else projFactory = projOptions;
 
     // Compute the frame dimensions and invoke the projection initializer.
@@ -120,7 +121,7 @@ export function createProjection(
     // The projection initializer might decide to not use a projection.
     if (projInstance == null) return;
     clip = maybePostClip(clip, marginLeft, marginTop, width - marginRight, height - marginBottom);
-  
+
     // Translate the origin to the top-left corner, respecting margins and insets.
     let tx = marginLeft + insetLeft;
     let ty = marginTop + insetTop;
@@ -131,7 +132,7 @@ export function createProjection(
         const [[x0, y0], [x1, y1]] = geoPath(projInstance).bounds(domain);
         const k = Math.min(dx / (x1 - x0), dy / (y1 - y0));
 
-        aspectRatio = (y1-y0) / (x1-x0);
+        aspectRatio = (y1 - y0) / (x1 - x0);
         // aspectRatio = 1/k;
         if (k > 0) {
             tx -= (k * (x0 + x1) - dx) / 2;
@@ -211,7 +212,7 @@ function namedProjection(projection) {
         default:
             throw new Error(`unknown projection type: ${projection}`);
     }
-}   
+}
 
 function scaleProjection(createProjection, kx, ky) {
     return {

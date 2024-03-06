@@ -30,7 +30,17 @@ export type MarkType =
     | 'tickX'
     | 'tickY';
 
-export type ScaleName = 'x' | 'y' | 'r' | 'color' | 'opacity' | 'length' | 'symbol' | 'fx' | 'fy';
+export type ScaleName =
+    | 'x'
+    | 'y'
+    | 'r'
+    | 'color'
+    | 'opacity'
+    | 'length'
+    | 'symbol'
+    | 'fx'
+    | 'fy'
+    | 'projection';
 
 export type ScaleType =
     | 'linear'
@@ -561,6 +571,16 @@ export type BaseMarkProps = Partial<{
     onclick?: MouseEventHandler<SVGPathElement>;
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
+    /**
+     * simple browser tooltip to be displayed on mouseover 
+     */
+    title: ConstantAccessor<string>;
+    /**
+     * if set, the mark element will be wrapped in a <a> link
+     * element
+     */
+    href: ConstantAccessor<string>;
+    target: ConstantAccessor<'_self'|'_blank'|string>;
 }>;
 
 export type RectMarkProps = {
