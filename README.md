@@ -2,6 +2,8 @@
 
 SveltePlot is a rewrite of [Observable Plot](https://github.com/observablehq/plot) in Svelte, by Gregor Aisch. It is licensed under AGPL v3.
 
+<img src="static/logo.png" alt="logo" width="400" />
+
 Since part of this code is modified from the Observable Plot code, here's the original copyright
 
 ```
