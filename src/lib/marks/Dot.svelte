@@ -85,13 +85,7 @@
                 {@const _y = resolveChannel('y', datum, args)}
                 {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                 {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                    {@const [x, y] =
-                        useScale.x && useScale.y
-                            ? projectXY(plot.scales, _x, _y)
-                            : [
-                                  useScale.x ? projectX('x', plot.scales, _x) : _x,
-                                  useScale.y ? projectY('y', plot.scales, _y) : _y
-                              ]}
+                    {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
                     {#if isValid(x) && isValid(y)}
                         {@const dx = +resolveProp(args.dx, datum, 0)}
                         {@const dy = +resolveProp(args.dx, datum, 0)}

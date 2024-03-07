@@ -335,7 +335,6 @@ export function createScale<T extends ScaleOptions>(
                 if (scaleOptions.reverse) range.reverse();
 
                 fn = scaleQuantile().domain(allDataValues).range(range);
-
             }
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
@@ -575,7 +574,7 @@ function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }
 
-export function projectXY(scales, x, y) {
+export function projectXY(scales, x, y, useXScale: boolean, useYScale: boolean) {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using
@@ -590,7 +589,7 @@ export function projectXY(scales, x, y) {
         stream.point(x, y);
         return [x_, y_];
     }
-    return [projectX('x', scales, x), projectY('y', scales, y)];
+    return [useXScale ? projectX('x', scales, x) : x, useYScale ? projectY('y', scales, y) : y];
 }
 
 export function projectX(channel: 'x' | 'x1' | 'x2', scales: PlotScales, value: RawValue) {

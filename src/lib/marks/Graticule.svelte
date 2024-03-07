@@ -8,11 +8,13 @@
         stepX,
         stepY,
         ...options
-    } = $props<{
-        stepX: number;
-        stepY: number;
-        step: number;
-    } & BaseMarkProps>();
+    } = $props<
+        {
+            stepX: number;
+            stepY: number;
+            step: number;
+        } & BaseMarkProps
+    >();
 
     let graticule = $derived.by(() => {
         const graticule = geoGraticule();

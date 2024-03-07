@@ -105,16 +105,16 @@ The [graticule](/marks/geo#Graticule) helper draws a uniform grid of meridians (
     $inspect(land);
 </script>
 
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20]}}>
+<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
     <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3}  />
+    <Graticule strokeOpacity={0.3} />
 </Plot>
 ```
 
 ```svelte
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20]}}>
+<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
     <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3}  />
+    <Graticule strokeOpacity={0.3} />
 </Plot>
 ```
 
@@ -135,37 +135,43 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 </script>
 
 <Plot
-    color={{ 
-        legend: true,  
-        label: 'Distance from Tonga (km)' 
+    color={{
+        legend: true,
+        label: 'Distance from Tonga (km)'
     }}
-    projection={{ type: 'equal-earth', rotate: [90, 0]}}> 
+    projection={{ type: 'equal-earth', rotate: [90, 0] }}
+>
     <Sphere stroke="currentColor" />
     <Geo data={[land]} stroke="currentColor" />
-    <Geo 
+    <Geo
         data={[0.5, 179.5].concat(range(10, 171, 10))}
-        geometry={geoCircle().center([-175.38, -20.57]).radius((r) => r)}
+        geometry={geoCircle()
+            .center([-175.38, -20.57])
+            .radius((r) => r)}
         stroke={(r) => r * 111.2}
         strokeWidth={2}
-         />
+    />
 </Plot>
 ```
 
 ```svelte
-<Plot 
-    color={{ 
-        legend: true, 
-        label: 'Distance from Tonga (km)' 
+<Plot
+    color={{
+        legend: true,
+        label: 'Distance from Tonga (km)'
     }}
-    projection={{ type: 'equal-earth', rotate: [90, 0]}}>
+    projection={{ type: 'equal-earth', rotate: [90, 0] }}
+>
     <Sphere stroke="currentColor" />
     <Geo data={[land]} stroke="currentColor" />
-    <Geo 
+    <Geo
         data={[0.5, 179.5].concat(range(10, 171, 10))}
-        geometry={geoCircle().center([-175.38, -20.57]).radius(r => r)}
+        geometry={geoCircle()
+            .center([-175.38, -20.57])
+            .radius((r) => r)}
         stroke={(r) => r * 111.2}
         strokeWidth={2}
-         />
+    />
 </Plot>
 ```
 

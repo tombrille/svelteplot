@@ -14,7 +14,7 @@
         FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
     import { maybeData } from '$lib/helpers/index.js';
@@ -76,36 +76,52 @@
     {...args}
     let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
+    {@const useScale = getUsedScales(plot, args, mark)}
     <g class="text" data-use-x={useScale.x ? 1 : 0}>
         {#each args.data as datum}
-            {#if testFacet(datum, mark.options) && (options.filter == null || resolveProp(options.filter, datum))}
-                {@const _x = resolveChannel('x', datum, options)}
-                {@const _y = resolveChannel('y', datum, options)}
-                {@const title = resolveProp(options.title, datum, '')}
+            {#if testFacet(datum, mark.options) && (args.filter == null || resolveProp(args.filter, datum))}
+                {@const _x = resolveChannel('x', datum, args)}
+                {@const _y = resolveChannel('y', datum, args)}
+                {@const title = resolveProp(args.title, datum, '')}
                 {#if isValid(_x) && isValid(_y)}
-                    {@const x = useScale.x ? projectX('x', plot.scales, _x) : _x}
-                    {@const y = useScale.y ? projectY('y', plot.scales, _y) : _y}
-                    {@const dx = +resolveProp(options.dx, datum, 0)}
-                    {@const dy = +resolveProp(options.dy, datum, 0)}
-                    {@const textLines = resolveProp(options.text, datum, '').split('\n')}
-                    <text
-                        dominant-baseline={LINE_ANCHOR[
-                            resolveProp(options.lineAnchor, datum, 'middle') || 'middle'
-                        ]}
-                        transform="translate({[x + dx, y + dy]})"
-                        >{#each textLines as line, l}<tspan
-                                x="0"
-                                dy={l ? resolveProp(options.fontSize, datum) || 12 : 0}
-                                style={resolveScaledStyles(
-                                    { ...datum, __tspanIndex: l },
-                                    options,
-                                    useScale,
-                                    plot,
-                                    'fill'
-                                )}>{line}</tspan
-                            >{/each}{#if title}<title>{title}</title>{/if}</text
-                    >
+                    {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
+                    {@const dx = +resolveProp(args.dx, datum, 0)}
+                    {@const dy = +resolveProp(args.dy, datum, 0)}
+                    {@const textLines = String(resolveProp(args.text, datum, '')).split('\n')}
+                    {#if textLines.length > 1}
+                        <text
+                            dominant-baseline={LINE_ANCHOR[
+                                resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
+                            ]}
+                            transform="translate({[x + dx, y + dy]})"
+                            >{#each textLines as line, l}<tspan
+                                    x="0"
+                                    dy={l ? resolveProp(args.fontSize, datum) || 12 : 0}
+                                    style={resolveScaledStyles(
+                                        { ...datum, __tspanIndex: l },
+                                        args,
+                                        useScale,
+                                        plot,
+                                        'fill'
+                                    )}>{line}</tspan
+                                >{/each}{#if title}<title>{title}</title>{/if}</text
+                        >
+                    {:else}
+                        <text
+                            dominant-baseline={LINE_ANCHOR[
+                                resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
+                            ]}
+                            transform="translate({[x + dx, y + dy]})"
+                            style={resolveScaledStyles(
+                                { ...datum, __tspanIndex: 0 },
+                                args,
+                                useScale,
+                                plot,
+                                'fill'
+                            )}
+                            >{textLines[0]}{#if title}<title>{title}</title>{/if}</text
+                        >
+                    {/if}
                 {/if}
             {/if}
         {/each}

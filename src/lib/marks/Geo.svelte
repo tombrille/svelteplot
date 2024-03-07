@@ -12,20 +12,28 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data, geoType, ...options } = $props<{
-        data: DataRecord[];
-        geoType: string;
-    } & BaseMarkProps>();
+    let { data, geoType, ...options } = $props<
+        {
+            data: DataRecord[];
+            geoType: string;
+        } & BaseMarkProps
+    >();
 
     let path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {
             ...(options.r
                 ? { pointRadius: (d) => plot.scales.r.fn(resolveChannel('r', d, options)) }
-                : {})
+                : { pointRadius: 3 })
         })
     );
 
-    let args = $derived(sort({ data: data.map(d => isObject(d) ? d : { ___orig___: d }), ...(options.r ? { sort: { channel: '-r' } } : {}), ...options }));
+    let args = $derived(
+        sort({
+            data: data.map((d) => (isObject(d) ? d : { ___orig___: d })),
+            ...(options.r ? { sort: { channel: '-r' } } : {}),
+            ...options
+        })
+    );
     const preferStroke = new Set(['MultiLineString', 'LineString']);
 </script>
 
@@ -43,7 +51,13 @@
                 {@const geometry = resolveProp(args.geometry, datum, datum)}
                 <path
                     d={path(geometry)}
-                    style={resolveScaledStyles(datum, args, useScale, plot, preferStroke.has(geometry.type) ? 'stroke' : 'fill')}
+                    style={resolveScaledStyles(
+                        datum,
+                        args,
+                        useScale,
+                        plot,
+                        preferStroke.has(geometry.type) ? 'stroke' : 'fill'
+                    )}
                 >
                     {#if title}<title>{title}</title>{/if}
                 </path>

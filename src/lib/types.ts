@@ -572,7 +572,7 @@ export type BaseMarkProps = Partial<{
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
     /**
-     * simple browser tooltip to be displayed on mouseover 
+     * simple browser tooltip to be displayed on mouseover
      */
     title: ConstantAccessor<string>;
     /**
@@ -580,7 +580,7 @@ export type BaseMarkProps = Partial<{
      * element
      */
     href: ConstantAccessor<string>;
-    target: ConstantAccessor<'_self'|'_blank'|string>;
+    target: ConstantAccessor<'_self' | '_blank' | string>;
 }>;
 
 export type RectMarkProps = {

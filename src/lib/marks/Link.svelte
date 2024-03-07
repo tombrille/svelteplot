@@ -19,7 +19,7 @@
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeData, testFilter } from '../helpers/index.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { replaceChannels } from '$lib/transforms/rename.js';
@@ -98,10 +98,8 @@
                 {@const _y2 = resolveChannel('y2', datum, args)}
                 {@const color = resolveChannel('stroke', datum, args)}
                 {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
-                    {@const x1 = useScale.x1 ? projectX('x', plot.scales, _x1) : _x1}
-                    {@const y1 = useScale.y1 ? projectY('y', plot.scales, _y1) : _y1}
-                    {@const x2 = useScale.x2 ? projectX('x', plot.scales, _x2) : _x2}
-                    {@const y2 = useScale.y2 ? projectY('y', plot.scales, _y2) : _y2}
+                    {@const [x1, y1] = projectXY(plot.scales, _x1, _y1, useScale.x1, useScale.y1)}
+                    {@const [x2, y2] = projectXY(plot.scales, _x2, _y2, useScale.x2, useScale.y2)}
                     {@const dx = resolveProp(args.dx, datum, 0)}
                     {@const dy = resolveProp(args.dx, datum, 0)}
                     <MarkerPath

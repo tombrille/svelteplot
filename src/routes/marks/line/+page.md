@@ -139,11 +139,11 @@ As you see in the previous plot, lines can show [markers](/features/markers) by 
 
 ## More examples
 
-The line mark can be used for a connection scatterplot:
+There is no requirement that **y** be dependent on **x**; lines can be used in connected scatterplots to show two independent (but often correlated) variables. (See also [phase plots](https://en.wikipedia.org/wiki/Phase_portrait).) The chart below recreates Hannah Fairfield’s [“Driving Shifts Into Reverse”](http://www.nytimes.com/imagepages/2010/05/02/business/02metrics.html) from 2009.
 
-```svelte --live
+```svelte live
 <script>
-    import { Plot, Line, Dot, Text } from '$lib';
+    import { Plot, Line, Text } from '$lib';
 
     import { page } from '$app/stores';
     let { driving } = $derived($page.data.data);
@@ -152,20 +152,81 @@ The line mark can be used for a connection scatterplot:
 <Plot
     inset={10}
     grid
+    height={500}
     x={{ label: 'Miles driven (per person-year) →' }}
     y={{ label: '↑ Cost of gasoline ($ per gallon)' }}
 >
-    <Line data={driving} x="miles" y="gas" curve="catmull-rom" marker />
-    <Text data={driving} x="miles" y="gas" text="year" dy="-8" filter={(d) => d.year % 5 === 0} />
+    <Line data={driving} x="miles" y="gas" curve="catmull-rom" marker="arrow" />
+    <Text
+        data={driving}
+        x="miles"
+        y="gas"
+        text="year"
+        fill="currentColor"
+        stroke="var(--svelteplot-bg)"
+        filter={(d) => d.year % 5 === 0}
+        dx={(d) => (d.side === 'left' ? -5 : d.side === 'right' ? 5 : 0)}
+        dy={(d) => (d.side === 'top' ? 5 : d.side === 'bottom' ? -5 : 0)}
+        textAnchor={(d) => (d.side === 'left' ? 'end' : d.side === 'right' ? 'start' : 'center')}
+        lineAnchor={(d) => (d.side === 'top' ? 'top' : d.side === 'bottom' ? 'bottom' : 'middle')}
+    />
 </Plot>
 ```
 
-CO2 decades:
+While uncommon, you can draw a line with ordinal position values. For example below, each line represents a U.S. state; x represents an (ordinal) age group while y represents the proportion of the state’s population in that age group. This chart emphasizes the overall age distribution of the United States, while giving a hint to variation across states.
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line, RuleY } from '$lib';
+    import { page } from '$app/stores';
+    let { stateage } = $derived($page.data.data);
+</script>
+
+<Plot x={{ label: 'Age range (years)' }} y={{ percent: true, grid: true, label: 'Population (%)' }}>
+    <Line data={stateage} x="age" y="pop_share" z="state" strokeOpacity={0.5} />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot x={{ label: 'Age range (years)' }} y={{ percent: true, grid: true, label: 'Population (%)' }}>
+    <Line data={stateage} x="age" y="pop_share" z="state" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+The following plot demonstrates combining grouping of lines with coloring by value. You can check out this [StackBlitz](https://stackblitz.com/edit/vitejs-vite-o4p5ss?file=src%2Fassets%2Fco2.csv,src%2FApp.svelte&terminal=dev) to see the source code
 
 <CO2Decades />
 
 ```svelte
 <Plot inset={10} grid>
     <Line data={co2} x="date" y="average" />
+</Plot>
+```
+
+With a [spherical projection](/features/projections), line segments become [geodesics](https://en.wikipedia.org/wiki/Great-circle_distance), taking the shortest path between two points on the sphere and wrapping around the antimeridian at 180° longitude. The line below shows Charles Darwin’s voyage on HMS _Beagle_. (Data via [Benjamin Schmidt](https://observablehq.com/@bmschmidt/data-driven-projections-darwins-world).)
+
+```svelte live
+<script lang="ts">
+    import { Plot, Geo, Line } from '$lib';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+    let { world, beagle } = $derived($page.data.data);
+    let land = $derived(topojson.feature(world, world.objects.land));
+</script>
+
+<Plot projection="equirectangular">
+    <Geo data={[land]} stroke="currentColor" />
+    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" />
+    <Geo data={[{ type: 'Point', coordinates: [-0.13, 51.5] }]} fill="var(--svp-red)" />
+</Plot>
+```
+
+```svelte
+<Plot projection="equirectangular">
+    <Geo data={[land]} stroke="currentColor" />
+    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" />
+    <Geo data={[{ type: 'Point', coordinates: [-0.13, 51.5] }]} fill="var(--svp-red)" />
 </Plot>
 ```
