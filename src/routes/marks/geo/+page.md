@@ -118,6 +118,57 @@ The [graticule](/marks/geo#Graticule) helper draws a uniform grid of meridians (
 </Plot>
 ```
 
+The geo mark’s **geometry** channel can be used to generate geometry from a non-GeoJSON data source.
+
+```svelte live
+<script>
+    import { Plot, Geo, Sphere } from '$lib';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+    import { geoCircle } from 'd3-geo';
+    import { range } from 'd3-array';
+
+    let { world, earthquakes } = $derived($page.data.data);
+    let land = $derived(topojson.feature(world, world.objects.land));
+
+    $inspect(land);
+</script>
+
+<Plot
+    color={{ 
+        legend: true,  
+        label: 'Distance from Tonga (km)' 
+    }}
+    projection={{ type: 'equal-earth', rotate: [90, 0]}}> 
+    <Sphere stroke="currentColor" />
+    <Geo data={[land]} stroke="currentColor" />
+    <Geo 
+        data={[0.5, 179.5].concat(range(10, 171, 10))}
+        geometry={geoCircle().center([-175.38, -20.57]).radius((r) => r)}
+        stroke={(r) => r * 111.2}
+        strokeWidth={2}
+         />
+</Plot>
+```
+
+```svelte
+<Plot 
+    color={{ 
+        legend: true, 
+        label: 'Distance from Tonga (km)' 
+    }}
+    projection={{ type: 'equal-earth', rotate: [90, 0]}}>
+    <Sphere stroke="currentColor" />
+    <Geo data={[land]} stroke="currentColor" />
+    <Geo 
+        data={[0.5, 179.5].concat(range(10, 171, 10))}
+        geometry={geoCircle().center([-175.38, -20.57]).radius(r => r)}
+        stroke={(r) => r * 111.2}
+        strokeWidth={2}
+         />
+</Plot>
+```
+
 ## Geo
 
 ## Sphere

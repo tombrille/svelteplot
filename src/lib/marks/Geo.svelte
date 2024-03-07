@@ -7,6 +7,7 @@
     import { getUsedScales } from '$lib/helpers/scales.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { sort } from '$lib/index.js';
+    import { isObject } from '$lib/helpers/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -24,8 +25,7 @@
         })
     );
 
-    let args = $derived(sort({ data, ...(options.r ? { sort: { channel: '-r' } } : {}), ...options }));
-
+    let args = $derived(sort({ data: data.map(d => isObject(d) ? d : { ___orig___: d }), ...(options.r ? { sort: { channel: '-r' } } : {}), ...options }));
     const preferStroke = new Set(['MultiLineString', 'LineString']);
 </script>
 
