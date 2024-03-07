@@ -90,7 +90,7 @@
                     : autoTimeFormat(plot.scales.x, plot.plotWidth)
                 : typeof tickFmt === 'string'
                   ? (d: number) =>
-                        numeral(d).format(
+                        numeral(plot.options.x.percent ? d * 100 : d).format(
                             tickFmt === 'auto'
                                 ? `0.[00]${plot.options.x.percent ? '%' : 'a'}`
                                 : tickFmt

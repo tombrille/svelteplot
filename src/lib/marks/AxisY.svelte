@@ -87,7 +87,10 @@
                               .split('\n')
                     : autoTimeFormat(plot.scales.y, plot.plotHeight)
                 : typeof tickFmt === 'string'
-                  ? (d: number) => numeral(d).format(tickFmt === 'auto' ? '0.[00]a' : tickFmt)
+                  ? (d: number) =>
+                        numeral(plot.options.y.percent ? d * 100 : d).format(
+                            tickFmt === 'auto' ? '0.[00]a' : tickFmt
+                        )
                   : (d: RawValue) => String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
     );
 
