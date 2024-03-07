@@ -52,7 +52,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 </Plot>
 ```
 
-You can create a "crosshair" mark
+You can create a "crosshair" mark by wrapping grids and axes marks inside a pointer mark:
 
 ```svelte live
 <script>
@@ -62,6 +62,22 @@ You can create a "crosshair" mark
 </script>
 
 <Plot testid="aapl-line-frame">
+    <AxisX />
+    <AxisY />
+    <Line data={aapl} x="Date" y="Close" />
+    <Pointer data={aapl} x="Date" y="Close" maxDistance={30} let:data>
+        {#if data.length > 0}
+            <RuleX {data} x="Date" opacity="0.3" />
+            <RuleY {data} y="Close" opacity="0.3" />
+            <AxisX data={data.map((d) => d.Date)} tickFormat="MMM D, YYYY" />
+            <AxisY data={data.map((d) => d.Close)} tickFormat={(d) => d.toFixed()} />
+        {/if}
+    </Pointer>
+</Plot>
+```
+
+```svelte
+<Plot>
     <AxisX />
     <AxisY />
     <Line data={aapl} x="Date" y="Close" />
