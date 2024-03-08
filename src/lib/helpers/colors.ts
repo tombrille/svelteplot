@@ -166,7 +166,7 @@ const ordinalSchemes = new Map<ColorScheme, SchemeGetter>([
 ]);
 
 export function isOrdinalScheme(scheme: ColorScheme) {
-    return ordinalSchemes.has(scheme);
+    return ordinalSchemes.has(`${scheme}`.toLowerCase());
 }
 
 type ColorSchemeArray = readonly (readonly string[])[];
