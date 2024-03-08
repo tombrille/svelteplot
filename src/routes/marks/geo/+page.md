@@ -21,7 +21,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
         })
     );
 
-    let n = $state(7);
+    let n = $state(5);
 </script>
 
 <Slider label="Steps (n)" bind:value={n} min={2} max={11} />
@@ -31,8 +31,9 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
         scheme: 'blues',
         label: 'Unemployment (%)',
         legend: true,
+        domain: [1, 5, 8, 10],
         n,
-        type: 'quantile'
+        type: 'threshold'
     }}
 >
     <Geo

@@ -42,3 +42,9 @@ export const constant =
     <T>(x: T) =>
     () =>
         x;
+
+export function wrapEvent(handler, d) {
+    return handler
+        ? (origEvent: Event) => handler(d.___orig___ !== undefined ? d.___orig___ : d, origEvent)
+        : null;
+}

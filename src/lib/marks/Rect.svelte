@@ -116,7 +116,7 @@
                 {@const insetT = coalesce(insetTop, inset) || 0}
                 {@const insetR = coalesce(insetRight, inset) || 0}
                 {@const insetB = coalesce(insetBottom, inset) || 0}
-                <g data-x2={x2_} data-x2s={plot.scales.x.fn(+x2_)} />
+                
                 {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     <rect
                         style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}

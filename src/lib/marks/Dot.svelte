@@ -16,7 +16,7 @@
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { getUsedScales, projectX, projectXY, projectY } from '../helpers/scales.js';
+    import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';

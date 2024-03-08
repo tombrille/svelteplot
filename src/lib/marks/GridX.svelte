@@ -14,7 +14,7 @@
 
     let {
         data = [],
-        automatic,
+        automatic = false,
         ...options
     } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkProps>();
 

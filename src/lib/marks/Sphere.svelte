@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { type BaseMarkProps } from '$lib/types.js';
     import Geo from './Geo.svelte';
-    let { ...options } = $props();
+
+    let { ...args } = $props<BaseMarkProps>();
 </script>
 
-<Geo data={[{ type: 'Sphere' }]} {...options} geoType="sphere" />
+<Geo data={[{ type: 'Sphere' }]} {...args} geoType="sphere" />

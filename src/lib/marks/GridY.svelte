@@ -14,7 +14,7 @@
 
     let {
         data = [],
-        automatic,
+        automatic = false,
         ...options
     } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkProps>();
 
@@ -43,14 +43,14 @@
 
 <Mark
     type="gridY"
-    data={data.length ? data.map((tick) => ({ __y: tick })) : []}
+    data={data.length ? data.map((tick) => ({ ___orig___: tick })) : []}
     channels={['x1', 'x2', 'y', 'stroke', 'strokeOpacity']}
-    {...{ ...options, y: '__y' }}
+    {...{ ...options, y: '___orig___' }}
     {automatic}
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="grid-x">
+    <g class="grid-y">
         {#each ticks as tick}
             {#if testFilter(tick, options)}
                 {@const y =

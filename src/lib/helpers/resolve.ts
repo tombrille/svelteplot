@@ -32,7 +32,7 @@ export function resolveProp<T>(
         // datum.___orig___ exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
         // so we're passing the original value to accessor functions instead of our wrapped record
-        return datum == null ? accessor() : accessor(datum.___orig___ ? datum.___orig___ : datum);
+        return datum == null ? accessor() : accessor(datum.___orig___ != null ? datum.___orig___ : datum);
     } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
         return datum[accessor] as T;
     }
@@ -95,7 +95,7 @@ function resolve(
             // datum.___orig___ exists if an array of raw values was used as dataset and got
             // "recordized" by the recordize transform. We want to hide this wrapping to the user
             // so we're passing the original value to accessor functions instead of our wrapped record
-            return accessor(datum.___orig___ ? datum.___orig___ : datum);
+            return accessor(datum.___orig___ != null ? datum.___orig___ : datum);
         // use accessor string
         if (typeof accessor === 'string' && datum[accessor] !== undefined) return datum[accessor];
         // fallback to channel name as accessor
@@ -150,9 +150,18 @@ export function resolveScaledStyles(
             Object.entries(scaledStyleProps)
                 .filter(([key]) => channels[key] != null)
                 .map(([key, cssAttr]) => [key, cssAttr, resolveChannel(key, datum, channels)])
-                .filter(([, , value]) => isValid(value))
+                .filter(([key, , value]) => isValid(value) || key === 'fill' || key === 'stroke')
                 .map(([key, cssAttr, value]) => {
-                    if (useScale[key]) return [cssAttr, plot.scales[CHANNEL_SCALE[key]].fn(value)];
+                    if (useScale[key]) {
+                        if (
+                            value == undefined &&
+                            (key === 'fill' || key === 'stroke') &&
+                            plot.options.color.unknown
+                        ) {
+                            return [cssAttr, plot.options.color.unknown];
+                        }
+                        return [cssAttr, plot.scales[CHANNEL_SCALE[key]].fn(value)];
+                    }
                     return [cssAttr, value];
                 })
         )

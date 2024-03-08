@@ -175,6 +175,10 @@ export type ColorScaleOptions = ScaleOptions & {
         | 'diverging-sqrt'
         | 'diverging-symlog';
     scheme: string;
+    /**
+     * fallback color used for null/undefined
+     */
+    unknown: string;
     interpolate: (d: any) => typeof d;
 };
 
@@ -569,7 +573,10 @@ export type BaseMarkProps = Partial<{
     >;
     paintOrder: ConstantAccessor<string>;
     onclick?: MouseEventHandler<SVGPathElement>;
+    onmouseup?: MouseEventHandler<SVGPathElement>;
+    onmousedown?: MouseEventHandler<SVGPathElement>;
     onmouseenter?: MouseEventHandler<SVGPathElement>;
+    onmousemove?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
     /**
      * simple browser tooltip to be displayed on mouseover
@@ -661,6 +668,7 @@ export type MarkStyleProps =
     | 'strokeDasharray'
     | 'opacity'
     | 'cursor'
+    | 'pointerEvents'
     | 'blend'
     | 'fill'
     | 'fillOpacity'

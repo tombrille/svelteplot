@@ -154,8 +154,8 @@
                 {/snippet}
                 {#if options.href}
                     <a
-                        href={resolveProp(options.href, areaData[0], '') as string}
-                        target={resolveProp(options.target, areaData[0], '_self') as string}
+                        href={resolveProp(options.href, areaData[0], '')}
+                        target={resolveProp(options.target, areaData[0], '_self')}
                     >
                         {@render el(areaData[0])}
                     </a>

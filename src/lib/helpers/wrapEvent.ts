@@ -1,3 +1,4 @@
-export function wrapEvent(handler, d) {
-    return handler ? () => handler(d.___orig___ !== undefined ? d.___orig___ : d) : null;
-}
+/**
+ * @deprecated import from helpers/index.ts instead!
+ */
+export { wrapEvent } from './index.js';

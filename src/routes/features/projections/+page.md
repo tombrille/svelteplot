@@ -15,6 +15,7 @@ title: Projections
 
     let latitude = $state(40);
     let longitude = $state(120);
+    let dragging = $state(false);
 </script>
 
 <Slider bind:value={longitude} min={-180} max={180} label="Longitude" />
@@ -27,8 +28,21 @@ title: Projections
         rotate: [-longitude, -latitude]
     }}
 >
-    <Geo data={[land]} fillOpacity="0.2" />
-    <Sphere stroke="currentColor" />
+    <Sphere
+        fill="var(--svelteplot-bg)"
+        stroke="currentColor"
+        cursor="pointer"
+        onmousedown={() => (dragging = true)}
+        onmousemove={(d, evt) => {
+            if (dragging) {
+                latitude = Math.round(latitude + evt.movementY);
+                longitude = Math.round(longitude - evt.movementX);
+            }
+        }}
+        onmouseup={() => (dragging = false)}
+    />
+    <Graticule pointerEvents="none" opacity="0.1" />
+    <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />
     <Dot
         data={earthquakes}
         stroke="var(--svp-red)"
@@ -50,8 +64,21 @@ title: Projections
         rotate: [-longitude, -latitude]
     }}
 >
-    <Geo data={[land]} fillOpacity="0.2" />
-    <Sphere stroke="currentColor" />
+    <Sphere
+        fill="var(--svelteplot-bg)"
+        stroke="currentColor"
+        cursor="pointer"
+        onmousedown={() => (dragging = true)}
+        onmousemove={(d, evt) => {
+            if (dragging) {
+                latitude = Math.round(latitude + evt.movementY);
+                longitude = Math.round(longitude - evt.movementX);
+            }
+        }}
+        onmouseup={() => (dragging = false)}
+    />
+    <Graticule pointerEvents="none" opacity="0.1" />
+    <Geo data={[land]} pointerEvents="none" fillOpacity="0.2" />
     <Dot
         data={earthquakes}
         stroke="var(--svp-red)"

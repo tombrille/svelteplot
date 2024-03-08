@@ -15,7 +15,8 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     fontStyle: 'font-style',
     // opacity: 'opacity',
     textAnchor: 'text-anchor',
-    cursor: 'cursor'
+    cursor: 'cursor',
+    pointerEvents: 'pointer-events'
 };
 
 const styleDefaults: Partial<Record<MarkStyleProps, string | null>> = {
