@@ -8,6 +8,7 @@
     import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { range as d3Range } from 'd3-array';
+    import numeral from 'numeral';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
     import type { PlotContext } from '../types.js';
@@ -64,10 +65,15 @@
                     <span class="item-label">{value}</span>
                 </div>
             {/each}
-        {:else if scaleType === 'quantile'}
+        {:else if scaleType === 'quantile' || scaleType === 'quantize' || scaleType === 'threshold'}
             {@const domain = plot.scales.color.domain}
             {@const range = plot.scales.color.range}
-            {@const tickLabels = plot.scales.color.fn.quantiles()}
+            {@const tickLabels =
+                scaleType === 'quantile'
+                    ? plot.scales.color.fn.quantiles()
+                    : scaleType === 'quantize'
+                      ? plot.scales.color.fn.thresholds()
+                      : plot.scales.color.fn.domain()}
             {@const ticks = d3Range(
                 domain[0],
                 domain[1],
@@ -83,7 +89,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, ticks, tickFormat: (t, i) => tickLabels[i].toFixed(1) }}
+                x={{ domain, ticks, tickFormat: (t, i) => numeral(tickLabels[i]).format('0.[0]') }}
             >
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">

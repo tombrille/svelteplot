@@ -13,7 +13,9 @@ import {
     scalePoint,
     scaleSymlog,
     scalePow,
-    scaleQuantile
+    scaleQuantile,
+    scaleQuantize,
+    scaleThreshold
 } from 'd3-scale';
 import { extent, range as d3Range, ascending } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
@@ -287,7 +289,9 @@ export function createScale<T extends ScaleOptions>(
     }
 
     // construct domain from data values
-    const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])];
+    const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])].filter(
+        (d) => d != null
+    );
 
     const type: ScaleType =
         scaleOptions.type === 'auto'
@@ -335,6 +339,23 @@ export function createScale<T extends ScaleOptions>(
                 if (scaleOptions.reverse) range.reverse();
 
                 fn = scaleQuantile().domain(allDataValues).range(range);
+            }
+        } else if (type === 'quantize') {
+            const scheme_ = scheme || 'turbo';
+            if (isOrdinalScheme(scheme_)) {
+                range = ordinalScheme(scheme_)(n);
+                // console.log({domain, scheme_, range})
+                if (scaleOptions.reverse) range.reverse();
+                fn = scaleQuantize().domain(domain).range(range);
+            } else {
+                throw new Error('no ordinal scheme ' + scheme_);
+            }
+        } else if (type === 'threshold') {
+            const scheme_ = scheme || 'turbo';
+            if (isOrdinalScheme(scheme_)) {
+                range = ordinalScheme(scheme_)(n);
+                if (scaleOptions.reverse) range.reverse();
+                fn = scaleThreshold().domain(domain).range(range);
             }
         } else if (type === 'linear') {
             const scheme_ = scheme || 'turbo';
