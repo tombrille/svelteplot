@@ -126,6 +126,7 @@ export function createProjection(
     let tx = marginLeft + insetLeft;
     let ty = marginTop + insetTop;
     let transform;
+    let invertTransform = d => d;
 
     // If a domain is specified, fit the projection to the frame.
     if (domain != null) {
@@ -142,6 +143,7 @@ export function createProjection(
                     this.stream.point(x * k + tx, y * k + ty);
                 }
             });
+            invertTransform = ([x,y]) => [(x - tx)/k, (y-ty)/k];
         } else {
             throw new Error(
                 `Warning: the projection could not be fit to the specified domain; using the default scale.`
@@ -158,8 +160,13 @@ export function createProjection(
                   }
               });
 
+    invertTransform ??= ([x,y]) => [x - tx, y-ty];
+
     return {
         aspectRatio,
+        invert([x, y]) {
+            return projInstance.invert(invertTransform([x,y]));
+        },
         stream: (s) => projInstance.stream(transform.stream(clip(s)))
     };
 }

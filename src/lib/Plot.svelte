@@ -381,7 +381,7 @@
                 {#if plotOptions.frame}
                     <Frame automatic />
                 {/if}
-                <slot {width} {height} options={plotOptions} />
+                <slot {width} {height} options={plotOptions} scales={plotState.scales} />
             </FacetGrid>
         </svg>
         {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}

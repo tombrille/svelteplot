@@ -24,6 +24,7 @@ export function addEvents(
         'onmousemove',
         'onmouseout',
         'onmouseup',
+        'onwheel',
         'ontouchcancel',
         'ontouchend',
         'ontouchmove',

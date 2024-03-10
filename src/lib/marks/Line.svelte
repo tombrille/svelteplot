@@ -36,7 +36,6 @@
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import groupBy from 'underscore/modules/groupBy.js';
     import { line, type CurveFactory } from 'd3-shape';
     import { geoPath } from 'd3-geo';
     import callWithProps from '$lib/helpers/callWithProps.js';
@@ -53,9 +52,34 @@
 
     let args = $derived(recordizeXY({ data, ...options }));
 
+    function groupIndex(data, groupByKey) {
+        let group = [];
+        const groups = [group];
+        let lastGroupValue;
+        for (const d of data) {
+            
+            const groupValue = resolveProp(groupByKey, d);
+            // console.log({d, groupValue})
+            if (!group.length || groupValue === lastGroupValue) {
+                group.push(d);
+            } else {
+                if (group.length === 1) {
+                    // jsut one point makes a bad line, add this one, too
+                    group.push(d);
+                }
+                // new group
+                group = [d];
+                groups.push(group);
+                lastGroupValue = groupValue;
+            }
+        }
+        return groups;
+        // return Object.values(groupBy(args.data, (d) => ))
+    }
+
     let groups = $derived(
         groupByKey && args.data.length > 0
-            ? Object.values(groupBy(args.data, (d) => resolveProp(groupByKey, d)))
+            ? groupIndex(args.data, groupByKey)
             : [args.data]
     );
 
