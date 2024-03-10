@@ -19,7 +19,9 @@ import {
     geoTransverseMercator
 } from 'd3-geo';
 
-import { constant, isObject } from './index.js';
+import { constant, isObject, isValid } from './index.js';
+import type { DataRecord, RawValue } from '$lib/types.js';
+import { resolveChannel } from './resolve.js';
 
 const identity = constant({ stream: (stream) => stream });
 
@@ -59,7 +61,7 @@ type Dimensions = {
 export function createProjection(
     {
         projOptions,
-        inset: globalInset = 0,
+        inset: globalInset = 2,
         insetTop = globalInset,
         insetRight = globalInset,
         insetBottom = globalInset,
@@ -126,7 +128,7 @@ export function createProjection(
     let tx = marginLeft + insetLeft;
     let ty = marginTop + insetTop;
     let transform;
-    let invertTransform = d => d;
+    let invertTransform = (d) => d;
 
     // If a domain is specified, fit the projection to the frame.
     if (domain != null) {
@@ -143,7 +145,7 @@ export function createProjection(
                     this.stream.point(x * k + tx, y * k + ty);
                 }
             });
-            invertTransform = ([x,y]) => [(x - tx)/k, (y-ty)/k];
+            invertTransform = ([x, y]) => [(x - tx) / k, (y - ty) / k];
         } else {
             throw new Error(
                 `Warning: the projection could not be fit to the specified domain; using the default scale.`
@@ -160,12 +162,12 @@ export function createProjection(
                   }
               });
 
-    invertTransform ??= ([x,y]) => [x - tx, y-ty];
+    invertTransform ??= ([x, y]) => [x - tx, y - ty];
 
     return {
         aspectRatio,
         invert([x, y]) {
-            return projInstance.invert(invertTransform([x,y]));
+            return projInstance.invert(invertTransform([x, y]));
         },
         stream: (s) => projInstance.stream(transform.stream(clip(s)))
     };

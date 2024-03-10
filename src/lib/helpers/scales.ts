@@ -595,7 +595,7 @@ function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }
 
-export function projectXY(scales, x, y, useXScale: boolean, useYScale: boolean) {
+export function projectXY(scales, x, y, useXScale = true, useYScale = true) {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using

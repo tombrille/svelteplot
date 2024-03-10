@@ -26,10 +26,11 @@
     import { line, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
+    import { geoPath } from 'd3-geo';
 
     let {
         data,
-        curve,
+        curve = 'auto',
         tension = 0,
         ...options
     } = $props<
@@ -41,7 +42,7 @@
             x2: ChannelAccessor;
             y2: ChannelAccessor;
             stroke?: ChannelAccessor;
-            curve?: CurveName | CurveFactory;
+            curve?: 'auto' | CurveName | CurveFactory;
             tension?: number;
             children?: Snippet;
         } & MarkerOptions
@@ -63,16 +64,27 @@
     );
 
     let args = $derived(
-        replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
+        replaceChannels({ data: sorted, stroke: 'currentColor', ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
     );
 
+    let sphericalLine = $derived(plot.scales.projection && curve === 'auto');
+
     let linePath: (d: DataRecord[]) => string = $derived(
-        callWithProps(line, [], {
-            curve: maybeCurve(curve, tension),
-            x: (d) => d[0],
-            y: (d) => d[1]
-        })
+        sphericalLine
+            ? sphereLine(plot.scales.projection)
+            : callWithProps(line, [], {
+                  curve: maybeCurve(curve === 'auto' ? 'linear' : curve, tension),
+                  x: (d) => d[0],
+                  y: (d) => d[1]
+              })
     );
+
+    function sphereLine(projection) {
+        const path = geoPath(projection);
+        return (x1: number, y1: number,x2:number,y2:number) => {
+            return path({ type: 'LineString', coordinates: [[x1,y1],[x2,y2]] });
+        }
+    }
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
@@ -89,29 +101,23 @@
     <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
         {#each args.data as datum}
             {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const _x1 = resolveChannel('x1', datum, args)}
-                {@const _x2 = resolveChannel('x2', datum, args)}
-                {@const _y1 = resolveChannel('y1', datum, args)}
-                {@const _y2 = resolveChannel('y2', datum, args)}
+                {@const x1 = resolveChannel('x1', datum, args)}
+                {@const x2 = resolveChannel('x2', datum, args)}
+                {@const y1 = resolveChannel('y1', datum, args)}
+                {@const y2 = resolveChannel('y2', datum, args)}
                 {@const color = resolveChannel('stroke', datum, args)}
-                {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
-                    {@const [x1, y1] = projectXY(plot.scales, _x1, _y1, useScale.x1, useScale.y1)}
-                    {@const [x2, y2] = projectXY(plot.scales, _x2, _y2, useScale.x2, useScale.y2)}
+                {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     {@const dx = resolveProp(args.dx, datum, 0)}
                     {@const dy = resolveProp(args.dx, datum, 0)}
                     <MarkerPath
                         {mark}
                         markerStart={args.markerStart}
-                        markerMid={args.markerMid}
                         markerEnd={args.markerEnd}
                         marker={args.marker}
                         strokeWidth={args.strokeWidth}
                         {datum}
                         color={useScale.stroke ? plot.scales.color.fn(color) : color}
-                        d={linePath([
-                            [x1, y1],
-                            [x2, y2]
-                        ])}
+                        d={sphericalLine ? linePath(x1,y1,x2,y2) : linePath([projectXY(plot.scales, x1, y1), projectXY(plot.scales, x2, y2)])}
                         style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
                     />

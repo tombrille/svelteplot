@@ -37,8 +37,8 @@ For connecting two points with a line.
         markerEnd="arrow"
         style="transition: opacity 0.2s ease-in"
         opacity={{ scale: null, value: (d) => (!hl || hl === d ? 1 : 0.1) }}
-        onmouseenter={(d) => (hl = d)}
-        onmouseleave={(d) => (hl = null)}
+        onmouseenter={(event, d) => (hl = d)}
+        onmouseleave={() => (hl = null)}
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
     <Text
@@ -53,5 +53,29 @@ For connecting two points with a line.
         lineAnchor="bottom"
         dy={-6}
     />
+</Plot>
+```
+
+Link support spherical projections:
+
+```svelte live
+<script lang="ts">
+    import { Plot, Geo, Sphere, Link, Dot, Text } from '$lib/index.js';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+
+    let { world } = $derived($page.data.data);
+    let land = $derived(topojson.feature(world, world.objects.land));
+
+    const link = [-122.4194, 37.7749, 2.3522, 48.8566];
+
+    let hl = $state(false);
+</script>
+
+<Plot projection={{ type: 'equal-earth', inset:2 }}>
+    <Geo data={[land]} fillOpacity="0.3" />
+    <Link data={[link]} x1="0" y1="1" x2="2" y2="3" curve="linear" stroke="red" />
+    <Link data={[link]} x1="0" y1="1" x2="2" y2="3" markerStart="dot" markerEnd="arrow" />
+    <Sphere stroke="currentColor" />
 </Plot>
 ```

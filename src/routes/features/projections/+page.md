@@ -4,11 +4,11 @@ title: Projections
 
 ```svelte live
 <script>
-    import { Plot, Dot, Geo, Sphere, Graticule } from '$lib';
-    import { Slider } from '$lib/ui';
+    import { Plot, Dot, Geo, Sphere, Line, Graticule } from '$lib';
+    import { Slider, Select } from '$lib/ui';
     import { tick } from 'svelte';
     import { page } from '$app/stores';
-    import { geoEqualEarth } from 'd3-geo';
+    import { geoEqualEarth, geoCircle } from 'd3-geo';
     import * as topojson from 'topojson-client';
 
     let { world, earthquakes } = $derived($page.data.data);
@@ -17,12 +17,31 @@ title: Projections
     let latitude = $state(40);
     let longitude = $state(120);
     let dragging = $state(false);
+    let zoom = $state(90);
 
     let vx = $state(0);
     let vy = $state(0);
 
+    let projection = $state('orthographic');
+    const options = [
+        /* "albers", */
+        'azimuthal-equal-area',
+        'azimuthal-equidistant',
+        /* 'conic-conformal', */
+        'conic-equal-area',
+        'conic-equidistant',
+        'equal-earth',
+        'equirectangular',
+        'gnomonic',
+        /* 'identity', */
+        /* 'reflect-y', */
+        'mercator',
+        'orthographic',
+        'stereographic',
+        'transverse-mercator'
+    ];
+
     async function step() {
-        console.log({ longitude, vx });
         longitude = longitude + vx;
         latitude = latitude + vy;
         vx *= 0.9;
@@ -33,47 +52,91 @@ title: Projections
         window.requestAnimationFrame(step);
     }
 
+    let savedLines = $state([]);
+
+    let mouseTrail = $state([]);
+
     $effect(() => {
         // step();
     });
 </script>
 
+<Select bind:value={projection} {options} label="Projection" />
 <button
     on:click={() => {
         vx = 10;
         step();
     }}>push</button
 >
-<Slider bind:value={longitude} min={-180} max={180} label="Longitude" />
-<Slider bind:value={latitude} min={-90} max={90} label="Latitude" />
-{dragging}
+<button
+    on:click={() => {
+        savedLines = [...savedLines, ...mouseTrail.map((pt) => [...pt, savedLines.length])];
+        mouseTrail = [];
+    }}>save line</button
+>
+
 <Plot
     r={{ range: [0.5, 25] }}
     projection={{
-        type: 'orthographic',
+        type: projection,
         inset: 10,
+        domain: geoCircle().center([longitude, latitude]).radius(zoom)(),
         rotate: [-longitude, -latitude]
     }}
+    let:scales
 >
     <Sphere
         fill="var(--svelteplot-bg)"
         stroke="currentColor"
         cursor="pointer"
-        onmousedown={() => {
+        onmousedown={(evt) => {
+            if (evt.button === 0) mouseTrail = [];
             dragging = true;
         }}
         onmousemove={(evt) => {
             if (dragging) {
-                latitude = Math.round(latitude + evt.movementY);
-                longitude = Math.round(longitude - evt.movementX);
+                if (evt.button === 0) {
+                    mouseTrail = [
+                        ...mouseTrail.slice(-1000),
+                        scales.projection.invert([evt.layerX, evt.layerY])
+                    ];
+                } else if (evt.button === 1) {
+                    const z = zoom / 90;
+                    latitude = latitude + evt.movementY * z;
+                    longitude = longitude - evt.movementX * z;
+                }
             }
         }}
-        onmouseup={() => {
+        onwheel={(evt) => {
+            zoom = Math.max(5, Math.min(90, zoom - evt.wheelDeltaY / 30));
+            evt.preventDefault();
+        }}
+        onmouseup={(evt) => {
             dragging = false;
+            if (evt.button === 0) {
+                savedLines = [...savedLines, ...mouseTrail.map((pt) => [...pt, savedLines.length])];
+                mouseTrail = [];
+            }
         }}
     />
-    <Graticule pointerEvents="none" opacity="0.1" />
+    <Graticule pointerEvents="none" opacity="0.1" step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
     <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />
+    <Line
+        data={mouseTrail}
+        strokeWidth={2}
+        stroke={(d) => d[1]}
+        x={(d) => d[0]}
+        y={(d) => d[1]}
+        pointerEvents="none"
+    />
+    <Line
+        data={savedLines}
+        opacity={0.3}
+        z={(d) => d[2]}
+        x={(d) => d[0]}
+        y={(d) => d[1]}
+        pointerEvents="none"
+    />
     <Dot
         data={earthquakes}
         stroke="var(--svp-red)"

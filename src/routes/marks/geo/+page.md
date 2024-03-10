@@ -73,8 +73,6 @@ Earthquakes
 
     let { world, earthquakes } = $derived($page.data.data);
     let land = $derived(topojson.feature(world, world.objects.land));
-
-    $inspect(land);
 </script>
 
 <Plot r={{ range: [0.5, 25] }} projection="equirectangular">
