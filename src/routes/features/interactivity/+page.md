@@ -6,7 +6,7 @@ Svelte makes interactive plots easy!
 
 Pointer mark
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, Dot, Text, Pointer } from '$lib';
     import { page } from '$app/stores';
@@ -56,7 +56,7 @@ Pointer mark
 
 You can create a "crosshair" mark
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, RuleX, RuleY, AxisX, AxisY, Pointer } from '$lib';
     import { page } from '$app/stores';
@@ -78,7 +78,7 @@ You can create a "crosshair" mark
 
 PointerY
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, RuleY, Dot, Text, Pointer } from '$lib';
     import { page } from '$app/stores';
@@ -106,7 +106,7 @@ PointerY
 </Plot>
 ```
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, RuleX, Dot, Text, Pointer } from '$lib';
     import { page } from '$app/stores';
@@ -136,7 +136,7 @@ PointerY
 
 PointerX
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, RuleX, Dot, Text, Pointer } from '$lib';
     import { page } from '$app/stores';
@@ -181,7 +181,10 @@ Click the bar chart!
         data={[-2, -1, 2, 4, 6, 9, 5]}
         cursor="pointer"
         opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
-        onclick={(d) => (clicked = d)}
+        onclick={(event, d) => {
+            console.log('click');
+            clicked = d;
+        }}
     />
     <RuleY data={[0]} />
 </Plot>
@@ -210,7 +213,7 @@ Note how we're wrapping the `opacity` channel accessor in a `scale: null, value:
 
 You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips in your plot.
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Dot, HTMLTooltip } from '$lib';
 
@@ -260,7 +263,7 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
 
 You can even put another tiny plot inside the HTML tooltips:
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Dot, HTMLTooltip, BarX } from '$lib';
     import isEqual from 'underscore/modules/isEqual.js';

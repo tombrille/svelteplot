@@ -31,9 +31,6 @@
         data,
         curve,
         tension = 0,
-        onmouseenter,
-        onmouseleave,
-        onclick,
         ...options
     } = $props<
         BaseMarkProps & {
@@ -103,6 +100,7 @@
                     {@const dx = resolveProp(args.dx, datum, 0)}
                     {@const dy = resolveProp(args.dx, datum, 0)}
                     <MarkerPath
+                        {mark}
                         markerStart={args.markerStart}
                         markerMid={args.markerMid}
                         markerEnd={args.markerEnd}
@@ -116,9 +114,6 @@
                         ])}
                         style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                        {onclick}
-                        {onmouseenter}
-                        {onmouseleave}
                     />
                 {/if}
             {/if}

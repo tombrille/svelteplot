@@ -15,18 +15,17 @@
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type {
         PlotContext,
-        DataRecord,
         BaseMarkProps,
         RectMarkProps,
         ChannelAccessor,
         DataRow
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
-    import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import { maybeData } from '$lib/helpers/index.js';
+    import { addEvents } from './helpers/events.js';
 
-    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<
+    let { data, stack, ...options } = $props<
         BaseMarkProps & {
             data: DataRow[];
             x?: ChannelAccessor;
@@ -83,12 +82,9 @@
                     transform="translate({[x + inset + dx, miny + dy]})"
                     width={plot.scales.x.fn.bandwidth() - inset * 2}
                     height={maxy - miny}
-                    role={onclick ? 'button' : null}
                     rx={resolveProp(args.rx, datum, null)}
                     ry={resolveProp(args.ry, datum, null)}
-                    onclick={onclick && wrapEvent(onclick, datum)}
-                    onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                    onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                    use:addEvents={{ options: mark.options, datum }}
                 />
             {/if}
         {/each}

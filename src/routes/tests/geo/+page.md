@@ -27,8 +27,8 @@ Test map:
     );
 
     let year = tweened(1990, {
-        duration: 15000, 
-        interpolate: (a,b) => t => Math.round(a + (b-a) * t)
+        duration: 15000,
+        interpolate: (a, b) => (t) => Math.round(a + (b - a) * t)
     });
 
     let countries = $derived(
@@ -48,11 +48,11 @@ Test map:
         unknown: '#cccccc',
         domain: [10, 20, 30, 40, 50],
         type: 'threshold'
-    }
+    };
 
     function animate() {
         year.set(1990, { duration: 0 });
-        $year = 2022
+        $year = 2022;
     }
 </script>
 
@@ -60,58 +60,61 @@ Test map:
 
 <button on:click={animate}>play</button>
 
-<Plot
-    projection="equal-earth"
-    {color}
->
+<Plot projection="equal-earth" {color}>
     <Geo
         data={countries}
         onmouseenter={(d) => (hover = d)}
-     
         onmousemove={(d, evt) => (mousePos = [evt.layerX, evt.layerY])}
         fill={(d) => d.properties.bmi?.get($year)}
         style="transition: fill 0.2s ease-in-out"
     />
- 
+
     <Geo
-        data={countries.filter(d => d.properties.DW_STATE_CODE === hover?.properties.DW_STATE_CODE)}
+        data={countries.filter(
+            (d) => d.properties.DW_STATE_CODE === hover?.properties.DW_STATE_CODE
+        )}
         stroke="currentColor"
     />
 
     {#snippet overlay()}
         {#if hover}
-        <div class="tooltip" style:left={`${mousePos[0]}px`} style:top={`${mousePos[1]}px`}>
-            <h2>{hover.properties.GERMAN_NAME_NEW}</h2>
-            
-            {#if hover.properties.bmi}
-            Anteil Erwachsener mit BMI ab 30 ({$year}): <b>{hover.properties.bmi.get($year).toFixed(1)}%</b> 
-            {@const lineData = [...hover.properties.bmi.entries()].map(([k,v]) => ({ year: new Date(k,0,1), bmi: v }))}
-            <Plot height={110} 
-                marginTop={10}
-                marginLeft={5}
-                marginBottom={20}
-                y={{ domain: [0,50], axis: 'right', grid: false, label: false }} 
-                x={{ tickFormat: '\'YY' }}
-                color={{...color, legend: false }}>
-                <RectY 
-                    data={[0,10,20,30,40]} 
-                    y1={d => d}
-                    y2={d => d+10}
-                    fill={d => d+9}  />
-                <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.5} />
-                <Line 
-                    data={lineData} 
-                    x="year"
-                    y="bmi" />
-                <Dot 
-                    data={lineData}
-                    filter={d => d.year.getFullYear() === $year}
-                    fill
-                    x="year"
-                    y="bmi" />
-            </Plot>
-            {/if}
-        </div>
+            <div class="tooltip" style:left={`${mousePos[0]}px`} style:top={`${mousePos[1]}px`}>
+                <h2>{hover.properties.GERMAN_NAME_NEW}</h2>
+
+                {#if hover.properties.bmi}
+                    Anteil Erwachsener mit BMI ab 30 ({$year}):
+                    <b>{hover.properties.bmi.get($year).toFixed(1)}%</b>
+                    {@const lineData = [...hover.properties.bmi.entries()].map(([k, v]) => ({
+                        year: new Date(k, 0, 1),
+                        bmi: v
+                    }))}
+                    <Plot
+                        height={110}
+                        marginTop={10}
+                        marginLeft={5}
+                        marginBottom={20}
+                        y={{ domain: [0, 50], axis: 'right', grid: false, label: false }}
+                        x={{ tickFormat: "'YY" }}
+                        color={{ ...color, legend: false }}
+                    >
+                        <RectY
+                            data={[0, 10, 20, 30, 40]}
+                            y1={(d) => d}
+                            y2={(d) => d + 10}
+                            fill={(d) => d + 9}
+                        />
+                        <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.5} />
+                        <Line data={lineData} x="year" y="bmi" />
+                        <Dot
+                            data={lineData}
+                            filter={(d) => d.year.getFullYear() === $year}
+                            fill
+                            x="year"
+                            y="bmi"
+                        />
+                    </Plot>
+                {/if}
+            </div>
         {/if}
     {/snippet}
 </Plot>
@@ -129,8 +132,8 @@ Test map:
     }
     .tooltip h2 {
         font-size: 13px;
-        margin: 0  0 0.5rem 0!important;
-        padding: 0!important;
+        margin: 0 0 0.5rem 0 !important;
+        padding: 0 !important;
     }
 </style>
 ```

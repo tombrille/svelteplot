@@ -18,16 +18,11 @@
     import { coalesce, maybeData, testFilter } from '../helpers/index.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
-    import {
-        arrowPath,
-        maybeSweep,
-        type SweepFunc,
-        type SweepOption
-    } from '../helpers/arrowPath.js';
-    import { wrapEvent } from '$lib/helpers/wrapEvent.js';
+    import { arrowPath, maybeSweep, type SweepOption } from '../helpers/arrowPath.js';
     import { replaceChannels } from '$lib/transforms/rename.js';
+    import { addEvents } from './helpers/events.js';
 
-    let { data, onmouseenter, onmouseleave, onclick, ...options } = $props<
+    let { data, ...options } = $props<
         BaseMarkProps & {
             data: DataRecord[];
             sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
@@ -133,12 +128,9 @@
                         data-y1={_y1}
                         data-y1_={y1}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                        role={onmouseenter || onclick ? 'button' : null}
-                        onclick={onclick && wrapEvent(onclick, datum)}
-                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                        use:addEvents={{ options: mark.options, datum }}
                     >
-                        {#if onmouseenter || onclick}
+                        {#if options.onmouseenter || options.onclick}
                             <!-- add invisible path in bg for easier mouse access -->
                             <path
                                 d={arrPath}

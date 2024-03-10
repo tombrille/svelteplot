@@ -23,7 +23,7 @@
         FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
-    import { wrapEvent } from '../helpers/wrapEvent.js';
+    import { addEvents } from './helpers/events.js';
 
     type Props = BaseMarkProps & {
         data: DataRecord[];
@@ -36,7 +36,7 @@
         interval?: number | string;
     } & RectMarkProps;
 
-    let { data, onclick, onmouseenter, onmouseleave, ...options } = $props<Props>();
+    let { data, ...options } = $props<Props>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -116,19 +116,16 @@
                 {@const insetT = coalesce(insetTop, inset) || 0}
                 {@const insetR = coalesce(insetRight, inset) || 0}
                 {@const insetB = coalesce(insetBottom, inset) || 0}
-                
+
                 {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     <rect
                         style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}
                         transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
                         width={maxx - minx - insetL - insetR}
                         height={maxy - miny - insetT - insetB}
-                        role={onclick ? 'button' : null}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        onclick={onclick && wrapEvent(onclick, datum)}
-                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                        use:addEvents={{ options: mark.options, datum }}
                     />
                 {/if}
             {/if}

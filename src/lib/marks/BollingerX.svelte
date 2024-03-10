@@ -21,15 +21,7 @@
         k?: number;
     };
 
-    let {
-        data,
-        n = 20,
-        k = 2,
-        onclick,
-        onmouseenter,
-        onmouseleave,
-        ...options
-    } = $props<BollingerXProps>();
+    let { data, n = 20, k = 2, ...options } = $props<BollingerXProps>();
 
     let args = $derived(bollingerX(recordizeX({ data, ...options }), { n, k }));
 </script>

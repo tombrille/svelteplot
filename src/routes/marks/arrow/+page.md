@@ -36,8 +36,8 @@ Metro dataset:
         bend
         style="transition: opacity 0.2s ease-in"
         opacity={{ scale: null, value: (d) => (!hl || hl === d ? 1 : 0.1) }}
-        onmouseenter={(d) => (hl = d)}
-        onmouseleave={(d) => (hl = null)}
+        onmouseenter={(evt, d) => (hl = d)}
+        onmouseleave={() => (hl = null)}
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
     <Text

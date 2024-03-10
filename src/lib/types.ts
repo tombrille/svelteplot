@@ -578,6 +578,11 @@ export type BaseMarkProps = Partial<{
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmousemove?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
+    ondragstart?: MouseEventHandler<SVGPathElement>;
+    ondragend?: MouseEventHandler<SVGPathElement>;
+    ontouchstart?: MouseEventHandler<SVGPathElement>;
+    ontouchmove?: MouseEventHandler<SVGPathElement>;
+    ontouchend?: MouseEventHandler<SVGPathElement>;
     /**
      * simple browser tooltip to be displayed on mouseover
      */

@@ -6,9 +6,9 @@
     import Marker from './Marker.svelte';
     import { isSnippet, randomId } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
-    import type { ConstantAccessor, DataRecord } from '$lib/types.js';
+    import type { BaseMarkProps, ConstantAccessor, DataRecord, Mark } from '$lib/types.js';
     import type { MouseEventHandler } from 'svelte/elements';
-    import { wrapEvent } from '$lib/helpers/wrapEvent.js';
+    import { addEvents } from './events.js';
 
     let {
         datum,
@@ -21,20 +21,16 @@
         transform,
         color,
         strokeWidth,
-        onclick,
-        onmouseenter,
-        onmouseleave
+        mark
     } = $props<
         MarkerOptions & {
+            mark: Mark<BaseMarkProps>;
             datum: DataRecord;
             d: string;
             style: string;
             color: string;
             transform: string;
             strokeWidth: ConstantAccessor<number>;
-            onclick: MouseEventHandler<SVGPathElement>;
-            onmouseenter: MouseEventHandler<SVGPathElement>;
-            onmouseleave: MouseEventHandler<SVGPathElement>;
         }
     >();
 
@@ -43,14 +39,7 @@
     let strokeWidth_ = $derived(resolveProp(strokeWidth, datum, 1.4));
 </script>
 
-<g
-    {transform}
-    stroke-width={strokeWidth_}
-    role={onmouseenter || onclick ? 'button' : null}
-    onclick={onclick && wrapEvent(onclick, datum)}
-    onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-    onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
->
+<g {transform} stroke-width={strokeWidth_} use:addEvents={{ options: mark.options, datum }}>
     {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
         {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}`}
         {#if isSnippet(marker)}
@@ -63,7 +52,7 @@
             />
         {/if}
     {/each}
-    {#if onmouseenter || onclick}
+    {#if mark.options.onmouseenter || mark.options.onclick}
         <!-- add invisible path in bg for easier mouse access -->
         <path
             {d}
@@ -78,5 +67,6 @@
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
         {d}
         {style}
+        use:addEvents={{ options: mark.options, datum }}
     />
 </g>

@@ -23,7 +23,7 @@
         FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
-    import { wrapEvent } from '../helpers/wrapEvent.js';
+    import { addEvents } from './helpers/events.js';
 
     type Props = BaseMarkProps & {
         data: DataRecord[];
@@ -31,7 +31,7 @@
         y?: ChannelAccessor;
     } & RectMarkProps;
 
-    let { data, onclick, onmouseenter, onmouseleave, ...options } = $props<Props>();
+    let { data, ...options } = $props<Props>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -93,12 +93,9 @@
                         transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
                         width={maxx - minx - insetL - insetR}
                         height={maxy - miny - insetT - insetB}
-                        role={onclick ? 'button' : null}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        onclick={onclick && wrapEvent(onclick, datum)}
-                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                        use:addEvents={{ options: mark.options, datum }}
                     />
                 {/if}
             {/if}

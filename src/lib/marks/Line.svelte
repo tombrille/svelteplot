@@ -141,6 +141,7 @@
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}
                     <MarkerPath
+                        {mark}
                         markerStart={args.markerStart}
                         markerMid={args.markerMid}
                         markerEnd={args.markerEnd}

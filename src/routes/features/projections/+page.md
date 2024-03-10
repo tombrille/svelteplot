@@ -6,6 +6,7 @@ title: Projections
 <script>
     import { Plot, Dot, Geo, Sphere, Graticule } from '$lib';
     import { Slider } from '$lib/ui';
+    import { tick } from 'svelte';
     import { page } from '$app/stores';
     import { geoEqualEarth } from 'd3-geo';
     import * as topojson from 'topojson-client';
@@ -16,10 +17,36 @@ title: Projections
     let latitude = $state(40);
     let longitude = $state(120);
     let dragging = $state(false);
+
+    let vx = $state(0);
+    let vy = $state(0);
+
+    async function step() {
+        console.log({ longitude, vx });
+        longitude = longitude + vx;
+        latitude = latitude + vy;
+        vx *= 0.9;
+        vy *= 0.9;
+        if (vx < 0.1) vx = 0;
+        if (vy < 0.1) vy = 0;
+        await tick();
+        window.requestAnimationFrame(step);
+    }
+
+    $effect(() => {
+        // step();
+    });
 </script>
 
+<button
+    on:click={() => {
+        vx = 10;
+        step();
+    }}>push</button
+>
 <Slider bind:value={longitude} min={-180} max={180} label="Longitude" />
 <Slider bind:value={latitude} min={-90} max={90} label="Latitude" />
+{dragging}
 <Plot
     r={{ range: [0.5, 25] }}
     projection={{
@@ -32,14 +59,18 @@ title: Projections
         fill="var(--svelteplot-bg)"
         stroke="currentColor"
         cursor="pointer"
-        onmousedown={() => (dragging = true)}
-        onmousemove={(d, evt) => {
+        onmousedown={() => {
+            dragging = true;
+        }}
+        onmousemove={(evt) => {
             if (dragging) {
                 latitude = Math.round(latitude + evt.movementY);
                 longitude = Math.round(longitude - evt.movementX);
             }
         }}
-        onmouseup={() => (dragging = false)}
+        onmouseup={() => {
+            dragging = false;
+        }}
     />
     <Graticule pointerEvents="none" opacity="0.1" />
     <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />

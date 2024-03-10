@@ -8,25 +8,16 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { sort } from '$lib/index.js';
     import { isObject, testFilter } from '$lib/helpers/index.js';
-    import { wrapEvent } from '$lib/helpers/wrapEvent.js';
+    import { addEvents } from './helpers/events.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let {
-        data,
-        geoType,
-        onclick,
-        onmousedown,
-        onmouseup,
-        onmouseenter,
-        onmousemove,
-        onmouseleave,
-        ...options
-    } = $props<
+    let { data, geoType, dragRotate, ...options } = $props<
         {
             data: DataRecord[];
             geoType: string;
+            dragRotate: boolean;
         } & BaseMarkProps
     >();
 
@@ -70,13 +61,7 @@
                             plot,
                             preferStroke.has(geometry.type) ? 'stroke' : 'fill'
                         )}
-                        role={onclick ? 'button' : null}
-                        onclick={onclick && wrapEvent(onclick, datum)}
-                        onmousedown={onmousedown && wrapEvent(onmousedown, datum)}
-                        onmouseup={onmouseup && wrapEvent(onmouseup, datum)}
-                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                        onmousemove={onmousemove && wrapEvent(onmousemove, datum)}
-                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                        use:addEvents={{ options: mark.options, datum }}
                     >
                         {#if title}<title>{title}</title>{/if}
                     </path>

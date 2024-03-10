@@ -20,10 +20,10 @@
         RectMarkProps,
         ChannelAccessor
     } from '../types.js';
-    import { wrapEvent } from '../helpers/wrapEvent.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
+    import { addEvents } from './helpers/events.js';
 
     type BarXProps = BaseMarkProps & {
         data: DataRow[];
@@ -34,7 +34,7 @@
         stack?: StackOptions;
     } & RectMarkProps;
 
-    let { data, stack, onclick, onmouseenter, onmouseleave, ...options } = $props<BarXProps>();
+    let { data, stack, ...options } = $props<BarXProps>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -70,12 +70,9 @@
                         transform="translate({[minx + dx, y + inset + dy]})"
                         width={maxx - minx}
                         height={plot.scales.y.fn.bandwidth() - inset * 2}
-                        role={onclick ? 'button' : null}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        onclick={onclick && wrapEvent(onclick, datum)}
-                        onmouseenter={onmouseenter && wrapEvent(onmouseenter, datum)}
-                        onmouseleave={onmouseleave && wrapEvent(onmouseleave, datum)}
+                        use:addEvents={{ options: mark.options, datum }}
                     />
                 {/if}
             {/if}

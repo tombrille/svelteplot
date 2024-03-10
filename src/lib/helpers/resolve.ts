@@ -32,7 +32,9 @@ export function resolveProp<T>(
         // datum.___orig___ exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
         // so we're passing the original value to accessor functions instead of our wrapped record
-        return datum == null ? accessor() : accessor(datum.___orig___ != null ? datum.___orig___ : datum);
+        return datum == null
+            ? accessor()
+            : accessor(datum.___orig___ != null ? datum.___orig___ : datum);
     } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
         return datum[accessor] as T;
     }
