@@ -92,7 +92,8 @@
         <!-- add invisible path in bg for easier mouse access -->
         <path
             {d}
-            style="fill:none;stroke-width: {(strokeWidth || 1) + 10}; stroke: transparent; stroke-opacity:0"
+            style="fill:none;stroke-width: {(strokeWidth || 1) +
+                10}; stroke: transparent; stroke-opacity:0"
         />
     {/if}
     <path

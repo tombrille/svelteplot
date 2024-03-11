@@ -57,17 +57,16 @@ The [LineY constructor](/marks/line#LineY) provides default channel definitions 
     import type { Datasets } from '$lib/types.js';
     import { randomNormal } from 'd3-random';
     import { range, cumsum } from 'd3-array';
-
 </script>
 
 <Plot grid>
-    <LineY data={cumsum(range(600).map(randomNormal()))} /> 
+    <LineY data={cumsum(range(600).map(randomNormal()))} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <LineY data={cumsum(range(600).map(randomNormal()))} /> 
+    <LineY data={cumsum(range(600).map(randomNormal()))} />
 </Plot>
 ```
 
@@ -122,17 +121,20 @@ While the _x_ scale of a line chart often represents time, this is not required.
     let { tdf } = $derived($page.data.data);
 </script>
 
-<Plot x={{ label: 'Distance from stage start (km)' }} 
-    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}>
+<Plot
+    x={{ label: 'Distance from stage start (km)' }}
+    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}
+>
     <Line data={tdf} x="distance" y="elevation" />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot 
-    x={{ label: 'Distance from stage start (km)' }} 
-    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}>
+<Plot
+    x={{ label: 'Distance from stage start (km)' }}
+    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}
+>
     <Line data={tdf} x="distance" y="elevation" />
     <RuleY data={[0]} />
 </Plot>
@@ -282,8 +284,6 @@ As you see in the previous plot, lines can show [markers](/features/markers) by 
 
 ## More examples
 
-
-
 While uncommon, you can draw a line with ordinal position values. For example below, each line represents a U.S. state; x represents an (ordinal) age group while y represents the proportion of the state’s population in that age group. This chart emphasizes the overall age distribution of the United States, while giving a hint to variation across states.
 
 ```svelte live
@@ -329,7 +329,7 @@ With a [spherical projection](/features/projections), line segments become [geod
 
 <Plot projection="equirectangular">
     <Geo data={[land]} stroke="currentColor" />
-    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" /> 
+    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" />
     <Geo data={[{ type: 'Point', coordinates: [-0.13, 51.5] }]} fill="var(--svp-red)" />
 </Plot>
 ```

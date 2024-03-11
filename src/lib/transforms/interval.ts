@@ -1,5 +1,4 @@
 import { maybeInterval } from '$lib/helpers/autoTicks.js';
-import { testFilter } from '$lib/helpers/index.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { PlotState, TransformArg } from '$lib/types.js';
 

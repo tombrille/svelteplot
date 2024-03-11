@@ -1,3 +1,4 @@
+import { maybeInterval } from '$lib/helpers/autoTicks.js';
 import { isValid } from '$lib/helpers/index.js';
 import { Reducer, mayberReducer, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
@@ -6,6 +7,7 @@ import { groups as d3Groups } from 'd3-array';
 
 type WindowOptions = {
     k: number;
+    interval: string;
     anchor: 'start' | 'middle' | 'end';
     reduce: ReducerName;
     strict: boolean;
@@ -24,7 +26,9 @@ function windowDim(
     options: WindowOptions
 ) {
     const { anchor = 'middle', reduce = 'mean', strict = false } = options;
-    let { k } = options;
+    let { k, interval } = options;
+
+    interval = maybeInterval(interval, 'time');
     // we only change the data, but not the
     if (!((k = Math.floor(k)) > 0)) throw new Error(`invalid k: ${k}`);
 
@@ -56,15 +60,39 @@ function windowDim(
                 reduceChannels.map((channel) => [channel, resolveChannel(channel, d, channels)])
             )
         );
+        const Y = interval
+            ? values.map((d, index) => ({
+                  index,
+                  value: resolveChannel(dim === 'x' ? 'y' : 'x', d, channels)
+              }))
+            : [];
         const L = values.length;
         for (let i = 0; i < L; i++) {
             const s0 = Math.max(0, i - shift);
             const newDatum = { ...values[i] };
+            let yWindow: Set<number> = new Set();
+            if (interval) {
+                const minDate = interval.offset(Y[i].value, -shift);
+                const maxDate = interval.offset(Y[i].value, -shift + k);
+                yWindow = new Set(
+                    Y.filter(({ value }) => value >= minDate && value <= maxDate).map(
+                        ({ index }) => index
+                    )
+                );
+            }
             for (const channel of reduceChannels) {
-                const window = X.slice(s0, Math.min(L, i - shift + k))
+                const window = (
+                    interval
+                        ? // we select X values based on the interval
+                          X.filter((d, i) => yWindow.has(i))
+                        : X.slice(s0, Math.min(L, i - shift + k))
+                )
                     .map((d) => d[channel])
                     .filter(isValid);
-                const reduced = strict && window.length !== k ? null : reduceFn(window);
+                const reduced =
+                    strict && window.length < (strict === true ? k : strict)
+                        ? null
+                        : reduceFn(window);
                 newDatum[`__reduced_${channel}__`] = reduced;
             }
             out.push(newDatum);
