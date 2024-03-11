@@ -17,7 +17,7 @@
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
-    import { maybeData } from '$lib/helpers/index.js';
+    import { isValid, maybeData } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
         BaseMarkProps & {
@@ -40,10 +40,6 @@
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
-
-    function isValid(value: RawValue): value is number | Date | string {
-        return value !== null && !Number.isNaN(value);
-    }
 
     const LINE_ANCHOR = {
         bottom: 'auto',
@@ -85,42 +81,44 @@
                 {@const title = resolveProp(args.title, datum, '')}
                 {#if isValid(_x) && isValid(_y)}
                     {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
-                    {@const dx = +resolveProp(args.dx, datum, 0)}
-                    {@const dy = +resolveProp(args.dy, datum, 0)}
-                    {@const textLines = String(resolveProp(args.text, datum, '')).split('\n')}
-                    {#if textLines.length > 1}
-                        <text
-                            dominant-baseline={LINE_ANCHOR[
-                                resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
-                            ]}
-                            transform="translate({[x + dx, y + dy]})"
-                            >{#each textLines as line, l}<tspan
-                                    x="0"
-                                    dy={l ? resolveProp(args.fontSize, datum) || 12 : 0}
-                                    style={resolveScaledStyles(
-                                        { ...datum, __tspanIndex: l },
-                                        args,
-                                        useScale,
-                                        plot,
-                                        'fill'
-                                    )}>{line}</tspan
-                                >{/each}{#if title}<title>{title}</title>{/if}</text
-                        >
-                    {:else}
-                        <text
-                            dominant-baseline={LINE_ANCHOR[
-                                resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
-                            ]}
-                            transform="translate({[x + dx, y + dy]})"
-                            style={resolveScaledStyles(
-                                { ...datum, __tspanIndex: 0 },
-                                args,
-                                useScale,
-                                plot,
-                                'fill'
-                            )}
-                            >{textLines[0]}{#if title}<title>{title}</title>{/if}</text
-                        >
+                    {#if isValid(x) && isValid(y)}
+                        {@const dx = +resolveProp(args.dx, datum, 0)}
+                        {@const dy = +resolveProp(args.dy, datum, 0)}
+                        {@const textLines = String(resolveProp(args.text, datum, '')).split('\n')}
+                        {#if textLines.length > 1}
+                            <text
+                                dominant-baseline={LINE_ANCHOR[
+                                    resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
+                                ]}
+                                transform="translate({[x + dx, y + dy]})"
+                                >{#each textLines as line, l}<tspan
+                                        x="0"
+                                        dy={l ? resolveProp(args.fontSize, datum) || 12 : 0}
+                                        style={resolveScaledStyles(
+                                            { ...datum, __tspanIndex: l },
+                                            args,
+                                            useScale,
+                                            plot,
+                                            'fill'
+                                        )}>{line}</tspan
+                                    >{/each}{#if title}<title>{title}</title>{/if}</text
+                            >
+                        {:else}
+                            <text
+                                dominant-baseline={LINE_ANCHOR[
+                                    resolveProp(args.lineAnchor, datum, 'middle') || 'middle'
+                                ]}
+                                transform="translate({[x + dx, y + dy]})"
+                                style={resolveScaledStyles(
+                                    { ...datum, __tspanIndex: 0 },
+                                    args,
+                                    useScale,
+                                    plot,
+                                    'fill'
+                                )}
+                                >{textLines[0]}{#if title}<title>{title}</title>{/if}</text
+                            >
+                        {/if}
                     {/if}
                 {/if}
             {/if}
