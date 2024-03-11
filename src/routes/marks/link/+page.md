@@ -72,10 +72,25 @@ Link support spherical projections:
     let hl = $state(false);
 </script>
 
-<Plot projection={{ type: 'equal-earth', inset:2 }}>
+<Plot projection="equal-earth">
     <Geo data={[land]} fillOpacity="0.3" />
-    <Link data={[link]} x1="0" y1="1" x2="2" y2="3" curve="linear" stroke="red" />
-    <Link data={[link]} x1="0" y1="1" x2="2" y2="3" markerStart="dot" markerEnd="arrow" />
+    <Link data={[link]} text="curve" x1="2" y1="3" x2="0" y2="1" curve="bump-x" stroke="red" />
+    <Link
+        data={[link]}
+        text="Foo"
+        x1="2"
+        y1="3"
+        x2="0"
+        y2="1"
+        textFill="currentColor"
+        textStroke="var(--svelteplot-bg)"
+        textStrokeWidth={3}
+        fontSize={15}
+        textAnchor="start"
+        textStartOffset="5"
+        markerStart="dot"
+        markerEnd="arrow"
+    />
     <Sphere stroke="currentColor" />
 </Plot>
 ```

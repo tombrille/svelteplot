@@ -27,11 +27,13 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { geoPath } from 'd3-geo';
+    import pick from 'underscore/modules/pick.js';
 
     let {
         data,
         curve = 'auto',
         tension = 0,
+        text,
         ...options
     } = $props<
         BaseMarkProps & {
@@ -44,6 +46,7 @@
             stroke?: ChannelAccessor;
             curve?: 'auto' | CurveName | CurveFactory;
             tension?: number;
+            text: ConstantAccessor<string>;
             children?: Snippet;
         } & MarkerOptions
     >();
@@ -64,7 +67,10 @@
     );
 
     let args = $derived(
-        replaceChannels({ data: sorted, stroke: 'currentColor', ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
+        replaceChannels(
+            { data: sorted, stroke: 'currentColor', ...options },
+            { y: ['y1', 'y2'], x: ['x1', 'x2'] }
+        )
     );
 
     let sphericalLine = $derived(plot.scales.projection && curve === 'auto');
@@ -81,9 +87,15 @@
 
     function sphereLine(projection) {
         const path = geoPath(projection);
-        return (x1: number, y1: number,x2:number,y2:number) => {
-            return path({ type: 'LineString', coordinates: [[x1,y1],[x2,y2]] });
-        }
+        return (x1: number, y1: number, x2: number, y2: number) => {
+            return path({
+                type: 'LineString',
+                coordinates: [
+                    [x1, y1],
+                    [x2, y2]
+                ]
+            });
+        };
     }
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
@@ -117,8 +129,28 @@
                         strokeWidth={args.strokeWidth}
                         {datum}
                         color={useScale.stroke ? plot.scales.color.fn(color) : color}
-                        d={sphericalLine ? linePath(x1,y1,x2,y2) : linePath([projectXY(plot.scales, x1, y1), projectXY(plot.scales, x2, y2)])}
+                        d={sphericalLine
+                            ? linePath(x1, y1, x2, y2)
+                            : linePath([
+                                  projectXY(plot.scales, x1, y1),
+                                  projectXY(plot.scales, x2, y2)
+                              ])}
                         style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                        text={text ? resolveProp(text, datum) : null}
+                        startOffset={resolveProp(args.textStartOffset, datum, '50%')}
+                        textStyle={resolveScaledStyles(
+                            datum,
+                            {
+                                textAnchor: 'middle',
+                                ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
+                                fill: args.textFill || args.stroke,
+                                stroke: args.textStroke,
+                                strokeWidth: args.textStrokeWidth
+                            },
+                            useScale,
+                            plot,
+                            'fill'
+                        )}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
                     />
                 {/if}

@@ -28,6 +28,11 @@
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+        text?: ConstantAccessor<string>;
+        textFill?: ConstantAccessor<string>;
+        textStroke?: ConstantAccessor<string>;
+        textStartOffset?: ConstantAccessor<string>;
+        textStrokeWidth?: ConstantAccessor<number>;
     } & MarkerOptions;
 </script>
 
@@ -40,24 +45,25 @@
     import { geoPath } from 'd3-geo';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
+    import pick from 'underscore/modules/pick.js';
 
     type LineProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & LineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
+    import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
 
-    let { data, curve = 'auto', tension = 0, ...options } = $props<LineProps>();
+    let { data, curve = 'auto', tension = 0, text, ...options } = $props<LineProps>();
 
-    let args = $derived(recordizeXY({ data, ...options }));
+    let args = $derived(sort(recordizeXY({ data, ...options })));
 
     function groupIndex(data, groupByKey) {
         let group = [];
         const groups = [group];
         let lastGroupValue;
         for (const d of data) {
-            
             const groupValue = resolveProp(groupByKey, d);
             // console.log({d, groupValue})
             if (!group.length || groupValue === lastGroupValue) {
@@ -78,24 +84,13 @@
     }
 
     let groups = $derived(
-        groupByKey && args.data.length > 0
-            ? groupIndex(args.data, groupByKey)
-            : [args.data]
+        groupByKey && args.data.length > 0 ? groupIndex(args.data, groupByKey) : [args.data]
     );
 
     let groupByKey = $derived(args.z || args.stroke);
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
-
-    // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
-    let sortedGroups = $derived(
-        args.sort
-            ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], args) > resolveChannel('sort', b[0], args) ? 1 : -1
-              )
-            : groups
-    );
 
     let linePath: (d: DataRecord[]) => string = $derived(
         plot.scales.projection && curve === 'auto'
@@ -155,7 +150,7 @@
     {#if data.length > 0}
         {@const useScale = getUsedScales(plot, args, mark)}
         <g class="lines">
-            {#each sortedGroups as lineData, i}
+            {#each groups as lineData, i}
                 {#if testFacet(lineData[0], mark.options)}
                     {@const dx_ = resolveProp(args.dx, lineData[0], 0)}
                     {@const dy_ = resolveProp(args.dy, lineData[0], 0)}
@@ -182,6 +177,21 @@
                             )
                         )}
                         style={resolveScaledStyles(lineData[0], args, useScale, plot, 'stroke')}
+                        text={text ? resolveProp(text, lineData[0]) : null}
+                        startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
+                        textStyle={resolveScaledStyles(
+                            lineData[0],
+                            {
+                                textAnchor: 'middle',
+                                ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
+                                fill: args.textFill || args.stroke,
+                                stroke: args.textStroke,
+                                strokeWidth: args.textStrokeWidth
+                            },
+                            useScale,
+                            plot,
+                            'fill'
+                        )}
                         transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
                     />
                 {/if}

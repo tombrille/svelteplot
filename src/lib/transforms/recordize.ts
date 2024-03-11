@@ -50,7 +50,7 @@ export function recordizeY(
         !isDataRecord(data[0]) && !Array.isArray(data[0]) && channels.y == null;
     if (dataIsRawValueArray) {
         return {
-            data: data.map((value, index) => ({
+            data: Array.from(data).map((value, index) => ({
                 __value: value,
                 ...(withIndex ? { __index: index } : {}),
                 ___orig___: value
