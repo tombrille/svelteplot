@@ -41,11 +41,11 @@
 
     const id = randomId();
 
-    let points = $derived(text ? d.split(/[LMC]/).slice(1) : []);
-    let firstPt = $derived(text ? points.at(0).split(',').map(Number) : []);
-    let lastPt = $derived(text ? points.at(-1).split(',').map(Number) : []);
-    let leftToRight = $derived(text ? firstPt[0] < lastPt.at(-2) : true);
-    let pathIsCurve = $derived(text ? d.includes('C') : false);
+    let points = $derived(text && d ? d.split(/[LMC]/).slice(1) : []);
+    let firstPt = $derived(text && d ? points.at(0).split(',').map(Number) : []);
+    let lastPt = $derived(text && d ? points.at(-1).split(',').map(Number) : []);
+    let leftToRight = $derived(text && d ? firstPt[0] < lastPt.at(-2) : true);
+    let pathIsCurve = $derived(text && d ? d.includes('C') : false);
     // this rather complicated code "reverses" the path to ensure that the text
     // is not turned upside down
     let textPath = $derived(
