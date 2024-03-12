@@ -118,7 +118,7 @@ Works as well with a point scale:
     <AxisY tickSize={0} />
     <GridY strokeDasharray="3,3" />
     <Arrow
-        data={metros}
+        data={metros.slice(0,50)}
         x1="R90_10_1980"
         x2="R90_10_2015"
         y="nyt_display"
@@ -145,9 +145,9 @@ Works as well with a point scale:
 
 Another thing you can use the arrow mark for is drawing network diagrams:
 
-```svelte --live
+```svelte live
 <script lang="ts">
-    import { Plot, Arrow, Dot, RuleX, RuleY } from '$lib/index.js';
+    import { Plot, Arrow, Dot, Pointer, Text } from '$lib/index.js';
     import { json } from 'd3-fetch';
     import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
 
@@ -173,7 +173,7 @@ Another thing you can use the arrow mark for is drawing network diagrams:
     });
 </script>
 
-<Plot inset={10} color={{ type: 'categorical' }} height={550}>
+<Plot x={{ axis: false }} y={{ axis:false }} inset={10} color={{ type: 'categorical' }} height={550}>
     <Arrow
         data={links}
         x1={(d) => d.source.x}
@@ -181,12 +181,10 @@ Another thing you can use the arrow mark for is drawing network diagrams:
         x2={(d) => d.target.x}
         y2={(d) => d.target.y}
         bend
-        insetStart={(d) => d.source.id.length * 1.1}
-        insetEnd={(d) => d.target.id.length * 1.1}
+        insetStart={(d) => d.source.id.length * 1}
+        insetEnd={(d) => d.target.id.length * 1}
         opacity={0.2}
     />
-    <RuleX data={[0]} />
-    <RuleY data={[0]} />
     <Dot
         data={nodes}
         r={(d) => d.id.length}
@@ -195,6 +193,17 @@ Another thing you can use the arrow mark for is drawing network diagrams:
         x="x"
         y="y"
     />
+    <Pointer data={nodes} x="x" y="y" maxDistance={50} let:data>
+        <Text
+            {data}
+            text="id"
+            fill="currentColor"
+            stroke="var(--svelteplot-bg)"
+            strokeWidth="3"
+            x="x"
+            y="y"
+        />
+    </Pointer>
 </Plot>
 ```
 

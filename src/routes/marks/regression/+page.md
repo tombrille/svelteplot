@@ -17,7 +17,7 @@ Regressions are useful if you want to show the relationship between two variable
     let bandwidth = $state(0.3);
     let span = $state(0.7);
     let confidence = $state(0.99);
-    const types = ['linear', 'quad', 'poly', 'exp', 'log', 'pow', 'loess'];
+    const types = ['linear', 'quad', 'exp', 'log', 'pow', 'loess'];
 </script>
 
 <Select label="Type" bind:value={type} options={types} />
@@ -121,7 +121,7 @@ Returns a linear regression mark where y is the dependent variable and x is the 
         y="weight (lb)"
         x="power (hp)"
     />
-    <RegressionY data={cars} type="poly" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
+    <RegressionY data={cars} type="quad" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
@@ -129,7 +129,7 @@ Returns a linear regression mark where y is the dependent variable and x is the 
 <Plot grid>
     <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
     <RegressionY data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
-    <RegressionY data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
+    <RegressionY data={cars} type="quad" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
@@ -155,7 +155,7 @@ Returns a linear regression mark where x is the dependent variable and y is the 
         y="weight (lb)"
         x="power (hp)"
     />
-    <RegressionX data={cars} type="poly" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
+    <RegressionX data={cars} type="quad" stroke="var(--svp-red)" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```
 
@@ -163,6 +163,6 @@ Returns a linear regression mark where x is the dependent variable and y is the 
 <Plot grid>
     <Dot data={cars} y="weight (lb)" x="power (hp)" opacity={0.2} />
     <RegressionX data={cars} type="linear" stroke="blue" y="weight (lb)" x="power (hp)" />
-    <RegressionX data={cars} type="poly" stroke="red" y="weight (lb)" x="power (hp)" />
+    <RegressionX data={cars} type="quad" stroke="red" y="weight (lb)" x="power (hp)" />
 </Plot>
 ```

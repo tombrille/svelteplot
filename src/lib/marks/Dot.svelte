@@ -52,7 +52,7 @@
         })
     );
 
-    let useCanvas = $derived(data.length > 1000);
+    let useCanvas = $derived(data.length > 2000);
     
 </script>
 

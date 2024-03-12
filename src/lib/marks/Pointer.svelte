@@ -46,7 +46,7 @@
         };
     });
 
-    let groups = d3Groups(data, z != null ? (d) => resolveChannel('z', d, { x, z }) : () => true);
+    let groups = $derived(z != null ? d3Groups(data, (d) => resolveChannel('z', d, { x, z })) : [[null, data]]);
 
     let trees = $derived(
         groups.map(([, items]) =>
