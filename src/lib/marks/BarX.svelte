@@ -53,7 +53,7 @@
                 {@const x2_ = resolveChannel('x2', datum, args)}
                 {@const x1 = useScale.x1 ? projectX('x1', plot.scales, x1_) : x1_}
                 {@const x2 = useScale.x2 ? projectX('x1', plot.scales, x2_) : x2_}
-                {@const y = useScale.y ? projectY('y', plot.scales, y_) : y_}
+                {@const y = useScale.y ? projectY('y1', plot.scales, y_) : y_}
                 {@const minx = Math.min(x1, x2)}
                 {@const maxx = Math.max(x1, x2)}
                 {@const inset = resolveProp(args.inset, datum, 0)}
