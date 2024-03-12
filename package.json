@@ -1,7 +1,8 @@
 {
     "name": "@gka/svelteplot",
+    "private": true,
     "version": "0.1.1-alpha.17",
-    "license": "FSL-1.1-MIT",
+    "license": "UNLICENSED",
     "author": {
         "name": "Gregor Aisch",
         "email": "gregor@datawrapper.de"
