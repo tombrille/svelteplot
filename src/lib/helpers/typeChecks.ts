@@ -1,9 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: AGPL-3.0-or-later
- * Copyright (C) 2024  Gregor Aisch
- */
-
 import type { RawValue } from '$lib/types.js';
 import isDate from 'underscore/modules/isDate.js';
 import isFinite from 'underscore/modules/isFinite.js';

@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: AGPL-3.0-or-later
- * Copyright (C) 2024  Gregor Aisch
- */
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, RawValue } from '$lib/types.js';
 import type { TransformArg } from '$lib/types.js';

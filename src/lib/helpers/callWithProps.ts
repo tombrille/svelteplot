@@ -1,9 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: AGPL-3.0-or-later
- * Copyright (C) 2024  Gregor Aisch
- */
-
 import type { RawValue } from '$lib/types.js';
 
 type Setter = (v: any) => void;

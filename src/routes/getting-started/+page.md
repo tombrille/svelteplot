@@ -1,10 +1,11 @@
 ---
 title: Getting started
+description: This page explains how to start using SveltePlot.
 ---
 
-:::warning
-Unfortunately, SveltePlot **is not ready for use** yet. Most of the existing features are implemented only half-way and there are countless bugs in the reactive data flows.
-:::
+SveltePlot is a Svelte5 library and as such, it can only be used in Svelte 5 projects. You may notice that Svelte 5 is [not even released, yet](https://svelte-5-preview.vercel.app/status), so you can't "officially" use SveltePlot as of now.
+
+So at best, you may try out this experimental SveltePlot pre-release.
 
 ## Try online
 
