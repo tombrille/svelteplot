@@ -1,8 +1,8 @@
-import type { ChannelAccessor, ChannelName, DataRecord, DataRow, RawValue } from '$lib/types.js';
+import type { ChannelAccessor, ChannelName, Channels, DataRecord, DataRow, RawValue } from '$lib/types.js';
 import { min, max, mode, sum, mean, median, variance, deviation, quantile, range } from 'd3-array';
 import { resolveChannel } from './resolve.js';
 
-type ReducerFunc = (group: DataRow[]) => RawValue;
+type ReducerFunc = (group: Iterable<DataRow>) => RawValue;
 type ReducerOption = ReducerName | ReducerFunc;
 
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -30,8 +30,8 @@ export type ReducerName =
     | 'variance'
     | ReducerPercentile;
 
-const StaticReducer: Record<ReducerName, (d: Iterable<number | null | undefined>) => number> = {
-    count: (d) => d.length,
+const StaticReducer: Record<ReducerName, ReducerFunc> = {
+    count: (d) => Array.from(d).length,
     min,
     max,
     mode,
@@ -52,25 +52,30 @@ const StaticReducer: Record<ReducerName, (d: Iterable<number | null | undefined>
     // TODO: max-index
 };
 
+// use proxy to allow for percentile reducers
 export const Reducer = new Proxy(StaticReducer, {
     get(target, prop) {
         if (String(prop).charAt(0) === 'p' && String(prop).length === 3) {
             const p = +String(prop).slice(1) / 100;
             return percentile(p);
         }
-        // eslint-disable-next-line prefer-rest-params
-        return Reflect.get(...arguments);
+        return Reflect.get(target, prop);
     }
 });
 
-function percentile(p) {
-    return (I, f) => quantile(I, p, f);
+function percentile(p: number) {
+    return (I: Iterable<number>, f: (d: number) => number) => quantile(I, p, f);
+}
+
+function isReducerName(r: ReducerOption): r is ReducerName {
+    return typeof r === 'string' && r in Reducer;
 }
 
 export function mayberReducer(r: ReducerOption): ReducerFunc {
-    if (typeof r === 'string' && typeof Reducer[r] === 'function') {
-        return Reducer[r];
-    } else if (typeof r === 'function') return r;
+    if (typeof r === 'function') return r;
+    if (typeof r === 'string' && isReducerName(r)) {
+        return Reducer[r] as ReducerFunc;
+    } 
     throw new Error('unknown reducer ' + r);
 }
 
@@ -79,8 +84,8 @@ export function reduceOutputs(
     data: DataRecord[],
     options: Record<ChannelName, ReducerOption>,
     outputs: Iterable<ChannelName>,
-    channels: Record<ChannelName, ChannelAccessor>,
-    newChannels: Record<ChannelName, ChannelAccessor>
+    channels: Channels,
+    newChannels: Channels
 ) {
     for (const k of outputs) {
         if (options[k] != null) {
@@ -99,9 +104,9 @@ export function reduceOutputs(
                     // of both as axis labels, e.g. MEAN(weight)
                     // eslint-disable-next-line no-irregular-whitespace
                     newChannels[`__${k}_origField`] =
-                        `${String(reducer).toUpperCase()} ( ${channels[k]} )`;
+                        `${String(options[k]).toUpperCase()} ( ${channels[k]} )`;
                 } else {
-                    newChannels[`__${k}_origField`] = options[k];
+                    newChannels[`__${k}_origField`] = String(options[k]).toUpperCase();
                 }
             }
         }

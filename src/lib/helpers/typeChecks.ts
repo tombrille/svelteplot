@@ -27,7 +27,7 @@ export function isStringOrNull(v: RawValue) {
 }
 
 export function isSymbolOrNull(v: RawValue) {
-    return v == null || ((typeof v === 'string' || typeof v === 'function') && isSymbol(v));
+    return v == null || ((typeof v === 'string' || typeof v === 'object') && isSymbol(v));
 }
 
 const CSS_VAR = /^var\(--([a-z-0-9,\s]+)\)$/;

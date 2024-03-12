@@ -16,12 +16,7 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 </script>
 ```
 
-## Use SveltePlot in Svelte 5 projects
-
-:::warning
-Note that while we're figuring out the best license for SveltePlot, there's no
-recent release on npm, yet.
-:::
+## Use SveltePlot in Svelte 5
 
 Just install SveltePlot via `npm` or `pnpm`, and import and use the components!
 
@@ -51,9 +46,15 @@ pnpm add svelteplot
 </Plot>
 ```
 
+## Use SveltePlot in Svelte 4
+
+Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to it's heavy use of [runes](https://svelte-5-preview.vercel.app/docs/runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
+
+To upgrade to Svelte 5, you can follow the official [Svelte documentation](https://svelte-5-preview.vercel.app/docs/introduction) on how to upgrade your project.
+
 ## Use SveltePlot in vanilla HTML
 
-The core idea of SveltePlot is to be used inside Svelte applications. Svelte being Svelte, nothing is stopping you from pre-compiling your visualization code (including the Svelte runtime) as a standalone JavaScript bundle and embedding it anywhere you want.
+The core idea of SveltePlot is to be used inside Svelte applications, but Svelte being Svelte, nothing is stopping you from pre-compiling your visualization code (including the Svelte runtime) as a standalone JavaScript bundle and embedding it anywhere you want.
 
 All you need for this is to clone this starter repo (TODO) and run `npm run build`.
 

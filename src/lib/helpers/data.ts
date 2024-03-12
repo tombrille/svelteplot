@@ -1,12 +1,14 @@
 import { csvParse, autoType } from 'd3-dsv';
 
-async function loadCSV(fetch, dataset: string) {
+type Fetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
+
+async function loadCSV(fetch: Fetch, dataset: string): Promise<any[]> {
     const res = await fetch(`/data/${dataset}.csv`);
     const text = await res.text();
     return csvParse(text, autoType);
 }
 
-export async function loadJSON(fetch, dataset: string) {
+export async function loadJSON(fetch: Fetch, dataset: string): Promise<any> {
     const res = await fetch(`/data/${dataset}.json`);
     return await res.json();
 }
@@ -14,8 +16,9 @@ export async function loadJSON(fetch, dataset: string) {
 /**
  * helper function used in the SveltePlot docs to load example datasets
  */
-export async function loadDatasets(ids: string[], fetch) {
+export async function loadDatasets(ids: string[], fetch: Fetch): Promise<{ [key: string]: any[] }> {
     return Object.fromEntries(
         (await Promise.all(ids.map((id) => loadCSV(fetch, id)))).map((data, i) => [ids[i], data])
     );
 }
+

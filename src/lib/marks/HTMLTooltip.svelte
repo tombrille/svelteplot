@@ -3,11 +3,6 @@
     For showing custom HTML tooltips positioned at x/y coordinates
 -->
 <script context="module" lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import type { ChannelAccessor, DataRow } from '$lib/types.js';
 
     export type HTMLTooltipMarkProps = {

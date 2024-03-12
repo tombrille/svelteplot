@@ -1,9 +1,4 @@
 <script context="module" lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     export type AreaMarkProps = {
         z?: ChannelAccessor;
         fill?: ChannelAccessor;
@@ -21,7 +16,7 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import groupBy from 'underscore/modules/groupBy.js';
+    import { groups as d3Groups } from 'd3-array';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
@@ -67,14 +62,14 @@
     let groupByKey = $derived(options.z || options.fill || options.stroke);
 
     let groups = $derived(
-        groupByKey ? Object.values(groupBy(data2, (d) => resolveProp(groupByKey, d))) : [data]
+        groupByKey ? d3Groups(data2, (d) => resolveProp(groupByKey, d)).map(d => d[1]) : [data]
     );
 
     // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
     let sortedGroups = $derived(
         options.sort
             ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], channels) > resolveChannel('sort', b[0], channels)
+                  resolveChannel('sort', a[0], options) > resolveChannel('sort', b[0], options)
                       ? 1
                       : -1
               )

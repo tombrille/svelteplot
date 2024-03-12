@@ -158,7 +158,6 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
 
 Note that _{'{ k: 20 }'}_ doesn't ensure that you're computing a 20-year average, since they may be missing years and the window may include data points outside of a 20-year period. To illustrate this, let's take a look at this dataset of [Cherry Tree Flowering in Kyoto City](http://atmenv.envi.osakafu-u.ac.jp/aono/kyophenotemp4/) by Yasuyuki Aono:
 
-
 ```svelte live
 <script lang="ts">
     import { Plot, Line, Dot, RectX, Area, RuleY, windowY, binX } from '$lib';
@@ -174,7 +173,7 @@ Note that _{'{ k: 20 }'}_ doesn't ensure that you're computing a 20-year average
 </script>
 
 <Plot grid height={250}>
-    <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay"  opacity="0.5" r={2} />
+    <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" opacity="0.5" r={2} />
 </Plot>
 ```
 
@@ -199,24 +198,18 @@ If we just use the `windowY` transform with _{'{ k: 20, strict: 5 }'}_ to comput
         }))
     );
 
-    let movingAverage = $derived(windowY(
-        { data, x: 'Year', y: 'CherryBlossomPeakDay' },
-        { y: 'mean', k: 20, anchor: 'end', strict: 5 }
-    ));
+    let movingAverage = $derived(
+        windowY(
+            { data, x: 'Year', y: 'CherryBlossomPeakDay' },
+            { y: 'mean', k: 20, anchor: 'end', strict: 5 }
+        )
+    );
 </script>
 
 <Plot grid height={250}>
     <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" opacity="0.5" r={2} /> -->
-    <Line
-        {...movingAverage}
-        stroke="var(--svelteplot-bg)"
-        strokeWidth="4"
-    /> 
-    <Line
-        {...movingAverage}
-        stroke="var(--svp-red)"
-        strokeWidth="2"
-    />
+    <Line {...movingAverage} stroke="var(--svelteplot-bg)" strokeWidth="4" />
+    <Line {...movingAverage} stroke="var(--svp-red)" strokeWidth="2" />
 </Plot>
 ```
 
@@ -244,10 +237,7 @@ The problem is that especially in pre-modern times, there aren't nearly as many 
 
 ```svelte
 <Plot grid height={250}>
-    <Line {...binX(
-        { data, x: 'Year' }, 
-        { interval: '20 years', y: 'count' })} 
-        curve="step-after" />
+    <Line {...binX({ data, x: 'Year' }, { interval: '20 years', y: 'count' })} curve="step-after" />
 </Plot>
 ```
 
@@ -271,27 +261,20 @@ We can fix this problem by setting the _interval_ option of the window transform
 
     let strict = $state(5);
 
-    let movingAverage = $derived(windowY(
-        { data, x: 'Year', y: 'CherryBlossomPeakDay' },
-        { y: 'mean', k: 20, interval: 'year', anchor: 'end', strict }
-    ));
+    let movingAverage = $derived(
+        windowY(
+            { data, x: 'Year', y: 'CherryBlossomPeakDay' },
+            { y: 'mean', k: 20, interval: 'year', anchor: 'end', strict }
+        )
+    );
 </script>
 
 <Slider label="strict" min={1} max={20} bind:value={strict} />
 <Plot grid height={250}>
     <Dot {data} fill="#e7adca" opacity="0.5" x="Year" y="CherryBlossomPeakDay" r={2} /> -->
-    
-    <Line
-        {...movingAverage}
-        stroke="var(--svelteplot-bg)"
-        strokeWidth="4"
-    /> 
-    <Line
-        {...movingAverage}
-        stroke="var(--svp-red)"
-        strokeWidth="2"
-    />
-    
+
+    <Line {...movingAverage} stroke="var(--svelteplot-bg)" strokeWidth="4" />
+    <Line {...movingAverage} stroke="var(--svp-red)" strokeWidth="2" />
 </Plot>
 ```
 
@@ -305,7 +288,7 @@ We can fix this problem by setting the _interval_ option of the window transform
         )}
         stroke="red"
         strokeWidth="2"
-    /> 
+    />
 </Plot>
 ```
 

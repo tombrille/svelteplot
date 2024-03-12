@@ -3,11 +3,6 @@
     For arbitrary rectangles, requires quantitative x and y scales 
 -->
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { recordizeY, intervalX, intervalY } from '$lib/index.js';

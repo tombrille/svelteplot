@@ -12,25 +12,25 @@ actions:
       type: primary
 features:
     - title: Marks
-      description: To help you can start writing with minimal configuration.
+      description: SveltePlot comes with a powerful set of built-in marks for building for your visualizations
       icon:
           type: iconify
           collection: carbon
           name: roadmap
       link: /features/scales
     - title: Automatic scales
-      description: Preserve the full power of Sveltekit. So that you can do more than SSG.
+      description: Scale types and domains are automatically inferred from your data, unless you customize them
       icon:
           type: iconify
           collection: ri
           name: ruler-line
       link: /features/scales
     - title: Fully reactive
-      description: Feel free to use svelte (3 and 4) in markdown. Explore infinite possibilities.
+      description: Everything in SveltePlot is fully reactive, the plot just updates when the data or configuration changes
       icon:
           type: iconify
-          collection: vscode-icons
-          name: file-type-svelte
+          collection: ri
+          name: svelte-line
       link: /features/interactivity
     - title: TypeScript
       description: All components are fully typed and documented to integrate with VSCode
@@ -39,12 +39,12 @@ features:
           collection: nonicons
           name: typescript-16
       link: /features/scales
-    - title: Theme Customizable
-      description: Feel free to use default theme, community themes or write your own.
+    - title: Customizable
+      description: All components are fully typed and documented to integrate with VSCode
       icon:
           type: iconify
-          collection: emojione
-          name: artist-palette
+          collection: nonicons
+          name: typescript-16
       link: /features/scales
     - title: Written in Svelte5 & TypeScript
       description: All components and props are fully reactive, typed and documented!

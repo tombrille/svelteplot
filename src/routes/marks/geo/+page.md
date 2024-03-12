@@ -90,33 +90,6 @@ Earthquakes
 </Plot>
 ```
 
-The [graticule](/marks/geo#Graticule) helper draws a uniform grid of meridians (lines of constant longitude) and parallels (lines of constant latitude) every 10° between ±80° latitude; for the polar regions, meridians are drawn every 90°. The [sphere](/marks/geo#Sphere) helper draws the outline of the projected sphere.
-
-```svelte live
-<script>
-    import { Plot, Graticule, Sphere } from '$lib';
-    import { page } from '$app/stores';
-    import * as topojson from 'topojson-client';
-
-    let { world, earthquakes } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
-
-    $inspect(land);
-</script>
-
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
-    <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3} />
-</Plot>
-```
-
-```svelte
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
-    <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3} />
-</Plot>
-```
-
 The geo mark’s **geometry** channel can be used to generate geometry from a non-GeoJSON data source.
 
 ```svelte live
@@ -179,3 +152,37 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 ## Sphere
 
 ## Graticule
+
+
+The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a uniform grid of meridians (lines of constant longitude) and parallels (lines of constant latitude) every 10° between ±80° latitude; for the polar regions, meridians are drawn every 90°. The [sphere](/marks/geo#Sphere) helper draws the outline of the projected sphere.
+
+```svelte live
+<script>
+    import { Plot, Graticule, Sphere } from '$lib';
+    import { Slider } from '$lib/ui';
+
+    let stepX = $state(10);
+    let stepY = $state(10);
+</script>
+
+<Slider label="stepX" bind:value={stepX} min={1} max={45} />
+<Slider label="stepY" bind:value={stepY} min={1} max={45} />
+
+<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
+    <Sphere stroke="currentColor" />
+    <Graticule strokeOpacity={0.3} {stepX} {stepY} />
+</Plot>
+```
+
+```svelte
+<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
+    <Sphere stroke="currentColor" />
+    <Graticule strokeOpacity={0.3} />
+</Plot>
+```
+
+You can customize the step size using the following options
+
+- **stepX** - default step size for the minor longitude grid, in degrees
+- **stepY** - default step size for the minor latitude grid, in degrees
+- **step** - convenience option for setting both _stepX_ and _stepY_ 

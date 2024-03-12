@@ -1,10 +1,10 @@
+<!--
+    @component
+    The Plot component is the container for your plot. It collects the marks and computes
+    the shared scales.
+-->
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
-    import { setContext } from 'svelte';
+    import { getContext, setContext } from 'svelte';
     import { writable } from 'svelte/store';
     import type {
         PlotOptions,
@@ -53,11 +53,21 @@
         inset?: number;
     };
 
+    const DEFAULTS = {
+        axisXAnchor: 'bottom',
+        axisYAnchor: 'left',
+        xTickSpacing: 80,
+        yTickSpacing: 50,
+        height: 350,
+        inset: 0,
+        colorScheme: 'turbo',
+        ...getContext<Partial<PlotOptions>>('svelteplot/defaults')
+    };
+
     function defaultPlotOptions({
         explicitScales,
         hasProjection,
         margins,
-        inset
     }: PlotOptionsParameters): PlotOptions {
         const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
         const oneDimX = isOneDimensional && explicitScales.has('x');
@@ -79,7 +89,7 @@
                     : Math.max($autoMarginRight + 1, 4),
             marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: hasProjection ? 0 : margins != null ? margins : 35,
-            inset: isOneDimensional ? 10 : 0,
+            inset: isOneDimensional ? 10 : DEFAULTS.inset,
             grid: false,
             frame: false,
             projection: null,
@@ -88,7 +98,7 @@
             padding: 0.1,
             x: {
                 type: 'auto',
-                axis: oneDimY ? null : 'bottom',
+                axis: oneDimY ? null : DEFAULTS.axisXAnchor,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -97,13 +107,13 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: 80,
+                tickSpacing: DEFAULTS.xTickSpacing,
                 tickFormat: 'auto',
                 grid: false
             },
             y: {
                 type: 'auto',
-                axis: oneDimX ? null : 'left',
+                axis: oneDimX ? null : DEFAULTS.axisYAnchor,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -112,7 +122,7 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: 50,
+                tickSpacing: DEFAULTS.yTickSpacing,
                 tickFormat: 'auto',
                 grid: false
             },
@@ -192,7 +202,7 @@
     );
 
     let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, 'pre')
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks)
     );
 
     let hasProjection = $derived(!!preScales.projection);
@@ -247,7 +257,7 @@
                                 ? yFacetCount * yDomainCount * 30
                                 : preScales.y.type === 'point'
                                   ? yFacetCount * yDomainCount * 18
-                                  : 350) +
+                                  : DEFAULTS.height) +
                           plotOptions.marginTop +
                           plotOptions.marginBottom
               )
@@ -318,12 +328,6 @@
         return width;
     }
 </script>
-
-<!--
-    @component
-    The Plot component is the container for your plot. It collects the marks and computes
-    the shared scales.
--->
 
 <figure
     class="svelteplot"

@@ -1,0 +1,53 @@
+---
+title: Default options
+---
+
+SveltePlot defines internal defaults for a lot of its options so you don't have to worry about them in your day-to-day use. However, sometimes you may want to divert from these defaults for _all_ of the plots on your page.
+
+In this case, you can make use of the `svelteplot/defaults` context.
+
+If you're using SveltePlot in a SvelteKit project, you can even set the defaults context in your root layout to ensure the same defaults are being used in your entire site.
+
+```svelte title="+layout.svelte"
+<script>
+    import { setContext } from 'svelte';
+
+    setContext('svelteplot/defaults', {
+        tickSize: 0,
+        colorScheme: 'plasma'
+    });
+</script>
+
+<slot />
+```
+
+
+## Options
+
+| Name       | Description                         | Unit   | Default |
+|------------|-------------------------------------|--------|---------|
+| _height_     | Plot height                         | px  | `350`     |
+| _inset_      | Plot inset                          | px  | `0`       |
+| _colorScheme_ | Default scheme for color scale | string  | `'turbo'`       |
+| _tickSize_   | Axis tick line length               | px  | `6`       |
+| _tickPadding_  | Distance between tick line and label | px  | `3`       |
+| _tickFontSize_  | Tick label font size | px  | `11`       |
+| _axisXAnchor_  | Alignment of AxisX |   | `'bottom'` |
+| _axisYAnchor_  | Alignment of AxisY |   | `'left'` |
+| _xTickSpacing_  | Horizontal space between ticks in AxisX and GridX | px | `80` |
+| _yTickSpacing_  | Vertical space between ticks in AxisY and GridY | px | `50` |
+| _graticuleStep_  | Default step size in graticules | degrees | `10` |
+
+<style>
+    * :global(td) {
+        vertical-align: top;
+    }
+</style>
+
+## CSS Variables
+
+SveltePlot is also relying on CSS variables.
+
+| Name            | Description                         | Unit   | Default |
+|-----------------|-------------------------------------|--------|---------|
+| _--svelteplot-bg_ | Background color of your page       | color  | white   |

@@ -7,7 +7,6 @@
  * and this permission notice appear in all copies.
  */
 import { bisector } from 'd3-array';
-// import { bisector, max, pairs, timeFormat, utcFormat } from 'd3-time';
 
 import {
     utcSecond,
@@ -290,13 +289,13 @@ export function generalizeTimeInterval(interval, n) {
 //     throw new Error('unable to format time ticks');
 // }
 
-function getTimeTemplate(anchor) {
-    return anchor === 'left' || anchor === 'right'
-        ? (f1, f2) => `\n${f1}\n${f2}` // extra newline to keep f1 centered
-        : anchor === 'top'
-          ? (f1, f2) => `${f2}\n${f1}`
-          : (f1, f2) => `${f1}\n${f2}`;
-}
+// function getTimeTemplate(anchor) {
+//     return anchor === 'left' || anchor === 'right'
+//         ? (f1, f2) => `\n${f1}\n${f2}` // extra newline to keep f1 centered
+//         : anchor === 'top'
+//           ? (f1, f2) => `${f2}\n${f1}`
+//           : (f1, f2) => `${f1}\n${f2}`;
+// }
 
 // function getFormatIntervals(type) {
 //     return type === 'time'
@@ -320,11 +319,11 @@ function getTimeTemplate(anchor) {
 //     }
 // }
 
-function formatConditional(format1, format2, template) {
-    return (x, i, X) => {
-        const f1 = format1(x, i); // always shown
-        const f2 = format2(x, i); // only shown if different
-        const j = i - orderof(X); // detect reversed domains
-        return i !== j && X[j] !== undefined && f2 === format2(X[j], j) ? f1 : template(f1, f2);
-    };
-}
+// function formatConditional(format1, format2, template) {
+//     return (x, i, X) => {
+//         const f1 = format1(x, i); // always shown
+//         const f2 = format2(x, i); // only shown if different
+//         const j = i - orderof(X); // detect reversed domains
+//         return i !== j && X[j] !== undefined && f2 === format2(X[j], j) ? f1 : template(f1, f2);
+//     };
+// }

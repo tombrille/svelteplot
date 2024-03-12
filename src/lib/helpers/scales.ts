@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: AGPL-3.0-or-later
- * Copyright (C) 2024  Gregor Aisch
- */
 import {
     scaleBand,
     scaleLinear,
@@ -34,6 +29,7 @@ import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
 import type {
     ChannelAccessor,
+    ColorScheme,
     GenericMarkOptions,
     Mark,
     MarkType,
@@ -75,8 +71,9 @@ export function computeScales(
     plotWidth: number,
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
-    marks: Mark<GenericMarkOptions>[]
-) {
+    marks: Mark<GenericMarkOptions>[],
+    defaultColorScheme: ColorScheme
+):PlotScales {
     const x = createScale(
         'x',
         plotOptions.x,
@@ -84,7 +81,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const y = createScale(
         'y',
@@ -93,7 +91,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const r = createScale(
         'r',
@@ -102,7 +101,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const color = createScale(
         'color',
@@ -111,7 +111,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme,
     );
     const opacity = createScale(
         'opacity',
@@ -120,7 +121,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const length = createScale(
         'length',
@@ -129,7 +131,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const symbol = createScale(
         'symbol',
@@ -138,7 +141,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const fx = createScale(
         'fx',
@@ -147,7 +151,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const fy = createScale(
         'fy',
@@ -156,7 +161,8 @@ export function computeScales(
         plotOptions,
         plotWidth,
         plotHeight,
-        plotHasFilledDotMarks
+        plotHasFilledDotMarks,
+        defaultColorScheme
     );
     const projection = plotOptions.projection
         ? createProjection(
@@ -181,7 +187,8 @@ export function createScale<T extends ScaleOptions>(
     plotOptions: PlotOptions,
     plotWidth: number,
     plotHeight: number,
-    plotHasFilledDotMarks: boolean
+    plotHasFilledDotMarks: boolean,
+    defaultColorScheme: ColorScheme
 ) {
     // gather all marks that use channels which support this scale
     const dataValues = new Set<RawValue>();
@@ -332,7 +339,7 @@ export function createScale<T extends ScaleOptions>(
                     : ordinalScheme(scheme)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'quantile') {
-            const scheme_ = scheme || 'turbo';
+            const scheme_ = scheme || defaultColorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
 
@@ -341,7 +348,7 @@ export function createScale<T extends ScaleOptions>(
                 fn = scaleQuantile().domain(allDataValues).range(range);
             }
         } else if (type === 'quantize') {
-            const scheme_ = scheme || 'turbo';
+            const scheme_ = scheme || defaultColorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
                 // console.log({domain, scheme_, range})
@@ -351,14 +358,14 @@ export function createScale<T extends ScaleOptions>(
                 throw new Error('no ordinal scheme ' + scheme_);
             }
         } else if (type === 'threshold') {
-            const scheme_ = scheme || 'turbo';
+            const scheme_ = scheme || defaultColorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
                 if (scaleOptions.reverse) range.reverse();
                 fn = scaleThreshold().domain(domain).range(range);
             }
         } else if (type === 'linear') {
-            const scheme_ = scheme || 'turbo';
+            const scheme_ = scheme || defaultColorScheme;
             if (interpolate) {
                 fn = scaleSequential(domain, interpolate);
             } else if (Array.isArray(scheme_)) {
@@ -580,7 +587,7 @@ export function getUsedScales(
     ) as { [k in ScaledChannelName]: boolean };
 }
 
-function looksLikeANumber(input: string | number) {
+export function looksLikeANumber(input: string | number) {
     return (
         Number.isFinite(input) ||
         (typeof input === 'string' && input.trim().length > 0 && Number.isFinite(+input))
@@ -595,7 +602,7 @@ function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }
 
-export function projectXY(scales, x, y, useXScale = true, useYScale = true) {
+export function projectXY(scales: PlotScales, x: RawValue, y: RawValue, useXScale = true, useYScale = true) {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using

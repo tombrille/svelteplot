@@ -1,10 +1,17 @@
 <script lang="ts">
     import Geo from './Geo.svelte';
     import { geoGraticule } from 'd3-geo';
-    import type { BaseMarkProps } from '../types.js';
+    import type { DefaultOptions, BaseMarkProps } from '../types.js';
+
+    import { getContext } from 'svelte';
+
+    const DEFAULTS = {
+        graticuleStep: 10,
+        ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
+    };
 
     let {
-        step = 10,
+        step = DEFAULTS.graticuleStep,
         stepX,
         stepY,
         ...options

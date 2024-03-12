@@ -1,9 +1,4 @@
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import { getContext, type Snippet } from 'svelte';
     import type {
         PlotContext,
@@ -19,6 +14,7 @@
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
+    import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
 
     let { data, ...options } = $props<
@@ -55,6 +51,9 @@
             ...(options.fill === true ? { fill: 'currentColor' } : {})
         })
     );
+
+    let useCanvas = $derived(data.length > 1000);
+    
 </script>
 
 <Mark
@@ -79,33 +78,37 @@
     {@const useScale = getUsedScales(plot, args, mark)}
 
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
-        {#each args.data as datum}
-            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const _x = resolveChannel('x', datum, args)}
-                {@const _y = resolveChannel('y', datum, args)}
-                {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
-                {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                    {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
-                    {#if isValid(x) && isValid(y)}
-                        {@const dx = +resolveProp(args.dx, datum, 0)}
-                        {@const dy = +resolveProp(args.dx, datum, 0)}
-                        {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
-                        {@const size = r * r * Math.PI}
-                        {@const symbol_ = resolveChannel('symbol', datum, {
-                            symbol: 'circle',
-                            ...args
-                        })}
-                        {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
-                        <path
-                            d={getSymbolPath(symbol, size)}
-                            transform="translate({x + dx}, {y + dy})"
-                            data-symbol={symbol}
-                            style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                        />
+        {#if useCanvas}
+            <DotCanvas {data} {mark} {plot} {testFacet} {useScale} />
+        {:else}
+            {#each args.data as datum}
+                {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
+                    {@const _x = resolveChannel('x', datum, args)}
+                    {@const _y = resolveChannel('y', datum, args)}
+                    {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
+                    {#if isValid(_x) && isValid(_y) && isValid(_r)}
+                        {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
+                        {#if isValid(x) && isValid(y)}
+                            {@const dx = +resolveProp(args.dx, datum, 0)}
+                            {@const dy = +resolveProp(args.dx, datum, 0)}
+                            {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
+                            {@const size = r * r * Math.PI}
+                            {@const symbol_ = resolveChannel('symbol', datum, {
+                                symbol: 'circle',
+                                ...args
+                            })}
+                            {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
+                            <path
+                                d={getSymbolPath(symbol, size)}
+                                transform="translate({x + dx}, {y + dy})"
+                                data-symbol={symbol}
+                                style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                            />
+                        {/if}
                     {/if}
                 {/if}
-            {/if}
-        {/each}
+            {/each}
+        {/if}
     </g>
 </Mark>
 

@@ -1,14 +1,14 @@
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { ChannelAccessor, ChannelName, DataRecord } from '$lib/types.js';
+import type { ChannelAccessor, ChannelName, Channels, DataRecord } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';
 
 export function groupFacetsAndZ(
     items: DataRecord[],
-    channels: Record<ChannelName, ChannelAccessor>,
+    channels: Channels,
     reduce: (items: DataRecord[]) => any
 ) {
-    const groupBy = ['fx', 'fy', 'z'].map((groupChannel) => {
-        const groupByChannel: ChannelName | false =
+    const groupBy = (['fx', 'fy', 'z'] as ChannelName[]).map((groupChannel) => {
+        const groupByChannel =
             groupChannel === 'z'
                 ? channels.z
                     ? 'z'

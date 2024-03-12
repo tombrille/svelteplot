@@ -143,6 +143,39 @@ You can rotate tick labels:
 Keep in mind that rotated texts are a lot harder to read, so if possible, avoid rotated axis ticks (e.g. by flipping a column chart to bar chart) or at least limit rotation to 45 degrees.
 :::
 
+You can change the defaults for SveltePlot grids by defining the `svelteplot/defaults` context:
+
+```svelte live
+<script>
+    import { Plot, Line } from '$lib';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid testid="axis">
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<script>
+    import { Plot, Line } from 'svelteplot';
+    import { setContext } from 'svelte';
+
+    setContext('svelteplot/defaults', {
+        tickSize: 0
+    });
+
+    let aapl = [/* import data etc. */];
+</script>
+
+<Plot grid testid="axis">
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+
 ## AxisX
 
 You can explicitly add an x axis using the `AxisX` mark component:

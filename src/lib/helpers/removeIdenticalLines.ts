@@ -1,5 +1,8 @@
-type Tick = { value: number; text: string[] };
+type Tick = { text: string[] };
 
+/**
+ * Remove identical lines from a set of ticks
+ */
 export default function removeIdenticalLines(input: Tick[]): Tick[] {
     const uniqueTicks: Tick[] = [];
     if (!input.length) return input;
@@ -14,7 +17,7 @@ export default function removeIdenticalLines(input: Tick[]): Tick[] {
         const isIdentical =
             input.length > 1 && input.every((tick) => input[0].text[l] === tick.text[l]);
         for (let c = 0; c < input.length; c++) {
-            if (!isIdentical) uniqueTicks[c].text.push(input[c].text[l]);
+            if (!isIdentical && input[c].text[l]) uniqueTicks[c].text.push(input[c].text[l]);
         }
     }
     return uniqueTicks;

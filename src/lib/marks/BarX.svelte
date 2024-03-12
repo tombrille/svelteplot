@@ -3,11 +3,6 @@
     For horizontal bar charts using a band scale as y axis
 -->
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { stackX, recordizeX, intervalX } from '$lib/index.js';

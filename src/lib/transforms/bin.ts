@@ -41,20 +41,20 @@ type AdditionalOutputChannels = Partial<{
     strokeOpacity: ReducerOption;
 }>;
 
-type BinXOptions = BinBaseOptions &
+export type BinXOptions = BinBaseOptions &
     AdditionalOutputChannels &
     Partial<{
-        y: Reducer;
-        y1: Reducer;
-        y2: Reducer;
+        y: typeof Reducer;
+        y1: typeof Reducer;
+        y2: typeof Reducer;
     }>;
 
-type BinYOptions = BinBaseOptions &
+export type BinYOptions = BinBaseOptions &
     AdditionalOutputChannels &
     Partial<{
-        x: Reducer;
-        x1: Reducer;
-        x2: Reducer;
+        x: typeof Reducer;
+        x1: typeof Reducer;
+        x2: typeof Reducer;
     }>;
 
 type BinOptions = BinBaseOptions & AdditionalOutputChannels;

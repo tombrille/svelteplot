@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: AGPL-3.0-or-later
- * Copyright (C) 2024  Gregor Aisch
- */
 import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
@@ -605,9 +600,7 @@ export type RectMarkProps = {
     insetBottom?: ConstantAccessor<number>;
 };
 
-export type Channels = {
-    [K in ChannelName]: ChannelAccessor | ConstantAccessor<string | number | boolean>;
-};
+export type Channels = Record<string, ChannelAccessor | ConstantAccessor<string | number | boolean>>;
 
 export type TransformArg<K> = Channels & { data: K[] };
 
@@ -697,3 +690,55 @@ export type AutoMarginStores = {
     autoMarginRight: Writable<number>;
     autoMarginBottom: Writable<number>;
 };
+
+/**
+ * these are the default options for the plot marks that can be set using
+ * the 'svelteplot/defaults' context.
+ */
+export type DefaultOptions = {
+    /**
+     * default plot height
+     */
+    height: number;
+    /**
+     * default plot inset
+     */
+    inset: number;
+    /**
+     * default tick line length
+     */
+    tickSize: number;
+    /**
+     * default padding between tick line and tick label
+     */
+    tickPadding: number;
+    /**
+     * default font size for tick labels
+     */
+    tickFontSize: number;
+    /**
+     * default anchor for x axis
+     */
+    axisXAnchor: 'bottom' | 'top';
+    /**
+     * default anchor for y axis
+     */
+    axisYAnchor: 'left' | 'right';
+    /**
+     * default spacing between ticks in AxisX and GridX
+     */
+    xTickSpacing: number;
+    /**
+     * default spacing between ticks in AxisY and GridY
+     */
+    yTickSpacing: number;
+    /**
+     * default color scheme
+     */
+    colorScheme: ColorScheme
+    /**
+     * default step for graticule, in degrees
+     */
+    graticuleStep: number;
+
+}

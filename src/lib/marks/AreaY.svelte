@@ -1,9 +1,4 @@
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackY } from '$lib/transforms/stack.js';

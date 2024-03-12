@@ -49,6 +49,10 @@ export default {
                 {
                     title: 'Interactivity',
                     to: '/features/interactivity/'
+                },
+                {
+                    title: 'Defaults',
+                    to: '/features/defaults/'
                 }
             ]
         },

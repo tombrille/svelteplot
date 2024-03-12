@@ -59,7 +59,7 @@ The [LineY constructor](/marks/line#LineY) provides default channel definitions 
     import { range, cumsum } from 'd3-array';
 </script>
 
-<Plot grid>
+<Plot grid height={250}>
     <LineY data={cumsum(range(600).map(randomNormal()))} />
 </Plot>
 ```

@@ -1,9 +1,4 @@
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import BaseAxisX from './helpers/BaseAxisX.svelte';
@@ -12,7 +7,10 @@
         BaseMarkProps,
         RawValue,
         ConstantAccessor,
-        FacetContext
+        FacetContext,
+
+        DefaultOptions
+
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -23,34 +21,42 @@
     import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
 
+    const DEFAULTS = {
+        tickSize: 6,
+        tickPadding: 3,
+        tickFontSize: 11,
+        axisXAnchor: 'bottom',
+        ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
+    };
+
+    type AxisXProps = BaseMarkProps & {
+        data?: RawValue[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'top' | 'bottom';
+        interval?: string | number;
+        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number>;
+        tickPadding?: number;
+        tickFormat?: string | ((d: RawValue) => string);
+    };
+
     let {
         data = [],
         automatic = false,
         title,
-        anchor = 'bottom',
+        anchor = DEFAULTS.axisXAnchor,
         facetAnchor = 'auto',
         interval,
-        tickSize = 6,
-        tickPadding = 3,
-        tickFontSize = 11,
+        tickSize = DEFAULTS.tickSize,
+        tickFontSize = DEFAULTS.tickFontSize,
+        tickPadding = DEFAULTS.tickPadding,
         labelAnchor,
         tickFormat,
         ...options
-    } = $props<
-        {
-            data?: RawValue[];
-            automatic?: boolean;
-            title?: string;
-            anchor?: 'top' | 'bottom';
-            interval?: string;
-            facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
-            labelAnchor?: 'auto' | 'left' | 'center' | 'right';
-            tickSize?: number;
-            tickPadding?: number;
-            tickFontSize?: ConstantAccessor<number>;
-            tickFormat?: string | ((d: RawValue) => string);
-        } & BaseMarkProps
-    >();
+    } = $props<AxisXProps>();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

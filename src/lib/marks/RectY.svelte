@@ -1,9 +1,4 @@
 <script lang="ts">
-    /**
-     * @license
-     * SPDX-License-Identifier: AGPL-3.0-or-later
-     * Copyright (C) 2024  Gregor Aisch
-     */
     import Rect from './Rect.svelte';
     import { renameChannels, intervalX, stackY, recordizeY } from '$lib/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
