@@ -1,4 +1,12 @@
-import { isColorOrNull, isBooleanOrNull, isDateOrNull, isNumberOrNull, isOpacityOrNull, isStringOrNull, isSymbolOrNull } from './typeChecks.js';
+import {
+    isColorOrNull,
+    isBooleanOrNull,
+    isDateOrNull,
+    isNumberOrNull,
+    isOpacityOrNull,
+    isStringOrNull,
+    isSymbolOrNull
+} from './typeChecks.js';
 import { describe, it, expect } from 'vitest';
 import { symbolAsterisk } from 'd3-shape';
 

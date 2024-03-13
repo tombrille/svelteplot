@@ -153,7 +153,6 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 ## Graticule
 
-
 The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a uniform grid of meridians (lines of constant longitude) and parallels (lines of constant latitude) every 10° between ±80° latitude; for the polar regions, meridians are drawn every 90°. The [sphere](/marks/geo#Sphere) helper draws the outline of the projected sphere.
 
 ```svelte live
@@ -183,6 +182,6 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 
 You can customize the step size using the following options
 
-- **stepX** - default step size for the minor longitude grid, in degrees
-- **stepY** - default step size for the minor latitude grid, in degrees
-- **step** - convenience option for setting both _stepX_ and _stepY_ 
+-   **stepX** - default step size for the minor longitude grid, in degrees
+-   **stepY** - default step size for the minor latitude grid, in degrees
+-   **step** - convenience option for setting both _stepX_ and _stepY_

@@ -5,11 +5,7 @@ import type { ChannelAccessor, ChannelName, RawValue } from '$lib/types.js';
 describe('reduceOutputs', () => {
     it('should correctly reduce outputs', () => {
         const newDatum = {};
-        const data = [
-            { value: 10 },
-            { value: 20 },
-            { value: 30 },
-        ];
+        const data = [{ value: 10 }, { value: 20 }, { value: 30 }];
         const options: Record<ChannelName, ReducerName> = {
             y: 'sum',
             y1: 'mean',
@@ -17,7 +13,9 @@ describe('reduceOutputs', () => {
         };
         const outputs: ChannelName[] = ['y', 'y1', 'y2'];
         const channels: Record<ChannelName, ChannelAccessor> = {
-            y: 'value', y1: 'value', y2: 'value'
+            y: 'value',
+            y1: 'value',
+            y2: 'value'
         };
         const newChannels: Partial<Record<ChannelName, ChannelAccessor>> = {};
 

@@ -67,7 +67,7 @@
     function defaultPlotOptions({
         explicitScales,
         hasProjection,
-        margins,
+        margins
     }: PlotOptionsParameters): PlotOptions {
         const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
         const oneDimX = isOneDimensional && explicitScales.has('x');

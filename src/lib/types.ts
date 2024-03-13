@@ -600,7 +600,10 @@ export type RectMarkProps = {
     insetBottom?: ConstantAccessor<number>;
 };
 
-export type Channels = Record<string, ChannelAccessor | ConstantAccessor<string | number | boolean>>;
+export type Channels = Record<
+    string,
+    ChannelAccessor | ConstantAccessor<string | number | boolean>
+>;
 
 export type TransformArg<K> = Channels & { data: K[] };
 
@@ -735,10 +738,9 @@ export type DefaultOptions = {
     /**
      * default color scheme
      */
-    colorScheme: ColorScheme
+    colorScheme: ColorScheme;
     /**
      * default step for graticule, in degrees
      */
     graticuleStep: number;
-
-}
+};

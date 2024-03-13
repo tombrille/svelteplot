@@ -1,12 +1,15 @@
 ---
 title: Why SveltePlot?
+description: SveltePlot is heavily inspired by Observable Plot, so much so that you may ask, why do it even exists
 ---
 
-SveltePlot is heavily inspired by Observable Plot, but in many regards it is different.
+SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/), and so much so that you may ask, why does it even exists! But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
 
 ## Reactive plotting
 
-As the name suggests, SveltePlot is written in Svelte, so all the marks are reactive components, and the _data_ and _channel_ definitions are just their props. Whenever you change mark options, like a channel or the data, the plot will update, re-using the existing DOM.
+Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a basically static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)).
+
+In contrast, in **SveltePlot** the plot and mark components are _reactive components_, so the _data_ and _channel_ definitions are just the properties you pass into. Whenever you change a channel assignment or the data array, the plot will update itself, re-using the existing DOM.
 
 Take the following example, where you can filter the data using the [filter](/transforms/filter/) transform, which is bound to a range input. When the plot updates itself, only the dot marks get updated:
 
@@ -21,20 +24,32 @@ Take the following example, where you can filter the data using the [filter](/tr
 
 <label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>
 
-<Plot grid testid="cars" color={{ type: 'linear', scheme: 'turbo' }} marginLeft={50}>
+<Plot grid testid="cars" color={{ type: 'linear', scheme: 'turbo' }}>
     <Dot
         data={cars}
         filter={(d) => d['economy (mpg)'] > min}
         y="weight (lb)"
         x="power (hp)"
         r={4}
-        symbol={manufactor}
         stroke="economy (mpg)"
     />
 </Plot>
 ```
 
-Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being re-created when the scales update:
+```svelte
+<Plot grid color={{ type: 'linear', scheme: 'turbo' }}>
+    <Dot
+        data={cars}
+        filter={(d) => d['economy (mpg)'] > min}
+        y="weight (lb)"
+        x="power (hp)"
+        r={4}
+        stroke="economy (mpg)"
+    />
+</Plot>
+```
+
+Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being re-created on every frame:
 
 ```svelte live
 <script lang="ts">
@@ -97,7 +112,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
 </Plot>
 ```
 
-Simply by being a reactive Svelte framework, SveltePlot supports using **transitions** out of the box! Here, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to smoothly update the plots y domain whenever the data changes:
+Also, simply by being a reactive Svelte framework, SveltePlot supports using **tweened transitions** out of the box! In the following plot, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
 
 ```svelte live
 <script>
@@ -174,29 +189,28 @@ In the following example, we're switching from the implicit y axis to a custom A
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 
-    let plot = $state(null);
-    let plotWidth = $derived(plot ? plot.getWidth() : 400);
+    let plotWidth = $state(600);
     let isMobile = $derived(plotWidth < 600);
 </script>
 
-<Plot
-    grid
-    bind:this={plot}
-    marginRight={isMobile ? 0 : 20}
-    marginLeft={isMobile ? 0 : 40}
-    x={{
-        insetLeft: isMobile ? 25 : 10,
-        tickFormat: isMobile ? "'YY" : 'YYYY'
-    }}
-    height={isMobile ? 300 : 400}
-    inset={isMobile ? 5 : 10}
->
-    {#if isMobile}
-        <!-- custom axisy on mobile -->
-        <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
-    {/if}
-    <Line data={aapl} x="Date" y="Close" />
-</Plot>
+<div bind:clientWidth={plotWidth}>
+    <Plot
+        grid
+        marginRight={isMobile ? 0 : 20}
+        x={{
+            insetLeft: isMobile ? 25 : 10,
+            tickFormat: isMobile ? "'YY" : 'YYYY'
+        }}
+        height={isMobile ? 300 : 400}
+        inset={isMobile ? 5 : 10}
+    >
+        {#if isMobile}
+            <!-- custom axisy on mobile -->
+            <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
+        {/if}
+        <Line data={aapl} x="Date" y="Close" />
+    </Plot>
+</div>
 ```
 
 ```svelte
@@ -242,19 +256,30 @@ Another difference to Observable Plot is that you can pass event handlers to the
     import { Plot, RuleY, BarY } from '$lib';
 
     let clicked = $state();
+    let hover = $state(null);
 
-    let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked)}` : 'Click the bars');
+    let src = $state([-2, -1, 2, 4, 6, 9, 5]);
+    let data = $derived(src.map((y, x) => ({ x, y, hover: hover === x })));
+    $inspect(data);
+    let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked.y)}` : 'Click the bars');
 </script>
 
-<Plot x={{ axis: false }} y={{ grid: true }} {title}>
+<Plot x={{ axis: false }} y={{ grid: true }} color={{ type: 'linear', scheme: 'reds' }} {title}>
     <BarY
-        data={[-2, -1, 2, 4, 6, 9, 5]}
+        {data}
+        x="x"
+        y="y"
+        fill={(d) => d.x}
         cursor="pointer"
-        opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
-        onclick={(d) => (clicked = d)}
+        opacity={{ scale: null, value: (d) => (!clicked || clicked.x === d.x ? 1 : 0.5) }}
+        onclick={(evt, d) => (src[d.x] *= 1.1)}
+        onmouseenter={(evt, d) => (clicked = d)}
+        onmouseleave={(evt, d) => (hover = null)}
     />
     <RuleY data={[0]} />
 </Plot>
+
+{hover}
 ```
 
 ```svelte

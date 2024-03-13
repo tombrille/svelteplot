@@ -8,9 +8,7 @@
         RawValue,
         DataRecord,
         FacetContext,
-
         DefaultOptions
-
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -18,6 +16,7 @@
     import numeral from 'numeral';
     import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
+    import { resolveScaledStyles } from '$lib/helpers/resolve.js';
 
     const DEFAULTS = {
         tickSize: 6,
@@ -140,11 +139,16 @@
 >
     {#if left && top && useTitle}
         <text
-            style={getBaseStyles(null, options)}
-            style:text-anchor={anchor === 'left' ? 'start' : 'end'}
+            style={resolveScaledStyles(
+                null,
+                { ...options, stroke: null, textAnchor: anchor === 'left' ? 'start' : 'end' },
+                {},
+                plot,
+                'fill'
+            )}
             x={anchor === 'left' ? 0 : plot.width}
             y={5}
-            class="axis-title"
+            class="axis-x-title"
             dominant-baseline="hanging">{useTitle}</text
         >
     {/if}

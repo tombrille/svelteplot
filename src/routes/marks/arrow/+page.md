@@ -118,7 +118,7 @@ Works as well with a point scale:
     <AxisY tickSize={0} />
     <GridY strokeDasharray="3,3" />
     <Arrow
-        data={metros.slice(0,50)}
+        data={metros.slice(0, 50)}
         x1="R90_10_1980"
         x2="R90_10_2015"
         y="nyt_display"
@@ -173,7 +173,13 @@ Another thing you can use the arrow mark for is drawing network diagrams:
     });
 </script>
 
-<Plot x={{ axis: false }} y={{ axis:false }} inset={10} color={{ type: 'categorical' }} height={550}>
+<Plot
+    x={{ axis: false }}
+    y={{ axis: false }}
+    inset={10}
+    color={{ type: 'categorical' }}
+    height={550}
+>
     <Arrow
         data={links}
         x1={(d) => d.source.x}

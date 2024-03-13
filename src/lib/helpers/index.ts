@@ -28,7 +28,7 @@ export function isValid(value: RawValue): value is number | Date | string {
 }
 
 export function maybeData(data: DataRecord[]): DataRecord[] {
-    if (data.type === 'FeatureCollection') return data.features;
+    // if (data.type === 'FeatureCollection') return data.features;
     return data;
 }
 

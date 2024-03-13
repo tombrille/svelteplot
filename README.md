@@ -1,6 +1,6 @@
 # SveltePlot
 
-SveltePlot is a rewrite of [Observable Plot](https://github.com/observablehq/plot) in Svelte, by Gregor Aisch. 
+SveltePlot is a rewrite of [Observable Plot](https://github.com/observablehq/plot) in Svelte, by Gregor Aisch.
 
 <img src="static/logo.png" alt="logo" width="400" />
 

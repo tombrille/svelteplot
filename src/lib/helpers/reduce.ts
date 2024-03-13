@@ -1,4 +1,11 @@
-import type { ChannelAccessor, ChannelName, Channels, DataRecord, DataRow, RawValue } from '$lib/types.js';
+import type {
+    ChannelAccessor,
+    ChannelName,
+    Channels,
+    DataRecord,
+    DataRow,
+    RawValue
+} from '$lib/types.js';
 import { min, max, mode, sum, mean, median, variance, deviation, quantile, range } from 'd3-array';
 import { resolveChannel } from './resolve.js';
 
@@ -75,7 +82,7 @@ export function mayberReducer(r: ReducerOption): ReducerFunc {
     if (typeof r === 'function') return r;
     if (typeof r === 'string' && isReducerName(r)) {
         return Reducer[r] as ReducerFunc;
-    } 
+    }
     throw new Error('unknown reducer ' + r);
 }
 

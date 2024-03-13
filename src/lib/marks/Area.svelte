@@ -62,7 +62,7 @@
     let groupByKey = $derived(options.z || options.fill || options.stroke);
 
     let groups = $derived(
-        groupByKey ? d3Groups(data2, (d) => resolveProp(groupByKey, d)).map(d => d[1]) : [data]
+        groupByKey ? d3Groups(data2, (d) => resolveProp(groupByKey, d)).map((d) => d[1]) : [data]
     );
 
     // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);

@@ -73,7 +73,7 @@ export function computeScales(
     plotHasFilledDotMarks: boolean,
     marks: Mark<GenericMarkOptions>[],
     defaultColorScheme: ColorScheme
-):PlotScales {
+): PlotScales {
     const x = createScale(
         'x',
         plotOptions.x,
@@ -112,7 +112,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme,
+        defaultColorScheme
     );
     const opacity = createScale(
         'opacity',
@@ -602,7 +602,13 @@ function looksLikeOpacity(input: string | number) {
     return looksLikeANumber(input) && isWithin(+input, 0, 1);
 }
 
-export function projectXY(scales: PlotScales, x: RawValue, y: RawValue, useXScale = true, useYScale = true) {
+export function projectXY(
+    scales: PlotScales,
+    x: RawValue,
+    y: RawValue,
+    useXScale = true,
+    useYScale = true
+) {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using

@@ -8,9 +8,7 @@
         RawValue,
         ConstantAccessor,
         FacetContext,
-
         DefaultOptions
-
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
@@ -20,6 +18,7 @@
     import { derived } from 'svelte/store';
     import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
+    import { resolveScaledStyles } from '$lib/helpers/resolve.js';
 
     const DEFAULTS = {
         tickSize: 6,
@@ -157,16 +156,26 @@
 >
     {#if left && top && useTitle}
         <text
-            style={getBaseStyles(null, options)}
-            text-anchor={titleAlign === 'right'
-                ? 'end'
-                : titleAlign === 'center'
-                  ? 'middle'
-                  : 'start'}
+            style={resolveScaledStyles(
+                null,
+                {
+                    ...options,
+                    stroke: null,
+                    textAnchor:
+                        titleAlign === 'right'
+                            ? 'end'
+                            : titleAlign === 'center'
+                              ? 'middle'
+                              : 'start'
+                },
+                {},
+                plot,
+                'fill'
+            )}
             x={plot.options.marginLeft +
                 plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
             y={anchor === 'top' ? 13 : plot.height - 13}
-            class="x-axis-title"
+            class="axis-x-title"
             dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
         >
     {/if}
@@ -189,7 +198,7 @@
 </Mark>
 
 <style>
-    text.x-axis-title {
+    text {
         font-size: 11px;
         opacity: 0.8;
         fill: currentColor;

@@ -21,4 +21,3 @@ export async function loadDatasets(ids: string[], fetch: Fetch): Promise<{ [key:
         (await Promise.all(ids.map((id) => loadCSV(fetch, id)))).map((data, i) => [ids[i], data])
     );
 }
-

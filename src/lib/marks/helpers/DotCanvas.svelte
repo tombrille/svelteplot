@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { isValid, testFilter } from "$lib/helpers/index.js";
-    import { resolveChannel, resolveProp } from "$lib/helpers/resolve.js";
-    import { projectXY } from "$lib/helpers/scales.js";
+    import { isValid, testFilter } from '$lib/helpers/index.js';
+    import { resolveChannel, resolveProp } from '$lib/helpers/resolve.js';
+    import { projectXY } from '$lib/helpers/scales.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
 
@@ -25,7 +25,7 @@
         context.scale(2, 2);
         // context.strokeStyle = 'red';
         context.fillStyle = 'red';
-        console.log(mark.options)
+        console.log(mark.options);
         for (const datum of data) {
             if (testFilter(datum, mark.options) && testFacet(datum, mark.options)) {
                 const x = resolveChannel('x', datum, mark.options);
@@ -43,7 +43,12 @@
                     const size = r_ * r_ * Math.PI * 2;
                     // context.beginPath();
                     const fill_ = resolveChannel('fill', datum, mark.options);
-                    const fill = mark.options.fill === true ? 'currentColor' : useScale.fill ? plot.scales.color.fn(fill_) : fill_;
+                    const fill =
+                        mark.options.fill === true
+                            ? 'currentColor'
+                            : useScale.fill
+                              ? plot.scales.color.fn(fill_)
+                              : fill_;
                     const stroke_ = resolveChannel('stroke', datum, mark.options);
                     const stroke = useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_;
 
@@ -58,27 +63,24 @@
 
                     if (fill) context.fillStyle = fill;
                     if (stroke) context.strokeStyle = stroke;
-                    
+
                     context.translate(px, py);
 
                     context.beginPath();
                     drawSymbolPath(symbol, size, context);
                     context.closePath();
-                    
+
                     if (fill) context.fill();
                     if (stroke) context.stroke();
                     context.translate(-px, -py);
                 }
             }
         }
-
-
-        imageHref = canvas.toDataURL();
-    })
+    });
 </script>
 
-<foreignObject>
-    <canvas bind:this={canvas} 
-        width={plot.width*2} height={plot.height*2} />
+<foreignObject x="0" y="0" width={plot.width} height={plot.height}>
+    <canvas xmlns="http://www.w3.org/1999/xhtml" bind:this={canvas} width={plot.width * 2} height={plot.height * 2}
+            style="width: {plot.width}px; height: {plot.height}px;" />
 </foreignObject>
-<image href={imageHref} style="pointer-events: none;" width={plot.width} height={plot.height} />
+

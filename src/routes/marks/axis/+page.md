@@ -167,14 +167,15 @@ You can change the defaults for SveltePlot grids by defining the `svelteplot/def
         tickSize: 0
     });
 
-    let aapl = [/* import data etc. */];
+    let aapl = [
+        /* import data etc. */
+    ];
 </script>
 
 <Plot grid testid="axis">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
-
 
 ## AxisX
 

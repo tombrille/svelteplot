@@ -53,7 +53,6 @@
     );
 
     let useCanvas = $derived(data.length > 2000);
-    
 </script>
 
 <Mark
@@ -97,7 +96,9 @@
                                 symbol: 'circle',
                                 ...args
                             })}
-                            {@const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
+                            {@const symbol = useScale.symbol
+                                ? plot.scales.symbol.fn(symbol_)
+                                : symbol_}
                             <path
                                 d={getSymbolPath(symbol, size)}
                                 transform="translate({x + dx}, {y + dy})"

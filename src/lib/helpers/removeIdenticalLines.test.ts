@@ -10,7 +10,7 @@ describe('removeIdenticalLines', () => {
         const input = [
             { text: ['line 1', 'line 2', 'line 3'] },
             { text: ['line 4', 'line 5', 'line 6'] },
-            { text: ['line 7', 'line 8', 'line 9'] },
+            { text: ['line 7', 'line 8', 'line 9'] }
         ];
         expect(removeIdenticalLines(input)).toEqual(input);
     });
@@ -19,12 +19,12 @@ describe('removeIdenticalLines', () => {
         const input = [
             { text: ['line 1', 'line 2', 'line 3'] },
             { text: ['line 1', 'line 5', 'line 6'] },
-            { text: ['line 1', 'line 8', 'line 9'] },
+            { text: ['line 1', 'line 8', 'line 9'] }
         ];
         const expectedOutput = [
             { text: ['line 2', 'line 3'] },
             { text: ['line 5', 'line 6'] },
-            { text: ['line 8', 'line 9'] },
+            { text: ['line 8', 'line 9'] }
         ];
         expect(removeIdenticalLines(input)).toEqual(expectedOutput);
     });
@@ -33,12 +33,12 @@ describe('removeIdenticalLines', () => {
         const input = [
             { text: ['line 1', 'line 2', 'line 3'] },
             { text: ['line 1', 'line 5', 'line 6'] },
-            { text: ['line 1', 'line 8'] },
+            { text: ['line 1', 'line 8'] }
         ];
         const expectedOutput = [
             { text: ['line 2', 'line 3'] },
             { text: ['line 5', 'line 6'] },
-            { text: ['line 8'] },
+            { text: ['line 8'] }
         ];
         expect(removeIdenticalLines(input)).toEqual(expectedOutput);
     });

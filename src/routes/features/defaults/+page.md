@@ -21,22 +21,21 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 <slot />
 ```
 
-
 ## Options
 
-| Name       | Description                         | Unit   | Default |
-|------------|-------------------------------------|--------|---------|
-| _height_     | Plot height                         | px  | `350`     |
-| _inset_      | Plot inset                          | px  | `0`       |
-| _colorScheme_ | Default scheme for color scale | string  | `'turbo'`       |
-| _tickSize_   | Axis tick line length               | px  | `6`       |
-| _tickPadding_  | Distance between tick line and label | px  | `3`       |
-| _tickFontSize_  | Tick label font size | px  | `11`       |
-| _axisXAnchor_  | Alignment of AxisX |   | `'bottom'` |
-| _axisYAnchor_  | Alignment of AxisY |   | `'left'` |
-| _xTickSpacing_  | Horizontal space between ticks in AxisX and GridX | px | `80` |
-| _yTickSpacing_  | Vertical space between ticks in AxisY and GridY | px | `50` |
-| _graticuleStep_  | Default step size in graticules | degrees | `10` |
+| Name            | Description                                       | Unit    | Default    |
+| --------------- | ------------------------------------------------- | ------- | ---------- |
+| _height_        | Plot height                                       | px      | `350`      |
+| _inset_         | Plot inset                                        | px      | `0`        |
+| _colorScheme_   | Default scheme for color scale                    | string  | `'turbo'`  |
+| _tickSize_      | Axis tick line length                             | px      | `6`        |
+| _tickPadding_   | Distance between tick line and label              | px      | `3`        |
+| _tickFontSize_  | Tick label font size                              | px      | `11`       |
+| _axisXAnchor_   | Alignment of AxisX                                |         | `'bottom'` |
+| _axisYAnchor_   | Alignment of AxisY                                |         | `'left'`   |
+| _xTickSpacing_  | Horizontal space between ticks in AxisX and GridX | px      | `80`       |
+| _yTickSpacing_  | Vertical space between ticks in AxisY and GridY   | px      | `50`       |
+| _graticuleStep_ | Default step size in graticules                   | degrees | `10`       |
 
 <style>
     * :global(td) {
@@ -48,6 +47,6 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 
 SveltePlot is also relying on CSS variables.
 
-| Name            | Description                         | Unit   | Default |
-|-----------------|-------------------------------------|--------|---------|
-| _--svelteplot-bg_ | Background color of your page       | color  | white   |
+| Name              | Description                   | Unit  | Default |
+| ----------------- | ----------------------------- | ----- | ------- |
+| _--svelteplot-bg_ | Background color of your page | color | white   |

@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
+    import { getContext, untrack } from 'svelte';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import { testFilter } from '$lib/helpers/index.js';
-    import { resolveProp } from '$lib/helpers/resolve.js';
+    import { resolveProp, resolveScaledStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import type {
         AutoMarginStores,
@@ -24,6 +24,7 @@
         tickFontSize,
         marginLeft,
         width,
+        plot,
         options
     } = $props<{
         scaleFn: (d: RawValue) => number;
@@ -83,19 +84,24 @@
         getContext<AutoMarginStores>('svelteplot/autoMargins');
 
     $effect(() => {
+        untrack(() => [$autoMarginLeft, $autoMarginRight]);
+        const outsideTextAnchor = anchor === 'left' ? 'end' : 'start';
         // measure tick label widths
         const maxLabelWidth =
             Math.ceil(
                 max(
                     positionedTicks.map((tick, i) => {
+                        if (
+                            resolveProp(options.textAnchor, tick.value, outsideTextAnchor) !==
+                            outsideTextAnchor
+                        )
+                            return 0;
                         if (tick.hidden || !testFilter(tick.value, options)) return 0;
                         if (tickTexts[i]) return tickTexts[i].getBoundingClientRect().width;
                         return 0;
                     }) as number[]
                 )
-            ) +
-            tickPadding +
-            tickSize;
+            ) + Math.max(0, tickPadding + tickSize);
 
         if (!isNaN(maxLabelWidth)) {
             if (anchor === 'left' && $autoMarginLeft !== maxLabelWidth) {
@@ -118,14 +124,20 @@
             >
                 {#if tickSize}
                     <line
-                        style={getBaseStyles(tick.value, options)}
+                        style={resolveScaledStyles(tick.value, options, {}, plot, 'stroke')}
                         x2={anchor === 'left' ? -tickSize : tickSize}
                     />
                 {/if}
                 <text
                     bind:this={tickTexts[t]}
                     class:is-left={anchor === 'left'}
-                    style={getBaseStyles(tick.value, { ...options, fontSize: tickFontSize })}
+                    style={resolveScaledStyles(
+                        tick.value,
+                        { ...options, fontSize: tickFontSize, stroke: null },
+                        {},
+                        plot,
+                        'fill'
+                    )}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
                     dominant-baseline={LINE_ANCHOR[lineAnchor]}
                     >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text
