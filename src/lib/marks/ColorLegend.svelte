@@ -163,6 +163,6 @@
         display: inline-block;
     }
     .item-label {
-        vertical-align: text-bottom;
+        vertical-align: super;
     }
 </style>

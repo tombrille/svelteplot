@@ -39,18 +39,16 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(stackY(intervalY(recordizeY({ data, ...options }), { plot }), stack));
-
-    // $derived(
-    //     stackY(
-    //         intervalY(
-    //             // by default, sort by x channel (the ordinal labels)
-    //             sort(recordizeY({ data: maybeData(data), sort: { channel: 'x' }, ...options })),
-    //             { plot }
-    //         ),
-    //         stack
-    //     )
-    // );
+    let args = $derived(
+        stackY(
+            intervalY(
+                // by default, sort by x channel (the ordinal labels)
+                sort(recordizeY({ data: maybeData(data), sort: { channel: 'x' }, ...options })),
+                { plot }
+            ),
+            stack
+        )
+    );
 </script>
 
 <Mark

@@ -5,12 +5,11 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX } from '$lib/index.js';
+    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type {
         PlotContext,
-        DataRecord,
         BaseMarkProps,
         RectMarkProps,
         ChannelAccessor
@@ -34,7 +33,16 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(stackX(intervalX(recordizeX({ data, ...options }), { plot }), stack));
+    let args = $derived(
+        stackX(
+            intervalX(
+                // by default, sort by y channel (the ordinal labels)
+                sort(recordizeX({ data, sort: { channel: 'y' }, ...options })),
+                { plot }
+            ),
+            stack
+        )
+    );
 </script>
 
 <Mark

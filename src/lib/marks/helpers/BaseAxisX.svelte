@@ -118,8 +118,8 @@
                           : 'auto'}
                 >
                     {#if ticks.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
-                        {#if typeof textLines === 'string' || textLines.length === 1}
-                            {textLines}
+                        {#if textLines.length === 1}
+                            {textLines[0]}
                         {:else}
                             {#each textLines as line, i}
                                 <tspan x="0" dy={i ? 12 : 0}

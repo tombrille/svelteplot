@@ -50,31 +50,51 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
 
 @code(./BarPlot.svelte)
 
-In its simplest form, you can just pass a few numbers as data to create a bar chart, but remember to set the x scale type to `band`:
+In its simplest form, you can just pass a few numbers as data to create a bar chart:
 
 ```svelte live
 <script>
     import { Plot, BarY, RuleY } from '$lib';
 </script>
 
-<Plot x={{ type: 'band' }}>
+<Plot>
     <BarY data={[1, 2, 3, 4, 5]} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ type: 'band' }}>
+<Plot>
     <BarY data={[1, 2, 3, 4, 5]} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
-You can create stacked bar charts, too:
+You can create stacked bar charts by defining a fill channel which will be used for grouping the series by the implicit [stack transform](/transforms/stack):
 
-<StackedBarPlot />
+```svelte live
+<script lang="ts">
+    import { Plot, BarX, groupY, RuleX} from '$lib';
+    import { getContext } from 'svelte';
+    
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
 
-@code(./StackedBarPlot.svelte)
+<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+    <RuleX data={[0]} /> 
+    <BarX  {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+</Plot>
+```
+
+```svelte
+<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+    <RuleX data={[0]} /> 
+    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, 
+        { x: 'count' })} />
+</Plot>
+```
+
 
 -   `x`
 -   `y1`
