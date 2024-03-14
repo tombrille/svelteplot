@@ -6,7 +6,7 @@
     import { symbol as d3Symbol } from 'd3-shape';
 
     let canvas: HTMLCanvasElement;
-    let imageHref = $state('');
+    let devicePixelRatio = $state(1);
 
     let { mark, plot, data, testFacet, useScale } = $props();
 
@@ -18,14 +18,13 @@
     $effect(() => {
         const context = canvas.getContext('2d');
         if (context === null) return;
-        context.clearRect(0, 0, canvas.width, canvas.height);
 
+        devicePixelRatio = window.devicePixelRatio || 1;
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
         // this will re-run whenever `color` or `size` change
         context.resetTransform();
-        context.scale(2, 2);
-        // context.strokeStyle = 'red';
-        context.fillStyle = 'red';
-        console.log(mark.options);
+        context.scale(devicePixelRatio, devicePixelRatio);
         for (const datum of data) {
             if (testFilter(datum, mark.options) && testFacet(datum, mark.options)) {
                 const x = resolveChannel('x', datum, mark.options);
@@ -40,7 +39,7 @@
                 if (isValid(x) && isValid(y) && isValid(r)) {
                     const [px, py] = projectXY(plot.scales, x, y, true, true);
                     const r_ = useScale.r ? plot.scales.r.fn(r) : r;
-                    const size = r_ * r_ * Math.PI * 2;
+                    const size = r_ * r_ * Math.PI * devicePixelRatio;
                     // context.beginPath();
                     const fill_ = resolveChannel('fill', datum, mark.options);
                     const fill =
@@ -80,7 +79,7 @@
 </script>
 
 <foreignObject x="0" y="0" width={plot.width} height={plot.height}>
-    <canvas xmlns="http://www.w3.org/1999/xhtml" bind:this={canvas} width={plot.width * 2} height={plot.height * 2}
+    <canvas xmlns="http://www.w3.org/1999/xhtml" bind:this={canvas} width={plot.width * devicePixelRatio} height={plot.height * devicePixelRatio}
             style="width: {plot.width}px; height: {plot.height}px;" />
 </foreignObject>
 

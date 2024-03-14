@@ -9,12 +9,32 @@ So at best, you may try out this experimental SveltePlot pre-release.
 
 ## Try online
 
-You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-o4p5ss?file=src%2Fassets%2Fco2.csv,src%2FApp.svelte&terminal=dev).
+You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev).
+
+```svelte live
+<script>
+    import { Plot, RectY, binX } from '$lib/index';
+    import { range } from 'd3-array';
+    import { randomNormal } from 'd3-random';
+</script>
+
+<Plot height={300}>
+    <RectY {...binX({ 
+        data: range(10000).map(randomNormal()),
+    }, { y: 'count' })} />
+</Plot>
+```
 
 ```svelte
 <script>
-    import { Plot } from 'svelteplot';
+    import { Plot, RectY, binX } from 'svelteplot';
 </script>
+
+<Plot>
+    <RectY {...binX(
+        { data: range(10000).map(randomNormal()) }, { y: 'count' }
+    )} />
+</Plot>
 ```
 
 ## Use SveltePlot in Svelte 5

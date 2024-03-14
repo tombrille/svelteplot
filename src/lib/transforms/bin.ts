@@ -125,7 +125,7 @@ function binBy(byDim: 'x' | 'y', { data, ...channels }, options: BinOptions) {
                 newData.push(item);
             }
         );
-
+        
         newChannels = { ...newChannels, ...newGroupChannels };
     });
 

@@ -59,6 +59,7 @@ function stackXY(
     channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     options: StackOptions
 ) {
+    console.log('stackXY', channels);
     // we need to stack the data for each facet separately
     const groupFacetsBy = [
         channels.fx != null ? 'fx' : null,
@@ -144,11 +145,11 @@ function stackXY(
             data: out.flat(1),
             ...channels,
             [byDim]: undefined,
-            ...(typeof channels[byDim] === 'string'
+            ...(typeof channels[byDim] === 'string' && !channels[`__${byDim}_origField`]
                 ? { [`__${byDim}_origField`]: channels[byDim] }
                 : {}),
             ...{ [byLow]: `__${byLow}`, [byHigh]: `__${byHigh}` }
-        };
+        };  
     }
     return { data, ...channels };
 }

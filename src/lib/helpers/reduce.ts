@@ -37,6 +37,12 @@ export type ReducerName =
     | 'variance'
     | ReducerPercentile;
 
+const niceReduceNames: Partial<Record<ReducerName,string>> = {
+    count: 'Frequency',
+    deviation: 'Standard Deviation',
+    mean: 'Average'
+}
+
 const StaticReducer: Record<ReducerName, ReducerFunc> = {
     count: (d) => Array.from(d).length,
     min,
@@ -104,6 +110,7 @@ export function reduceOutputs(
             newChannels[k] = `__${k}`;
 
             if (typeof options[k] === 'string') {
+                const reducerName = niceReduceNames[options[k] as ReducerName] ?? `${String(options[k]).charAt(0).toUpperCase()}${String(options[k]).slice(1)}`;
                 // we have a named reducer like 'count', so let's try to preserve the
                 // source channel mapping for axis labels
                 if (typeof channels[k] === 'string') {
@@ -111,9 +118,9 @@ export function reduceOutputs(
                     // of both as axis labels, e.g. MEAN(weight)
                     // eslint-disable-next-line no-irregular-whitespace
                     newChannels[`__${k}_origField`] =
-                        `${String(options[k]).toUpperCase()} ( ${channels[k]} )`;
+                        `${reducerName} ( ${channels[k]} )`;
                 } else {
-                    newChannels[`__${k}_origField`] = String(options[k]).toUpperCase();
+                    newChannels[`__${k}_origField`] = reducerName;
                 }
             }
         }
