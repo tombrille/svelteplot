@@ -281,7 +281,6 @@ export function createScale<T extends ScaleOptions>(
                 }
 
                 // special handling of marks using the stackX/stackY transform
-                if (name === 'y') console.log('special', mark.type, mark.options[`__${name}_origField`], mark.options.__y_origField)
                 if (
                     (name === 'x' || name === 'y') &&
                     mark.options[`__${name}_origField`] &&
@@ -325,8 +324,6 @@ export function createScale<T extends ScaleOptions>(
     let range;
 
     let fn;
-
-    if (name === 'y') console.log(propNames)
 
     if (name === 'color') {
         // special treatment for color scales

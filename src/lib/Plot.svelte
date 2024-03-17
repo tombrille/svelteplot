@@ -202,7 +202,7 @@
     );
 
     let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks)
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS.colorScheme)
     );
 
     let hasProjection = $derived(!!preScales.projection);
@@ -278,7 +278,7 @@
             facetHeight || height,
             hasFilledDotMarks,
             marks,
-            'post'
+            DEFAULTS.colorScheme
         );
         const colorSymbolRedundant =
             scales.color.uniqueScaleProps.size === 1 &&

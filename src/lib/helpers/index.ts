@@ -1,6 +1,7 @@
 import type { BaseMarkProps, DataRecord, RawValue } from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
+import isDate from 'underscore/modules/isDate.js';
 
 export function coalesce(...args: (number | undefined | null)[]) {
     for (const arg of args) {
@@ -32,10 +33,9 @@ export function maybeData(data: DataRecord[]): DataRecord[] {
     return data;
 }
 
-const objectToString = Object.prototype.toString;
-
 export function isObject(option: object | RawValue): option is object {
-    return option?.toString === objectToString;
+    // doesn't work with Proxies
+    return typeof option === 'object' && !isDate(option);
 }
 
 export const constant =
