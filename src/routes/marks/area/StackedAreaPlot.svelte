@@ -5,7 +5,7 @@
     import type { CurveName } from '$lib/types.js';
     let { riaa } = $derived($page.data.data);
 
-    let { stackControls } = $props<{ stackControls: boolean }>();
+    let { stackControls }: { stackControls: boolean } = $props();
 
     const CURVES =
         'basis,basis-open,basis-closed,bump-x,bump-y,bundle,cardinal,cardinal-open,cardinal-closed,catmull-rom,catmull-rom-open,catmull-rom-closed,linear,linear-closed,monotone-x,monotone-y,natural,step,step-after,step-before'.split(

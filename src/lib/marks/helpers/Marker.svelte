@@ -10,12 +10,18 @@
         | 'tick-y';
 </script>
 
+<!-- 
+    @component Marker is a helper component that creates a marker for use in a line or path.
+-->
+
 <script lang="ts">
-    let { id, shape, color } = $props<{
+    type MarkerProps = {
         id: string;
-        color: string;
         shape: MarkerShape;
-    }>();
+        color: string;
+    };
+    
+    let { id, shape, color }: MarkerProps = $props();
 
     const tickMarker = (orient: number | 'auto') => ({
         viewBox: '-3 -3 6 6',

@@ -144,26 +144,85 @@ export function computeScales(
         plotHasFilledDotMarks,
         defaultColorScheme
     );
-    const fx = createScale(
-        'fx',
-        plotOptions.fx,
-        marks,
-        plotOptions,
-        plotWidth,
-        plotHeight,
-        plotHasFilledDotMarks,
-        defaultColorScheme
-    );
-    const fy = createScale(
-        'fy',
-        plotOptions.fy,
-        marks,
-        plotOptions,
-        plotWidth,
-        plotHeight,
-        plotHasFilledDotMarks,
-        defaultColorScheme
-    );
+    // facet scales
+    let fx, fy, fz;
+    if (marks.find(mark => mark.options.fz != null)) {
+        // derrive fx and fy scales for facet wrap
+        fz = createScale(
+            'fz',
+            plotOptions.fz,
+            marks,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks,
+            defaultColorScheme
+        );
+
+        const index = new Map(fz.domain.map((key, i) => [key, i]));
+        fz.toFx = (d: RawValue) => index.get(d) % plotOptions.fz.columns;
+        fz.toFy = (d: RawValue) => Math.floor(index.get(d) / plotOptions.fz.columns);
+
+        
+        fx = createScale(
+            'fx',
+            { 
+                ...plotOptions.fx, 
+                // enforce domain
+                domain: d3Range(plotOptions.fz.columns)
+            },
+            marks,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks,
+            defaultColorScheme
+        );
+        const newFxFn = (d: RawValue) => fx.fn(fz.toFx(d));
+        Object.assign(newFxFn, fx.fn);
+        fx.fn = newFxFn;
+        
+        fy = createScale(
+            'fy',
+            { 
+                ...plotOptions.fx, 
+                // enforce domain for rows
+                domain: d3Range(Math.ceil(fz.domain.length / plotOptions.fz.columns))
+            },
+            marks,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks,
+            defaultColorScheme
+        );
+        const newFyFn = (d: RawValue) => fy.fn(fz.toFy(d));
+        Object.assign(newFyFn, fy.fn);
+        fy.fn = newFyFn;
+    } else {
+        // create fx and fy scales from mark data directly
+        fx = createScale(
+            'fx',
+            plotOptions.fx,
+            marks,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks,
+            defaultColorScheme
+        );
+        fy = createScale(
+            'fy',
+            plotOptions.fy,
+            marks,
+            plotOptions,
+            plotWidth,
+            plotHeight,
+            plotHasFilledDotMarks,
+            defaultColorScheme
+        );
+    }
+    
     const projection = plotOptions.projection
         ? createProjection(
               { projOptions: plotOptions.projection, inset: plotOptions.inset },
@@ -177,7 +236,7 @@ export function computeScales(
               }
           )
         : null;
-    return { x, y, r, color, opacity, length, symbol, fx, fy, projection };
+    return { x, y, r, color, opacity, length, symbol, fx, fy, fz, projection };
 }
 
 export function createScale<T extends ScaleOptions>(

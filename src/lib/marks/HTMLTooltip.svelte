@@ -26,7 +26,7 @@
     import { quadtree } from 'd3-quadtree';
     import { projectX, projectY } from '$lib/helpers/scales.js';
 
-    let { data, x, y, r } = $props<HTMLTooltipMarkProps>();
+    let { data, x, y, r }: HTMLTooltipMarkProps = $props();
 
     let datum = $state(false);
     let tooltipX = $state();

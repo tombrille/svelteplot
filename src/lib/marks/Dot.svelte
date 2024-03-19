@@ -17,20 +17,20 @@
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
 
-    let { data, ...options } = $props<
-        BaseMarkProps & {
-            data: DataRecord[];
-            x: ChannelAccessor;
-            y: ChannelAccessor;
-            r?: ChannelAccessor;
-            fill?: ChannelAccessor;
-            stroke?: ChannelAccessor;
-            symbol?: ChannelAccessor | Snippet<[number, string]>;
-            children?: Snippet;
-            dx?: ConstantAccessor<number>;
-            dy?: ConstantAccessor<number>;
-        }
-    >();
+    type DotProps = BaseMarkProps & {
+        data: DataRecord[];
+        x: ChannelAccessor;
+        y: ChannelAccessor;
+        r?: ChannelAccessor;
+        fill?: ChannelAccessor;
+        stroke?: ChannelAccessor;
+        symbol?: ChannelAccessor | Snippet<[number, string]>;
+        children?: Snippet;
+        dx?: ConstantAccessor<number>;
+        dy?: ConstantAccessor<number>;
+    };
+
+    let { data, ...options }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

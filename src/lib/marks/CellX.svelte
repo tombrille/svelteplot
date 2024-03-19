@@ -9,7 +9,7 @@
         x?: ChannelAccessor;
     } & RectMarkProps;
 
-    let { data, ...options } = $props<CellXProps>();
+    let { data, ...options }: CellXProps = $props();
 
     let args = $derived(
         recordizeX<CellXProps>(

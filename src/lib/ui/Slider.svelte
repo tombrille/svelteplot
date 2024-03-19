@@ -6,14 +6,14 @@
         max = 100,
         step = 1,
         type = 'range'
-    } = $props<{
+    }: {
         label: string;
         type: 'range' | 'number';
         value: number;
         min?: number;
         max?: number;
         step?: number;
-    }>();
+    } = $props();
 </script>
 
 <label>

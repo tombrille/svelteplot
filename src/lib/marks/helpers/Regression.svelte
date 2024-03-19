@@ -3,7 +3,7 @@
 
     type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';
 
-    export type RegressionProps = BaseMarkProps & {
+    export type RegressionMarkProps = BaseMarkProps & {
         x: ChannelAccessor;
         y: ChannelAccessor;
         type: RegressionType;
@@ -72,11 +72,7 @@
         span = 0.3,
         confidence = 0.99,
         ...options
-    } = $props<
-        RegressionProps & {
-            dependent: 'x' | 'y';
-        }
-    >();
+    }: RegressionMarkProps & { dependent: 'x' | 'y'; } = $props();
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());

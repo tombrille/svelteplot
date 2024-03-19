@@ -9,9 +9,9 @@
         x?: ChannelAccessor;
     };
 
-    let { data, ...options } = $props<DotXProps>();
+    let { data, ...options }: DotXProps = $props();
 
-    let args = $derived(recordizeX<DotXProps>({ data, ...options, y: 0 }, { withIndex: false }));
+    let args = $derived(recordizeX({ data, ...options, y: 0 }, { withIndex: false }));
 </script>
 
 <Dot {...args}>dot</Dot>

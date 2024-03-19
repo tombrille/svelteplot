@@ -7,7 +7,7 @@ export const load: PageLoad = async ({ fetch }) => {
             us: await loadJSON(fetch, 'us-counties-10m'),
             world: await loadJSON(fetch, 'countries-110m'),
             earthquakes: await loadJSON(fetch, 'earthquakes'),
-            ...(await loadDatasets(['unemployment'], fetch))
+            ...(await loadDatasets(['unemployment', 'presidents'], fetch))
         }
     };
 };

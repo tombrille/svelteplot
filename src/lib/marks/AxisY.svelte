@@ -51,7 +51,7 @@
         tickPadding = DEFAULTS.tickPadding,
         tickFormat,
         ...options
-    } = $props<AxisYProps>();
+    }: AxisYProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

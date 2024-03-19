@@ -13,7 +13,7 @@
         y?: ChannelAccessor;
     } & AreaMarkProps;
 
-    let { data, stack, ...options } = $props<AreaXProps>();
+    let { data, stack, ...options }: AreaXProps = $props();
 
     let args = $derived(
         renameChannels<AreaXProps>(stackX(recordizeX({ data, ...options }), stack), { y: 'y1' })

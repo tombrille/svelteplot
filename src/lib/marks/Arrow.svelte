@@ -16,43 +16,43 @@
     import { replaceChannels } from '$lib/transforms/rename.js';
     import { addEvents } from './helpers/events.js';
 
-    let { data, ...options } = $props<
-        BaseMarkProps & {
-            data: DataRecord[];
-            sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-            x1: ChannelAccessor;
-            y1: ChannelAccessor;
-            x2: ChannelAccessor;
-            y2: ChannelAccessor;
-            stroke?: ChannelAccessor;
-            /**
-             * the bend angle, in degrees; defaults to 0°; true for 22.5°
-             */
-            bend?: ConstantAccessor<number> | true;
-            /**
-             * the arrowhead angle, in degrees; defaults to 60°
-             */
-            headAngle?: ConstantAccessor<number>;
-            /**
-             * the arrowhead scale; defaults to 8
-             */
-            headLength?: ConstantAccessor<number>;
-            /**
-             * inset at the end of the arrow (useful if the arrow points to a dot)
-             */
-            insetEnd?: ConstantAccessor<number>;
-            /**
-             * inset at the start of the arrow
-             */
-            insetStart?: ConstantAccessor<number>;
-            /**
-             * shorthand for the two insets
-             */
-            inset?: ConstantAccessor<number>;
-            sweep?: SweepOption;
-            children?: Snippet;
-        }
-    >();
+    type ArrowProps = BaseMarkProps & {
+        data: DataRecord[];
+        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+        x1: ChannelAccessor;
+        y1: ChannelAccessor;
+        x2: ChannelAccessor;
+        y2: ChannelAccessor;
+        stroke?: ChannelAccessor;
+        /**
+         * the bend angle, in degrees; defaults to 0°; true for 22.5°
+         */
+        bend?: ConstantAccessor<number> | true;
+        /**
+         * the arrowhead angle, in degrees; defaults to 60°
+         */
+        headAngle?: ConstantAccessor<number>;
+        /**
+         * the arrowhead scale; defaults to 8
+         */
+        headLength?: ConstantAccessor<number>;
+        /**
+         * inset at the end of the arrow (useful if the arrow points to a dot)
+         */
+        insetEnd?: ConstantAccessor<number>;
+        /**
+         * inset at the start of the arrow
+         */
+        insetStart?: ConstantAccessor<number>;
+        /**
+         * shorthand for the two insets
+         */
+        inset?: ConstantAccessor<number>;
+        sweep?: SweepOption;
+        children?: Snippet;
+    };
+
+    let { data, ...options }: ArrowProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -80,7 +80,7 @@
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'opacity', 'stroke', 'strokeOpacity']}
+    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}
     let:mark
 >

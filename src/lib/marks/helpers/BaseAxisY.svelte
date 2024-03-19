@@ -12,21 +12,7 @@
         ScaleType
     } from '$lib/types.js';
 
-    let {
-        scaleFn,
-        scaleType,
-        ticks,
-        tickFormat,
-        anchor,
-        lineAnchor,
-        tickSize,
-        tickPadding,
-        tickFontSize,
-        marginLeft,
-        width,
-        plot,
-        options
-    } = $props<{
+    type BaseAxisYProps = {
         scaleFn: (d: RawValue) => number;
         scaleType: ScaleType;
         ticks: RawValue[];
@@ -43,7 +29,23 @@
             dy: ConstantAccessor<number>;
         };
         plot: PlotState;
-    }>();
+    };
+
+    let {
+        scaleFn,
+        scaleType,
+        ticks,
+        tickFormat,
+        anchor,
+        lineAnchor,
+        tickSize,
+        tickPadding,
+        tickFontSize,
+        marginLeft,
+        width,
+        plot,
+        options
+    }: BaseAxisYProps = $props();
 
     const LINE_ANCHOR = {
         top: 'hanging',

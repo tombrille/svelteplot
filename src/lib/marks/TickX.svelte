@@ -3,11 +3,8 @@
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import type {
-        CurveName,
         PlotContext,
-        DataRecord,
         BaseMarkProps,
-        ConstantAccessor,
         ChannelAccessor,
         DataRow,
         FacetContext
@@ -20,21 +17,21 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data = [], ...options } = $props<
-        BaseMarkProps & {
-            data: DataRow[];
-            /**
-             * the horizontal position; bound to the x scale
-             */
-            x?: ChannelAccessor;
-            /**
-             * the vertical position; bound to the y scale, which must be band. If the y channel
-             * is not specified, the tick will span the full vertical extent of the frame.
-             */
-            y?: ChannelAccessor;
-            stroke?: ChannelAccessor;
-        }
-    >();
+    type TickXMarkProps = BaseMarkProps & {
+        data: DataRow[];
+        /**
+         * the horizontal position; bound to the x scale
+         */
+        x?: ChannelAccessor;
+        /**
+         * the vertical position; bound to the y scale, which must be band. If the y channel
+         * is not specified, the tick will span the full vertical extent of the frame.
+         */
+        y?: ChannelAccessor;
+        stroke?: ChannelAccessor;
+    };
+
+    let { data = [], ...options }: TickXMarkProps = $props();
 
     let args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
 
@@ -42,7 +39,7 @@
     let testFacet = $derived(getTestFacet());
 </script>
 
-<Mark type="tickX" channels={['x', 'y', 'stroke', 'opacity', 'strokeOpacity']} {...args} let:mark>
+<Mark type="tickX" channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']} {...args} let:mark>
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="tick-x">
         {#each args.data as datum}

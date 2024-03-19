@@ -52,7 +52,7 @@
         curve = 'linear',
         tension = 0,
         ...options
-    } = $props<AreaProps>();
+    }: AreaProps = $props();
 
     let data2 = $derived(maybeData(data));
 

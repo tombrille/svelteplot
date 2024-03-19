@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     import type { ChannelAccessor, DataRow } from '$lib/types.js';
 
-    export type HTMLTooltipMarkProps = {
+    export type PointerMarkProps = {
         data: DataRow[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
@@ -22,7 +22,7 @@
     import { quadtree } from 'd3-quadtree';
     import { projectX, projectY } from '$lib/helpers/scales.js';
 
-    let { data, x, y, z, maxDistance = 15 } = $props<HTMLTooltipMarkProps>();
+    let { data, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
 
     let selectedData = $state([]);
 

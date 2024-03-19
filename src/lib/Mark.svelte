@@ -16,14 +16,7 @@
         FacetContext
     } from './types.js';
 
-    let {
-        data = [],
-        type,
-        channels = [],
-        required = [],
-        ...options
-    } = $props<
-        {
+    type MarkProps = {
             data?: DataRecord[];
             automatic?: boolean;
             type: MarkType;
@@ -31,8 +24,15 @@
             required?: ScaledChannelName[];
             children?: Snippet;
         } & Partial<Record<ChannelName, ChannelAccessor>> &
-            Partial<BaseMarkProps>
-    >();
+            Partial<BaseMarkProps>;
+
+    let {
+        data = [],
+        type,
+        channels = [],
+        required = [],
+        ...options
+    }: MarkProps = $props();
 
     const { addMark, updateMark, removeMark, getTopLevelFacet } =
         getContext<PlotContext>('svelteplot');

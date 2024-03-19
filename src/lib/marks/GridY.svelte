@@ -7,11 +7,13 @@
     import { getUsedScales } from '$lib/helpers/scales.js';
     import { testFilter } from '$lib/helpers/index.js';
 
+    type GridYMarkProps = BaseMarkProps & { data?: RawValue[]; automatic?: boolean };
+
     let {
         data = [],
         automatic = false,
         ...options
-    } = $props<{ data?: RawValue[]; automatic?: boolean } & BaseMarkProps>();
+    }: GridYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

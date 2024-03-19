@@ -10,18 +10,18 @@
         ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
     };
 
+    type GraticuleMarkProps = BaseMarkProps & {
+        step?: number;
+        stepX?: number;
+        stepY?: number;
+    };
+
     let {
         step = DEFAULTS.graticuleStep,
         stepX,
         stepY,
         ...options
-    } = $props<
-        {
-            stepX: number;
-            stepY: number;
-            step: number;
-        } & BaseMarkProps
-    >();
+    }: GraticuleMarkProps = $props();
 
     let graticule = $derived.by(() => {
         const graticule = geoGraticule();

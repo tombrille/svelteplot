@@ -15,7 +15,7 @@
         PlotState
     } from '../types.js';
 
-    export type LineMarkProps = {
+    export type BaseLineMarkProps = {
         data: DataRecord[];
         z?: ChannelAccessor;
         stroke?: ChannelAccessor;
@@ -43,7 +43,7 @@
     import { maybeCurve } from '$lib/helpers/curves.js';
     import pick from 'underscore/modules/pick.js';
 
-    type LineProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & LineMarkProps;
+    type LineMarkProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & BaseLineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
@@ -51,7 +51,7 @@
     import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
 
-    let { data, curve = 'auto', tension = 0, text, ...options } = $props<LineProps>();
+    let { data, curve = 'auto', tension = 0, text, ...options }: LineMarkProps = $props();
 
     let args = $derived(sort(recordizeXY({ data, ...options })));
 
@@ -88,7 +88,9 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let linePath: (d: DataRecord[]) => string = $derived(
+    type LinePath = (dr: DataRecord[]) => string;
+
+    let linePath: LinePath = $derived(
         plot.scales.projection && curve === 'auto'
             ? sphereLine(plot.scales.projection)
             : callWithProps(line, [], {
@@ -124,21 +126,21 @@
 
     function projectLineData(lineData: DataRecord[], plot: PlotState) {
         return lineData.map((d) => {
-            [d.__px, d.__py] = projectXY(
+            const [__px, __py] = projectXY(
                 plot.scales,
                 resolveChannel('x', d, args),
                 resolveChannel('y', d, args),
                 true,
                 true
             );
-            return d;
+            return { ...d, __px, __py };
         });
     }
 </script>
 
 <Mark
     type="line"
-    channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy']}
+    channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy', 'fz']}
     required={['x', 'y']}
     {...args}
     let:mark
@@ -163,7 +165,6 @@
                         marker={args.marker}
                         strokeWidth={args.strokeWidth}
                         datum={lineData[0]}
-                        color={markerColor}
                         d={linePath(
                             projectLineData(
                                 args.filter == null
@@ -172,6 +173,7 @@
                                 plot
                             )
                         )}
+                        color={markerColor}
                         style={resolveScaledStyles(lineData[0], args, useScale, plot, 'stroke')}
                         text={text ? resolveProp(text, lineData[0]) : null}
                         startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}

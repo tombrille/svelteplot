@@ -5,7 +5,7 @@
     import { page } from '$app/stores';
     let { riaa } = $derived($page.data.data);
 
-    let { stackControls } = $props<{ stackControls: boolean }>();
+    let { stackControls }: { stackControls: boolean } = $props();
 
     let offset: StackOffset = $state('wiggle');
 </script>

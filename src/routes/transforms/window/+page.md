@@ -227,7 +227,6 @@ The problem is that especially in pre-modern times, there aren't nearly as many 
             CherryBlossomPeakDay
         }))
     );
-    $inspect(cherryblossom);
 </script>
 
 <Plot grid y={{ label: 'Measurement count in 20-year interval' }} height={250}>

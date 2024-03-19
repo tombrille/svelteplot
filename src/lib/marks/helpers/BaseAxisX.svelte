@@ -15,6 +15,25 @@
     import { max } from 'd3-array';
     import { testFilter } from '$lib/helpers/index.js';
 
+    type BaseAxisXProps = {
+        scaleFn: (d: RawValue) => number;
+        scaleType: ScaleType;
+        ticks: RawValue[];
+        tickFormat: (d: RawValue, i: number) => string | string[];
+        anchor: 'top' | 'bottom';
+        tickSize: number;
+        tickPadding: number;
+        tickFontSize: ConstantAccessor<number>;
+        marginTop: number;
+        height: number;
+        options: {
+            dx: ConstantAccessor<number>;
+            dy: ConstantAccessor<number>;
+            filter: ChannelAccessor;
+        };
+        plot: PlotState;
+    };
+
     let {
         scaleFn,
         scaleType,
@@ -28,24 +47,7 @@
         height,
         options,
         plot
-    } = $props<{
-        scaleFn: (d: RawValue) => number;
-        scaleType: ScaleType;
-        ticks: RawValue[];
-        tickFormat: (d: RawValue) => string | string[];
-        anchor: 'top' | 'bottom';
-        tickSize: number;
-        tickPadding: number;
-        tickFontSize: ConstantAccessor<number>;
-        marginTop: number;
-        height: number;
-        options: {
-            dx: ConstantAccessor<number>;
-            dy: ConstantAccessor<number>;
-            filter: ChannelAccessor;
-        };
-        plot: PlotState;
-    }>();
+    }: BaseAxisXProps = $props();
 
     function splitTick(tick: string | string[]) {
         return Array.isArray(tick) ? tick : [tick];

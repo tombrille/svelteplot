@@ -16,8 +16,10 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
     let rateMap = $derived(new Map(unemployment.map((d) => [d.id, +d.rate])));
     let counties = $derived(
         topojson.feature(us, us.objects.counties).features.map((feat) => {
-            feat.properties.unemployment = rateMap.get(+feat.id);
-            return feat;
+            return {
+                ...feat,
+                properties: { ...feat.properties, unemployment: rateMap.get(+feat.id) }
+            }
         })
     );
 
@@ -102,8 +104,6 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
     let { world, earthquakes } = $derived($page.data.data);
     let land = $derived(topojson.feature(world, world.objects.land));
-
-    $inspect(land);
 </script>
 
 <Plot
@@ -147,6 +147,76 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 </Plot>
 ```
 
+Facetting with maps
+
+```svelte live
+<script>
+    import { Plot, Geo, Text, Frame } from '$lib';
+    import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+    import { geoEqualEarth } from 'd3-geo';
+    import { union } from 'd3-array';
+    import * as topojson from 'topojson-client';
+
+    let { us, presidents } = $derived($page.data.data);
+
+    let statesGeo = $derived(new Map(topojson.feature(us, us.objects.states).features.map(feat => [+feat.id, feat])));
+    let years = union(presidents.map(d => d.year));
+    let columns = $state(3);
+</script>
+
+<Slider bind:value={columns} label="Columns:" min={2} max={4} />
+<Plot
+    projection="albers-usa"
+    color={{
+        scheme: 'RdBu',
+        legend: true
+    }}
+    fz={{ columns }}
+    marginTop={20}
+    let:scales
+>
+    <Geo
+        data={presidents}
+        fz="year"
+        fill={d => d.DEMOCRAT - d.REPUBLICAN}
+        geometry={d => statesGeo.get(d.state_fips)}
+    />
+    <Text 
+        fontWeight="bold" 
+        data={scales.fz.domain} 
+        frameAnchor="top" 
+        fz={d => d}
+        text={d => d} />
+</Plot>
+```
+
+```svelte
+<Plot
+    projection="albers-usa"
+    color={{
+        scheme: 'RdBu',
+        legend: true
+    }}
+    fz={{ columns }}
+    marginTop={20}
+    let:scales
+>
+    <Geo
+        data={presidents}
+        fz="year"
+        fill={d => d.DEMOCRAT - d.REPUBLICAN}
+        geometry={d => statesGeo.get(d.state_fips)}
+    />
+    <Text 
+        data={scales.fz.domain} 
+        fontWeight="bold" 
+        frameAnchor="top" 
+        fz={d => d}
+        text={d => d} />
+</Plot>
+```
+
 ## Geo
 
 ## Sphere
@@ -155,7 +225,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a uniform grid of meridians (lines of constant longitude) and parallels (lines of constant latitude) every 10° between ±80° latitude; for the polar regions, meridians are drawn every 90°. The [sphere](/marks/geo#Sphere) helper draws the outline of the projected sphere.
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Graticule, Sphere } from '$lib';
     import { Slider } from '$lib/ui';

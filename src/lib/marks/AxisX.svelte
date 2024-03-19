@@ -55,7 +55,7 @@
         labelAnchor,
         tickFormat,
         ...options
-    } = $props<AxisXProps>();
+    }: AxisXProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

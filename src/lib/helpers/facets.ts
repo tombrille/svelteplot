@@ -1,4 +1,4 @@
-import type { GenericMarkOptions, Mark, RawValue } from '$lib/types.js';
+import type { GenericMarkOptions, Mark, PlotScale, RawValue } from '$lib/types.js';
 import { resolveChannel } from './resolve.js';
 
 /**
@@ -14,7 +14,8 @@ import { resolveChannel } from './resolve.js';
 export function getEmptyFacets(
     marks: Mark<GenericMarkOptions>[],
     fxValues: RawValue[],
-    fyValues: RawValue[]
+    fyValues: RawValue[],
+    fz: PlotScale & { toFx: (d: RawValue) => RawValue; toFy: (d: RawValue) => RawValue }
 ) {
     const facettedMarks = marks.filter((mark) => {
         return (
@@ -22,19 +23,22 @@ export function getEmptyFacets(
             mark.data.length > 0 && // has data
             !mark.options.automatic && // not an automatic mark
             (fxValues.length === 1 || mark.options.fx != null) && // uses x faceting
-            (fyValues.length === 1 || mark.options.fy != null)
-        ); // uses y faceting
+            (fyValues.length === 1 || mark.options.fy != null) // uses y faceting
+        ); 
     });
     const facettedData = facettedMarks
         .map((mark) =>
             mark.data.map((datum) => {
+                const fx = resolveChannel('fx', datum, mark.options);
+                const fy = resolveChannel('fy', datum, mark.options);
                 return {
-                    fx: resolveChannel('fx', datum, mark.options),
-                    fy: resolveChannel('fy', datum, mark.options)
+                    fx: fz ? fz.toFx(fx) : fx,
+                    fy: fz ? fz.toFy(fy) : fy
                 };
             })
         )
         .flat(1);
+
     const out = new Map<RawValue, Map<RawValue, boolean>>();
     for (const fx of fxValues) {
         out.set(fx, new Map<RawValue, boolean>());

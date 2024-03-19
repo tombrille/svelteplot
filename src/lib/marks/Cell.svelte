@@ -20,13 +20,13 @@
     import { isValid } from '../helpers/isValid.js';
     import { addEvents } from './helpers/events.js';
 
-    type Props = BaseMarkProps & {
+    type CellProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
     } & RectMarkProps;
 
-    let { data, ...options } = $props<Props>();
+    let { data, ...options }: CellProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -52,7 +52,7 @@
 <Mark
     type="cell"
     required={['x', 'y']}
-    channels={['x', 'y', 'fx', 'fy', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
+    channels={['x', 'y', 'fx', 'fy', 'fz', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}
     let:mark
 >

@@ -7,19 +7,20 @@
     import { getUsedScales } from '$lib/helpers/scales.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { sort } from '$lib/index.js';
-    import { isObject, testFilter } from '$lib/helpers/index.js';
+    import { testFilter } from '$lib/helpers/index.js';
     import { addEvents } from './helpers/events.js';
+    import { facetWrap } from '$lib/transforms/facet.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data, geoType, dragRotate, ...options } = $props<
-        {
-            data: DataRecord[];
-            geoType: string;
-            dragRotate: boolean;
-        } & BaseMarkProps
-    >();
+    type GeoMarkProps = {
+        data: DataRecord[];
+        geoType?: 'sphere'|'graticule';
+        dragRotate: boolean;
+    } & BaseMarkProps;
+
+    let { data, geoType, dragRotate, ...options }: GeoMarkProps = $props();
 
     let path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {
@@ -30,25 +31,28 @@
     );
 
     let args = $derived(
-        sort({
-            data: data.map((d) => (isObject(d) ? d : { ___orig___: d })),
+        facetWrap(sort({
+            data,
             ...(options.r ? { sort: { channel: '-r' } } : {}),
             ...options
-        })
+        }))
     );
     const preferStroke = new Set(['MultiLineString', 'LineString']);
+
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="geo"
-    channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r']}
+    channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r', 'fx', 'fy', 'fz']}
     {...args}
     let:mark
 >
     {@const useScale = getUsedScales(plot, args, mark)}
     <g aria-label="geo" class="geo{geoType ? ` geo-${geoType}` : ''}" style="fill:currentColor">
         {#each args.data as datum}
-            {#if testFilter(datum, mark.options)}
+            {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
                 {#snippet el(datum)}
                     {@const title = resolveProp(args.title, datum, '')}
                     {@const geometry = resolveProp(args.geometry, datum, datum)}

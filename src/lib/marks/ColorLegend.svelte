@@ -8,7 +8,7 @@
 
     import type { PlotContext } from '../types.js';
 
-    let { width = 250 } = $props<{ width?: number }>();
+    let { width = 250 }: { width?: number } = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

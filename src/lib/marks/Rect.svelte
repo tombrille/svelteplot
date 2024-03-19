@@ -13,14 +13,14 @@
         PlotContext,
         DataRecord,
         BaseMarkProps,
-        RectMarkProps,
+        BaseRectMarkProps,
         ChannelAccessor,
         FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { addEvents } from './helpers/events.js';
 
-    type Props = BaseMarkProps & {
+    type RectMarkProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         x1?: ChannelAccessor;
@@ -29,15 +29,15 @@
         y1?: ChannelAccessor;
         y2?: ChannelAccessor;
         interval?: number | string;
-    } & RectMarkProps;
+    } & BaseRectMarkProps;
 
-    let { data, ...options } = $props<Props>();
+    let { data, ...options }: RectMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
     let args = $derived(
-        intervalY(intervalX(recordizeY<Props>({ data, ...options }), { plot }), { plot }) as Props
+        intervalY(intervalX(recordizeY({ data, ...options }), { plot }), { plot }) as RectMarkProps
     );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');

@@ -20,21 +20,21 @@
     import { maybeData } from '$lib/helpers/index.js';
     import { addEvents } from './helpers/events.js';
 
-    let { data, stack, ...options } = $props<
-        BaseMarkProps & {
-            data: DataRow[];
-            x?: ChannelAccessor;
-            y?: ChannelAccessor;
-            y1?: ChannelAccessor;
-            y2?: ChannelAccessor;
-            stack?: StackOptions;
-            /**
-             * Converts y into y1/y2 ranges based on the provided interval. Disables the
-             * implicit stacking
-             */
-            interval?: number | string;
-        } & RectMarkProps
-    >();
+    type BarYProps = BaseMarkProps & {
+        data: DataRow[];
+        x?: ChannelAccessor;
+        y?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+        stack?: StackOptions;
+        /**
+         * Converts y into y1/y2 ranges based on the provided interval. Disables the
+         * implicit stacking
+         */
+        interval?: number | string;
+    } & RectMarkProps;
+
+    let { data, stack, ...options }: BarYProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

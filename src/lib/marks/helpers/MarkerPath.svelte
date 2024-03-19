@@ -1,13 +1,50 @@
 <!--
     @component
-    Used by Line and Link marker
+    Helper component for paths with markers and optional text along the path.
 -->
 <script lang="ts">
-    import Marker from './Marker.svelte';
+    import Marker, { type MarkerShape } from './Marker.svelte';
     import { isSnippet, randomId } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import type { BaseMarkProps, ConstantAccessor, DataRecord, Mark } from '$lib/types.js';
     import { addEvents } from './events.js';
+
+    type MarkerPathProps = BaseMarkProps & {
+        /**
+         * the datum associated with this path, usually the first 
+         * element of the data array group
+         */
+        datum: DataRecord;
+        /**
+         * the marker shape to use at the start of the path, defaults to 
+         * cirlce
+         */
+        markerStart?: boolean | MarkerShape;
+        /**
+         * the marker shape to use at the middle of the path, defaults to circle
+         */
+        markerMid?: boolean | MarkerShape;
+        /**
+         * the marker shape to use at the end of the path, defaults to circle
+         */
+        markerEnd?: boolean | MarkerShape;
+        /**
+         * shorthand for setting all markers
+         */
+        marker?: boolean | MarkerShape;
+        /**
+         * path string
+         */
+        d: string;
+        style: string;
+        startOffset: string;
+        textStyle: string;
+        text: string;
+        transform: string;
+        color: string;
+        strokeWidth: ConstantAccessor<number>;
+        mark: Mark<BaseMarkProps>;
+    };
 
     let {
         datum,
@@ -24,33 +61,21 @@
         color,
         strokeWidth,
         mark
-    } = $props<
-        MarkerOptions & {
-            mark: Mark<BaseMarkProps>;
-            datum: DataRecord;
-            d: string;
-            style: string;
-            textStyle: string;
-            startOffset: string;
-            color: string;
-            transform: string;
-            text: string;
-            strokeWidth: ConstantAccessor<number>;
-        }
-    >();
+    }: MarkerPathProps = $props();
 
     const id = randomId();
 
-    let points = $derived(text && d ? d.split(/[LMC]/).slice(1) : []);
-    let firstPt = $derived(text && d ? points.at(0).split(',').map(Number) : []);
-    let lastPt = $derived(text && d ? points.at(-1).split(',').map(Number) : []);
-    let leftToRight = $derived(text && d ? firstPt[0] < lastPt.at(-2) : true);
-    let pathIsCurve = $derived(text && d ? d.includes('C') : false);
+    let points = $derived(text && d != null ? d.split(/[LMC]/).slice(1) : []);
+    let hasPath = $derived(points.length > 0);
+    let firstPt = $derived(text && hasPath ? points.at(0).split(',').map(Number) : []);
+    let lastPt = $derived(text && hasPath ? points.at(-1).split(',').map(Number) : []);
+    let leftToRight = $derived(text && hasPath ? firstPt[0] < lastPt.at(-2) : true);
+    let pathIsCurve = $derived(text && hasPath ? d.includes('C') : false);
     // this rather complicated code "reverses" the path to ensure that the text
     // is not turned upside down
     let textPath = $derived(
         !text || leftToRight
-            ? d
+            ? hasPath
             : pathIsCurve
               ? [
                     'M',
@@ -102,7 +127,7 @@
             : null}
         marker-mid={markerMid || marker ? `url(#marker-${markerMid ? 'mid-' : ''}${id})` : null}
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
-        {d}
+        d={d}
         {style}
         use:addEvents={{ options: mark.options, datum }}
     />

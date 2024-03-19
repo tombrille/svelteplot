@@ -260,7 +260,6 @@ Another difference to Observable Plot is that you can pass event handlers to the
 
     let src = $state([-2, -1, 2, 4, 6, 9, 5]);
     let data = $derived(src.map((y, x) => ({ x, y, hover: hover === x })));
-    $inspect(data);
     let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked.y)}` : 'Click the bars');
 </script>
 

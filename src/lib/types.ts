@@ -35,6 +35,7 @@ export type ScaleName =
     | 'symbol'
     | 'fx'
     | 'fy'
+    | 'fz'
     | 'projection';
 
 export type ScaleType =
@@ -322,6 +323,12 @@ export type PlotOptions = {
     length: ScaleOptions;
     fx: Partial<ScaleOptions>;
     fy: Partial<ScaleOptions>;
+    fz: Partial<ScaleOptions> & { 
+        /**
+         * the number of columns to wrap the facets
+         */
+        columns: number
+    };
     children: Snippet;
     /**
      * You can use the header snippet to render a custom title and subtitle for
@@ -590,7 +597,7 @@ export type BaseMarkProps = Partial<{
     target: ConstantAccessor<'_self' | '_blank' | string>;
 }>;
 
-export type RectMarkProps = {
+export type BaseRectMarkProps = {
     rx?: ConstantAccessor<number>;
     ry?: ConstantAccessor<number>;
     inset?: ConstantAccessor<number>;

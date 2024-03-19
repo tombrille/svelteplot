@@ -42,8 +42,8 @@
         autoMarginTop
     });
 
-    let { header, footer, overlay, underlay, testid, facet, ...initialOpts } =
-        $props<Partial<PlotOptions>>();
+    let { header, footer, overlay, underlay, testid, facet, ...initialOpts }: Partial<PlotOptions> =
+        $props();
 
     // information that influences the default plot options
     type PlotOptionsParameters = {
@@ -51,6 +51,7 @@
         hasProjection: boolean;
         margins?: number;
         inset?: number;
+
     };
 
     const DEFAULTS = {
@@ -72,7 +73,7 @@
         const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
         const oneDimX = isOneDimensional && explicitScales.has('x');
         const oneDimY = isOneDimensional && explicitScales.has('y');
-
+        const hasFZ = explicitScales.has('fz');
         return {
             title: '',
             subtitle: '',
@@ -149,8 +150,9 @@
             color: { type: 'auto' },
             length: { type: 'linear' },
             symbol: { type: 'ordinal' },
-            fx: { type: 'band' },
-            fy: { type: 'band' }
+            fx: { type: 'band', axis: hasFZ ? null : 'top' },
+            fy: { type: 'band', axis: hasFZ ? null : 'right '},
+            fz: { type: 'point', columns: 3 },
         };
     }
 
@@ -230,16 +232,16 @@
         );
     }
 
+    let xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
     let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
     let yDomainCount = $derived(
         isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
     );
-
     let height = $derived(
         plotOptions.height === 'auto'
             ? Math.round(
                   preScales.projection && preScales.projection.aspectRatio
-                      ? plotWidth * preScales.projection.aspectRatio +
+                      ? plotWidth * preScales.projection.aspectRatio / xFacetCount * yFacetCount +
                             plotOptions.marginTop +
                             plotOptions.marginBottom
                       : plotOptions.aspectRatio

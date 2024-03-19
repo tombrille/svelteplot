@@ -17,21 +17,21 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data = [], ...options } = $props<
-        BaseMarkProps & {
-            data: DataRow[];
-            /**
-             * the vertical position; bound to the x scale
-             */
-            y?: ChannelAccessor;
-            /**
-             * the horizontal position; bound to the x scale, which must be band. If the x channel
-             * is not specified, the tick will span the full horizontal extent of the frame.
-             */
-            x?: ChannelAccessor;
-            stroke?: ChannelAccessor;
-        }
-    >();
+    type TickYMarkProps = BaseMarkProps & {
+        data: DataRow[];
+        /**
+         * the vertical position; bound to the x scale
+         */
+        y?: ChannelAccessor;
+        /**
+         * the horizontal position; bound to the x scale, which must be band. If the x channel
+         * is not specified, the tick will span the full horizontal extent of the frame.
+         */
+        x?: ChannelAccessor;
+        stroke?: ChannelAccessor;
+    };
+
+    let { data = [], ...options }: TickYMarkProps = $props();
 
     let args = $derived(recordizeY({ data, ...options }, { withIndex: false }));
 
@@ -41,7 +41,7 @@
 
 <Mark
     type="tickY"
-    channels={['x', 'y', 'fx', 'fy', 'stroke', 'opacity', 'strokeOpacity']}
+    channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
     let:mark
 >

@@ -11,10 +11,10 @@
     // we need the plot context for the overall width & height
     let plot = $derived(getPlotState());
 
-    let { children, marks } = $props<{
+    let { children, marks }: {
         children: Snippet;
         marks: Mark<GenericMarkOptions>[];
-    }>();
+    } = $props();
 
     let useFacetX = $derived(plot.scales.fx.domain.length > 0);
     let useFacetY = $derived(plot.scales.fy.domain.length > 0);
@@ -25,7 +25,7 @@
     // we need to track which facets are "empty", meaning that they don't contain
     // any "faceted" data points. this can happen when fx and fy are combined and
     // certain combinations don't yield results
-    let emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues));
+    let emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues, plot.scales.fz));
 
     // create band scales for fx and fy
     let facetXScale = $derived(
@@ -44,7 +44,7 @@
 </script>
 
 <!-- facet grid -->
-{#if fxValues.length > 1}
+{#if fxValues.length > 1 && plot.options.fx.axis}
     <g transform="translate({plot.options.marginLeft}, 0)">
         <BaseAxisX
             scaleFn={facetXScale}
@@ -53,7 +53,7 @@
             tickFormat={(d) => d}
             tickSize={0}
             tickPadding={5}
-            anchor="top"
+            anchor={plot.options.fx.axis}
             options={{}}
             height={plot.plotHeight}
             marginTop={plot.options.marginTop}
@@ -61,7 +61,7 @@
         />
     </g>
 {/if}
-{#if fyValues.length > 1}
+{#if fyValues.length > 1  && plot.options.fy.axis}
     <g transform="translate(0, {plot.options.marginTop})">
         <BaseAxisY
             scaleFn={facetYScale}
@@ -70,7 +70,7 @@
             tickFormat={(d) => d}
             tickSize={0}
             tickPadding={5}
-            anchor="right"
+            anchor={plot.options.fy.axis}
             lineAnchor="center"
             options={{ dx: 0, dy: 0 }}
             width={plot.plotWidth}
@@ -93,6 +93,7 @@
             <Facet
                 fx={facetX}
                 fy={facetY}
+                fz={plot.scales.fz}
                 left={i === 0}
                 right={i === fxValues.length - 1}
                 top={j === 0}

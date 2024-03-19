@@ -28,7 +28,7 @@
         stack?: StackOptions;
     } & RectMarkProps;
 
-    let { data, stack, ...options } = $props<BarXProps>();
+    let { data, stack, ...options }: BarXProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

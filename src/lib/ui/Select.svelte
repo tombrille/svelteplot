@@ -4,12 +4,12 @@
         value,
         options,
         format = (d) => d
-    } = $props<{
+    }: {
         label?: string;
         value: any;
         options: any[];
         format?: (d: any) => string;
-    }>();
+    } = $props();
 </script>
 
 <label

@@ -14,7 +14,7 @@
     } from '../types.js';
     import { isValid, testFilter } from '../helpers/index.js';
 
-    type RuleXOptions = BaseMarkProps & {
+    type RuleXMarkProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
         y1?: ChannelAccessor;
@@ -26,12 +26,12 @@
         dy?: ConstantAccessor<number>;
     };
 
-    let { data, ...options } = $props<RuleXOptions>();
+    let { data, ...options }: RuleXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(recordizeX<RuleXOptions>({ data, ...options }, { withIndex: false }));
+    let args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
@@ -39,7 +39,7 @@
 
 <Mark
     type="ruleX"
-    channels={['x', 'y1', 'y2', 'fx', 'fy', 'stroke', 'opacity', 'strokeOpacity']}
+    channels={['x', 'y1', 'y2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
     let:mark
 >

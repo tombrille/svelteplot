@@ -49,7 +49,6 @@ const StaticReducer: Record<ReducerName, ReducerFunc> = {
     max,
     mode,
     sum,
-    mode,
     mean,
     median,
     identity: (d) => d,

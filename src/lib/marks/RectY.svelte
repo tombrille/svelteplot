@@ -6,12 +6,12 @@
         DataRecord,
         BaseMarkProps,
         ChannelAccessor,
-        RectMarkProps,
+        BaseRectMarkProps,
         PlotContext
     } from '../types.js';
     import { getContext } from 'svelte';
 
-    type RectYProps = BaseMarkProps & {
+    type RectYMarkProps = BaseMarkProps & {
         data: DataRecord[];
         y?: ChannelAccessor;
         y1?: ChannelAccessor;
@@ -20,9 +20,9 @@
         x2?: ChannelAccessor;
         stack?: StackOptions;
         interval?: number | string;
-    } & RectMarkProps;
+    } & BaseRectMarkProps;
 
-    let { data, stack, ...options } = $props<RectYProps>();
+    let { data, stack, ...options }: RectYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

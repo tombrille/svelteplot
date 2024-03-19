@@ -23,27 +23,27 @@
     import { geoPath } from 'd3-geo';
     import pick from 'underscore/modules/pick.js';
 
+    type LinkMarkProps = BaseMarkProps & {
+        data: DataRecord[];
+        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+        x1: ChannelAccessor;
+        y1: ChannelAccessor;
+        x2: ChannelAccessor;
+        y2: ChannelAccessor;
+        stroke?: ChannelAccessor;
+        curve?: 'auto' | CurveName | CurveFactory;
+        tension?: number;
+        text: ConstantAccessor<string>;
+        children?: Snippet;
+    } & MarkerOptions;
+
     let {
         data,
         curve = 'auto',
         tension = 0,
         text,
         ...options
-    } = $props<
-        BaseMarkProps & {
-            data: DataRecord[];
-            sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-            x1: ChannelAccessor;
-            y1: ChannelAccessor;
-            x2: ChannelAccessor;
-            y2: ChannelAccessor;
-            stroke?: ChannelAccessor;
-            curve?: 'auto' | CurveName | CurveFactory;
-            tension?: number;
-            text: ConstantAccessor<string>;
-            children?: Snippet;
-        } & MarkerOptions
-    >();
+    }: LinkMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -99,7 +99,7 @@
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'opacity', 'stroke', 'strokeOpacity']}
+    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}
     let:mark
 >

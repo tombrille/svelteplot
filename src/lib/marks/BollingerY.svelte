@@ -21,7 +21,7 @@
         k?: number;
     };
 
-    let { data, n = 20, k = 2, ...options } = $props<BollingerYProps>();
+    let { data, n = 20, k = 2, ...options }: BollingerYProps = $props();
 
     let args = $derived(bollingerY(recordizeY({ data, ...options }), { n, k }));
 </script>
