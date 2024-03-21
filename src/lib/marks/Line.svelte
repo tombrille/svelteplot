@@ -65,11 +65,11 @@
         for (const d of data) {
             const groupValue = resolveProp(groupByKey, d);
             // console.log({d, groupValue})
-            if (!group.length || groupValue === lastGroupValue) {
+            if (groupValue === lastGroupValue) {
                 group.push(d);
             } else {
                 if (group.length === 1) {
-                    // jsut one point makes a bad line, add this one, too
+                    // just one point makes a bad line, add this one, too
                     group.push(d);
                 }
                 // new group
