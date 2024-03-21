@@ -16,7 +16,7 @@
 
     type GeoMarkProps = {
         data: DataRecord[];
-        geoType?: 'sphere'|'graticule';
+        geoType?: 'sphere' | 'graticule';
         dragRotate: boolean;
     } & BaseMarkProps;
 
@@ -31,11 +31,13 @@
     );
 
     let args = $derived(
-        facetWrap(sort({
-            data,
-            ...(options.r ? { sort: { channel: '-r' } } : {}),
-            ...options
-        }))
+        facetWrap(
+            sort({
+                data,
+                ...(options.r ? { sort: { channel: '-r' } } : {}),
+                ...options
+            })
+        )
     );
     const preferStroke = new Set(['MultiLineString', 'LineString']);
 

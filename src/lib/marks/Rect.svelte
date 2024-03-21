@@ -8,7 +8,7 @@
     import { recordizeY, intervalX, intervalY } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
-    import { coalesce, testFilter } from '../helpers/index.js';
+    import { coalesce, testFilter, maybeNumber } from '../helpers/index.js';
     import type {
         PlotContext,
         DataRecord,
@@ -107,10 +107,10 @@
                 {@const insetBottom = resolveProp(args.insetBottom, datum)}
                 {@const dx = resolveProp(args.dx, datum, 0)}
                 {@const dy = resolveProp(args.dy, datum, 0)}
-                {@const insetL = coalesce(insetLeft, inset) || 0}
-                {@const insetT = coalesce(insetTop, inset) || 0}
-                {@const insetR = coalesce(insetRight, inset) || 0}
-                {@const insetB = coalesce(insetBottom, inset) || 0}
+                {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
+                {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
+                {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
+                {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
 
                 {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
                     <rect

@@ -323,11 +323,11 @@ export type PlotOptions = {
     length: ScaleOptions;
     fx: Partial<ScaleOptions>;
     fy: Partial<ScaleOptions>;
-    fz: Partial<ScaleOptions> & { 
+    fz: Partial<ScaleOptions> & {
         /**
          * the number of columns to wrap the facets
          */
-        columns: number
+        columns: number;
     };
     children: Snippet;
     /**
@@ -569,6 +569,7 @@ export type BaseMarkProps = Partial<{
         | 'plus-darker'
         | 'plus-lighter'
     >;
+    clipPath: string;
     imageFilter: ConstantAccessor<string>;
     shapeRendering: ConstantAccessor<
         'crispEdges' | 'geometricPrecision' | 'optimizeSpeed' | 'auto'

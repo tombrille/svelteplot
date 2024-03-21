@@ -1,4 +1,4 @@
-import { parseTimeInterval } from './time.js';
+import { parseTimeInterval, maybeTimeInterval } from './time.js';
 import { describe, it, expect } from 'vitest';
 
 describe('time helpers', () => {
@@ -54,4 +54,34 @@ describe('time helpers', () => {
         });
         // END: Additional tests for parseTimeInterval
     });
+
+    // describe('maybeTimeInterval', () => {
+    //     it('should return the time interval as an interval object', () => {
+    //         expect(maybeTimeInterval('1 second')).toEqual({ unit: 'second', value: 1 });
+    //         expect(maybeTimeInterval('2 minutes')).toEqual({ unit: 'minute', value: 2 });
+    //         expect(maybeTimeInterval('3 hours')).toEqual({ unit: 'hour', value: 3 });
+    //         expect(maybeTimeInterval('4 days')).toEqual({ unit: 'day', value: 4 });
+    //         expect(maybeTimeInterval('5 weeks')).toEqual({ unit: 'week', value: 5 });
+    //         expect(maybeTimeInterval('6 months')).toEqual({ unit: 'month', value: 6 });
+    //         expect(maybeTimeInterval('7 quarters')).toEqual({ unit: 'month', value: 21 });
+    //         expect(maybeTimeInterval('8 half')).toEqual({ unit: 'month', value: 48 });
+    //     });
+
+    //     it('should throw an error if the time interval is invalid', () => {
+    //         expect(() => maybeTimeInterval('invalid')).toThrow();
+    //     });
+
+    //     // Additional tests for maybeTimeInterval
+    //     it('should return null if the input is null', () => {
+    //         expect(maybeTimeInterval(null)).toBeNull();
+    //     });
+
+    //     it('should return null if the input is undefined', () => {
+    //         expect(maybeTimeInterval(undefined)).toBeNull();
+    //     });
+
+    //     it('should return null if the input is an empty string', () => {
+    //         expect(maybeTimeInterval('')).toBeNull();
+    //     });
+    // });
 });

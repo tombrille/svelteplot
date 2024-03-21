@@ -1,8 +1,15 @@
 <script lang="ts">
     import Rect from './Rect.svelte';
     import { intervalY, stackX, recordizeX } from '$lib/index.js';
-    import type { DataRecord, BaseMarkProps, ChannelAccessor, BaseRectMarkProps } from '../types.js';
+    import type {
+        DataRecord,
+        BaseMarkProps,
+        ChannelAccessor,
+        BaseRectMarkProps,
+        PlotContext
+    } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
+    import { getContext } from 'svelte';
 
     type RectXMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -16,6 +23,9 @@
     } & BaseRectMarkProps;
 
     let { data, stack, ...options }: RectXMarkProps = $props();
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    let plot = $derived(getPlotState());
 
     let args = $derived(stackX(intervalY(recordizeX({ data, ...options }), { plot }), stack));
 </script>

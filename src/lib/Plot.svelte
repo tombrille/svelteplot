@@ -51,7 +51,6 @@
         hasProjection: boolean;
         margins?: number;
         inset?: number;
-
     };
 
     const DEFAULTS = {
@@ -151,8 +150,8 @@
             length: { type: 'linear' },
             symbol: { type: 'ordinal' },
             fx: { type: 'band', axis: hasFZ ? null : 'top' },
-            fy: { type: 'band', axis: hasFZ ? null : 'right '},
-            fz: { type: 'point', columns: 3 },
+            fy: { type: 'band', axis: hasFZ ? null : 'right ' },
+            fz: { type: 'point', columns: 3 }
         };
     }
 
@@ -241,7 +240,8 @@
         plotOptions.height === 'auto'
             ? Math.round(
                   preScales.projection && preScales.projection.aspectRatio
-                      ? plotWidth * preScales.projection.aspectRatio / xFacetCount * yFacetCount +
+                      ? ((plotWidth * preScales.projection.aspectRatio) / xFacetCount) *
+                            yFacetCount +
                             plotOptions.marginTop +
                             plotOptions.marginBottom
                       : plotOptions.aspectRatio

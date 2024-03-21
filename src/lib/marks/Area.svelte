@@ -14,6 +14,7 @@
 
 <script lang="ts">
     import Mark from '../Mark.svelte';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { groups as d3Groups } from 'd3-array';
@@ -76,34 +77,54 @@
             : groups
     );
 
-    let areaPath: (d: DataRecord[]) => string = $derived(
-        callWithProps(area, [], {
-            curve: maybeCurve(curve, tension),
-            defined: (d: DataRecord) =>
-                options.x1 != null && options.x2 != null
-                    ? // vertical
+    let mark: Mark = $state();
 
-                      isValid(resolveChannel('y1', d, options)) &&
-                      isValid(resolveChannel('x1', d, options)) &&
-                      isValid(resolveChannel('x2', d, options))
-                    : // horizontal
-                      isValid(resolveChannel('x1', d, options)) &&
-                      isValid(resolveChannel('y1', d, options)) &&
-                      isValid(resolveChannel('y2', d, options)),
-            ...(options.x1 != null && options.x2 != null
-                ? {
-                      // "vertical" area
-                      x0: (d) => projectX('x1', plot.scales, resolveChannel('x1', d, options)),
-                      x1: (d) => projectX('x2', plot.scales, resolveChannel('x2', d, options)),
-                      y: (d) => projectY('y', plot.scales, resolveChannel('y1', d, options))
-                  }
-                : {
-                      // "horizontal" area
-                      x: (d) => projectX('x', plot.scales, resolveChannel('x1', d, options)),
-                      y0: (d) => projectY('y1', plot.scales, resolveChannel('y1', d, options)),
-                      y1: (d) => projectY('y2', plot.scales, resolveChannel('y2', d, options))
-                  })
-        })
+    let areaPath: (d: DataRecord[]) => string = $derived(
+        (useScale: ReturnType<typeof getUsedScales>) =>
+            callWithProps(area, [], {
+                curve: maybeCurve(curve, tension),
+                defined: (d: DataRecord) =>
+                    options.x1 != null && options.x2 != null
+                        ? // vertical
+                          isValid(resolveChannel('y1', d, options)) &&
+                          isValid(resolveChannel('x1', d, options)) &&
+                          isValid(resolveChannel('x2', d, options))
+                        : // horizontal
+                          isValid(resolveChannel('x1', d, options)) &&
+                          isValid(resolveChannel('y1', d, options)) &&
+                          isValid(resolveChannel('y2', d, options)),
+                ...(options.x1 != null && options.x2 != null
+                    ? {
+                          // "vertical" area
+                          x0: (d) =>
+                              useScale.x1
+                                  ? projectX('x1', plot.scales, resolveChannel('x1', d, options))
+                                  : resolveChannel('x1', d, options),
+                          x1: (d) =>
+                              useScale.x2
+                                  ? projectX('x2', plot.scales, resolveChannel('x2', d, options))
+                                  : resolveChannel('x2', d, options),
+                          y: (d) =>
+                              useScale.y1
+                                  ? projectY('y1', plot.scales, resolveChannel('y1', d, options))
+                                  : resolveChannel('y1', d, options)
+                      }
+                    : {
+                          // "horizontal" area
+                          x: (d) =>
+                              useScale.x1
+                                  ? projectX('x', plot.scales, resolveChannel('x1', d, options))
+                                  : resolveChannel('x1', d, options),
+                          y0: (d) =>
+                              useScale.y1
+                                  ? projectY('y1', plot.scales, resolveChannel('y1', d, options))
+                                  : resolveChannel('y1', d, options),
+                          y1: (d) =>
+                              useScale.y2
+                                  ? projectY('y2', plot.scales, resolveChannel('y2', d, options))
+                                  : resolveChannel('y2', d, options)
+                      })
+            })
     );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
@@ -131,14 +152,16 @@
     let:mark
 >
     {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="areas">
+
+    <GroupMultiple length={sortedGroups.length} class="areas">
         {#each sortedGroups as areaData}
             {#if testFacet(areaData[0], mark.options)}
                 {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
                 {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
                 {#snippet el(datum)}
                     <path
-                        d={areaPath(
+                        clip-path={options.clipPath}
+                        d={areaPath(useScale)(
                             options.filter == null
                                 ? areaData
                                 : areaData.filter((d) => resolveProp(options.filter, d))
@@ -159,11 +182,5 @@
                 {/if}
             {/if}
         {/each}
-    </g>
+    </GroupMultiple>
 </Mark>
-
-<style>
-    .lines path {
-        stroke-width: 1.4px;
-    }
-</style>

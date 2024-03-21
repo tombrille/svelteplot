@@ -33,7 +33,7 @@ You can use SveltePlot to create charts with a concise and minimal API.
         x={{ type: 'linear', insetLeft: 30, grid: true }}
         inset={10}
     >
-        <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
+        <Dot data={olympians} canvas x="weight" opacity="0.5" y="height" stroke="sex" />
     </Plot>
 {/if}
 ```

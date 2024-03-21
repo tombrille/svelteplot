@@ -9,7 +9,7 @@
         FacetContext
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { coalesce, maybeData, testFilter } from '../helpers/index.js';
+    import { coalesce, maybeData, testFilter, maybeNumber } from '../helpers/index.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
     import { arrowPath, maybeSweep, type SweepOption } from '../helpers/arrowPath.js';
@@ -110,8 +110,8 @@
                         y1,
                         x2,
                         y2,
-                        coalesce(insetStart, inset),
-                        coalesce(insetEnd, inset),
+                        maybeNumber(coalesce(insetStart, inset)),
+                        maybeNumber(coalesce(insetEnd, inset)),
                         headAngle,
                         headLength,
                         bend === true ? 22.5 : bend === false ? 0 : bend,

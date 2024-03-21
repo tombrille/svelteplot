@@ -11,7 +11,10 @@
     // we need the plot context for the overall width & height
     let plot = $derived(getPlotState());
 
-    let { children, marks }: {
+    let {
+        children,
+        marks
+    }: {
         children: Snippet;
         marks: Mark<GenericMarkOptions>[];
     } = $props();
@@ -61,7 +64,7 @@
         />
     </g>
 {/if}
-{#if fyValues.length > 1  && plot.options.fy.axis}
+{#if fyValues.length > 1 && plot.options.fy.axis}
     <g transform="translate(0, {plot.options.marginTop})">
         <BaseAxisY
             scaleFn={facetYScale}

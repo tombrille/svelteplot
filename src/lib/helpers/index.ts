@@ -3,10 +3,10 @@ import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
 import isDate from 'underscore/modules/isDate.js';
 
-export function coalesce(...args: (number | undefined | null)[]) {
+export function coalesce(...args: (RawValue | undefined | null)[]) {
     for (const arg of args) {
         if (arg !== null && arg !== undefined) {
-            return +arg;
+            return arg;
         }
     }
     return null; // Return null if all arguments are null or undefined
@@ -36,6 +36,10 @@ export function maybeData(data: DataRecord[]): DataRecord[] {
 export function isObject(option: object | RawValue): option is object {
     // doesn't work with Proxies
     return typeof option === 'object' && !isDate(option);
+}
+
+export function maybeNumber(value: RawValue|null): number | null {
+    return value != null ? +value : null;
 }
 
 export const constant =

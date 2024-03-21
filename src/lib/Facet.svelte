@@ -4,19 +4,31 @@
     import type { BaseMarkProps, DataRecord, PlotScale, RawValue } from './types.js';
     import identity from 'underscore/modules/identity.js';
 
-    let { fx, fy, fz, left, top, right, bottom, topEmpty, bottomEmpty, leftEmpty, rightEmpty }: {
-            fx: RawValue;
-            fy: RawValue;
-            fz: PlotScale & { toFx: (d: RawValue) => RawValue; toFy: (d: RawValue) => RawValue };
-            left: boolean;
-            top: boolean;
-            right: boolean;
-            bottom: boolean;
-            topEmpty: boolean;
-            bottomEmpty: boolean;
-            leftEmpty: boolean;
-            rightEmpty: boolean;
-        } = $props();
+    let {
+        fx,
+        fy,
+        fz,
+        left,
+        top,
+        right,
+        bottom,
+        topEmpty,
+        bottomEmpty,
+        leftEmpty,
+        rightEmpty
+    }: {
+        fx: RawValue;
+        fy: RawValue;
+        fz: PlotScale & { toFx: (d: RawValue) => RawValue; toFy: (d: RawValue) => RawValue };
+        left: boolean;
+        top: boolean;
+        right: boolean;
+        bottom: boolean;
+        topEmpty: boolean;
+        bottomEmpty: boolean;
+        leftEmpty: boolean;
+        rightEmpty: boolean;
+    } = $props();
 
     setContext('svelteplot/facet', {
         getTestFacet() {

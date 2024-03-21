@@ -11,12 +11,12 @@
 
     type MarkerPathProps = BaseMarkProps & {
         /**
-         * the datum associated with this path, usually the first 
+         * the datum associated with this path, usually the first
          * element of the data array group
          */
         datum: DataRecord;
         /**
-         * the marker shape to use at the start of the path, defaults to 
+         * the marker shape to use at the start of the path, defaults to
          * cirlce
          */
         markerStart?: boolean | MarkerShape;
@@ -127,7 +127,7 @@
             : null}
         marker-mid={markerMid || marker ? `url(#marker-${markerMid ? 'mid-' : ''}${id})` : null}
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
-        d={d}
+        {d}
         {style}
         use:addEvents={{ options: mark.options, datum }}
     />

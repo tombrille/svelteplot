@@ -47,24 +47,23 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarX, groupY, RuleX} from '$lib';
+    import { Plot, BarX, groupY, RuleX } from '$lib';
     import { getContext } from 'svelte';
-    
+
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>
 
 <Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
-    <RuleX data={[0]} /> 
-    <BarX  {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <RuleX data={[0]} />
+    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
 </Plot>
 ```
 
 ```svelte
 <Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
-    <RuleX data={[0]} /> 
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, 
-        { x: 'count' })} />
+    <RuleX data={[0]} />
+    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
 </Plot>
 ```
 
@@ -73,7 +72,7 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 Groups on the _x_ channel as well as an additional _z_, _fill_, or _stroke_ channel to create new groups and compute output channels (mostly _y_, but can also be used for other channels).
 
 ```js
-groupX({ data, x: 'sex' }, { y: 'count' })
+groupX({ data, x: 'sex' }, { y: 'count' });
 ```
 
 ## groupY
@@ -81,7 +80,7 @@ groupX({ data, x: 'sex' }, { y: 'count' })
 Groups on the _y_ channel as well as an additional _z_, _fill_, or _stroke_ channel to create new groups and compute output channels (mostly _x_, but can also be used for other channels).
 
 ```js
-groupY({ data, y: 'sex' }, { x: 'count' })
+groupY({ data, y: 'sex' }, { x: 'count' });
 ```
 
 ## groupZ

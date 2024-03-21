@@ -37,13 +37,7 @@
         children?: Snippet;
     } & MarkerOptions;
 
-    let {
-        data,
-        curve = 'auto',
-        tension = 0,
-        text,
-        ...options
-    }: LinkMarkProps = $props();
+    let { data, curve = 'auto', tension = 0, text, ...options }: LinkMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

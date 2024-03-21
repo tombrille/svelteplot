@@ -5,9 +5,10 @@
     import type { BaseMarkProps } from '../types.js';
     import { resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
 
-    type FrameMarkProps = BaseMarkProps & BaseRectMarkProps & {
-        automatic?: boolean;
-    };
+    type FrameMarkProps = BaseMarkProps &
+        BaseRectMarkProps & {
+            automatic?: boolean;
+        };
 
     let { automatic, ...options }: FrameMarkProps = $props();
 

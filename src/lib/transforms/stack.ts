@@ -149,7 +149,7 @@ function stackXY(
                 ? { [`__${byDim}_origField`]: channels[byDim] }
                 : {}),
             ...{ [byLow]: `__${byLow}`, [byHigh]: `__${byHigh}` }
-        };  
+        };
     }
     return { data, ...channels };
 }

@@ -45,7 +45,7 @@ import type {
 import isDataRecord from './isDataRecord.js';
 import callWithProps from './callWithProps.js';
 import { interpolateLab, interpolateRound } from 'd3-interpolate';
-import { coalesce } from './index.js';
+import { coalesce, maybeNumber } from './index.js';
 import { getLogTicks } from './getLogTicks.js';
 import { createProjection } from './projection.js';
 
@@ -146,7 +146,7 @@ export function computeScales(
     );
     // facet scales
     let fx, fy, fz;
-    if (marks.find(mark => mark.options.fz != null)) {
+    if (marks.find((mark) => mark.options.fz != null)) {
         // derrive fx and fy scales for facet wrap
         fz = createScale(
             'fz',
@@ -163,11 +163,10 @@ export function computeScales(
         fz.toFx = (d: RawValue) => index.get(d) % plotOptions.fz.columns;
         fz.toFy = (d: RawValue) => Math.floor(index.get(d) / plotOptions.fz.columns);
 
-        
         fx = createScale(
             'fx',
-            { 
-                ...plotOptions.fx, 
+            {
+                ...plotOptions.fx,
                 // enforce domain
                 domain: d3Range(plotOptions.fz.columns)
             },
@@ -181,11 +180,11 @@ export function computeScales(
         const newFxFn = (d: RawValue) => fx.fn(fz.toFx(d));
         Object.assign(newFxFn, fx.fn);
         fx.fn = newFxFn;
-        
+
         fy = createScale(
             'fy',
-            { 
-                ...plotOptions.fx, 
+            {
+                ...plotOptions.fx,
                 // enforce domain for rows
                 domain: d3Range(Math.ceil(fz.domain.length / plotOptions.fz.columns))
             },
@@ -222,7 +221,7 @@ export function computeScales(
             defaultColorScheme
         );
     }
-    
+
     const projection = plotOptions.projection
         ? createProjection(
               { projOptions: plotOptions.projection, inset: plotOptions.inset },
@@ -345,7 +344,6 @@ export function createScale<T extends ScaleOptions>(
                     mark.options[`__${name}_origField`] &&
                     !mark.options[`__${name}_origField`].startsWith('__')
                 ) {
-                    
                     propNames.add(mark.options[`__${name}_origField`]);
                 }
             } else {
@@ -503,7 +501,7 @@ export function createScale<T extends ScaleOptions>(
             ...(type === 'band' || type === 'point'
                 ? {
                       align: scaleOptions.align,
-                      padding: coalesce(scaleOptions.padding, plotOptions.padding, 0.15)
+                      padding: maybeNumber(coalesce(scaleOptions.padding, plotOptions.padding, 0.15))
                   }
                 : {})
         };

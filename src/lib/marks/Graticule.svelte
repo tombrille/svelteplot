@@ -16,12 +16,7 @@
         stepY?: number;
     };
 
-    let {
-        step = DEFAULTS.graticuleStep,
-        stepX,
-        stepY,
-        ...options
-    }: GraticuleMarkProps = $props();
+    let { step = DEFAULTS.graticuleStep, stepX, stepY, ...options }: GraticuleMarkProps = $props();
 
     let graticule = $derived.by(() => {
         const graticule = geoGraticule();

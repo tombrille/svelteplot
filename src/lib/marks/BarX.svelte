@@ -8,12 +8,7 @@
     import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
-    import type {
-        PlotContext,
-        BaseMarkProps,
-        RectMarkProps,
-        ChannelAccessor
-    } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RectMarkProps, ChannelAccessor } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';

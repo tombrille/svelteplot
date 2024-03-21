@@ -9,11 +9,7 @@
 
     type GridYMarkProps = BaseMarkProps & { data?: RawValue[]; automatic?: boolean };
 
-    let {
-        data = [],
-        automatic = false,
-        ...options
-    }: GridYMarkProps = $props();
+    let { data = [], automatic = false, ...options }: GridYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

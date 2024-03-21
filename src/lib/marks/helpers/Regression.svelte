@@ -72,7 +72,7 @@
         span = 0.3,
         confidence = 0.99,
         ...options
-    }: RegressionMarkProps & { dependent: 'x' | 'y'; } = $props();
+    }: RegressionMarkProps & { dependent: 'x' | 'y' } = $props();
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());

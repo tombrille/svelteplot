@@ -24,7 +24,7 @@ export function getEmptyFacets(
             !mark.options.automatic && // not an automatic mark
             (fxValues.length === 1 || mark.options.fx != null) && // uses x faceting
             (fyValues.length === 1 || mark.options.fy != null) // uses y faceting
-        ); 
+        );
     });
     const facettedData = facettedMarks
         .map((mark) =>

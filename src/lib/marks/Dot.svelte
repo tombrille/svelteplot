@@ -28,9 +28,10 @@
         children?: Snippet;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
+        canvas?: boolean;
     };
 
-    let { data, ...options }: DotProps = $props();
+    let { data, canvas, ...options }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -51,8 +52,6 @@
             ...(options.fill === true ? { fill: 'currentColor' } : {})
         })
     );
-
-    let useCanvas = $derived(data.length > 2000);
 </script>
 
 <Mark
@@ -77,7 +76,7 @@
     {@const useScale = getUsedScales(plot, args, mark)}
 
     <g class="dots" data-use-x={useScale.x ? 1 : 0}>
-        {#if useCanvas}
+        {#if canvas}
             <DotCanvas {data} {mark} {plot} {testFacet} {useScale} />
         {:else}
             {#each args.data as datum}

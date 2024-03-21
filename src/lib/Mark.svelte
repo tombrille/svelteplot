@@ -17,22 +17,16 @@
     } from './types.js';
 
     type MarkProps = {
-            data?: DataRecord[];
-            automatic?: boolean;
-            type: MarkType;
-            channels?: ScaledChannelName[];
-            required?: ScaledChannelName[];
-            children?: Snippet;
-        } & Partial<Record<ChannelName, ChannelAccessor>> &
-            Partial<BaseMarkProps>;
+        data?: DataRecord[];
+        automatic?: boolean;
+        type: MarkType;
+        channels?: ScaledChannelName[];
+        required?: ScaledChannelName[];
+        children?: Snippet;
+    } & Partial<Record<ChannelName, ChannelAccessor>> &
+        Partial<BaseMarkProps>;
 
-    let {
-        data = [],
-        type,
-        channels = [],
-        required = [],
-        ...options
-    }: MarkProps = $props();
+    let { data = [], type, channels = [], required = [], ...options }: MarkProps = $props();
 
     const { addMark, updateMark, removeMark, getTopLevelFacet } =
         getContext<PlotContext>('svelteplot');

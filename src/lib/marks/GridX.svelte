@@ -12,11 +12,7 @@
         automatic?: boolean;
     };
 
-    let {
-        data = [],
-        automatic = false,
-        ...options
-    }: GrixXMarkProps = $props();
+    let { data = [], automatic = false, ...options }: GrixXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

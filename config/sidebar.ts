@@ -66,6 +66,7 @@ export default {
                 { title: 'Bar', to: '/marks/bar/' },
                 { title: 'Bollinger', to: '/marks/bollinger/' },
                 { title: 'Cell', to: '/marks/cell/' },
+                { title: 'Difference', to: '/marks/difference/' },
                 { title: 'Dot', to: '/marks/dot/' },
                 { title: 'Frame', to: '/marks/frame/' },
                 { title: 'Geo', to: '/marks/geo/' },
@@ -90,6 +91,7 @@ export default {
                 { title: 'Interval', to: '/transforms/interval/' },
                 { title: 'Map', to: '/transforms/map/' },
                 { title: 'Select', to: '/transforms/select/' },
+                { title: 'Shift', to: '/transforms/shift/' },
                 { title: 'Sort', to: '/transforms/sort/' },
                 { title: 'Stack', to: '/transforms/stack/' },
                 { title: 'Window', to: '/transforms/window/' }

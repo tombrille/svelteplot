@@ -74,27 +74,25 @@ You can create stacked bar charts by defining a fill channel which will be used 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarX, groupY, RuleX} from '$lib';
+    import { Plot, BarX, groupY, RuleX } from '$lib';
     import { getContext } from 'svelte';
-    
+
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>
 
 <Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
-    <RuleX data={[0]} /> 
-    <BarX  {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <RuleX data={[0]} />
+    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
 </Plot>
 ```
 
 ```svelte
 <Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
-    <RuleX data={[0]} /> 
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, 
-        { x: 'count' })} />
+    <RuleX data={[0]} />
+    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
 </Plot>
 ```
-
 
 -   `x`
 -   `y1`

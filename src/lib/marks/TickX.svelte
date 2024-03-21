@@ -39,7 +39,12 @@
     let testFacet = $derived(getTestFacet());
 </script>
 
-<Mark type="tickX" channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']} {...args} let:mark>
+<Mark
+    type="tickX"
+    channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
+    {...args}
+    let:mark
+>
     {@const useScale = getUsedScales(plot, options, mark)}
     <g class="tick-x">
         {#each args.data as datum}

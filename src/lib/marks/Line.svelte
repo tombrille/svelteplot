@@ -43,7 +43,10 @@
     import { maybeCurve } from '$lib/helpers/curves.js';
     import pick from 'underscore/modules/pick.js';
 
-    type LineMarkProps = BaseMarkProps & { x?: ChannelAccessor; y?: ChannelAccessor } & BaseLineMarkProps;
+    type LineMarkProps = BaseMarkProps & {
+        x?: ChannelAccessor;
+        y?: ChannelAccessor;
+    } & BaseLineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';

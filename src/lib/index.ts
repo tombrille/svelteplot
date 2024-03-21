@@ -11,6 +11,7 @@ export { default as BollingerX } from './marks/BollingerX.svelte';
 export { default as BollingerY } from './marks/BollingerY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
+export { default as DifferenceY } from './marks/DifferenceY.svelte';
 export { default as Dot } from './marks/Dot.svelte';
 export { default as DotX } from './marks/DotX.svelte';
 export { default as DotY } from './marks/DotY.svelte';
@@ -59,6 +60,7 @@ export {
     selectMinX,
     selectMinY
 } from './transforms/select.js';
+export { shiftX, shiftY } from './transforms/shift.js';
 export { sort, shuffle, reverse } from './transforms/sort.js';
 export { stackX, stackY } from './transforms/stack.js';
 export { windowX, windowY } from './transforms/window.js';

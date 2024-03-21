@@ -19,7 +19,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
             return {
                 ...feat,
                 properties: { ...feat.properties, unemployment: rateMap.get(+feat.id) }
-            }
+            };
         })
     );
 
@@ -160,8 +160,10 @@ Facetting with maps
 
     let { us, presidents } = $derived($page.data.data);
 
-    let statesGeo = $derived(new Map(topojson.feature(us, us.objects.states).features.map(feat => [+feat.id, feat])));
-    let years = union(presidents.map(d => d.year));
+    let statesGeo = $derived(
+        new Map(topojson.feature(us, us.objects.states).features.map((feat) => [+feat.id, feat]))
+    );
+    let years = union(presidents.map((d) => d.year));
     let columns = $state(3);
 </script>
 
@@ -179,15 +181,16 @@ Facetting with maps
     <Geo
         data={presidents}
         fz="year"
-        fill={d => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={d => statesGeo.get(d.state_fips)}
+        fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
+        geometry={(d) => statesGeo.get(d.state_fips)}
     />
-    <Text 
-        fontWeight="bold" 
-        data={scales.fz.domain} 
-        frameAnchor="top" 
-        fz={d => d}
-        text={d => d} />
+    <Text
+        fontWeight="bold"
+        data={scales.fz.domain}
+        frameAnchor="top"
+        fz={(d) => d}
+        text={(d) => d}
+    />
 </Plot>
 ```
 
@@ -205,15 +208,16 @@ Facetting with maps
     <Geo
         data={presidents}
         fz="year"
-        fill={d => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={d => statesGeo.get(d.state_fips)}
+        fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
+        geometry={(d) => statesGeo.get(d.state_fips)}
     />
-    <Text 
-        data={scales.fz.domain} 
-        fontWeight="bold" 
-        frameAnchor="top" 
-        fz={d => d}
-        text={d => d} />
+    <Text
+        data={scales.fz.domain}
+        fontWeight="bold"
+        frameAnchor="top"
+        fz={(d) => d}
+        text={(d) => d}
+    />
 </Plot>
 ```
 

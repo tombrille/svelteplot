@@ -79,7 +79,11 @@
 </script>
 
 <foreignObject x="0" y="0" width={plot.width} height={plot.height}>
-    <canvas xmlns="http://www.w3.org/1999/xhtml" bind:this={canvas} width={plot.width * devicePixelRatio} height={plot.height * devicePixelRatio}
-            style="width: {plot.width}px; height: {plot.height}px;" />
+    <canvas
+        xmlns="http://www.w3.org/1999/xhtml"
+        bind:this={canvas}
+        width={plot.width * devicePixelRatio}
+        height={plot.height * devicePixelRatio}
+        style="width: {plot.width}px; height: {plot.height}px;"
+    />
 </foreignObject>
-
