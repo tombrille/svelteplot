@@ -52,21 +52,21 @@ Or candlestick
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot grid testid="candlestick">
-    <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
+<Plot grid height={250} testid="candlestick">
+    <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.5" />
     <RuleX
         data={aapl.slice(750, 800)}
         x="Date"
         y1="Open"
         y2="Close"
         strokeWidth="5"
-        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'lightseagreen' : 'crimson')}
+        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'var(--svp-green)' : 'var(--svp-red)')}
     />
 </Plot>
 ```
 
 ```svelte
-<Plot grid testid="candlestick">
+<Plot grid>
     <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
     <RuleX
         data={aapl.slice(750, 800)}
@@ -74,7 +74,7 @@ Or candlestick
         y1="Open"
         y2="Close"
         strokeWidth="5"
-        stroke={(d) => (d.Close > d.Open ? 'lightseagreen' : 'crimson')}
+        stroke={(d) => (d.Close > d.Open ? 'green' : 'red')}
     />
 </Plot>
 ```

@@ -26,6 +26,7 @@ export { default as LineY } from './marks/LineY.svelte';
 export { default as Link } from './marks/Link.svelte';
 export { default as Plot } from './Plot.svelte';
 export { default as Pointer } from './marks/Pointer.svelte';
+export { default as Vector } from './marks/Vector.svelte';
 export { default as Rect } from './marks/Rect.svelte';
 export { default as RectX } from './marks/RectX.svelte';
 export { default as RectY } from './marks/RectY.svelte';

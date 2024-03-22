@@ -13,6 +13,7 @@ export type MarkType =
     | 'barY'
     | 'cell'
     | 'dot'
+    | 'vector'
     | 'frame'
     | 'geo'
     | 'gridX'
@@ -675,6 +676,8 @@ export type ColorScheme =
 // list of all prossible style props on marks
 export type MarkStyleProps =
     | 'strokeDasharray'
+    | 'strokeLinejoin'
+    | 'strokeLinecap'
     | 'opacity'
     | 'cursor'
     | 'pointerEvents'

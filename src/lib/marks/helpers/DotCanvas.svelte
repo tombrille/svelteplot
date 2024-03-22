@@ -1,14 +1,22 @@
 <script lang="ts">
+    import CanvasLayer from './CanvasLayer.svelte';
+    import type { PlotState, Mark, DataRecord, BaseMarkProps } from '$lib/types.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from '$lib/helpers/resolve.js';
     import { projectXY } from '$lib/helpers/scales.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
 
-    let canvas: HTMLCanvasElement;
+    let canvas: HTMLCanvasElement|undefined = $state();
     let devicePixelRatio = $state(1);
 
-    let { mark, plot, data, testFacet, useScale } = $props();
+    let { mark, plot, data, testFacet, useScale }: {
+        mark: Mark<BaseMarkProps>;
+        plot: PlotState;
+        data: DataRecord[];
+        testFacet: any;
+        useScale: any;
+    } = $props();
 
     function drawSymbolPath(symbolType: string, size: number, context) {
         // maybeSymbol(symbolType).draw(context, size);
@@ -16,10 +24,9 @@
     }
 
     $effect(() => {
+        if (!canvas) return;
         const context = canvas.getContext('2d');
         if (context === null) return;
-
-        devicePixelRatio = window.devicePixelRatio || 1;
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         // this will re-run whenever `color` or `size` change
@@ -78,12 +85,5 @@
     });
 </script>
 
-<foreignObject x="0" y="0" width={plot.width} height={plot.height}>
-    <canvas
-        xmlns="http://www.w3.org/1999/xhtml"
-        bind:this={canvas}
-        width={plot.width * devicePixelRatio}
-        height={plot.height * devicePixelRatio}
-        style="width: {plot.width}px; height: {plot.height}px;"
-    />
-</foreignObject>
+<CanvasLayer bind:canvas bind:devicePixelRatio {plot} />
+

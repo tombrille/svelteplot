@@ -16,6 +16,7 @@
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
+    import { addEvents } from './helpers/events.js';
 
     type DotProps = BaseMarkProps & {
         data: DataRecord[];
@@ -75,7 +76,7 @@
 >
     {@const useScale = getUsedScales(plot, args, mark)}
 
-    <g class="dots" data-use-x={useScale.x ? 1 : 0}>
+    <g class="dots">
         {#if canvas}
             <DotCanvas {data} {mark} {plot} {testFacet} {useScale} />
         {:else}
@@ -103,6 +104,7 @@
                                 transform="translate({x + dx}, {y + dy})"
                                 data-symbol={symbol}
                                 style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
+                                use:addEvents={{ options: mark.options, datum }}
                             />
                         {/if}
                     {/if}

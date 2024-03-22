@@ -4,6 +4,7 @@
     import type { PlotContext, BaseRectMarkProps } from '../types.js';
     import type { BaseMarkProps } from '../types.js';
     import { resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import { addEvents } from './helpers/events.js';
 
     type FrameMarkProps = BaseMarkProps &
         BaseRectMarkProps & {
@@ -29,6 +30,7 @@
         ry={resolveProp(options.ry, null, null)}
         width={plot.facetWidth}
         height={plot.facetHeight}
+        use:addEvents={{ options: options, datum: {} }}
     />
 </Mark>
 

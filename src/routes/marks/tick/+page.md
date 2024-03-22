@@ -7,8 +7,6 @@ Ticks are useful for showing one-dimensional distributions, as in the "barcode" 
 ```svelte live
 <script lang="ts">
     import { Plot, RuleX, TickX } from '$lib/index.js';
-    import type { Datasets } from '$lib/types.js';
-
     import { page } from '$app/stores';
     let { stateage } = $derived($page.data.data);
 </script>

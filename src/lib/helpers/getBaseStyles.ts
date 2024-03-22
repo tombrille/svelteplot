@@ -7,6 +7,8 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     // stroke: 'stroke',
     strokeWidth: 'stroke-width',
     strokeDasharray: 'stroke-dasharray',
+    strokeLinejoin: 'stroke-linejoin',
+    strokeLinecap: 'stroke-linecap',
     blend: 'mix-blend-mode',
     // fillOpacity: 'fill-opacity',
     // strokeOpacity: 'stroke-opacity',

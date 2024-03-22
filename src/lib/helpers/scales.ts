@@ -583,7 +583,7 @@ function getScaleRange(
     return name === 'opacity'
         ? [0, 1]
         : name === 'length'
-          ? [0, 10]
+          ? [0, 20]
           : name === 'x'
             ? [
                   marginLeft + (insetLeft || inset || 0),
@@ -619,7 +619,8 @@ const scaledChannelNames: ScaledChannelName[] = [
     'fillOpacity',
     'stroke',
     'strokeOpacity',
-    'symbol'
+    'symbol',
+    'length'
 ];
 
 /**

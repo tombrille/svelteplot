@@ -35,7 +35,9 @@
         y2: ChannelAccessor;
         y: ChannelAccessor;
         positiveFill?: string;
+        positiveFillOpacity?: number;
         negativeFill?: string;
+        negativeFillOpacity?: number;
         stroke: boolean | ChannelAccessor;
         curve?: CurveName | CurveFactory;
         tension?: number;
@@ -91,6 +93,7 @@
         data={croppedX1}
         {...options}
         fill={options.positiveFill || 'pink'}
+        fillOpacity={coalesce(options.positiveFillOpacity, 1)}
         x1={coalesce(x1, x2, x)}
         y1={{ scale: null, value: 0 }}
         y2={coalesce(y1, x1x2Differ ? coalesce(y2,y) : 0)}
@@ -114,6 +117,7 @@
         data={croppedX2}
         {...options}
         fill={options.negativeFill || 'cyan'}
+        fillOpacity={coalesce(options.negativeFillOpacity, 1)}
         x1={coalesce(x2, x)}
         y1={{ scale: null, value: 0 }}
         y2={coalesce(y2, y)}

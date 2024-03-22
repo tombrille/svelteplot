@@ -74,6 +74,7 @@ export default {
                 { title: 'Line', to: '/marks/line/' },
                 { title: 'Link', to: '/marks/link/' },
                 { title: 'Pointer', to: '/marks/pointer/' },
+                { title: 'Vector', to: '/marks/vector/' },
                 { title: 'Rect', to: '/marks/rect/' },
                 { title: 'Regression', to: '/marks/regression/' },
                 { title: 'Rule', to: '/marks/rule/' },

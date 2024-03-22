@@ -27,6 +27,7 @@
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
     import { CHANNEL_SCALE } from './contants.js';
+    import { addEvents } from './marks/helpers/events.js';
 
     let width = $state(500);
 
