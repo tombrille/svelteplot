@@ -156,7 +156,7 @@
                             <path
                                 d={shapePath(shape, l, r)}
                                 transform="translate({x + dx}, {y + dy}) rotate({resolveProp(args.rotate, datum, 0)}) {anchor === 'start' ? '' : anchor === 'end' ? `translate(0, ${l})` : `translate(0, ${l/2})`}"
-                                style={resolveScaledStyles(datum, { strokeWidth: 1.5, strokeLinejoin: 'round', ...args}, useScale, plot, 'stroke')}
+                                style={resolveScaledStyles(datum, { strokeWidth: 1.5, strokeLinejoin: 'round', strokeLinecap: 'round', ...args}, useScale, plot, 'stroke')}
                             />
                         {/if}
                     {/if}

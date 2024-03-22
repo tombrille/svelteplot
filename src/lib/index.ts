@@ -35,6 +35,7 @@ export { default as RegressionY } from './marks/RegressionY.svelte';
 export { default as RuleX } from './marks/RuleX.svelte';
 export { default as RuleY } from './marks/RuleY.svelte';
 export { default as Sphere } from './marks/Sphere.svelte';
+export { default as Spike } from './marks/Spike.svelte';
 export { default as Text } from './marks/Text.svelte';
 export { default as TickX } from './marks/TickX.svelte';
 export { default as TickY } from './marks/TickY.svelte';
@@ -47,6 +48,7 @@ export { default as SymbolLegend } from './marks/SymbolLegend.svelte';
 // transforms
 export { bin, binX, binY } from './transforms/bin.js';
 export { bollingerX, bollingerY } from './transforms/bollinger.js';
+export { geoCentroid } from './transforms/centroid.js';
 export { filter } from './transforms/filter.js';
 export { groupX, groupY, groupZ } from './transforms/group.js';
 export { intervalX, intervalY } from './transforms/interval.js';

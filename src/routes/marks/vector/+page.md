@@ -77,6 +77,83 @@ Here's an example where all arrows point towards the mouse cursor:
 </Plot>
 ```
 
+Vector mark can deal with projection system:
+
+```svelte live
+<script>
+    import { Plot, Geo, Vector, geoCentroid } from '$lib';
+    import * as topojson from 'topojson-client';
+    import { page } from '$app/stores';
+    let { us, election } = $derived($page.data.data);
+
+    let nation = $derived(topojson.feature(us, us.objects.nation));
+    let stateMesh = $derived(topojson.mesh(us, us.objects.states));
+    let _election = new Map(election.map((d) => [d.fips, d]));
+
+    let counties = $derived(
+        topojson.feature(us, us.objects.counties).features.map((feat) => {
+            return {
+                ...feat,
+                properties: { 
+                    ...feat.properties, 
+                    ...(_election.get(+feat.id) || {})
+                }
+            };
+        })
+    );
+</script>
+
+<Plot projection="albers-usa" length={{ type: 'sqrt', range: [3,40]}} color={{ scheme: 'BuRd' }}>
+    <Geo data={[nation]} stroke="currentColor" />
+    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Vector 
+        {...geoCentroid({ data: counties })}
+        length={(d) => Math.abs(d.properties.margin2020 * d.properties.votes)}
+        stroke={(d) => d.properties.margin2020 > 0 ? "var(--svp-red)" : "var(--svp-blue)"}
+        rotate={(d) => d.properties.margin2020 > 0 ? 60 : -60}
+        />
+</Plot>
+```
+
+Here's a spike map example:
+
+
+```svelte live
+<script>
+    import { Plot, Geo, Spike, geoCentroid } from '$lib';
+    import * as topojson from 'topojson-client';
+    import { page } from '$app/stores';
+    let { us, election } = $derived($page.data.data);
+
+    let nation = topojson.feature(us, us.objects.nation);
+    let stateMesh = topojson.mesh(us, us.objects.states);
+
+    let _election = new Map(election.map((d) => [d.fips, d]));
+
+    let counties = $derived(
+        topojson.feature(us, us.objects.counties).features.map((feat) => {
+            return {
+                ...feat,
+                properties: { 
+                    ...feat.properties, 
+                    ...(_election.get(+feat.id) || {})
+                }
+            };
+        })
+    );
+</script>
+
+<Plot projection="albers-usa" length={{ range: [0, 100]}}>
+    <Geo data={[nation]} stroke="currentColor" />
+    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Spike 
+        {...geoCentroid({ data: counties })}
+        stroke="var(--svp-green)"
+        length={(d) => d.properties.votes}
+        />
+</Plot>
+```
+
 Here's an example with a custom shape object for drawing little "A" characters:
 
 ```svelte
