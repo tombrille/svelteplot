@@ -162,6 +162,7 @@
                         : markerColor_}
                     <MarkerPath
                         {mark}
+                        scales={plot.scales}
                         markerStart={args.markerStart}
                         markerMid={args.markerMid}
                         markerEnd={args.markerEnd}

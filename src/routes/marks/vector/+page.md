@@ -199,7 +199,7 @@ The **Spike** mark is a convenience wrapper around the Vector mark that sets nic
 
 ```svelte live
 <script>
-    import { Plot, Geo, Spike, geoCentroid, Pointer, Text } from '$lib';
+    import { Plot, Geo, Spike, geoCentroid } from '$lib';
     import * as topojson from 'topojson-client';
     import { page } from '$app/stores';
     let { us, election } = $derived($page.data.data);
@@ -230,25 +230,6 @@ The **Spike** mark is a convenience wrapper around the Vector mark that sets nic
         stroke="var(--svp-green)"
         length={(d) => d.properties.votes}
         />
-     <Pointer 
-        {...geoCentroid({ data: counties })}
-        let:data
-    >
-        <Spike {data} 
-            x={d => d.__centroid__[0]} 
-            y={d => d.__centroid__[1]}
-            strokeWidth="2"
-            length={(d) => d.properties.votes} />
-        <Text {data}
-            x={d => d.__centroid__[0]} 
-            y={d => d.__centroid__[1]}
-            lineAnchor="top"
-            dy="5"
-            fill="currentColor"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            text={d => d.properties.name} />
-    </Pointer>
 </Plot>
 ```
 

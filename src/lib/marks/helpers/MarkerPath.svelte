@@ -6,7 +6,7 @@
     import Marker, { type MarkerShape } from './Marker.svelte';
     import { isSnippet, randomId } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
-    import type { BaseMarkProps, ConstantAccessor, DataRecord, Mark } from '$lib/types.js';
+    import type { BaseMarkProps, ConstantAccessor, DataRecord, Mark, PlotScales } from '$lib/types.js';
     import { addEventHandlers } from './events.js';
 
     type MarkerPathProps = BaseMarkProps & {
@@ -44,6 +44,7 @@
         color: string;
         strokeWidth: ConstantAccessor<number>;
         mark: Mark<BaseMarkProps>;
+        scales: PlotScales;
     };
 
     let {
@@ -60,7 +61,8 @@
         transform,
         color,
         strokeWidth,
-        mark
+        mark,
+        scales
     }: MarkerPathProps = $props();
 
     const id = randomId();
@@ -100,7 +102,7 @@
     let strokeWidth_ = $derived(resolveProp(strokeWidth, datum, 1.4));
 </script>
 
-<g {transform} stroke-width={strokeWidth_} use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}>
+<g {transform} stroke-width={strokeWidth_} use:addEventHandlers={{ scales: scales, options: mark.options, datum }}>
     {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
         {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}`}
         {#if isSnippet(marker)}
@@ -129,7 +131,7 @@
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
         {d}
         {style}
-        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+        use:addEventHandlers={{ scales: scales, options: mark.options, datum }}
     />
     {#if text}
         <!-- since textPath.side is not yet supported, we have to use an invisible

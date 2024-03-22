@@ -111,6 +111,7 @@
                     {@const dy = resolveProp(args.dx, datum, 0)}
                     <MarkerPath
                         {mark}
+                        scales={plot.scales}
                         markerStart={args.markerStart}
                         markerEnd={args.markerEnd}
                         marker={args.marker}
