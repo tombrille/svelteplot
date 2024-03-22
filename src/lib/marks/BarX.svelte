@@ -12,7 +12,7 @@
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
 
     type BarXProps = BaseMarkProps & {
         data: DataRow[];
@@ -70,7 +70,7 @@
                         height={plot.scales.y.fn.bandwidth() - inset * 2}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        use:addEvents={{ options: mark.options, datum }}
+                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                     />
                 {/if}
             {/if}

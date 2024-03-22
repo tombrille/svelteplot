@@ -16,7 +16,7 @@
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
 
     type DotProps = BaseMarkProps & {
         data: DataRecord[];
@@ -104,7 +104,7 @@
                                 transform="translate({x + dx}, {y + dy})"
                                 data-symbol={symbol}
                                 style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                                use:addEvents={{ options: mark.options, datum }}
+                                use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                             />
                         {/if}
                     {/if}

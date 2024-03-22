@@ -7,7 +7,7 @@
     import { isSnippet, randomId } from '$lib/helpers/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import type { BaseMarkProps, ConstantAccessor, DataRecord, Mark } from '$lib/types.js';
-    import { addEvents } from './events.js';
+    import { addEventHandlers } from './events.js';
 
     type MarkerPathProps = BaseMarkProps & {
         /**
@@ -100,7 +100,7 @@
     let strokeWidth_ = $derived(resolveProp(strokeWidth, datum, 1.4));
 </script>
 
-<g {transform} stroke-width={strokeWidth_} use:addEvents={{ options: mark.options, datum }}>
+<g {transform} stroke-width={strokeWidth_} use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}>
     {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
         {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}`}
         {#if isSnippet(marker)}
@@ -129,7 +129,7 @@
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
         {d}
         {style}
-        use:addEvents={{ options: mark.options, datum }}
+        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
     />
     {#if text}
         <!-- since textPath.side is not yet supported, we have to use an invisible

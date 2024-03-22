@@ -18,7 +18,7 @@
         FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
 
     type RectMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -120,7 +120,7 @@
                         height={maxy - miny - insetT - insetB}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        use:addEvents={{ options: mark.options, datum }}
+                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                     />
                 {/if}
             {/if}

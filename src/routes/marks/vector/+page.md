@@ -45,10 +45,7 @@ Here's an example where all arrows point towards the mouse cursor:
         rotate={d => Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180 / Math.PI} 
         /> 
     <Frame stroke="none" fill="transparent" onmousemove={(evt) => {
-        pointer = [
-            scales.x.fn.invert(evt.layerX),
-            scales.y.fn.invert(evt.layerY)
-        ];
+        pointer = [evt.dataX, evt.dataY];
     }} />
 </Plot>
 ```
@@ -68,11 +65,7 @@ Here's an example where all arrows point towards the mouse cursor:
         rotate={d => Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180 / Math.PI} 
         />
     <Frame stroke="none" fill="transparent" onmousemove={(evt) => {
-        // update pointer state with cursor pos in data coordinates
-        pointer = [
-            scales.x.fn.invert(evt.layerX),
-            scales.y.fn.invert(evt.layerY)
-        ];
+        pointer = [evt.dataX, evt.dataY];
     }} />
 </Plot>
 ```
@@ -118,43 +111,16 @@ Vector mark can deal with projection system:
 Here's a spike map example:
 
 
-```svelte live
-<script>
-    import { Plot, Geo, Spike, geoCentroid } from '$lib';
-    import * as topojson from 'topojson-client';
-    import { page } from '$app/stores';
-    let { us, election } = $derived($page.data.data);
 
-    let nation = topojson.feature(us, us.objects.nation);
-    let stateMesh = topojson.mesh(us, us.objects.states);
 
-    let _election = new Map(election.map((d) => [d.fips, d]));
+## Vector options
 
-    let counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: { 
-                    ...feat.properties, 
-                    ...(_election.get(+feat.id) || {})
-                }
-            };
-        })
-    );
-</script>
+- **shape** - Either _arrow_ or _spike_, or a custom shape object (see below)
+- **anchor** - Controls where the vector is anchored in relation to the x, y position. If set to _'start'_, the arrow will start at the x, y position. If set to _'middle'_, the arrow will be centered at the x, y position. If set to _'end'_, the arrow will end at the x, y position. Default is _middle_.
 
-<Plot projection="albers-usa" length={{ range: [0, 100]}}>
-    <Geo data={[nation]} stroke="currentColor" />
-    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
-    <Spike 
-        {...geoCentroid({ data: counties })}
-        stroke="var(--svp-green)"
-        length={(d) => d.properties.votes}
-        />
-</Plot>
-```
+### Custom shapes
 
-Here's an example with a custom shape object for drawing little "A" characters:
+You can use the Vector mark with **custom shapes** by passing an object with a `draw` method that takes a _context_, _length_, and _radius_ as argument. Here's an example with a custom shape object for drawing little "A" characters:
 
 ```svelte
 <script>
@@ -207,18 +173,94 @@ Here's an example with a custom shape object for drawing little "A" characters:
         rotate={d => Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180 / Math.PI} 
         /> 
     <Frame stroke="none" fill="transparent" onmousemove={(evt) => {
-        pointer = [
-            scales.x.fn.invert(evt.layerX),
-            scales.y.fn.invert(evt.layerY)
-        ];
+        pointer = [evt.dataX, evt.dataY];
     }} />
 </Plot>
 ```
 
-## Vector options
-
-- **shape** - Either _arrow_ or _spike_, or any object with a draw method; it receives a _context_, _length_, and _radius_.
-- **anchor** - Controls where the vector is anchored in relation to the x, y position. If set to _'start'_, the arrow will start at the x, y position. If set to _'middle'_, the arrow will be centered at the x, y position. If set to _'end'_, the arrow will end at the x, y position. Default is _middle_.
 
 ## Vector
 
+```svelte
+<Vector 
+    {data}
+    x="x" 
+    y="y" 
+    anchor="start"
+    length={d => Math.sqrt((d.x-pointer[0]) ** 2 + (d.y-pointer[1]) ** 2)}
+    rotate={d => Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180 / Math.PI} 
+    /> 
+```
+
+## Spike
+
+The **Spike** mark is a convenience wrapper around the Vector mark that sets nice defaults.
+
+
+```svelte live
+<script>
+    import { Plot, Geo, Spike, geoCentroid, Pointer, Text } from '$lib';
+    import * as topojson from 'topojson-client';
+    import { page } from '$app/stores';
+    let { us, election } = $derived($page.data.data);
+
+    let nation = topojson.feature(us, us.objects.nation);
+    let stateMesh = topojson.mesh(us, us.objects.states);
+
+    let _election = new Map(election.map((d) => [d.fips, d]));
+
+    let counties = $derived(
+        topojson.feature(us, us.objects.counties).features.map((feat) => {
+            return {
+                ...feat,
+                properties: { 
+                    ...feat.properties, 
+                    ...(_election.get(+feat.id) || {})
+                }
+            };
+        })
+    );
+</script>
+
+<Plot projection="albers-usa" length={{ range: [0, 100]}}>
+    <Geo data={[nation]} fill="white" stroke="currentColor" />
+    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Spike 
+        {...geoCentroid({ data: counties })}
+        stroke="var(--svp-green)"
+        length={(d) => d.properties.votes}
+        />
+     <Pointer 
+        {...geoCentroid({ data: counties })}
+        let:data
+    >
+        <Spike {data} 
+            x={d => d.__centroid__[0]} 
+            y={d => d.__centroid__[1]}
+            strokeWidth="2"
+            length={(d) => d.properties.votes} />
+        <Text {data}
+            x={d => d.__centroid__[0]} 
+            y={d => d.__centroid__[1]}
+            lineAnchor="top"
+            dy="5"
+            fill="currentColor"
+            stroke="var(--svelteplot-bg)"
+            strokeWidth="3"
+            text={d => d.properties.name} />
+    </Pointer>
+</Plot>
+```
+
+```svelte
+<Plot projection="albers-usa" length={{ range: [0, 100]}}>
+    <Geo data={[nation]} stroke="currentColor" />
+    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Spike 
+        {...geoCentroid({ data: counties })}
+        stroke="green"
+        length={(d) => d.properties.votes}
+        />
+   
+</Plot>
+```

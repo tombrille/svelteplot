@@ -1,10 +1,10 @@
-import type { BaseMarkProps, DataRecord } from '$lib/types.js';
+import type { BaseMarkProps, DataRecord, PlotScales } from '$lib/types.js';
 import type { MouseEventHandler } from 'svelte/elements';
 import pick from 'underscore/modules/pick.js';
 
-export function addEvents(
+export function addEventHandlers(
     node: SVGElement,
-    { options, datum }: { options: BaseMarkProps; datum: DataRecord }
+    { scales, options, datum }: { scales: PlotScales; options: BaseMarkProps; datum: DataRecord }
 ) {
     const events = pick(
         options,
@@ -36,6 +36,16 @@ export function addEvents(
     for (const [eventName, eventHandler] of Object.entries(events)) {
         if (eventHandler) {
             const wrappedHandler = (origEvent: Event) => {
+                if (origEvent.layerX !== undefined) {
+                    if (scales.projection) {
+                        const [x, y] = scales.projection.invert([origEvent.layerX, origEvent.layerY]);
+                        origEvent.dataX = x;
+                        origEvent.dataY = y;
+                    } else {
+                        origEvent.dataX = scales.x.fn.invert(origEvent.layerX);
+                        origEvent.dataY = scales.y.fn.invert(origEvent.layerY);
+                    }
+                }
                 eventHandler(origEvent, datum.___orig___ !== undefined ? datum.___orig___ : datum);
             };
             listeners.set(eventName, wrappedHandler);

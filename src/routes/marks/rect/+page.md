@@ -67,6 +67,18 @@ RectX can be used for range annotations:
 </Plot>
 ```
 
+```svelte
+<Plot>
+    <Line data={aapl} x="Date" y="Close" />
+    <RectX
+        data={[{ from: new Date(2014, 0, 1), to: new Date(2016, 0, 1) }]}
+        x1="from"
+        x2="to"
+        fillOpacity={0.1}
+    />
+</Plot>
+```
+
 ## RectY
 
 RectY can be used for range annotations:
@@ -79,6 +91,13 @@ RectY can be used for range annotations:
     let { aapl } = $derived($page.data.data);
 </script>
 
+<Plot>
+    <Line data={aapl} x="Date" y="Close" />
+    <RectY data={[{ from: 120, to: 140 }]} y1="from" y2="to" fillOpacity={0.1} />
+</Plot>
+```
+
+```svelte
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
     <RectY data={[{ from: 120, to: 140 }]} y1="from" y2="to" fillOpacity={0.1} />

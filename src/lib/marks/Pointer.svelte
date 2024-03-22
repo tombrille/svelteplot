@@ -20,7 +20,8 @@
 
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
-    import { projectX, projectY } from '$lib/helpers/scales.js';
+    import { projectX, projectXY, projectY } from '$lib/helpers/scales.js';
+    import isDataRecord from '$lib/helpers/isDataRecord.js';
 
     let { data, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
 
@@ -35,13 +36,9 @@
     }
 
     $effect(() => {
-        // plot.body?.addEventListener('mouseenter', onMouseEnter);
-        // plot.body?.addEventListener('mouseleave', onMouseLeave);
         plot.body?.addEventListener('mousemove', onMouseMove);
 
         return () => {
-            // plot.body?.removeEventListener('mouseenter', onMouseEnter);
-            // plot.body?.removeEventListener('mouseleave', onMouseLeave);
             plot.body?.removeEventListener('mousemove', onMouseMove);
         };
     });
@@ -55,15 +52,26 @@
             quadtree()
                 .x(
                     x != null
-                        ? (d) => projectX('x', plot.scales, resolveChannel('x', d, { x }))
+                        ? d => d.__pointerX
                         : () => 0
                 )
                 .y(
                     y != null
-                        ? (d) => projectY('y', plot.scales, resolveChannel('y', d, { y }))
+                        ? d => d.__pointerY
                         : () => 0
                 )
-                .addAll(items)
+                .addAll(items?.map((d) => {
+                    const [px,py] = projectXY(plot.scales, 
+                        resolveChannel('x', d, { x }), 
+                        resolveChannel('y', d, { y }),
+                        true, true
+                    );
+                    return {
+                        ...(isDataRecord(d) ? d : { ___orig___: d}),
+                        __pointerX: px,
+                        __pointerY: py
+                    };
+                }) ?? [])
         )
     );
 </script>

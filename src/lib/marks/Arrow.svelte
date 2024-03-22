@@ -14,7 +14,7 @@
     import Mark from '../Mark.svelte';
     import { arrowPath, maybeSweep, type SweepOption } from '../helpers/arrowPath.js';
     import { replaceChannels } from '$lib/transforms/rename.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
 
     type ArrowProps = BaseMarkProps & {
         data: DataRecord[];
@@ -122,7 +122,7 @@
                         data-y1={_y1}
                         data-y1_={y1}
                         transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                        use:addEvents={{ options: mark.options, datum }}
+                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                     >
                         {#if options.onmouseenter || options.onclick}
                             <!-- add invisible path in bg for easier mouse access -->

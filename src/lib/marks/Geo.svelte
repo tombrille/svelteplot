@@ -8,7 +8,7 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { sort } from '$lib/index.js';
     import { testFilter } from '$lib/helpers/index.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
     import { facetWrap } from '$lib/transforms/facet.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
@@ -67,7 +67,7 @@
                             plot,
                             preferStroke.has(geometry.type) ? 'stroke' : 'fill'
                         )}
-                        use:addEvents={{ options: mark.options, datum }}
+                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                     >
                         {#if title}<title>{title}</title>{/if}
                     </path>

@@ -9,6 +9,7 @@
     fillOpacity={0.3} 
     strokeWidth={1} 
     anchor="start" 
+    stroke="currentColor"
     sort={{ channel: '-y' }}
     {...options} 
     shape="spike" />

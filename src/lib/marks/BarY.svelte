@@ -18,7 +18,7 @@
     import { isValid } from '../helpers/isValid.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import { maybeData } from '$lib/helpers/index.js';
-    import { addEvents } from './helpers/events.js';
+    import { addEventHandlers } from './helpers/events.js';
 
     type BarYProps = BaseMarkProps & {
         data: DataRow[];
@@ -79,7 +79,7 @@
                     height={maxy - miny}
                     rx={resolveProp(args.rx, datum, null)}
                     ry={resolveProp(args.ry, datum, null)}
-                    use:addEvents={{ options: mark.options, datum }}
+                    use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
                 />
             {/if}
         {/each}
