@@ -501,7 +501,9 @@ export function createScale<T extends ScaleOptions>(
             ...(type === 'band' || type === 'point'
                 ? {
                       align: scaleOptions.align,
-                      padding: maybeNumber(coalesce(scaleOptions.padding, plotOptions.padding, 0.15))
+                      padding: maybeNumber(
+                          coalesce(scaleOptions.padding, plotOptions.padding, 0.15)
+                      )
                   }
                 : {})
         };

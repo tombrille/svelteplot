@@ -1,18 +1,20 @@
-import { resolveChannel } from "$lib/helpers/resolve.js";
-import { maybeTimeInterval } from "$lib/helpers/time.js";
-import type { ChannelName, DataRecord, TransformArg } from "$lib/types.js";
+import { resolveChannel } from '$lib/helpers/resolve.js';
+import { maybeTimeInterval } from '$lib/helpers/time.js';
+import type { ChannelName, DataRecord, TransformArg } from '$lib/types.js';
 
-type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
-    Pick<T, Exclude<keyof T, Keys>>
-    & {
-        [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+    {
+        [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
     }[Keys];
 
 type ShiftXOptions = {
-    [key in 'x'|'x1'|'x2']: string|number
-}
+    [key in 'x' | 'x1' | 'x2']: string | number;
+};
 
-export function shiftX({ data, ...channels }: TransformArg<DataRecord>, shiftBy: string|number|RequireAtLeastOne<ShiftXOptions>): TransformArg<DataRecord> {
+export function shiftX(
+    { data, ...channels }: TransformArg<DataRecord>,
+    shiftBy: string | number | RequireAtLeastOne<ShiftXOptions>
+): TransformArg<DataRecord> {
     if (typeof shiftBy === 'number' || typeof shiftBy === 'string') {
         shiftBy = { x: shiftBy };
     }
@@ -23,11 +25,13 @@ export function shiftX({ data, ...channels }: TransformArg<DataRecord>, shiftBy:
 }
 
 type ShiftYOptions = {
-    [key in 'y'|'y1'|'y2']: string|number
-}
+    [key in 'y' | 'y1' | 'y2']: string | number;
+};
 
-
-export function shiftY({ data, ...channels }: TransformArg<DataRecord>, shiftBy: string|number|RequireAtLeastOne<ShiftYOptions>): TransformArg<DataRecord> {
+export function shiftY(
+    { data, ...channels }: TransformArg<DataRecord>,
+    shiftBy: string | number | RequireAtLeastOne<ShiftYOptions>
+): TransformArg<DataRecord> {
     if (typeof shiftBy === 'number' || typeof shiftBy === 'string') {
         shiftBy = { y: shiftBy };
     }
@@ -35,25 +39,39 @@ export function shiftY({ data, ...channels }: TransformArg<DataRecord>, shiftBy:
     return { data, ...channels };
 }
 
-function shiftChannels(shiftDim:'x'|'y', shiftBy: RequireAtLeastOne<ShiftYOptions | ShiftXOptions>, { data, ...channels }) {
+function shiftChannels(
+    shiftDim: 'x' | 'y',
+    shiftBy: RequireAtLeastOne<ShiftYOptions | ShiftXOptions>,
+    { data, ...channels }
+) {
     return {
-        data: data.map(d => {
+        data: data.map((d) => {
             const newRow = { ...d };
             for (const [channel, shift] of Object.entries(shiftBy)) {
-                const shiftFrom = (channels[channel] != null ? channel : shiftDim) as 'x'|'y'|'x1'|'y1'|'x2'|'y2';
+                const shiftFrom = (channels[channel] != null ? channel : shiftDim) as
+                    | 'x'
+                    | 'y'
+                    | 'x1'
+                    | 'y1'
+                    | 'x2'
+                    | 'y2';
                 if (typeof shift === 'number') {
-                    newRow[`__shift_${channel}`] = (resolveChannel(shiftFrom, d, channels) as number) + shift;
+                    newRow[`__shift_${channel}`] =
+                        (resolveChannel(shiftFrom, d, channels) as number) + shift;
                 } else if (typeof shift === 'string') {
                     const [, sign, value, unit] = shift.match(/^([+-])?(\d+)? ?([a-z]+)$/);
                     const step = (sign === '-' ? -1 : 1) * (value || 1);
                     const interval = maybeTimeInterval(unit);
                     if (!interval) throw new Error(`Invalid shift interval: ${shift}`);
-                    newRow[`__shift_${channel}`] = interval.offset(resolveChannel(shiftFrom, d, channels), step);
+                    newRow[`__shift_${channel}`] = interval.offset(
+                        resolveChannel(shiftFrom, d, channels),
+                        step
+                    );
                 }
             }
             return newRow;
         }),
         ...channels,
-        ...(Object.fromEntries(Object.keys(shiftBy).map((key) => [key, `__shift_${key}`])))
-    }
+        ...Object.fromEntries(Object.keys(shiftBy).map((key) => [key, `__shift_${key}`]))
+    };
 }

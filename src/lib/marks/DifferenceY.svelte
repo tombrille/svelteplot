@@ -50,27 +50,44 @@
     let { x, x1, x2, y, y1, y2 } = $derived(options);
 
     let x1x2Differ = $derived((x1 == null || x2 == null) && x1 !== x2);
-    
-    let xExtent = $derived(x1x2Differ && x != null ? extent(data, d => resolveChannel('x', d, options)) : null);
-    let x1Extent = $derived(x1x2Differ && x1 != null ? extent(data, d => resolveChannel('x1', d, options)) : null);
-    let x2Extent = $derived(x1x2Differ && x2 != null ? extent(data, d => resolveChannel('x2', d, options)) : null);
 
-    let maxMin = $derived(max([xExtent, x1Extent, x2Extent].filter(d => d != null).map(d => d[0])));
-    let minMax = $derived(min([xExtent, x1Extent, x2Extent].filter(d => d != null).map(d => d[1])));
+    let xExtent = $derived(
+        x1x2Differ && x != null ? extent(data, (d) => resolveChannel('x', d, options)) : null
+    );
+    let x1Extent = $derived(
+        x1x2Differ && x1 != null ? extent(data, (d) => resolveChannel('x1', d, options)) : null
+    );
+    let x2Extent = $derived(
+        x1x2Differ && x2 != null ? extent(data, (d) => resolveChannel('x2', d, options)) : null
+    );
 
-    let croppedX1 = $derived(x1x2Differ ? data.filter(d => {
-        const x1val = resolveChannel(x1 != null ? 'x1' : 'x', d, options);
-        return x1val >= maxMin && x1val <= minMax;
-    }) : data);
+    let maxMin = $derived(
+        max([xExtent, x1Extent, x2Extent].filter((d) => d != null).map((d) => d[0]))
+    );
+    let minMax = $derived(
+        min([xExtent, x1Extent, x2Extent].filter((d) => d != null).map((d) => d[1]))
+    );
 
-    let croppedX2 = $derived(x1x2Differ ? data.filter(d => {
-        const x2val = resolveChannel(x2 != null ? 'x2' : 'x', d, options);
-        return x2val >= maxMin && x2val <= minMax;
-    }) : data);
+    let croppedX1 = $derived(
+        x1x2Differ
+            ? data.filter((d) => {
+                  const x1val = resolveChannel(x1 != null ? 'x1' : 'x', d, options);
+                  return x1val >= maxMin && x1val <= minMax;
+              })
+            : data
+    );
+
+    let croppedX2 = $derived(
+        x1x2Differ
+            ? data.filter((d) => {
+                  const x2val = resolveChannel(x2 != null ? 'x2' : 'x', d, options);
+                  return x2val >= maxMin && x2val <= minMax;
+              })
+            : data
+    );
 
     // $inspect({ x1x2Differ, xExtent, x1Extent, x2Extent, maxMin, minMax, croppedData })
-    $inspect({data, x, x1, x2})
-
+    $inspect({ data, x, x1, x2 });
 
     const id = randomId();
 </script>
@@ -96,7 +113,7 @@
         fillOpacity={coalesce(options.positiveFillOpacity, 1)}
         x1={coalesce(x1, x2, x)}
         y1={{ scale: null, value: 0 }}
-        y2={coalesce(y1, x1x2Differ ? coalesce(y2,y) : 0)}
+        y2={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)}
     />
 </g>
 <g class="negative difference">
@@ -107,10 +124,10 @@
             {...options}
             fill={options.negativeFill || 'blue'}
             x1={coalesce(x1, x2, x)}
-            y1={coalesce(y1, x1x2Differ ? coalesce(y2,y) : 0)}
-            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }}  
+            y1={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)}
+            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }}
         />
-    </clipPath> 
+    </clipPath>
     <!-- neg area goes from top to line 2 -->
     <Area
         clipPath="url(#neg-clip-{id})"
@@ -125,5 +142,11 @@
 </g>
 {#if stroke != null}
     <!-- set stroke to false to hide the line -->
-    <Line data={croppedX2} {...options} stroke={stroke === true ? 'currentColor' : stroke} x={coalesce(x2, x)} y={coalesce(y2, y)} />
+    <Line
+        data={croppedX2}
+        {...options}
+        stroke={stroke === true ? 'currentColor' : stroke}
+        x={coalesce(x2, x)}
+        y={coalesce(y2, y)}
+    />
 {/if}

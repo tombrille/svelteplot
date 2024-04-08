@@ -38,12 +38,17 @@ export function addEventHandlers(
             const wrappedHandler = (origEvent: Event) => {
                 if (origEvent.layerX !== undefined) {
                     if (scales.projection) {
-                        const [x, y] = scales.projection.invert([origEvent.layerX, origEvent.layerY]);
+                        const [x, y] = scales.projection.invert([
+                            origEvent.layerX,
+                            origEvent.layerY
+                        ]);
                         origEvent.dataX = x;
                         origEvent.dataY = y;
                     } else {
-                        origEvent.dataX = scales.x.fn.invert && scales.x.fn.invert(origEvent.layerX);
-                        origEvent.dataY = scales.y.fn.invert && scales.y.fn.invert(origEvent.layerY);
+                        origEvent.dataX =
+                            scales.x.fn.invert && scales.x.fn.invert(origEvent.layerX);
+                        origEvent.dataY =
+                            scales.y.fn.invert && scales.y.fn.invert(origEvent.layerY);
                     }
                 }
                 eventHandler(origEvent, datum.___orig___ !== undefined ? datum.___orig___ : datum);

@@ -25,23 +25,23 @@
         stroke?: ChannelAccessor;
         /**
          * Controls where the vector is anchored in relation to the x, y position.
-         * If set to 'start', the arrow will start at the x, y position. If set to 
-         * 'middle', the arrow will be centered at the x, y position. If set to 
+         * If set to 'start', the arrow will start at the x, y position. If set to
+         * 'middle', the arrow will be centered at the x, y position. If set to
          * 'end', the arrow will end at the x, y position.
          */
-        anchor: 'start'|'middle'|'end';
-        shape?: 'arrow'|'spike'|ShapeRenderer;
+        anchor: 'start' | 'middle' | 'end';
+        shape?: 'arrow' | 'spike' | ShapeRenderer;
         children?: Snippet;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
         canvas?: boolean;
     };
-    
 </script>
+
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
-    import { pathRound as path } from "d3-path";
-    
+    import { pathRound as path } from 'd3-path';
+
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
@@ -57,7 +57,14 @@
     // That said, we’ll probably want a arrow with a fixed head size, too.
     const wingRatio = defaultRadius * 5;
 
-    let { data, canvas, shape = 'arrow', anchor = 'middle', r = defaultRadius, ...options }: VectorMarkProps = $props();
+    let {
+        data,
+        canvas,
+        shape = 'arrow',
+        anchor = 'middle',
+        r = defaultRadius,
+        ...options
+    }: VectorMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -85,22 +92,22 @@
     };
 
     const shapes = new Map([
-        ["arrow", shapeArrow],
-        ["spike", shapeSpike]
+        ['arrow', shapeArrow],
+        ['spike', shapeSpike]
     ]);
 
     function isShapeObject(value: any): value is ShapeRenderer {
-        return value && typeof value.draw === "function";
+        return value && typeof value.draw === 'function';
     }
 
-    function maybeShape(shape: 'arrow'|'spike'|ShapeRenderer) {
+    function maybeShape(shape: 'arrow' | 'spike' | ShapeRenderer) {
         if (isShapeObject(shape)) return shape;
         const value = shapes.get(`${shape}`.toLowerCase());
         if (value) return value;
         throw new Error(`invalid shape: ${shape}`);
     }
 
-    function shapePath(shape: 'arrow'|'spike'|ShapeRenderer, l:number, r:number) {
+    function shapePath(shape: 'arrow' | 'spike' | ShapeRenderer, l: number, r: number) {
         const context = path();
         maybeShape(shape).draw(context, l, r);
         return context.toString();
@@ -110,7 +117,7 @@
         sort({
             data: maybeData(data),
             // sort by descending radius by default
-            ...options,
+            ...options
         })
     );
 </script>
@@ -155,8 +162,27 @@
                             {@const dy = +resolveProp(args.dx, datum, 0)}
                             <path
                                 d={shapePath(shape, l, r)}
-                                transform="translate({x + dx}, {y + dy}) rotate({resolveProp(args.rotate, datum, 0)}) {anchor === 'start' ? '' : anchor === 'end' ? `translate(0, ${l})` : `translate(0, ${l/2})`}"
-                                style={resolveScaledStyles(datum, { strokeWidth: 1.5, strokeLinejoin: 'round', strokeLinecap: 'round', ...args}, useScale, plot, 'stroke')}
+                                transform="translate({x + dx}, {y + dy}) rotate({resolveProp(
+                                    args.rotate,
+                                    datum,
+                                    0
+                                )}) {anchor === 'start'
+                                    ? ''
+                                    : anchor === 'end'
+                                      ? `translate(0, ${l})`
+                                      : `translate(0, ${l / 2})`}"
+                                style={resolveScaledStyles(
+                                    datum,
+                                    {
+                                        strokeWidth: 1.5,
+                                        strokeLinejoin: 'round',
+                                        strokeLinecap: 'round',
+                                        ...args
+                                    },
+                                    useScale,
+                                    plot,
+                                    'stroke'
+                                )}
                             />
                         {/if}
                     {/if}

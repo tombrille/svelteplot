@@ -4,9 +4,18 @@ import { reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';
+import omit from 'underscore/modules/omit.js';
 
 type ReducerFunc = (group: DataRow[]) => RawValue;
 type ReducerOption = ReducerName | ReducerFunc;
+
+type GroupBaseOptions = {
+    domain?: [number, number];
+    thresholds?: NamedThresholdsGenerator | number | number[] | ThresholdCountGenerator;
+    interval?: number | string;
+    cumulative?: false | 1 | -1;
+    reverse?: boolean;
+};
 
 type AdditionalOutputChannels = Partial<{
     fill: ReducerOption;
@@ -16,14 +25,6 @@ type AdditionalOutputChannels = Partial<{
     fillOpacity: ReducerOption;
     strokeOpacity: ReducerOption;
 }>;
-
-type GroupBaseOptions = {
-    domain?: [number, number];
-    thresholds?: NamedThresholdsGenerator | number | number[] | ThresholdCountGenerator;
-    interval?: number | string;
-    cumulative?: false | 1 | -1;
-    reverse?: boolean;
-};
 
 type GroupXOptions = GroupBaseOptions &
     AdditionalOutputChannels &
@@ -43,15 +44,33 @@ type GroupYOptions = GroupBaseOptions &
 
 type GroupZOptions = GroupXOptions | GroupYOptions;
 
-export function group() {}
+/**
+ * groups the dataset by x and y channel and optionally reduces the group items
+ * to output channels fill, stroke, r, opacity, fillOpacity, or strokeOpacity
+ */
+export function group(input: TransformArg<T, DataRecord>, options: GroupXOptions = {}) {}
 
+/**
+ * groups the dataset by the x channel and optionally reduces the group items
+ * to output channels y, y1, y2, fill, stroke, r, opacity, fillOpacity, or strokeOpacity
+ */
 export function groupX(input: TransformArg<T, DataRecord>, options: GroupXOptions = {}) {
     return groupXYZ('x', input, options);
 }
 
+/**
+ * groups the dataset by the y channel and optionally reduces the group items
+ * to output channels x, x1, x2, fill, stroke, r, opacity, fillOpacity, or strokeOpacity
+ */
 export function groupY(input: TransformArg<T, DataRecord>, options: GroupYOptions = {}) {
     return groupXYZ('y', input, options);
 }
+
+/**
+ * groups the dataset by the z channel and optionally reduces the group items
+ * to output channels x, x1, x2, y, y1, y2, fill, stroke, r, opacity, fillOpacity,
+ * or strokeOpacity
+ */
 export function groupZ(input: TransformArg<T, DataRecord>, options: GroupZOptions = {}) {
     return groupXYZ('z', input, options);
 }
@@ -70,7 +89,7 @@ function groupXYZ(
                   (d) => resolveChannel(dim, d, channels)
               );
     const newData: DataRecord[] = [];
-    let newChannels = { ...channels, filter: null };
+    let newChannels = omit({ ...channels }, 'filter');
     if (dim !== 'z') newChannels[dim] = `__${dim}`;
 
     const outputs = [

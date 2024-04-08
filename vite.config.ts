@@ -29,7 +29,7 @@ export default defineConfig({
                 highlighter: {
                     themeLight: 'github-light',
                     themeDark: 'github-dark',
-                    twoslash: false 
+                    twoslash: false
                 },
                 navbar: [
                     {
@@ -76,6 +76,5 @@ export default defineConfig({
                 additionalData: '@use "src/variables.scss" as *;'
             }
         }
-    },
-
+    }
 });

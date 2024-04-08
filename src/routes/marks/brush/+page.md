@@ -13,6 +13,5 @@ The **brush mark** is useful for interactively selecting data.
 
 <Plot height={250}>
     <Line data={aapl} x="Date" y="Close" />
-
 </Plot>
 ```

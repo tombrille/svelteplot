@@ -7,10 +7,16 @@
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
 
-    let canvas: HTMLCanvasElement|undefined = $state();
+    let canvas: HTMLCanvasElement | undefined = $state();
     let devicePixelRatio = $state(1);
 
-    let { mark, plot, data, testFacet, useScale }: {
+    let {
+        mark,
+        plot,
+        data,
+        testFacet,
+        useScale
+    }: {
         mark: Mark<BaseMarkProps>;
         plot: PlotState;
         data: DataRecord[];
@@ -86,4 +92,3 @@
 </script>
 
 <CanvasLayer bind:canvas bind:devicePixelRatio {plot} />
-

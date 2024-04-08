@@ -1,10 +1,14 @@
 <script lang="ts">
-    let { canvas, devicePixelRatio, plot }: { 
+    let {
+        canvas,
+        devicePixelRatio,
+        plot
+    }: {
         canvas: HTMLCanvasElement; // bindable
         devicePixelRatio: number; // bindable
-        plot: PlotState 
+        plot: PlotState;
     } = $props();
-    
+
     $effect(() => {
         devicePixelRatio = window.devicePixelRatio || 1;
         const ctx = canvas.getContext('2d');

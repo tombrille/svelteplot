@@ -4,7 +4,7 @@ import { resolveProp } from './resolve.js';
 import isDate from 'underscore/modules/isDate.js';
 
 /**
- * Returns first argument that is not null or undefined 
+ * Returns first argument that is not null or undefined
  */
 export function coalesce(...args: (RawValue | undefined | null)[]) {
     for (const arg of args) {
@@ -38,10 +38,12 @@ export function maybeData(data: DataRecord[]): DataRecord[] {
 
 export function isObject(option: object | RawValue): option is object {
     // doesn't work with Proxies
-    return typeof option === 'object' && !isDate(option) && !Array.isArray(option) && option !== null;
+    return (
+        typeof option === 'object' && !isDate(option) && !Array.isArray(option) && option !== null
+    );
 }
 
-export function maybeNumber(value: RawValue|null): number | null {
+export function maybeNumber(value: RawValue | null): number | null {
     return value != null ? +value : null;
 }
 

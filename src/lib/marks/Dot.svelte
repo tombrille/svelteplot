@@ -104,7 +104,11 @@
                                 transform="translate({x + dx}, {y + dy})"
                                 data-symbol={symbol}
                                 style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                                use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                                use:addEventHandlers={{
+                                    scales: plot.scales,
+                                    options: mark.options,
+                                    datum
+                                }}
                             />
                         {/if}
                     {/if}

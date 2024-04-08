@@ -50,28 +50,24 @@
     let trees = $derived(
         groups.map(([, items]) =>
             quadtree()
-                .x(
-                    x != null
-                        ? d => d.__pointerX
-                        : () => 0
+                .x(x != null ? (d) => d.__pointerX : () => 0)
+                .y(y != null ? (d) => d.__pointerY : () => 0)
+                .addAll(
+                    items?.map((d) => {
+                        const [px, py] = projectXY(
+                            plot.scales,
+                            resolveChannel('x', d, { x }),
+                            resolveChannel('y', d, { y }),
+                            true,
+                            true
+                        );
+                        return {
+                            ...(isDataRecord(d) ? d : { ___orig___: d }),
+                            __pointerX: px,
+                            __pointerY: py
+                        };
+                    }) ?? []
                 )
-                .y(
-                    y != null
-                        ? d => d.__pointerY
-                        : () => 0
-                )
-                .addAll(items?.map((d) => {
-                    const [px,py] = projectXY(plot.scales, 
-                        resolveChannel('x', d, { x }), 
-                        resolveChannel('y', d, { y }),
-                        true, true
-                    );
-                    return {
-                        ...(isDataRecord(d) ? d : { ___orig___: d}),
-                        __pointerX: px,
-                        __pointerY: py
-                    };
-                }) ?? [])
         )
     );
 </script>
