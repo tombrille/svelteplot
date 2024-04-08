@@ -27,7 +27,7 @@ describe('binX', () => {
                 { __x1: 4, __x: 5, __x2: 6, __y: 2 }
             ],
             __x_origField: 'x',
-            __y_origField: 'COUNT',
+            __y_origField: 'Frequency',
             x: '__x',
             x1: '__x1',
             x2: '__x2',
@@ -54,7 +54,7 @@ describe('binX', () => {
                 { __x1: 4, __x: 5, __x2: 6, __y: 5 }
             ],
             __x_origField: 'x',
-            __y_origField: 'COUNT',
+            __y_origField: 'Frequency',
             x: '__x',
             x1: '__x1',
             x2: '__x2',

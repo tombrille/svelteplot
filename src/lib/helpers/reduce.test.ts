@@ -25,8 +25,8 @@ describe('reduceOutputs', () => {
         expect(newDatum.__y1).toBe(20);
         expect(newDatum.__y2).toBe(30);
         expect(newChannels.y).toBe('__y');
-        expect(newChannels.__y_origField).toBe('SUM ( value )');
-        expect(newChannels.__y1_origField).toBe('MEAN ( value )');
-        expect(newChannels.__y2_origField).toBe('MAX ( value )');
+        expect(newChannels.__y_origField).toBe('Sum ( value )');
+        expect(newChannels.__y1_origField).toBe('Average ( value )');
+        expect(newChannels.__y2_origField).toBe('Max ( value )');
     });
 });
