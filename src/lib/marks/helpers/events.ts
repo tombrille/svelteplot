@@ -42,8 +42,8 @@ export function addEventHandlers(
                         origEvent.dataX = x;
                         origEvent.dataY = y;
                     } else {
-                        origEvent.dataX = scales.x.fn.invert(origEvent.layerX);
-                        origEvent.dataY = scales.y.fn.invert(origEvent.layerY);
+                        origEvent.dataX = scales.x.fn.invert && scales.x.fn.invert(origEvent.layerX);
+                        origEvent.dataY = scales.y.fn.invert && scales.y.fn.invert(origEvent.layerY);
                     }
                 }
                 eventHandler(origEvent, datum.___orig___ !== undefined ? datum.___orig___ : datum);

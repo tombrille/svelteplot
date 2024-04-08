@@ -33,7 +33,13 @@ Pointer mark
 </Plot>
 ```
 
-```svelte
+```svelte 
+<script lang="ts">
+    import { Plot, Line, Dot, Text, Pointer } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+// --- cut ---
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30} let:data>
@@ -182,7 +188,6 @@ Click the bar chart!
         cursor="pointer"
         opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
         onclick={(event, d) => {
-            console.log('click');
             clicked = d;
         }}
     />
