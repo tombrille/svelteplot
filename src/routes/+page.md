@@ -10,7 +10,7 @@ actions:
     - label: Why SveltePlot?
       to: /why-svelteplot
       type: primary
-features:
+_features:
     - title: Marks
       description: SveltePlot comes with a powerful set of built-in marks for building for your visualizations
       icon:

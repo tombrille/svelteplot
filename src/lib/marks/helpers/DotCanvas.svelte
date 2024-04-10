@@ -1,8 +1,9 @@
 <script lang="ts">
     import CanvasLayer from './CanvasLayer.svelte';
     import type { PlotState, Mark, DataRecord, BaseMarkProps } from '$lib/types.js';
+    import { CSS_VAR } from '$lib/constants.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
-    import { resolveChannel, resolveProp } from '$lib/helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveScaledStyleProps } from '$lib/helpers/resolve.js';
     import { projectXY } from '$lib/helpers/scales.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
@@ -33,7 +34,6 @@
         if (!canvas) return;
         const context = canvas.getContext('2d');
         if (context === null) return;
-
         context.clearRect(0, 0, canvas.width, canvas.height);
         // this will re-run whenever `color` or `size` change
         context.resetTransform();
@@ -53,37 +53,39 @@
                     const [px, py] = projectXY(plot.scales, x, y, true, true);
                     const r_ = useScale.r ? plot.scales.r.fn(r) : r;
                     const size = r_ * r_ * Math.PI * devicePixelRatio;
-                    // context.beginPath();
-                    const fill_ = resolveChannel('fill', datum, mark.options);
-                    const fill =
-                        mark.options.fill === true
-                            ? 'currentColor'
-                            : useScale.fill
-                              ? plot.scales.color.fn(fill_)
-                              : fill_;
-                    const stroke_ = resolveChannel('stroke', datum, mark.options);
-                    const stroke = useScale.stroke ? plot.scales.color.fn(stroke_) : stroke_;
+                    let { stroke, strokeOpacity, fillOpacity, fill, opacity } =
+                        resolveScaledStyleProps(datum, mark.options, useScale, plot, 'stroke');
 
-                    if (stroke) {
+                    if (`${fill}`.toLowerCase() === 'currentcolor')
+                        fill = getComputedStyle(
+                            canvas.parentElement.parentElement
+                        ).getPropertyValue('color');
+                    if (`${stroke}`.toLowerCase() === 'currentcolor')
+                        stroke = getComputedStyle(
+                            canvas.parentElement.parentElement
+                        ).getPropertyValue('color');
+                    if (CSS_VAR.test(fill))
+                        fill = getComputedStyle(canvas).getPropertyValue(fill.slice(4, -1));
+                    if (CSS_VAR.test(stroke))
+                        stroke = getComputedStyle(canvas).getPropertyValue(stroke.slice(4, -1));
+
+                    if (stroke && stroke !== 'none') {
                         const strokeWidth = resolveProp(mark.options.strokeWidth, datum, 1.6);
                         context.lineWidth = strokeWidth;
                     }
-
-                    const opacity_ = resolveChannel('opacity', datum, mark.options);
-                    const opacity = useScale.opacity ? plot.scales.opacity.fn(opacity_) : opacity_;
-                    if (opacity != null) context.globalAlpha = opacity;
-
-                    if (fill) context.fillStyle = fill;
-                    if (stroke) context.strokeStyle = stroke;
-
+                    context.fillStyle = fill ? fill : 'none';
+                    context.strokeStyle = stroke ? stroke : 'none';
                     context.translate(px, py);
 
                     context.beginPath();
                     drawSymbolPath(symbol, size, context);
                     context.closePath();
 
-                    if (fill) context.fill();
-                    if (stroke) context.stroke();
+                    if (opacity != null) context.globalAlpha = opacity;
+                    if (fillOpacity != null) context.globalAlpha = (opacity ?? 1) * fillOpacity;
+                    if (fill && fill !== 'none') context.fill();
+                    if (strokeOpacity != null) context.globalAlpha = (opacity ?? 1) * strokeOpacity;
+                    if (stroke && stroke !== 'none') context.stroke();
                     context.translate(-px, -py);
                 }
             }

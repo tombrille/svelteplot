@@ -1,4 +1,4 @@
-import { CHANNEL_SCALE } from '$lib/contants.js';
+import { CHANNEL_SCALE } from '$lib/constants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
 import type { PlotState } from '$lib/types.js';
@@ -65,7 +65,7 @@ export function toChannelOption(
 export function resolveChannel(
     channel: ChannelName,
     datum: DataRow,
-    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
+    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>, x
 ): RawValue {
     const scale = CHANNEL_SCALE[channel];
     // the z channel has an automatic alias mechanism
@@ -129,14 +129,14 @@ const opositeColor = {
     stroke: 'fill'
 };
 
-export function resolveScaledStyles(
+export function resolveScaledStyleProps(
     datum: DataRecord,
     channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     useScale: Record<ScaledChannelName, boolean>,
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    return `${Object.entries({
+    return {
         ...getBaseStylesObject(datum, channels),
         fill: 'none',
         stroke: 'none',
@@ -162,7 +162,19 @@ export function resolveScaledStyles(
                     return [cssAttr, value];
                 })
         )
-    })
+    };
+}
+
+export function resolveScaledStyles(
+    datum: DataRecord,
+    channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
+    useScale: Record<ScaledChannelName, boolean>,
+    plot: PlotState,
+    defaultColorProp: 'fill' | 'stroke' | null = null
+) {
+    return `${Object.entries(
+        resolveScaledStyleProps(datum, channels, useScale, plot, defaultColorProp)
+    )
         .map(([key, value]) => `${key}: ${value}`)
         .join(';')};${channels.style || ''}`;
 }

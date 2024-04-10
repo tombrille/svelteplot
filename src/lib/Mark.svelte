@@ -2,7 +2,7 @@
     import { getContext, type Snippet } from 'svelte';
     import { deepEqual } from 'fast-equals';
 
-    import { CHANNEL_SCALE } from '$lib/contants.js';
+    import { CHANNEL_SCALE } from '$lib/constants.js';
     import type {
         ScaledChannelName,
         Mark,

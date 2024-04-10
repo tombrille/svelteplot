@@ -8,6 +8,7 @@ export function sort(
     { data, ...channels }: TransformArg<DataRecord>,
     options: { reverse?: boolean } = {}
 ) {
+    if (!Array.isArray(data)) return { data, ...channels };
     if (channels.sort) {
         const { sort } = channels;
         if (

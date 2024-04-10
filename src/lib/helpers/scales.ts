@@ -24,7 +24,7 @@ import {
     quantitativeScheme
 } from './colors.js';
 import { isDateOrNull, isNumberOrNull, isStringOrNull, isColorOrNull } from './typeChecks.js';
-import { CHANNEL_SCALE } from '$lib/contants.js';
+import { CHANNEL_SCALE } from '$lib/constants.js';
 import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
 import type {

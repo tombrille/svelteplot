@@ -16,6 +16,7 @@
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
+    import { recordizeXY } from '$lib/transforms/recordize.js';
     import { addEventHandlers } from './helpers/events.js';
 
     type DotProps = BaseMarkProps & {
@@ -29,10 +30,10 @@
         children?: Snippet;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
-        canvas?: boolean;
+        canvas: boolean;
     };
 
-    let { data, canvas, ...options }: DotProps = $props();
+    let { data, canvas = false, ...options }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -45,13 +46,15 @@
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(
-        sort({
-            data: maybeData(data),
-            // sort by descending radius by default
-            ...(options.r ? { sort: { channel: '-r' } } : {}),
-            ...options,
-            ...(options.fill === true ? { fill: 'currentColor' } : {})
-        })
+        sort(
+            recordizeXY({
+                data: maybeData(data),
+                // sort by descending radius by default
+                ...(options.r ? { sort: { channel: '-r' } } : {}),
+                ...options,
+                ...(options.fill === true ? { fill: 'currentColor' } : {})
+            })
+        )
     );
 </script>
 
@@ -78,7 +81,7 @@
 
     <g class="dots">
         {#if canvas}
-            <DotCanvas {data} {mark} {plot} {testFacet} {useScale} />
+            <DotCanvas data={args.data} {mark} {plot} {testFacet} {useScale} />
         {:else}
             {#each args.data as datum}
                 {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}

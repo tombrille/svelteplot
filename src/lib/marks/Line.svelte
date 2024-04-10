@@ -152,11 +152,11 @@
         {@const useScale = getUsedScales(plot, args, mark)}
         <g class="lines">
             {#each groups as lineData, i}
-                {#if testFacet(lineData[0], mark.options)}
+                {#if testFacet(lineData[0], mark.options) && lineData.length > 0}
                     {@const dx_ = resolveProp(args.dx, lineData[0], 0)}
                     {@const dy_ = resolveProp(args.dy, lineData[0], 0)}
                     {@const markerColor_ =
-                        resolveChannel('stroke', lineData[0], args) || 'currentColor'}
+                        resolveChannel('stroke', lineData[0], args, true) || 'currentColor'}
                     {@const markerColor = useScale.stroke
                         ? plot.scales.color.fn(markerColor_)
                         : markerColor_}

@@ -3,6 +3,7 @@ import isDate from 'underscore/modules/isDate.js';
 import isFinite from 'underscore/modules/isFinite.js';
 import { isSymbol } from './symbols.js';
 import { color } from 'd3-color';
+import { CSS_VAR } from '$lib/constants.js';
 
 export function isBooleanOrNull(v: RawValue) {
     return v == null || typeof v === 'boolean';
@@ -23,8 +24,6 @@ export function isStringOrNull(v: RawValue) {
 export function isSymbolOrNull(v: RawValue) {
     return v == null || ((typeof v === 'string' || typeof v === 'object') && isSymbol(v));
 }
-
-const CSS_VAR = /^var\(--([a-z-0-9,\s]+)\)$/;
 
 export function isColorOrNull(v: RawValue) {
     return (

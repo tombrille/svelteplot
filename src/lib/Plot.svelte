@@ -26,7 +26,7 @@
     import GridX from './marks/GridX.svelte';
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
-    import { CHANNEL_SCALE } from './contants.js';
+    import { CHANNEL_SCALE } from './constants.js';
     import { addEventHandlers } from './marks/helpers/events.js';
 
     let width = $state(500);
@@ -404,6 +404,7 @@
 <style>
     :root {
         --plot-bg: white;
+        --plot-fg: currentColor;
     }
 
     figure {

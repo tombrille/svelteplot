@@ -52,13 +52,7 @@ title: Projections
         window.requestAnimationFrame(step);
     }
 
-    let savedLines = $state([]);
-
-    let mouseTrail = $state([]);
-
-    $effect(() => {
-        // step();
-    });
+    $inspect(earthquakes);
 </script>
 
 <Select bind:value={projection} {options} label="Projection" />
@@ -66,13 +60,7 @@ title: Projections
     on:click={() => {
         vx = 10;
         step();
-    }}>push</button
->
-<button
-    on:click={() => {
-        savedLines = [...savedLines, ...mouseTrail.map((pt) => [...pt, savedLines.length])];
-        mouseTrail = [];
-    }}>save line</button
+    }}>spin</button
 >
 
 <Plot
@@ -121,24 +109,8 @@ title: Projections
     />
     <Graticule pointerEvents="none" opacity="0.1" step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
     <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />
-    <Line
-        data={mouseTrail}
-        strokeWidth={2}
-        stroke={(d) => d[1]}
-        x={(d) => d[0]}
-        y={(d) => d[1]}
-        pointerEvents="none"
-    />
-    <Line
-        data={savedLines}
-        opacity={0.3}
-        z={(d) => d[2]}
-        x={(d) => d[0]}
-        y={(d) => d[1]}
-        pointerEvents="none"
-    />
     <Dot
-        data={earthquakes}
+        data={earthquakes.features}
         stroke="var(--svp-red)"
         fill="var(--svp-red)"
         fillOpacity="0.2"

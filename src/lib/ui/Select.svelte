@@ -1,12 +1,12 @@
 <script lang="ts">
     let {
         label = '',
-        value,
+        value = $bindable(),
         options,
         format = (d) => d
     }: {
         label?: string;
-        value: any;
+        value: string|number|undefined;
         options: any[];
         format?: (d: any) => string;
     } = $props();

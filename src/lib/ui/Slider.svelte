@@ -1,7 +1,7 @@
 <script lang="ts">
     let {
         label,
-        value,
+        value = $bindable(),
         min = 0,
         max = 100,
         step = 1,

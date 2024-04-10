@@ -30,6 +30,8 @@ export const CHANNEL_SCALE: Record<ScaledChannelName, ScaleName> = {
     strokeOpacity: 'opacity'
 };
 
+export const CSS_VAR = /^var\(--([a-z-0-9,\s]+)\)$/;
+
 // export const CHANNEL_MAP: Record<ScaleName, ValueOf<typeof SCALE_TYPES>> = {
 // 	x: SCALE_TYPES.x,
 // 	y: SCALE_TYPES.y,

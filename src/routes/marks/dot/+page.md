@@ -15,18 +15,47 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
     const manufactor = (d) => d.name.split(' ')[0];
     let fill = $state(false);
+    let canvas = $state(false);
 </script>
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
 
 <Plot grid height={500} testid="cars1">
     <Dot
+        {canvas}
         data={cars}
         x="economy (mpg)"
         y="power (hp)"
         stroke={!fill ? manufactor : null}
         fill={fill ? manufactor : null}
         symbol={manufactor}
+    />
+</Plot>
+```
+
+When showing plots with a lot of dots, you can switch to canvas rendering to improve the performance. Here are 20,000 randomly distributed dots:
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { range } from 'd3-array';
+    import { randomNormal } from 'd3-random';
+
+    const randX = randomNormal();
+    const randY = randomNormal();
+
+    let fill = $state(false);
+</script>
+
+<input type="checkbox" bind:checked={fill} /> fill symbols<br />
+
+<Plot>
+    <Dot
+        fill={fill ? 'currentColor' : null}
+        stroke={!fill ? 'currentColor' : null}
+        opacity={0.4}
+        canvas
+        data={range(20000).map((i) => [randX(), randY()])}
     />
 </Plot>
 ```
@@ -90,9 +119,9 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
     testid="languages"
     x={{
         type: 'log',
-        domain: [50, 2000],
+        domain: [50e6, 2000e6],
         axis: 'both',
-        label: 'NUMBER OF SPEAKERS (MILLIONS)',
+        label: 'NUMBER OF SPEAKERS',
         labelAnchor: 'center'
     }}
     y={{ type: 'point', label: '' }}
@@ -105,7 +134,7 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
         fill="currentColor"
         sort={{ channel: '-x' }}
         y="Language"
-        x="Total speakers"
+        x={(d) => d['Total speakers'] * 1e6}
     />
 </Plot>
 ```
