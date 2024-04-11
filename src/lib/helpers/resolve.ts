@@ -65,7 +65,7 @@ export function toChannelOption(
 export function resolveChannel(
     channel: ChannelName,
     datum: DataRow,
-    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>, x
+    channels: Partial<Record<ChannelName, ChannelAccessor | ChannelAlias>>
 ): RawValue {
     const scale = CHANNEL_SCALE[channel];
     // the z channel has an automatic alias mechanism

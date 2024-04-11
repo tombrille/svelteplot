@@ -33,6 +33,7 @@ import type {
     GenericMarkOptions,
     Mark,
     MarkType,
+    PlotDefaults,
     PlotOptions,
     PlotScales,
     PlotState,
@@ -72,7 +73,7 @@ export function computeScales(
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
     marks: Mark<GenericMarkOptions>[],
-    defaultColorScheme: ColorScheme
+    plotDefaults: PlotDefaults
 ): PlotScales {
     const x = createScale(
         'x',
@@ -82,7 +83,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const y = createScale(
         'y',
@@ -92,7 +93,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const r = createScale(
         'r',
@@ -102,7 +103,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const color = createScale(
         'color',
@@ -112,7 +113,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const opacity = createScale(
         'opacity',
@@ -122,7 +123,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const length = createScale(
         'length',
@@ -132,7 +133,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     const symbol = createScale(
         'symbol',
@@ -142,7 +143,7 @@ export function computeScales(
         plotWidth,
         plotHeight,
         plotHasFilledDotMarks,
-        defaultColorScheme
+        plotDefaults
     );
     // facet scales
     let fx, fy, fz;
@@ -156,7 +157,7 @@ export function computeScales(
             plotWidth,
             plotHeight,
             plotHasFilledDotMarks,
-            defaultColorScheme
+            plotDefaults
         );
 
         const index = new Map(fz.domain.map((key, i) => [key, i]));
@@ -175,7 +176,7 @@ export function computeScales(
             plotWidth,
             plotHeight,
             plotHasFilledDotMarks,
-            defaultColorScheme
+            plotDefaults
         );
         const newFxFn = (d: RawValue) => fx.fn(fz.toFx(d));
         Object.assign(newFxFn, fx.fn);
@@ -193,7 +194,7 @@ export function computeScales(
             plotWidth,
             plotHeight,
             plotHasFilledDotMarks,
-            defaultColorScheme
+            plotDefaults
         );
         const newFyFn = (d: RawValue) => fy.fn(fz.toFy(d));
         Object.assign(newFyFn, fy.fn);
@@ -208,7 +209,7 @@ export function computeScales(
             plotWidth,
             plotHeight,
             plotHasFilledDotMarks,
-            defaultColorScheme
+            plotDefaults
         );
         fy = createScale(
             'fy',
@@ -218,7 +219,7 @@ export function computeScales(
             plotWidth,
             plotHeight,
             plotHasFilledDotMarks,
-            defaultColorScheme
+            plotDefaults
         );
     }
 
@@ -246,7 +247,7 @@ export function createScale<T extends ScaleOptions>(
     plotWidth: number,
     plotHeight: number,
     plotHasFilledDotMarks: boolean,
-    defaultColorScheme: ColorScheme
+    plotDefaults: PlotDefaults
 ) {
     // gather all marks that use channels which support this scale
     const dataValues = new Set<RawValue>();
@@ -387,17 +388,17 @@ export function createScale<T extends ScaleOptions>(
         const { scheme, interpolate, pivot, n = 9 } = scaleOptions;
 
         if (type === 'categorical') {
+            const scheme_ = scheme || plotDefaults.categoricalColorScheme;
+            console.log({ scheme,  def: plotDefaults.categoricalColorScheme})
             // categorical scale
-            range = Array.isArray(scheme)
-                ? scheme
-                : !scheme
-                  ? categoricalSchemes.get('observable10')
-                  : isCategoricalScheme(scheme)
-                    ? categoricalSchemes.get(scheme)
-                    : ordinalScheme(scheme)(domain.length);
+            range = Array.isArray(scheme_)
+                ? scheme_
+                  : isCategoricalScheme(scheme_)
+                    ? categoricalSchemes.get(scheme_)
+                    : ordinalScheme(scheme_)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'quantile') {
-            const scheme_ = scheme || defaultColorScheme;
+            const scheme_ = scheme || plotDefaults.colorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
 
@@ -406,7 +407,7 @@ export function createScale<T extends ScaleOptions>(
                 fn = scaleQuantile().domain(allDataValues).range(range);
             }
         } else if (type === 'quantize') {
-            const scheme_ = scheme || defaultColorScheme;
+            const scheme_ = scheme || plotDefaults.colorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
                 // console.log({domain, scheme_, range})
@@ -416,14 +417,14 @@ export function createScale<T extends ScaleOptions>(
                 throw new Error('no ordinal scheme ' + scheme_);
             }
         } else if (type === 'threshold') {
-            const scheme_ = scheme || defaultColorScheme;
+            const scheme_ = scheme || plotDefaults.colorScheme;
             if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
                 if (scaleOptions.reverse) range.reverse();
                 fn = scaleThreshold().domain(domain).range(range);
             }
         } else if (type === 'linear') {
-            const scheme_ = scheme || defaultColorScheme;
+            const scheme_ = scheme || plotDefaults.colorScheme;
             if (interpolate) {
                 fn = scaleSequential(domain, interpolate);
             } else if (Array.isArray(scheme_)) {

@@ -6,7 +6,10 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext
+        FacetContext,
+
+        PlotDefaults
+
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
@@ -43,6 +46,7 @@
     }
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    const { dotRadius } = getContext<PlotDefaults>('svelteplot/_defaults');
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(
@@ -87,7 +91,7 @@
                 {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
                     {@const _x = resolveChannel('x', datum, args)}
                     {@const _y = resolveChannel('y', datum, args)}
-                    {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
+                    {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
                     {#if isValid(_x) && isValid(_y) && isValid(_r)}
                         {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
                         {#if isValid(x) && isValid(y)}

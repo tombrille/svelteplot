@@ -28,6 +28,7 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 | _height_        | Plot height                                       | px      | `350`      |
 | _inset_         | Plot inset                                        | px      | `0`        |
 | _colorScheme_   | Default scheme for color scale                    | string  | `'turbo'`  |
+| _categoricalColorScheme_   | Default scheme for categorical color scales   | string  | `'observable10'`  |
 | _tickSize_      | Axis tick line length                             | px      | `6`        |
 | _tickPadding_   | Distance between tick line and label              | px      | `3`        |
 | _tickFontSize_  | Tick label font size                              | px      | `11`       |
@@ -50,3 +51,53 @@ SveltePlot is also relying on CSS variables.
 | Name              | Description                   | Unit  | Default |
 | ----------------- | ----------------------------- | ----- | ------- |
 | _--svelteplot-bg_ | Background color of your page | color | white   |
+
+## Example plot
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    import { setContext } from 'svelte';
+
+    let { penguins } = $derived($page.data.data);
+    setContext('svelteplot/defaults', {
+        dotRadius: 5,
+        tickSize: 0,
+        frame: true,
+        grid: true,
+        inset: 15,
+        categoricalColorScheme: ['var(--svp-red)', 'var(--svp-blue)', 'var(--svp-green)']
+    })
+</script>
+
+<Plot> 
+    <Dot 
+        data={penguins} 
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        fill="species"/>
+</Plot>
+```
+
+```svelte
+<script>
+    setContext('svelteplot/defaults', {
+        dotRadius: 5,
+        tickSize: 0,
+        frame: true,
+        grid: true,
+        inset: 15,
+        categoricalColorScheme: ['red', 'blue', 'green']
+    })
+</script>
+<Plot> 
+    <Dot 
+        data={penguins} 
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        fill="species"/>
+</Plot>
+```

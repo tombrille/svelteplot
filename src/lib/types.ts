@@ -354,6 +354,23 @@ export type PlotOptions = {
     testid: string;
 };
 
+export type PlotDefaults = {
+    axisXAnchor: AxisXAnchor;
+    axisYAnchor: AxisYAnchor;
+    xTickSpacing: number;
+    yTickSpacing: number;
+    height: number;
+    inset: number;
+    colorScheme: ColorScheme|string[];
+    categoricalColorScheme: ColorScheme|string[];
+    dotRadius: number;
+    /**
+     * add frame to plots by default
+     */
+    frame: boolean;
+    grid: boolean;
+}
+
 export type GenericMarkOptions = Record<string, any>;
 
 export type DataRecord = Record<string, RawValue> & {

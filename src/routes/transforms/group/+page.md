@@ -8,15 +8,22 @@ For example, the bar chart below shows a distribution of Olympic athletes by spo
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, groupX } from '$lib';
+    import { Plot, BarX, RuleX, groupY } from '$lib';
 
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot x={{ tickRotate: -90 }} y={{ grid: true }} marginBottom={110}>
-    <BarY {...groupX({ data: olympians, x: 'sport' }, { y: 'count' })} />
-    <RuleY data={[0]} />
+<Plot x={{ grid: true }}>
+    <BarX {...groupY({ data: olympians, y: 'sport' }, { x: 'count' })} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot x={{ grid: true }}>
+    <BarX {...groupY({ data: olympians, y: 'sport' }, { x: 'count' })} />
+    <RuleX data={[0]} />
 </Plot>
 ```
 

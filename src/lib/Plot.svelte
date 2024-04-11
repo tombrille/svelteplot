@@ -12,7 +12,9 @@
         Mark,
         PlotScales,
         ScaleName,
-        PlotScale
+        PlotScale,
+        PlotDefaults
+
     } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
@@ -27,7 +29,6 @@
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
     import { CHANNEL_SCALE } from './constants.js';
-    import { addEventHandlers } from './marks/helpers/events.js';
 
     let width = $state(500);
 
@@ -54,7 +55,9 @@
         inset?: number;
     };
 
-    const DEFAULTS = {
+    
+
+    const DEFAULTS: PlotDefaults = {
         axisXAnchor: 'bottom',
         axisYAnchor: 'left',
         xTickSpacing: 80,
@@ -62,8 +65,14 @@
         height: 350,
         inset: 0,
         colorScheme: 'turbo',
-        ...getContext<Partial<PlotOptions>>('svelteplot/defaults')
+        dotRadius: 3,
+        frame: false,
+        grid: false,
+        categoricalColorScheme: 'observable10',
+        ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
+
+    setContext('svelteplot/_defaults', DEFAULTS);
 
     function defaultPlotOptions({
         explicitScales,
@@ -91,8 +100,8 @@
             marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : 35,
             marginBottom: hasProjection ? 0 : margins != null ? margins : 35,
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
-            grid: false,
-            frame: false,
+            grid: DEFAULTS.grid,
+            frame: DEFAULTS.frame,
             projection: null,
             aspectRatio: null,
             facet: {},
@@ -204,7 +213,7 @@
     );
 
     let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS.colorScheme)
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS)
     );
 
     let hasProjection = $derived(!!preScales.projection);
@@ -281,7 +290,7 @@
             facetHeight || height,
             hasFilledDotMarks,
             marks,
-            DEFAULTS.colorScheme
+            DEFAULTS
         );
         const colorSymbolRedundant =
             scales.color.uniqueScaleProps.size === 1 &&
