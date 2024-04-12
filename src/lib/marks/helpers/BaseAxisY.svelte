@@ -1,7 +1,6 @@
 <script lang="ts">
     import { getContext, untrack } from 'svelte';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
-    import { testFilter } from '$lib/helpers/index.js';
+    import { randomId, testFilter } from '$lib/helpers/index.js';
     import { resolveProp, resolveScaledStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import type {
@@ -24,6 +23,7 @@
         tickFontSize: ConstantAccessor<number>;
         marginLeft: number;
         width: number;
+        title: string|null;
         options: {
             dx: ConstantAccessor<number>;
             dy: ConstantAccessor<number>;
@@ -43,6 +43,7 @@
         tickFontSize,
         marginLeft,
         width,
+        title,
         plot,
         options
     }: BaseAxisYProps = $props();
@@ -82,7 +83,10 @@
 
     let tickTexts = $state([] as SVGTextElement[]);
 
-    const { autoMarginLeft, autoMarginRight } =
+    // generate id used for registering margins
+    const id = randomId();
+
+    const { autoMarginLeft, autoMarginRight, autoMarginTop } =
         getContext<AutoMarginStores>('svelteplot/autoMargins');
 
     $effect(() => {
@@ -106,13 +110,34 @@
             ) + Math.max(0, tickPadding + tickSize);
 
         if (!isNaN(maxLabelWidth)) {
-            if (anchor === 'left' && $autoMarginLeft !== maxLabelWidth) {
-                $autoMarginLeft = maxLabelWidth;
-            } else if (anchor === 'right' && $autoMarginRight !== maxLabelWidth) {
-                $autoMarginRight = maxLabelWidth;
+            if (anchor === 'left' && $autoMarginLeft.get(id) !== maxLabelWidth) {
+                $autoMarginLeft.set(id, maxLabelWidth);
+            } else if (anchor === 'right' && $autoMarginRight.get(id) !== maxLabelWidth) {
+                $autoMarginRight.set(id, maxLabelWidth);
             }
         }
     });
+
+    $effect(() => {
+        untrack(() => [$autoMarginTop]);
+        if (title) {
+            // add margin top to make some space for title
+            $autoMarginTop.set(id, 20);
+        } else {
+            // no need for extra margin top
+            $autoMarginTop.delete(id);
+        }
+    });
+
+    $effect(() => {
+        // clear margins on destroy
+        return () => {
+            if ($autoMarginLeft.has(id)) $autoMarginLeft.delete(id);
+            if ($autoMarginRight.has(id)) $autoMarginRight.delete(id);
+            if ($autoMarginTop.has(id)) $autoMarginTop.delete(id);
+        }
+    });
+
 </script>
 
 <g class="axis-y">

@@ -19,12 +19,14 @@ Take the following example, where you can filter the data using the [filter](/tr
     import { page } from '$app/stores';
     let { cars } = $derived($page.data.data);
     let min = $state(0);
+    let noAxisX = $state(false);
+    let noAxisTitle = $state(false);
     const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>
 
-<Plot grid testid="cars" color={{ type: 'linear', scheme: 'turbo' }}>
+<Plot grid testid="cars" color={{ type: 'linear' }}> 
     <Dot
         data={cars}
         filter={(d) => d['economy (mpg)'] > min}
@@ -37,7 +39,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 ```
 
 ```svelte
-<Plot grid color={{ type: 'linear', scheme: 'turbo' }}>
+<Plot grid color={{ type: 'linear' }}>
     <Dot
         data={cars}
         filter={(d) => d['economy (mpg)'] > min}
@@ -193,10 +195,10 @@ In the following example, we're switching from the implicit y axis to a custom A
     let isMobile = $derived(plotWidth < 600);
 </script>
 
+{plotWidth} {isMobile}
 <div bind:clientWidth={plotWidth}>
     <Plot
         grid
-        marginRight={isMobile ? 0 : 20}
         x={{
             insetLeft: isMobile ? 25 : 10,
             tickFormat: isMobile ? "'YY" : 'YYYY'

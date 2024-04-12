@@ -29,13 +29,14 @@
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
     import { CHANNEL_SCALE } from './constants.js';
+    import { Map } from 'svelte/reactivity'
 
     let width = $state(500);
 
-    let autoMarginLeft = writable(0);
-    let autoMarginRight = writable(0);
-    let autoMarginBottom = writable(0);
-    let autoMarginTop = writable(0);
+    let autoMarginLeft = writable(new Map<string, number>());
+    let autoMarginRight = writable(new Map<string, number>());
+    let autoMarginBottom = writable(new Map<string, number>());
+    let autoMarginTop = writable(new Map<string, number>());
 
     setContext('svelteplot/autoMargins', {
         autoMarginLeft,
@@ -43,6 +44,11 @@
         autoMarginBottom,
         autoMarginTop
     });
+
+    let maxMarginLeft = $derived(Math.max(...$autoMarginLeft.values()));
+    let maxMarginRight = $derived(Math.max(...$autoMarginRight.values()));
+    let maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
+    let maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
 
     let { header, footer, overlay, underlay, testid, facet, ...initialOpts }: Partial<PlotOptions> =
         $props();
@@ -54,8 +60,6 @@
         margins?: number;
         inset?: number;
     };
-
-    
 
     const DEFAULTS: PlotDefaults = {
         axisXAnchor: 'bottom',
@@ -89,16 +93,16 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: hasProjection ? 0 : margins != null ? margins : $autoMarginLeft + 1,
+            marginLeft: hasProjection ? 0 : margins != null ? margins : maxMarginLeft + 1,
             marginRight: hasProjection
                 ? 0
                 : margins != null
                   ? margins
                   : oneDimY
                     ? 0
-                    : Math.max($autoMarginRight + 1, 4),
-            marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : 35,
-            marginBottom: hasProjection ? 0 : margins != null ? margins : 35,
+                    : Math.max(maxMarginRight + 1, 4),
+            marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : Math.max(5, maxMarginTop),
+            marginBottom: hasProjection ? 0 : margins != null ? margins : Math.max(5, maxMarginBottom),
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
             grid: DEFAULTS.grid,
             frame: DEFAULTS.frame,

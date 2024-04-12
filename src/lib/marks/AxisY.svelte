@@ -166,6 +166,7 @@
             {tickPadding}
             {tickFontSize}
             {options}
+            title={useTitle}
             {plot}
         />
     {/if}

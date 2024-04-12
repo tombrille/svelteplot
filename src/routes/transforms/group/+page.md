@@ -8,22 +8,21 @@ For example, the bar chart below shows a distribution of Olympic athletes by spo
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX, groupY } from '$lib';
-
+    import { Plot, BarY, RuleY, groupX } from '$lib';
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot x={{ grid: true }}>
-    <BarX {...groupY({ data: olympians, y: 'sport' }, { x: 'count' })} />
-    <RuleX data={[0]} />
+<Plot x={{ tickRotate: -90 }} y={{ grid: true }} height={300}>
+    <BarY {...groupX({ data: olympians, x: 'sport' }, { y: 'count' })} />
+    <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ grid: true }}>
-    <BarX {...groupY({ data: olympians, y: 'sport' }, { x: 'count' })} />
-    <RuleX data={[0]} />
+<Plot x={{ tickRotate: -90 }} y={{ grid: true }}>
+    <BarY {...groupX({ data: olympians, x: 'sport' }, { y: 'count' })} />
+    <RuleY data={[0]} />
 </Plot>
 ```
 
@@ -39,13 +38,13 @@ While the groupX transform is often used to generate **y**, it can output to any
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot x={{ tickRotate: -90 }} margins={5} r={{ range: [0, 14] }} height={150} marginBottom={110}>
+<Plot x={{ tickRotate: -90 }} r={{ range: [0, 14] }} height={150}>
     <DotX {...groupX({ data: olympians, x: 'sport' }, { r: 'count' })} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ tickRotate: -90 }} margins={5} r={{ range: [0, 14] }} marginBottom={110}>
+<Plot x={{ tickRotate: -90 }} r={{ range: [0, 14] }}>
     <DotX {...groupX({ data: olympians, x: 'sport' }, { r: 'count' })} />
 </Plot>
 ```

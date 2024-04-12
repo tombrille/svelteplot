@@ -1,7 +1,7 @@
 <script lang="ts">
     // this component only takes care of rendering the x axis so we can re-use it
     // for the facet labels
-    import { getContext } from 'svelte';
+    import { getContext, untrack } from 'svelte';
     import removeIdenticalLines from '$lib/helpers/removeIdenticalLines.js';
     import type {
         AutoMarginStores,
@@ -13,7 +13,7 @@
     } from '$lib/types.js';
     import { resolveScaledStyles, resolveProp } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
-    import { testFilter } from '$lib/helpers/index.js';
+    import { randomId, testFilter } from '$lib/helpers/index.js';
 
     type BaseAxisXProps = {
         scaleFn: (d: RawValue) => number;
@@ -26,6 +26,7 @@
         tickFontSize: ConstantAccessor<number>;
         marginTop: number;
         height: number;
+        title: string;
         options: {
             dx: ConstantAccessor<number>;
             dy: ConstantAccessor<number>;
@@ -46,44 +47,99 @@
         marginTop,
         height,
         options,
-        plot
+        plot,
+        title
     }: BaseAxisXProps = $props();
 
     function splitTick(tick: string | string[]) {
         return Array.isArray(tick) ? tick : [tick];
     }
 
-    let formattedTicks = $derived(
-        removeIdenticalLines(
-            ticks.map((tick, i) => ({
-                value: tick,
-                text: splitTick(tickFormat(tick, i))
-            }))
-        )
-    );
-
     let tickRotate = $derived(plot.options.x.tickRotate || 0);
 
     let tickY = $derived(anchor === 'bottom' ? marginTop + height : marginTop);
 
     let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
+
+    // generate id used for registering margins
+    const id = randomId();
+
+    const { autoMarginTop, autoMarginBottom } =
+        getContext<AutoMarginStores>('svelteplot/autoMargins');
+
+    let tickTextElements = $state([] as SVGTextElement[]);
+
+    let positionedTicks = $derived.by(() => {
+        let tickObjects = removeIdenticalLines(ticks.map((tick, i) => {
+            return {
+                value: tick,
+                hidden: false,
+                dx: +resolveProp(options.dx, tick, 0),
+                dy: +resolveProp(options.dy, tick, 0),
+                x: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
+                text: splitTick(tickFormat(tick, i)),
+                element: null as SVGTextElement | null
+            };
+        }));
+        const T = tickObjects.length;
+        for (let i = 0; i < T; i++) {
+            let j = i;
+            // find the preceeding tick that was not hidden
+            do {
+                j--;
+            } while (j >= 0 && tickObjects[j].hidden);
+            if (j >= 0) {
+                const tickLabelSpace = Math.abs(tickObjects[i].x - tickObjects[j].x);
+                tickObjects[i].hidden = tickLabelSpace < 15;
+            }
+        }
+        return tickObjects;
+    });
+
+    $effect(() => {
+        untrack(() => [$autoMarginTop, $autoMarginBottom]);
+        const outsideTextAnchor = anchor === 'top' ? 'end' : 'start';
+        // measure tick label heights
+        const maxLabelHeight =
+            Math.ceil(
+                max(
+                    positionedTicks.map((tick, i) => {
+                        if (
+                            resolveProp(options.anchor, tick.value, outsideTextAnchor) !==
+                            outsideTextAnchor
+                        )
+                            return 0;
+                        if (tick.hidden || !testFilter(tick.value, options)) return 0;
+                        if (tickTextElements[i]) return tickTextElements[i].getBoundingClientRect().height;
+                        return 0;
+                    }) as number[]
+                )
+            ) + Math.max(0, tickPadding + tickSize) + (title ? 15 : 0);
+
+        if (!isNaN(maxLabelHeight)) {
+            if (anchor === 'top' && $autoMarginTop.get(id) !== maxLabelHeight) {
+                $autoMarginTop.set(id, maxLabelHeight);
+            } else if (anchor === 'bottom' && $autoMarginBottom.get(id) !== maxLabelHeight) {
+                $autoMarginBottom.set(id, maxLabelHeight);
+            }
+        }
+    });
+
+    $effect(() => {
+        // clear margins on destroy
+        return () => {
+            if ($autoMarginBottom.has(id)) $autoMarginBottom.delete(id);
+            if ($autoMarginTop.has(id)) $autoMarginTop.delete(id);
+        }
+    });
 </script>
 
 <g class="axis-x">
-    {#each formattedTicks as tick, t}
-        {#if testFilter(tick.value, options)}
-            {@const x =
-                scaleFn(tick.value) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)}
-            {@const nextX =
-                t < formattedTicks.length - 1
-                    ? scaleFn(formattedTicks[t + 1].value) +
-                      (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0)
-                    : null}
-            {@const tickLabelSpace = Math.abs(nextX - x)}
+    <text x="100" y="20">{id}</text>
+    {#each positionedTicks as tick, t}
+        {#if testFilter(tick.value, options) && !tick.hidden}
             {@const textLines = tick.text}
-            {@const dx = +resolveProp(options.dx, tick, 0)}
-            {@const dy = +resolveProp(options.dy, tick, 0)}
-            {@const prevTextLines = t && formattedTicks[t - 1].text}
+            {@const prevTextLines = t && positionedTicks[t - 1].text}
             {@const fontSize = resolveProp(tickFontSize, tick)}
             {@const estLabelWidth = max(textLines.map((t) => t.length)) * fontSize * 0.2}
             {@const moveDown =
@@ -91,7 +147,7 @@
                 (anchor === 'bottom' ? 1 : -1)}
             <g
                 class="tick"
-                transform="translate({x + dx}, {tickY + dy})"
+                transform="translate({tick.x + tick.dx}, {tickY + tick.dy})"
                 text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}
             >
                 {#if tickSize}
@@ -102,6 +158,7 @@
                 {/if}
 
                 <text
+                    bind:this={tickTextElements[t]}
                     transform="translate(0, {moveDown})  rotate({tickRotate})"
                     style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
                     style={resolveScaledStyles(
@@ -119,7 +176,7 @@
                           ? 'hanging'
                           : 'auto'}
                 >
-                    {#if ticks.length > 0 || t === 0 || t === ticks.length - 1 || tickLabelSpace >= estLabelWidth * 2}
+                    {#if ticks.length > 0 || t === 0 || t === ticks.length - 1}
                         {#if textLines.length === 1}
                             {textLines[0]}
                         {:else}

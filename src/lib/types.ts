@@ -716,10 +716,10 @@ export type MarkStyleProps =
     | 'width';
 
 export type AutoMarginStores = {
-    autoMarginTop: Writable<number>;
-    autoMarginLeft: Writable<number>;
-    autoMarginRight: Writable<number>;
-    autoMarginBottom: Writable<number>;
+    autoMarginTop: Writable<Map<string,number>>;
+    autoMarginLeft: Writable<Map<string,number>>;
+    autoMarginRight: Writable<Map<string,number>>;
+    autoMarginBottom: Writable<Map<string,number>>;
 };
 
 /**

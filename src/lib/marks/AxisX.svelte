@@ -10,7 +10,6 @@
         FacetContext,
         DefaultOptions
     } from '../types.js';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import dayjs from 'dayjs';
     import advancedFormat from 'dayjs/plugin/advancedFormat';
@@ -192,6 +191,7 @@
             {tickPadding}
             {tickFontSize}
             {options}
+            title={useTitle}
             {plot}
         />
     {/if}

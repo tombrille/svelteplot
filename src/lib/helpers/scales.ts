@@ -389,7 +389,6 @@ export function createScale<T extends ScaleOptions>(
 
         if (type === 'categorical') {
             const scheme_ = scheme || plotDefaults.categoricalColorScheme;
-            console.log({ scheme,  def: plotDefaults.categoricalColorScheme})
             // categorical scale
             range = Array.isArray(scheme_)
                 ? scheme_
