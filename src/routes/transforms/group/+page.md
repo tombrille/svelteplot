@@ -54,8 +54,6 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 ```svelte live
 <script lang="ts">
     import { Plot, BarX, groupY, RuleX } from '$lib';
-    import { getContext } from 'svelte';
-
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>
@@ -90,3 +88,19 @@ groupY({ data, y: 'sex' }, { x: 'count' });
 ```
 
 ## groupZ
+
+## group
+
+Groups on _x_ and _y_ channels as an additional _z_, _fill_, or _stroke_ channel to create new groups and compute output channels.
+
+```svelte live
+<script>
+    import { group, Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot x={{ tickRotate: -90 }} grid>
+    <Dot {...group({ data: penguins, x: 'island', y: 'species', r: 'body_mass_g' }, { r: 'mean' })} fill />
+</Plot>
+```

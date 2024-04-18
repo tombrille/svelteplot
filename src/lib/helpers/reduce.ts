@@ -8,6 +8,7 @@ import type {
 } from '$lib/types.js';
 import { min, max, mode, sum, mean, median, variance, deviation, quantile, range } from 'd3-array';
 import { resolveChannel } from './resolve.js';
+import { POSITION_CHANNELS } from './index.js';
 
 type ReducerFunc = (group: Iterable<DataRow>) => RawValue;
 type ReducerOption = ReducerName | ReducerFunc;
@@ -91,6 +92,8 @@ export function mayberReducer(r: ReducerOption): ReducerFunc {
     throw new Error('unknown reducer ' + r);
 }
 
+
+
 export function reduceOutputs(
     newDatum: DataRecord,
     data: DataRecord[],
@@ -114,13 +117,15 @@ export function reduceOutputs(
                     `${String(options[k]).charAt(0).toUpperCase()}${String(options[k]).slice(1)}`;
                 // we have a named reducer like 'count', so let's try to preserve the
                 // source channel mapping for axis labels
-                if (typeof channels[k] === 'string') {
-                    // the named reducer is applied to a column name, so we can use a combination
-                    // of both as axis labels, e.g. MEAN(weight)
-                    // eslint-disable-next-line no-irregular-whitespace
-                    newChannels[`__${k}_origField`] = `${reducerName} ( ${channels[k]} )`;
-                } else {
-                    newChannels[`__${k}_origField`] = reducerName;
+                if (POSITION_CHANNELS.has(k)) {
+                    if (typeof channels[k] === 'string') {
+                        // the named reducer is applied to a column name, so we can use a combination
+                        // of both as axis labels, e.g. MEAN(weight)
+                        // eslint-disable-next-line no-irregular-whitespace
+                        newChannels[`__${k}_origField`] = `${reducerName} ( ${channels[k]} )`;
+                    } else {
+                        newChannels[`__${k}_origField`] = reducerName;
+                    }
                 }
             }
         }

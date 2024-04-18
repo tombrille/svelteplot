@@ -1,4 +1,4 @@
-import type { BaseMarkProps, DataRecord, RawValue } from '$lib/types.js';
+import type { BaseMarkProps, ChannelName, DataRecord, RawValue } from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
 import isDate from 'underscore/modules/isDate.js';
@@ -51,3 +51,5 @@ export const constant =
     <T>(x: T) =>
     () =>
         x;
+
+export const POSITION_CHANNELS: Set<ChannelName> = new Set(['x', 'x1', 'x2', 'y', 'y1', 'y2']);

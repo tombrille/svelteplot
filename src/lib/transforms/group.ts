@@ -48,7 +48,46 @@ type GroupZOptions = GroupXOptions | GroupYOptions;
  * groups the dataset by x and y channel and optionally reduces the group items
  * to output channels fill, stroke, r, opacity, fillOpacity, or strokeOpacity
  */
-export function group(input: TransformArg<T, DataRecord>, options: GroupXOptions = {}) {}
+export function group(
+    { data, ...channels }: TransformArg<T, DataRecord>,
+    options: GroupXOptions = {}
+) {
+    if (channels.x == null || channels.y == null) throw new Error('you must provide an x and y channel to group on');
+    // group by x or y
+    const groups =
+            d3Groups(
+                data.filter((d) => testFilter(d, channels)),
+                (d) => resolveChannel('x', d, channels),
+                (d) => resolveChannel('y', d, channels),
+            );
+    const newData: DataRecord[] = [];
+    const xChannel = typeof channels.x === 'string' ? channels.x : '__x';
+    const yChannel = typeof channels.y === 'string' ? channels.y : '__y';
+    let newChannels = omit({ ...channels, x: xChannel, y: yChannel }, 'filter');
+
+    const outputs = [
+        'fill',
+        'stroke',
+        'r',
+        'opacity',
+        'fillOpacity',
+        'strokeOpacity'
+    ];
+
+    groups.forEach(([xGroupKey, xGroups]) => {
+        xGroups.forEach(([yGroupKey, items]) => {
+            // console.log(groupKey, items)
+            const baseRecord = { [xChannel]: xGroupKey, [yChannel]: yGroupKey }; // dim === 'z' ? {} : { [`__${dim}`]: groupKey };
+            const newGroupChannels = groupFacetsAndZ(items, channels, (items, itemGroupProps) => {
+                const item = { ...baseRecord, ...itemGroupProps };
+                reduceOutputs(item, items, options, outputs, channels, newChannels);
+                newData.push(item);
+            });
+            newChannels = { ...newChannels, ...newGroupChannels };
+        });
+    });
+    return { data: newData, ...newChannels };
+}
 
 /**
  * groups the dataset by the x channel and optionally reduces the group items
@@ -80,6 +119,7 @@ function groupXYZ(
     { data, ...channels }: TransformArg<T, DataRecord>,
     options: GroupXOptions = {}
 ) {
+    if ((dim === 'z' ? channels.z || channels.fill || channels.stroke : channels[dim]) == null) throw new Error('you must provide a channel to group on '+dim)
     // group by x or y
     const groups =
         dim === 'z'

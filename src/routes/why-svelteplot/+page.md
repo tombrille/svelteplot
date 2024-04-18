@@ -3,7 +3,7 @@ title: Why SveltePlot?
 description: SveltePlot is heavily inspired by Observable Plot, so much so that you may ask, why do it even exists
 ---
 
-SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/), and so much so that you may ask, why does it even exists! But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
+SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/). But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
 
 ## Reactive plotting
 
@@ -204,10 +204,8 @@ In the following example, we're switching from the implicit y axis to a custom A
             tickFormat: isMobile ? "'YY" : 'YYYY'
         }}
         height={isMobile ? 300 : 400}
-        inset={isMobile ? 5 : 10}
     >
         {#if isMobile}
-            <!-- custom axisy on mobile -->
             <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
         {/if}
         <Line data={aapl} x="Date" y="Close" />
@@ -216,22 +214,8 @@ In the following example, we're switching from the implicit y axis to a custom A
 ```
 
 ```svelte
-<script>
-    import { Plot, Line, AxisY } from 'svelteplot';
-    let aapl = $state([
-        /** data **/
-    ]);
-
-    // bind plot reference
-    let plot = $state(null);
-    // get current plot width and define a mobile breakpoint
-    let plotWidth = $derived(plot ? plot.getWidth() : 500);
-    let isMobile = $derived(plotWidth < 600);
-</script>
-
 <Plot
     grid
-    bind:this={plot}
     marginRight={isMobile ? 0 : 20}
     marginLeft={isMobile ? 0 : 40}
     x={{

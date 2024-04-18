@@ -1,20 +1,54 @@
 import { describe, it, expect } from 'vitest';
-import { groupX, groupY } from './group.js';
+import { group, groupX, groupY, groupZ } from './group.js';
 import type { DataRecord } from '$lib/types.js';
+import { csvParse } from 'd3-dsv';
+import { readFileSync } from 'fs';
 
 const inputData: DataRecord[] = [
-    { year: 2000, value: 10 },
-    { year: 2000, value: 20 },
-    { year: 2001, value: 15 },
-    { year: 2001, value: 25 },
-    { year: 2002, value: 10 },
-    { year: 2002, value: 20 },
-    { year: 2002, value: 30 }
+    { year: 2000, facet: 'A', value: 10 },
+    { year: 2000, facet: 'A', value: 20 },
+    { year: 2001, facet: 'B', value: 15 },
+    { year: 2001, facet: 'B', value: 25 },
+    { year: 2002, facet: 'A', value: 10 },
+    { year: 2002, facet: 'B', value: 20 },
+    { year: 2002, facet: 'B', value: 30 }
 ];
 
 describe('groupX', () => {
     it('groups by x channel', () => {
         const { data, ...channels } = groupX({ data: inputData, x: 'year' });
+        expect(data).toHaveLength(3);
+        expect(data[0].__x).toBe(2000);
+        expect(data[1].__x).toBe(2001);
+        expect(data[2].__x).toBe(2002);
+        expect(channels).toStrictEqual({ x: '__x' });
+    });
+
+    it('groups by x channel and facets', () => {
+        const { data, ...channels } = groupX({ data: inputData, x: 'year', fx: 'facet' });
+        expect(data).toHaveLength(4);
+        expect(data[0].__x).toBe(2000);
+        expect(data[1].__x).toBe(2001);
+        expect(data[2].__x).toBe(2002);
+        expect(data[3].__x).toBe(2002);
+        expect(channels).toStrictEqual({ x: '__x', fx: 'facet' });
+    });
+
+    it('groups by x channel', () => {
+        const { data, ...channels } = groupX({ data: inputData, x: 'year' });
+        expect(data).toHaveLength(3);
+        expect(data[0].__x).toBe(2000);
+        expect(data[1].__x).toBe(2001);
+        expect(data[2].__x).toBe(2002);
+        expect(channels).toStrictEqual({ x: '__x' });
+    });
+
+    it('throws error if there is no x channel', () => {
+        expect(() => groupX({ data: inputData })).toThrowError('you must provide a channel to group on x')
+    });
+
+    it('groups by x channel accessor', () => {
+        const { data, ...channels } = groupX({ data: inputData, x: d => d.year });
         expect(data).toHaveLength(3);
         expect(data[0].__x).toBe(2000);
         expect(data[1].__x).toBe(2001);
@@ -57,7 +91,12 @@ describe('groupY', () => {
         expect(channels).toStrictEqual({ y: '__y' });
     });
 
-    it('groups by x channel and reduces count as x channel', () => {
+    it('throws error if there is no y channel', () => {
+        expect(() => groupY({ data: inputData })).toThrowError('you must provide a channel to group on y');
+    });
+
+
+    it('groups by y channel and reduces count as x channel', () => {
         const { data, ...channels } = groupY(
             { data: inputData, y: 'year', x1: 'value' },
             { x: 'count', x1: 'sum' }
@@ -81,3 +120,82 @@ describe('groupY', () => {
         });
     });
 });
+
+
+describe('groupZ', () => {
+    it('groups by z channel', () => {
+        const { data, ...channels } = groupZ({ data: inputData, z: 'year' });
+        expect(data).toHaveLength(3);
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(channels).toStrictEqual({ z: 'year' });
+    });
+
+    it('groups by fill channel if no z is present', () => {
+        const { data, ...channels } = groupZ({ data: inputData, fill: 'year', opacity: 'value' }, { opacity: 'count' });
+        expect(data).toHaveLength(3);
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(data[0].__opacity).toBe(2);
+        expect(data[1].__opacity).toBe(2);
+        expect(data[2].__opacity).toBe(3);
+        expect(channels).toStrictEqual({ fill: 'year', opacity: '__opacity' });
+    });
+
+    it('groups by z channel accessor', () => {
+        const { data, ...channels } = groupZ({ data: inputData, z: d => d.year });
+        expect(data).toHaveLength(3);
+        expect(data[0].__group_z).toBe(2000);
+        expect(data[1].__group_z).toBe(2001);
+        expect(data[2].__group_z).toBe(2002);
+        expect(channels).toStrictEqual({ z: '__group_z' });
+    });
+
+
+    it('groups by z channel and reduces count as x channel', () => {
+        const { data, ...channels } = groupZ(
+            { data: inputData, z: 'year', y: 'value' },
+            { x: 'count', y: 'sum' }
+        );
+        expect(data).toHaveLength(3);
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(data[0].__x).toBe(2);
+        expect(data[1].__x).toBe(2);
+        expect(data[2].__x).toBe(3);
+        expect(data[0].__y).toBe(30);
+        expect(data[1].__y).toBe(40);
+        expect(data[2].__y).toBe(60);
+        expect(channels).toStrictEqual({
+            z: 'year',
+            x: '__x',
+            y: '__y',
+            __x_origField: 'Frequency',
+            __y_origField: 'Sum ( value )'
+        });
+    });
+});
+
+const penguins: DataRecord[] = csvParse(readFileSync('./static/data/penguins.csv', 'utf-8')); 
+
+describe('group', () => {
+    it('groups by x and y', () => {
+        const { data, ...channels } = group({ data: penguins, x: 'island', y: 'species' }, { r: 'count' });
+        expect(channels).toStrictEqual({ x: 'island', y: 'species', r: '__r' });
+        expect(data).toStrictEqual([
+            { island: 'Torgersen', species: 'Adelie', __r: 52 },
+            { island: 'Biscoe', species: 'Adelie', __r: 44 },
+            { island: 'Biscoe', species: 'Gentoo', __r: 124 },
+            { island: 'Dream', species: 'Adelie', __r: 56 },
+            { island: 'Dream', species: 'Chinstrap', __r: 68 }
+        ]);
+    });
+
+    it('throws error if there is no x channel', () => {
+        expect(() => group({ data: penguins })).toThrowError('you must provide an x and y channel to group on')
+    });
+
+})

@@ -50,7 +50,7 @@ export { bin, binX, binY } from './transforms/bin.js';
 export { bollingerX, bollingerY } from './transforms/bollinger.js';
 export { geoCentroid } from './transforms/centroid.js';
 export { filter } from './transforms/filter.js';
-export { groupX, groupY, groupZ } from './transforms/group.js';
+export { group, groupX, groupY, groupZ } from './transforms/group.js';
 export { intervalX, intervalY } from './transforms/interval.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';
 export { renameChannels } from './transforms/rename.js';

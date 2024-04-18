@@ -135,7 +135,6 @@
 </script>
 
 <g class="axis-x">
-    <text x="100" y="20">{id}</text>
     {#each positionedTicks as tick, t}
         {#if testFilter(tick.value, options) && !tick.hidden}
             {@const textLines = tick.text}
