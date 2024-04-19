@@ -44,11 +44,13 @@ describe('groupX', () => {
     });
 
     it('throws error if there is no x channel', () => {
-        expect(() => groupX({ data: inputData })).toThrowError('you must provide a channel to group on x')
+        expect(() => groupX({ data: inputData })).toThrowError(
+            'you must provide a channel to group on x'
+        );
     });
 
     it('groups by x channel accessor', () => {
-        const { data, ...channels } = groupX({ data: inputData, x: d => d.year });
+        const { data, ...channels } = groupX({ data: inputData, x: (d) => d.year });
         expect(data).toHaveLength(3);
         expect(data[0].__x).toBe(2000);
         expect(data[1].__x).toBe(2001);
@@ -92,9 +94,10 @@ describe('groupY', () => {
     });
 
     it('throws error if there is no y channel', () => {
-        expect(() => groupY({ data: inputData })).toThrowError('you must provide a channel to group on y');
+        expect(() => groupY({ data: inputData })).toThrowError(
+            'you must provide a channel to group on y'
+        );
     });
-
 
     it('groups by y channel and reduces count as x channel', () => {
         const { data, ...channels } = groupY(
@@ -121,7 +124,6 @@ describe('groupY', () => {
     });
 });
 
-
 describe('groupZ', () => {
     it('groups by z channel', () => {
         const { data, ...channels } = groupZ({ data: inputData, z: 'year' });
@@ -133,7 +135,10 @@ describe('groupZ', () => {
     });
 
     it('groups by fill channel if no z is present', () => {
-        const { data, ...channels } = groupZ({ data: inputData, fill: 'year', opacity: 'value' }, { opacity: 'count' });
+        const { data, ...channels } = groupZ(
+            { data: inputData, fill: 'year', opacity: 'value' },
+            { opacity: 'count' }
+        );
         expect(data).toHaveLength(3);
         expect(data[0].year).toBe(2000);
         expect(data[1].year).toBe(2001);
@@ -145,14 +150,13 @@ describe('groupZ', () => {
     });
 
     it('groups by z channel accessor', () => {
-        const { data, ...channels } = groupZ({ data: inputData, z: d => d.year });
+        const { data, ...channels } = groupZ({ data: inputData, z: (d) => d.year });
         expect(data).toHaveLength(3);
         expect(data[0].__group_z).toBe(2000);
         expect(data[1].__group_z).toBe(2001);
         expect(data[2].__group_z).toBe(2002);
         expect(channels).toStrictEqual({ z: '__group_z' });
     });
-
 
     it('groups by z channel and reduces count as x channel', () => {
         const { data, ...channels } = groupZ(
@@ -179,11 +183,14 @@ describe('groupZ', () => {
     });
 });
 
-const penguins: DataRecord[] = csvParse(readFileSync('./static/data/penguins.csv', 'utf-8')); 
+const penguins: DataRecord[] = csvParse(readFileSync('./static/data/penguins.csv', 'utf-8'));
 
 describe('group', () => {
     it('groups by x and y', () => {
-        const { data, ...channels } = group({ data: penguins, x: 'island', y: 'species' }, { r: 'count' });
+        const { data, ...channels } = group(
+            { data: penguins, x: 'island', y: 'species' },
+            { r: 'count' }
+        );
         expect(channels).toStrictEqual({ x: 'island', y: 'species', r: '__r' });
         expect(data).toStrictEqual([
             { island: 'Torgersen', species: 'Adelie', __r: 52 },
@@ -195,7 +202,8 @@ describe('group', () => {
     });
 
     it('throws error if there is no x channel', () => {
-        expect(() => group({ data: penguins })).toThrowError('you must provide an x and y channel to group on')
+        expect(() => group({ data: penguins })).toThrowError(
+            'you must provide an x and y channel to group on'
+        );
     });
-
-})
+});

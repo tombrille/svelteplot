@@ -92,8 +92,6 @@ export function mayberReducer(r: ReducerOption): ReducerFunc {
     throw new Error('unknown reducer ' + r);
 }
 
-
-
 export function reduceOutputs(
     newDatum: DataRecord,
     data: DataRecord[],

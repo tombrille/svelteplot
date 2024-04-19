@@ -23,20 +23,20 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 
 ## Options
 
-| Name            | Description                                       | Unit    | Default    |
-| --------------- | ------------------------------------------------- | ------- | ---------- |
-| _height_        | Plot height                                       | px      | `350`      |
-| _inset_         | Plot inset                                        | px      | `0`        |
-| _colorScheme_   | Default scheme for color scale                    | string  | `'turbo'`  |
-| _categoricalColorScheme_   | Default scheme for categorical color scales   | string  | `'observable10'`  |
-| _tickSize_      | Axis tick line length                             | px      | `6`        |
-| _tickPadding_   | Distance between tick line and label              | px      | `3`        |
-| _tickFontSize_  | Tick label font size                              | px      | `11`       |
-| _axisXAnchor_   | Alignment of AxisX                                |         | `'bottom'` |
-| _axisYAnchor_   | Alignment of AxisY                                |         | `'left'`   |
-| _xTickSpacing_  | Horizontal space between ticks in AxisX and GridX | px      | `80`       |
-| _yTickSpacing_  | Vertical space between ticks in AxisY and GridY   | px      | `50`       |
-| _graticuleStep_ | Default step size in graticules                   | degrees | `10`       |
+| Name                     | Description                                       | Unit    | Default          |
+| ------------------------ | ------------------------------------------------- | ------- | ---------------- |
+| _height_                 | Plot height                                       | px      | `350`            |
+| _inset_                  | Plot inset                                        | px      | `0`              |
+| _colorScheme_            | Default scheme for color scale                    | string  | `'turbo'`        |
+| _categoricalColorScheme_ | Default scheme for categorical color scales       | string  | `'observable10'` |
+| _tickSize_               | Axis tick line length                             | px      | `6`              |
+| _tickPadding_            | Distance between tick line and label              | px      | `3`              |
+| _tickFontSize_           | Tick label font size                              | px      | `11`             |
+| _axisXAnchor_            | Alignment of AxisX                                |         | `'bottom'`       |
+| _axisYAnchor_            | Alignment of AxisY                                |         | `'left'`         |
+| _xTickSpacing_           | Horizontal space between ticks in AxisX and GridX | px      | `80`             |
+| _yTickSpacing_           | Vertical space between ticks in AxisY and GridY   | px      | `50`             |
+| _graticuleStep_          | Default step size in graticules                   | degrees | `10`             |
 
 <style>
     * :global(td) {
@@ -68,16 +68,11 @@ SveltePlot is also relying on CSS variables.
         grid: true,
         inset: 15,
         categoricalColorScheme: ['var(--svp-red)', 'var(--svp-blue)', 'var(--svp-green)']
-    })
+    });
 </script>
 
-<Plot> 
-    <Dot 
-        data={penguins} 
-        x="culmen_length_mm"
-        fx="species"
-        y="culmen_depth_mm"
-        fill="species"/>
+<Plot>
+    <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
 </Plot>
 ```
 
@@ -90,14 +85,10 @@ SveltePlot is also relying on CSS variables.
         grid: true,
         inset: 15,
         categoricalColorScheme: ['red', 'blue', 'green']
-    })
+    });
 </script>
-<Plot> 
-    <Dot 
-        data={penguins} 
-        x="culmen_length_mm"
-        fx="species"
-        y="culmen_depth_mm"
-        fill="species"/>
+
+<Plot>
+    <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
 </Plot>
 ```

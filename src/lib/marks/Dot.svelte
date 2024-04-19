@@ -7,9 +7,7 @@
         ConstantAccessor,
         ChannelAccessor,
         FacetContext,
-
         PlotDefaults
-
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';

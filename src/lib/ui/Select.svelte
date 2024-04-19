@@ -6,7 +6,7 @@
         format = (d) => d
     }: {
         label?: string;
-        value: string|number|undefined;
+        value: string | number | undefined;
         options: any[];
         format?: (d: any) => string;
     } = $props();

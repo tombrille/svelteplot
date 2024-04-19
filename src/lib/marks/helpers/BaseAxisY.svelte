@@ -23,7 +23,7 @@
         tickFontSize: ConstantAccessor<number>;
         marginLeft: number;
         width: number;
-        title: string|null;
+        title: string | null;
         options: {
             dx: ConstantAccessor<number>;
             dy: ConstantAccessor<number>;
@@ -135,9 +135,8 @@
             if ($autoMarginLeft.has(id)) $autoMarginLeft.delete(id);
             if ($autoMarginRight.has(id)) $autoMarginRight.delete(id);
             if ($autoMarginTop.has(id)) $autoMarginTop.delete(id);
-        }
+        };
     });
-
 </script>
 
 <g class="axis-y">

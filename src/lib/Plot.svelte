@@ -14,7 +14,6 @@
         ScaleName,
         PlotScale,
         PlotDefaults
-
     } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
@@ -29,7 +28,7 @@
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
     import { CHANNEL_SCALE } from './constants.js';
-    import { Map } from 'svelte/reactivity'
+    import { Map } from 'svelte/reactivity';
 
     let width = $state(500);
 
@@ -101,8 +100,18 @@
                   : oneDimY
                     ? 0
                     : Math.max(maxMarginRight + 1, 4),
-            marginTop: hasProjection ? 0 : margins != null ? margins : oneDimX ? 0 : Math.max(5, maxMarginTop),
-            marginBottom: hasProjection ? 0 : margins != null ? margins : Math.max(5, maxMarginBottom),
+            marginTop: hasProjection
+                ? 0
+                : margins != null
+                  ? margins
+                  : oneDimX
+                    ? 0
+                    : Math.max(5, maxMarginTop),
+            marginBottom: hasProjection
+                ? 0
+                : margins != null
+                  ? margins
+                  : Math.max(5, maxMarginBottom),
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
             grid: DEFAULTS.grid,
             frame: DEFAULTS.frame,
@@ -277,7 +286,9 @@
                           plotOptions.marginTop +
                           plotOptions.marginBottom
               )
-            : plotOptions.height
+            : typeof plotOptions.height === 'function'
+              ? plotOptions.height(plotWidth)
+              : plotOptions.height
     );
 
     let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);

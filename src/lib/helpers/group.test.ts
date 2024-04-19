@@ -8,13 +8,13 @@ describe('groupFacetsAndZ', () => {
             { facet: 'A', z: 1, color: 'red', value: 15 },
             { facet: 'A', z: 2, color: 'red', value: 20 },
             { facet: 'B', z: 1, color: 'red', value: 30 },
-            { facet: 'B', z: 2, color: 'blue', value: 40 },
+            { facet: 'B', z: 2, color: 'blue', value: 40 }
         ];
 
         const channels = {
             fx: 'facet',
             fill: 'color',
-            z: 'z',
+            z: 'z'
         };
 
         const result: number[] = [];
@@ -33,11 +33,11 @@ describe('groupFacetsAndZ', () => {
             { color: 'red', value: 15 },
             { color: 'blue', value: 20 },
             { color: 'red', value: 30 },
-            { color: 'blue', value: 40 },
+            { color: 'blue', value: 40 }
         ];
 
         const channels = {
-            fill: 'color',
+            fill: 'color'
         };
 
         const result: number[] = [];

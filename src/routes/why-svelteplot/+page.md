@@ -26,7 +26,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 
 <label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>
 
-<Plot grid testid="cars" color={{ type: 'linear' }}> 
+<Plot grid testid="cars" color={{ type: 'linear' }}>
     <Dot
         data={cars}
         filter={(d) => d['economy (mpg)'] > min}
@@ -195,7 +195,8 @@ In the following example, we're switching from the implicit y axis to a custom A
     let isMobile = $derived(plotWidth < 600);
 </script>
 
-{plotWidth} {isMobile}
+{plotWidth}
+{isMobile}
 <div bind:clientWidth={plotWidth}>
     <Plot
         grid

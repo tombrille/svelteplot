@@ -70,17 +70,19 @@
     let tickTextElements = $state([] as SVGTextElement[]);
 
     let positionedTicks = $derived.by(() => {
-        let tickObjects = removeIdenticalLines(ticks.map((tick, i) => {
-            return {
-                value: tick,
-                hidden: false,
-                dx: +resolveProp(options.dx, tick, 0),
-                dy: +resolveProp(options.dy, tick, 0),
-                x: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
-                text: splitTick(tickFormat(tick, i)),
-                element: null as SVGTextElement | null
-            };
-        }));
+        let tickObjects = removeIdenticalLines(
+            ticks.map((tick, i) => {
+                return {
+                    value: tick,
+                    hidden: false,
+                    dx: +resolveProp(options.dx, tick, 0),
+                    dy: +resolveProp(options.dy, tick, 0),
+                    x: scaleFn(tick) + (scaleType === 'band' ? scaleFn.bandwidth() * 0.5 : 0),
+                    text: splitTick(tickFormat(tick, i)),
+                    element: null as SVGTextElement | null
+                };
+            })
+        );
         const T = tickObjects.length;
         for (let i = 0; i < T; i++) {
             let j = i;
@@ -110,11 +112,14 @@
                         )
                             return 0;
                         if (tick.hidden || !testFilter(tick.value, options)) return 0;
-                        if (tickTextElements[i]) return tickTextElements[i].getBoundingClientRect().height;
+                        if (tickTextElements[i])
+                            return tickTextElements[i].getBoundingClientRect().height;
                         return 0;
                     }) as number[]
                 )
-            ) + Math.max(0, tickPadding + tickSize) + (title ? 15 : 0);
+            ) +
+            Math.max(0, tickPadding + tickSize) +
+            (title ? 15 : 0);
 
         if (!isNaN(maxLabelHeight)) {
             if (anchor === 'top' && $autoMarginTop.get(id) !== maxLabelHeight) {
@@ -130,7 +135,7 @@
         return () => {
             if ($autoMarginBottom.has(id)) $autoMarginBottom.delete(id);
             if ($autoMarginTop.has(id)) $autoMarginTop.delete(id);
-        }
+        };
     });
 </script>
 

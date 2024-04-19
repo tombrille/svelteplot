@@ -200,7 +200,7 @@ BLS Demo:
         y="unemployment"
         z="division"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => /, MI /.test(d.division) ? 'red' : '#99999955'}
+        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#99999955')}
     />
 </Plot>
 ```

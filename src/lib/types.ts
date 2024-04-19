@@ -253,7 +253,7 @@ export type PlotOptions = {
      * setting the maxWidth style property you can limit the width of your plot.
      */
     maxWidth?: string;
-    height: 'auto' | number;
+    height: 'auto' | number | ((d: number) => number);
     /**
      * Convenience option for setting all four margins at once, in px.
      */
@@ -361,15 +361,15 @@ export type PlotDefaults = {
     yTickSpacing: number;
     height: number;
     inset: number;
-    colorScheme: ColorScheme|string[];
-    categoricalColorScheme: ColorScheme|string[];
+    colorScheme: ColorScheme | string[];
+    categoricalColorScheme: ColorScheme | string[];
     dotRadius: number;
     /**
      * add frame to plots by default
      */
     frame: boolean;
     grid: boolean;
-}
+};
 
 export type GenericMarkOptions = Record<string, any>;
 
@@ -716,10 +716,10 @@ export type MarkStyleProps =
     | 'width';
 
 export type AutoMarginStores = {
-    autoMarginTop: Writable<Map<string,number>>;
-    autoMarginLeft: Writable<Map<string,number>>;
-    autoMarginRight: Writable<Map<string,number>>;
-    autoMarginBottom: Writable<Map<string,number>>;
+    autoMarginTop: Writable<Map<string, number>>;
+    autoMarginLeft: Writable<Map<string, number>>;
+    autoMarginRight: Writable<Map<string, number>>;
+    autoMarginBottom: Writable<Map<string, number>>;
 };
 
 /**

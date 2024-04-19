@@ -392,9 +392,9 @@ export function createScale<T extends ScaleOptions>(
             // categorical scale
             range = Array.isArray(scheme_)
                 ? scheme_
-                  : isCategoricalScheme(scheme_)
-                    ? categoricalSchemes.get(scheme_)
-                    : ordinalScheme(scheme_)(domain.length);
+                : isCategoricalScheme(scheme_)
+                  ? categoricalSchemes.get(scheme_)
+                  : ordinalScheme(scheme_)(domain.length);
             fn = scaleOrdinal().domain(domain).range(range);
         } else if (type === 'quantile') {
             const scheme_ = scheme || plotDefaults.colorScheme;

@@ -101,6 +101,9 @@ Groups on _x_ and _y_ channels as an additional _z_, _fill_, or _stroke_ channel
 </script>
 
 <Plot x={{ tickRotate: -90 }} grid>
-    <Dot {...group({ data: penguins, x: 'island', y: 'species', r: 'body_mass_g' }, { r: 'mean' })} fill />
+    <Dot
+        {...group({ data: penguins, x: 'island', y: 'species', r: 'body_mass_g' }, { r: 'mean' })}
+        fill
+    />
 </Plot>
 ```
