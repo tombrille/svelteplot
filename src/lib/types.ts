@@ -201,6 +201,8 @@ export type XScaleOptions = ScaleOptions & {
     tickRotate: number;
 
     labelAnchor: 'auto' | 'left' | 'center' | 'right';
+
+    tickFormat: 'auto' | string | ((d:RawValue) => string);
 };
 
 export type YScaleOptions = ScaleOptions & {
@@ -330,7 +332,9 @@ export type PlotOptions = {
          */
         columns: number;
     };
-    children: Snippet;
+    children: Snippet<
+        [{ width: number; height: number; options: PlotOptions; scales: PlotScales }]
+    >;
     /**
      * You can use the header snippet to render a custom title and subtitle for
      * your plot, or place a legend above the visualization.
@@ -364,6 +368,16 @@ export type PlotDefaults = {
     colorScheme: ColorScheme | string[];
     categoricalColorScheme: ColorScheme | string[];
     dotRadius: number;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a point scale
+     */
+    pointScaleHeight: number;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a band scale
+     */
+    bandScaleHeight: number;
     /**
      * add frame to plots by default
      */

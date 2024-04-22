@@ -67,6 +67,9 @@ const Scales: Record<
     diverging: scaleDiverging
 };
 
+/**
+ * compute the plot scales
+ */
 export function computeScales(
     plotOptions: PlotOptions,
     plotWidth: number,

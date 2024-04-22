@@ -1,3 +1,8 @@
+<!-- 
+    @component
+    The FacetGrid component renders the facet axes and repeats the
+    marks for each facet domain value 
+-->
 <script lang="ts">
     import { getContext, setContext, type Snippet } from 'svelte';
     import type { PlotContext, GenericMarkOptions, Mark, RawValue } from './types.js';

@@ -1,11 +1,13 @@
 <!--
     @component
-    The Plot component is the container for your plot. It collects the marks and computes
-    the shared scales.
+    The Plot component is the container for plots. It collects the marks with
+    their data and channels and computes the shared scales.
 -->
 <script lang="ts">
     import { getContext, setContext } from 'svelte';
+    import { Map } from 'svelte/reactivity';
     import { writable } from 'svelte/store';
+
     import type {
         PlotOptions,
         GenericMarkOptions,
@@ -13,12 +15,14 @@
         PlotScales,
         ScaleName,
         PlotScale,
-        PlotDefaults
+        PlotDefaults,
+        PlotState
     } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '$lib/helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
+    import { CHANNEL_SCALE } from './constants.js';
 
     import AxisX from './marks/AxisX.svelte';
     import AxisY from './marks/AxisY.svelte';
@@ -27,16 +31,28 @@
     import GridX from './marks/GridX.svelte';
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
-    import { CHANNEL_SCALE } from './constants.js';
-    import { Map } from 'svelte/reactivity';
-
+    
     let width = $state(500);
 
+    let {
+        header,
+        footer,
+        overlay,
+        underlay,
+        children,
+        testid,
+        facet,
+        ...initialOpts
+    }: Partial<PlotOptions> = $props();
+
+    // automatic margins can be applied by the marks, registered
+    // with their respective unique identifier as keys
     let autoMarginLeft = writable(new Map<string, number>());
     let autoMarginRight = writable(new Map<string, number>());
     let autoMarginBottom = writable(new Map<string, number>());
     let autoMarginTop = writable(new Map<string, number>());
 
+    // autoMargin stores are shared via context
     setContext('svelteplot/autoMargins', {
         autoMarginLeft,
         autoMarginRight,
@@ -44,22 +60,15 @@
         autoMarginTop
     });
 
+    // compute maximum margins to either side of the plot from the
+    // automatic margins defined by marks
     let maxMarginLeft = $derived(Math.max(...$autoMarginLeft.values()));
     let maxMarginRight = $derived(Math.max(...$autoMarginRight.values()));
     let maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
     let maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
 
-    let { header, footer, overlay, underlay, testid, facet, ...initialOpts }: Partial<PlotOptions> =
-        $props();
-
-    // information that influences the default plot options
-    type PlotOptionsParameters = {
-        explicitScales: Set<ScaleName>;
-        hasProjection: boolean;
-        margins?: number;
-        inset?: number;
-    };
-
+    // default settings in the plot and marks can be overwritten by
+    // defining the svelteplot/defaults context outside of Plot
     const DEFAULTS: PlotDefaults = {
         axisXAnchor: 'bottom',
         axisYAnchor: 'left',
@@ -72,12 +81,240 @@
         frame: false,
         grid: false,
         categoricalColorScheme: 'observable10',
+        pointScaleHeight: 18,
+        bandScaleHeight: 30,
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
 
     setContext('svelteplot/_defaults', DEFAULTS);
 
-    function defaultPlotOptions({
+    // information that influences the default plot options
+    type PlotOptionsParameters = {
+        explicitScales: Set<ScaleName>;
+        hasProjection: boolean;
+        margins?: number;
+        inset?: number;
+    };
+
+    /**
+     * the marks used in the plot
+     */
+    let marks = $state.frozen<Mark<GenericMarkOptions>[]>([]);
+
+    /**
+     *
+     */
+    let explicitMarks = $derived(marks.filter((m) => !m.options.automatic));
+
+    // knowing if the plot includes explicit grids and marks is useful for
+    // including the automatic/implicit axes/grids
+    let hasExplicitAxisX = $derived(explicitMarks.find((m) => m.type === 'axisX'));
+    let hasExplicitAxisY = $derived(explicitMarks.find((m) => m.type === 'axisY'));
+    let hasExplicitGridX = $derived(explicitMarks.find((m) => m.type === 'gridX'));
+    let hasExplicitGridY = $derived(explicitMarks.find((m) => m.type === 'gridY'));
+
+    let explicitScales = $derived(
+        new Set(
+            explicitMarks
+                .map((m) =>
+                    [...m.scales.values()].filter((scale) => {
+                        // remove the scales where no input channels are defined for this mark
+                        const channels = Object.entries(CHANNEL_SCALE)
+                            .filter(([, scaleName]) => scale === scaleName)
+                            .map(([channel]) => channel);
+                        return channels.find((channel) => m.options[channel] != null);
+                    })
+                )
+                .flat(1)
+        )
+    );
+
+    // one-dimensional plots have different automatic margins and heights
+    let isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
+
+    // construct the plot options from the user-defined options (top-level props) as well
+    // as extending them from smart context-aware defaults
+    let plotOptions = $derived(
+        extendPlotOptions(initialOpts, {
+            explicitScales,
+            hasProjection: !!initialOpts.projection,
+            margins: initialOpts.margins,
+            inset: initialOpts.inset
+        })
+    );
+
+    // if the plot is showing filled dot marks we're using different defaults
+    // for the symbol axis range, so we're passing on this info to the createScales
+    // function below
+    let hasFilledDotMarks = $derived(
+        !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
+    );
+
+    // compute preliminary scales with a fixed height, since we don't have
+    // height defined at this point, but still need some of the scales
+    let preScales: PlotScales = $derived(
+        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS)
+    );
+
+    let hasProjection = $derived(!!preScales.projection);
+    
+    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
+
+    // the facet and y domain counts are used for computing the automatic height
+    let xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
+    let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
+    let yDomainCount = $derived(
+        isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
+    );
+    // compute the (automatic) height based on various factors:
+    // - if the plot used a projection and the projection requires an aspect ratio,
+    //   we use it, but adjust for the facet counts
+    // - if the user defined a domain-aspect ratio, we use the heightFromAspect
+    //   method to compute the height based on the preliminary x and y scales
+    // - for one-dimensional scales using the x scale we set a fixed height
+    // - for y band-scales we use the number of items in the y domain  
+    let height = $derived(
+        plotOptions.height === 'auto'
+            ? Math.round(
+                  preScales.projection && preScales.projection.aspectRatio
+                      ? ((plotWidth * preScales.projection.aspectRatio) / xFacetCount) *
+                            yFacetCount +
+                            plotOptions.marginTop +
+                            plotOptions.marginBottom
+                      : plotOptions.aspectRatio
+                        ? heightFromAspect(
+                              preScales.x,
+                              preScales.y,
+                              plotOptions.aspectRatio,
+                              plotWidth,
+                              plotOptions.marginTop,
+                              plotOptions.marginBottom
+                          )
+                        : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
+                              ? yFacetCount * DEFAULTS.bandScaleHeight
+                              : preScales.y.type === 'band'
+                                ? yFacetCount * yDomainCount * DEFAULTS.bandScaleHeight
+                                : preScales.y.type === 'point'
+                                  ? yFacetCount * yDomainCount * DEFAULTS.pointScaleHeight
+                                  : DEFAULTS.height) +
+                          plotOptions.marginTop +
+                          plotOptions.marginBottom
+              )
+            : typeof plotOptions.height === 'function'
+              ? plotOptions.height(plotWidth)
+              : plotOptions.height
+    );
+
+    let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
+
+    // TODO: check if there's still a reason to store and expose the plot body element
+    let plotBody: HTMLDivElement | null = $state(null);
+
+    let facetWidth: number | null = $state(null);
+    let facetHeight: number | null = $state(null);
+
+    let plotState: PlotState = $derived.by((x) => {
+        // now that we know the actual height and facet dimensions, we can compute
+        // the scales used in all the marks
+        const scales = computeScales(
+            plotOptions,
+            facetWidth || width,
+            facetHeight || height,
+            hasFilledDotMarks,
+            marks,
+            DEFAULTS
+        );
+        const colorSymbolRedundant =
+            scales.color.uniqueScaleProps.size === 1 &&
+            scales.symbol.uniqueScaleProps.size === 1 &&
+            [...scales.color.uniqueScaleProps.values()][0] ===
+                [...scales.symbol.uniqueScaleProps.values()][0];
+        return {
+            options: plotOptions,
+            width,
+            height,
+            facetWidth,
+            facetHeight,
+            plotHeight,
+            plotWidth,
+            scales,
+            colorSymbolRedundant,
+            hasFilledDotMarks,
+            body: plotBody
+        };
+    });
+
+    setContext('svelteplot', {
+        /**
+         * used by the Mark component to register new marks to the plot
+         */
+        addMark(mark: Mark<GenericMarkOptions>) {
+            marks = [...marks, mark];
+        },
+        /**
+         * used by the Mark component to update marks when its props change
+         */
+        updateMark(mark: Mark<GenericMarkOptions>) {
+            marks = marks.map((m) => (m.id === mark.id ? mark : m));
+        },
+        /**
+         * used by the Mark component to unregister marks when their 
+         * respective components get removed from the plot
+         */
+        removeMark(mark: Mark<GenericMarkOptions>) {
+            marks = marks.filter((m) => m.id !== mark.id);
+        },
+        getPlotState() {
+            return plotState;
+        },
+        getTopLevelFacet() {
+            // we need to expose the facet options to allow marks to
+            // react to state changes by updating the fx and fy channels
+            return facet;
+        },
+        updateDimensions(w: number, h: number) {
+            if (facetWidth !== w) facetWidth = w;
+            if (facetHeight !== h) facetHeight = h;
+        }
+    });
+
+    // TODO: perhaps we don't need this anymore
+    export function getWidth() {
+        return width;
+    }
+
+    function heightFromAspect(
+        x: PlotScale,
+        y: PlotScale,
+        aspectRatio: number,
+        plotWidth: number,
+        marginTop: number,
+        marginBottom: number
+    ) {
+        const xDomainExtent =
+            x.type === 'band' || x.type === 'point'
+                ? x.domain.length
+                : Math.abs(x.domain[1] - x.domain[0]);
+        const yDomainExtent =
+            y.type === 'band' || y.type === 'point'
+                ? y.domain.length
+                : Math.abs(y.domain[1] - y.domain[0]);
+        return (
+            ((plotWidth / xDomainExtent) * yDomainExtent) / aspectRatio + marginTop + marginBottom
+        );
+    }
+
+    function extendPlotOptions(
+        initialOpts: Partial<PlotOptions>,
+        opts: PlotOptionsParameters
+    ): PlotOptions {
+        return mergeDeep<PlotOptions>({}, smartDefaultPlotOptions(opts), initialOpts);
+    }
+
+    /**
+     * compute smart default options for the plot based on the scales and marks
+     */
+    function smartDefaultPlotOptions({
         explicitScales,
         hasProjection,
         margins
@@ -121,7 +358,7 @@
             padding: 0.1,
             x: {
                 type: 'auto',
-                axis: oneDimY ? null : DEFAULTS.axisXAnchor,
+                axis: oneDimY ? false : DEFAULTS.axisXAnchor,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -136,7 +373,7 @@
             },
             y: {
                 type: 'auto',
-                axis: oneDimX ? null : DEFAULTS.axisYAnchor,
+                axis: oneDimX ? false : DEFAULTS.axisYAnchor,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -155,6 +392,8 @@
                 clamp: false,
                 nice: false,
                 zero: false,
+                round: false,
+                tickSpacing: 0,
                 percent: false,
                 padding: 0.1,
                 align: 0.5
@@ -166,6 +405,7 @@
                 nice: false,
                 zero: true,
                 percent: false,
+                round: false,
                 padding: 0,
                 align: 0
             },
@@ -178,182 +418,7 @@
         };
     }
 
-    function extendPlotOptions(
-        initialOpts: Partial<PlotOptions>,
-        opts: PlotOptionsParameters
-    ): PlotOptions {
-        return mergeDeep<PlotOptions>({}, defaultPlotOptions(opts), initialOpts);
-    }
-
-    let marks = $state.frozen<Mark<GenericMarkOptions>[]>([]);
-
-    let explicitMarks = $derived(marks.filter((m) => !m.options.automatic));
-
-    let hasExplicitAxisX = $derived(explicitMarks.find((m) => m.type === 'axisX'));
-    let hasExplicitAxisY = $derived(explicitMarks.find((m) => m.type === 'axisY'));
-    let hasExplicitGridX = $derived(explicitMarks.find((m) => m.type === 'gridX'));
-    let hasExplicitGridY = $derived(explicitMarks.find((m) => m.type === 'gridY'));
-
-    let explicitScales = $derived(
-        new Set(
-            explicitMarks
-                .map((m) =>
-                    [...m.scales.values()].filter((scale) => {
-                        // remove the scales where no input channels are defined for this mark
-                        const channels = Object.entries(CHANNEL_SCALE)
-                            .filter(([, scaleName]) => scale === scaleName)
-                            .map(([channel]) => channel);
-                        return channels.find((channel) => m.options[channel] != null);
-                    })
-                )
-                .flat(1)
-        )
-    );
-
-    let isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
-
-    let plotOptions = $derived(
-        extendPlotOptions(initialOpts, {
-            explicitScales,
-            hasProjection: !!initialOpts.projection,
-            margins: initialOpts.margins,
-            inset: initialOpts.inset
-        })
-    );
-
-    let hasFilledDotMarks = $derived(
-        !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
-    );
-
-    let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS)
-    );
-
-    let hasProjection = $derived(!!preScales.projection);
-
-    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
-
-    function heightFromAspect(
-        x: PlotScale,
-        y: PlotScale,
-        aspectRatio: number,
-        plotWidth: number,
-        marginTop: number,
-        marginBottom: number
-    ) {
-        const xDomainExtent =
-            x.type === 'band' || x.type === 'point'
-                ? x.domain.length
-                : Math.abs(x.domain[1] - x.domain[0]);
-        const yDomainExtent =
-            y.type === 'band' || y.type === 'point'
-                ? y.domain.length
-                : Math.abs(y.domain[1] - y.domain[0]);
-        return (
-            ((plotWidth / xDomainExtent) * yDomainExtent) / aspectRatio + marginTop + marginBottom
-        );
-    }
-
-    let xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
-    let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
-    let yDomainCount = $derived(
-        isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
-    );
-    let height = $derived(
-        plotOptions.height === 'auto'
-            ? Math.round(
-                  preScales.projection && preScales.projection.aspectRatio
-                      ? ((plotWidth * preScales.projection.aspectRatio) / xFacetCount) *
-                            yFacetCount +
-                            plotOptions.marginTop +
-                            plotOptions.marginBottom
-                      : plotOptions.aspectRatio
-                        ? heightFromAspect(
-                              preScales.x,
-                              preScales.y,
-                              plotOptions.aspectRatio,
-                              plotWidth,
-                              plotOptions.marginTop,
-                              plotOptions.marginBottom
-                          )
-                        : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                              ? yFacetCount * 30
-                              : preScales.y.type === 'band'
-                                ? yFacetCount * yDomainCount * 30
-                                : preScales.y.type === 'point'
-                                  ? yFacetCount * yDomainCount * 18
-                                  : DEFAULTS.height) +
-                          plotOptions.marginTop +
-                          plotOptions.marginBottom
-              )
-            : typeof plotOptions.height === 'function'
-              ? plotOptions.height(plotWidth)
-              : plotOptions.height
-    );
-
-    let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
-
-    let plotBody: HTMLDivElement | undefined = $state(null);
-
-    let facetWidth: number | null = $state(null);
-    let facetHeight: number | null = $state(null);
-
-    let plotState = $derived.by((x) => {
-        const scales = computeScales(
-            plotOptions,
-            facetWidth || width,
-            facetHeight || height,
-            hasFilledDotMarks,
-            marks,
-            DEFAULTS
-        );
-        const colorSymbolRedundant =
-            scales.color.uniqueScaleProps.size === 1 &&
-            scales.symbol.uniqueScaleProps.size === 1 &&
-            [...scales.color.uniqueScaleProps.values()][0] ===
-                [...scales.symbol.uniqueScaleProps.values()][0];
-        return {
-            options: plotOptions,
-            width,
-            height,
-            facetWidth,
-            facetHeight,
-            plotHeight,
-            plotWidth,
-            scales,
-            colorSymbolRedundant,
-            hasFilledDotMarks,
-            body: plotBody
-        };
-    });
-
-    setContext('svelteplot', {
-        addMark(mark: Mark<GenericMarkOptions>) {
-            marks = [...marks, mark];
-        },
-        updateMark(mark: Mark<GenericMarkOptions>) {
-            marks = marks.map((m) => (m.id === mark.id ? mark : m));
-        },
-        removeMark(mark: Mark<GenericMarkOptions>) {
-            marks = marks.filter((m) => m.id !== mark.id);
-        },
-        getPlotState() {
-            return plotState;
-        },
-        getTopLevelFacet() {
-            // we need to expose the facet options to allow marks to
-            // react to state changes by updating the fx and fy channels
-            return facet;
-        },
-        updateDimensions(w: number, h: number) {
-            if (facetWidth !== w) facetWidth = w;
-            if (facetHeight !== h) facetHeight = h;
-        }
-    });
-
-    export function getWidth() {
-        return width;
-    }
+   
 </script>
 
 <figure
@@ -412,7 +477,14 @@
                 {#if plotOptions.frame}
                     <Frame automatic />
                 {/if}
-                <slot {width} {height} options={plotOptions} scales={plotState.scales} />
+                {#if children}
+                    {@render children({
+                        width,
+                        height,
+                        options: plotOptions,
+                        scales: plotState.scales
+                    })}
+                {/if}
             </FacetGrid>
         </svg>
         {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}
