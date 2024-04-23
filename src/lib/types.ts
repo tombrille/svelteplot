@@ -202,7 +202,7 @@ export type XScaleOptions = ScaleOptions & {
 
     labelAnchor: 'auto' | 'left' | 'center' | 'right';
 
-    tickFormat: 'auto' | string | ((d:RawValue) => string);
+    tickFormat: 'auto' | string | ((d: RawValue) => string);
 };
 
 export type YScaleOptions = ScaleOptions & {

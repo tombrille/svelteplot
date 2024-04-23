@@ -22,11 +22,18 @@
         type: MarkType;
         channels?: ScaledChannelName[];
         required?: ScaledChannelName[];
-        children?: Snippet;
+        children?: Snippet<[{ mark: Mark }]>;
     } & Partial<Record<ChannelName, ChannelAccessor>> &
         Partial<BaseMarkProps>;
 
-    let { data = [], type, channels = [], required = [], ...options }: MarkProps = $props();
+    let {
+        data = [],
+        children,
+        type,
+        channels = [],
+        required = [],
+        ...options
+    }: MarkProps = $props();
 
     const { addMark, updateMark, removeMark, getTopLevelFacet } =
         getContext<PlotContext>('svelteplot');
@@ -108,8 +115,8 @@
             <tspan x="0" dy={i ? 14 : 0}>{error}</tspan>
         {/each}
     </text>
-{:else}
-    <slot mark={mark2} />
+{:else if children}
+    {@render children({ mark: mark2 })}
 {/if}
 
 <style>

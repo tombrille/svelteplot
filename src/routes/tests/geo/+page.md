@@ -6,6 +6,52 @@ Test map:
 
 ```svelte live
 <script>
+    import { Plot, Geo, Text, Frame } from '$lib';
+    import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+    import { geoEqualEarth } from 'd3-geo';
+    import { union } from 'd3-array';
+    import * as topojson from 'topojson-client';
+
+    let { us, presidents } = $derived($page.data.data);
+
+    let statesGeo = $derived(
+        new Map(topojson.feature(us, us.objects.states).features.map((feat) => [+feat.id, feat]))
+    );
+    let years = union(presidents.map((d) => d.year));
+    let columns = $state(3);
+</script>
+
+<Slider bind:value={columns} label="Columns:" min={2} max={4} />
+<Plot
+    projection="albers-usa"
+    color={{
+        scheme: 'RdBu',
+        legend: true
+    }}
+    fz={{ columns }}
+    marginTop={20}
+>
+    {#snippet children({ scales })}
+        <Geo
+            data={presidents}
+            fz="year"
+            fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
+            geometry={(d) => statesGeo.get(d.state_fips)}
+        />
+        <Text
+            fontWeight="bold"
+            data={scales.fz.domain}
+            frameAnchor="top"
+            fz={(d) => d}
+            text={(d) => d}
+        />
+    {/snippet}
+</Plot>
+```
+
+```svelte --live
+<script>
     import { Plot, Geo, Sphere, Line, Dot, GridX, RectY } from '$lib/index';
     import { tick } from 'svelte';
     import { tweened } from 'svelte/motion';

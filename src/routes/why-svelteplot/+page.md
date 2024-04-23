@@ -399,37 +399,41 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot grid let:width let:height>
-    <defs>
-        <filter id="neon">
-            <feFlood flood-color="rgb(255,0,128)" flood-opacity="0.5" in="SourceGraphic" />
-            <feComposite operator="in" in2="SourceGraphic" />
-            <feGaussianBlur stdDeviation="5" />
-            <feComponentTransfer result="glow1">
-                <feFuncA type="linear" slope="4" intercept="0" />
-            </feComponentTransfer>
-            <feMerge>
-                <feMergeNode in="glow1" />
-                <feMergeNode in="SourceGraphic" />
-            </feMerge>
-        </filter>
-    </defs>
-    <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
-    <g filter="url(#neon)">
-        <Line data={aapl} x="Date" y="Adj Close" />
-    </g>
+<Plot grid>
+    {#snippet children({ width, height })}
+        <defs>
+            <filter id="neon">
+                <feFlood flood-color="rgb(255,0,128)" flood-opacity="0.5" in="SourceGraphic" />
+                <feComposite operator="in" in2="SourceGraphic" />
+                <feGaussianBlur stdDeviation="5" />
+                <feComponentTransfer result="glow1">
+                    <feFuncA type="linear" slope="4" intercept="0" />
+                </feComponentTransfer>
+                <feMerge>
+                    <feMergeNode in="glow1" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+        <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
+        <g filter="url(#neon)">
+            <Line data={aapl} x="Date" y="Adj Close" />
+        </g>
+    {/snippet}
 </Plot>
 ```
 
 ```svelte
-<Plot grid let:width let:height>
-    <defs>
-        <filter id="neon"><!-- ... --></filter>
-    </defs>
-    <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
-    <g filter="url(#neon)">
-        <Line data={aapl} x="Date" y="Adj Close" />
-    </g>
+<Plot grid>
+    {#snippet children({ width, height })}
+        <defs>
+            <filter id="neon"><!-- ... --></filter>
+        </defs>
+        <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
+        <g filter="url(#neon)">
+            <Line data={aapl} x="Date" y="Adj Close" />
+        </g>
+    {/snippet}
 </Plot>
 ```
 

@@ -31,7 +31,7 @@
     import GridX from './marks/GridX.svelte';
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
-    
+
     let width = $state(500);
 
     let {
@@ -157,7 +157,7 @@
     );
 
     let hasProjection = $derived(!!preScales.projection);
-    
+
     let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
     // the facet and y domain counts are used for computing the automatic height
@@ -172,7 +172,7 @@
     // - if the user defined a domain-aspect ratio, we use the heightFromAspect
     //   method to compute the height based on the preliminary x and y scales
     // - for one-dimensional scales using the x scale we set a fixed height
-    // - for y band-scales we use the number of items in the y domain  
+    // - for y band-scales we use the number of items in the y domain
     let height = $derived(
         plotOptions.height === 'auto'
             ? Math.round(
@@ -258,7 +258,7 @@
             marks = marks.map((m) => (m.id === mark.id ? mark : m));
         },
         /**
-         * used by the Mark component to unregister marks when their 
+         * used by the Mark component to unregister marks when their
          * respective components get removed from the plot
          */
         removeMark(mark: Mark<GenericMarkOptions>) {
@@ -417,8 +417,6 @@
             fz: { type: 'point', columns: 3 }
         };
     }
-
-   
 </script>
 
 <figure

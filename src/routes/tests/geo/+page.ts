@@ -5,7 +5,8 @@ export const load: PageLoad = async ({ fetch }) => {
     return {
         data: {
             world: await loadJSON(fetch, 'world-2019'),
-            ...(await loadDatasets(['bmi'], fetch))
+            us: await loadJSON(fetch, 'us-states-10m'),
+            ...(await loadDatasets(['bmi', 'presidents'], fetch))
         }
     };
 };
