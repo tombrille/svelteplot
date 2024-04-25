@@ -199,16 +199,18 @@ Another thing you can use the arrow mark for is drawing network diagrams:
         x="x"
         y="y"
     />
-    <Pointer data={nodes} x="x" y="y" maxDistance={50} let:data>
-        <Text
-            {data}
-            text="id"
-            fill="currentColor"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            x="x"
-            y="y"
-        />
+    <Pointer data={nodes} x="x" y="y" maxDistance={50}>
+        {#snippet children({ data })}
+            <Text
+                {data}
+                text="id"
+                fill="currentColor"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth="3"
+                x="x"
+                y="y"
+            />
+        {/snippet}
     </Pointer>
 </Plot>
 ```

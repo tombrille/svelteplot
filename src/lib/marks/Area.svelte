@@ -149,38 +149,37 @@
     ]}
     required={['x1', 'y1']}
     {...options}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-
-    <GroupMultiple length={sortedGroups.length} class="areas">
-        {#each sortedGroups as areaData}
-            {#if testFacet(areaData[0], mark.options)}
-                {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
-                {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
-                {#snippet el(datum)}
-                    <path
-                        clip-path={options.clipPath}
-                        d={areaPath(useScale)(
-                            options.filter == null
-                                ? areaData
-                                : areaData.filter((d) => resolveProp(options.filter, d))
-                        )}
-                        style={resolveScaledStyles(datum, options, useScale, plot, 'fill')}
-                        transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                    />
-                {/snippet}
-                {#if options.href}
-                    <a
-                        href={resolveProp(options.href, areaData[0], '')}
-                        target={resolveProp(options.target, areaData[0], '_self')}
-                    >
+    {#snippet children({ mark, usedScales })}
+        <GroupMultiple length={sortedGroups.length} class="areas">
+            {#each sortedGroups as areaData}
+                {#if testFacet(areaData[0], mark.options)}
+                    {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
+                    {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
+                    {#snippet el(datum)}
+                        <path
+                            clip-path={options.clipPath}
+                            d={areaPath(usedScales)(
+                                options.filter == null
+                                    ? areaData
+                                    : areaData.filter((d) => resolveProp(options.filter, d))
+                            )}
+                            style={resolveScaledStyles(datum, options, usedScales, plot, 'fill')}
+                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                        />
+                    {/snippet}
+                    {#if options.href}
+                        <a
+                            href={resolveProp(options.href, areaData[0], '')}
+                            target={resolveProp(options.target, areaData[0], '_self')}
+                        >
+                            {@render el(areaData[0])}
+                        </a>
+                    {:else}
                         {@render el(areaData[0])}
-                    </a>
-                {:else}
-                    {@render el(areaData[0])}
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </GroupMultiple>
+            {/each}
+        </GroupMultiple>
+    {/snippet}
 </Mark>

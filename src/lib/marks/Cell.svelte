@@ -65,48 +65,48 @@
         'strokeOpacity'
     ]}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-    <g class="rect" data-fill={useScale.fillOpacity}>
-        {#each args.data as datum}
-            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const x_ = resolveChannel('x', datum, args)}
-                {@const y_ = resolveChannel('y', datum, args)}
-                {@const x1 = useScale.x ? projectX('x1', plot.scales, x_) : x_}
-                {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
-                {@const y1 = useScale.y ? projectY('y1', plot.scales, y_) : y_}
-                {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
-                {@const miny = Math.min(y1, y2)}
-                {@const maxy = Math.max(y1, y2)}
-                {@const minx = Math.min(x1, x2)}
-                {@const maxx = Math.max(x1, x2)}
-                {@const inset = resolveProp(args.inset, datum, 0)}
-                {@const insetLeft = resolveProp(args.insetLeft, datum)}
-                {@const insetRight = resolveProp(args.insetRight, datum)}
-                {@const insetTop = resolveProp(args.insetTop, datum)}
-                {@const insetBottom = resolveProp(args.insetBottom, datum)}
-                {@const dx = resolveProp(args.dx, datum, 0)}
-                {@const dy = resolveProp(args.dy, datum, 0)}
-                {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
-                {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
-                {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
-                {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
+    {#snippet children({ mark, usedScales })}
+        <g class="rect" data-fill={usedScales.fillOpacity}>
+            {#each args.data as datum}
+                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
+                    {@const x_ = resolveChannel('x', datum, args)}
+                    {@const y_ = resolveChannel('y', datum, args)}
+                    {@const x1 = usedScales.x ? projectX('x1', plot.scales, x_) : x_}
+                    {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
+                    {@const y1 = usedScales.y ? projectY('y1', plot.scales, y_) : y_}
+                    {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
+                    {@const miny = Math.min(y1, y2)}
+                    {@const maxy = Math.max(y1, y2)}
+                    {@const minx = Math.min(x1, x2)}
+                    {@const maxx = Math.max(x1, x2)}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const insetLeft = resolveProp(args.insetLeft, datum)}
+                    {@const insetRight = resolveProp(args.insetRight, datum)}
+                    {@const insetTop = resolveProp(args.insetTop, datum)}
+                    {@const insetBottom = resolveProp(args.insetBottom, datum)}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
+                    {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
+                    {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
+                    {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
 
-                {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2) && (args.fill == null || isValid(resolveChannel('fill', datum, args)))}
-                    <rect
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}
-                        transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
-                        width={maxx - minx - insetL - insetR}
-                        height={maxy - miny - insetT - insetB}
-                        rx={resolveProp(args.rx, datum, null)}
-                        ry={resolveProp(args.ry, datum, null)}
-                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
-                    />
+                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2) && (args.fill == null || isValid(resolveChannel('fill', datum, args)))}
+                        <rect
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
+                            transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
+                            width={maxx - minx - insetL - insetR}
+                            height={maxy - miny - insetT - insetB}
+                            rx={resolveProp(args.rx, datum, null)}
+                            ry={resolveProp(args.ry, datum, null)}
+                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                        />
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

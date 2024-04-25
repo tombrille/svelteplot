@@ -95,57 +95,57 @@
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-    <g class="arrow" data-use-x={useScale.x ? 1 : 0}>
-        {#each args.data as datum}
-            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const x1 = resolveChannel('x1', datum, args)}
-                {@const x2 = resolveChannel('x2', datum, args)}
-                {@const y1 = resolveChannel('y1', datum, args)}
-                {@const y2 = resolveChannel('y2', datum, args)}
-                {@const color = resolveChannel('stroke', datum, args)}
-                {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
-                    {@const dx = resolveProp(args.dx, datum, 0)}
-                    {@const dy = resolveProp(args.dx, datum, 0)}
-                    <MarkerPath
-                        {mark}
-                        scales={plot.scales}
-                        markerStart={args.markerStart}
-                        markerEnd={args.markerEnd}
-                        marker={args.marker}
-                        strokeWidth={args.strokeWidth}
-                        {datum}
-                        color={useScale.stroke ? plot.scales.color.fn(color) : color}
-                        d={sphericalLine
-                            ? linePath(x1, y1, x2, y2)
-                            : linePath([
-                                  projectXY(plot.scales, x1, y1),
-                                  projectXY(plot.scales, x2, y2)
-                              ])}
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                        text={text ? resolveProp(text, datum) : null}
-                        startOffset={resolveProp(args.textStartOffset, datum, '50%')}
-                        textStyle={resolveScaledStyles(
-                            datum,
-                            {
-                                textAnchor: 'middle',
-                                ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
-                                fill: args.textFill || args.stroke,
-                                stroke: args.textStroke,
-                                strokeWidth: args.textStrokeWidth
-                            },
-                            useScale,
-                            plot,
-                            'fill'
-                        )}
-                        transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                    />
+    {#snippet children({ mark, usedScales })}
+        <g class="arrow" data-use-x={usedScales.x ? 1 : 0}>
+            {#each args.data as datum}
+                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
+                    {@const x1 = resolveChannel('x1', datum, args)}
+                    {@const x2 = resolveChannel('x2', datum, args)}
+                    {@const y1 = resolveChannel('y1', datum, args)}
+                    {@const y2 = resolveChannel('y2', datum, args)}
+                    {@const color = resolveChannel('stroke', datum, args)}
+                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
+                        {@const dx = resolveProp(args.dx, datum, 0)}
+                        {@const dy = resolveProp(args.dx, datum, 0)}
+                        <MarkerPath
+                            {mark}
+                            scales={plot.scales}
+                            markerStart={args.markerStart}
+                            markerEnd={args.markerEnd}
+                            marker={args.marker}
+                            strokeWidth={args.strokeWidth}
+                            {datum}
+                            color={usedScales.stroke ? plot.scales.color.fn(color) : color}
+                            d={sphericalLine
+                                ? linePath(x1, y1, x2, y2)
+                                : linePath([
+                                    projectXY(plot.scales, x1, y1),
+                                    projectXY(plot.scales, x2, y2)
+                                ])}
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
+                            text={text ? resolveProp(text, datum) : null}
+                            startOffset={resolveProp(args.textStartOffset, datum, '50%')}
+                            textStyle={resolveScaledStyles(
+                                datum,
+                                {
+                                    textAnchor: 'middle',
+                                    ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
+                                    fill: args.textFill || args.stroke,
+                                    stroke: args.textStroke,
+                                    strokeWidth: args.textStrokeWidth
+                                },
+                                usedScales,
+                                plot,
+                                'fill'
+                            )}
+                            transform={dx || dy ? `translate(${dx}, ${dy})` : null}
+                        />
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

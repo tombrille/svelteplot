@@ -77,50 +77,49 @@
         'strokeOpacity'
     ]}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-
-    <g class="dots">
-        {#if canvas}
-            <DotCanvas data={args.data} {mark} {plot} {testFacet} {useScale} />
-        {:else}
-            {#each args.data as datum}
-                {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                    {@const _x = resolveChannel('x', datum, args)}
-                    {@const _y = resolveChannel('y', datum, args)}
-                    {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
-                    {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                        {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
-                        {#if isValid(x) && isValid(y)}
-                            {@const dx = +resolveProp(args.dx, datum, 0)}
-                            {@const dy = +resolveProp(args.dx, datum, 0)}
-                            {@const r = useScale.r ? +plot.scales.r.fn(_r) : +_r}
-                            {@const size = r * r * Math.PI}
-                            {@const symbol_ = resolveChannel('symbol', datum, {
-                                symbol: 'circle',
-                                ...args
-                            })}
-                            {@const symbol = useScale.symbol
-                                ? plot.scales.symbol.fn(symbol_)
-                                : symbol_}
-                            <path
-                                d={getSymbolPath(symbol, size)}
-                                transform="translate({x + dx}, {y + dy})"
-                                data-symbol={symbol}
-                                style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                                use:addEventHandlers={{
-                                    scales: plot.scales,
-                                    options: mark.options,
-                                    datum
-                                }}
-                            />
+    {#snippet children({ mark, usedScales })}
+        <g class="dots">
+            {#if canvas}
+                <DotCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
+            {:else}
+                {#each args.data as datum}
+                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
+                        {@const _x = resolveChannel('x', datum, args)}
+                        {@const _y = resolveChannel('y', datum, args)}
+                        {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
+                        {#if isValid(_x) && isValid(_y) && isValid(_r)}
+                            {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
+                            {#if isValid(x) && isValid(y)}
+                                {@const dx = +resolveProp(args.dx, datum, 0)}
+                                {@const dy = +resolveProp(args.dx, datum, 0)}
+                                {@const r = usedScales.r ? +plot.scales.r.fn(_r) : +_r}
+                                {@const size = r * r * Math.PI}
+                                {@const symbol_ = resolveChannel('symbol', datum, {
+                                    symbol: 'circle',
+                                    ...args
+                                })}
+                                {@const symbol = usedScales.symbol
+                                    ? plot.scales.symbol.fn(symbol_)
+                                    : symbol_}
+                                <path
+                                    d={getSymbolPath(symbol, size)}
+                                    transform="translate({x + dx}, {y + dy})"
+                                    data-symbol={symbol}
+                                    style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
+                                    use:addEventHandlers={{
+                                        scales: plot.scales,
+                                        options: mark.options,
+                                        datum
+                                    }}
+                                />
+                            {/if}
                         {/if}
                     {/if}
-                {/if}
-            {/each}
-        {/if}
-    </g>
+                {/each}
+            {/if}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

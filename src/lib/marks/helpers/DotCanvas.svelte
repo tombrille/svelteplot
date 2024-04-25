@@ -16,13 +16,13 @@
         plot,
         data,
         testFacet,
-        useScale
+        usedScales
     }: {
         mark: Mark<BaseMarkProps>;
         plot: PlotState;
         data: DataRecord[];
         testFacet: any;
-        useScale: any;
+        usedScales: any;
     } = $props();
 
     function drawSymbolPath(symbolType: string, size: number, context) {
@@ -47,14 +47,14 @@
                     symbol: 'circle',
                     ...mark.options
                 });
-                const symbol = useScale.symbol ? plot.scales.symbol.fn(symbol_) : symbol_;
+                const symbol = usedScales.symbol ? plot.scales.symbol.fn(symbol_) : symbol_;
 
                 if (isValid(x) && isValid(y) && isValid(r)) {
                     const [px, py] = projectXY(plot.scales, x, y, true, true);
-                    const r_ = useScale.r ? plot.scales.r.fn(r) : r;
+                    const r_ = usedScales.r ? plot.scales.r.fn(r) : r;
                     const size = r_ * r_ * Math.PI * devicePixelRatio;
                     let { stroke, strokeOpacity, fillOpacity, fill, opacity } =
-                        resolveScaledStyleProps(datum, mark.options, useScale, plot, 'stroke');
+                        resolveScaledStyleProps(datum, mark.options, usedScales, plot, 'stroke');
 
                     if (`${fill}`.toLowerCase() === 'currentcolor')
                         fill = getComputedStyle(

@@ -49,40 +49,40 @@
     type="geo"
     channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r', 'fx', 'fy', 'fz']}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-    <g aria-label="geo" class="geo{geoType ? ` geo-${geoType}` : ''}" style="fill:currentColor">
-        {#each args.data as datum}
-            {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                {#snippet el(datum)}
-                    {@const title = resolveProp(args.title, datum, '')}
-                    {@const geometry = resolveProp(args.geometry, datum, datum)}
-                    <path
-                        d={path(geometry)}
-                        style={resolveScaledStyles(
-                            datum,
-                            args,
-                            useScale,
-                            plot,
-                            preferStroke.has(geometry.type) ? 'stroke' : 'fill'
-                        )}
-                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
-                    >
-                        {#if title}<title>{title}</title>{/if}
-                    </path>
-                {/snippet}
-                {#if options.href}
-                    <a
-                        href={resolveProp(args.href, datum, '')}
-                        target={resolveProp(args.target, datum, '_self')}
-                    >
+    {#snippet children({ mark, usedScales })}
+        <g aria-label="geo" class="geo{geoType ? ` geo-${geoType}` : ''}" style="fill:currentColor">
+            {#each args.data as datum}
+                {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
+                    {#snippet el(datum)}
+                        {@const title = resolveProp(args.title, datum, '')}
+                        {@const geometry = resolveProp(args.geometry, datum, datum)}
+                        <path
+                            d={path(geometry)}
+                            style={resolveScaledStyles(
+                                datum,
+                                args,
+                                usedScales,
+                                plot,
+                                preferStroke.has(geometry.type) ? 'stroke' : 'fill'
+                            )}
+                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                        >
+                            {#if title}<title>{title}</title>{/if}
+                        </path>
+                    {/snippet}
+                    {#if options.href}
+                        <a
+                            href={resolveProp(args.href, datum, '')}
+                            target={resolveProp(args.target, datum, '_self')}
+                        >
+                            {@render el(datum)}
+                        </a>
+                    {:else}
                         {@render el(datum)}
-                    </a>
-                {:else}
-                    {@render el(datum)}
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>

@@ -23,6 +23,7 @@ export type MarkType =
     | 'regression'
     | 'ruleX'
     | 'ruleY'
+    | 'text'
     | 'tickX'
     | 'tickY';
 
@@ -81,6 +82,7 @@ export type ScaledChannelName =
     | 'symbol'
     | 'fx'
     | 'fy'
+    | 'fz'
     | 'x'
     | 'x1'
     | 'x2'

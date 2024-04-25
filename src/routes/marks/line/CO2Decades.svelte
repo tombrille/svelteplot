@@ -83,19 +83,21 @@
         fill="average"
     />
 
-    <Pointer data={co2decades} x="yearInDecade" z="decadeBaseYear" let:data>
-        <Dot {data} x="yearInDecade" y="average" fill="average" />
-        <Text
-            {data}
-            x="yearInDecade"
-            y="average"
-            text={(d) => `${dayjs(d.date).format("MMM 'YY")}\n${d.average.toFixed(0)}`}
-            lineAnchor="bottom"
-            fontWeight={(d) => (d.__tspanIndex ? 'bold' : 'normal')}
-            dy="-20"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth={3}
-            fill="average"
-        />
+    <Pointer data={co2decades} x="yearInDecade" z="decadeBaseYear">
+        {#snippet children({data})}
+            <Dot {data} x="yearInDecade" y="average" fill="average" />
+            <Text
+                {data}
+                x="yearInDecade"
+                y="average"
+                text={(d) => `${dayjs(d.date).format("MMM 'YY")}\n${d.average.toFixed(0)}`}
+                lineAnchor="bottom"
+                fontWeight={(d) => (d.__tspanIndex ? 'bold' : 'normal')}
+                dy="-20"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth={3}
+                fill="average"
+            />
+        {/snippet}
     </Pointer>
 </Plot>

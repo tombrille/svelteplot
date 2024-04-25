@@ -43,38 +43,38 @@
     type="tickY"
     channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="tick-y">
-        {#each args.data as datum}
-            {#if testFacet(datum, mark.options) && testFilter(datum, args)}
-                {@const y_ = resolveChannel('y', datum, args)}
-                {@const x_ = resolveChannel('x', datum, args)}
-                {#if isValid(y_) && (isValid(x_) || args.x == null)}
-                    {@const y = useScale.y ? projectY('y', plot.scales, y_) : y_}
-                    {@const x1 =
-                        args.x != null
-                            ? useScale.x
-                                ? projectX('x1', plot.scales, x_)
-                                : x_
-                            : plot.options.marginLeft}
-                    {@const x2 =
-                        args.x != null
-                            ? useScale.x
-                                ? projectX('x2', plot.scales, x_)
-                                : y_
-                            : plot.options.marginLeft + plot.facetWidth}
-                    <line
-                        transform="translate({0}, {y})"
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                        {x1}
-                        {x2}
-                    />
+    {#snippet children({ mark, usedScales })}
+        <g class="tick-y">
+            {#each args.data as datum}
+                {#if testFacet(datum, mark.options) && testFilter(datum, args)}
+                    {@const y_ = resolveChannel('y', datum, args)}
+                    {@const x_ = resolveChannel('x', datum, args)}
+                    {#if isValid(y_) && (isValid(x_) || args.x == null)}
+                        {@const y = usedScales.y ? projectY('y', plot.scales, y_) : y_}
+                        {@const x1 =
+                            args.x != null
+                                ? usedScales.x
+                                    ? projectX('x1', plot.scales, x_)
+                                    : x_
+                                : plot.options.marginLeft}
+                        {@const x2 =
+                            args.x != null
+                                ? usedScales.x
+                                    ? projectX('x2', plot.scales, x_)
+                                    : y_
+                                : plot.options.marginLeft + plot.facetWidth}
+                        <line
+                            transform="translate({0}, {y})"
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
+                            {x1}
+                            {x2}
+                        />
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

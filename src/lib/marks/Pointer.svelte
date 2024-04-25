@@ -3,6 +3,7 @@
 
     export type PointerMarkProps = {
         data: DataRow[];
+        children: Snippet<[{ data: DataRow[] }]>;
         x?: ChannelAccessor;
         y?: ChannelAccessor;
         z?: ChannelAccessor;
@@ -11,7 +12,7 @@
 </script>
 
 <script lang="ts">
-    import { getContext } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
     import type { PlotContext } from '../types.js';
     import { groups as d3Groups } from 'd3-array';
 
@@ -23,7 +24,7 @@
     import { projectX, projectXY, projectY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
 
-    let { data, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
+    let { data, children, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
 
     let selectedData = $state([]);
 
@@ -73,5 +74,5 @@
 </script>
 
 <g class="pointer">
-    <slot data={selectedData} />
+    {@render children({ data: selectedData })}
 </g>

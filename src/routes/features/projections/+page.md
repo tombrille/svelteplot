@@ -71,41 +71,11 @@ title: Projections
         domain: geoCircle().center([longitude, latitude]).radius(zoom)(),
         rotate: [-longitude, -latitude]
     }}
-    let:scales
 >
     <Sphere
         fill="var(--svelteplot-bg)"
         stroke="currentColor"
         cursor="pointer"
-        onmousedown={(evt) => {
-            if (evt.button === 0) mouseTrail = [];
-            dragging = true;
-        }}
-        onmousemove={(evt) => {
-            if (dragging) {
-                if (evt.button === 0) {
-                    mouseTrail = [
-                        ...mouseTrail.slice(-1000),
-                        scales.projection.invert([evt.layerX, evt.layerY])
-                    ];
-                } else if (evt.button === 1) {
-                    const z = zoom / 90;
-                    latitude = latitude + evt.movementY * z;
-                    longitude = longitude - evt.movementX * z;
-                }
-            }
-        }}
-        onwheel={(evt) => {
-            zoom = Math.max(5, Math.min(90, zoom - evt.wheelDeltaY / 30));
-            evt.preventDefault();
-        }}
-        onmouseup={(evt) => {
-            dragging = false;
-            if (evt.button === 0) {
-                savedLines = [...savedLines, ...mouseTrail.map((pt) => [...pt, savedLines.length])];
-                mouseTrail = [];
-            }
-        }}
     />
     <Graticule pointerEvents="none" opacity="0.1" step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
     <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />

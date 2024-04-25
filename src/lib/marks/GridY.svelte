@@ -40,28 +40,28 @@
     channels={['x1', 'x2', 'y', 'stroke', 'strokeOpacity']}
     {...{ ...options, y: '___orig___' }}
     {automatic}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="grid-y">
-        {#each ticks as tick}
-            {#if testFilter(tick, options)}
-                {@const y =
-                    plot.scales.y.fn(tick) +
-                    (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
-                {@const x1_ = resolveChannel('x1', tick, options)}
-                {@const x2_ = resolveChannel('x2', tick, options)}
-                {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) : 0}
-                {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) : plot.facetWidth}
-                <line
-                    transform="translate({plot.options.marginLeft},{y})"
-                    style={resolveScaledStyles(tick, options, useScale, plot, 'stroke')}
-                    {x1}
-                    {x2}
-                />
-            {/if}
-        {/each}
-    </g>
+    {#snippet children({ usedScales })}
+        <g class="grid-y">
+            {#each ticks as tick}
+                {#if testFilter(tick, options)}
+                    {@const y =
+                        plot.scales.y.fn(tick) +
+                        (plot.scales.y.type === 'band' ? plot.scales.y.fn.bandwidth() * 0.5 : 0)}
+                    {@const x1_ = resolveChannel('x1', tick, options)}
+                    {@const x2_ = resolveChannel('x2', tick, options)}
+                    {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) : 0}
+                    {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) : plot.facetWidth}
+                    <line
+                        transform="translate({plot.options.marginLeft},{y})"
+                        style={resolveScaledStyles(tick, options, usedScales, plot, 'stroke')}
+                        {x1}
+                        {x2}
+                    />
+                {/if}
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

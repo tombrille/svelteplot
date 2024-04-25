@@ -140,56 +140,55 @@
         'strokeOpacity'
     ]}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-
-    <g class="vector" data-l={useScale.length}>
-        {#if canvas}
-            <text x="30" y="30" style="color:red">implement canvas rendering for vector mark</text>
-        {:else}
-            {#each args.data as datum}
-                {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                    {@const _x = resolveChannel('x', datum, args)}
-                    {@const _y = resolveChannel('y', datum, args)}
-                    {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
-                    {@const _l = resolveChannel('length', datum, { length: 10, ...args })}
-                    {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                        {@const [x, y] = projectXY(plot.scales, _x, _y, useScale.x, useScale.y)}
-                        {@const l = useScale.length ? plot.scales.length.fn(_l) : _l}
-                        {#if isValid(x) && isValid(y) && isValid(l)}
-                            {@const dx = +resolveProp(args.dx, datum, 0)}
-                            {@const dy = +resolveProp(args.dx, datum, 0)}
-                            <path
-                                d={shapePath(shape, l, r)}
-                                transform="translate({x + dx}, {y + dy}) rotate({resolveProp(
-                                    args.rotate,
-                                    datum,
-                                    0
-                                )}) {anchor === 'start'
-                                    ? ''
-                                    : anchor === 'end'
-                                      ? `translate(0, ${l})`
-                                      : `translate(0, ${l / 2})`}"
-                                style={resolveScaledStyles(
-                                    datum,
-                                    {
-                                        strokeWidth: 1.5,
-                                        strokeLinejoin: 'round',
-                                        strokeLinecap: 'round',
-                                        ...args
-                                    },
-                                    useScale,
-                                    plot,
-                                    'stroke'
-                                )}
-                            />
+    {#snippet children({ mark, usedScales })}
+        <g class="vector" data-l={usedScales.length}>
+            {#if canvas}
+                <text x="30" y="30" style="color:red">implement canvas rendering for vector mark</text>
+            {:else}
+                {#each args.data as datum}
+                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
+                        {@const _x = resolveChannel('x', datum, args)}
+                        {@const _y = resolveChannel('y', datum, args)}
+                        {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
+                        {@const _l = resolveChannel('length', datum, { length: 10, ...args })}
+                        {#if isValid(_x) && isValid(_y) && isValid(_r)}
+                            {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
+                            {@const l = usedScales.length ? plot.scales.length.fn(_l) : _l}
+                            {#if isValid(x) && isValid(y) && isValid(l)}
+                                {@const dx = +resolveProp(args.dx, datum, 0)}
+                                {@const dy = +resolveProp(args.dx, datum, 0)}
+                                <path
+                                    d={shapePath(shape, l, r)}
+                                    transform="translate({x + dx}, {y + dy}) rotate({resolveProp(
+                                        args.rotate,
+                                        datum,
+                                        0
+                                    )}) {anchor === 'start'
+                                        ? ''
+                                        : anchor === 'end'
+                                        ? `translate(0, ${l})`
+                                        : `translate(0, ${l / 2})`}"
+                                    style={resolveScaledStyles(
+                                        datum,
+                                        {
+                                            strokeWidth: 1.5,
+                                            strokeLinejoin: 'round',
+                                            strokeLinecap: 'round',
+                                            ...args
+                                        },
+                                        usedScales,
+                                        plot,
+                                        'stroke'
+                                    )}
+                                />
+                            {/if}
                         {/if}
                     {/if}
-                {/if}
-            {/each}
-        {/if}
-    </g>
+                {/each}
+            {/if}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

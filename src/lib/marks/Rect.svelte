@@ -61,71 +61,71 @@
         'strokeOpacity'
     ]}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, args, mark)}
-    <g class="rect" data-fill={useScale.fillOpacity}>
-        {#each args.data as datum}
-            {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                {@const x1_ = resolveChannel('x1', datum, args)}
-                {@const x2_ = resolveChannel('x2', datum, args)}
-                {@const y1_ = resolveChannel('y1', datum, args)}
-                {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const x1 =
-                    x1_ == null
-                        ? plot.options.marginLeft
-                        : useScale.x1
-                          ? projectX('x', plot.scales, x1_)
-                          : x1_}
-                {@const x2 =
-                    x2_ == null
-                        ? plot.options.marginLeft + plot.facetWidth
-                        : useScale.x2
-                          ? projectX('x', plot.scales, x2_)
-                          : x2_}
-                {@const y1 =
-                    y1_ == null
-                        ? plot.options.marginTop
-                        : useScale.y1
-                          ? projectY('y', plot.scales, y1_)
-                          : y1_}
-                {@const y2 =
-                    y2_ == null
-                        ? plot.options.marginTop + plot.facetHeight
-                        : useScale.y2
-                          ? projectY('y', plot.scales, y2_)
-                          : y2_}
+    {#snippet children({ mark, usedScales })}
+        <g class="rect" data-fill={usedScales.fillOpacity}>
+            {#each args.data as datum}
+                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
+                    {@const x1_ = resolveChannel('x1', datum, args)}
+                    {@const x2_ = resolveChannel('x2', datum, args)}
+                    {@const y1_ = resolveChannel('y1', datum, args)}
+                    {@const y2_ = resolveChannel('y2', datum, args)}
+                    {@const x1 =
+                        x1_ == null
+                            ? plot.options.marginLeft
+                            : usedScales.x1
+                            ? projectX('x', plot.scales, x1_)
+                            : x1_}
+                    {@const x2 =
+                        x2_ == null
+                            ? plot.options.marginLeft + plot.facetWidth
+                            : usedScales.x2
+                            ? projectX('x', plot.scales, x2_)
+                            : x2_}
+                    {@const y1 =
+                        y1_ == null
+                            ? plot.options.marginTop
+                            : usedScales.y1
+                            ? projectY('y', plot.scales, y1_)
+                            : y1_}
+                    {@const y2 =
+                        y2_ == null
+                            ? plot.options.marginTop + plot.facetHeight
+                            : usedScales.y2
+                            ? projectY('y', plot.scales, y2_)
+                            : y2_}
 
-                {@const miny = Math.min(y1, y2)}
-                {@const maxy = Math.max(y1, y2)}
-                {@const minx = Math.min(x1, x2)}
-                {@const maxx = Math.max(x1, x2)}
-                {@const inset = resolveProp(args.inset, datum, 0)}
-                {@const insetLeft = resolveProp(args.insetLeft, datum)}
-                {@const insetRight = resolveProp(args.insetRight, datum)}
-                {@const insetTop = resolveProp(args.insetTop, datum)}
-                {@const insetBottom = resolveProp(args.insetBottom, datum)}
-                {@const dx = resolveProp(args.dx, datum, 0)}
-                {@const dy = resolveProp(args.dy, datum, 0)}
-                {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
-                {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
-                {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
-                {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
+                    {@const miny = Math.min(y1, y2)}
+                    {@const maxy = Math.max(y1, y2)}
+                    {@const minx = Math.min(x1, x2)}
+                    {@const maxx = Math.max(x1, x2)}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const insetLeft = resolveProp(args.insetLeft, datum)}
+                    {@const insetRight = resolveProp(args.insetRight, datum)}
+                    {@const insetTop = resolveProp(args.insetTop, datum)}
+                    {@const insetBottom = resolveProp(args.insetBottom, datum)}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
+                    {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
+                    {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
+                    {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
 
-                {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
-                    <rect
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'fill')}
-                        transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
-                        width={maxx - minx - insetL - insetR}
-                        height={maxy - miny - insetT - insetB}
-                        rx={resolveProp(args.rx, datum, null)}
-                        ry={resolveProp(args.ry, datum, null)}
-                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
-                    />
+                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
+                        <rect
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
+                            transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
+                            width={maxx - minx - insetL - insetR}
+                            height={maxy - miny - insetT - insetB}
+                            rx={resolveProp(args.rx, datum, null)}
+                            ry={resolveProp(args.ry, datum, null)}
+                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                        />
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

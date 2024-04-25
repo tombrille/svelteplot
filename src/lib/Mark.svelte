@@ -15,6 +15,7 @@
         BaseMarkProps,
         FacetContext
     } from './types.js';
+    import { getUsedScales } from './helpers/scales.js';
 
     type MarkProps = {
         data?: DataRecord[];
@@ -22,7 +23,7 @@
         type: MarkType;
         channels?: ScaledChannelName[];
         required?: ScaledChannelName[];
-        children?: Snippet<[{ mark: Mark }]>;
+        children?: Snippet<[{ mark: Mark; usedScales: ReturnType<typeof getUsedScales> }]>;
     } & Partial<Record<ChannelName, ChannelAccessor>> &
         Partial<BaseMarkProps>;
 
@@ -35,9 +36,10 @@
         ...options
     }: MarkProps = $props();
 
-    const { addMark, updateMark, removeMark, getTopLevelFacet } =
+    const { addMark, updateMark, removeMark, getTopLevelFacet, getPlotState } =
         getContext<PlotContext>('svelteplot');
 
+    let plot = $derived(getPlotState());
     let facet = $derived(getTopLevelFacet());
 
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
@@ -102,6 +104,8 @@
         }
     });
 
+    let usedScales = $derived(getUsedScales(plot, mark2.options, mark2));
+
     $effect(() => {
         return () => {
             removeMark(mark);
@@ -116,7 +120,7 @@
         {/each}
     </text>
 {:else if children}
-    {@render children({ mark: mark2 })}
+    {@render children({ mark: mark2, usedScales })}
 {/if}
 
 <style>

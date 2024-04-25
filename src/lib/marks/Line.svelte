@@ -146,60 +146,72 @@
     channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy', 'fz']}
     required={['x', 'y']}
     {...args}
-    let:mark
 >
-    {#if data.length > 0}
-        {@const useScale = getUsedScales(plot, args, mark)}
-        <g class="lines">
-            {#each groups as lineData, i}
-                {#if testFacet(lineData[0], mark.options) && lineData.length > 0}
-                    {@const dx_ = resolveProp(args.dx, lineData[0], 0)}
-                    {@const dy_ = resolveProp(args.dy, lineData[0], 0)}
-                    {@const markerColor_ =
-                        resolveChannel('stroke', lineData[0], args, true) || 'currentColor'}
-                    {@const markerColor = useScale.stroke
-                        ? plot.scales.color.fn(markerColor_)
-                        : markerColor_}
-                    <MarkerPath
-                        {mark}
-                        scales={plot.scales}
-                        markerStart={args.markerStart}
-                        markerMid={args.markerMid}
-                        markerEnd={args.markerEnd}
-                        marker={args.marker}
-                        strokeWidth={args.strokeWidth}
-                        datum={lineData[0]}
-                        d={linePath(
-                            projectLineData(
-                                args.filter == null
-                                    ? lineData
-                                    : lineData.filter((d) => resolveProp(args.filter, d)),
-                                plot
-                            )
-                        )}
-                        color={markerColor}
-                        style={resolveScaledStyles(lineData[0], args, useScale, plot, 'stroke')}
-                        text={text ? resolveProp(text, lineData[0]) : null}
-                        startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
-                        textStyle={resolveScaledStyles(
-                            lineData[0],
-                            {
-                                textAnchor: 'middle',
-                                ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
-                                fill: args.textFill || args.stroke,
-                                stroke: args.textStroke,
-                                strokeWidth: args.textStrokeWidth
-                            },
-                            useScale,
-                            plot,
-                            'fill'
-                        )}
-                        transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                    />
-                {/if}
-            {/each}
-        </g>
-    {/if}
+    {#snippet children({ mark, usedScales })}
+        {#if data.length > 0}
+            <g class="lines">
+                {#each groups as lineData, i}
+                    {#if testFacet(lineData[0], mark.options) && lineData.length > 0}
+                        {@const dx_ = resolveProp(args.dx, lineData[0], 0)}
+                        {@const dy_ = resolveProp(args.dy, lineData[0], 0)}
+                        {@const markerColor_ =
+                            resolveChannel('stroke', lineData[0], args, true) || 'currentColor'}
+                        {@const markerColor = usedScales.stroke
+                            ? plot.scales.color.fn(markerColor_)
+                            : markerColor_}
+                        <MarkerPath
+                            {mark}
+                            scales={plot.scales}
+                            markerStart={args.markerStart}
+                            markerMid={args.markerMid}
+                            markerEnd={args.markerEnd}
+                            marker={args.marker}
+                            strokeWidth={args.strokeWidth}
+                            datum={lineData[0]}
+                            d={linePath(
+                                projectLineData(
+                                    args.filter == null
+                                        ? lineData
+                                        : lineData.filter((d) => resolveProp(args.filter, d)),
+                                    plot
+                                )
+                            )}
+                            color={markerColor}
+                            style={resolveScaledStyles(
+                                lineData[0],
+                                args,
+                                usedScales,
+                                plot,
+                                'stroke'
+                            )}
+                            text={text ? resolveProp(text, lineData[0]) : null}
+                            startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
+                            textStyle={resolveScaledStyles(
+                                lineData[0],
+                                {
+                                    textAnchor: 'middle',
+                                    ...pick(
+                                        args,
+                                        'fontSize',
+                                        'fontWeight',
+                                        'fontStyle',
+                                        'textAnchor'
+                                    ),
+                                    fill: args.textFill || args.stroke,
+                                    stroke: args.textStroke,
+                                    strokeWidth: args.textStrokeWidth
+                                },
+                                usedScales,
+                                plot,
+                                'fill'
+                            )}
+                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
+                        />
+                    {/if}
+                {/each}
+            </g>
+        {/if}
+    {/snippet}
 </Mark>
 
 <style>

@@ -43,38 +43,38 @@
     type="tickX"
     channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}
-    let:mark
 >
-    {@const useScale = getUsedScales(plot, options, mark)}
-    <g class="tick-x">
-        {#each args.data as datum}
-            {#if testFacet(datum, mark.options) && testFilter(datum, args)}
-                {@const x_ = resolveChannel('x', datum, args)}
-                {@const y_ = resolveChannel('y', datum, args)}
-                {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
-                    {@const x = useScale.x ? projectX('x', plot.scales, x_) : x_}
-                    {@const y1 =
-                        args.y != null
-                            ? useScale.y
-                                ? projectY('y1', plot.scales, y_)
-                                : y_
-                            : plot.options.marginTop}
-                    {@const y2 =
-                        args.y != null
-                            ? useScale.y
-                                ? Number(projectY('y2', plot.scales, y_))
-                                : y_
-                            : plot.options.marginTop + plot.plotHeight}
-                    <line
-                        transform="translate({x}, {0})"
-                        style={resolveScaledStyles(datum, args, useScale, plot, 'stroke')}
-                        {y1}
-                        {y2}
-                    />
+    {#snippet children({ mark, usedScales })}
+        <g class="tick-x">
+            {#each args.data as datum}
+                {#if testFacet(datum, mark.options) && testFilter(datum, args)}
+                    {@const x_ = resolveChannel('x', datum, args)}
+                    {@const y_ = resolveChannel('y', datum, args)}
+                    {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
+                        {@const x = usedScales.x ? projectX('x', plot.scales, x_) : x_}
+                        {@const y1 =
+                            args.y != null
+                                ? usedScales.y
+                                    ? projectY('y1', plot.scales, y_)
+                                    : y_
+                                : plot.options.marginTop}
+                        {@const y2 =
+                            args.y != null
+                                ? usedScales.y
+                                    ? Number(projectY('y2', plot.scales, y_))
+                                    : y_
+                                : plot.options.marginTop + plot.plotHeight}
+                        <line
+                            transform="translate({x}, {0})"
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
+                            {y1}
+                            {y2}
+                        />
+                    {/if}
                 {/if}
-            {/if}
-        {/each}
-    </g>
+            {/each}
+        </g>
+    {/snippet}
 </Mark>
 
 <style>

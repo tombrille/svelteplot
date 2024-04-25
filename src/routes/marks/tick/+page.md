@@ -4,6 +4,11 @@ title: Tick mark
 
 Ticks are useful for showing one-dimensional distributions, as in the "barcode" plot below. The secondary dimension must be a band scale.
 
+
+## TickX
+
+Shows a vertical bar for each x position.
+
 ```svelte live
 <script lang="ts">
     import { Plot, RuleX, TickX } from '$lib/index.js';
@@ -11,22 +16,19 @@ Ticks are useful for showing one-dimensional distributions, as in the "barcode" 
     let { stateage } = $derived($page.data.data);
 </script>
 
-<Plot x={{ grid: true, percent: true }} marginLeft={50}>
+<Plot x={{ grid: true, percent: true }}>
     <RuleX data={[0]} />
     <TickX data={stateage} y="age" x="pop_share" />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ grid: true, percent: true }} marginLeft={50}>
+<Plot x={{ grid: true, percent: true }}>
     <RuleX data={[0]} />
     <TickX data={stateage} y="age" x="pop_share" />
 </Plot>
 ```
 
-## TickX
-
-Shows a vertical bar for each x position.
 
 ## TickY
 
@@ -52,14 +54,14 @@ Shows a horizontal bar for each x position.
     {align}</label
 >
 
-<Plot x={{ padding, align }} y={{ grid: true, percent: true }} marginLeft={50}>
+<Plot x={{ padding, align }} y={{ grid: true, percent: true }}>
     <RuleY data={[0]} />
     <TickY data={stateage} x="age" y="pop_share" />
 </Plot>
 ```
 
 ```svelte
-<Plot y={{ grid: true, percent: true }} marginLeft={50}>
+<Plot y={{ grid: true, percent: true }}>
     <RuleY data={[0]} />
     <TickY data={stateage} x="age" y="pop_share" />
 </Plot>
@@ -76,7 +78,15 @@ Same idea but with facet:
     let { stateage } = $derived($page.data.data);
 </script>
 
-<Plot x={{ insetLeft: 10, insetRight: 10 }} y={{ grid: true, percent: true }} marginLeft={50}>
+<Plot y={{ grid: true, percent: true }}>
+    <RuleY data={[0]} />
+    <TickY data={stateage} fx="age" y="pop_share" />
+</Plot>
+```
+
+```svelte
+<Plot 
+    y={{ grid: true, percent: true }}}>
     <RuleY data={[0]} />
     <TickY data={stateage} fx="age" y="pop_share" />
 </Plot>
