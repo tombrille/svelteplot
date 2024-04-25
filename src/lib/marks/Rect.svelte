@@ -19,6 +19,7 @@
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { addEventHandlers } from './helpers/events.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     type RectMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -63,7 +64,7 @@
     {...args}
 >
     {#snippet children({ mark, usedScales })}
-        <g class="rect" data-fill={usedScales.fillOpacity}>
+        <GroupMultiple class="rect" length={args.data.length}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const x1_ = resolveChannel('x1', datum, args)}
@@ -124,7 +125,7 @@
                     {/if}
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
 

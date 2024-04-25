@@ -1,11 +1,11 @@
 <script lang="ts">
-    let { length, ...groupProps }: { length: number } = $props();
+    let { length, children, ...groupProps }: { length: number } = $props();
 </script>
 
 {#if length > 1}
     <g {...groupProps}>
-        <slot />
+       {@render children()}
     </g>
 {:else}
-    <slot />
+    {@render children()}
 {/if}
