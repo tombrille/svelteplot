@@ -32,14 +32,14 @@ export default defineConfig({
                     twoslash: false
                 },
                 navbar: [
-                    {
-                        title: 'Home',
-                        to: '/'
-                    },
-                    {
-                        title: 'Guide',
-                        to: '/introduction'
-                    }
+                //     {
+                //         title: 'Home',
+                //         to: '/'
+                //     },
+                //     {
+                //         title: 'Guide',
+                //         to: '/introduction'
+                //     }
                 ],
                 sidebar,
                 preBuildIconifyIcons: {
@@ -61,7 +61,7 @@ export default defineConfig({
                 description: 'The best data visualizations are built with Svelte.'
             },
 
-            addInspect: false
+            addInspect: true
         })
     ],
 

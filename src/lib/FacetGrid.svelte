@@ -43,11 +43,15 @@
         scaleBand().paddingInner(0.1).domain(fyValues).rangeRound([0, plot.plotHeight])
     );
 
-    $effect(() => {
-        updateDimensions(
-            useFacetX ? facetXScale.bandwidth() : plot.plotWidth,
-            useFacetY ? facetYScale.bandwidth() : plot.plotHeight
-        );
+    let facetWidth = $derived(
+        useFacetX ? facetXScale.bandwidth() : plot.plotWidth
+    );
+    let facetHeight = $derived(
+        useFacetY ? facetYScale.bandwidth() : plot.plotHeight
+    );
+
+    $effect.pre(() => {
+        updateDimensions(facetWidth, facetHeight);
     });
 </script>
 

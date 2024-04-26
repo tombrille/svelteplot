@@ -1,6 +1,5 @@
 {
     "name": "@gka/svelteplot",
-    "private": true,
     "version": "0.1.1-alpha.24",
     "license": "UNLICENSED",
     "author": {
@@ -100,7 +99,7 @@
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
-        "svelte": "5.0.0-next.114",
+        "svelte": "5.0.0-next.115",
         "underscore": "^1.13.6"
     }
 }

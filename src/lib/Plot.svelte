@@ -273,6 +273,7 @@
             return facet;
         },
         updateDimensions(w: number, h: number) {
+            console.log({w,h})
             if (facetWidth !== w) facetWidth = w;
             if (facetHeight !== h) facetHeight = h;
         }
@@ -329,7 +330,7 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: hasProjection ? 0 : margins != null ? margins : maxMarginLeft + 1,
+            marginLeft: hasProjection ? 0 : margins != null ? margins : Math.max(maxMarginLeft + 1, 1),
             marginRight: hasProjection
                 ? 0
                 : margins != null

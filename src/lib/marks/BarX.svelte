@@ -13,6 +13,7 @@
     import type { DataRow } from '$lib/types.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     type BarXProps = BaseMarkProps & {
         data: DataRow[];
@@ -46,7 +47,7 @@
     {...args}
 >
     {#snippet children({ mark, usedScales })}
-        <g class="bars-x">
+        <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
                 {#if testFilter(datum, args)}
                     {@const y_ = resolveChannel('y', datum, args)}
@@ -73,6 +74,6 @@
                     {/if}
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>

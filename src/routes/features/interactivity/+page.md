@@ -13,7 +13,7 @@ Pointer mark
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot testid="aapl-line-frame" marginRight={20}>
+<Plot testid="aapl-line-frame">
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
         {#snippet children({ data })}
@@ -36,14 +36,7 @@ Pointer mark
 ```
 
 ```svelte
-<script lang="ts">
-    import { Plot, Line, Dot, Text, Pointer } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
-</script>
-
-// --- cut ---
-<Plot testid="aapl-line-frame" marginRight={20}>
+<Plot>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
         {#snippet children({ data })}

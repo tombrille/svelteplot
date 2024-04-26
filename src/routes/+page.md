@@ -1,5 +1,5 @@
 ---
-title: Reactive data visualization
+title: SveltePlot
 description: The best visualizations are built with <span>Svelte.</span>
 heroImage: /logo.png
 tagline: Inspired by Observable Plot, written in Svelte 5, built on top of D3.js!
@@ -55,17 +55,15 @@ _features:
       link: /features/scales
 ---
 
-<script>
-  import { preloadData, preloadCode } from '$app/navigation';
-
-  $effect(() => {
-    preloadCode('/getting-started');
-    preloadData('/introduction');
-  });
-  
-</script>
 
 <style>
+  main {
+
+  }
+  article {
+   margin-left: auto;
+   margin-right: auto;
+  }
   :global(.intro .description) {
     font-size: 2.8rem!important;
     font-weight: 600!important;

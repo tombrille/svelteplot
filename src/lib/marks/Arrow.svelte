@@ -6,7 +6,10 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext
+        FacetContext,
+
+        RawValue
+
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, testFilter, maybeNumber } from '../helpers/index.js';
@@ -15,6 +18,7 @@
     import { arrowPath, maybeSweep, type SweepOption } from '../helpers/arrowPath.js';
     import { replaceChannels } from '$lib/transforms/rename.js';
     import { addEventHandlers } from './helpers/events.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     type ArrowProps = BaseMarkProps & {
         data: DataRecord[];
@@ -69,7 +73,7 @@
             : maybeData(data)
     );
 
-    let args = $derived(
+    let args: ArrowProps = $derived(
         replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
     );
 
@@ -85,7 +89,7 @@
 >
     {#snippet children({ mark, usedScales })}
         {@const sweep = maybeSweep(args.sweep)}
-        <g class="arrow" data-use-x={usedScales.x ? 1 : 0}>
+        <GroupMultiple class="arrow" length={args.data.length}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const _x1 = resolveChannel('x1', datum, args)}
@@ -155,7 +159,7 @@
                     {/if}
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
 

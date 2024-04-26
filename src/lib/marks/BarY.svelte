@@ -19,6 +19,7 @@
     import type { StackOptions } from '$lib/transforms/stack.js';
     import { maybeData } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     type BarYProps = BaseMarkProps & {
         data: DataRow[];
@@ -57,7 +58,7 @@
     {...args}
 >
     {#snippet children({ mark, usedScales })}
-        <g class="bars-y">
+        <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y1_ = resolveChannel('y1', datum, args)}
@@ -82,6 +83,6 @@
                     />
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
