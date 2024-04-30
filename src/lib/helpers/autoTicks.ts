@@ -4,7 +4,6 @@ import { range as rangei } from 'd3-array';
 
 export function maybeInterval(
     interval: null | number | string | (<T>(d: T) => T),
-    type: ScaleType
 ) {
     if (interval == null) return;
     if (typeof interval === 'number') {

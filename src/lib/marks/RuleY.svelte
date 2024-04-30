@@ -1,6 +1,6 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
-    import GroupMultiple from '$lib/helpers/GroupMultiple.svelte';
+    import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
     import { recordizeY } from '$lib/transforms/recordize.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
@@ -44,7 +44,7 @@
     {...args}
 >
     {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="rule-y" count={args.data.length}>
+        <GroupMultiple class="rule-y" length={args.data.length}>
             {#each args.data as datum}
                 {#if testFacet(datum, mark.options) && testFilter(datum, mark.options)}
                     {@const y_ = resolveChannel('y', datum, args)}

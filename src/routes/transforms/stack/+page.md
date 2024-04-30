@@ -119,3 +119,11 @@ You can pass options to the implicit stack transforms using the mark **stack** o
     />
 </Plot>
 ```
+
+## stackX
+
+Replaces **x** with **x1** and **x2** for horizontal→ stacks grouped on **y**
+
+## stackY
+
+Replaces **y** with **y1** and **y2** to form vertical↑ stacks grouped on **x**.

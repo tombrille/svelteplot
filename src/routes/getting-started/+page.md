@@ -3,9 +3,9 @@ title: Getting started
 description: This page explains how to start using SveltePlot.
 ---
 
-SveltePlot is a Svelte5 library and as such, it can only be used in Svelte 5 projects. You may notice that Svelte 5 is [not even released, yet](https://svelte-5-preview.vercel.app/status), so you can't "officially" use SveltePlot as of now.
-
-So at best, you may try out this experimental SveltePlot pre-release.
+:::caution
+SveltePlot is still in its alpha phase, so you're free to use it for experimentation, but usage in production is not recommented, yet. Also keep in mind that SveltePlot is a Svelte 5 library and Svelte 5 is [not even released, yet](https://svelte-5-preview.vercel.app/status).
+:::
 
 ## Try online
 
@@ -18,7 +18,7 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
     import { randomNormal } from 'd3-random';
 </script>
 
-<Plot height={300}>
+<Plot grid height={300}>
     <RectY
         {...binX(
             {
@@ -32,10 +32,10 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 
 ```svelte
 <script>
-    import { Plot, RectY, binX } from 'svelteplot';
+    import { Plot, RectY, binX } from '@gka/svelteplot';
 </script>
 
-<Plot>
+<Plot grid>
     <RectY {...binX({ data: range(10000).map(randomNormal()) }, { y: 'count' })} />
 </Plot>
 ```
@@ -45,9 +45,9 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 Just install SveltePlot via `npm` or `pnpm`, and import and use the components!
 
 ```sh
-npm install svelteplot
+npm install @gka/svelteplot
 # or
-pnpm add svelteplot
+pnpm add @gka/svelteplot
 ```
 
 ```svelte live
@@ -62,7 +62,7 @@ pnpm add svelteplot
 
 ```svelte
 <script>
-    import { Plot, BarX } from 'svelteplot';
+    import { Plot, BarX } from '@gka/svelteplot';
 </script>
 
 <Plot grid>

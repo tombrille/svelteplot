@@ -117,3 +117,19 @@ The select transform groups data into series using the **z**, **fill**, or **str
     <RuleY data={[0]} />
 </Plot>
 ```
+
+## selectMaxY
+
+Selects the data point in each group with the largest y value.
+
+## selectMinY
+
+Selects the data point in each group with the smallest y value.
+
+## selectFirst
+
+Selects the data point in each group with the smallest x value.
+
+## selectLast
+
+Selects the data point in each group with the largest x value.

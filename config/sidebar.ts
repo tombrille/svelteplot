@@ -15,6 +15,10 @@ export default {
                 {
                     title: 'Introduction',
                     to: '/introduction/'
+                }, 
+                {
+                    title: 'License',
+                    to: '/license/'
                 }
             ]
         },
@@ -27,32 +31,12 @@ export default {
                     to: '/features/plot/'
                 },
                 {
-                    title: 'Scales',
-                    to: '/features/scales/'
-                },
-                {
-                    title: 'Facets',
-                    to: '/features/facets/'
-                },
-                {
-                    title: 'Markers',
-                    to: '/features/markers/'
+                    title: 'Marks',
+                    to: '/features/marks/'
                 },
                 {
                     title: 'Transforms',
                     to: '/features/transforms/'
-                },
-                {
-                    title: 'Projections',
-                    to: '/features/projections/'
-                },
-                {
-                    title: 'Interactivity',
-                    to: '/features/interactivity/'
-                },
-                {
-                    title: 'Defaults',
-                    to: '/features/defaults/'
                 }
             ]
         },
@@ -96,6 +80,40 @@ export default {
                 { title: 'Sort', to: '/transforms/sort/' },
                 { title: 'Stack', to: '/transforms/stack/' },
                 { title: 'Window', to: '/transforms/window/' }
+            ]
+        }, 
+        {
+            title: 'Advanced use',
+            collapsible: true,
+            items: [
+                {
+                    title: 'Scales',
+                    to: '/features/scales/'
+                },
+                {
+                    title: 'Facets',
+                    to: '/features/facets/'
+                },
+                {
+                    title: 'Markers',
+                    to: '/features/markers/'
+                },
+                {
+                    title: 'Transforms',
+                    to: '/features/transforms/'
+                },
+                {
+                    title: 'Projections',
+                    to: '/features/projections/'
+                },
+                {
+                    title: 'Interactivity',
+                    to: '/features/interactivity/'
+                },
+                {
+                    title: 'Defaults',
+                    to: '/features/defaults/'
+                }
             ]
         }
     ]

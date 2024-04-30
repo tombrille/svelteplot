@@ -103,11 +103,19 @@ html {
         display: none !important;
     }
 
-    .admonition-content p {
-        font-size: small;
-        line-height: 1.5rem !important;
-        &:first-child {
-            margin-top: 0 !important;
+    .admonition-content {
+        p {
+            font-size: small;
+            line-height: 1.5rem !important;
+            &:first-child {
+                margin-top: 0 !important;
+            }
+        }
+
+        ol {
+            &:first-child {
+                margin-top: 0 !important;
+            }
         }
     }
 

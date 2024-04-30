@@ -291,6 +291,6 @@ We can fix this problem by setting the _interval_ option of the window transform
 </Plot>
 ```
 
-## WindowX
+## windowX
 
-## WindowY
+## windowY

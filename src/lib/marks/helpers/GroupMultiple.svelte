@@ -1,5 +1,6 @@
 <script lang="ts">
-    let { length, children, ...groupProps }: { length: number } = $props();
+    import type { Snippet } from "svelte";
+    let { length, children, ...groupProps }: { children: Snippet, length: number } = $props();
 </script>
 
 {#if length > 1}

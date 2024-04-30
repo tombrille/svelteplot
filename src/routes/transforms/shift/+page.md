@@ -101,4 +101,8 @@ Under the hood, the shift transform is using the interval helpers from [d3-time]
 
 ## shiftX
 
+Shift the data points in x direction.
+
 ## shiftY
+
+Shift the data points in y direction.

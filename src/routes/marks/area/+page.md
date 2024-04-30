@@ -3,8 +3,6 @@ title: Area mark
 ---
 
 <script lang="ts">
-    // import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
-
     import AreaLineRulePlot from './AreaLineRulePlot.svelte';
     import AreaY1Plot from './AreaY1Plot.svelte';
     import StackedAreaPlot from './StackedAreaPlot.svelte';
@@ -96,7 +94,17 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 
 To create a stacked area chart you can use the implicit [stackY](/transforms/stack) transform built into the AreaY mark:
 
-<StackedAreaPlot />
+```svelte live
+<script>
+    import { Plot, AreaY } from '$lib';
+    import { page } from '$app/stores';
+    let { riaa } = $derived($page.data.data);
+</script>
+
+<Plot>
+    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" />
+</Plot>
+```
 
 ```svelte
 <Plot>
@@ -110,18 +118,32 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 -   `reverse` - for reversing the order
 -   `offset`
 
-<StackedAreaPlot stackControls />
+```svelte live
+<script>
+    import { Plot, AreaY } from '$lib';
+    import { page } from '$app/stores';
+    import { Select } from '$lib/ui';
+    let { riaa } = $derived($page.data.data);
 
-```svelte
+    const CURVES =
+        'basis,basis-open,bump-x,bump-y,bundle,cardinal,cardinal-open,catmull-rom,catmull-rom-open,catmull,linear,monotone-x,monotone-y,natural,step,step-after,step-before'.split(',');
+    let curve = $state('linear');
+
+    let reverse = $state(false);
+    let order = $state('none');
+</script>
+
+<Select label="curve" options={CURVES} bind:value={curve} />
+<Select label="order" options={['none', 'appearance', 'inside-out', 'sum']} bind:value={order} />
 <Plot>
-    <AreaY
-        data={riaa}
-        x="year"
-        y="revenue"
-        z="format"
+    <AreaY 
+        data={riaa} 
+        x="year" 
+        y="revenue" 
+        z="format" 
         fill="group"
-        stack={{ order: 'appearance', reverse: false }}
-    />
+        {curve}
+        stack={{ order, reverse }} />
 </Plot>
 ```
 

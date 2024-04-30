@@ -5,6 +5,24 @@ description: SveltePlot is heavily inspired by Observable Plot, so much so that 
 
 SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/). But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
 
+```svelte live
+<script>
+    import { Plot, Line, AxisY } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+
+    import { Slider } from '$lib/ui';
+
+    let truncate = $state(aapl.length);
+    let data = $derived(aapl.slice(0, truncate));
+</script>
+
+<Slider label="truncate" bind:value={truncate} min={50} max={aapl.length} />
+<Plot inset={10} grid>
+    <Line marker={truncate < 100} data={data} x="Date" y="Close" curve="monotone-x" />
+</Plot>
+```
+
 ## Reactive plotting
 
 Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a basically static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)).
