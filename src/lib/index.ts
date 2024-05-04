@@ -9,6 +9,8 @@ export { default as BarX } from './marks/BarX.svelte';
 export { default as BarY } from './marks/BarY.svelte';
 export { default as BollingerX } from './marks/BollingerX.svelte';
 export { default as BollingerY } from './marks/BollingerY.svelte';
+export { default as BoxX } from './marks/BoxX.svelte';
+export { default as BoxY } from './marks/BoxY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
 export { default as DifferenceY } from './marks/DifferenceY.svelte';

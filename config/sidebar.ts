@@ -30,10 +30,10 @@ export default {
                     title: 'Plot',
                     to: '/features/plot/'
                 },
-                {
-                    title: 'Marks',
-                    to: '/features/marks/'
-                },
+                // {
+                //     title: 'Marks',
+                //     to: '/features/marks/'
+                // },
                 {
                     title: 'Transforms',
                     to: '/features/transforms/'
@@ -49,6 +49,7 @@ export default {
                 { title: 'Axis', to: '/marks/axis/' },
                 { title: 'Bar', to: '/marks/bar/' },
                 { title: 'Bollinger', to: '/marks/bollinger/' },
+                { title: 'Box', to: '/marks/box/' },
                 { title: 'Cell', to: '/marks/cell/' },
                 { title: 'Difference', to: '/marks/difference/' },
                 { title: 'Dot', to: '/marks/dot/' },

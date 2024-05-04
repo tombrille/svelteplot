@@ -50,6 +50,7 @@
                 {#if testFacet(datum, mark.options) && testFilter(datum, args)}
                     {@const y_ = resolveChannel('y', datum, args)}
                     {@const x_ = resolveChannel('x', datum, args)}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
                     {#if isValid(y_) && (isValid(x_) || args.x == null)}
                         {@const y = usedScales.y ? projectY('y', plot.scales, y_) : y_}
                         {@const x1 =
@@ -62,13 +63,13 @@
                             args.x != null
                                 ? usedScales.x
                                     ? projectX('x2', plot.scales, x_)
-                                    : y_
+                                    : x_
                                 : plot.options.marginLeft + plot.facetWidth}
                         <line
                             transform="translate({0}, {y})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            {x1}
-                            {x2}
+                            x1={x1+inset}
+                            x2={x2-inset}
                         />
                     {/if}
                 {/if}

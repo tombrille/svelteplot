@@ -58,7 +58,7 @@
     {...args}
 >
     {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="bar-x" length={args.data.length}>
+        <GroupMultiple class="bar-y" length={args.data.length}>
             {#each args.data as datum}
                 {@const x_ = resolveChannel('x', datum, args)}
                 {@const y1_ = resolveChannel('y1', datum, args)}

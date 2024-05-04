@@ -273,7 +273,6 @@
             return facet;
         },
         updateDimensions(w: number, h: number) {
-            console.log({w,h})
             if (facetWidth !== w) facetWidth = w;
             if (facetHeight !== h) facetHeight = h;
         }

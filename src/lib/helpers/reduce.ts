@@ -73,6 +73,12 @@ export const Reducer = new Proxy(StaticReducer, {
             return percentile(p);
         }
         return Reflect.get(target, prop);
+    },
+    has(target, prop) {
+        if (String(prop).charAt(0) === 'p' && String(prop).length === 3) {
+            return true;
+        }
+        return Reflect.has(target, prop);
     }
 });
 

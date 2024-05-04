@@ -11,7 +11,7 @@ are permitted provided that the following conditions are met:
    and/or other materials provided with the distribution.
 
 3. You may not use this source code to build a user-facing software service for
-   creating charts and maps, similar to Datawrapper.
+   creating or publishing charts and maps.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
