@@ -58,13 +58,13 @@
                                   : 0)
                             : y_}
                         {@const x1 = usedScales.x1
-                            ? plot.scales.y.fn(x1_) +
+                            ? plot.scales.x.fn(x1_) +
                               (plot.scales.x.type === 'band'
                                   ? plot.scales.x.fn.bandwidth() * 0.5
                                   : 0)
                             : x1_}
                         {@const x2 = usedScales.x2
-                            ? plot.scales.y.fn(x2_) +
+                            ? plot.scales.x.fn(x2_) +
                               (plot.scales.x.type === 'band'
                                   ? plot.scales.x.fn.bandwidth() * 0.5
                                   : 0)
@@ -74,7 +74,9 @@
                         {@const insetRight = resolveProp(args.insetRight, datum, 0)}
                         {@const dx = resolveProp(args.dx, datum, 0)}
                         {@const dy = resolveProp(args.dy, datum, 0)}
+                            
                         <line
+                            data-foo="{x1_} {x2_} - {x1} {x2} {inset} - {insetLeft} - {insetRight}"
                             transform="translate({dx}, {y + dy})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             x1={(inset || insetLeft) + (x1_ != null ? x1 : plot.options.marginLeft)}

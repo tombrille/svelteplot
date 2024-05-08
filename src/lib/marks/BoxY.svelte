@@ -1,16 +1,37 @@
-<script lang="ts">
-    import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type { BaseMarkProps, ChannelAccessor, DataRow } from '$lib/types.js';
-    import { groupX, BarY, TickY, RuleX, Dot } from '$lib/index.js';
-    import { resolveChannel } from '$lib/helpers/resolve.js';
-
-    type BoxYProps = {
+<script lang="ts" context="module">
+    export type BoxProps = {
         data: DataRecord[];
         x: ChannelAccessor;
         y: ChannelAccessor;
-    };
+        /**
+         * Options for the rule marks that represent the min/max range
+         */
+        rule: Record<string, ChannelAccessor>;
+        /**
+         * Options for the bar marks that represent the IQR range
+         */
+        bar: Record<string, ChannelAccessor>;
+        /**
+         * Options for the tick marks that represent the median
+         */
+        tickMedian: Record<string, ChannelAccessor> | boolean;
+        /**
+         * Options for the tick marks that represent the min/max range
+         */
+        tickMinMax: Record<string, ChannelAccessor> | boolean;
+        /**
+         * Options for the dot marks that represent the outliers
+         */
+        dot: Record<string, ChannelAccessor>;
+    }
+</script>
+<script lang="ts">
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
+    import type { ChannelAccessor, DataRecord } from '$lib/types.js';
+    import { groupX, BarY, TickY, RuleX, Dot } from '$lib/index.js';
+    import { resolveChannel } from '$lib/helpers/resolve.js';
 
-    let { data, x, y }: BoxYProps = $props();
+    let { data, x, y, rule, bar, tickMedian = true, tickMinMax = false, dot }: BoxProps = $props();
 
     let { data: grouped } = $derived(groupX(
         { data, x, y, y1: y, y2: y },
@@ -35,15 +56,17 @@
             outliers
         };
     }));
-
-    $inspect(boxData)
 </script>
 
 <GroupMultiple class="box-y" length={grouped.length}>
-    <RuleX data={boxData} x="x" y1="min" y2="max" />
-    <BarY data={boxData} x="x" y1="p25" y2="p75" fill="#ddd" stroke="currentColor" />
-    <TickY data={boxData} x="x" y="median" strokeWidth={2} />
-    <TickY data={boxData} x="x" y="min" strokeWidth={1} />
-    <TickY data={boxData} x="x" y="max" strokeWidth={1} inset={10}  />
-    <Dot data={boxData.map(d => d.outliers).flat()} {x} {y} />
+    <RuleX data={boxData} x="x" y1="min" y2="max" {...(rule || {})}/>
+    <BarY data={boxData} x="x" y1="p25" y2="p75" fill="#ddd" {...(bar || {})} />
+    {#if tickMedian}
+        <TickY data={boxData} x="x" y="median" strokeWidth={2} {...typeof tickMedian === 'object' ? tickMedian : {}} />
+    {/if}
+    {#if tickMinMax}
+        <TickY data={boxData} x="x" y="min" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+        <TickY data={boxData} x="x" y="max" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+    {/if}
+    <Dot data={boxData.map(d => d.outliers).flat()} {x} {y} {...(dot || {})} />
 </GroupMultiple>

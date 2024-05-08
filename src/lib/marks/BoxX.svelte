@@ -1,16 +1,12 @@
 <script lang="ts">
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type { BaseMarkProps, ChannelAccessor, DataRecord, DataRow } from '$lib/types.js';
+    import type { BoxProps } from './BoxY.svelte';
     import { BarX, TickX, RuleY, Dot, groupY } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
 
-    type BoxXProps = {
-        data: DataRecord[];
-        x: ChannelAccessor;
-        y: ChannelAccessor;
-    };
+ 
 
-    let { data, x, y }: BoxXProps = $props();
+    let { data, x, y, rule, bar, tickMedian = true, tickMinMax = false, dot }: BoxProps = $props();
 
     let { data: grouped } = $derived(groupY(
         { data, x, y, x1: x, x2: x },
@@ -38,8 +34,14 @@
 </script>
 
 <GroupMultiple class="box-x" length={grouped.length}>
-    <RuleY data={boxData} y="y" x1="min" x2="max" />
-    <BarX data={boxData} y="y" x1="p25" x2="p75" fill="#ccc" />
-    <TickX data={boxData} y="y" x="median" strokeWidth={2} />
-    <Dot data={boxData.map(d => d.outliers).flat()} {x} {y} />
+    <RuleY data={boxData} y="y" x1="min" x2="max" {...(rule || {})} />
+    <BarX data={boxData} y="y" x1="p25" x2="p75" fill="#ddd" {...(bar || {})} />
+    {#if tickMedian}
+        <TickX data={boxData} y="y" x="median" strokeWidth={2} />
+    {/if}
+    {#if tickMinMax}
+        <TickX data={boxData} x="min" y="y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+        <TickX data={boxData} x="max" y="y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+    {/if}
+    <Dot data={boxData.map(d => d.outliers).flat()} {x} {y}  {...(dot || {})} />
 </GroupMultiple>

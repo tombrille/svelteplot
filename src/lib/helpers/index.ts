@@ -53,3 +53,13 @@ export const constant =
         x;
 
 export const POSITION_CHANNELS: Set<ChannelName> = new Set(['x', 'x1', 'x2', 'y', 'y1', 'y2']);
+
+export function parseInset(inset: number | string, width: number) {
+    if (typeof inset === 'number') {
+        return inset;
+    }
+    if (inset.endsWith('%')) {
+        return (width * +inset.slice(0, -1)) / 100;
+    }
+    return +inset;
+}

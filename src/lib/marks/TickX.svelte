@@ -10,9 +10,9 @@
         FacetContext
     } from '../types.js';
     import { recordizeX } from '$lib/index.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { projectX, projectY } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
-    import { testFilter } from '$lib/helpers/index.js';
+    import { testFilter, parseInset } from '$lib/helpers/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -50,6 +50,7 @@
                 {#if testFacet(datum, mark.options) && testFilter(datum, args)}
                     {@const x_ = resolveChannel('x', datum, args)}
                     {@const y_ = resolveChannel('y', datum, args)}
+                    {@const inset_ = resolveProp(args.inset, datum, 0)}
                     {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
                         {@const x = usedScales.x ? projectX('x', plot.scales, x_) : x_}
                         {@const y1 =
@@ -64,11 +65,12 @@
                                     ? Number(projectY('y2', plot.scales, y_))
                                     : y_
                                 : plot.options.marginTop + plot.plotHeight}
+                        {@const inset = parseInset(inset_, Math.abs(y2 - y1))}
                         <line
                             transform="translate({x}, {0})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            {y1}
-                            {y2}
+                            y1={y1 + inset}
+                            y2={y2 - inset}
                         />
                     {/if}
                 {/if}
