@@ -37,7 +37,7 @@
     <RuleY data={boxData} y="y" x1="min" x2="max" {...(rule || {})} />
     <BarX data={boxData} y="y" x1="p25" x2="p75" fill="#ddd" {...(bar || {})} />
     {#if tickMedian}
-        <TickX data={boxData} y="y" x="median" strokeWidth={2} />
+        <TickX data={boxData} y="y" x="median" strokeWidth={2} {...typeof tickMedian === 'object' ? tickMedian : {}} />
     {/if}
     {#if tickMinMax}
         <TickX data={boxData} x="min" y="y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
