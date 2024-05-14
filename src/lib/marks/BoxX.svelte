@@ -9,7 +9,7 @@
     let { data, x, y, rule, bar, tickMedian = true, tickMinMax = false, dot }: BoxProps = $props();
 
     let { data: grouped } = $derived(groupY(
-        { data, x, y, x1: x, x2: x },
+        { data: data.filter(d => resolveChannel('x', d, { x, y }) != null), x, y, x1: x, x2: x },
         { x: 'median', x1: 'p25', x2: 'p75', fill: rows => rows })
     );
 
@@ -21,8 +21,9 @@
         const data = row.__fill.map(d => ({ ...d, __x: resolveChannel('x', d, { x, y }) }));
         const outliers = data.filter(d => d.__x < lower || d.__x > upper);
         const inside = data.filter(d => d.__x >= lower && d.__x <= upper).sort((a, b) => a.__x - b.__x);
+        if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper)
         return {
-            y: row.__y,
+            __y: row.__y,
             p25: row.__x1,
             p75: row.__x2,
             median: row.__x,
@@ -34,14 +35,14 @@
 </script>
 
 <GroupMultiple class="box-x" length={grouped.length}>
-    <RuleY data={boxData} y="y" x1="min" x2="max" {...(rule || {})} />
-    <BarX data={boxData} y="y" x1="p25" x2="p75" fill="#ddd" {...(bar || {})} />
+    <RuleY data={boxData} y="__y" x1="min" x2="max" {...(rule || {})} />
+    <BarX data={boxData} y="__y" x1="p25" x2="p75" fill="#ddd" {...(bar || {})} />
     {#if tickMedian}
-        <TickX data={boxData} y="y" x="median" strokeWidth={2} {...typeof tickMedian === 'object' ? tickMedian : {}} />
+        <TickX data={boxData} y="__y" x="median" strokeWidth={2} {...typeof tickMedian === 'object' ? tickMedian : {}} />
     {/if}
     {#if tickMinMax}
-        <TickX data={boxData} x="min" y="y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
-        <TickX data={boxData} x="max" y="y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+        <TickX data={boxData} x="min" y="__y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
+        <TickX data={boxData} x="max" y="__y" inset="20%" {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
     {/if}
     <Dot data={boxData.map(d => d.outliers).flat()} {x} {y}  {...(dot || {})} />
 </GroupMultiple>
