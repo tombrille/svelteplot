@@ -5,7 +5,7 @@
 <script lang="ts">
     import { Area, Line, bollingerY, recordizeY } from '$lib/index.js';
     import type { BaseMarkProps, ChannelAccessor, DataRow } from '$lib/types.js';
-    import pick from 'underscore/modules/pick.js';
+    import { pick } from '$lib/helpers';
 
     type BollingerYProps = BaseMarkProps & {
         data: DataRow[];

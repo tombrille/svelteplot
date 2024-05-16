@@ -42,7 +42,7 @@
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { confidenceInterval } from '$lib/helpers/math.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
-    import isDate from 'underscore/modules/isDate.js';
+    import { isDate } from '$lib/helpers/typeChecks';
 
     const regressions = new Map<RegressionType, typeof regressionLinear>([
         ['linear', regressionLinear],

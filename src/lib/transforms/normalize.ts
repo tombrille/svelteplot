@@ -1,5 +1,5 @@
 import type { DataRecord } from '$lib/types.js';
-import groupBy from 'underscore/modules/groupBy.js';
+// import groupBy from 'underscore/modules/groupBy.js';
 
 export function normalizeY({ data, y, y1, y2, stroke, fill, z, ...restProps }) {
     const groupBy = stroke || fill || z;

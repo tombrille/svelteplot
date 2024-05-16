@@ -4,7 +4,7 @@ import { reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';
-import omit from 'underscore/modules/omit.js';
+import { omit } from '$lib/helpers';
 
 type ReducerFunc = (group: DataRow[]) => RawValue;
 type ReducerOption = ReducerName | ReducerFunc;

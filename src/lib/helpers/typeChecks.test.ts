@@ -77,6 +77,7 @@ describe('isDateOrNull', () => {
 describe('isNumberOrNull', () => {
     it('returns true for null', () => {
         expect(isNumberOrNull(null)).toBe(true);
+        expect(isNumberOrNull(undefined)).toBe(true);
     });
 
     it('returns true for finite number', () => {

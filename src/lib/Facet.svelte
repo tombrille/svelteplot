@@ -2,7 +2,7 @@
     import { setContext } from 'svelte';
     import { resolveChannel } from './helpers/resolve.js';
     import type { BaseMarkProps, DataRecord, PlotScale, RawValue } from './types.js';
-    import identity from 'underscore/modules/identity.js';
+    import { identity } from '$lib/helpers';
 
     let {
         fx,

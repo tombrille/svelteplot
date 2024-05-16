@@ -1,4 +1,4 @@
-import { coalesce, isObject } from './index';
+import { coalesce, isObject, pick, omit } from './index';
 import { describe, it, expect } from 'vitest';
 
 describe('coalesce', () => {
@@ -30,5 +30,33 @@ describe('isObject', () => {
         expect(isObject(123)).toBe(false);
         expect(isObject('string')).toBe(false);
         expect(isObject(true)).toBe(false);
+    });
+});
+
+describe('pick', () => {
+    const obj = { a: 1, b: 2, c: 3, d: 4 };
+
+    it('should return a new object with the specified keys', () => {
+        expect(pick(obj, 'a', 'c')).toEqual({ a: 1, c: 3 });
+        expect(pick(obj, 'b', 'd')).toEqual({ b: 2, d: 4 });
+    });
+
+    it('should not include keys that are not present in the input object', () => {
+        expect(pick(obj, 'a', 'b', 'e')).toEqual({ a: 1, b: 2 });
+        expect(pick(obj, 'e', 'f')).toEqual({});
+    });
+});
+
+describe('omit', () => {
+    const obj = { a: 1, b: 2, c: 3, d: 4 };
+
+    it('should return a new object with the specified keys', () => {
+        expect(omit(obj, 'a', 'c')).toEqual({ b: 2, d: 4 });
+        expect(omit(obj, 'b', 'd')).toEqual({ a: 1, c: 3 });
+    });
+
+    it('should not include keys that are not present in the input object', () => {
+        expect(omit(obj, 'a', 'b', 'e')).toEqual({ c: 3, d: 4 });
+        expect(omit(obj, 'e', 'f')).toEqual(obj);
     });
 });

@@ -1,7 +1,7 @@
 import type { BaseMarkProps, ChannelName, DataRecord, RawValue } from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
-import isDate from 'underscore/modules/isDate.js';
+import { isDate } from '$lib/helpers/typeChecks';
 
 /**
  * Returns first argument that is not null or undefined
@@ -49,8 +49,8 @@ export function maybeNumber(value: RawValue | null): number | null {
 
 export const constant =
     <T>(x: T) =>
-    () =>
-        x;
+        () =>
+            x;
 
 export const POSITION_CHANNELS: Set<ChannelName> = new Set(['x', 'x1', 'x2', 'y', 'y1', 'y2']);
 
@@ -62,4 +62,27 @@ export function parseInset(inset: number | string, width: number) {
         return (width * +inset.slice(0, -1)) / 100;
     }
     return +inset;
+}
+
+export function pick<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
+    return Object.fromEntries(
+        keys
+            .filter(key => key in obj)
+            .map(key => [key, obj[key]])
+    ) as Pick<T, K>;
+}
+
+export function omit<T extends {}, K extends keyof T>(
+    obj: T, ...keys: K[]
+) {
+    return (
+        Object.fromEntries(
+            Object.entries(obj)
+                .filter(([key]) => !keys.includes(key as K))
+        ) as Omit<T, K>
+    );
+}
+
+export function identity<T>(x: T): T {
+    return x;
 }

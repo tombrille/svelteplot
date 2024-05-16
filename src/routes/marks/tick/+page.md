@@ -72,7 +72,6 @@ Same idea but with facet:
 ```svelte live
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
-    import uniq from 'underscore/modules/uniq.js';
 
     import { page } from '$app/stores';
     let { stateage } = $derived($page.data.data);

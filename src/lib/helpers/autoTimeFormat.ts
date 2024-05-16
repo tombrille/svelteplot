@@ -1,6 +1,6 @@
 import type { Scale } from '$lib/classes/Scale.svelte.js';
 import dayjs from 'dayjs';
-import isDate from 'underscore/modules/isDate.js';
+import { isDate } from '$lib/helpers/typeChecks';
 
 export default function autoTimeFormat(x: Scale, plotWidth: number) {
     const daysPer100Px =

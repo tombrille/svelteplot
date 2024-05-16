@@ -21,7 +21,7 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { geoPath } from 'd3-geo';
-    import pick from 'underscore/modules/pick.js';
+    import { pick } from '$lib/helpers';
 
     type LinkMarkProps = BaseMarkProps & {
         data: DataRecord[];

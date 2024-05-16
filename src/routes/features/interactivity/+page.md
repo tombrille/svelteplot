@@ -277,7 +277,6 @@ You can even put another tiny plot inside the HTML tooltips:
 ```svelte live
 <script>
     import { Plot, Dot, HTMLTooltip, BarX } from '$lib';
-    import isEqual from 'underscore/modules/isEqual.js';
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 

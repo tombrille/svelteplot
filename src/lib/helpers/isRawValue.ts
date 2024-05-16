@@ -1,5 +1,5 @@
 import type { RawValue } from '$lib/types.js';
-import isDate from 'underscore/modules/isDate.js';
+import { isDate } from '$lib/helpers/typeChecks';
 
 export default function (value: any): value is RawValue {
     const t = typeof value;
