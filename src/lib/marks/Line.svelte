@@ -19,6 +19,8 @@
         data: DataRecord[];
         z?: ChannelAccessor;
         stroke?: ChannelAccessor;
+        outlineStroke?: ConstantAccessor<string>;
+        outlineStrokeWidth?: ConstantAccessor<number>;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
         curve?: CurveName | CurveFactory;
@@ -159,6 +161,32 @@
                         {@const markerColor = usedScales.stroke
                             ? plot.scales.color.fn(markerColor_)
                             : markerColor_}
+                        {@const pathString = linePath(
+                            projectLineData(
+                                args.filter == null
+                                    ? lineData
+                                    : lineData.filter((d) => resolveProp(args.filter, d)),
+                                plot
+                            )
+                        )}
+                        {#if options.outlineStroke}
+                            <path
+                                d={pathString}
+                                style={resolveScaledStyles(
+                                    lineData[0],
+                                    {
+                                        ...args,
+                                        stroke: options.outlineStroke,
+                                        strokeWidth:
+                                            options.outlineStrokeWidth ||
+                                            (+options.strokeWidth || 1.4) + 2
+                                    },
+                                    { stroke: false },
+                                    plot,
+                                    'stroke'
+                                )}
+                            />
+                        {/if}
                         <MarkerPath
                             {mark}
                             scales={plot.scales}
@@ -168,14 +196,7 @@
                             marker={args.marker}
                             strokeWidth={args.strokeWidth}
                             datum={lineData[0]}
-                            d={linePath(
-                                projectLineData(
-                                    args.filter == null
-                                        ? lineData
-                                        : lineData.filter((d) => resolveProp(args.filter, d)),
-                                    plot
-                                )
-                            )}
+                            d={pathString}
                             color={markerColor}
                             style={resolveScaledStyles(
                                 lineData[0],

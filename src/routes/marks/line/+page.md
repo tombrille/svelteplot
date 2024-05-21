@@ -199,6 +199,7 @@ BLS Demo:
         x="date"
         y="unemployment"
         z="division"
+        outlineStroke="var(--svelteplot-bg)"
         sort={(d) => /, MI /.test(d.division)}
         stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#99999955')}
     />
