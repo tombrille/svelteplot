@@ -54,11 +54,12 @@
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
+    import { facetWrap } from '$lib/transforms/facet.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
 
     let { data, curve = 'auto', tension = 0, text, ...options }: LineMarkProps = $props();
 
-    let args = $derived(sort(recordizeXY({ data, ...options })));
+    let args = $derived(facetWrap(sort(recordizeXY({ data, ...options }))));
 
     function groupIndex(data, groupByKey) {
         let group = [];
