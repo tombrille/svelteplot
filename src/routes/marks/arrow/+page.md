@@ -318,3 +318,53 @@ Options:
     <Arrow {data} {bend} {sweep} x1="x1" y1="y1" x2="x2" y2="y2" {inset} {headLength} {headAngle} />
 </Plot>
 ```
+
+Shift map example:
+
+```svelte live
+<script>
+    import { Plot, Geo, Arrow2 } from '$lib';
+    import { page } from '$app/stores';
+    let { shifts, europe } = $derived($page.data.data);
+    import * as topojson from "topojson-client";
+    
+    const countries = topojson.mesh(europe, europe.objects.countries);
+
+    // const partyColors = {
+    //     NA: '#eee',
+    //     CDU: '#113', 
+    //     SPD: '#e31d34',
+    //     Grüne: '#5ba700',
+    //     AfD: '#37a7e4',
+    //     Sonstige: '#9c8e77'
+    // };
+    function shift(d) {
+        return 100*((d.right_votes_24 / d.total_votes_24) - (d.right_votes_19 / d.total_votes_19));
+    }
+</script>
+
+<Plot
+    projection={{
+        type: 'azimuthal-equal-area',
+        rotate: [-10,-50],
+        domain: countries
+    }}
+    length={{
+        range: [0,20]
+    }}
+>
+    <Geo 
+        data={[countries]} 
+        stroke='#cccccc'
+        />
+    
+    <Arrow2 
+        data={shifts}
+        x='lon'
+        y='lat'
+        stroke={d => shift(d)}
+        length={d => Math.max(d.total_votes_24, 1000)}
+        angle={d => 90 * Math.max(10, Math.min(25, Math.abs(shift(d))))/25 * Math.sign(shift(d))}
+    />
+</Plot>
+```

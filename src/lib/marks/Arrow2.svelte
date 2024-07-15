@@ -73,9 +73,14 @@
             : maybeData(data)
     );
 
-    let args: ArrowProps = $derived(
-        replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
-    );
+
+    let args: ArrowProps = $derived({ ...options, data: sorted });
+
+
+    $inspect(args);
+
+    //     replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
+    // );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
@@ -92,28 +97,22 @@
         <GroupMultiple class="arrow" length={args.data.length}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                    {@const _x1 = resolveChannel('x', datum, args)}
-                    {@const _y1 = resolveChannel('y', datum, args)}
+                    {@const _x = resolveChannel('x', datum, args)}
+                    {@const _y = resolveChannel('y', datum, args)}
                     {@const _angle = Number(resolveProp(args.angle, datum, 0)) * (Math.PI / 180) - Math.PI / 2}
-                    {@const _length = Number(resolveChannel('length', datum, args))}
-                    {@const _x2 = Number(_x1) + _length * Math.cos(_angle)}
-                    {@const _y2 = Number(_y1) + _length * Math.sin(_angle)}
+                    {@const _length = plot.scales.length.fn(Number(resolveChannel('length', datum, args)))}
                     {@const strokeWidth = resolveProp(args.strokeWidth, datum, 1)}
-                    {#if isValid(_x1) && isValid(_x2) && isValid(_y1) && isValid(_y2)}
+                    {#if isValid(_x) && isValid(_y) && isValid(_angle) && isValid(_length)}
                         {@const [x1, y1] = projectXY(
                             plot.scales,
-                            _x1,
-                            _y1,
-                            usedScales.x1,
-                            usedScales.y1
+                            _x,
+                            _y,
+                            usedScales.x,
+                            usedScales.y
                         )}
-                        {@const [x2, y2] = projectXY(
-                            plot.scales,
-                            _x2,
-                            _y2,
-                            usedScales.x2,
-                            usedScales.y2
-                        )}
+                        {@const x2 = Number(x1) + _length * Math.cos(_angle)}
+                        {@const y2 = Number(y1) + _length * Math.sin(_angle)}
+                        
                         {@const dx = resolveProp(args.dx, datum, 0)}
                         {@const dy = resolveProp(args.dx, datum, 0)}
                         {@const inset = resolveProp(args.inset, datum, 0)}
@@ -136,8 +135,6 @@
                             sweep
                         )}
                         <g
-                            data-y1={_y1}
-                            data-y1_={y1}
                             transform={dx || dy ? `translate(${dx}, ${dy})` : null}
                             use:addEventHandlers={{
                                 scales: plot.scales,
