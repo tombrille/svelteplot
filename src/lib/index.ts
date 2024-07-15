@@ -3,6 +3,7 @@ export { default as Area } from './marks/Area.svelte';
 export { default as AreaX } from './marks/AreaX.svelte';
 export { default as AreaY } from './marks/AreaY.svelte';
 export { default as Arrow } from './marks/Arrow.svelte';
+export { default as Arrow2 } from './marks/Arrow2.svelte';
 export { default as AxisX } from './marks/AxisX.svelte';
 export { default as AxisY } from './marks/AxisY.svelte';
 export { default as BarX } from './marks/BarX.svelte';
