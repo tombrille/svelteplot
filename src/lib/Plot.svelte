@@ -5,7 +5,7 @@
 -->
 <script lang="ts">
     import { getContext, setContext } from 'svelte';
-    import { Map } from 'svelte/reactivity';
+    import { SvelteMap } from 'svelte/reactivity';
     import { writable } from 'svelte/store';
 
     import type {
@@ -47,10 +47,10 @@
 
     // automatic margins can be applied by the marks, registered
     // with their respective unique identifier as keys
-    let autoMarginLeft = writable(new Map<string, number>());
-    let autoMarginRight = writable(new Map<string, number>());
-    let autoMarginBottom = writable(new Map<string, number>());
-    let autoMarginTop = writable(new Map<string, number>());
+    let autoMarginLeft = writable(new SvelteMap<string, number>());
+    let autoMarginRight = writable(new SvelteMap<string, number>());
+    let autoMarginBottom = writable(new SvelteMap<string, number>());
+    let autoMarginTop = writable(new SvelteMap<string, number>());
 
     // autoMargin stores are shared via context
     setContext('svelteplot/autoMargins', {
