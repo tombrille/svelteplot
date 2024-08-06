@@ -34,11 +34,11 @@
     ],
     "devDependencies": {
         "@aitodotai/json-stringify-pretty-compact": "^1.3.0",
-        "@playwright/test": "^1.45.3",
+        "@playwright/test": "^1.46.0",
         "@sveltejs/adapter-auto": "^3.2.2",
         "@sveltejs/adapter-static": "^3.0.2",
         "@sveltejs/eslint-config": "^8.0.1",
-        "@sveltejs/kit": "^2.5.19",
+        "@sveltejs/kit": "^2.5.20",
         "@sveltejs/package": "^2.3.2",
         "@sveltejs/vite-plugin-svelte": "^3.1.1",
         "@sveltepress/theme-default": "^3.0.0",
@@ -56,8 +56,8 @@
         "@types/d3-scale-chromatic": "^3.0.3",
         "@types/d3-shape": "^3.1.6",
         "@types/underscore": "^1.11.15",
-        "@typescript-eslint/eslint-plugin": "^8.0.0",
-        "@typescript-eslint/parser": "^8.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.0.1",
+        "@typescript-eslint/parser": "^8.0.1",
         "d3-dsv": "^3.0.1",
         "d3-fetch": "^3.0.1",
         "d3-force": "^3.0.0",
@@ -99,6 +99,6 @@
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
-        "svelte": "5.0.0-next.206"
+        "svelte": "5.0.0-next.210"
     }
 }
