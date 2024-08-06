@@ -17,7 +17,7 @@
         "format": "prettier --write .",
         "test:integration": "playwright test",
         "test:unit": "vitest",
-        "prepack": "npx svelte-package",
+        "prepack": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's\/ lang=\"ts\"\/\/g' {} +",
         "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish",
         "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/"
     },
