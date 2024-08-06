@@ -1,6 +1,6 @@
 {
     "name": "@gka/svelteplot",
-    "version": "0.1.1-alpha.34",
+    "version": "0.1.1-alpha.35",
     "license": "SEE LICENSE IN LICENSE.md",
     "author": {
         "name": "Gregor Aisch",
@@ -17,7 +17,7 @@
         "format": "prettier --write .",
         "test:integration": "playwright test",
         "test:unit": "vitest",
-        "prepack": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's\/ lang=\"ts\"\/\/g' {} +",
+        "prepack": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's/ lang=\"ts\"//g' {} +",
         "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish",
         "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/"
     },
