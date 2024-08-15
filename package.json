@@ -1,6 +1,6 @@
 {
     "name": "@gka/svelteplot",
-    "version": "0.1.1-alpha.35",
+    "version": "0.1.1-alpha.36",
     "license": "SEE LICENSE IN LICENSE.md",
     "author": {
         "name": "Gregor Aisch",
@@ -99,6 +99,6 @@
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
-        "svelte": "5.0.0-next.210"
+        "svelte": "5.0.0-next.222"
     }
 }

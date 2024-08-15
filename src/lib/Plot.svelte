@@ -20,7 +20,7 @@
     } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
-    import mergeDeep from '$lib/helpers/mergeDeep.js';
+    import mergeDeep from './helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
     import { CHANNEL_SCALE } from './constants.js';
 
@@ -99,7 +99,7 @@
     /**
      * the marks used in the plot
      */
-    let marks = $state.frozen<Mark<GenericMarkOptions>[]>([]);
+    let marks = $state.raw<Mark<GenericMarkOptions>[]>([]);
 
     /**
      *
