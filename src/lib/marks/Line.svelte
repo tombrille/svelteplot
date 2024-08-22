@@ -85,11 +85,11 @@
         // return Object.values(groupBy(args.data, (d) => ))
     }
 
+    let groupByKey = $derived(args.z || args.stroke);
+
     let groups = $derived(
         groupByKey && args.data.length > 0 ? groupIndex(args.data, groupByKey) : [args.data]
     );
-
-    let groupByKey = $derived(args.z || args.stroke);
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
