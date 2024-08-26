@@ -23,6 +23,7 @@ export type MarkType =
     | 'regression'
     | 'ruleX'
     | 'ruleY'
+    | 'swoopyArrow'
     | 'text'
     | 'tickX'
     | 'tickY';
