@@ -15,14 +15,12 @@
 
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { symbol as d3Symbol, symbol } from 'd3-shape';
-    import { maybeSymbol } from '$lib/helpers/symbols.js';
     import type { PlotContext } from '../types.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    import { resolveProp, resolveChannel } from '$lib/helpers/resolve.js';
+    import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
     import { projectX, projectY } from '$lib/helpers/scales.js';
 

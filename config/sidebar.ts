@@ -51,6 +51,7 @@ export default {
                 { title: 'Bollinger', to: '/marks/bollinger/' },
                 { title: 'Box', to: '/marks/box/' },
                 { title: 'Cell', to: '/marks/cell/' },
+                { title: 'Custom', to: '/marks/custom/' },
                 { title: 'Difference', to: '/marks/difference/' },
                 { title: 'Dot', to: '/marks/dot/' },
                 { title: 'Frame', to: '/marks/frame/' },

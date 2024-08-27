@@ -14,6 +14,7 @@ export { default as BoxX } from './marks/BoxX.svelte';
 export { default as BoxY } from './marks/BoxY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
+export { default as CustomMarkHTML } from './marks/CustomMarkHTML.svelte';
 export { default as DifferenceY } from './marks/DifferenceY.svelte';
 export { default as Dot } from './marks/Dot.svelte';
 export { default as DotX } from './marks/DotX.svelte';
