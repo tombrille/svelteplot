@@ -109,7 +109,8 @@ PointerY
 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} y="Close" maxDistance={30} let:data>
+    <Pointer data={aapl} y="Close" maxDistance={30}>
+        {#snippet children({ data })}
         <RuleY {data} y="Close" opacity={0.2} />
         <Text
             {data}
@@ -124,6 +125,7 @@ PointerY
             dy="-10"
         />
         <Dot {data} x="Date" y="Close" fill />
+        {/snippet}
     </Pointer>
 </Plot>
 ```
@@ -137,7 +139,8 @@ PointerY
 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} x="Date" maxDistance={30} let:data>
+    <Pointer data={aapl} x="Date" maxDistance={30}>
+        {#snippet children({ data })}
         <RuleX {data} x="Date" opacity={0.2} />
         <Text
             {data}
@@ -152,6 +155,7 @@ PointerY
             dy="-10"
         />
         <Dot {data} x="Date" y="Close" fill />
+        {/snippet}
     </Pointer>
 </Plot>
 ```
@@ -168,7 +172,8 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
 
 <Plot testid="stocks-line-frame" y={{ type: 'log' }} marginRight={20}>
     <Line data={stocks2} x="Date" y="Close" stroke="Symbol" />
-    <Pointer data={stocks2} x="Date" z="Symbol" maxDistance={30} let:data>
+    <Pointer data={stocks2} x="Date" z="Symbol" maxDistance={30}>
+        {#snippet children({ data })}
         <Text
             {data}
             fill="Symbol"
@@ -189,6 +194,7 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
             strokeWidth="0.7"
             stroke="var(--svelteplot-bg)"
         />
+        {/snippet}
     </Pointer>
 </Plot>
 ```
@@ -196,7 +202,8 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
 ```svelte
 <Plot testid="stocks-line-frame" y={{ type: 'log' }} marginRight={20}>
     <Line data={stocks} x="Date" y="Close" stroke="Symbol" />
-    <Pointer data={stocks} x="Date" z="Symbol" maxDistance={30} let:data>
+    <Pointer data={stocks} x="Date" z="Symbol" maxDistance={30}>
+        {#snippet children({ data })}
         <Text
             {data}
             fill="Symbol"
@@ -210,6 +217,7 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
             dy="-7"
         />
         <Dot {data} x="Date" y="Close" fill="Symbol" stroke="var(--svelteplot-bg)" />
+        {/snippet}
     </Pointer>
 </Plot>
 ```

@@ -29,18 +29,43 @@
     let selectedData = $state([]);
 
     function onMouseMove(evt: MouseEvent) {
+        updateSelection(evt.layerX, evt.layerY);
+    }
+
+    function onTouchMove(evt: TouchEvent) {
+        if (evt.target) {
+            const rect = (evt.target as HTMLElement).getBoundingClientRect();
+            const ex = evt.targetTouches[0].pageX - rect.left;
+            const ey = evt.targetTouches[0].pageY - rect.top;
+            updateSelection(ex, ey);
+        }
+    }
+
+    function updateSelection(ex: number, ey: number) {
         // find data row with minimum distance to
         const points = trees.map((tree) =>
-            tree.find(x != null ? evt.layerX : 0, y != null ? evt.layerY : 0, maxDistance)
+            tree.find(x != null ? ex : 0, y != null ? ey : 0, maxDistance)
         );
         selectedData = points.filter((d) => d != null);
     }
 
+    let touching = $state(false);
+
+    function onTouchStart(evt: TouchEvent) {
+        touching = true;
+    }
+
+    function onTouchEnd(evt: TouchEvent) {
+        touching = false;
+    }
+
     $effect(() => {
         plot.body?.addEventListener('mousemove', onMouseMove);
+        plot.body?.addEventListener('touchmove', onTouchMove);
 
         return () => {
             plot.body?.removeEventListener('mousemove', onMouseMove);
+            plot.body?.removeEventListener('touchmove', onTouchMove);
         };
     });
 

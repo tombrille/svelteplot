@@ -410,10 +410,14 @@ export function createScale<T extends ScaleOptions>(
             }
         } else if (type === 'quantize') {
             const scheme_ = scheme || plotDefaults.colorScheme;
-            if (isOrdinalScheme(scheme_)) {
+            if (Array.isArray(scheme_)) {
+                range = scheme_.slice(0);
+                if (scaleOptions.reverse) range.toReversed();
+                fn = scaleQuantize().domain(domain).range(range);
+            } else if (isOrdinalScheme(scheme_)) {
                 range = ordinalScheme(scheme_)(n);
                 // console.log({domain, scheme_, range})
-                if (scaleOptions.reverse) range.reverse();
+                if (scaleOptions.reverse) range.toReversed();
                 fn = scaleQuantize().domain(domain).range(range);
             } else {
                 throw new Error('no ordinal scheme ' + scheme_);

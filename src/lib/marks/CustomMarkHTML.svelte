@@ -9,7 +9,6 @@
         data: DataRow[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
-        pointerEvents?: 'none' | 'auto';
     };
 </script>
 
