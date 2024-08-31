@@ -15,10 +15,6 @@ export default {
                 {
                     title: 'Introduction',
                     to: '/introduction/'
-                }, 
-                {
-                    title: 'License',
-                    to: '/license/'
                 }
             ]
         },

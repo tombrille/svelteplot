@@ -4,7 +4,7 @@
     "license": "SEE LICENSE IN LICENSE.md",
     "author": {
         "name": "Gregor Aisch",
-        "email": "gregor@datawrapper.de"
+        "email": "gka@datawrapper.de"
     },
     "scripts": {
         "dev": "vite dev",
@@ -19,7 +19,8 @@
         "test:unit": "vitest",
         "prepack": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's/ lang=\"ts\"//g' {} +",
         "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish",
-        "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/"
+        "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/",
+        "update:svelte": "pnpm i svelte@next eslint-plugin-svelte@latest @sveltejs/vite-plugin-svelte@next prettier-plugin-svelte@latest"
     },
     "exports": {
         ".": {
@@ -40,7 +41,7 @@
         "@sveltejs/eslint-config": "^8.0.1",
         "@sveltejs/kit": "^2.5.20",
         "@sveltejs/package": "^2.3.2",
-        "@sveltejs/vite-plugin-svelte": "^3.1.1",
+        "@sveltejs/vite-plugin-svelte": "4.0.0-next.6",
         "@sveltepress/theme-default": "^3.0.0",
         "@sveltepress/twoslash": "^0.3.0",
         "@sveltepress/vite": "^0.34.0",
@@ -99,6 +100,6 @@
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
-        "svelte": "5.0.0-next.240"
+        "svelte": "5.0.0-next.242"
     }
 }

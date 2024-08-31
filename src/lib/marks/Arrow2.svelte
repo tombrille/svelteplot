@@ -1,3 +1,8 @@
+<!--
+    @component Arrow2 is an alternative arrow mark that defines arrows by the start 
+    point, a length, and an angle. It is useful for encoding direction and and 
+    magnitude of a vector.
+-->
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {
@@ -7,9 +12,7 @@
         ConstantAccessor,
         ChannelAccessor,
         FacetContext,
-
         RawValue
-
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, testFilter, maybeNumber } from '../helpers/index.js';

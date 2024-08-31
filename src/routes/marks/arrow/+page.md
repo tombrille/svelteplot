@@ -11,6 +11,7 @@ Metro dataset:
     let { metros } = $derived($page.data.data);
 
     let hl = $state(false);
+    $inspect({hl})
 </script>
 
 <Plot
@@ -35,7 +36,7 @@ Metro dataset:
         y2="R90_10_2015"
         bend
         style="transition: opacity 0.2s ease-in"
-        opacity={{ scale: null, value: (d) => (!hl || hl === d ? 1 : 0.1) }}
+        opacity={{ scale: null, value: (d) => (!hl || hl.Metro === d.Metro ? 1 : 0.1) }}
         onmouseenter={(evt, d) => (hl = d)}
         onmouseleave={() => (hl = null)}
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
@@ -44,7 +45,7 @@ Metro dataset:
         data={metros}
         x="POP_2015"
         y="R90_10_2015"
-        filter={(d) => (hl ? d === hl : d.highlight)}
+        filter={(d) => (hl ? hl.Metro === d.Metro : d.highlight)}
         text="nyt_display"
         fill="currentColor"
         stroke="var(--svelteplot-bg)"
@@ -76,13 +77,17 @@ Metro dataset:
         x2="POP_2015"
         y2="R90_10_2015"
         bend
+        style="transition: opacity 0.2s ease-in"
+        opacity={{ scale: null, value: (d) => (!hl || hl.Metro === d.Metro ? 1 : 0.1) }}
+        onmouseenter={(evt, d) => (hl = d)}
+        onmouseleave={() => (hl = null)}
         stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
     <Text
         data={metros}
         x="POP_2015"
         y="R90_10_2015"
-        filter="highlight"
+        filter={(d) => (hl ? hl.Metro === d.Metro : d.highlight)}
         text="nyt_display"
         fill="currentColor"
         stroke="var(--svelteplot-bg)"
@@ -100,20 +105,12 @@ Works as well with a point scale:
     import { Plot, Arrow, Dot, Text, AxisY, GridY } from '$lib/index.js';
     import { page } from '$app/stores';
     let { metros } = $derived($page.data.data);
-
-    let hl = $state(false);
 </script>
 
 <Plot
     inset={10}
     x={{ label: 'Population' }}
     y={{ label: '' }}
-    color={{
-        scheme: 'BuRd',
-        label: 'Change in inequality from 1980 to 2015',
-        legend: true,
-        tickFormat: '+f'
-    }}
 >
     <AxisY tickSize={0} />
     <GridY strokeDasharray="3,3" />
@@ -122,24 +119,24 @@ Works as well with a point scale:
         x1="R90_10_1980"
         x2="R90_10_2015"
         y="nyt_display"
-        style="transition: opacity 0.2s ease-in"
-        opacity={{ scale: null, value: (d) => (!hl || hl === d ? 1 : 0.1) }}
-        onmouseenter={(d) => (hl = d)}
-        onmouseleave={(d) => (hl = null)}
-        stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
     />
-    <!-- <Text
-        data={metros}
-        x="POP_2015"
-        y="R90_10_2015"
-        filter={(d) => hl ? d === hl : d.highlight}
-        text="nyt_display"
-        fill="currentColor"
-        stroke="var(--svelteplot-bg)"
-        strokeWidth={4}
-        lineAnchor="bottom"
-        dy={-6}
-    /> -->
+</Plot>
+```
+
+```svelte
+<Plot
+    inset={10}
+    x={{ label: 'Population' }}
+    y={{ label: '' }}
+>
+    <AxisY tickSize={0} />
+    <GridY strokeDasharray="3,3" />
+    <Arrow
+        data={metros.slice(0, 50)}
+        x1="R90_10_1980"
+        x2="R90_10_2015"
+        y="nyt_display"
+    />
 </Plot>
 ```
 
@@ -319,10 +316,16 @@ Options:
 </Plot>
 ```
 
-Shift map example:
+## Arrow2 (name tbd)
+
+**Arrow2** is an alternative implementation of the arrow mark that defines arrows by
+a starting point (`x`, `y`), an `angle` and a `length` channel.
+
+It is useful for shift maps:
 
 ```svelte live
 <script>
+    
     import { Plot, Geo, Arrow2 } from '$lib';
     import { page } from '$app/stores';
     let { shifts, europe } = $derived($page.data.data);
@@ -330,14 +333,6 @@ Shift map example:
     
     const countries = topojson.mesh(europe, europe.objects.countries);
 
-    // const partyColors = {
-    //     NA: '#eee',
-    //     CDU: '#113', 
-    //     SPD: '#e31d34',
-    //     Grüne: '#5ba700',
-    //     AfD: '#37a7e4',
-    //     Sonstige: '#9c8e77'
-    // };
     function shift(d) {
         return 100*((d.right_votes_24 / d.total_votes_24) - (d.right_votes_19 / d.total_votes_19));
     }
@@ -362,7 +357,33 @@ Shift map example:
         data={shifts}
         x='lon'
         y='lat'
-        stroke={d => shift(d)}
+        stroke={d => shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)'}
+        length={d => Math.max(d.total_votes_24, 1000)}
+        angle={d => 90 * Math.max(10, Math.min(25, Math.abs(shift(d))))/25 * Math.sign(shift(d))}
+    />
+</Plot>
+```
+
+TODO: probably better to render these arrows in canvas.
+
+```svelte 
+<Plot
+    projection={{
+        type: 'azimuthal-equal-area',
+        rotate: [-10,-50],
+        domain: countries
+    }}
+    length={{ range: [0,20] }}
+>
+    <Geo 
+        data={[countries]} 
+        stroke='#cccccc'
+        />
+    <Arrow2 
+        data={shifts}
+        x='lon'
+        y='lat'
+        stroke={d => shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)'}
         length={d => Math.max(d.total_votes_24, 1000)}
         angle={d => 90 * Math.max(10, Math.min(25, Math.abs(shift(d))))/25 * Math.sign(shift(d))}
     />

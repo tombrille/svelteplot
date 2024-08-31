@@ -1,3 +1,6 @@
+<!--
+    @component Arrow2
+-->
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {
@@ -7,9 +10,7 @@
         ConstantAccessor,
         ChannelAccessor,
         FacetContext,
-
         RawValue
-
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, testFilter, maybeNumber } from '../helpers/index.js';

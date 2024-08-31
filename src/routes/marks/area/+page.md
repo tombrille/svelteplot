@@ -33,6 +33,25 @@ Supplying undefined values is not the same as filtering the data: the latter wil
 </Plot>
 ```
 
+```svelte
+<script lang="ts">
+    import { Plot, AreaY, LineY, RuleY } from 'svelteplot';
+    import aapl from 'data/aapl.csv';
+</script>
+
+<Plot grid>
+    <AreaY
+        data={aapl}
+        filter={(d) => d.Date.getUTCMonth() >= 3}
+        x="Date"
+        y="Close"
+        fillOpacity={0.3}
+    />
+    <LineY data={aapl} y={(d) => (d.Date.getUTCMonth() < 3 ? NaN : d.Close)} x="Date" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
 ## AreaY
 
 <AreaY1Plot />
