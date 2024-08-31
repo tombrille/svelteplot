@@ -33,11 +33,20 @@
     }
 
     function onTouchMove(evt: TouchEvent) {
-        if (evt.target) {
+
+        if (evt.touches) {
+           
             const rect = (evt.target as HTMLElement).getBoundingClientRect();
-            const ex = evt.targetTouches[0].pageX - rect.left;
-            const ey = evt.targetTouches[0].pageY - rect.top;
-            updateSelection(ex, ey);
+            const pageTop = window.scrollY || document.documentElement.scrollTop;
+            const ox = rect.left;
+            const oy = rect.top + pageTop;
+
+            const touch = evt.touches[0] || evt.changedTouches[0];
+            if (touch) {
+                const ex = touch.pageX - ox;
+                const ey = touch.pageY - oy;
+                updateSelection(ex, ey);
+            }
         }
     }
 
@@ -49,19 +58,12 @@
         selectedData = points.filter((d) => d != null);
     }
 
-    let touching = $state(false);
 
-    function onTouchStart(evt: TouchEvent) {
-        touching = true;
-    }
-
-    function onTouchEnd(evt: TouchEvent) {
-        touching = false;
-    }
 
     $effect(() => {
         plot.body?.addEventListener('mousemove', onMouseMove);
         plot.body?.addEventListener('touchmove', onTouchMove);
+        plot.body
 
         return () => {
             plot.body?.removeEventListener('mousemove', onMouseMove);

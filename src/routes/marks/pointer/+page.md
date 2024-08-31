@@ -65,6 +65,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
     let { aapl } = $derived($page.data.data);
 </script>
 
+<div style="touch-action: none">
 <Plot testid="aapl-line-frame">
     <AxisX />
     <AxisY />
@@ -80,6 +81,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
         {/snippet}
     </Pointer>
 </Plot>
+</div>
 ```
 
 ```svelte
