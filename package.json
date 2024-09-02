@@ -17,7 +17,8 @@
         "format": "prettier --write .",
         "test:integration": "playwright test",
         "test:unit": "vitest",
-        "prepack": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's/ lang=\"ts\"//g' {} +",
+        "prepack-removets": "npx svelte-package && find dist -type f -name \"*.svelte\" -exec perl -pi -e 's/ lang=\"ts\"//g' {} +",
+        "prepack": "npx svelte-package",
         "release-alpha": "npm run build && npm version prerelease --preid alpha && npm publish",
         "docs": "npm run build && cd build && rsync --recursive . vis4.net:svelteplot/alpha0/",
         "update:svelte": "pnpm i svelte@next eslint-plugin-svelte@latest @sveltejs/vite-plugin-svelte@next prettier-plugin-svelte@latest"
