@@ -178,7 +178,7 @@
                                                     : 'middle'
                                         )
                                     ]}
-                                    transform="translate({[x + dx, y + dy]})"
+                                    transform="translate({[Math.round(x + dx), Math.round(y + dy)]})"
                                     style={resolveScaledStyles(
                                         { ...datum, __tspanIndex: 0 },
                                         {

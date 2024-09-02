@@ -32,8 +32,8 @@
     {#if isValid(x_) && isValid(y_)}
         <div
             class="custom-mark-html"
-            style:left="{projectX('x', plot.scales, resolveChannel('x', datum, { x, y }))}px"
-            style:top="{projectY('y', plot.scales, resolveChannel('y', datum, { x, y }))}px"
+            style:left="{projectX('x', plot.scales, resolveChannel('x', datum, { x, y })).toFixed(0)}px"
+            style:top="{projectY('y', plot.scales, resolveChannel('y', datum, { x, y })).toFixed(0)}px"
         >
             <slot {datum} />
         </div>
