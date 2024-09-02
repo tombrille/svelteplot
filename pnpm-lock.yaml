@@ -73,16 +73,16 @@ importers:
         specifier: ^1.46.1
         version: 1.46.1
       '@sveltejs/adapter-auto':
-        specifier: ^3.2.4
+        specifier: ^3.2.2
         version: 3.2.4(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)))
       '@sveltejs/adapter-static':
-        specifier: ^3.0.4
+        specifier: ^3.0.2
         version: 3.0.4(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)))
       '@sveltejs/eslint-config':
         specifier: ^8.0.1
         version: 8.0.1(@stylistic/eslint-plugin-js@1.7.2(eslint@9.9.1(jiti@1.21.0)))(eslint-config-prettier@9.1.0(eslint@9.9.1(jiti@1.21.0)))(eslint-plugin-n@17.10.1(eslint@9.9.1(jiti@1.21.0)))(eslint-plugin-svelte@2.43.0(eslint@9.9.1(jiti@1.21.0))(svelte@5.0.0-next.242))(eslint@9.9.1(jiti@1.21.0))(typescript-eslint@7.7.0(eslint@9.9.1(jiti@1.21.0))(typescript@5.5.4))(typescript@5.5.4)
       '@sveltejs/kit':
-        specifier: ^2.5.25
+        specifier: ^2.5.20
         version: 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)))(svelte@5.0.0-next.242)(vite@5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0))
       '@sveltejs/package':
         specifier: ^2.3.2
@@ -148,7 +148,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       eslint:
-        specifier: ^9.9.1
+        specifier: ^9.8.0
         version: 9.9.1(jiti@1.21.0)
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -175,7 +175,7 @@ importers:
         specifier: ^1.77.8
         version: 1.77.8
       svelte-check:
-        specifier: ^3.8.6
+        specifier: ^3.8.5
         version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.8)(svelte@5.0.0-next.242)
       svelte-highlight:
         specifier: ^7.7.0
@@ -190,7 +190,7 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       vite:
-        specifier: ^5.4.2
+        specifier: ^5.3.5
         version: 5.4.2(@types/node@20.10.8)(sass@1.77.8)(terser@5.26.0)
       vitest:
         specifier: ^2.0.5
