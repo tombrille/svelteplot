@@ -50,6 +50,10 @@
         }
     }
 
+    function onMouseLeave() {
+        selectedData = [];
+    }
+
     function updateSelection(ex: number, ey: number) {
         // find data row with minimum distance to
         const points = trees.map((tree) =>
@@ -62,11 +66,13 @@
 
     $effect(() => {
         plot.body?.addEventListener('mousemove', onMouseMove);
+        plot.body?.addEventListener('mouseleave', onMouseLeave);
         plot.body?.addEventListener('touchmove', onTouchMove);
         plot.body
 
         return () => {
             plot.body?.removeEventListener('mousemove', onMouseMove);
+            plot.body?.removeEventListener('mouseleave', onMouseLeave);
             plot.body?.removeEventListener('touchmove', onTouchMove);
         };
     });
