@@ -33,9 +33,7 @@
     }
 
     function onTouchMove(evt: TouchEvent) {
-
         if (evt.touches) {
-           
             const rect = (evt.target as HTMLElement).getBoundingClientRect();
             const pageTop = window.scrollY || document.documentElement.scrollTop;
             const ox = rect.left;

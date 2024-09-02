@@ -143,7 +143,7 @@
                                             args.y != null ? 'middle' : 'top'
                                         )
                                     ]}
-                                    transform="translate({[x + dx, y + dy]})"
+                                    transform="translate({[Math.round(x + dx), Math.round(y + dy)]})"
                                     >{#each textLines as line, l}<tspan
                                             x="0"
                                             dy={l ? resolveProp(args.fontSize, datum) || 12 : 0}
