@@ -4,11 +4,13 @@
 -->
 <script context="module" lang="ts">
     import type { ChannelAccessor, DataRow } from '$lib/types.js';
+    import type { Snippet } from 'svelte';
 
     export type HTMLMarkProps = {
         data: DataRow[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
+        children: Snippet<{ datum: DataRow; x: number; y: number }>;
     };
 </script>
 
@@ -23,19 +25,21 @@
     import { projectX, projectY } from '$lib/helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
 
-    let { data, x, y }: HTMLMarkProps = $props();
+    let { data, x, y, children }: HTMLMarkProps = $props();
 </script>
 
 {#each data as datum}
     {@const x_ = resolveChannel('x', datum, { x, y })}
     {@const y_ = resolveChannel('y', datum, { x, y })}
     {#if isValid(x_) && isValid(y_)}
+        {@const px = projectX('x', plot.scales, resolveChannel('x', datum, { x, y }))}
+        {@const py = projectY('y', plot.scales, resolveChannel('y', datum, { x, y }))}
         <div
             class="custom-mark-html"
-            style:left="{projectX('x', plot.scales, resolveChannel('x', datum, { x, y })).toFixed(0)}px"
-            style:top="{projectY('y', plot.scales, resolveChannel('y', datum, { x, y })).toFixed(0)}px"
+            style:left="{px.toFixed(0)}px"
+            style:top="{py.toFixed(0)}px"
         >
-            <slot {datum} />
+            {@render children({ datum, x: px, y: py })}
         </div>
     {/if}
 {/each}

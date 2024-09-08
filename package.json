@@ -41,7 +41,7 @@
         "@sveltejs/eslint-config": "^8.0.1",
         "@sveltejs/kit": "^2.5.25",
         "@sveltejs/package": "^2.3.4",
-        "@sveltejs/vite-plugin-svelte": "^3.1.2",
+        "@sveltejs/vite-plugin-svelte": "4.0.0-next.7",
         "@sveltepress/theme-default": "^3.0.0",
         "@sveltepress/twoslash": "^0.3.0",
         "@sveltepress/vite": "^0.34.0",
@@ -100,6 +100,6 @@
         "fast-equals": "^5.0.1",
         "merge-deep": "^3.0.3",
         "numeral": "^2.0.6",
-        "svelte": "5.0.0-next.222"
+        "svelte": "5.0.0-next.244"
     }
 }

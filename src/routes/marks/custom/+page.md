@@ -25,10 +25,12 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
         data={penguins} 
         x="culmen_length_mm" 
         y="culmen_depth_mm" 
-        let:datum>
+        >
+        {#snippet children({datum})}
         <div style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center">
             {datum.species}
         </div>
+        {/snippet}
     </CustomMarkHTML>
     {/snippet}
 
@@ -90,7 +92,8 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
         data={data} 
         x="culmen_length_mm" 
         y="culmen_depth_mm" 
-        let:datum>
+        >
+        {#snippet children({datum})}
         <div 
             style:width="{datum.width}px" 
             style:height="{datum.height}px" 
@@ -101,6 +104,7 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
             style:left="-40px">
             {datum.i}: {datum.species} {datum.dy}
         </div>
+        {/snippet}
     </CustomMarkHTML>
     {/snippet}
 
