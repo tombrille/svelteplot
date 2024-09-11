@@ -423,8 +423,6 @@
     class="svelteplot"
     bind:clientWidth={width}
     style:max-width={plotOptions.maxWidth}
-    data-oned={$autoMarginRight}
-    data-w={plotState.scales.x.range[1]}
     data-testid={testid}
 >
     {#if plotOptions.title || plotOptions.subtitle || header || plotOptions.color.legend || plotOptions.symbol.legend}
