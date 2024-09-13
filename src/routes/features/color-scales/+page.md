@@ -226,26 +226,68 @@ The default color scheme shown above is called `turbo`, but we can change it to 
 
 You may wonder why some of the color schemes don't use their entire range (e.g., try using the `BuYlRd` scheme above which is supposed to go from blue over yellow to red). That's because SveltePlot recognizes some schemes as `diverging` and automatically adjusts the "center" (or _pivot_) of the domain to be zero.
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot grid height={200} color={{ legend: true, type: 'BuYlRd'  }}>
+<Plot grid height={200} color={{ legend: true, scheme: 'BuYlRd'  }}>
     <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid color={{ legend: true, type: 'BuYlRd' }}>
+<Plot grid color={{ legend: true, scheme: 'BuYlRd' }}>
     <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
 </Plot>
 ```
 
 You can disable this by passing `type: 'linear'` to the color options:
 
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot grid height={200} color={{ legend: true, type: 'linear', scheme: 'BuYlRd'  }}>
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+</Plot>
+```
+
+```svelte
+<Plot grid color={{ legend: true,  type: 'linear', scheme: 'BuYlRd' }}>
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+</Plot>
+```
+
+Alternatively you can change the center point of the diverging scale using the `pivot` option. This can be useful to highlight values above or below a certain value, like the median of a distribution.
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+     import { Slider } from '$lib/ui';
+    let { penguins } = $derived($page.data.data);
+
+    let pivot = $state(4000);
+</script>
+
+<Slider label="pivot" bind:value={pivot} min={3000} max={6500} />
+<Plot grid height={200} color={{ legend: true, pivot, scheme: 'BuYlRd'  }}>
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+</Plot>
+```
+
+```svelte
+<Plot grid color={{ legend: true,  pivot: 1000, scheme: 'BuYlRd' }}>
+    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+</Plot>
+```
+    
 
 ## Ordinal color scales
 

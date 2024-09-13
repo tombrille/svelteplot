@@ -30,7 +30,7 @@ import {
     isColorOrNull,
     isNumberOrNullOrNaN
 } from './typeChecks.js';
-import { CHANNEL_SCALE } from '$lib/constants.js';
+import { CHANNEL_SCALE, VALID_SCALE_TYPES } from '$lib/constants.js';
 import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
 import type {
@@ -372,6 +372,11 @@ export function createScale<T extends ScaleOptions>(
         scaleOptions.type === 'auto'
             ? inferScaleType(name, valueArr, markTypes)
             : scaleOptions.type;
+
+    if (VALID_SCALE_TYPES[name] && !VALID_SCALE_TYPES[name].has(type)) {
+        throw new Error(`Invalid scale type ${type} for scale
+            ${name}. Valid types are ${[...VALID_SCALE_TYPES[name]].join(', ')}`);
+    }
 
     const isOrdinal =
         type === 'band' || type === 'point' || type === 'ordinal' || type === 'categorical';
