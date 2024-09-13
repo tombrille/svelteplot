@@ -60,7 +60,8 @@ Or candlestick
         y1="Open"
         y2="Close"
         strokeWidth="5"
-        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'var(--svp-green)' : 'var(--svp-red)')}
+        stroke={(d) =>
+            (d as AAPL).Close > (d as AAPL).Open ? 'var(--svp-green)' : 'var(--svp-red)'}
     />
 </Plot>
 ```

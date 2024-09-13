@@ -6,7 +6,18 @@ export const load: PageLoad = async ({ fetch }) => {
         data: {
             world: await loadJSON(fetch, 'countries-110m'),
             ...(await loadDatasets(
-                ['aapl', 'beagle', 'bls', 'co2', 'crimea', 'driving', 'riaa', 'stateage', 'tdf', 'rightwing'],
+                [
+                    'aapl',
+                    'beagle',
+                    'bls',
+                    'co2',
+                    'crimea',
+                    'driving',
+                    'riaa',
+                    'stateage',
+                    'tdf',
+                    'rightwing'
+                ],
                 fetch
             ))
         }

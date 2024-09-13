@@ -14,7 +14,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
-        {#snippet children({data})}
+        {#snippet children({ data })}
             <Text
                 {data}
                 fill="currentColor"
@@ -37,7 +37,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 <Plot testid="aapl-line-frame" marginRight={20}>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
-        {#snippet children({data})}
+        {#snippet children({ data })}
             <Text
                 {data}
                 fill="currentColor"
@@ -66,21 +66,21 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
 </script>
 
 <div style="touch-action: none">
-<Plot testid="aapl-line-frame">
-    <AxisX />
-    <AxisY />
-    <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
-        {#snippet children({data})}
-            {#if data.length > 0}
-                <RuleX {data} x="Date" opacity="0.3" />
-                <RuleY {data} y="Close" opacity="0.3" />
-                <AxisX data={data.map((d) => d.Date)} tickFormat="MMM D, YYYY" />
-                <AxisY data={data.map((d) => d.Close)} tickFormat={(d) => d.toFixed()} />
-            {/if}
-        {/snippet}
-    </Pointer>
-</Plot>
+    <Plot testid="aapl-line-frame">
+        <AxisX />
+        <AxisY />
+        <Line data={aapl} x="Date" y="Close" />
+        <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
+            {#snippet children({ data })}
+                {#if data.length > 0}
+                    <RuleX {data} x="Date" opacity="0.3" />
+                    <RuleY {data} y="Close" opacity="0.3" />
+                    <AxisX data={data.map((d) => d.Date)} tickFormat="MMM D, YYYY" />
+                    <AxisY data={data.map((d) => d.Close)} tickFormat={(d) => d.toFixed()} />
+                {/if}
+            {/snippet}
+        </Pointer>
+    </Plot>
 </div>
 ```
 
@@ -113,20 +113,20 @@ PointerY
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} y="Close" maxDistance={30}>
         {#snippet children({ data })}
-        <RuleY {data} y="Close" opacity={0.2} />
-        <Text
-            {data}
-            fill="currentColor"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            x="Date"
-            y="Close"
-            text={(d) => d.Close.toFixed()}
-            lineAnchor="bottom"
-            fontWeight="bold"
-            dy="-10"
-        />
-        <Dot {data} x="Date" y="Close" fill />
+            <RuleY {data} y="Close" opacity={0.2} />
+            <Text
+                {data}
+                fill="currentColor"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth="3"
+                x="Date"
+                y="Close"
+                text={(d) => d.Close.toFixed()}
+                lineAnchor="bottom"
+                fontWeight="bold"
+                dy="-10"
+            />
+            <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
 </Plot>
@@ -143,20 +143,20 @@ PointerY
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} x="Date" maxDistance={30}>
         {#snippet children({ data })}
-        <RuleX {data} x="Date" opacity={0.2} />
-        <Text
-            {data}
-            fill="currentColor"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            x="Date"
-            y="Close"
-            text={(d) => d.Close.toFixed()}
-            lineAnchor="bottom"
-            fontWeight="bold"
-            dy="-10"
-        />
-        <Dot {data} x="Date" y="Close" fill />
+            <RuleX {data} x="Date" opacity={0.2} />
+            <Text
+                {data}
+                fill="currentColor"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth="3"
+                x="Date"
+                y="Close"
+                text={(d) => d.Close.toFixed()}
+                lineAnchor="bottom"
+                fontWeight="bold"
+                dy="-10"
+            />
+            <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
 </Plot>
@@ -176,26 +176,26 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
     <Line data={stocks2} x="Date" y="Close" stroke="Symbol" />
     <Pointer data={stocks2} x="Date" z="Symbol" maxDistance={30}>
         {#snippet children({ data })}
-        <Text
-            {data}
-            fill="Symbol"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            x="Date"
-            y="Close"
-            text={(d) => d.Close.toFixed()}
-            lineAnchor="bottom"
-            fontWeight="bold"
-            dy="-7"
-        />
-        <Dot
-            {data}
-            x="Date"
-            y="Close"
-            fill="Symbol"
-            strokeWidth="0.7"
-            stroke="var(--svelteplot-bg)"
-        />
+            <Text
+                {data}
+                fill="Symbol"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth="3"
+                x="Date"
+                y="Close"
+                text={(d) => d.Close.toFixed()}
+                lineAnchor="bottom"
+                fontWeight="bold"
+                dy="-7"
+            />
+            <Dot
+                {data}
+                x="Date"
+                y="Close"
+                fill="Symbol"
+                strokeWidth="0.7"
+                stroke="var(--svelteplot-bg)"
+            />
         {/snippet}
     </Pointer>
 </Plot>
@@ -206,19 +206,19 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
     <Line data={stocks} x="Date" y="Close" stroke="Symbol" />
     <Pointer data={stocks} x="Date" z="Symbol" maxDistance={30}>
         {#snippet children({ data })}
-        <Text
-            {data}
-            fill="Symbol"
-            stroke="var(--svelteplot-bg)"
-            strokeWidth="3"
-            x="Date"
-            y="Close"
-            text={(d) => d.Close.toFixed()}
-            lineAnchor="bottom"
-            fontWeight="bold"
-            dy="-7"
-        />
-        <Dot {data} x="Date" y="Close" fill="Symbol" stroke="var(--svelteplot-bg)" />
+            <Text
+                {data}
+                fill="Symbol"
+                stroke="var(--svelteplot-bg)"
+                strokeWidth="3"
+                x="Date"
+                y="Close"
+                text={(d) => d.Close.toFixed()}
+                lineAnchor="bottom"
+                fontWeight="bold"
+                dy="-7"
+            />
+            <Dot {data} x="Date" y="Close" fill="Symbol" stroke="var(--svelteplot-bg)" />
         {/snippet}
     </Pointer>
 </Plot>

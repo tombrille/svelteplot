@@ -2,9 +2,7 @@ import type { RawValue, ScaleType } from '$lib/types.js';
 import { maybeTimeInterval } from './time.js';
 import { range as rangei } from 'd3-array';
 
-export function maybeInterval(
-    interval: null | number | string | (<T>(d: T) => T),
-) {
+export function maybeInterval(interval: null | number | string | (<T>(d: T) => T)) {
     if (interval == null) return;
     if (typeof interval === 'number') {
         if (0 < interval && interval < 1 && Number.isInteger(1 / interval))

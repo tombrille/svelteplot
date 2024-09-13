@@ -79,7 +79,7 @@ export default {
                 { title: 'Stack', to: '/transforms/stack/' },
                 { title: 'Window', to: '/transforms/window/' }
             ]
-        }, 
+        },
         {
             title: 'Advanced use',
             collapsible: true,
@@ -87,6 +87,10 @@ export default {
                 {
                     title: 'Scales',
                     to: '/features/scales/'
+                },
+                {
+                    title: 'Color scales',
+                    to: '/features/color-scales/'
                 },
                 {
                     title: 'Facets',

@@ -75,26 +75,26 @@
                         x1_ == null
                             ? plot.options.marginLeft
                             : usedScales.x1
-                            ? projectX('x', plot.scales, x1_)
-                            : x1_}
+                              ? projectX('x', plot.scales, x1_)
+                              : x1_}
                     {@const x2 =
                         x2_ == null
                             ? plot.options.marginLeft + plot.facetWidth
                             : usedScales.x2
-                            ? projectX('x', plot.scales, x2_)
-                            : x2_}
+                              ? projectX('x', plot.scales, x2_)
+                              : x2_}
                     {@const y1 =
                         y1_ == null
                             ? plot.options.marginTop
                             : usedScales.y1
-                            ? projectY('y', plot.scales, y1_)
-                            : y1_}
+                              ? projectY('y', plot.scales, y1_)
+                              : y1_}
                     {@const y2 =
                         y2_ == null
                             ? plot.options.marginTop + plot.facetHeight
                             : usedScales.y2
-                            ? projectY('y', plot.scales, y2_)
-                            : y2_}
+                              ? projectY('y', plot.scales, y2_)
+                              : y2_}
 
                     {@const miny = Math.min(y1, y2)}
                     {@const maxy = Math.max(y1, y2)}
@@ -120,7 +120,11 @@
                             height={maxy - miny - insetT - insetB}
                             rx={resolveProp(args.rx, datum, null)}
                             ry={resolveProp(args.ry, datum, null)}
-                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                            use:addEventHandlers={{
+                                scales: plot.scales,
+                                options: mark.options,
+                                datum
+                            }}
                         />
                     {/if}
                 {/if}

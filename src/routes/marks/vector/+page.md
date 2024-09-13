@@ -126,7 +126,6 @@ Vector mark can deal with projection system:
 </Plot>
 ```
 
-
 ## Vector options
 
 -   **shape** - Either _arrow_ or _spike_, or a custom shape object (see below)
@@ -260,9 +259,6 @@ The **Spike** mark is a convenience wrapper around the Vector mark that sets nic
 <Plot projection="albers-usa" length={{ range: [0, 100] }}>
     <Geo data={[nation]} stroke="currentColor" />
     <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
-    <Spike 
-        {...geoCentroid({ data: counties })}
-        stroke="green" 
-        length={(d) => d.properties.votes} />
+    <Spike {...geoCentroid({ data: counties })} stroke="green" length={(d) => d.properties.votes} />
 </Plot>
 ```

@@ -13,7 +13,6 @@ y↑ and fuel efficiency in miles per gallon in x→.
     import { page } from '$app/stores';
     let { cars } = $derived($page.data.data);
 
-    const manufactor = (d) => d.name.split(' ')[0];
     let fill = $state(false);
     let canvas = $state(false);
 </script>
@@ -26,9 +25,9 @@ y↑ and fuel efficiency in miles per gallon in x→.
         data={cars}
         x="economy (mpg)"
         y="power (hp)"
-        stroke={!fill ? manufactor : null}
-        fill={fill ? manufactor : null}
-        symbol={manufactor}
+        stroke={!fill ? 'manufactor' : null}
+        fill={fill ? 'manufactor' : null}
+        symbol="manufactor"
     />
 </Plot>
 ```

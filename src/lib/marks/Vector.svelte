@@ -144,7 +144,9 @@
     {#snippet children({ mark, usedScales })}
         <g class="vector" data-l={usedScales.length}>
             {#if canvas}
-                <text x="30" y="30" style="color:red">implement canvas rendering for vector mark</text>
+                <text x="30" y="30" style="color:red"
+                    >implement canvas rendering for vector mark</text
+                >
             {:else}
                 {#each args.data as datum}
                     {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
@@ -153,7 +155,13 @@
                         {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
                         {@const _l = resolveChannel('length', datum, { length: 10, ...args })}
                         {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                            {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
+                            {@const [x, y] = projectXY(
+                                plot.scales,
+                                _x,
+                                _y,
+                                usedScales.x,
+                                usedScales.y
+                            )}
                             {@const l = usedScales.length ? plot.scales.length.fn(_l) : _l}
                             {#if isValid(x) && isValid(y) && isValid(l)}
                                 {@const dx = +resolveProp(args.dx, datum, 0)}
@@ -167,8 +175,8 @@
                                     )}) {anchor === 'start'
                                         ? ''
                                         : anchor === 'end'
-                                        ? `translate(0, ${l})`
-                                        : `translate(0, ${l / 2})`}"
+                                          ? `translate(0, ${l})`
+                                          : `translate(0, ${l / 2})`}"
                                     style={resolveScaledStyles(
                                         datum,
                                         {

@@ -329,7 +329,11 @@
             caption: '',
             height: 'auto',
             // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: hasProjection ? 0 : margins != null ? margins : Math.max(maxMarginLeft + 1, 1),
+            marginLeft: hasProjection
+                ? 0
+                : margins != null
+                  ? margins
+                  : Math.max(maxMarginLeft + 1, 1),
             marginRight: hasProjection
                 ? 0
                 : margins != null

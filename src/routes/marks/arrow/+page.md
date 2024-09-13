@@ -11,7 +11,7 @@ Metro dataset:
     let { metros } = $derived($page.data.data);
 
     let hl = $state(false);
-    $inspect({hl})
+    $inspect({ hl });
 </script>
 
 <Plot
@@ -107,36 +107,18 @@ Works as well with a point scale:
     let { metros } = $derived($page.data.data);
 </script>
 
-<Plot
-    inset={10}
-    x={{ label: 'Population' }}
-    y={{ label: '' }}
->
+<Plot inset={10} x={{ label: 'Population' }} y={{ label: '' }}>
     <AxisY tickSize={0} />
     <GridY strokeDasharray="3,3" />
-    <Arrow
-        data={metros.slice(0, 50)}
-        x1="R90_10_1980"
-        x2="R90_10_2015"
-        y="nyt_display"
-    />
+    <Arrow data={metros.slice(0, 50)} x1="R90_10_1980" x2="R90_10_2015" y="nyt_display" />
 </Plot>
 ```
 
 ```svelte
-<Plot
-    inset={10}
-    x={{ label: 'Population' }}
-    y={{ label: '' }}
->
+<Plot inset={10} x={{ label: 'Population' }} y={{ label: '' }}>
     <AxisY tickSize={0} />
     <GridY strokeDasharray="3,3" />
-    <Arrow
-        data={metros.slice(0, 50)}
-        x1="R90_10_1980"
-        x2="R90_10_2015"
-        y="nyt_display"
-    />
+    <Arrow data={metros.slice(0, 50)} x1="R90_10_1980" x2="R90_10_2015" y="nyt_display" />
 </Plot>
 ```
 
@@ -325,67 +307,62 @@ It is useful for shift maps:
 
 ```svelte live
 <script>
-    
     import { Plot, Geo, Arrow2 } from '$lib';
     import { page } from '$app/stores';
     let { shifts, europe } = $derived($page.data.data);
-    import * as topojson from "topojson-client";
-    
+    import * as topojson from 'topojson-client';
+
     const countries = topojson.mesh(europe, europe.objects.countries);
 
     function shift(d) {
-        return 100*((d.right_votes_24 / d.total_votes_24) - (d.right_votes_19 / d.total_votes_19));
+        return 100 * (d.right_votes_24 / d.total_votes_24 - d.right_votes_19 / d.total_votes_19);
     }
 </script>
 
 <Plot
     projection={{
         type: 'azimuthal-equal-area',
-        rotate: [-10,-50],
+        rotate: [-10, -50],
         domain: countries
     }}
     length={{
-        range: [0,20]
+        range: [0, 20]
     }}
 >
-    <Geo 
-        data={[countries]} 
-        stroke='#cccccc'
-        />
-    
-    <Arrow2 
+    <Geo data={[countries]} stroke="#cccccc" />
+
+    <Arrow2
         data={shifts}
-        x='lon'
-        y='lat'
-        stroke={d => shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)'}
-        length={d => Math.max(d.total_votes_24, 1000)}
-        angle={d => 90 * Math.max(10, Math.min(25, Math.abs(shift(d))))/25 * Math.sign(shift(d))}
+        x="lon"
+        y="lat"
+        stroke={(d) => (shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)')}
+        length={(d) => Math.max(d.total_votes_24, 1000)}
+        angle={(d) =>
+            ((90 * Math.max(10, Math.min(25, Math.abs(shift(d))))) / 25) * Math.sign(shift(d))}
     />
 </Plot>
 ```
 
 TODO: probably better to render these arrows in canvas.
 
-```svelte 
+```svelte
 <Plot
     projection={{
         type: 'azimuthal-equal-area',
-        rotate: [-10,-50],
+        rotate: [-10, -50],
         domain: countries
     }}
-    length={{ range: [0,20] }}
+    length={{ range: [0, 20] }}
 >
-    <Geo 
-        data={[countries]} 
-        stroke='#cccccc'
-        />
-    <Arrow2 
+    <Geo data={[countries]} stroke="#cccccc" />
+    <Arrow2
         data={shifts}
-        x='lon'
-        y='lat'
-        stroke={d => shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)'}
-        length={d => Math.max(d.total_votes_24, 1000)}
-        angle={d => 90 * Math.max(10, Math.min(25, Math.abs(shift(d))))/25 * Math.sign(shift(d))}
+        x="lon"
+        y="lat"
+        stroke={(d) => (shift(d) > 0 ? 'var(--svp-red)' : 'var(--svp-blue)')}
+        length={(d) => Math.max(d.total_votes_24, 1000)}
+        angle={(d) =>
+            ((90 * Math.max(10, Math.min(25, Math.abs(shift(d))))) / 25) * Math.sign(shift(d))}
     />
 </Plot>
 ```

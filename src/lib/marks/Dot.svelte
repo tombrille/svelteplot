@@ -89,7 +89,13 @@
                         {@const _y = resolveChannel('y', datum, args)}
                         {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
                         {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                            {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
+                            {@const [x, y] = projectXY(
+                                plot.scales,
+                                _x,
+                                _y,
+                                usedScales.x,
+                                usedScales.y
+                            )}
                             {#if isValid(x) && isValid(y)}
                                 {@const dx = +resolveProp(args.dx, datum, 0)}
                                 {@const dy = +resolveProp(args.dx, datum, 0)}
@@ -106,7 +112,13 @@
                                     d={getSymbolPath(symbol, size)}
                                     transform="translate({x + dx}, {y + dy})"
                                     data-symbol={symbol}
-                                    style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
+                                    style={resolveScaledStyles(
+                                        datum,
+                                        args,
+                                        usedScales,
+                                        plot,
+                                        'stroke'
+                                    )}
                                     use:addEventHandlers={{
                                         scales: plot.scales,
                                         options: mark.options,

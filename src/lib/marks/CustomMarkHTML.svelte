@@ -34,11 +34,7 @@
     {#if isValid(x_) && isValid(y_)}
         {@const px = projectX('x', plot.scales, resolveChannel('x', datum, { x, y }))}
         {@const py = projectY('y', plot.scales, resolveChannel('y', datum, { x, y }))}
-        <div
-            class="custom-mark-html"
-            style:left="{px.toFixed(0)}px"
-            style:top="{py.toFixed(0)}px"
-        >
+        <div class="custom-mark-html" style:left="{px.toFixed(0)}px" style:top="{py.toFixed(0)}px">
             {@render children({ datum, x: px, y: py })}
         </div>
     {/if}

@@ -66,7 +66,11 @@
                                 plot,
                                 preferStroke.has(geometry.type) ? 'stroke' : 'fill'
                             )}
-                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                            use:addEventHandlers={{
+                                scales: plot.scales,
+                                options: mark.options,
+                                datum
+                            }}
                         >
                             {#if title}<title>{title}</title>{/if}
                         </path>

@@ -23,7 +23,13 @@ import {
     ordinalScheme,
     quantitativeScheme
 } from './colors.js';
-import { isDateOrNull, isNumberOrNull, isStringOrNull, isColorOrNull } from './typeChecks.js';
+import {
+    isDateOrNull,
+    isNumberOrNull,
+    isStringOrNull,
+    isColorOrNull,
+    isNumberOrNullOrNaN
+} from './typeChecks.js';
 import { CHANNEL_SCALE } from '$lib/constants.js';
 import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
@@ -552,7 +558,7 @@ export function inferScaleType(
 ): ScaleType {
     if (name === 'color') {
         if (!dataValues.length) return 'ordinal';
-        if (dataValues.every(isNumberOrNull)) return 'linear';
+        if (dataValues.every(isNumberOrNullOrNaN)) return 'linear';
         if (dataValues.every(isDateOrNull)) return 'linear';
         if (dataValues.every(isStringOrNull)) return 'categorical';
         return 'ordinal';

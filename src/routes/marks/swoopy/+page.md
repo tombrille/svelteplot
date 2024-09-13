@@ -10,7 +10,6 @@ title: Swoopy arrows
 </script>
 
 <Plot grid height={500} color={{ legend: true }} testid="penguins">
-    
     <Dot
         data={penguins}
         x="culmen_length_mm"
@@ -18,12 +17,13 @@ title: Swoopy arrows
         stroke="species"
         symbol="species"
     />
-    <SwoopyArrow 
+    <SwoopyArrow
         bend="-22"
-        data={[penguins[0]]} 
+        data={[penguins[0]]}
         x="culmen_length_mm"
         y="culmen_depth_mm"
         tx="-50"
-        ty="-50" />
+        ty="-50"
+    />
 </Plot>
 ```

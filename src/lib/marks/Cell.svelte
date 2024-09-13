@@ -100,7 +100,11 @@
                             height={maxy - miny - insetT - insetB}
                             rx={resolveProp(args.rx, datum, null)}
                             ry={resolveProp(args.ry, datum, null)}
-                            use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                            use:addEventHandlers={{
+                                scales: plot.scales,
+                                options: mark.options,
+                                datum
+                            }}
                         />
                     {/if}
                 {/if}

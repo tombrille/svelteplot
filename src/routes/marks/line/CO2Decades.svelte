@@ -84,7 +84,7 @@
     />
 
     <Pointer data={co2decades} x="yearInDecade" z="decadeBaseYear">
-        {#snippet children({data})}
+        {#snippet children({ data })}
             <Dot {data} x="yearInDecade" y="average" fill="average" />
             <Text
                 {data}

@@ -72,11 +72,7 @@ title: Projections
         rotate: [-longitude, -latitude]
     }}
 >
-    <Sphere
-        fill="var(--svelteplot-bg)"
-        stroke="currentColor"
-        cursor="pointer"
-    />
+    <Sphere fill="var(--svelteplot-bg)" stroke="currentColor" cursor="pointer" />
     <Graticule pointerEvents="none" opacity="0.1" step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
     <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />
     <Dot

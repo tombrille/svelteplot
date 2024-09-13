@@ -3,8 +3,5 @@ import GroupMultiple from './GroupMultiple.svelte';
 import { describe, it, expect } from 'vitest';
 
 describe('GroupMultiple component', () => {
-  it('should render', async () => {
-    
-  });
-
+    it('should render', async () => {});
 });

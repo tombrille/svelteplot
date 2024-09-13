@@ -23,6 +23,10 @@ describe('isColorOrNull', () => {
         expect(isColorOrNull('var(--primary-color)')).toBe(true);
     });
 
+    it('returns true for a CSS color-mix expression', () => {
+        expect(isColorOrNull('color-mix(in srgb --primary-color #ff0000, 0.5)')).toBe(true);
+    });
+
     it('returns true for valid color string', () => {
         expect(isColorOrNull('#ff0000')).toBe(true);
     });

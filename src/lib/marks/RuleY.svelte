@@ -74,7 +74,7 @@
                         {@const insetRight = resolveProp(args.insetRight, datum, 0)}
                         {@const dx = resolveProp(args.dx, datum, 0)}
                         {@const dy = resolveProp(args.dy, datum, 0)}
-                            
+
                         <line
                             data-foo="{x1_} {x2_} - {x1} {x2} {inset} - {insetLeft} - {insetRight}"
                             transform="translate({dx}, {y + dy})"

@@ -19,7 +19,7 @@ SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plo
 
 <Slider label="truncate" bind:value={truncate} min={50} max={aapl.length} />
 <Plot inset={10} grid>
-    <Line marker={truncate < 100} data={data} x="Date" y="Close" curve="monotone-x" />
+    <Line marker={truncate < 100} {data} x="Date" y="Close" curve="monotone-x" />
 </Plot>
 ```
 
@@ -39,7 +39,6 @@ Take the following example, where you can filter the data using the [filter](/tr
     let min = $state(0);
     let noAxisX = $state(false);
     let noAxisTitle = $state(false);
-    const manufactor = (d) => d.name.split(' ')[0];
 </script>
 
 <label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>

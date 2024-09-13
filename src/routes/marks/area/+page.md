@@ -145,7 +145,9 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
     let { riaa } = $derived($page.data.data);
 
     const CURVES =
-        'basis,basis-open,bump-x,bump-y,bundle,cardinal,cardinal-open,catmull-rom,catmull-rom-open,catmull,linear,monotone-x,monotone-y,natural,step,step-after,step-before'.split(',');
+        'basis,basis-open,bump-x,bump-y,bundle,cardinal,cardinal-open,catmull-rom,catmull-rom-open,catmull,linear,monotone-x,monotone-y,natural,step,step-after,step-before'.split(
+            ','
+        );
     let curve = $state('linear');
 
     let reverse = $state(false);
@@ -155,14 +157,15 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 <Select label="curve" options={CURVES} bind:value={curve} />
 <Select label="order" options={['none', 'appearance', 'inside-out', 'sum']} bind:value={order} />
 <Plot>
-    <AreaY 
-        data={riaa} 
-        x="year" 
-        y="revenue" 
-        z="format" 
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
         fill="group"
         {curve}
-        stack={{ order, reverse }} />
+        stack={{ order, reverse }}
+    />
 </Plot>
 ```
 

@@ -4,7 +4,6 @@ title: Tick mark
 
 Ticks are useful for showing one-dimensional distributions, as in the "barcode" plot below. The secondary dimension must be a band scale.
 
-
 ## TickX
 
 Shows a vertical bar for each x position.
@@ -28,7 +27,6 @@ Shows a vertical bar for each x position.
     <TickX data={stateage} y="age" x="pop_share" />
 </Plot>
 ```
-
 
 ## TickY
 
@@ -84,8 +82,7 @@ Same idea but with facet:
 ```
 
 ```svelte
-<Plot 
-    y={{ grid: true, percent: true }}}>
+<Plot y="{{ grid: true, percent: true }}}">
     <RuleY data={[0]} />
     <TickY data={stateage} fx="age" y="pop_share" />
 </Plot>

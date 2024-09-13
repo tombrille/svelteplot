@@ -120,9 +120,9 @@
                             d={sphericalLine
                                 ? linePath(x1, y1, x2, y2)
                                 : linePath([
-                                    projectXY(plot.scales, x1, y1),
-                                    projectXY(plot.scales, x2, y2)
-                                ])}
+                                      projectXY(plot.scales, x1, y1),
+                                      projectXY(plot.scales, x2, y2)
+                                  ])}
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             text={text ? resolveProp(text, datum) : null}
                             startOffset={resolveProp(args.textStartOffset, datum, '50%')}
@@ -130,7 +130,13 @@
                                 datum,
                                 {
                                     textAnchor: 'middle',
-                                    ...pick(args, 'fontSize', 'fontWeight', 'fontStyle', 'textAnchor'),
+                                    ...pick(
+                                        args,
+                                        'fontSize',
+                                        'fontWeight',
+                                        'fontStyle',
+                                        'textAnchor'
+                                    ),
                                     fill: args.textFill || args.stroke,
                                     stroke: args.textStroke,
                                     strokeWidth: args.textStrokeWidth

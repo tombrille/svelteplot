@@ -7,9 +7,7 @@
         ConstantAccessor,
         ChannelAccessor,
         FacetContext,
-  
         RawValue
-  
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, testFilter, maybeNumber } from '../helpers/index.js';
@@ -19,7 +17,7 @@
     import { replaceChannels } from '$lib/transforms/rename.js';
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-  
+
     type ArrowProps = BaseMarkProps & {
         data: DataRecord[];
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
@@ -62,16 +60,16 @@
         sweep?: SweepOption;
         children?: Snippet;
     };
-  
+
     let { data, ...options }: ArrowProps = $props();
-  
+
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
-  
+
     function isValid(value: RawValue): value is number | Date | string {
         return value !== null && (typeof value === 'string' || !Number.isNaN(value));
     }
-  
+
     let sorted = $derived(
         options.sort
             ? maybeData(data).toSorted((a, b) =>
@@ -79,19 +77,19 @@
               )
             : maybeData(data)
     );
-  
+
     let args: ArrowProps = $derived({ data: sorted, ...options });
-  
+
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
-  </script>
-  
-  <Mark
+</script>
+
+<Mark
     type="swoopyArrow"
     required={['x', 'y']}
     channels={['x', 'y', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}
-  >
+>
     {#snippet children({ mark, usedScales })}
         {@const sweep = maybeSweep(args.sweep)}
         <GroupMultiple class="arrow" length={args.data.length}>
@@ -101,13 +99,7 @@
                     {@const _y = resolveChannel('y', datum, args)}
                     {@const strokeWidth = resolveProp(args.strokeWidth, datum, 1)}
                     {#if isValid(_x) && isValid(_y)}
-                        {@const [x, y] = projectXY(
-                            plot.scales,
-                            _x,
-                            _y,
-                            usedScales.x,
-                            usedScales.y
-                        )}
+                        {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
                         {@const tx = +resolveProp(args.tx, datum, 0)}
                         {@const ty = +resolveProp(args.ty, datum, 0)}
                         {@const dx = resolveProp(args.dx, datum, 0)}
@@ -157,13 +149,12 @@
             {/each}
         </GroupMultiple>
     {/snippet}
-  </Mark>
-  
-  <style>
+</Mark>
+
+<style>
     path {
         stroke-width: 1.6px;
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-  </style>
-  
+</style>

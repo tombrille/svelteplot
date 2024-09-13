@@ -60,13 +60,11 @@
         selectedData = points.filter((d) => d != null);
     }
 
-
-
     $effect(() => {
         plot.body?.addEventListener('mousemove', onMouseMove);
         plot.body?.addEventListener('mouseleave', onMouseLeave);
         plot.body?.addEventListener('touchmove', onTouchMove);
-        plot.body
+        plot.body;
 
         return () => {
             plot.body?.removeEventListener('mousemove', onMouseMove);
