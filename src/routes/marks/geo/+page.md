@@ -13,14 +13,21 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
     import * as topojson from 'topojson-client';
 
     let { us, unemployment } = $derived($page.data.data);
-    let rateMap = $derived(new Map(unemployment.map((d) => [d.id, +d.rate])));
+    let rateMap = $derived(
+        new Map(unemployment.map((d) => [d.id, +d.rate]))
+    );
     let counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: { ...feat.properties, unemployment: rateMap.get(+feat.id) }
-            };
-        })
+        topojson
+            .feature(us, us.objects.counties)
+            .features.map((feat) => {
+                return {
+                    ...feat,
+                    properties: {
+                        ...feat.properties,
+                        unemployment: rateMap.get(+feat.id)
+                    }
+                };
+            })
     );
 
     let n = $state(5);
@@ -36,13 +43,12 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
         domain: [1, 5, 8, 10],
         n,
         type: 'threshold'
-    }}
->
+    }}>
     <Geo
         data={counties}
         fill={(d) => d.properties.unemployment}
-        title={(d) => `${d.properties.name}\n${d.properties.unemployment}%`}
-    />
+        title={(d) =>
+            `${d.properties.name}\n${d.properties.unemployment}%`} />
 </Plot>
 ```
 
@@ -55,13 +61,12 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
         label: 'Unemployment (%)',
         n: 7,
         type: 'quantile'
-    }}
->
+    }}>
     <Geo
         data={counties}
         fill={(d) => d.properties.unemployment}
-        title={(d) => `${d.properties.name}\n${d.properties.unemployment}%`}
-    />
+        title={(d) =>
+            `${d.properties.name}\n${d.properties.unemployment}%`} />
 </Plot>
 ```
 
@@ -74,7 +79,9 @@ Earthquakes
     import * as topojson from 'topojson-client';
 
     let { world, earthquakes } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 </script>
 
 <Plot r={{ range: [0.5, 25] }} projection="equirectangular">
@@ -87,8 +94,7 @@ Earthquakes
         fillOpacity="0.2"
         title={(d) => d.properties.title}
         href={(d) => d.properties.url}
-        r={(d) => Math.pow(10, d.properties.mag)}
-    />
+        r={(d) => Math.pow(10, d.properties.mag)} />
 </Plot>
 ```
 
@@ -103,7 +109,9 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
     import { range } from 'd3-array';
 
     let { world, earthquakes } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 </script>
 
 <Plot
@@ -111,8 +119,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
         legend: true,
         label: 'Distance from Tonga (km)'
     }}
-    projection={{ type: 'equal-earth', rotate: [90, 0] }}
->
+    projection={{ type: 'equal-earth', rotate: [90, 0] }}>
     <Sphere stroke="currentColor" />
     <Geo data={[land]} stroke="currentColor" />
     <Geo
@@ -121,8 +128,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
             .center([-175.38, -20.57])
             .radius((r) => r)}
         stroke={(r) => r * 111.2}
-        strokeWidth={2}
-    />
+        strokeWidth={2} />
 </Plot>
 ```
 
@@ -132,8 +138,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
         legend: true,
         label: 'Distance from Tonga (km)'
     }}
-    projection={{ type: 'equal-earth', rotate: [90, 0] }}
->
+    projection={{ type: 'equal-earth', rotate: [90, 0] }}>
     <Sphere stroke="currentColor" />
     <Geo data={[land]} stroke="currentColor" />
     <Geo
@@ -142,8 +147,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
             .center([-175.38, -20.57])
             .radius((r) => r)}
         stroke={(r) => r * 111.2}
-        strokeWidth={2}
-    />
+        strokeWidth={2} />
 </Plot>
 ```
 
@@ -161,13 +165,21 @@ Facetting with maps
     let { us, presidents } = $derived($page.data.data);
 
     let statesGeo = $derived(
-        new Map(topojson.feature(us, us.objects.states).features.map((feat) => [+feat.id, feat]))
+        new Map(
+            topojson
+                .feature(us, us.objects.states)
+                .features.map((feat) => [+feat.id, feat])
+        )
     );
     let years = union(presidents.map((d) => d.year));
     let columns = $state(3);
 </script>
 
-<Slider bind:value={columns} label="Columns:" min={2} max={4} />
+<Slider
+    bind:value={columns}
+    label="Columns:"
+    min={2}
+    max={4} />
 <Plot
     projection="albers-usa"
     color={{
@@ -176,21 +188,18 @@ Facetting with maps
     }}
     fz={{ columns }}
     marginTop={20}
-    let:scales
->
+    let:scales>
     <Geo
         data={presidents}
         fz="year"
         fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={(d) => statesGeo.get(d.state_fips)}
-    />
+        geometry={(d) => statesGeo.get(d.state_fips)} />
     <Text
         fontWeight="bold"
         data={scales.fz.domain}
         frameAnchor="top"
         fz={(d) => d}
-        text={(d) => d}
-    />
+        text={(d) => d} />
 </Plot>
 ```
 
@@ -203,21 +212,18 @@ Facetting with maps
     }}
     fz={{ columns }}
     marginTop={20}
-    let:scales
->
+    let:scales>
     <Geo
         data={presidents}
         fz="year"
         fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={(d) => statesGeo.get(d.state_fips)}
-    />
+        geometry={(d) => statesGeo.get(d.state_fips)} />
     <Text
         data={scales.fz.domain}
         fontWeight="bold"
         frameAnchor="top"
         fz={(d) => d}
-        text={(d) => d}
-    />
+        text={(d) => d} />
 </Plot>
 ```
 
@@ -241,14 +247,24 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 <Slider label="stepX" bind:value={stepX} min={1} max={45} />
 <Slider label="stepY" bind:value={stepY} min={1} max={45} />
 
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
+<Plot
+    inset={2}
+    projection={{
+        type: 'orthographic',
+        rotate: [0, -30, 20]
+    }}>
     <Sphere stroke="currentColor" />
     <Graticule strokeOpacity={0.3} {stepX} {stepY} />
 </Plot>
 ```
 
 ```svelte
-<Plot inset={2} projection={{ type: 'orthographic', rotate: [0, -30, 20] }}>
+<Plot
+    inset={2}
+    projection={{
+        type: 'orthographic',
+        rotate: [0, -30, 20]
+    }}>
     <Sphere stroke="currentColor" />
     <Graticule strokeOpacity={0.3} />
 </Plot>

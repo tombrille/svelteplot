@@ -22,10 +22,19 @@ The following example shows trade between the USA and the UK, with the exports f
         curve="basis"
         opacity="0.3"
         positiveFill="var(--svp-blue)"
-        negativeFill="var(--svp-red)"
-    />
-    <Line data={trade} x="Year" y="Imports" stroke="var(--svp-red)" curve="basis" />
-    <Line data={trade} x="Year" y="Exports" stroke="var(--svp-blue)" curve="basis" />
+        negativeFill="var(--svp-red)" />
+    <Line
+        data={trade}
+        x="Year"
+        y="Imports"
+        stroke="var(--svp-red)"
+        curve="basis" />
+    <Line
+        data={trade}
+        x="Year"
+        y="Exports"
+        stroke="var(--svp-blue)"
+        curve="basis" />
 </Plot>
 ```
 
@@ -39,10 +48,19 @@ The following example shows trade between the USA and the UK, with the exports f
         curve="basis"
         opacity="0.3"
         positiveFill="blue"
-        negativeFill="red"
-    />
-    <Line data={trade} x="Year" y="Imports" stroke="red" curve="basis" />
-    <Line data={trade} x="Year" y="Exports" stroke="blue" curve="basis" />
+        negativeFill="red" />
+    <Line
+        data={trade}
+        x="Year"
+        y="Imports"
+        stroke="red"
+        curve="basis" />
+    <Line
+        data={trade}
+        x="Year"
+        y="Exports"
+        stroke="blue"
+        curve="basis" />
 </Plot>
 ```
 
@@ -62,8 +80,7 @@ If just one _x_ and _y_ channel is defined, the value zero will be used as compa
         y="Anomaly"
         curve="step"
         positiveFill="var(--svp-red)"
-        negativeFill="var(--svp-blue)"
-    />
+        negativeFill="var(--svp-blue)" />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -76,8 +93,7 @@ If just one _x_ and _y_ channel is defined, the value zero will be used as compa
         y="Anomaly"
         curve="step"
         positiveFill="var(--svp-red)"
-        negativeFill="var(--svp-blue)"
-    />
+        negativeFill="var(--svp-blue)" />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -93,7 +109,12 @@ You can compare the metric to a different "baseline" by providing a constant _y1
     let y1 = $state(0.2);
 </script>
 
-<Slider label="y1" min={-0.4} max={1} step={0.01} bind:value={y1} />
+<Slider
+    label="y1"
+    min={-0.4}
+    max={1}
+    step={0.01}
+    bind:value={y1} />
 <Plot height={350} y={{ grid: true }}>
     <DifferenceY
         data={gistemp}
@@ -102,8 +123,7 @@ You can compare the metric to a different "baseline" by providing a constant _y1
         {y1}
         curve="step"
         positiveFill="var(--svp-red)"
-        negativeFill="var(--svp-blue)"
-    />
+        negativeFill="var(--svp-blue)" />
     <RuleY data={[y1]} />
 </Plot>
 ```
@@ -117,8 +137,7 @@ You can compare the metric to a different "baseline" by providing a constant _y1
         {y1}
         curve="step"
         positiveFill="red"
-        negativeFill="blue"
-    />
+        negativeFill="blue" />
     <RuleY data={[y1]} />
 </Plot>
 ```
@@ -127,7 +146,13 @@ In combination with the [shift transform](/transforms/shift) you can compare a s
 
 ```svelte live
 <script>
-    import { Plot, Line, DifferenceY, shiftX, RuleX } from '$lib';
+    import {
+        Plot,
+        Line,
+        DifferenceY,
+        shiftX,
+        RuleX
+    } from '$lib';
     import { page } from '$app/stores';
     import { Slider } from '$lib/ui';
 
@@ -139,10 +164,12 @@ In combination with the [shift transform](/transforms/shift) you can compare a s
 <Plot height={350} grid>
     <DifferenceY
         stroke
-        {...shiftX({ data: aapl, x: 'Date', y: 'Close' }, { x1: `+${days} days` })}
+        {...shiftX(
+            { data: aapl, x: 'Date', y: 'Close' },
+            { x1: `+${days} days` }
+        )}
         positiveFill="var(--svp-green)"
-        negativeFill="var(--svp-red)"
-    />
+        negativeFill="var(--svp-red)" />
 </Plot>
 ```
 
@@ -150,10 +177,12 @@ In combination with the [shift transform](/transforms/shift) you can compare a s
 <Plot height={350} grid>
     <DifferenceY
         stroke
-        {...shiftX({ data: aapl, x: 'Date', y: 'Close' }, { x1: `+${days} days` })}
+        {...shiftX(
+            { data: aapl, x: 'Date', y: 'Close' },
+            { x1: `+${days} days` }
+        )}
         positiveFill="green"
-        negativeFill="red"
-    />
+        negativeFill="red" />
 </Plot>
 ```
 

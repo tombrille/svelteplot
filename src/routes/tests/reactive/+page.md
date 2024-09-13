@@ -14,10 +14,16 @@ Plot scales react to mark data changes
 
     let cutoff = $state(0);
 
-    let data = $derived(cutoff ? aapl.slice(0, -cutoff) : aapl);
+    let data = $derived(
+        cutoff ? aapl.slice(0, -cutoff) : aapl
+    );
 </script>
 
-<Slider label="cutoff" bind:value={cutoff} min={0} max={aapl.length - 10} />
+<Slider
+    label="cutoff"
+    bind:value={cutoff}
+    min={0}
+    max={aapl.length - 10} />
 <Plot grid inset={10}>
     <Line {data} x="Date" y="Close" />
 </Plot>
@@ -35,7 +41,10 @@ Plot reacts to channel changes:
     let y = $state('Close');
 </script>
 
-<Select label="y" bind:value={y} options={['Open', 'Close', 'Volume']} />
+<Select
+    label="y"
+    bind:value={y}
+    options={['Open', 'Close', 'Volume']} />
 <Plot grid inset={10}>
     <Line data={aapl} x="Date" {y} />
 </Plot>
@@ -55,17 +64,32 @@ Plot reacts to channel changes:
     let facet = $state(false);
     let minWeight = $state(8000);
 
-    let justGentoo = $derived(penguins.filter((d) => d.species === 'Gentoo'));
-    let others = $derived(penguins.filter((d) => d.species !== 'Gentoo'));
+    let justGentoo = $derived(
+        penguins.filter((d) => d.species === 'Gentoo')
+    );
+    let others = $derived(
+        penguins.filter((d) => d.species !== 'Gentoo')
+    );
 </script>
 
-<p>Changing a mark filter should not affect the inferred scale range:</p>
-<Slider label="min weight" min={3000} max={8000} bind:value={minWeight} />
+<p>
+    Changing a mark filter should not affect the inferred
+    scale range:
+</p>
+<Slider
+    label="min weight"
+    min={3000}
+    max={8000}
+    bind:value={minWeight} />
 
 <p>But filtering data should:</p>
-<label><input type="checkbox" bind:checked={filter} /> just Gentoo</label><br />
+<label
+    ><input type="checkbox" bind:checked={filter} /> just Gentoo</label
+><br />
 
-<label><input type="checkbox" bind:checked={facet} /> facet</label><br />
+<label
+    ><input type="checkbox" bind:checked={facet} /> facet</label
+><br />
 
 {#if penguins.length}
     <Plot grid>
@@ -75,8 +99,7 @@ Plot reacts to channel changes:
                 fill="gray"
                 x="culmen_length_mm"
                 y="culmen_depth_mm"
-                filter={(d) => d.body_mass_g < minWeight}
-            />
+                filter={(d) => d.body_mass_g < minWeight} />
         {/if}
         <Dot
             data={justGentoo}
@@ -84,8 +107,7 @@ Plot reacts to channel changes:
             fx={facet ? 'sex' : null}
             x="culmen_length_mm"
             y="culmen_depth_mm"
-            filter={(d) => d.body_mass_g < minWeight}
-        /> />
+            filter={(d) => d.body_mass_g < minWeight} /> />
     </Plot>
 {/if}
 ```

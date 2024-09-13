@@ -15,7 +15,11 @@ Pointer mark
 
 <Plot testid="aapl-line-frame">
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
+    <Pointer
+        data={aapl}
+        x="Date"
+        y="Close"
+        maxDistance={30}>
         {#snippet children({ data })}
             <Text
                 {data}
@@ -27,8 +31,7 @@ Pointer mark
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10"
-            />
+                dy="-10" />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
@@ -38,7 +41,11 @@ Pointer mark
 ```svelte
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
+    <Pointer
+        data={aapl}
+        x="Date"
+        y="Close"
+        maxDistance={30}>
         {#snippet children({ data })}
             <Text
                 {data}
@@ -50,8 +57,7 @@ Pointer mark
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10"
-            />
+                dy="-10" />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
@@ -62,7 +68,15 @@ You can create a "crosshair" mark
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleX, RuleY, AxisX, AxisY, Pointer } from '$lib';
+    import {
+        Plot,
+        Line,
+        RuleX,
+        RuleY,
+        AxisX,
+        AxisY,
+        Pointer
+    } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -71,12 +85,20 @@ You can create a "crosshair" mark
     <AxisX />
     <AxisY />
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer data={aapl} x="Date" y="Close" maxDistance={30}>
+    <Pointer
+        data={aapl}
+        x="Date"
+        y="Close"
+        maxDistance={30}>
         {#snippet children({ data })}
             <RuleX {data} x="Date" opacity="0.3" />
             <RuleY {data} y="Close" opacity="0.3" />
-            <AxisX data={data.map((d) => d.Date)} tickFormat={(d) => d.getFullYear()} />
-            <AxisY data={data.map((d) => d.Close)} tickFormat={(d) => d.toFixed()} />
+            <AxisX
+                data={data.map((d) => d.Date)}
+                tickFormat={(d) => d.getFullYear()} />
+            <AxisY
+                data={data.map((d) => d.Close)}
+                tickFormat={(d) => d.toFixed()} />
         {/snippet}
     </Pointer>
 </Plot>
@@ -86,7 +108,14 @@ PointerY
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY, Dot, Text, Pointer } from '$lib';
+    import {
+        Plot,
+        Line,
+        RuleY,
+        Dot,
+        Text,
+        Pointer
+    } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -106,8 +135,7 @@ PointerY
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10"
-            />
+                dy="-10" />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
@@ -116,7 +144,14 @@ PointerY
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleX, Dot, Text, Pointer } from '$lib';
+    import {
+        Plot,
+        Line,
+        RuleX,
+        Dot,
+        Text,
+        Pointer
+    } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -136,8 +171,7 @@ PointerY
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10"
-            />
+                dy="-10" />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
@@ -148,17 +182,40 @@ PointerX
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleX, Dot, Text, Pointer } from '$lib';
+    import {
+        Plot,
+        Line,
+        RuleX,
+        Dot,
+        Text,
+        Pointer
+    } from '$lib';
     import { page } from '$app/stores';
     let { stocks } = $derived($page.data.data);
-    let stocks2 = $derived(stocks.filter((d) => d.Date < new Date(2018, 0, 1)));
+    let stocks2 = $derived(
+        stocks.filter((d) => d.Date < new Date(2018, 0, 1))
+    );
 </script>
 
-<Plot testid="stocks-line-frame" y={{ type: 'log' }} marginRight={20}>
-    <Line data={stocks2} x="Date" y="Close" stroke="Symbol" />
-    <Pointer data={stocks2} x="Date" z="Symbol" maxDistance={30}>
+<Plot
+    testid="stocks-line-frame"
+    y={{ type: 'log' }}
+    marginRight={20}>
+    <Line
+        data={stocks2}
+        x="Date"
+        y="Close"
+        stroke="Symbol" />
+    <Pointer
+        data={stocks2}
+        x="Date"
+        z="Symbol"
+        maxDistance={30}>
         {#snippet children({ data })}
-            <RuleX data={data.length ? [data[0]] : []} x="Date" opacity={0.2} />
+            <RuleX
+                data={data.length ? [data[0]] : []}
+                x="Date"
+                opacity={0.2} />
             <Text
                 {data}
                 fill="Symbol"
@@ -169,8 +226,7 @@ PointerX
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10"
-            />
+                dy="-10" />
             <Dot {data} x="Date" y="Close" fill="Symbol" />
         {/snippet}
     </Pointer>
@@ -185,18 +241,25 @@ Click the bar chart!
 
     let clicked = $state();
 
-    let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked)}` : 'Click the bars');
+    let title = $derived(
+        clicked
+            ? `You clicked ${JSON.stringify(clicked)}`
+            : 'Click the bars'
+    );
 </script>
 
 <Plot x={{ axis: false }} y={{ grid: true }} {title}>
     <BarY
         data={[-2, -1, 2, 4, 6, 9, 5]}
         cursor="pointer"
-        opacity={{ scale: null, value: (d) => (!clicked || clicked === d ? 1 : 0.5) }}
+        opacity={{
+            scale: null,
+            value: (d) =>
+                !clicked || clicked === d ? 1 : 0.5
+        }}
         onclick={(event, d) => {
             clicked = d;
-        }}
-    />
+        }} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -208,10 +271,10 @@ Click the bar chart!
         cursor="pointer"
         opacity={{
             scale: null,
-            value: (d) => (!clicked || clicked === d ? 1 : 0.5)
+            value: (d) =>
+                !clicked || clicked === d ? 1 : 0.5
         }}
-        onclick={(d) => (clicked = d)}
-    />
+        onclick={(d) => (clicked = d)} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -245,15 +308,21 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species"
-    />
+        symbol="species" />
     {#snippet overlay()}
-        <HTMLTooltip data={penguins} let:datum x="culmen_length_mm" y="culmen_depth_mm">
+        <HTMLTooltip
+            data={penguins}
+            let:datum
+            x="culmen_length_mm"
+            y="culmen_depth_mm">
             <div class="tt">
                 <div>Species: {datum.species}</div>
                 <div>Island: {datum.island}</div>
                 <div>
-                    <img src={speciesImages[datum.species]} />
+                    <img
+                        src={speciesImages[
+                            datum.species
+                        ]} />
                 </div>
             </div>
         </HTMLTooltip>
@@ -294,33 +363,33 @@ You can even put another tiny plot inside the HTML tooltips:
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species"
-    />
+        symbol="species" />
     {#snippet overlay()}
-        <HTMLTooltip data={penguins} let:datum x="culmen_length_mm" y="culmen_depth_mm">
+        <HTMLTooltip
+            data={penguins}
+            let:datum
+            x="culmen_length_mm"
+            y="culmen_depth_mm">
             <div style="width: 150px">
                 <Plot
                     inset={4}
                     margins={0}
                     x={{ label: null, axis: false }}
                     y={{ label: null, axis: false }}
-                    height={130}
-                >
+                    height={130}>
                     <Dot
                         data={penguins}
                         x="culmen_length_mm"
                         y="culmen_depth_mm"
                         stroke="species"
                         r={2}
-                        opacity={0.2}
-                    />
+                        opacity={0.2} />
                     <Dot
                         data={[datum]}
                         x="culmen_length_mm"
                         y="culmen_depth_mm"
                         r={4}
-                        fill="currentColor"
-                    />
+                        fill="currentColor" />
                 </Plot>
             </div>
         </HTMLTooltip>

@@ -34,11 +34,19 @@ Rules can be used for barcode plots:
     import { range } from 'd3-array';
     import { randomNormal, randomLcg } from 'd3-random';
 
-    const seededNormal = randomNormal.source(randomLcg(0.12345));
+    const seededNormal = randomNormal.source(
+        randomLcg(0.12345)
+    );
 </script>
 
-<Plot testid="barcode" margins={0} marginBottom={35} height={70}>
-    <RuleX data={range(500).map(seededNormal(0, 1))} strokeOpacity={0.5} />
+<Plot
+    testid="barcode"
+    margins={0}
+    marginBottom={35}
+    height={70}>
+    <RuleX
+        data={range(500).map(seededNormal(0, 1))}
+        strokeOpacity={0.5} />
 </Plot>
 ```
 
@@ -53,7 +61,13 @@ Or candlestick
 </script>
 
 <Plot grid height={250} testid="candlestick">
-    <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.5" />
+    <RuleX
+        data={aapl.slice(750, 800)}
+        x="Date"
+        y1="Low"
+        y2="High"
+        strokeWidth="2"
+        opacity="0.5" />
     <RuleX
         data={aapl.slice(750, 800)}
         x="Date"
@@ -61,22 +75,29 @@ Or candlestick
         y2="Close"
         strokeWidth="5"
         stroke={(d) =>
-            (d as AAPL).Close > (d as AAPL).Open ? 'var(--svp-green)' : 'var(--svp-red)'}
-    />
+            (d as AAPL).Close > (d as AAPL).Open
+                ? 'var(--svp-green)'
+                : 'var(--svp-red)'} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <RuleX data={aapl.slice(750, 800)} x="Date" y1="Low" y2="High" strokeWidth="2" opacity="0.3" />
+    <RuleX
+        data={aapl.slice(750, 800)}
+        x="Date"
+        y1="Low"
+        y2="High"
+        strokeWidth="2"
+        opacity="0.3" />
     <RuleX
         data={aapl.slice(750, 800)}
         x="Date"
         y1="Open"
         y2="Close"
         strokeWidth="5"
-        stroke={(d) => (d.Close > d.Open ? 'green' : 'red')}
-    />
+        stroke={(d) =>
+            d.Close > d.Open ? 'green' : 'red'} />
 </Plot>
 ```
 

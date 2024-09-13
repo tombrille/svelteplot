@@ -22,18 +22,22 @@ For example, the heatmap below shows the decline of _The Simpsons_ after Season 
     x={{ type: 'band', axis: 'top' }}
     y={{ type: 'band' }}
     color={{ type: 'linear', scheme: 'PiYG' }}
-    testid="simpsons"
->
-    <Cell data={simpsons} x="episode" y="season" fill="imdb_rating" inset={0.5} />
+    testid="simpsons">
+    <Cell
+        data={simpsons}
+        x="episode"
+        y="season"
+        fill="imdb_rating"
+        inset={0.5} />
     <Text
         data={simpsons}
         y="season"
         x="episode"
         fontSize={9}
         fill="black"
-        text={(d) => d.imdb_rating && d.imdb_rating.toFixed(1)}
-        title={(d) => d.title}
-    />
+        text={(d) =>
+            d.imdb_rating && d.imdb_rating.toFixed(1)}
+        title={(d) => d.title} />
 </Plot>
 ```
 
@@ -54,16 +58,14 @@ Seattle temperatures
         ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         tickFormat: formatMonth('en', 'short')
     }}
-    testid="seattle-temp"
->
+    testid="seattle-temp">
     <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5"
-    />
+        inset="0.5" />
 </Plot>
 ```
 
@@ -77,7 +79,9 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-    let first28 = $derived(simpsons.filter((d) => d.season < 29));
+    let first28 = $derived(
+        simpsons.filter((d) => d.season < 29)
+    );
 </script>
 
 <Plot
@@ -90,13 +94,18 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
         type: 'band',
         axis: 'top',
         label: 'Season',
-        ticks: first28.filter((d) => d.episode === 1).map((d) => d.id),
-        tickFormat: (x) => first28.find((d) => d.id === x).season
+        ticks: first28
+            .filter((d) => d.episode === 1)
+            .map((d) => d.id),
+        tickFormat: (x) =>
+            first28.find((d) => d.id === x).season
     }}
     color={{ type: 'linear', scheme: 'PiYG' }}
-    testid="first28"
->
-    <CellX data={first28.sort((a, b) => b.id - a.id)} x="id" fill="imdb_rating" />
+    testid="first28">
+    <CellX
+        data={first28.sort((a, b) => b.id - a.id)}
+        x="id"
+        fill="imdb_rating" />
 </Plot>
 ```
 
@@ -106,12 +115,17 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
         type: 'band',
         axis: 'top',
         label: 'Season',
-        ticks: simpsons.filter((d) => d.episode === 1).map((d) => d.id),
-        tickFormat: (x) => simpsons.find((d) => d.id === x).season
+        ticks: simpsons
+            .filter((d) => d.episode === 1)
+            .map((d) => d.id),
+        tickFormat: (x) =>
+            simpsons.find((d) => d.id === x).season
     }}
-    color={{ type: 'linear', scheme: 'PiYG' }}
->
-    <CellX data={simpsons.sort((a, b) => b.id - a.id)} x="id" fill="imdb_rating" />
+    color={{ type: 'linear', scheme: 'PiYG' }}>
+    <CellX
+        data={simpsons.sort((a, b) => b.id - a.id)}
+        x="id"
+        fill="imdb_rating" />
 </Plot>
 ```
 
@@ -123,7 +137,9 @@ But better to use a RectX here:
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-    let first28 = $derived(simpsons.filter((d) => d.season < 29));
+    let first28 = $derived(
+        simpsons.filter((d) => d.season < 29)
+    );
 </script>
 
 <Plot
@@ -136,8 +152,11 @@ But better to use a RectX here:
         axis: 'top',
         label: 'Season'
     }}
-    color={{ type: 'linear', scheme: 'PiYG' }}
->
-    <RectX data={first28.sort((a, b) => b.id - a.id)} x="id" interval="1" fill="imdb_rating" />
+    color={{ type: 'linear', scheme: 'PiYG' }}>
+    <RectX
+        data={first28.sort((a, b) => b.id - a.id)}
+        x="id"
+        interval="1"
+        fill="imdb_rating" />
 </Plot>
 ```

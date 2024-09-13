@@ -44,64 +44,99 @@ title: Window transform
 </script>
 
 <p>
-    For example, the band chart below shows the daily high and low temperature in San Francisco. The <span
-        style="border-bottom: solid 2px var(--svp-red);">red</span
-    >
+    For example, the band chart below shows the daily high
+    and low temperature in San Francisco. The <span
+        style="border-bottom: solid 2px var(--svp-red);"
+        >red</span>
     line represents the {k}-day {niceReduce} high, and the
-    <span style="border-bottom: solid 2px var(--svp-blue);">blue</span>
+    <span style="border-bottom: solid 2px var(--svp-blue);"
+        >blue</span>
     line the {k}-day {niceReduce} low.
 </p>
 
 <Slider label="k" min={1} max={100} bind:value={k} />
-<Select label="reduce" options={REDUCE_OPTIONS} bind:value={reduce} />
-<Select label="anchor" options={['start', 'middle', 'end']} bind:value={anchor} />
-<label><input type="checkbox" bind:checked={strict} /> strict</label>
+<Select
+    label="reduce"
+    options={REDUCE_OPTIONS}
+    bind:value={reduce} />
+<Select
+    label="anchor"
+    options={['start', 'middle', 'end']}
+    bind:value={anchor} />
+<label
+    ><input type="checkbox" bind:checked={strict} /> strict</label>
 <Plot inset={5}>
-    <AreaY data={sftemp} x="date" y1="low" y2="high" opacity="0.2" />
+    <AreaY
+        data={sftemp}
+        x="date"
+        y1="low"
+        y2="high"
+        opacity="0.2" />
     <Line
-        {...windowY({ data: sftemp, x: 'date', y: 'low' }, { k, anchor, strict, reduce })}
-        stroke="var(--svp-blue)"
-    />
+        {...windowY(
+            { data: sftemp, x: 'date', y: 'low' },
+            { k, anchor, strict, reduce }
+        )}
+        stroke="var(--svp-blue)" />
     <Line
-        {...windowY({ data: sftemp, x: 'date', y: 'high' }, { k, anchor, strict, reduce })}
-        stroke="var(--svp-red)"
-    />
+        {...windowY(
+            { data: sftemp, x: 'date', y: 'high' },
+            { k, anchor, strict, reduce }
+        )}
+        stroke="var(--svp-red)" />
     <AreaY
         {...windowY(
-            { data: sftemp, x: 'date', y1: 'high', y2: 'low' },
+            {
+                data: sftemp,
+                x: 'date',
+                y1: 'high',
+                y2: 'low'
+            },
             { k, anchor, strict, reduce }
         )}
         fillOpacity={0.15}
         fill="yellow"
-        mixBlendMode="multiply"
-    />
+        mixBlendMode="multiply" />
 </Plot>
 ```
 
 ```svelte
 <Plot>
     <!-- raw data -->
-    <AreaY data={sftemp} x="date" y1="low" y2="high" opacity="0.2" />
+    <AreaY
+        data={sftemp}
+        x="date"
+        y1="low"
+        y2="high"
+        opacity="0.2" />
     <!-- line for reduced high temp. -->
     <Line
-        {...windowY({ data: sftemp, x: 'date', y: 'low' }, { k, anchor, strict, reduce })}
-        stroke="blue"
-    />
+        {...windowY(
+            { data: sftemp, x: 'date', y: 'low' },
+            { k, anchor, strict, reduce }
+        )}
+        stroke="blue" />
     <!-- line for reduced low temp. -->
     <Line
-        {...windowY({ data: sftemp, x: 'date', y: 'high' }, { k, anchor, strict, reduce })}
-        stroke="red"
-    />
+        {...windowY(
+            { data: sftemp, x: 'date', y: 'high' },
+            { k, anchor, strict, reduce }
+        )}
+        stroke="red" />
     <!-- area band between reduced high and low temp. -->
     <AreaY
         {...windowY(
-            { data: sftemp, x: 'date', y1: 'high', y2: 'low' },
+            {
+                data: sftemp,
+                x: 'date',
+                y1: 'high',
+                y2: 'low'
+            },
             { k, anchor, strict, reduce }
         )}
         fillOpacity={0.25}
         fill="yellow"
-        mixBlendMode="multiply"
-    />
+        mixBlendMode="multiply" />
 </Plot>
 ```
 
@@ -111,48 +146,111 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
 
 ```svelte live
 <script>
-    import { Plot, AreaY, RectX, Line, windowY, binX, groupZ, Text, selectLast } from '$lib';
+    import {
+        Plot,
+        AreaY,
+        RectX,
+        Line,
+        windowY,
+        binX,
+        groupZ,
+        Text,
+        selectLast
+    } from '$lib';
     import { page } from '$app/stores';
     import { Slider } from '$lib/ui';
     import { groups } from 'd3-array';
 
     let { stocks } = $derived($page.data.data);
-    let stocks2 = $derived(stocks.filter((d) => d.Date.getFullYear() < 2016));
+    let stocks2 = $derived(
+        stocks.filter((d) => d.Date.getFullYear() < 2016)
+    );
     let k = $state(90);
-    let smoothed = $derived(windowY({ data: stocks, x: 'Date', y: 'Close', z: 'Symbol' }, { k }));
+    let smoothed = $derived(
+        windowY(
+            {
+                data: stocks,
+                x: 'Date',
+                y: 'Close',
+                z: 'Symbol'
+            },
+            { k }
+        )
+    );
 </script>
 
 <Slider label="k" min={1} max={120} bind:value={k} />
 <Plot grid y={{ type: 'log', base: 5 }} marginRight={75}>
     <RectX
         {...binX(
-            { data: stocks, x: 'Date', y1: 'Low', y2: 'High', fill: 'Symbol' },
+            {
+                data: stocks,
+                x: 'Date',
+                y1: 'Low',
+                y2: 'High',
+                fill: 'Symbol'
+            },
             { y1: 'min', y2: 'max', interval: '2 weeks' }
         )}
         opacity="0.4"
-        strokeWidth="1.5"
-    />
-    <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
-    <Text {...selectLast(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
+        strokeWidth="1.5" />
+    <Line
+        {...smoothed}
+        stroke="Symbol"
+        strokeWidth="2"
+        markerEnd="dot" />
+    <Text
+        {...selectLast(smoothed)}
+        fill="Symbol"
+        text="Symbol"
+        dx="10"
+        textAnchor="start" />
 </Plot>
 ```
 
 ```svelte
 <script>
-    let smoothed = $derived(windowY({ data: stocks2, x: 'Date', y: 'Close', z: 'Symbol' }, { k }));
+    let smoothed = $derived(
+        windowY(
+            {
+                data: stocks2,
+                x: 'Date',
+                y: 'Close',
+                z: 'Symbol'
+            },
+            { k }
+        )
+    );
 </script>
 
-<Plot grid y={{ type: 'log', base: 5, domain: [50, 1000] }} marginRight={100}>
+<Plot
+    grid
+    y={{ type: 'log', base: 5, domain: [50, 1000] }}
+    marginRight={100}>
     <RuleX
         {...binX(
-            { data: stocks2, x: 'Date', y1: 'Low', y2: 'High', z: 'Symbol' },
+            {
+                data: stocks2,
+                x: 'Date',
+                y1: 'Low',
+                y2: 'High',
+                z: 'Symbol'
+            },
             { y1: 'min', y2: 'max', interval: '3 days' }
         )}
         opacity="0.5"
-        strokeWidth="1.5"
-    />
-    <Line {...smoothed} stroke="Symbol" strokeWidth="2" markerEnd="dot" />
-    <Text {...selectLast(smoothed)} fill="Symbol" text="Symbol" dx="10" textAnchor="start" />
+        strokeWidth="1.5" />
+    <Line
+        {...smoothed}
+        stroke="Symbol"
+        strokeWidth="2"
+        markerEnd="dot" />
+    <Text
+        {...selectLast(smoothed)}
+        fill="Symbol"
+        text="Symbol"
+        dx="10"
+        textAnchor="start" />
 </Plot>
 ```
 
@@ -160,26 +258,47 @@ Note that _{'{ k: 20 }'}_ doesn't ensure that you're computing a 20-year average
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot, RectX, Area, RuleY, windowY, binX } from '$lib';
+    import {
+        Plot,
+        Line,
+        Dot,
+        RectX,
+        Area,
+        RuleY,
+        windowY,
+        binX
+    } from '$lib';
     import { page } from '$app/stores';
     let { cherryblossom } = $derived($page.data.data);
 
     let data = $derived(
-        cherryblossom.map(({ Year, CherryBlossomPeakDay }) => ({
-            Year: new Date(Year, 0, 1),
-            CherryBlossomPeakDay
-        }))
+        cherryblossom.map(
+            ({ Year, CherryBlossomPeakDay }) => ({
+                Year: new Date(Year, 0, 1),
+                CherryBlossomPeakDay
+            })
+        )
     );
 </script>
 
 <Plot grid height={250}>
-    <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" opacity="0.5" r={2} />
+    <Dot
+        {data}
+        fill="#e7adca"
+        x="Year"
+        y="CherryBlossomPeakDay"
+        opacity="0.5"
+        r={2} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid height={250}>
-    <Dot data={cherryblossom} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" />
+    <Dot
+        data={cherryblossom}
+        fill="#e7adca"
+        x="Year"
+        y="CherryBlossomPeakDay" />
 </Plot>
 ```
 
@@ -187,15 +306,26 @@ If we just use the `windowY` transform with _{'{ k: 20, strict: 5 }'}_ to comput
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot, RectX, Area, RuleY, windowY, binX } from '$lib';
+    import {
+        Plot,
+        Line,
+        Dot,
+        RectX,
+        Area,
+        RuleY,
+        windowY,
+        binX
+    } from '$lib';
     import { page } from '$app/stores';
     let { cherryblossom } = $derived($page.data.data);
 
     let data = $derived(
-        cherryblossom.map(({ Year, CherryBlossomPeakDay }) => ({
-            Year: new Date(Year, 0, 1),
-            CherryBlossomPeakDay
-        }))
+        cherryblossom.map(
+            ({ Year, CherryBlossomPeakDay }) => ({
+                Year: new Date(Year, 0, 1),
+                CherryBlossomPeakDay
+            })
+        )
     );
 
     let movingAverage = $derived(
@@ -207,9 +337,21 @@ If we just use the `windowY` transform with _{'{ k: 20, strict: 5 }'}_ to comput
 </script>
 
 <Plot grid height={250}>
-    <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" opacity="0.5" r={2} /> -->
-    <Line {...movingAverage} stroke="var(--svelteplot-bg)" strokeWidth="4" />
-    <Line {...movingAverage} stroke="var(--svp-red)" strokeWidth="2" />
+    <Dot
+        {data}
+        fill="#e7adca"
+        x="Year"
+        y="CherryBlossomPeakDay"
+        opacity="0.5"
+        r={2} /> -->
+    <Line
+        {...movingAverage}
+        stroke="var(--svelteplot-bg)"
+        strokeWidth="4" />
+    <Line
+        {...movingAverage}
+        stroke="var(--svp-red)"
+        strokeWidth="2" />
 </Plot>
 ```
 
@@ -222,21 +364,36 @@ The problem is that especially in pre-modern times, there aren't nearly as many 
     let { cherryblossom } = $derived($page.data.data);
 
     let data = $derived(
-        cherryblossom.map(({ Year, CherryBlossomPeakDay }) => ({
-            Year: new Date(Year, 0, 1),
-            CherryBlossomPeakDay
-        }))
+        cherryblossom.map(
+            ({ Year, CherryBlossomPeakDay }) => ({
+                Year: new Date(Year, 0, 1),
+                CherryBlossomPeakDay
+            })
+        )
     );
 </script>
 
-<Plot grid y={{ label: 'Measurement count in 20-year interval' }} height={250}>
-    <Line {...binX({ data, x: 'Year' }, { interval: '20 years', y: 'count' })} curve="step-after" />
+<Plot
+    grid
+    y={{ label: 'Measurement count in 20-year interval' }}
+    height={250}>
+    <Line
+        {...binX(
+            { data, x: 'Year' },
+            { interval: '20 years', y: 'count' }
+        )}
+        curve="step-after" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid height={250}>
-    <Line {...binX({ data, x: 'Year' }, { interval: '20 years', y: 'count' })} curve="step-after" />
+    <Line
+        {...binX(
+            { data, x: 'Year' },
+            { interval: '20 years', y: 'count' }
+        )}
+        curve="step-after" />
 </Plot>
 ```
 
@@ -246,16 +403,27 @@ We can fix this problem by setting the _interval_ option of the window transform
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot, RectX, Area, RuleY, windowY, binX } from '$lib';
+    import {
+        Plot,
+        Line,
+        Dot,
+        RectX,
+        Area,
+        RuleY,
+        windowY,
+        binX
+    } from '$lib';
     import { Slider } from '$lib/ui';
     import { page } from '$app/stores';
     let { cherryblossom } = $derived($page.data.data);
 
     let data = $derived(
-        cherryblossom.map(({ Year, CherryBlossomPeakDay }) => ({
-            Year: new Date(Year, 0, 1),
-            CherryBlossomPeakDay
-        }))
+        cherryblossom.map(
+            ({ Year, CherryBlossomPeakDay }) => ({
+                Year: new Date(Year, 0, 1),
+                CherryBlossomPeakDay
+            })
+        )
     );
 
     let strict = $state(5);
@@ -263,31 +431,63 @@ We can fix this problem by setting the _interval_ option of the window transform
     let movingAverage = $derived(
         windowY(
             { data, x: 'Year', y: 'CherryBlossomPeakDay' },
-            { y: 'mean', k: 20, interval: 'year', anchor: 'end', strict }
+            {
+                y: 'mean',
+                k: 20,
+                interval: 'year',
+                anchor: 'end',
+                strict
+            }
         )
     );
 </script>
 
-<Slider label="strict" min={1} max={20} bind:value={strict} />
+<Slider
+    label="strict"
+    min={1}
+    max={20}
+    bind:value={strict} />
 <Plot grid height={250}>
-    <Dot {data} fill="#e7adca" opacity="0.5" x="Year" y="CherryBlossomPeakDay" r={2} /> -->
+    <Dot
+        {data}
+        fill="#e7adca"
+        opacity="0.5"
+        x="Year"
+        y="CherryBlossomPeakDay"
+        r={2} /> -->
 
-    <Line {...movingAverage} stroke="var(--svelteplot-bg)" strokeWidth="4" />
-    <Line {...movingAverage} stroke="var(--svp-red)" strokeWidth="2" />
+    <Line
+        {...movingAverage}
+        stroke="var(--svelteplot-bg)"
+        strokeWidth="4" />
+    <Line
+        {...movingAverage}
+        stroke="var(--svp-red)"
+        strokeWidth="2" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid height={250}>
-    <Dot {data} fill="#e7adca" x="Year" y="CherryBlossomPeakDay" r={2} />
+    <Dot
+        {data}
+        fill="#e7adca"
+        x="Year"
+        y="CherryBlossomPeakDay"
+        r={2} />
     <Line
         {...windowY(
             { data, x: 'Year', y: 'CherryBlossomPeakDay' },
-            { y: 'mean', k: 20, interval: 'year', anchor: 'end', strict }
+            {
+                y: 'mean',
+                k: 20,
+                interval: 'year',
+                anchor: 'end',
+                strict
+            }
         )}
         stroke="red"
-        strokeWidth="2"
-    />
+        strokeWidth="2" />
 </Plot>
 ```
 

@@ -11,11 +11,40 @@ export const SCALE_TYPES: Record<ScaleName, symbol> = {
 };
 
 export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
-    color: new Set(['linear', 'categorical', 'ordinal', 'diverging', 'quantile', 'quantize', 'threshold', 'log']),
-    x: new Set(['linear', 'log', 'time', 'ordinal', 'band', 'point', 'quantile', 'quantize', 'threshold']),
-    y: new Set(['linear', 'log', 'time', 'ordinal', 'band', 'point', 'quantile', 'quantize', 'threshold']),
+    color: new Set([
+        'linear',
+        'categorical',
+        'ordinal',
+        'diverging',
+        'quantile',
+        'quantize',
+        'threshold',
+        'log'
+    ]),
+    x: new Set([
+        'linear',
+        'log',
+        'time',
+        'ordinal',
+        'band',
+        'point',
+        'quantile',
+        'quantize',
+        'threshold'
+    ]),
+    y: new Set([
+        'linear',
+        'log',
+        'time',
+        'ordinal',
+        'band',
+        'point',
+        'quantile',
+        'quantize',
+        'threshold'
+    ])
     // ...
-}
+};
 
 export const CHANNEL_SCALE: Record<ScaledChannelName, ScaleName> = {
     x: 'x',

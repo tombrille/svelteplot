@@ -27,15 +27,28 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
     let { crimea } = $derived($page.data.data);
 </script>
 
-<Select label="Marker:" bind:value={marker} {options} /><br />
+<Select
+    label="Marker:"
+    bind:value={marker}
+    {options} /><br />
 <Plot inset={10} grid>
-    <Line data={crimea} x="date" y="deaths" stroke="cause" {marker} />
+    <Line
+        data={crimea}
+        x="date"
+        y="deaths"
+        stroke="cause"
+        {marker} />
 </Plot>
 ```
 
 ```svelte
 <Plot>
-    <Line data={crimea} x="date" y="deaths" stroke="cause" marker="dot" />
+    <Line
+        data={crimea}
+        x="date"
+        y="deaths"
+        stroke="cause"
+        marker="dot" />
 </Plot>
 ```
 
@@ -70,21 +83,35 @@ Note that for the interpolation methods `basis`, `bundle`, and `step`, the marke
 
     // curve demo
     const numbers = [
-        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12, 0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6,
-        0.09, 0.14, 0.95, 0.92, 0.89
+        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12,
+        0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6, 0.09, 0.14,
+        0.95, 0.92, 0.89
     ];
 </script>
 
 <Plot height={250} grid>
-    <LineY data={numbers} curve="basis" marker="circle-stroke" />
+    <LineY
+        data={numbers}
+        curve="basis"
+        marker="circle-stroke" />
     <!-- TODO: use DotY here -->
-    <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} symbol="plus" y="value" x="index" />
+    <Dot
+        data={numbers.map((d, i) => ({
+            value: d,
+            index: i
+        }))}
+        symbol="plus"
+        y="value"
+        x="index" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
-    <LineY data={numbers} curve="basis" marker="circle-stroke" />
+    <LineY
+        data={numbers}
+        curve="basis"
+        marker="circle-stroke" />
     <DotY data={numbers} symbol="plus" />
 </Plot>
 ```
@@ -112,8 +139,7 @@ You can also specify a custom marker icon using the `marker` snippet:
                 markerWidth="6"
                 markerHeight="10"
                 viewBox="-4 -10 8 10"
-                orient="auto"
-            >
+                orient="auto">
                 <path d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
             </marker>
         {/snippet}
@@ -132,8 +158,7 @@ You can also specify a custom marker icon using the `marker` snippet:
                 markerWidth="6"
                 markerHeight="6"
                 viewBox="-4 -8 8 8"
-                orient="auto"
-            >
+                orient="auto">
                 <path d="M0,-8L0,0M-3,-6 L0,0 L3,-6" />
             </marker>
         {/snippet}
@@ -171,14 +196,12 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
                 markerWidth="6"
                 markerHeight="10"
                 viewBox="-4 -10 8 10"
-                orient="auto"
-            >
+                orient="auto">
                 {#if shown}
                     <path
                         in:fly={{ duration: 1000, y: -10 }}
                         out:fade
-                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3"
-                    />
+                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
                 {/if}
             </marker>
         {/snippet}
@@ -189,9 +212,17 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 ```svelte
 <!-- <Plot><Line> -->
 {#snippet marker(id, color)}
-    <marker {id} fill="none" stroke={color} ... orient="auto">
+    <marker
+        {id}
+        fill="none"
+        stroke={color}
+        ...
+        orient="auto">
         {#if shown}
-            <path in:fly={{ duration: 1000, y: -10 }} out:fade d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
+            <path
+                in:fly={{ duration: 1000, y: -10 }}
+                out:fade
+                d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
         {/if}
     </marker>
 {/snippet}

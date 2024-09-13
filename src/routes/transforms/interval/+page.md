@@ -16,7 +16,13 @@ The interval transform is often used for time-series bar charts. For example, co
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot marginLeft={40} x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>
+<Plot
+    marginLeft={40}
+    x={{
+        tickFormat: (d) =>
+            dayjs(d).format('D\nMMM').split('\n')
+    }}
+    grid>
     <BarY data={aapl.slice(-40)} x="Date" y="Volume" />
     <RuleY data={[0]} />
 </Plot>
@@ -35,14 +41,24 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 </script>
 
 <Plot marginLeft={40} x={{ type: 'time' }} grid>
-    <RectY data={aapl.slice(-40)} x="Date" y="Volume" interval="day" insetRight={1} />
+    <RectY
+        data={aapl.slice(-40)}
+        x="Date"
+        y="Volume"
+        interval="day"
+        insetRight={1} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
 <Plot marginLeft={40} x={{ type: 'time' }} grid>
-    <RectY data={aapl.slice(-40)} x="Date" y="Volume" interval="day" insetRight={1} />
+    <RectY
+        data={aapl.slice(-40)}
+        x="Date"
+        y="Volume"
+        interval="day"
+        insetRight={1} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -59,8 +75,18 @@ The meaning of the interval mark option depends on the associated mark, such as 
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot marginLeft={40} x={{ tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n') }} grid>
-    <BarY data={aapl.slice(-40)} x="Date" y="Volume" interval={5e6} />
+<Plot
+    marginLeft={40}
+    x={{
+        tickFormat: (d) =>
+            dayjs(d).format('D\nMMM').split('\n')
+    }}
+    grid>
+    <BarY
+        data={aapl.slice(-40)}
+        x="Date"
+        y="Volume"
+        interval={5e6} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -70,11 +96,15 @@ The meaning of the interval mark option depends on the associated mark, such as 
     marginLeft={40}
     x={{
         /* force date ticks for band scale */
-        tickFormat: (d) => dayjs(d).format('D\nMMM').split('\n')
+        tickFormat: (d) =>
+            dayjs(d).format('D\nMMM').split('\n')
     }}
-    grid
->
-    <BarY data={aapl.slice(-40)} x="Date" y="Volume" interval={5e6} />
+    grid>
+    <BarY
+        data={aapl.slice(-40)}
+        x="Date"
+        y="Volume"
+        interval={5e6} />
     <RuleY data={[0]} />
 </Plot>
 ```

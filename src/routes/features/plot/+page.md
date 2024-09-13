@@ -28,7 +28,15 @@ But if we wanted to, we can add these marks individually, and it would look just
 
 ```svelte live
 <script>
-    import { Plot, Frame, GridX, GridY, AxisX, AxisY, Line } from '$lib';
+    import {
+        Plot,
+        Frame,
+        GridX,
+        GridY,
+        AxisX,
+        AxisY,
+        Line
+    } from '$lib';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
@@ -85,8 +93,7 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
     title="This is a plot title"
     subtitle="This is a subtitle"
     caption="This is the caption"
-    testid="with-title"
->
+    testid="with-title">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -142,12 +149,15 @@ to add events and scoped styles.
 
 <Plot grid>
     {#snippet header()}
-        <figcaption>Custom caption above the plot</figcaption>
+        <figcaption>
+            Custom caption above the plot
+        </figcaption>
     {/snippet}
     {#snippet footer()}
         <h4>
             Centered headline below plot with
-            <a href="#/" on:click={() => alert('works')}>custom link</a>
+            <a href="#/" on:click={() => alert('works')}
+                >custom link</a>
         </h4>
     {/snippet}
     <Line data={aapl} x="Date" y="Close" />

@@ -30,18 +30,33 @@ layering grids on top of other marks. Note that in this case, custom grid ticks 
 with the axes marks.
 
 ```svelte
-<Plot frame x={{ domain: [0, 10] }} y={{ domain: [0, 5] }} marginBottom={40} marginRight={30}>
+<Plot
+    frame
+    x={{ domain: [0, 10] }}
+    y={{ domain: [0, 5] }}
+    marginBottom={40}
+    marginRight={30}>
     <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
     <AxisX stroke="cornflowerblue" fill="cornflowerblue" />
-    <AxisY fill="green" anchor="right" tickSize={-5} tickPadding={10} />
-    <AxisY stroke="magenta" fill="#dd0000" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+    <AxisY
+        fill="green"
+        anchor="right"
+        tickSize={-5}
+        tickPadding={10} />
+    <AxisY
+        stroke="magenta"
+        fill="#dd0000"
+        ticks={[0, 1.5, 2, 2.5, 4, 5]} />
 </Plot>
 ```
 
 The automatic ticks can be customized using the <b>tickSpacing</b> option:
 
 ```svelte
-<Plot x={{ tickSpacing: 150 }} y={{ tickSpacing: 10 }} testid="tickspacing">
+<Plot
+    x={{ tickSpacing: 150 }}
+    y={{ tickSpacing: 10 }}
+    testid="tickspacing">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -56,7 +71,12 @@ You can turn off all axes
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot x={{ axis: false }} y={{ axis: false }} height={200} margins={0} testid="axis-off">
+<Plot
+    x={{ axis: false }}
+    y={{ axis: false }}
+    height={200}
+    margins={0}
+    testid="axis-off">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -84,11 +104,16 @@ You can turn off all axes
         maxWidth="50px"
         height={25}
         margins={0}
-        testid="axis-off"
-    >
+        testid="axis-off">
         <Line data={aapl.slice(-60)} x="Date" y="Close" />
-        <Dot data={aapl.slice(-1)} x="Date" y="Close" r={2} fill="currentColor" />
-    </Plot>, inside a text paragraph or table -- often referred to as sparklines.
+        <Dot
+            data={aapl.slice(-1)}
+            x="Date"
+            y="Close"
+            r={2}
+            fill="currentColor" />
+    </Plot>, inside a text paragraph or table -- often
+    referred to as sparklines.
 </p>
 
 <style>
@@ -106,11 +131,21 @@ Ordinal axis:
     import { Plot, RuleY } from '$lib';
 </script>
 
-<Plot x={{ domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+<Plot
+    x={{
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
 ```
 
 ```svelte
-<Plot x={{ domain: 'These are some ordinal ticks on a band scale'.split(' ') }} />
+<Plot
+    x={{
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
 ```
 
 You can rotate tick labels:
@@ -123,20 +158,30 @@ You can rotate tick labels:
     let tickRotate = $state(-45);
 </script>
 
-<Slider label="tick angle" min={-90} max={90} step={5} bind:value={tickRotate} />
+<Slider
+    label="tick angle"
+    min={-90}
+    max={90}
+    step={5}
+    bind:value={tickRotate} />
 <Plot
     marginBottom={50}
-    x={{ tickRotate, domain: 'These are some ordinal ticks on a band scale'.split(' ') }}
-/>
+    x={{
+        tickRotate,
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
 ```
 
 ```svelte
 <Plot
     x={{
         tickRotate: -45,
-        domain: 'These are some ordinal ticks on a band scale'.split(' ')
-    }}
-/>
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
 ```
 
 :::warning
@@ -186,7 +231,12 @@ You can explicitly add an x axis using the `AxisX` mark component:
     import { Plot, AxisX } from '$lib';
 </script>
 
-<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)] }}>
+<Plot
+    margins={30}
+    marginBottom={50}
+    x={{
+        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)]
+    }}>
     <AxisX interval="quarter" tickFormat="[Q]Q" />
     <AxisX
         interval="year"
@@ -194,13 +244,17 @@ You can explicitly add an x axis using the `AxisX` mark component:
         tickFontSize={15}
         tickPadding={25}
         tickFormat="YYYY"
-        fill="#999"
-    />
+        fill="#999" />
 </Plot>
 ```
 
 ```svelte
-<Plot margins={30} marginBottom={50} x={{ domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)] }}>
+<Plot
+    margins={30}
+    marginBottom={50}
+    x={{
+        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)]
+    }}>
     <AxisX interval="quarter" tickFormat="[Q]Q" />
     <AxisX
         interval="year"
@@ -208,8 +262,7 @@ You can explicitly add an x axis using the `AxisX` mark component:
         tickFontSize={15}
         tickPadding={25}
         tickFormat="YYYY"
-        fill="#999"
-    />
+        fill="#999" />
 </Plot>
 ```
 

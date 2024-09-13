@@ -43,14 +43,24 @@ If you need more customization options, you can add the frame manually by explic
 </script>
 
 <Plot grid testid="frame-demo" inset={20}>
-    <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
+    <Frame
+        fill="yellow"
+        fillOpacity="0.2"
+        stroke="magenta"
+        strokeWidth="2"
+        strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid inset={20}>
-    <Frame fill="yellow" fillOpacity="0.2" stroke="magenta" strokeWidth="2" strokeDasharray="4,4" />
+    <Frame
+        fill="yellow"
+        fillOpacity="0.2"
+        stroke="magenta"
+        strokeWidth="2"
+        strokeDasharray="4,4" />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

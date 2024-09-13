@@ -21,8 +21,7 @@ title: Test
                 markerWidth="6"
                 markerHeight="6"
                 viewBox="-4 -8 8 8"
-                orient="auto"
-            >
+                orient="auto">
                 <path d="M-3,-6 L0,0 L3,-6h-6z" />
             </marker>
         {/snippet}

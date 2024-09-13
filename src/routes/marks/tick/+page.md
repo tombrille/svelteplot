@@ -44,15 +44,25 @@ Shows a horizontal bar for each x position.
 </script>
 
 <label style="margin-right:2em"
-    >padding: <input type="range" min={0} max={1} step={0.01} bind:value={padding} />
-    {padding}</label
->
+    >padding: <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.01}
+        bind:value={padding} />
+    {padding}</label>
 <label
-    >align: <input type="range" min={0} max={1} step={0.01} bind:value={align} />
-    {align}</label
->
+    >align: <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.01}
+        bind:value={align} />
+    {align}</label>
 
-<Plot x={{ padding, align }} y={{ grid: true, percent: true }}>
+<Plot
+    x={{ padding, align }}
+    y={{ grid: true, percent: true }}>
     <RuleY data={[0]} />
     <TickY data={stateage} x="age" y="pop_share" />
 </Plot>

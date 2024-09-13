@@ -36,7 +36,13 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 </script>
 
 <Plot grid color={{ legend: true }}>
-    <Area {...stackY({ data: crimea, x1: 'date', y: 'deaths', fill: 'cause' })} />
+    <Area
+        {...stackY({
+            data: crimea,
+            x1: 'date',
+            y: 'deaths',
+            fill: 'cause'
+        })} />
 </Plot>
 ```
 
@@ -46,7 +52,13 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 </script>
 
 <Plot grid color={{ legend: true }}>
-    <Area {...stackY({ data: crimea, x1: 'date', y: 'deaths', fill: 'cause' })} />
+    <Area
+        {...stackY({
+            data: crimea,
+            x1: 'date',
+            y: 'deaths',
+            fill: 'cause'
+        })} />
 </Plot>
 ```
 
@@ -61,7 +73,12 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 </script>
 
 <Plot grid color={{ legend: true }}>
-    <RectY data={crimea} x="date" y="deaths" fill="cause" interval="month" />
+    <RectY
+        data={crimea}
+        x="date"
+        y="deaths"
+        fill="cause"
+        interval="month" />
 </Plot>
 ```
 
@@ -87,8 +104,7 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
             x1: 'year',
             y: 'revenue',
             z: 'format'
-        })}
-    />
+        })} />
 </Plot>
 ```
 
@@ -96,17 +112,30 @@ You can pass options to the implicit stack transforms using the mark **stack** o
 
 ```svelte live
 <script>
-    import { Plot, Rect, RectY, RuleY, binX, stackY } from '$lib';
+    import {
+        Plot,
+        Rect,
+        RectY,
+        RuleY,
+        binX,
+        stackY
+    } from '$lib';
 
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot height={300} grid marginLeft={40} color={{ legend: true }}>
+<Plot
+    height={300}
+    grid
+    marginLeft={40}
+    color={{ legend: true }}>
     <RectY
-        {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })}
-        stack={{ offset: 'center' }}
-    />
+        {...binX(
+            { data: olympians, x: 'weight', fill: 'sex' },
+            { y: 'count' }
+        )}
+        stack={{ offset: 'center' }} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -114,9 +143,11 @@ You can pass options to the implicit stack transforms using the mark **stack** o
 ```svelte
 <Plot color={{ legend: true }}>
     <RectY
-        {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })}
-        stack={{ offset: 'center' }}
-    />
+        {...binX(
+            { data: olympians, x: 'weight', fill: 'sex' },
+            { y: 'count' }
+        )}
+        stack={{ offset: 'center' }} />
 </Plot>
 ```
 

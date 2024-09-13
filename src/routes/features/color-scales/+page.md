@@ -16,13 +16,21 @@ Categorical color scales are useful for mapping categories to colors. The follow
 </script>
 
 <Plot color={{ legend: true }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ legend: true }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species" />
 </Plot>
 ```
 
@@ -51,15 +59,21 @@ There are 11 categorical schemes included in SveltePlot, the default is `observa
     let scheme = $state('observable10');
 </script>
 
-<Select label="scheme" options={schemes} bind:value={scheme} />
-<Plot grid color={{ legend: true, scheme }} y={{ type: 'log' }} r={{ range: [2, 14] }}>
+<Select
+    label="scheme"
+    options={schemes}
+    bind:value={scheme} />
+<Plot
+    grid
+    color={{ legend: true, scheme }}
+    y={{ type: 'log' }}
+    r={{ range: [2, 14] }}>
     <Dot
         data={countries_2020}
         x="Life expectancy"
         y="GDP per capita"
         r="Population"
-        fill="Continent"
-    />
+        fill="Continent" />
 </Plot>
 ```
 
@@ -68,15 +82,13 @@ There are 11 categorical schemes included in SveltePlot, the default is `observa
     grid
     y={{ type: 'log' }}
     r={{ range: [2, 14] }}
-    color={{ legend: true, scheme: 'observable10' }}
->
+    color={{ legend: true, scheme: 'observable10' }}>
     <Dot
         data={countries_2020}
         x="Life expectancy"
         y="GDP per capita"
         r="Population"
-        fill="Continent"
-    />
+        fill="Continent" />
 </Plot>
 ```
 
@@ -93,15 +105,34 @@ If you want to map custom colors to your data, you need to pass them via the `sc
 
 <Plot
     grid
-    color={{ legend: true, scheme: ['var(--svp-red)', 'var(--svp-blue)', 'var(--svp-green)'] }}
->
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
+    color={{
+        legend: true,
+        scheme: [
+            'var(--svp-red)',
+            'var(--svp-blue)',
+            'var(--svp-green)'
+        ]
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid color={{ legend: true, scheme: ['red', 'blue', 'green'] }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" />
+<Plot
+    grid
+    color={{
+        legend: true,
+        scheme: ['red', 'blue', 'green']
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species" />
 </Plot>
 ```
 
@@ -120,19 +151,34 @@ Note that the colors are picked in the order the categories appear in your datas
         legend: true,
         domain: ['FEMALE', 'MALE'],
         scheme: ['var(--svp-green)', 'var(--svp-violet)']
-    }}
->
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="sex" />
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="sex" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid color={{ legend: true, domain: ['FEMALE', 'MALE'], scheme: ['green', 'violet'] }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="sex" />
+<Plot
+    grid
+    color={{
+        legend: true,
+        domain: ['FEMALE', 'MALE'],
+        scheme: ['green', 'violet']
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="sex" />
 </Plot>
 ```
 
 ## Sequential color scales
+
+### Linear
 
 Another very common way to color plots is to map numbers to colors. If you simply use a number column as fill or stroke, SveltePlot will default to a `linear` color scale:
 
@@ -144,16 +190,23 @@ Another very common way to color plots is to map numbers to colors. If you simpl
 </script>
 
 <Plot grid height={200} color={{ legend: true }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid color={{ legend: true }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
-
 
 The default color scheme shown above is called `turbo`, but we can change it to a number of other available schemes using the **scheme** option.
 
@@ -210,15 +263,30 @@ The default color scheme shown above is called `turbo`, but we can change it to 
     let scheme = $state('plasma');
 </script>
 
-<Select label="scheme:" options={schemes} bind:value={scheme} />
-<Plot grid testid="linear" color={{ scheme, legend: true }} height={200}>
-<Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Select
+    label="scheme:"
+    options={schemes}
+    bind:value={scheme} />
+<Plot
+    grid
+    testid="linear"
+    color={{ scheme, legend: true }}
+    height={200}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ scheme: 'plasma' }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
@@ -233,14 +301,25 @@ You may wonder why some of the color schemes don't use their entire range (e.g.,
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot grid height={200} color={{ legend: true, scheme: 'BuYlRd'  }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Plot
+    grid
+    height={200}
+    color={{ legend: true, scheme: 'BuYlRd' }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
 <Plot grid color={{ legend: true, scheme: 'BuYlRd' }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
@@ -253,14 +332,35 @@ You can disable this by passing `type: 'linear'` to the color options:
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot grid height={200} color={{ legend: true, type: 'linear', scheme: 'BuYlRd'  }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Plot
+    grid
+    height={200}
+    color={{
+        legend: true,
+        type: 'linear',
+        scheme: 'BuYlRd'
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid color={{ legend: true,  type: 'linear', scheme: 'BuYlRd' }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Plot
+    grid
+    color={{
+        legend: true,
+        type: 'linear',
+        scheme: 'BuYlRd'
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
@@ -270,24 +370,85 @@ Alternatively you can change the center point of the diverging scale using the `
 <script>
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
-     import { Slider } from '$lib/ui';
+    import { Slider } from '$lib/ui';
     let { penguins } = $derived($page.data.data);
 
     let pivot = $state(4000);
 </script>
 
-<Slider label="pivot" bind:value={pivot} min={3000} max={6500} />
-<Plot grid height={200} color={{ legend: true, pivot, scheme: 'BuYlRd'  }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Slider
+    label="pivot"
+    bind:value={pivot}
+    min={3000}
+    max={6500} />
+<Plot
+    grid
+    height={200}
+    color={{ legend: true, pivot, scheme: 'BuYlRd' }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid color={{ legend: true,  pivot: 1000, scheme: 'BuYlRd' }}>
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" stroke="body_mass_g" />
+<Plot
+    grid
+    color={{ legend: true, pivot: 1000, scheme: 'BuYlRd' }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
 </Plot>
 ```
-    
+
+### Logarithmic
+
+For mapping [power-law distributions](https://en.wikipedia.org/wiki/Power_law) (like income or population) to colors, a logarithmic scale is often useful. You can switch to log scale by passing `type: 'log'` to the color options:
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { countries_2020 } = $derived($page.data.data);
+    import { Checkbox } from '$lib/ui';
+
+    let log = $state(true);
+</script>
+
+<Plot
+    grid
+    height={200}
+    y={{ type: 'log' }}
+    color={{
+        legend: true,
+        scheme: 'OrRd',
+        type: log ? 'log' : 'linear'
+    }}>
+    <Dot
+        data={countries_2020}
+        x="Life expectancy"
+        y="Population"
+        stroke="GDP per capita" />
+</Plot>
+<Checkbox label="log scale" bind:value={log} />
+```
+
+```svelte
+<Plot
+    grid
+    color={{ legend: true, type: 'log', scheme: 'OrRd' }}
+    y={{ type: 'log' }}>
+    <Dot
+        data={countries_2020}
+        x="Life expectancy"
+        y="Population"
+        stroke="GDP per capita" />
+</Plot>
+```
 
 ## Ordinal color scales
 
@@ -303,13 +464,21 @@ The color scales are used whenever a _fill_ or _stroke_ channel is mapped to val
 </script>
 
 <Plot testid="linear" height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="crimson" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="crimson" />
 </Plot>
 ```
 
 ```svelte
 <Plot>
-    <Dot data={seattle} x="date" y="temp_max" stroke="crimson" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="crimson" />
 </Plot>
 ```
 
@@ -323,7 +492,11 @@ Note that SveltePlot also recognizes generic CSS variables as valid color names,
 </script>
 
 <Plot testid="linear" height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="var(--brand-red)" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="var(--brand-red)" />
 </Plot>
 
 <style>
@@ -338,7 +511,11 @@ Note that SveltePlot also recognizes generic CSS variables as valid color names,
 
 ```svelte
 <Plot height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="var(--brand-red)" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="var(--brand-red)" />
 </Plot>
 
 <style>
@@ -363,13 +540,21 @@ If we change the stroke to `"weather"`, which is an attribute of our dataset row
 </script>
 
 <Plot testid="linear" color={{ legend: true }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="weather" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="weather" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ legend: true }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="weather" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="weather" />
 </Plot>
 ```
 
@@ -399,9 +584,19 @@ The default color scheme shown above is called `observable10`, but we can change
     let scheme = $state('tableau10');
 </script>
 
-<Select label="scheme:" options={schemes} bind:value={scheme} />
-<Plot testid="linear" color={{ legend: true, scheme }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="weather" />
+<Select
+    label="scheme:"
+    options={schemes}
+    bind:value={scheme} />
+<Plot
+    testid="linear"
+    color={{ legend: true, scheme }}
+    height={180}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="weather" />
 </Plot>
 ```
 
@@ -418,12 +613,21 @@ We can also pass our own array of colors via the **scheme** option. Combined wit
     testid="linear"
     color={{
         legend: true,
-        scheme: ['orange', 'lightsteelblue', 'lightseagreen', 'deepskyblue', 'gray'],
+        scheme: [
+            'orange',
+            'lightsteelblue',
+            'lightseagreen',
+            'deepskyblue',
+            'gray'
+        ],
         domain: ['sun', 'drizzle', 'rain', 'snow', 'fog']
     }}
-    height={180}
->
-    <Dot data={seattle} x="date" y="temp_max" stroke="weather" />
+    height={180}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="weather" />
 </Plot>
 ```
 
@@ -432,10 +636,19 @@ We can also pass our own array of colors via the **scheme** option. Combined wit
     color={{
         legend: true,
         domain: ['sun', 'drizzle', 'rain', 'snow', 'fog'],
-        scheme: ['orange', 'lightsteelblue', 'lightseagreen', 'deepskyblue', 'gray']
-    }}
->
-    <Dot data={seattle} x="date" y="temp_max" stroke="weather" />
+        scheme: [
+            'orange',
+            'lightsteelblue',
+            'lightseagreen',
+            'deepskyblue',
+            'gray'
+        ]
+    }}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="weather" />
 </Plot>
 ```
 
@@ -451,13 +664,21 @@ Now, let's see how it looks if map the stroke channel to a numeric attribute of 
 </script>
 
 <Plot testid="linear" color={{ legend: true }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ legend: true }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
@@ -516,15 +737,26 @@ The default color scheme shown above is called `turbo`, but we can change it to 
     let scheme = $state('plasma');
 </script>
 
-<Select label="scheme:" options={schemes} bind:value={scheme} />
+<Select
+    label="scheme:"
+    options={schemes}
+    bind:value={scheme} />
 <Plot grid testid="linear" color={{ scheme }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ scheme: 'BuRd' }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
@@ -542,15 +774,30 @@ So in the plot above, the temperatures shown range from something like -2 to 38 
     let pivot = $state(10);
 </script>
 
-<Slider label="pivot" min={-1} max={38} bind:value={pivot} />
-<Plot testid="linear" color={{ scheme: 'BuYlRd', pivot }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+<Slider
+    label="pivot"
+    min={-1}
+    max={38}
+    bind:value={pivot} />
+<Plot
+    testid="linear"
+    color={{ scheme: 'BuYlRd', pivot }}
+    height={180}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ scheme: 'BuYlRd', pivot: 15 }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
@@ -563,14 +810,25 @@ Alternatively you can also override the scale type to `"linear"` to have the col
     let { seattle } = $derived($page.data.data);
 </script>
 
-<Plot testid="linear" color={{ scheme: 'BuYlRd', type: 'linear' }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+<Plot
+    testid="linear"
+    color={{ scheme: 'BuYlRd', type: 'linear' }}
+    height={180}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ scheme: 'BuYlRd', type: 'linear' }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="temp_max" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="temp_max" />
 </Plot>
 ```
 
@@ -583,13 +841,24 @@ If you want you can also pass a custom scheme, either as **interpolate** option 
     let { seattle } = $derived($page.data.data);
 </script>
 
-<Plot testid="linear" color={{ scheme: ['pink', 'crimson'] }} height={180}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="date" />
+<Plot
+    testid="linear"
+    color={{ scheme: ['pink', 'crimson'] }}
+    height={180}>
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="date" />
 </Plot>
 ```
 
 ```svelte
 <Plot color={{ scheme: ['pink', 'crimson'] }}>
-    <Dot data={seattle} x="date" y="temp_max" stroke="date" />
+    <Dot
+        data={seattle}
+        x="date"
+        y="temp_max"
+        stroke="date" />
 </Plot>
 ```

@@ -12,7 +12,11 @@ title: Test filters
 </script>
 
 <Plot height={200} testid="area">
-    <AreaY data={aapl} filter={(d) => d.Date.getFullYear() > 2015} x="Date" y="Close" />
+    <AreaY
+        data={aapl}
+        filter={(d) => d.Date.getFullYear() > 2015}
+        x="Date"
+        y="Close" />
 </Plot>
 ```
 
@@ -25,15 +29,17 @@ title: Test filters
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot height={300} testid="arrow" color={{ scheme: 'BuRd' }}>
+<Plot
+    height={300}
+    testid="arrow"
+    color={{ scheme: 'BuRd' }}>
     <Arrow
         data={aapl.slice(-52)}
         filter={(d) => d.Date > new Date(2018, 3, 1)}
         x1="Date"
         x2="Date"
         y1="Low"
-        y2="High"
-    />
+        y2="High" />
 </Plot>
 ```
 
@@ -62,9 +68,15 @@ title: Test filters
 
 <Plot marginLeft={50} testid="barx">
     <BarX
-        {...groupY({ data: aapl, y: (d) => d.Date.getFullYear(), x: 'Close' }, { x: 'mean' })}
-        filter={(d) => d.__y !== 2016}
-    />
+        {...groupY(
+            {
+                data: aapl,
+                y: (d) => d.Date.getFullYear(),
+                x: 'Close'
+            },
+            { x: 'mean' }
+        )}
+        filter={(d) => d.__y !== 2016} />
 </Plot>
 ```
 
@@ -88,8 +100,7 @@ title: Test filters
                 filter: (d) => d.Date.getFullYear() !== 2016
             },
             { x: 'mean' }
-        )}
-    />
+        )} />
 </Plot>
 ```
 
@@ -110,15 +121,15 @@ title: Test filters
         tickFormat: formatMonth('en', 'short')
     }}
     color={{ scheme: 'blues' }}
-    testid="cell"
->
+    testid="cell">
     <Cell
         data={seattle}
-        filter={(d) => d.date.getUTCFullYear() === 2015 && d.date.getUTCDate() < 20}
+        filter={(d) =>
+            d.date.getUTCFullYear() === 2015 &&
+            d.date.getUTCDate() < 20}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
-        fill="temp_max"
-    />
+        fill="temp_max" />
 </Plot>
 ```
 
@@ -132,7 +143,11 @@ title: Test filters
 </script>
 
 <Plot height={200} testid="dot">
-    <Dot data={aapl.slice(-200)} filter={(d) => d.Date.getFullYear() >= 2018} x="Date" y="Close" />
+    <Dot
+        data={aapl.slice(-200)}
+        filter={(d) => d.Date.getFullYear() >= 2018}
+        x="Date"
+        y="Close" />
 </Plot>
 ```
 
@@ -159,7 +174,11 @@ title: Test filters
 </script>
 
 <Plot height={200} testid="line">
-    <Line data={aapl} filter={(d) => d.Date.getFullYear() > 2015} x="Date" y="Close" />
+    <Line
+        data={aapl}
+        filter={(d) => d.Date.getFullYear() > 2015}
+        x="Date"
+        y="Close" />
 </Plot>
 ```
 
@@ -179,8 +198,7 @@ title: Test filters
         x1="Date"
         x2="Date"
         y1="Low"
-        y2="High"
-    />
+        y2="High" />
 </Plot>
 ```
 
@@ -201,8 +219,7 @@ title: Test filters
         x="Volume"
         interval="day"
         insetRight={1}
-        filter={(d) => d.Date > new Date(2018, 3, 1)}
-    />
+        filter={(d) => d.Date > new Date(2018, 3, 1)} />
 </Plot>
 ```
 
@@ -223,8 +240,7 @@ title: Test filters
         y="Volume"
         interval="day"
         insetRight={1}
-        filter={(d) => d.Date > new Date(2018, 3, 1)}
-    />
+        filter={(d) => d.Date > new Date(2018, 3, 1)} />
 </Plot>
 ```
 
@@ -259,15 +275,15 @@ title: Test filters
         tickFormat: formatMonth('en', 'short')
     }}
     color={{ scheme: 'blues' }}
-    testid="text"
->
+    testid="text">
     <Text
         data={seattle}
-        filter={(d) => d.date.getUTCFullYear() === 2015 && d.weather === 'fog'}
+        filter={(d) =>
+            d.date.getUTCFullYear() === 2015 &&
+            d.weather === 'fog'}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
-        text="weather"
-    />
+        text="weather" />
 </Plot>
 ```
 
@@ -281,13 +297,16 @@ title: Test filters
     let { stateage } = $derived($page.data.data);
 </script>
 
-<Plot testid="tickx" x={{ grid: true, percent: true }} marginLeft={50}>
+<Plot
+    testid="tickx"
+    x={{ grid: true, percent: true }}
+    marginLeft={50}>
     <TickX
         data={stateage}
         y="age"
         x="pop_share"
-        filter={(d) => d.pop_share < 0.1 || d.pop_share > 0.12}
-    />
+        filter={(d) =>
+            d.pop_share < 0.1 || d.pop_share > 0.12} />
 </Plot>
 ```
 
@@ -301,12 +320,15 @@ title: Test filters
     let { stateage } = $derived($page.data.data);
 </script>
 
-<Plot testid="ticky" y={{ grid: true, percent: true }} marginLeft={50}>
+<Plot
+    testid="ticky"
+    y={{ grid: true, percent: true }}
+    marginLeft={50}>
     <TickY
         data={stateage}
         x="age"
         y="pop_share"
-        filter={(d) => d.pop_share < 0.1 || d.pop_share > 0.12}
-    />
+        filter={(d) =>
+            d.pop_share < 0.1 || d.pop_share > 0.12} />
 </Plot>
 ```

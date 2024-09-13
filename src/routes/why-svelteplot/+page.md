@@ -17,9 +17,18 @@ SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plo
     let data = $derived(aapl.slice(0, truncate));
 </script>
 
-<Slider label="truncate" bind:value={truncate} min={50} max={aapl.length} />
+<Slider
+    label="truncate"
+    bind:value={truncate}
+    min={50}
+    max={aapl.length} />
 <Plot inset={10} grid>
-    <Line marker={truncate < 100} {data} x="Date" y="Close" curve="monotone-x" />
+    <Line
+        marker={truncate < 100}
+        {data}
+        x="Date"
+        y="Close"
+        curve="monotone-x" />
 </Plot>
 ```
 
@@ -41,7 +50,12 @@ Take the following example, where you can filter the data using the [filter](/tr
     let noAxisTitle = $state(false);
 </script>
 
-<label>min economy (mpg): <input type="range" max={50} bind:value={min} /> ({min})</label>
+<label
+    >min economy (mpg): <input
+        type="range"
+        max={50}
+        bind:value={min} />
+    ({min})</label>
 
 <Plot grid testid="cars" color={{ type: 'linear' }}>
     <Dot
@@ -50,8 +64,7 @@ Take the following example, where you can filter the data using the [filter](/tr
         y="weight (lb)"
         x="power (hp)"
         r={4}
-        stroke="economy (mpg)"
-    />
+        stroke="economy (mpg)" />
 </Plot>
 ```
 
@@ -63,8 +76,7 @@ Take the following example, where you can filter the data using the [filter](/tr
         y="weight (lb)"
         x="power (hp)"
         r={4}
-        stroke="economy (mpg)"
-    />
+        stroke="economy (mpg)" />
 </Plot>
 ```
 
@@ -72,7 +84,14 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
 
 ```svelte live
 <script lang="ts">
-    import { Plot, LineY, RuleY, AreaY, Dot, Text } from '$lib/index.js';
+    import {
+        Plot,
+        LineY,
+        RuleY,
+        AreaY,
+        Dot,
+        Text
+    } from '$lib/index.js';
     import { noise } from '$lib/helpers/noise.js';
 
     let rand: number[] = $state([]);
@@ -86,12 +105,22 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
     function addLine() {
         do {
             const prevI = rand.length ? rand.at(-1).x : 200;
-            mag = Math.pow(10, Math.floor(Math.log10(prevI) - 2));
+            mag = Math.pow(
+                10,
+                Math.floor(Math.log10(prevI) - 2)
+            );
             const i = prevI + mag;
-            const pt = { x: i, y: (noise(i / 40 / mag) * 100 - 50) * Math.log10(mag * 10) * 5 };
+            const pt = {
+                x: i,
+                y:
+                    (noise(i / 40 / mag) * 100 - 50) *
+                    Math.log10(mag * 10) *
+                    5
+            };
             rand = [...rand.slice(-maxLen), pt];
         } while (rand.length < 150);
-        maxLen = noise(S + rand.at(-1).x / 60 / mag) * 80 + 200;
+        maxLen =
+            noise(S + rand.at(-1).x / 60 / mag) * 80 + 200;
         setTimeout(addLine, 50);
     }
 
@@ -108,13 +137,25 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
     y={{ tickSpacing: 30, nice: true }}
     x={{ tickSpacing: 90, insetRight: 30 }}
     color={{ type: 'categorical' }}
-    height={250}
->
+    height={250}>
     <RuleY data={[0]} />
     {#if rand.length > 1}
-        <AreaY data={rand} x="x" y="y" fill="currentColor" opacity={0.1} />
-        <LineY data={rand} x="x" y="y" stroke="currentColor" />
-        <Dot data={[rand.at(-1)]} x="x" y="y" fill="currentColor" />
+        <AreaY
+            data={rand}
+            x="x"
+            y="y"
+            fill="currentColor"
+            opacity={0.1} />
+        <LineY
+            data={rand}
+            x="x"
+            y="y"
+            stroke="currentColor" />
+        <Dot
+            data={[rand.at(-1)]}
+            x="x"
+            y="y"
+            fill="currentColor" />
         <Text
             data={[rand.at(-1)]}
             x="x"
@@ -125,8 +166,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
             fill="currentColor"
             textAnchor="start"
             dx={6}
-            text={(d) => d.y.toFixed(0)}
-        />
+            text={(d) => d.y.toFixed(0)} />
     {/if}
 </Plot>
 ```
@@ -153,18 +193,19 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
     });
 </script>
 
-<button onclick={() => data.push(data.at(-1) + (data.length - 3))}>add number</button>
+<button
+    onclick={() =>
+        data.push(data.at(-1) + (data.length - 3))}
+    >add number</button>
 <button
     onclick={() => {
         data = [1, 2, 3, 4, 5];
-    }}>reset</button
->
+    }}>reset</button>
 
 <Plot
     x={{ axis: false, padding: data.length < 60 ? 0.1 : 0 }}
     color={{ scheme: 'RdBu' }}
-    y={{ grid: true, domain: $domain }}
->
+    y={{ grid: true, domain: $domain }}>
     <BarY {data} fill={(d) => d} t={fade} />
     <RuleY data={[0]} />
 </Plot>
@@ -188,9 +229,12 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
     });
 </script>
 
-<button onclick={(d) => data.push(Math.random())}>add number</button>
+<button onclick={(d) => data.push(Math.random())}
+    >add number</button>
 
-<Plot color={{ scheme: 'RdBu' }} y={{ grid: true, domain: $domain }}>
+<Plot
+    color={{ scheme: 'RdBu' }}
+    y={{ grid: true, domain: $domain }}>
     <BarY {data} fill={(d) => d} />
     <RuleY data={[0]} />
 </Plot>
@@ -221,10 +265,14 @@ In the following example, we're switching from the implicit y axis to a custom A
             insetLeft: isMobile ? 25 : 10,
             tickFormat: isMobile ? "'YY" : 'YYYY'
         }}
-        height={isMobile ? 300 : 400}
-    >
+        height={isMobile ? 300 : 400}>
         {#if isMobile}
-            <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
+            <AxisY
+                tickSize={0}
+                tickPadding={0}
+                dy={-5}
+                lineAnchor="bottom"
+                textAnchor="start" />
         {/if}
         <Line data={aapl} x="Date" y="Close" />
     </Plot>
@@ -241,11 +289,15 @@ In the following example, we're switching from the implicit y axis to a custom A
         tickFormat: isMobile ? "'YY" : 'YYYY'
     }}
     height={isMobile ? 300 : 400}
-    inset={isMobile ? 5 : 10}
->
+    inset={isMobile ? 5 : 10}>
     {#if isMobile}
         <!-- custom y axis on mobile -->
-        <AxisY tickSize={0} tickPadding={0} dy={-5} lineAnchor="bottom" textAnchor="start" />
+        <AxisY
+            tickSize={0}
+            tickPadding={0}
+            dy={-5}
+            lineAnchor="bottom"
+            textAnchor="start" />
     {/if}
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
@@ -263,22 +315,35 @@ Another difference to Observable Plot is that you can pass event handlers to the
     let hover = $state(null);
 
     let src = $state([-2, -1, 2, 4, 6, 9, 5]);
-    let data = $derived(src.map((y, x) => ({ x, y, hover: hover === x })));
-    let title = $derived(clicked ? `You clicked ${JSON.stringify(clicked.y)}` : 'Click the bars');
+    let data = $derived(
+        src.map((y, x) => ({ x, y, hover: hover === x }))
+    );
+    let title = $derived(
+        clicked
+            ? `You clicked ${JSON.stringify(clicked.y)}`
+            : 'Click the bars'
+    );
 </script>
 
-<Plot x={{ axis: false }} y={{ grid: true }} color={{ type: 'linear', scheme: 'reds' }} {title}>
+<Plot
+    x={{ axis: false }}
+    y={{ grid: true }}
+    color={{ type: 'linear', scheme: 'reds' }}
+    {title}>
     <BarY
         {data}
         x="x"
         y="y"
         fill={(d) => d.x}
         cursor="pointer"
-        opacity={{ scale: null, value: (d) => (!clicked || clicked.x === d.x ? 1 : 0.5) }}
+        opacity={{
+            scale: null,
+            value: (d) =>
+                !clicked || clicked.x === d.x ? 1 : 0.5
+        }}
         onclick={(evt, d) => (src[d.x] *= 1.1)}
         onmouseenter={(evt, d) => (clicked = d)}
-        onmouseleave={(evt, d) => (hover = null)}
-    />
+        onmouseleave={(evt, d) => (hover = null)} />
     <RuleY data={[0]} />
 </Plot>
 
@@ -292,10 +357,10 @@ Another difference to Observable Plot is that you can pass event handlers to the
         cursor="pointer"
         opacity={{
             scale: null,
-            value: (d) => (!clicked || clicked === d ? 1 : 0.5)
+            value: (d) =>
+                !clicked || clicked === d ? 1 : 0.5
         }}
-        onclick={(d) => (clicked = d)}
-    />
+        onclick={(d) => (clicked = d)} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -327,7 +392,11 @@ this example is currently broken in the static docs builds
 </script>
 
 <Plot grid height={300}>
-    <Line data={aapl.slice(-40)} curve="basis" x="Date" y="Adj Close">
+    <Line
+        data={aapl.slice(-40)}
+        curve="basis"
+        x="Date"
+        y="Adj Close">
         <!-- {#snippet marker(id, color)}
             <marker
                 {id}
@@ -367,7 +436,11 @@ this example is currently broken in the static docs builds
 </script>
 
 <Plot grid height={300}>
-    <Line data={aapl.slice(-40)} x="Date" y="Adj Close" curve="basis">
+    <Line
+        data={aapl.slice(-40)}
+        x="Date"
+        y="Adj Close"
+        curve="basis">
         {#snippet marker(id, color)}
             <marker
                 {id}
@@ -376,14 +449,12 @@ this example is currently broken in the static docs builds
                 markerWidth="6"
                 markerHeight="10"
                 viewBox="-4 -10 8 10"
-                orient="auto"
-            >
+                orient="auto">
                 {#if shown}
                     <path
                         in:fly={{ duration: 1000, y: -10 }}
                         out:fade
-                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3"
-                    />
+                        d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
                 {/if}
             </marker>
         {/snippet}
@@ -401,7 +472,10 @@ Like Observable Plot, SveltePlot tries to automatically detect wether or not to 
 
 ```svelte
 <Plot>
-    <Dot data={penguins} fill="species" stroke={(d) => (d.sex === 'M' ? 'red' : 'blue')} />
+    <Dot
+        data={penguins}
+        fill="species"
+        stroke={(d) => (d.sex === 'M' ? 'red' : 'blue')} />
 </Plot>
 ```
 
@@ -420,11 +494,19 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
     {#snippet children({ width, height })}
         <defs>
             <filter id="neon">
-                <feFlood flood-color="rgb(255,0,128)" flood-opacity="0.5" in="SourceGraphic" />
-                <feComposite operator="in" in2="SourceGraphic" />
+                <feFlood
+                    flood-color="rgb(255,0,128)"
+                    flood-opacity="0.5"
+                    in="SourceGraphic" />
+                <feComposite
+                    operator="in"
+                    in2="SourceGraphic" />
                 <feGaussianBlur stdDeviation="5" />
                 <feComponentTransfer result="glow1">
-                    <feFuncA type="linear" slope="4" intercept="0" />
+                    <feFuncA
+                        type="linear"
+                        slope="4"
+                        intercept="0" />
                 </feComponentTransfer>
                 <feMerge>
                     <feMergeNode in="glow1" />
@@ -432,7 +514,12 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
                 </feMerge>
             </filter>
         </defs>
-        <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
+        <circle
+            cx={width * 0.5}
+            cy={height * 0.5}
+            r="130"
+            opacity="0.1"
+            fill="currentColor" />
         <g filter="url(#neon)">
             <Line data={aapl} x="Date" y="Adj Close" />
         </g>
@@ -446,7 +533,12 @@ You can nest and combine marks with regular SVG. This may be useful for styling 
         <defs>
             <filter id="neon"><!-- ... --></filter>
         </defs>
-        <circle cx={width * 0.5} cy={height * 0.5} r="130" opacity="0.1" fill="currentColor" />
+        <circle
+            cx={width * 0.5}
+            cy={height * 0.5}
+            r="130"
+            opacity="0.1"
+            fill="currentColor" />
         <g filter="url(#neon)">
             <Line data={aapl} x="Date" y="Adj Close" />
         </g>
@@ -470,14 +562,21 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
 <Plot grid testid="overlay">
     {#snippet overlay()}
         <p>
-            Occaecat tempor mollit <strong>labore proident</strong> officia eu sit tempor deserunt
-            commodo. In <a href="#top">Lorem deserunt</a> sint excepteur ullamco Lorem id do.
+            Occaecat tempor mollit <strong
+                >labore proident</strong>
+            officia eu sit tempor deserunt commodo. In
+            <a href="#top">Lorem deserunt</a> sint excepteur
+            ullamco Lorem id do.
         </p>
     {/snippet}
     {#snippet underlay()}
         <div class="bg" />
     {/snippet}
-    <Line data={aapl} x="Date" y="Adj Close" strokeWidth={2} />
+    <Line
+        data={aapl}
+        x="Date"
+        y="Adj Close"
+        strokeWidth={2} />
 </Plot>
 
 <style>
@@ -503,7 +602,8 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
         top: 2em;
         bottom: 2em;
         opacity: 0.3;
-        background: transparent url(/logo.png) no-repeat center center;
+        background: transparent url(/logo.png) no-repeat
+            center center;
         background-size: contain;
     }
 </style>
@@ -512,12 +612,19 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
 ```svelte
 <Plot grid>
     {#snippet overlay()}
-        <p>Occaecat tempor mollit <strong>labore proident</strong> off...</p>
+        <p>
+            Occaecat tempor mollit <strong
+                >labore proident</strong> off...
+        </p>
     {/snippet}
     {#snippet underlay()}
         <div class="bg" />
     {/snippet}
-    <Line data={aapl} x="Date" y="Adj Close" strokeWidth={2} />
+    <Line
+        data={aapl}
+        x="Date"
+        y="Adj Close"
+        strokeWidth={2} />
 </Plot>
 
 <style>
@@ -525,7 +632,8 @@ Since the markup is defined in your code and passed as [snippet](https://svelte-
         /* fire away */
     }
     .bg {
-        background: transparent url(/logo.png) no-repeat center center;
+        background: transparent url(/logo.png) no-repeat
+            center center;
         background-size: contain;
         /* ... */
     }

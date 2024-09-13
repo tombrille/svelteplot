@@ -31,16 +31,30 @@ You can use SveltePlot to create charts with a concise and minimal API.
         grid
         color={{ legend: true }}
         x={{ type: 'linear', insetLeft: 30, grid: true }}
-        inset={10}
-    >
-        <Dot data={olympians} canvas x="weight" opacity="0.5" y="height" stroke="sex" />
+        inset={10}>
+        <Dot
+            data={olympians}
+            canvas
+            x="weight"
+            opacity="0.5"
+            y="height"
+            stroke="sex" />
     </Plot>
 {/if}
 ```
 
 ```svelte
-<Plot grid color={{ legend: true }} x={{ type: 'linear', insetLeft: 30, grid: true }} inset={10}>
-    <Dot data={olympians} x="weight" opacity="0.5" y="height" stroke="sex" />
+<Plot
+    grid
+    color={{ legend: true }}
+    x={{ type: 'linear', insetLeft: 30, grid: true }}
+    inset={10}>
+    <Dot
+        data={olympians}
+        x="weight"
+        opacity="0.5"
+        y="height"
+        stroke="sex" />
 </Plot>
 ```
 
@@ -54,7 +68,15 @@ This scatterplot suffers from overplotting: many dots are drawn in the same spot
     let { olympians } = $derived($page.data.data);
 
     let args = $derived(
-        bin({ data: olympians, x: 'weight', y: 'height', fill: 'sex' }, { fillOpacity: 'count' })
+        bin(
+            {
+                data: olympians,
+                x: 'weight',
+                y: 'height',
+                fill: 'sex'
+            },
+            { fillOpacity: 'count' }
+        )
     );
 </script>
 
@@ -69,7 +91,17 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 
 ```svelte live
 <script>
-    import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
+    import {
+        Plot,
+        Dot,
+        RectY,
+        GridY,
+        AxisX,
+        AxisY,
+        RuleY,
+        DotX,
+        binX
+    } from '$lib';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
@@ -77,7 +109,15 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 
 {#if olympians}
     <Plot grid testid="olympians-hist">
-        <RectY {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })} />
+        <RectY
+            {...binX(
+                {
+                    data: olympians,
+                    x: 'weight',
+                    fill: 'sex'
+                },
+                { y: 'count' }
+            )} />
         <RuleY data={[0]} />
     </Plot>
 {/if}
@@ -85,7 +125,11 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
 
 ```svelte
 <Plot grid>
-    <RectY {...binX({ data: olympians, x: 'weight', fill: 'sex' }, { y: 'count' })} />
+    <RectY
+        {...binX(
+            { data: olympians, x: 'weight', fill: 'sex' },
+            { y: 'count' }
+        )} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -94,7 +138,17 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 
 ```svelte live
 <script>
-    import { Plot, Dot, RectY, GridY, AxisX, AxisY, RuleY, DotX, binX } from '$lib';
+    import {
+        Plot,
+        Dot,
+        RectY,
+        GridY,
+        AxisX,
+        AxisY,
+        RuleY,
+        DotX,
+        binX
+    } from '$lib';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/stores';
     let { olympians } = $derived($page.data.data);
@@ -103,8 +157,15 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
 {#if olympians}
     <Plot grid testid="olympians-hist-facet">
         <RectY
-            {...binX({ data: olympians, x: 'weight', fill: 'sex', fy: 'sex' }, { y: 'count' })}
-        />
+            {...binX(
+                {
+                    data: olympians,
+                    x: 'weight',
+                    fill: 'sex',
+                    fy: 'sex'
+                },
+                { y: 'count' }
+            )} />
         <RuleY data={[0]} />
     </Plot>
 {/if}
@@ -121,8 +182,7 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
                 fy: 'sex'
             },
             { y: 'count' }
-        )}
-    />
+        )} />
     <RuleY data={[0]} />
 </Plot>
 ```

@@ -26,9 +26,12 @@ Supplying undefined values is not the same as filtering the data: the latter wil
         filter={(d) => d.Date.getUTCMonth() >= 3}
         x="Date"
         y="Close"
-        fillOpacity={0.3}
-    />
-    <LineY data={aapl} y={(d) => (d.Date.getUTCMonth() < 3 ? NaN : d.Close)} x="Date" />
+        fillOpacity={0.3} />
+    <LineY
+        data={aapl}
+        y={(d) =>
+            d.Date.getUTCMonth() < 3 ? NaN : d.Close}
+        x="Date" />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -45,9 +48,12 @@ Supplying undefined values is not the same as filtering the data: the latter wil
         filter={(d) => d.Date.getUTCMonth() >= 3}
         x="Date"
         y="Close"
-        fillOpacity={0.3}
-    />
-    <LineY data={aapl} y={(d) => (d.Date.getUTCMonth() < 3 ? NaN : d.Close)} x="Date" />
+        fillOpacity={0.3} />
+    <LineY
+        data={aapl}
+        y={(d) =>
+            d.Date.getUTCMonth() < 3 ? NaN : d.Close}
+        x="Date" />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -98,15 +104,23 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
     import { range } from 'd3-array';
 </script>
 
-<Plot testid="area-y-numbers" grid height={200} y={{ ticks: [-1, 0, 1] }}>
-    <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5} />
+<Plot
+    testid="area-y-numbers"
+    grid
+    height={200}
+    y={{ ticks: [-1, 0, 1] }}>
+    <AreaY
+        data={range(100).map((v) => Math.cos(v / 5))}
+        opacity={0.5} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid height={200} y={{ ticks: [-1, 0, 1] }}>
-    <AreaY data={range(100).map((v) => Math.cos(v / 5))} opacity={0.5} />
+    <AreaY
+        data={range(100).map((v) => Math.cos(v / 5))}
+        opacity={0.5} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -121,13 +135,23 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 </script>
 
 <Plot>
-    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" />
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        fill="group" />
 </Plot>
 ```
 
 ```svelte
 <Plot>
-    <AreaY data={riaa} x="year" y="revenue" z="format" fill="group" />
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        fill="group" />
 </Plot>
 ```
 
@@ -155,7 +179,10 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 </script>
 
 <Select label="curve" options={CURVES} bind:value={curve} />
-<Select label="order" options={['none', 'appearance', 'inside-out', 'sum']} bind:value={order} />
+<Select
+    label="order"
+    options={['none', 'appearance', 'inside-out', 'sum']}
+    bind:value={order} />
 <Plot>
     <AreaY
         data={riaa}
@@ -164,8 +191,7 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
         z="format"
         fill="group"
         {curve}
-        stack={{ order, reverse }}
-    />
+        stack={{ order, reverse }} />
 </Plot>
 ```
 
@@ -202,13 +228,26 @@ Required channels for horizontal area charts:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Frame, Area, AreaX, AreaY, Line, RuleY } from '$lib/index.js';
+    import {
+        Plot,
+        Frame,
+        Area,
+        AreaX,
+        AreaY,
+        Line,
+        RuleY
+    } from '$lib/index.js';
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid testid="area-line-rule">
-    <Area data={aapl} x1="Date" y1={0} y2="Close" opacity={0.25} />
+    <Area
+        data={aapl}
+        x1="Date"
+        y1={0}
+        y2="Close"
+        opacity={0.25} />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
 </Plot>
@@ -216,7 +255,12 @@ Required channels for horizontal area charts:
 
 ```svelte
 <Plot grid>
-    <Area data={aapl} x1="Date" y1={0} y2="Close" opacity={0.25} />
+    <Area
+        data={aapl}
+        x1="Date"
+        y1={0}
+        y2="Close"
+        opacity={0.25} />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
 </Plot>

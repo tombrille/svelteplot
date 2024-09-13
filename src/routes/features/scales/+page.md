@@ -44,7 +44,11 @@ Since we no longer have a single key, the y axis title is left empty.
 </script>
 
 <Plot grid testid="aapl-line-frame" inset={5} height={250}>
-    <RuleX data={aapl.slice(-120)} x="Date" y1="Low" y2="High" />
+    <RuleX
+        data={aapl.slice(-120)}
+        x="Date"
+        y1="Low"
+        y2="High" />
 </Plot>
 ```
 
@@ -68,9 +72,12 @@ You can set a custom axis title or domain by providing global scale options:
     inset={5}
     height={250}
     grid
-    y={{ domain: [140, 200], label: '↑ Price' }}
->
-    <RuleX data={aapl.slice(-120)} x="Date" y1="Low" y2="High" />
+    y={{ domain: [140, 200], label: '↑ Price' }}>
+    <RuleX
+        data={aapl.slice(-120)}
+        x="Date"
+        y1="Low"
+        y2="High" />
 </Plot>
 ```
 
@@ -97,8 +104,7 @@ side of the plot while the second (x = 100) corresponds to the right side.
     marginLeft={10}
     marginRight={10}
     height={70}
-    testid="linear"
-/>
+    testid="linear" />
 ```
 
 ```svelte
@@ -118,8 +124,7 @@ Scales can be reversed using the **reverse** option:
     marginLeft={10}
     marginRight={10}
     height={70}
-    testid="linear"
-/>
+    testid="linear" />
 ```
 
 ```svelte
@@ -137,19 +142,28 @@ based on the Gregorian calendar.
 <Plot
     x={{
         type: 'time',
-        domain: [new Date('2021-01-01'), new Date('2022-01-01')],
+        domain: [
+            new Date('2021-01-01'),
+            new Date('2022-01-01')
+        ],
         grid: true
     }}
     marginTop={0}
     marginLeft={20}
     marginRight={20}
     height={70}
-    testid="linear"
-/>
+    testid="linear" />
 ```
 
 ```svelte
-<Plot x={{ domain: [new Date('2021-01-01'), new Date('2022-01-01')], grid: true }} />
+<Plot
+    x={{
+        domain: [
+            new Date('2021-01-01'),
+            new Date('2022-01-01')
+        ],
+        grid: true
+    }} />
 ```
 
 ## Logarithmic scales
@@ -167,8 +181,7 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
     marginLeft={10}
     marginRight={20}
     height={70}
-    testid="linear"
-/>
+    testid="linear" />
 ```
 
 ```svelte

@@ -16,18 +16,37 @@ bollinger foo
     let k = $state(2);
 </script>
 
-<Slider label="Window size (n)" bind:value={n} min={1} max={100} />
-<Slider label="Radius (k)" bind:value={k} min={0} max={10} step={0.01} />
+<Slider
+    label="Window size (n)"
+    bind:value={n}
+    min={1}
+    max={100} />
+<Slider
+    label="Radius (k)"
+    bind:value={k}
+    min={0}
+    max={10}
+    step={0.01} />
 <Plot grid>
     <Line data={aapl} x="Date" y="Adj Close" />
-    <BollingerY data={aapl} x="Date" y="Adj Close" stroke="red" {n} {k} />
+    <BollingerY
+        data={aapl}
+        x="Date"
+        y="Adj Close"
+        stroke="red"
+        {n}
+        {k} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
     <Line data={aapl} x="Date" y="Adj Close" />
-    <BollingerY data={aapl} x="Date" y="Adj Close" stroke="red" />
+    <BollingerY
+        data={aapl}
+        x="Date"
+        y="Adj Close"
+        stroke="red" />
 </Plot>
 ```
 
@@ -35,7 +54,12 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
 
 ```svelte live
 <script>
-    import { Plot, Line, Area, bollingerY } from '$lib/index';
+    import {
+        Plot,
+        Line,
+        Area,
+        bollingerY
+    } from '$lib/index';
     import { Slider } from '$lib/ui';
 
     import { page } from '$app/stores';
@@ -44,11 +68,25 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
     let n = $state(20);
     let k = $state(2);
 
-    let transformed = $derived(bollingerY({ data: aapl, x: 'Date', y: 'Adj Close' }, { n, k }));
+    let transformed = $derived(
+        bollingerY(
+            { data: aapl, x: 'Date', y: 'Adj Close' },
+            { n, k }
+        )
+    );
 </script>
 
-<Slider label="Window size (n)" bind:value={n} min={1} max={100} />
-<Slider label="Radius (k)" bind:value={k} min={0} max={10} step={0.01} />
+<Slider
+    label="Window size (n)"
+    bind:value={n}
+    min={1}
+    max={100} />
+<Slider
+    label="Radius (k)"
+    bind:value={k}
+    min={0}
+    max={10}
+    step={0.01} />
 <Plot grid>
     <Line data={aapl} x="Date" y="Adj Close" />
     <Line {...transformed} y="__hi" stroke="red" />
@@ -60,7 +98,12 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
 <script>
     import { Plot, Line, bollingerY } from 'svelteplot';
     // import data etc
-    let transformed = $derived(bollingerY({ data: aapl, x: 'Date', y: 'Adj Close' }, { n, k }));
+    let transformed = $derived(
+        bollingerY(
+            { data: aapl, x: 'Date', y: 'Adj Close' },
+            { n, k }
+        )
+    );
 </script>
 
 <Plot grid>
@@ -84,17 +127,36 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
     let k = $state(2);
 </script>
 
-<Slider label="Window size (n)" bind:value={n} min={1} max={100} />
-<Slider label="Radius (k)" bind:value={k} min={0} max={10} step={0.01} />
+<Slider
+    label="Window size (n)"
+    bind:value={n}
+    min={1}
+    max={100} />
+<Slider
+    label="Radius (k)"
+    bind:value={k}
+    min={0}
+    max={10}
+    step={0.01} />
 <Plot grid>
     <Line data={aapl} y="Date" x="Adj Close" />
-    <BollingerX data={aapl} y="Date" x="Adj Close" stroke="red" {n} {k} />
+    <BollingerX
+        data={aapl}
+        y="Date"
+        x="Adj Close"
+        stroke="red"
+        {n}
+        {k} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid>
     <Line data={aapl} x="Date" y="Adj Close" />
-    <BollingerY data={aapl} x="Date" y="Adj Close" stroke="red" />
+    <BollingerY
+        data={aapl}
+        x="Date"
+        y="Adj Close"
+        stroke="red" />
 </Plot>
 ```

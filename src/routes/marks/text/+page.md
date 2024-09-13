@@ -12,8 +12,17 @@ Useful for showing SVG labels!
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot grid height={500} color={{ legend: true }} testid="penguins">
-    <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" fill="currentColor" r={3} />
+<Plot
+    grid
+    height={500}
+    color={{ legend: true }}
+    testid="penguins">
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        fill="currentColor"
+        r={3} />
     <Text
         data={penguins}
         x="culmen_length_mm"
@@ -26,9 +35,9 @@ Useful for showing SVG labels!
         dy={-6}
         textAnchor="start"
         lineAnchor="bottom"
-        fontWeight={(d) => (d.species === 'Gentoo' ? 'bold' : 'normal')}
-        text={(d) => d.island}
-    />
+        fontWeight={(d) =>
+            d.species === 'Gentoo' ? 'bold' : 'normal'}
+        text={(d) => d.island} />
 </Plot>
 ```
 
@@ -39,8 +48,7 @@ Useful for showing SVG labels!
         x="culmen_length_mm"
         y="culmen_depth_mm"
         fill="species"
-        text={(d) => d.island.charAt(0)}
-    />
+        text={(d) => d.island.charAt(0)} />
 </Plot>
 ```
 

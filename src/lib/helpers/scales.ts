@@ -10,7 +10,8 @@ import {
     scalePow,
     scaleQuantile,
     scaleQuantize,
-    scaleThreshold
+    scaleThreshold,
+    scaleSequentialLog
 } from 'd3-scale';
 import { extent, range as d3Range, ascending } from 'd3-array';
 import { scaleSequential, scaleDiverging } from 'd3-scale';
@@ -440,31 +441,40 @@ export function createScale<T extends ScaleOptions>(
                 if (scaleOptions.reverse) range.reverse();
                 fn = scaleThreshold().domain(domain).range(range);
             }
-        } else if (type === 'linear') {
+        } else if (type === 'linear' || type === 'log') {
             const scheme_ = scheme || plotDefaults.colorScheme;
             if (interpolate) {
+                // user-defined interpolation function [0, 1] -> color
                 fn = scaleSequential(domain, interpolate);
             } else if (Array.isArray(scheme_)) {
+                // custom user-defined colors to interpolate from
                 const step = 1 / scheme_.length;
                 fn = scaleSequential(
                     domain,
-                    scaleLinear(d3Range(0, 1 + step / 2, step), scheme_).interpolate(interpolateLab)
+                    (type === 'linear' ? scaleLinear : scaleLog)(
+                        d3Range(0, 1 + step / 2, step),
+                        scheme_
+                    ).interpolate(interpolateLab)
                 );
             } else if (
                 scaleOptions.type === 'diverging' ||
                 (scaleOptions.type === 'auto' && isDivergingScheme(scheme_))
             ) {
-                // diverging
+                // diverging color scheme, explicit or auto-detected
                 const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
                 const domain_ =
                     pivot != null ? [domain[0], pivot, domain[1]] : [-maxabs, 0, maxabs];
                 fn = scaleDiverging(domain_, quantitativeScheme(scheme_));
             } else if (
                 scaleOptions.type === 'linear' ||
+                scaleOptions.type === 'log' ||
                 (scaleOptions.type === 'auto' && isQuantitativeScheme(scheme_))
             ) {
                 // sequential
-                fn = scaleSequential(domain, quantitativeScheme(scheme_));
+                fn = (scaleOptions.type === 'log' ? scaleSequentialLog : scaleSequential)(
+                    domain,
+                    quantitativeScheme(scheme_)
+                );
             } else {
                 console.warn(
                     'color problem',
@@ -473,6 +483,9 @@ export function createScale<T extends ScaleOptions>(
                 );
                 // problem
                 fn = () => 'red';
+            }
+            if (type === 'log') {
+                fn.ticks = (count: number) => getLogTicks(domain, count);
             }
 
             //

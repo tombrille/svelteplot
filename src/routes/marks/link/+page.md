@@ -25,8 +25,7 @@ For connecting two points with a line.
         label: 'Change in inequality from 1980 to 2015',
         legend: true,
         tickFormat: '+f'
-    }}
->
+    }}>
     <Link
         data={metros}
         x1="POP_1980"
@@ -36,11 +35,13 @@ For connecting two points with a line.
         bend
         markerEnd="arrow"
         style="transition: opacity 0.2s ease-in"
-        opacity={{ scale: null, value: (d) => (!hl || hl === d ? 1 : 0.1) }}
+        opacity={{
+            scale: null,
+            value: (d) => (!hl || hl === d ? 1 : 0.1)
+        }}
         onmouseenter={(event, d) => (hl = d)}
         onmouseleave={() => (hl = null)}
-        stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
-    />
+        stroke={(d) => d.R90_10_2015 - d.R90_10_1980} />
     <Text
         data={metros}
         x="POP_2015"
@@ -51,8 +52,7 @@ For connecting two points with a line.
         stroke="var(--svelteplot-bg)"
         strokeWidth={4}
         lineAnchor="bottom"
-        dy={-6}
-    />
+        dy={-6} />
 </Plot>
 ```
 
@@ -60,12 +60,21 @@ Link support spherical projections:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Geo, Sphere, Link, Dot, Text } from '$lib/index.js';
+    import {
+        Plot,
+        Geo,
+        Sphere,
+        Link,
+        Dot,
+        Text
+    } from '$lib/index.js';
     import { page } from '$app/stores';
     import * as topojson from 'topojson-client';
 
     let { world } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 
     const link = [-122.4194, 37.7749, 2.3522, 48.8566];
 
@@ -74,7 +83,15 @@ Link support spherical projections:
 
 <Plot projection="equal-earth">
     <Geo data={[land]} fillOpacity="0.3" />
-    <Link data={[link]} text="curve" x1="2" y1="3" x2="0" y2="1" curve="bump-x" stroke="red" />
+    <Link
+        data={[link]}
+        text="curve"
+        x1="2"
+        y1="3"
+        x2="0"
+        y2="1"
+        curve="bump-x"
+        stroke="red" />
     <Link
         data={[link]}
         text="Foo"
@@ -89,8 +106,7 @@ Link support spherical projections:
         textAnchor="start"
         textStartOffset="5"
         markerStart="dot"
-        markerEnd="arrow"
-    />
+        markerEnd="arrow" />
     <Sphere stroke="currentColor" />
 </Plot>
 ```

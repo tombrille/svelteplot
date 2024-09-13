@@ -18,11 +18,12 @@ The interval transform may be used to convert a single value in x or y (or both)
         y={{
             ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             tickFormat: (d) =>
-                new Intl.DateTimeFormat('en', { month: 'narrow' }).format(new Date(2000, d, 1))
+                new Intl.DateTimeFormat('en', {
+                    month: 'narrow'
+                }).format(new Date(2000, d, 1))
         }}
         testid="seattle-temp"
-        let:plot
-    >
+        let:plot>
         <Rect
             data={seattle}
             filter={(d) => d.date.getUTCFullYear() === 2015}
@@ -30,8 +31,7 @@ The interval transform may be used to convert a single value in x or y (or both)
             y={(d) => d.date.getUTCMonth()}
             interval={1}
             fill="temp_max"
-            inset="0.5"
-        />
+            inset="0.5" />
         <!-- <Text
             data={seattle}
             filter={(d) => d.date.getUTCFullYear() === 2015}
@@ -59,11 +59,15 @@ RectX can be used for range annotations:
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
     <RectX
-        data={[{ from: new Date(2014, 0, 1), to: new Date(2016, 0, 1) }]}
+        data={[
+            {
+                from: new Date(2014, 0, 1),
+                to: new Date(2016, 0, 1)
+            }
+        ]}
         x1="from"
         x2="to"
-        fillOpacity={0.1}
-    />
+        fillOpacity={0.1} />
 </Plot>
 ```
 
@@ -71,11 +75,15 @@ RectX can be used for range annotations:
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
     <RectX
-        data={[{ from: new Date(2014, 0, 1), to: new Date(2016, 0, 1) }]}
+        data={[
+            {
+                from: new Date(2014, 0, 1),
+                to: new Date(2016, 0, 1)
+            }
+        ]}
         x1="from"
         x2="to"
-        fillOpacity={0.1}
-    />
+        fillOpacity={0.1} />
 </Plot>
 ```
 
@@ -93,13 +101,21 @@ RectY can be used for range annotations:
 
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
-    <RectY data={[{ from: 120, to: 140 }]} y1="from" y2="to" fillOpacity={0.1} />
+    <RectY
+        data={[{ from: 120, to: 140 }]}
+        y1="from"
+        y2="to"
+        fillOpacity={0.1} />
 </Plot>
 ```
 
 ```svelte
 <Plot>
     <Line data={aapl} x="Date" y="Close" />
-    <RectY data={[{ from: 120, to: 140 }]} y1="from" y2="to" fillOpacity={0.1} />
+    <RectY
+        data={[{ from: 120, to: 140 }]}
+        y1="from"
+        y2="to"
+        fillOpacity={0.1} />
 </Plot>
 ```

@@ -17,14 +17,15 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species"
-    />
+        symbol="species" />
     {#snippet overlay()}
-        <CustomMarkHTML data={penguins} x="culmen_length_mm" y="culmen_depth_mm">
+        <CustomMarkHTML
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm">
             {#snippet children({ datum })}
                 <div
-                    style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center"
-                >
+                    style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center">
                     {datum.species}
                 </div>
             {/snippet}
@@ -40,13 +41,15 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species"
-    />
+        symbol="species" />
     {#snippet overlay()}
-        <CustomMarkHTML data={penguins} x="culmen_length_mm" y="culmen_depth_mm" let:datum>
+        <CustomMarkHTML
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            let:datum>
             <div
-                style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center"
-            >
+                style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center">
                 {datum.species}
             </div>
         </CustomMarkHTML>
@@ -75,9 +78,17 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
 </script>
 
 <Plot grid inset={40}>
-    <Dot {data} x="culmen_length_mm" y="culmen_depth_mm" stroke="species" symbol="species" />
+    <Dot
+        {data}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species" />
     {#snippet overlay()}
-        <CustomMarkHTML {data} x="culmen_length_mm" y="culmen_depth_mm">
+        <CustomMarkHTML
+            {data}
+            x="culmen_length_mm"
+            y="culmen_depth_mm">
             {#snippet children({ datum })}
                 <div
                     style:width="{datum.width}px"
@@ -90,8 +101,7 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
                         : datum.dy > 0
                           ? datum.dy
                           : -datum.height * 0.5}px"
-                    style:left="-40px"
-                >
+                    style:left="-40px">
                     {datum.i}: {datum.species}
                     {datum.dy}
                 </div>

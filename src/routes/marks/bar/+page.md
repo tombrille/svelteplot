@@ -18,7 +18,11 @@ Here's a very simple bar chart:
     import { Plot, BarX, RuleX } from '$lib';
 </script>
 
-<Plot y={{ type: 'band' }} x={{ grid: true }} height={200} marginTop={0}>
+<Plot
+    y={{ type: 'band' }}
+    x={{ grid: true }}
+    height={200}
+    marginTop={0}>
     <BarX data={[1, 2, 3, 4, 5]} />
     <RuleX data={[0]} />
 </Plot>
@@ -81,16 +85,38 @@ You can create stacked bar charts by defining a fill channel which will be used 
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+<Plot
+    x={{ axis: 'top' }}
+    color={{ legend: true }}
+    marginTop={40}>
     <RuleX data={[0]} />
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+<Plot
+    x={{ axis: 'top' }}
+    color={{ legend: true }}
+    marginTop={40}>
     <RuleX data={[0]} />
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} />
 </Plot>
 ```
 

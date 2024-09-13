@@ -40,16 +40,24 @@ with the axes marks.
     import { Plot, GridX, GridY } from '$lib/index.js';
 </script>
 
-<Plot x={{ domain: [0, 5] }} y={{ domain: [0, 5] }} testid="custom">
+<Plot
+    x={{ domain: [0, 5] }}
+    y={{ domain: [0, 5] }}
+    testid="custom">
     <GridX stroke="lime" strokeOpacity="1" />
-    <GridY stroke="magenta" strokeOpacity="1" data={[0, 1.5, 2, 2.5, 4, 5]} />
+    <GridY
+        stroke="magenta"
+        strokeOpacity="1"
+        data={[0, 1.5, 2, 2.5, 4, 5]} />
 </Plot>
 ```
 
 ```svelte
 <Plot x={{ domain: [0, 5] }} testid="custom">
     <GridX stroke="lime" />
-    <GridY stroke="magenta" ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+    <GridY
+        stroke="magenta"
+        ticks={[0, 1.5, 2, 2.5, 4, 5]} />
 </Plot>
 ```
 
@@ -63,7 +71,9 @@ In the following bar chart, we put two grids, one below the bars and one above:
 <Plot marginTop={0}>
     <GridX />
     <BarX data={[1.5, 2.5, 4.5, 4.7, 6.2, 6.8]} />
-    <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.4} />
+    <GridX
+        stroke="var(--svelteplot-bg)"
+        strokeOpacity={0.4} />
     <RuleX data={[0]} />
 </Plot>
 ```
@@ -72,7 +82,9 @@ In the following bar chart, we put two grids, one below the bars and one above:
 <Plot marginTop={0}>
     <GridX />
     <BarX data={[1.5, 2.5, 4.5, 4.7, 6.2, 6.8]} />
-    <GridX stroke="var(--svelteplot-bg)" strokeOpacity={0.4} />
+    <GridX
+        stroke="var(--svelteplot-bg)"
+        strokeOpacity={0.4} />
     <RuleX data={[0]} />
 </Plot>
 ```
@@ -80,7 +92,11 @@ In the following bar chart, we put two grids, one below the bars and one above:
 The automatic ticks can be customized using the **tickSpacing** option:
 
 ```svelte
-<Plot grid x={{ tickSpacing: 150 }} y={{ tickSpacing: 10 }} testid="tickspacing">
+<Plot
+    grid
+    x={{ tickSpacing: 150 }}
+    y={{ tickSpacing: 10 }}
+    testid="tickspacing">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

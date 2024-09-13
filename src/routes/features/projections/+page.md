@@ -4,7 +4,14 @@ title: Projections
 
 ```svelte live
 <script>
-    import { Plot, Dot, Geo, Sphere, Line, Graticule } from '$lib';
+    import {
+        Plot,
+        Dot,
+        Geo,
+        Sphere,
+        Line,
+        Graticule
+    } from '$lib';
     import { Slider, Select } from '$lib/ui';
     import { tick } from 'svelte';
     import { page } from '$app/stores';
@@ -12,7 +19,9 @@ title: Projections
     import * as topojson from 'topojson-client';
 
     let { world, earthquakes } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 
     let latitude = $state(40);
     let longitude = $state(120);
@@ -55,26 +64,38 @@ title: Projections
     $inspect(earthquakes);
 </script>
 
-<Select bind:value={projection} {options} label="Projection" />
+<Select
+    bind:value={projection}
+    {options}
+    label="Projection" />
 <button
     on:click={() => {
         vx = 10;
         step();
-    }}>spin</button
->
+    }}>spin</button>
 
 <Plot
     r={{ range: [0.5, 25] }}
     projection={{
         type: projection,
         inset: 10,
-        domain: geoCircle().center([longitude, latitude]).radius(zoom)(),
+        domain: geoCircle()
+            .center([longitude, latitude])
+            .radius(zoom)(),
         rotate: [-longitude, -latitude]
-    }}
->
-    <Sphere fill="var(--svelteplot-bg)" stroke="currentColor" cursor="pointer" />
-    <Graticule pointerEvents="none" opacity="0.1" step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
-    <Geo data={[land]} fillOpacity="0.2" pointerEvents="none" />
+    }}>
+    <Sphere
+        fill="var(--svelteplot-bg)"
+        stroke="currentColor"
+        cursor="pointer" />
+    <Graticule
+        pointerEvents="none"
+        opacity="0.1"
+        step={zoom > 50 ? 10 : zoom > 20 ? 5 : 1} />
+    <Geo
+        data={[land]}
+        fillOpacity="0.2"
+        pointerEvents="none" />
     <Dot
         data={earthquakes.features}
         stroke="var(--svp-red)"
@@ -82,8 +103,7 @@ title: Projections
         fillOpacity="0.2"
         x={(d) => d.geometry.coordinates[0]}
         y={(d) => d.geometry.coordinates[1]}
-        r={(d) => Math.pow(10, d.properties.mag)}
-    />
+        r={(d) => Math.pow(10, d.properties.mag)} />
 </Plot>
 ```
 
@@ -94,8 +114,7 @@ title: Projections
         type: 'orthographic',
         inset: 10,
         rotate: [-longitude, -latitude]
-    }}
->
+    }}>
     <Sphere
         fill="var(--svelteplot-bg)"
         stroke="currentColor"
@@ -103,14 +122,20 @@ title: Projections
         onmousedown={() => (dragging = true)}
         onmousemove={(d, evt) => {
             if (dragging) {
-                latitude = Math.round(latitude + evt.movementY);
-                longitude = Math.round(longitude - evt.movementX);
+                latitude = Math.round(
+                    latitude + evt.movementY
+                );
+                longitude = Math.round(
+                    longitude - evt.movementX
+                );
             }
         }}
-        onmouseup={() => (dragging = false)}
-    />
+        onmouseup={() => (dragging = false)} />
     <Graticule pointerEvents="none" opacity="0.1" />
-    <Geo data={[land]} pointerEvents="none" fillOpacity="0.2" />
+    <Geo
+        data={[land]}
+        pointerEvents="none"
+        fillOpacity="0.2" />
     <Dot
         data={earthquakes}
         stroke="var(--svp-red)"
@@ -118,8 +143,7 @@ title: Projections
         fillOpacity="0.2"
         x="longitude"
         y="latitude"
-        r={(d) => Math.pow(10, d.mag)}
-    />
+        r={(d) => Math.pow(10, d.mag)} />
 </Plot>
 ```
 
@@ -138,7 +162,9 @@ Plot provides a variety of built-in projections. And as above, all world project
     import * as topojson from 'topojson-client';
 
     let { world } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 
     let projection = $state('equirectangular');
     const options = [
@@ -160,7 +186,10 @@ Plot provides a variety of built-in projections. And as above, all world project
     ];
 </script>
 
-<Select bind:value={projection} {options} label="Projection" />
+<Select
+    bind:value={projection}
+    {options}
+    label="Projection" />
 <Plot {projection}>
     <Geo data={[land]} />
     <Sphere stroke="currentColor" />
@@ -189,17 +218,27 @@ Plot provides a variety of built-in projections. And as above, all world project
 
     let { world } = $derived($page.data.data);
 
-    let countries = $derived(topojson.feature(world, world.objects.countries).features);
+    let countries = $derived(
+        topojson.feature(world, world.objects.countries)
+            .features
+    );
     let selected = $state(
         topojson
             .feature(world, world.objects.countries)
-            .features.find((d) => d.properties.name === 'Germany')
+            .features.find(
+                (d) => d.properties.name === 'Germany'
+            )
     );
     let centroid = $derived(geoCentroid(selected));
 </script>
 
 <Slider bind:value={inset} min={0} max={50} label="inset" />
-<Slider bind:value={aspect} min={0.35} max={2} step={0.01} label="aspect" />
+<Slider
+    bind:value={aspect}
+    min={0.35}
+    max={2}
+    step={0.01}
+    label="aspect" />
 <Plot
     projection={{
         type: 'transverse-mercator',
@@ -207,15 +246,13 @@ Plot provides a variety of built-in projections. And as above, all world project
         inset,
         domain: selected
     }}
-    height={(w) => w * aspect}
->
+    height={(w) => w * aspect}>
     <Geo
         data={countries}
         opacity={0.2}
         fill="currentColor"
         stroke="var(--svelteplot-bg)"
-        onclick={(d, e) => (selected = e)}
-    />
+        onclick={(d, e) => (selected = e)} />
     <Geo data={[selected]} />
 </Plot>
 ```

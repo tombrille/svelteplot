@@ -41,14 +41,22 @@ But you can change the sorting using the **sort** transform option, which will c
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY data={alphabet} x="letter" y="frequency" sort={{ channel: 'y' }} />
+    <BarY
+        data={alphabet}
+        x="letter"
+        y="frequency"
+        sort={{ channel: 'y' }} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY data={alphabet} x="letter" y="frequency" sort={{ channel: 'y' }} />
+    <BarY
+        data={alphabet}
+        x="letter"
+        y="frequency"
+        sort={{ channel: 'y' }} />
 </Plot>
 ```
 
@@ -66,14 +74,22 @@ To invert the channel sorting, you can either add `order: 'descending` to the so
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY data={alphabet} x="letter" y="frequency" sort={{ channel: '-y' }} />
+    <BarY
+        data={alphabet}
+        x="letter"
+        y="frequency"
+        sort={{ channel: '-y' }} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY data={alphabet} x="letter" y="frequency" sort={{ channel: '-y' }} />
+    <BarY
+        data={alphabet}
+        x="letter"
+        y="frequency"
+        sort={{ channel: '-y' }} />
 </Plot>
 ```
 
@@ -109,7 +125,13 @@ Sorts the data.
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY {...sort({ data: alphabet, x: 'letter', y: 'frequency', sort: 'letter' })} />
+    <BarY
+        {...sort({
+            data: alphabet,
+            x: 'letter',
+            y: 'frequency',
+            sort: 'letter'
+        })} />
 </Plot>
 ```
 
@@ -131,7 +153,11 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY {...shuffle({ data: alphabet, x: 'letter', y: 'frequency' }, { seed })} />
+    <BarY
+        {...shuffle(
+            { data: alphabet, x: 'letter', y: 'frequency' },
+            { seed }
+        )} />
 </Plot>
 
 <Slider label="seed" type="number" bind:value={seed} />
@@ -141,7 +167,11 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
 ```svelte
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY {...shuffle({ data: alphabet, x: 'letter', y: 'frequency' }, { seed: 42 })} />
+    <BarY
+        {...shuffle(
+            { data: alphabet, x: 'letter', y: 'frequency' },
+            { seed: 42 }
+        )} />
 </Plot>
 ```
 
@@ -160,7 +190,12 @@ The reverse transform reverses the data order:
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY {...reverse({ data: alphabet, x: 'letter', y: 'frequency' })} />
+    <BarY
+        {...reverse({
+            data: alphabet,
+            x: 'letter',
+            y: 'frequency'
+        })} />
 </Plot>
 ```
 
@@ -172,7 +207,12 @@ The reverse transform reverses the data order:
 
 <Plot grid y={{ percent: true }} marginTop={25}>
     <RuleY data={[0]} />
-    <BarY {...reverse({ data: alphabet, x: 'letter', y: 'frequency' })} />
+    <BarY
+        {...reverse({
+            data: alphabet,
+            x: 'letter',
+            y: 'frequency'
+        })} />
 </Plot>
 ```
 
@@ -189,14 +229,22 @@ There's a simpler way to reverse the order of a band scale by setting `reverse: 
     let { alphabet } = $derived($page.data.data);
 </script>
 
-<Plot grid x={{ reverse: true }} y={{ percent: true }} marginTop={25}>
+<Plot
+    grid
+    x={{ reverse: true }}
+    y={{ percent: true }}
+    marginTop={25}>
     <RuleY data={[0]} />
     <BarY data={alphabet} x="letter" y="frequency" />
 </Plot>
 ```
 
 ```svelte
-<Plot grid x={{ reverse: true }} y={{ percent: true }} marginTop={25}>
+<Plot
+    grid
+    x={{ reverse: true }}
+    y={{ percent: true }}
+    marginTop={25}>
     <RuleY data={[0]} />
     <BarY data={alphabet} x="letter" y="frequency" />
 </Plot>

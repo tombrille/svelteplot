@@ -41,14 +41,25 @@ In the returned `data` array, each item will have new properties `__y1` and `__y
             (d) => d.species,
             (d) => d.island
         )
-            .map(([species, group]) => group.map(([island, count]) => ({ species, island, count })))
+            .map(([species, group]) =>
+                group.map(([island, count]) => ({
+                    species,
+                    island,
+                    count
+                }))
+            )
             .flat(1)
     );
 </script>
 
 <Plot grid>
     <RuleY data={[0]} />
-    <BarY {...stackY(data, { x: 'island', y: 'count', fill: 'species' })} />
+    <BarY
+        {...stackY(data, {
+            x: 'island',
+            y: 'count',
+            fill: 'species'
+        })} />
 </Plot>
 ```
 
@@ -63,6 +74,11 @@ More text here
 
 <Plot grid>
     <RuleY data={[0]} />
-    <BarY {...stackY(data, { x: 'island', y: 'count', fill: 'species' })} />
+    <BarY
+        {...stackY(data, {
+            x: 'island',
+            y: 'count',
+            fill: 'species'
+        })} />
 </Plot>
 ```

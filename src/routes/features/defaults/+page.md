@@ -67,12 +67,21 @@ SveltePlot is also relying on CSS variables.
         frame: true,
         grid: true,
         inset: 15,
-        categoricalColorScheme: ['var(--svp-red)', 'var(--svp-blue)', 'var(--svp-green)']
+        categoricalColorScheme: [
+            'var(--svp-red)',
+            'var(--svp-blue)',
+            'var(--svp-green)'
+        ]
     });
 </script>
 
 <Plot>
-    <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        fill="species" />
 </Plot>
 ```
 
@@ -89,6 +98,11 @@ SveltePlot is also relying on CSS variables.
 </script>
 
 <Plot>
-    <Dot data={penguins} x="culmen_length_mm" fx="species" y="culmen_depth_mm" fill="species" />
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        fx="species"
+        y="culmen_depth_mm"
+        fill="species" />
 </Plot>
 ```

@@ -25,8 +25,7 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
                 data: range(10000).map(randomNormal())
             },
             { y: 'count' }
-        )}
-    />
+        )} />
 </Plot>
 ```
 
@@ -36,7 +35,11 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 </script>
 
 <Plot grid>
-    <RectY {...binX({ data: range(10000).map(randomNormal()) }, { y: 'count' })} />
+    <RectY
+        {...binX(
+            { data: range(10000).map(randomNormal()) },
+            { y: 'count' }
+        )} />
 </Plot>
 ```
 

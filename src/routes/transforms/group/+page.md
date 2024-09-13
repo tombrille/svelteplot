@@ -13,15 +13,26 @@ For example, the bar chart below shows a distribution of Olympic athletes by spo
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot x={{ tickRotate: -90 }} y={{ grid: true }} height={300}>
-    <BarY {...groupX({ data: olympians, x: 'sport' }, { y: 'count' })} />
+<Plot
+    x={{ tickRotate: -90 }}
+    y={{ grid: true }}
+    height={300}>
+    <BarY
+        {...groupX(
+            { data: olympians, x: 'sport' },
+            { y: 'count' }
+        )} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
 <Plot x={{ tickRotate: -90 }} y={{ grid: true }}>
-    <BarY {...groupX({ data: olympians, x: 'sport' }, { y: 'count' })} />
+    <BarY
+        {...groupX(
+            { data: olympians, x: 'sport' },
+            { y: 'count' }
+        )} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -38,14 +49,25 @@ While the groupX transform is often used to generate **y**, it can output to any
     let { olympians } = $derived($page.data.data);
 </script>
 
-<Plot x={{ tickRotate: -90 }} r={{ range: [0, 14] }} height={150}>
-    <DotX {...groupX({ data: olympians, x: 'sport' }, { r: 'count' })} />
+<Plot
+    x={{ tickRotate: -90 }}
+    r={{ range: [0, 14] }}
+    height={150}>
+    <DotX
+        {...groupX(
+            { data: olympians, x: 'sport' },
+            { r: 'count' }
+        )} />
 </Plot>
 ```
 
 ```svelte
 <Plot x={{ tickRotate: -90 }} r={{ range: [0, 14] }}>
-    <DotX {...groupX({ data: olympians, x: 'sport' }, { r: 'count' })} />
+    <DotX
+        {...groupX(
+            { data: olympians, x: 'sport' },
+            { r: 'count' }
+        )} />
 </Plot>
 ```
 
@@ -58,16 +80,38 @@ Grouping can be combined with the implicit stack transform of the bar marks:
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+<Plot
+    x={{ axis: 'top' }}
+    color={{ legend: true }}
+    marginTop={40}>
     <RuleX data={[0]} />
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ axis: 'top' }} color={{ legend: true }} marginTop={40}>
+<Plot
+    x={{ axis: 'top' }}
+    color={{ legend: true }}
+    marginTop={40}>
     <RuleX data={[0]} />
-    <BarX {...groupY({ data: penguins, y: 'island', fill: 'species' }, { x: 'count' })} />
+    <BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} />
 </Plot>
 ```
 
@@ -102,8 +146,15 @@ Groups on _x_ and _y_ channels as an additional _z_, _fill_, or _stroke_ channel
 
 <Plot x={{ tickRotate: -90 }} grid>
     <Dot
-        {...group({ data: penguins, x: 'island', y: 'species', r: 'body_mass_g' }, { r: 'mean' })}
-        fill
-    />
+        {...group(
+            {
+                data: penguins,
+                x: 'island',
+                y: 'species',
+                r: 'body_mass_g'
+            },
+            { r: 'mean' }
+        )}
+        fill />
 </Plot>
 ```

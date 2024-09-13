@@ -81,7 +81,10 @@ As with [areas](/marks/area), points in lines are connected in input order: the 
 </script>
 
 <Plot y={{ grid: true }}>
-    <Line data={shuffle(aapl.slice(0))} x="Date" y="Close" />
+    <Line
+        data={shuffle(aapl.slice(0))}
+        x="Date"
+        y="Close" />
 </Plot>
 ```
 
@@ -102,13 +105,21 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 </script>
 
 <Plot y={{ grid: true }}>
-    <Line data={shuffle(aapl.slice(0))} x="Date" y="Close" sort="Date" />
+    <Line
+        data={shuffle(aapl.slice(0))}
+        x="Date"
+        y="Close"
+        sort="Date" />
 </Plot>
 ```
 
 ```svelte
 <Plot y={{ grid: true }}>
-    <Line data={shuffle(aapl)} x="Date" y="Close" sort="Date" />
+    <Line
+        data={shuffle(aapl)}
+        x="Date"
+        y="Close"
+        sort="Date" />
 </Plot>
 ```
 
@@ -123,8 +134,11 @@ While the _x_ scale of a line chart often represents time, this is not required.
 
 <Plot
     x={{ label: 'Distance from stage start (km)' }}
-    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}
->
+    y={{
+        grid: true,
+        interval: 100,
+        label: 'Elevation (m)'
+    }}>
     <Line data={tdf} x="distance" y="elevation" />
     <RuleY data={[0]} />
 </Plot>
@@ -133,8 +147,11 @@ While the _x_ scale of a line chart often represents time, this is not required.
 ```svelte
 <Plot
     x={{ label: 'Distance from stage start (km)' }}
-    y={{ grid: true, interval: 100, label: 'Elevation (m)' }}
->
+    y={{
+        grid: true,
+        interval: 100,
+        label: 'Elevation (m)'
+    }}>
     <Line data={tdf} x="distance" y="elevation" />
     <RuleY data={[0]} />
 </Plot>
@@ -155,9 +172,13 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
     grid
     height={500}
     x={{ label: 'Miles driven (per person-year) →' }}
-    y={{ label: '↑ Cost of gasoline ($ per gallon)' }}
->
-    <Line data={driving} x="miles" y="gas" curve="catmull-rom" marker="arrow" />
+    y={{ label: '↑ Cost of gasoline ($ per gallon)' }}>
+    <Line
+        data={driving}
+        x="miles"
+        y="gas"
+        curve="catmull-rom"
+        marker="arrow" />
     <Text
         data={driving}
         x="miles"
@@ -166,11 +187,30 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
         fill="currentColor"
         stroke="var(--svelteplot-bg)"
         filter={(d) => d.year % 5 === 0}
-        dx={(d) => (d.side === 'left' ? -5 : d.side === 'right' ? 5 : 0)}
-        dy={(d) => (d.side === 'top' ? 5 : d.side === 'bottom' ? -5 : 0)}
-        textAnchor={(d) => (d.side === 'left' ? 'end' : d.side === 'right' ? 'start' : 'center')}
-        lineAnchor={(d) => (d.side === 'top' ? 'top' : d.side === 'bottom' ? 'bottom' : 'middle')}
-    />
+        dx={(d) =>
+            d.side === 'left'
+                ? -5
+                : d.side === 'right'
+                  ? 5
+                  : 0}
+        dy={(d) =>
+            d.side === 'top'
+                ? 5
+                : d.side === 'bottom'
+                  ? -5
+                  : 0}
+        textAnchor={(d) =>
+            d.side === 'left'
+                ? 'end'
+                : d.side === 'right'
+                  ? 'start'
+                  : 'center'}
+        lineAnchor={(d) =>
+            d.side === 'top'
+                ? 'top'
+                : d.side === 'bottom'
+                  ? 'bottom'
+                  : 'middle'} />
 </Plot>
 ```
 
@@ -201,8 +241,10 @@ BLS Demo:
         z="division"
         outlineStroke="var(--svelteplot-bg)"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#99999955')}
-    />
+        stroke={(d) =>
+            /, MI /.test(d.division)
+                ? 'red'
+                : '#99999955'} />
 </Plot>
 ```
 
@@ -214,8 +256,8 @@ BLS Demo:
         y="unemployment"
         z="division"
         sort={(d) => /, MI /.test(d.division)}
-        stroke={(d) => (/, MI /.test(d.division) ? 'red' : '#ccc')}
-    />
+        stroke={(d) =>
+            /, MI /.test(d.division) ? 'red' : '#ccc'} />
 </Plot>
 ```
 
@@ -230,13 +272,19 @@ Convenience wrapper
 </script>
 
 <Plot grid x={{ nice: true }} maxWidth="180px">
-    <LineX data={range(Math.PI * 100).map((i) => Math.sin(i / 20))} />
+    <LineX
+        data={range(Math.PI * 100).map((i) =>
+            Math.sin(i / 20)
+        )} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid x={{ nice: true }}>
-    <LineX data={range(Math.PI * 100).map((i) => Math.sin(i / 20))} />
+    <LineX
+        data={range(Math.PI * 100).map((i) =>
+            Math.sin(i / 20)
+        )} />
 </Plot>
 ```
 
@@ -251,13 +299,19 @@ Convenience wrapper for wrapping a list of numbers over their indices
 </script>
 
 <Plot grid y={{ nice: true }} height={150}>
-    <LineY data={range(Math.PI * 100).map((i) => Math.sin(i / 10))} />
+    <LineY
+        data={range(Math.PI * 100).map((i) =>
+            Math.sin(i / 10)
+        )} />
 </Plot>
 ```
 
 ```svelte
 <Plot grid y={{ nice: true }}>
-    <LineY data={range(Math.PI * 100).map((i) => Math.sin(i / 50))} />
+    <LineY
+        data={range(Math.PI * 100).map((i) =>
+            Math.sin(i / 50)
+        )} />
 </Plot>
 ```
 
@@ -271,7 +325,12 @@ LineY can automatically group?
 </script>
 
 <Plot grid y={{ nice: true }} height={350}>
-    <LineY data={riaa} x="year" y="revenue" z="format" stroke="group" />
+    <LineY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        stroke="group" />
 </Plot>
 ```
 
@@ -294,14 +353,31 @@ While uncommon, you can draw a line with ordinal position values. For example be
     let { stateage } = $derived($page.data.data);
 </script>
 
-<Plot x={{ label: 'Age range (years)' }} y={{ percent: true, grid: true, label: 'Population (%)' }}>
-    <Line data={stateage} x="age" y="pop_share" z="state" strokeOpacity={0.5} />
+<Plot
+    x={{ label: 'Age range (years)' }}
+    y={{
+        percent: true,
+        grid: true,
+        label: 'Population (%)'
+    }}>
+    <Line
+        data={stateage}
+        x="age"
+        y="pop_share"
+        z="state"
+        strokeOpacity={0.5} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot x={{ label: 'Age range (years)' }} y={{ percent: true, grid: true, label: 'Population (%)' }}>
+<Plot
+    x={{ label: 'Age range (years)' }}
+    y={{
+        percent: true,
+        grid: true,
+        label: 'Population (%)'
+    }}>
     <Line data={stateage} x="age" y="pop_share" z="state" />
     <RuleY data={[0]} />
 </Plot>
@@ -325,21 +401,39 @@ With a [spherical projection](/features/projections), line segments become [geod
     import { page } from '$app/stores';
     import * as topojson from 'topojson-client';
     let { world, beagle } = $derived($page.data.data);
-    let land = $derived(topojson.feature(world, world.objects.land));
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
 </script>
 
 <Plot projection="equirectangular">
     <Geo data={[land]} stroke="currentColor" />
-    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" />
-    <Geo data={[{ type: 'Point', coordinates: [-0.13, 51.5] }]} fill="var(--svp-red)" />
+    <Line
+        data={beagle}
+        x="lon"
+        y="lat"
+        stroke="var(--svp-red)" />
+    <Geo
+        data={[
+            { type: 'Point', coordinates: [-0.13, 51.5] }
+        ]}
+        fill="var(--svp-red)" />
 </Plot>
 ```
 
 ```svelte
 <Plot projection="equirectangular">
     <Geo data={[land]} stroke="currentColor" />
-    <Line data={beagle} x="lon" y="lat" stroke="var(--svp-red)" />
-    <Geo data={[{ type: 'Point', coordinates: [-0.13, 51.5] }]} fill="var(--svp-red)" />
+    <Line
+        data={beagle}
+        x="lon"
+        y="lat"
+        stroke="var(--svp-red)" />
+    <Geo
+        data={[
+            { type: 'Point', coordinates: [-0.13, 51.5] }
+        ]}
+        fill="var(--svp-red)" />
 </Plot>
 ```
 

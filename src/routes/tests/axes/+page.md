@@ -19,7 +19,9 @@ Linear interval
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot grid x={{ axis: 'top', domain: [0, 100], interval: 25 }} />
+<Plot
+    grid
+    x={{ axis: 'top', domain: [0, 100], interval: 25 }} />
 ```
 
 Linear auto-format
@@ -39,7 +41,13 @@ Log auto-format
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot grid x={{ axis: 'both', type: 'log', domain: [200000, 3000000] }} />
+<Plot
+    grid
+    x={{
+        axis: 'both',
+        type: 'log',
+        domain: [200000, 3000000]
+    }} />
 ```
 
 Time auto-format
@@ -49,7 +57,13 @@ Time auto-format
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot debug grid x={{ nice: true, domain: [new Date(2000, 0, 1), new Date(2002, 0, 1)] }} />
+<Plot
+    debug
+    grid
+    x={{
+        nice: true,
+        domain: [new Date(2000, 0, 1), new Date(2002, 0, 1)]
+    }} />
 ```
 
 months
@@ -59,7 +73,15 @@ months
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot debug grid x={{ domain: [new Date(2000, 0, 1), new Date(2000, 11, 1)] }} />
+<Plot
+    debug
+    grid
+    x={{
+        domain: [
+            new Date(2000, 0, 1),
+            new Date(2000, 11, 1)
+        ]
+    }} />
 ```
 
 enforce quarterly ticks
@@ -72,8 +94,13 @@ enforce quarterly ticks
 <Plot
     debug
     grid
-    x={{ interval: 'quarter', domain: [new Date(2000, 0, 1), new Date(2000, 11, 1)] }}
-/>
+    x={{
+        interval: 'quarter',
+        domain: [
+            new Date(2000, 0, 1),
+            new Date(2000, 11, 1)
+        ]
+    }} />
 ```
 
 weeks
@@ -83,7 +110,12 @@ weeks
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot debug grid x={{ domain: [new Date(2000, 0, 1), new Date(2000, 2, 1)] }} />
+<Plot
+    debug
+    grid
+    x={{
+        domain: [new Date(2000, 0, 1), new Date(2000, 2, 1)]
+    }} />
 ```
 
 daily
@@ -93,5 +125,13 @@ daily
     import { Plot } from '$lib/index.js';
 </script>
 
-<Plot debug grid x={{ domain: [new Date(2000, 0, 1), new Date(2000, 0, 10)] }} />
+<Plot
+    debug
+    grid
+    x={{
+        domain: [
+            new Date(2000, 0, 1),
+            new Date(2000, 0, 10)
+        ]
+    }} />
 ```

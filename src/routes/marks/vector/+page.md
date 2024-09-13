@@ -9,15 +9,22 @@ title: Vector mark
     let { wind } = $derived($page.data.data);
 </script>
 
-<Plot inset={10} aspectRatio={1} color={{ label: 'Speed (m/s)', zero: true, legend: true }}>
+<Plot
+    inset={10}
+    aspectRatio={1}
+    color={{
+        label: 'Speed (m/s)',
+        zero: true,
+        legend: true
+    }}>
     <Vector
         data={wind}
         x="longitude"
         y="latitude"
-        rotate={({ u, v }) => (Math.atan2(u, v) * 180) / Math.PI}
+        rotate={({ u, v }) =>
+            (Math.atan2(u, v) * 180) / Math.PI}
         length={({ u, v }) => Math.hypot(u, v)}
-        stroke={({ u, v }) => Math.hypot(u, v)}
-    />
+        stroke={({ u, v }) => Math.hypot(u, v)} />
 </Plot>
 ```
 
@@ -42,22 +49,29 @@ Here's an example where all arrows point towards the mouse cursor:
     y={{ axis: false }}
     aspectRatio={1}
     length={{ range: [3.5, 20] }}
-    let:scales
->
+    let:scales>
     <Vector
         {data}
         x="x"
         y="y"
-        length={(d) => Math.sqrt((d.x - pointer[0]) ** 2 + (d.y - pointer[1]) ** 2)}
-        rotate={(d) => (Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180) / Math.PI}
-    />
+        length={(d) =>
+            Math.sqrt(
+                (d.x - pointer[0]) ** 2 +
+                    (d.y - pointer[1]) ** 2
+            )}
+        rotate={(d) =>
+            (Math.atan2(
+                pointer[0] - d.x,
+                pointer[1] - d.y
+            ) *
+                180) /
+            Math.PI} />
     <Frame
         stroke="none"
         fill="transparent"
         onmousemove={(evt) => {
             pointer = [evt.dataX, evt.dataY];
-        }}
-    />
+        }} />
 </Plot>
 ```
 
@@ -70,21 +84,33 @@ Here's an example where all arrows point towards the mouse cursor:
     let pointer = $state([0, 0]);
 </script>
 
-<Plot inset={10} aspectRatio={1} length={{ range: [3.5, 20] }} let:scales>
+<Plot
+    inset={10}
+    aspectRatio={1}
+    length={{ range: [3.5, 20] }}
+    let:scales>
     <Vector
         {data}
         x="x"
         y="y"
-        length={(d) => Math.sqrt((d.x - pointer[0]) ** 2 + (d.y - pointer[1]) ** 2)}
-        rotate={(d) => (Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180) / Math.PI}
-    />
+        length={(d) =>
+            Math.sqrt(
+                (d.x - pointer[0]) ** 2 +
+                    (d.y - pointer[1]) ** 2
+            )}
+        rotate={(d) =>
+            (Math.atan2(
+                pointer[0] - d.x,
+                pointer[1] - d.y
+            ) *
+                180) /
+            Math.PI} />
     <Frame
         stroke="none"
         fill="transparent"
         onmousemove={(evt) => {
             pointer = [evt.dataX, evt.dataY];
-        }}
-    />
+        }} />
 </Plot>
 ```
 
@@ -97,32 +123,52 @@ Vector mark can deal with projection system:
     import { page } from '$app/stores';
     let { us, election } = $derived($page.data.data);
 
-    let nation = $derived(topojson.feature(us, us.objects.nation));
-    let stateMesh = $derived(topojson.mesh(us, us.objects.states));
-    let _election = new Map(election.map((d) => [d.fips, d]));
+    let nation = $derived(
+        topojson.feature(us, us.objects.nation)
+    );
+    let stateMesh = $derived(
+        topojson.mesh(us, us.objects.states)
+    );
+    let _election = new Map(
+        election.map((d) => [d.fips, d])
+    );
 
     let counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: {
-                    ...feat.properties,
-                    ...(_election.get(+feat.id) || {})
-                }
-            };
-        })
+        topojson
+            .feature(us, us.objects.counties)
+            .features.map((feat) => {
+                return {
+                    ...feat,
+                    properties: {
+                        ...feat.properties,
+                        ...(_election.get(+feat.id) || {})
+                    }
+                };
+            })
     );
 </script>
 
-<Plot projection="albers-usa" length={{ type: 'sqrt', range: [3, 40] }} color={{ scheme: 'BuRd' }}>
+<Plot
+    projection="albers-usa"
+    length={{ type: 'sqrt', range: [3, 40] }}
+    color={{ scheme: 'BuRd' }}>
     <Geo data={[nation]} stroke="currentColor" />
-    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Geo
+        data={[stateMesh]}
+        stroke="currentColor"
+        strokeWidth="0.5" />
     <Vector
         {...geoCentroid({ data: counties })}
-        length={(d) => Math.abs(d.properties.margin2020 * d.properties.votes)}
-        stroke={(d) => (d.properties.margin2020 > 0 ? 'var(--svp-red)' : 'var(--svp-blue)')}
-        rotate={(d) => (d.properties.margin2020 > 0 ? 60 : -60)}
-    />
+        length={(d) =>
+            Math.abs(
+                d.properties.margin2020 * d.properties.votes
+            )}
+        stroke={(d) =>
+            d.properties.margin2020 > 0
+                ? 'var(--svp-red)'
+                : 'var(--svp-blue)'}
+        rotate={(d) =>
+            d.properties.margin2020 > 0 ? 60 : -60} />
 </Plot>
 ```
 
@@ -149,7 +195,8 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     };
 </script>
 
-<Plot><Vector {data} x="x" y="y" shape={shapeA} ... /></Plot>
+<Plot
+    ><Vector {data} x="x" y="y" shape={shapeA} ... /></Plot>
 ```
 
 ```svelte live
@@ -181,24 +228,31 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     y={{ axis: false }}
     aspectRatio={1}
     length={{ range: [5, 15] }}
-    let:scales
->
+    let:scales>
     <Vector
         {data}
         x="x"
         y="y"
         shape={shapeA}
         anchor="start"
-        length={(d) => Math.sqrt((d.x - pointer[0]) ** 2 + (d.y - pointer[1]) ** 2)}
-        rotate={(d) => (Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180) / Math.PI}
-    />
+        length={(d) =>
+            Math.sqrt(
+                (d.x - pointer[0]) ** 2 +
+                    (d.y - pointer[1]) ** 2
+            )}
+        rotate={(d) =>
+            (Math.atan2(
+                pointer[0] - d.x,
+                pointer[1] - d.y
+            ) *
+                180) /
+            Math.PI} />
     <Frame
         stroke="none"
         fill="transparent"
         onmousemove={(evt) => {
             pointer = [evt.dataX, evt.dataY];
-        }}
-    />
+        }} />
 </Plot>
 ```
 
@@ -210,9 +264,15 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     x="x"
     y="y"
     anchor="start"
-    length={(d) => Math.sqrt((d.x - pointer[0]) ** 2 + (d.y - pointer[1]) ** 2)}
-    rotate={(d) => (Math.atan2(pointer[0] - d.x, pointer[1] - d.y) * 180) / Math.PI}
-/>
+    length={(d) =>
+        Math.sqrt(
+            (d.x - pointer[0]) ** 2 +
+                (d.y - pointer[1]) ** 2
+        )}
+    rotate={(d) =>
+        (Math.atan2(pointer[0] - d.x, pointer[1] - d.y) *
+            180) /
+        Math.PI} />
 ```
 
 ## Spike
@@ -229,36 +289,51 @@ The **Spike** mark is a convenience wrapper around the Vector mark that sets nic
     let nation = topojson.feature(us, us.objects.nation);
     let stateMesh = topojson.mesh(us, us.objects.states);
 
-    let _election = new Map(election.map((d) => [d.fips, d]));
+    let _election = new Map(
+        election.map((d) => [d.fips, d])
+    );
 
     let counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: {
-                    ...feat.properties,
-                    ...(_election.get(+feat.id) || {})
-                }
-            };
-        })
+        topojson
+            .feature(us, us.objects.counties)
+            .features.map((feat) => {
+                return {
+                    ...feat,
+                    properties: {
+                        ...feat.properties,
+                        ...(_election.get(+feat.id) || {})
+                    }
+                };
+            })
     );
 </script>
 
 <Plot projection="albers-usa" length={{ range: [0, 100] }}>
-    <Geo data={[nation]} fill="white" stroke="currentColor" />
-    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
+    <Geo
+        data={[nation]}
+        fill="white"
+        stroke="currentColor" />
+    <Geo
+        data={[stateMesh]}
+        stroke="currentColor"
+        strokeWidth="0.5" />
     <Spike
         {...geoCentroid({ data: counties })}
         stroke="var(--svp-green)"
-        length={(d) => d.properties.votes}
-    />
+        length={(d) => d.properties.votes} />
 </Plot>
 ```
 
 ```svelte
 <Plot projection="albers-usa" length={{ range: [0, 100] }}>
     <Geo data={[nation]} stroke="currentColor" />
-    <Geo data={[stateMesh]} stroke="currentColor" strokeWidth="0.5" />
-    <Spike {...geoCentroid({ data: counties })} stroke="green" length={(d) => d.properties.votes} />
+    <Geo
+        data={[stateMesh]}
+        stroke="currentColor"
+        strokeWidth="0.5" />
+    <Spike
+        {...geoCentroid({ data: counties })}
+        stroke="green"
+        length={(d) => d.properties.votes} />
 </Plot>
 ```

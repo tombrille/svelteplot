@@ -27,8 +27,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
         y="power (hp)"
         stroke={!fill ? 'manufactor' : null}
         fill={fill ? 'manufactor' : null}
-        symbol="manufactor"
-    />
+        symbol="manufactor" />
 </Plot>
 ```
 
@@ -54,8 +53,10 @@ When showing plots with a lot of dots, you can switch to canvas rendering to imp
         stroke={!fill ? 'currentColor' : null}
         opacity={0.4}
         canvas
-        data={range(20000).map((i) => [randX(), randY()])}
-    />
+        data={range(20000).map((i) => [
+            randX(),
+            randY()
+        ])} />
 </Plot>
 ```
 
@@ -68,14 +69,17 @@ dsdsd sd sd sdsd sd
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot grid height={500} color={{ legend: true }} testid="penguins">
+<Plot
+    grid
+    height={500}
+    color={{ legend: true }}
+    testid="penguins">
     <Dot
         data={penguins}
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species"
-    />
+        symbol="species" />
 </Plot>
 ```
 
@@ -90,16 +94,23 @@ One more
     let maxRad = $state(10);
 </script>
 
-max radius: <input type="range" bind:value={maxRad} min={0} max={20} /><br />
+max radius: <input
+    type="range"
+    bind:value={maxRad}
+    min={0}
+    max={20} /><br />
 
 <Plot grid r={{ range: [0, maxRad] }}>
     <Dot
         data={penguins}
         x="culmen_length_mm"
         y="culmen_depth_mm"
-        r={(d) => Math.pow(d.culmen_length_mm * d.culmen_depth_mm, 4)}
-        fill="sex"
-    />
+        r={(d) =>
+            Math.pow(
+                d.culmen_length_mm * d.culmen_depth_mm,
+                4
+            )}
+        fill="sex" />
 </Plot>
 ```
 
@@ -125,16 +136,16 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
     }}
     y={{ type: 'point', label: '' }}
     marginTop={40}
-    marginBottom={40}
->
+    marginBottom={40}>
     <GridY strokeDasharray="1,3" strokeOpacity="0.5" />
     <Dot
-        data={languages.filter((d) => d['Total speakers'] >= 70)}
+        data={languages.filter(
+            (d) => d['Total speakers'] >= 70
+        )}
         fill="currentColor"
         sort={{ channel: '-x' }}
         y="Language"
-        x={(d) => d['Total speakers'] * 1e6}
-    />
+        x={(d) => d['Total speakers'] * 1e6} />
 </Plot>
 ```
 
@@ -193,9 +204,12 @@ You can use the color channel for encoding a third quantitative variable.
         domain: decline ? null : [1, 10],
         scheme: 'rdylgn',
         label: 'IMDB rating'
-    }}
->
-    <Dot data={simpsons} y="imdb_rating" fill="imdb_rating" x="airdate" />
+    }}>
+    <Dot
+        data={simpsons}
+        y="imdb_rating"
+        fill="imdb_rating"
+        x="airdate" />
     {#if !decline}
         <RuleY data={[1]} />
     {/if}
