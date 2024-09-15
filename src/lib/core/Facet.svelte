@@ -1,7 +1,7 @@
 <script lang="ts">
     import { setContext } from 'svelte';
-    import { resolveChannel } from './helpers/resolve.js';
-    import type { BaseMarkProps, DataRecord, PlotScale, RawValue } from './types.js';
+    import { resolveChannel } from '../helpers/resolve.js';
+    import type { BaseMarkProps, DataRecord, PlotScale, RawValue } from '../types.js';
     import { identity } from '$lib/helpers';
 
     let {

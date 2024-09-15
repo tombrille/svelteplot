@@ -18,8 +18,16 @@ export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
         'diverging',
         'quantile',
         'quantize',
+        'quantize',
         'threshold',
-        'log'
+        'log',
+        'symlog',
+        'pow',
+        'sqrt',
+        'diverging-log',
+        'diverging-pow',
+        'diverging-sqrt',
+        'diverging-symlog'
     ]),
     x: new Set([
         'linear',

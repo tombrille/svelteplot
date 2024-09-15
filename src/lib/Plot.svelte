@@ -4,6 +4,8 @@
     their data and channels and computes the shared scales.
 -->
 <script lang="ts">
+    import Plot from './core/Plot.svelte';
+
     import { getContext, setContext } from 'svelte';
     import { SvelteMap } from 'svelte/reactivity';
     import { writable } from 'svelte/store';
@@ -18,12 +20,12 @@
         PlotDefaults,
         PlotState
     } from './types.js';
-    import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from './helpers/mergeDeep.js';
     import { computeScales } from './helpers/scales.js';
     import { CHANNEL_SCALE } from './constants.js';
 
+    // implicit marks
     import AxisX from './marks/AxisX.svelte';
     import AxisY from './marks/AxisY.svelte';
     import ColorLegend from './marks/ColorLegend.svelte';
@@ -32,61 +34,24 @@
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
 
+    // automatic scales
+    import { autoScale, autoScaleColor } from './helpers/autoScales.js';
+    import { namedProjection } from './helpers/autoProjection.js';
+    import { isObject } from './helpers/index.js';
+
     let width = $state(500);
 
     let {
-        header,
-        footer,
+        header: userHeader,
+        footer: userFooter,
         overlay,
         underlay,
         children,
         testid,
         facet,
-        ...initialOpts
+        projection,
+        ...restOptions
     }: Partial<PlotOptions> = $props();
-
-    // automatic margins can be applied by the marks, registered
-    // with their respective unique identifier as keys
-    let autoMarginLeft = writable(new SvelteMap<string, number>());
-    let autoMarginRight = writable(new SvelteMap<string, number>());
-    let autoMarginBottom = writable(new SvelteMap<string, number>());
-    let autoMarginTop = writable(new SvelteMap<string, number>());
-
-    // autoMargin stores are shared via context
-    setContext('svelteplot/autoMargins', {
-        autoMarginLeft,
-        autoMarginRight,
-        autoMarginBottom,
-        autoMarginTop
-    });
-
-    // compute maximum margins to either side of the plot from the
-    // automatic margins defined by marks
-    let maxMarginLeft = $derived(Math.max(...$autoMarginLeft.values()));
-    let maxMarginRight = $derived(Math.max(...$autoMarginRight.values()));
-    let maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
-    let maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
-
-    // default settings in the plot and marks can be overwritten by
-    // defining the svelteplot/defaults context outside of Plot
-    const DEFAULTS: PlotDefaults = {
-        axisXAnchor: 'bottom',
-        axisYAnchor: 'left',
-        xTickSpacing: 80,
-        yTickSpacing: 50,
-        height: 350,
-        inset: 0,
-        colorScheme: 'turbo',
-        dotRadius: 3,
-        frame: false,
-        grid: false,
-        categoricalColorScheme: 'observable10',
-        pointScaleHeight: 18,
-        bandScaleHeight: 30,
-        ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
-    };
-
-    setContext('svelteplot/_defaults', DEFAULTS);
 
     // information that influences the default plot options
     type PlotOptionsParameters = {
@@ -96,461 +61,119 @@
         inset?: number;
     };
 
-    /**
-     * the marks used in the plot
-     */
-    let marks = $state.raw<Mark<GenericMarkOptions>[]>([]);
-
-    /**
-     *
-     */
-    let explicitMarks = $derived(marks.filter((m) => !m.options.automatic));
-
-    // knowing if the plot includes explicit grids and marks is useful for
-    // including the automatic/implicit axes/grids
-    let hasExplicitAxisX = $derived(explicitMarks.find((m) => m.type === 'axisX'));
-    let hasExplicitAxisY = $derived(explicitMarks.find((m) => m.type === 'axisY'));
-    let hasExplicitGridX = $derived(explicitMarks.find((m) => m.type === 'gridX'));
-    let hasExplicitGridY = $derived(explicitMarks.find((m) => m.type === 'gridY'));
-
-    let explicitScales = $derived(
-        new Set(
-            explicitMarks
-                .map((m) =>
-                    [...m.scales.values()].filter((scale) => {
-                        // remove the scales where no input channels are defined for this mark
-                        const channels = Object.entries(CHANNEL_SCALE)
-                            .filter(([, scaleName]) => scale === scaleName)
-                            .map(([channel]) => channel);
-                        return channels.find((channel) => m.options[channel] != null);
-                    })
-                )
-                .flat(1)
-        )
-    );
-
-    // one-dimensional plots have different automatic margins and heights
-    let isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
-
-    // construct the plot options from the user-defined options (top-level props) as well
-    // as extending them from smart context-aware defaults
-    let plotOptions = $derived(
-        extendPlotOptions(initialOpts, {
-            explicitScales,
-            hasProjection: !!initialOpts.projection,
-            margins: initialOpts.margins,
-            inset: initialOpts.inset
-        })
-    );
-
-    // if the plot is showing filled dot marks we're using different defaults
-    // for the symbol axis range, so we're passing on this info to the createScales
-    // function below
-    let hasFilledDotMarks = $derived(
-        !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
-    );
-
-    // compute preliminary scales with a fixed height, since we don't have
-    // height defined at this point, but still need some of the scales
-    let preScales: PlotScales = $derived(
-        computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS)
-    );
-
-    let hasProjection = $derived(!!preScales.projection);
-
-    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
-
-    // the facet and y domain counts are used for computing the automatic height
-    let xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
-    let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
-    let yDomainCount = $derived(
-        isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
-    );
-    // compute the (automatic) height based on various factors:
-    // - if the plot used a projection and the projection requires an aspect ratio,
-    //   we use it, but adjust for the facet counts
-    // - if the user defined a domain-aspect ratio, we use the heightFromAspect
-    //   method to compute the height based on the preliminary x and y scales
-    // - for one-dimensional scales using the x scale we set a fixed height
-    // - for y band-scales we use the number of items in the y domain
-    let height = $derived(
-        plotOptions.height === 'auto'
-            ? Math.round(
-                  preScales.projection && preScales.projection.aspectRatio
-                      ? ((plotWidth * preScales.projection.aspectRatio) / xFacetCount) *
-                            yFacetCount +
-                            plotOptions.marginTop +
-                            plotOptions.marginBottom
-                      : plotOptions.aspectRatio
-                        ? heightFromAspect(
-                              preScales.x,
-                              preScales.y,
-                              plotOptions.aspectRatio,
-                              plotWidth,
-                              plotOptions.marginTop,
-                              plotOptions.marginBottom
-                          )
-                        : ((isOneDimensional && explicitScales.has('x')) || !explicitMarks.length
-                              ? yFacetCount * DEFAULTS.bandScaleHeight
-                              : preScales.y.type === 'band'
-                                ? yFacetCount * yDomainCount * DEFAULTS.bandScaleHeight
-                                : preScales.y.type === 'point'
-                                  ? yFacetCount * yDomainCount * DEFAULTS.pointScaleHeight
-                                  : DEFAULTS.height) +
-                          plotOptions.marginTop +
-                          plotOptions.marginBottom
-              )
-            : typeof plotOptions.height === 'function'
-              ? plotOptions.height(plotWidth)
-              : plotOptions.height
-    );
-
-    let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
-
-    // TODO: check if there's still a reason to store and expose the plot body element
-    let plotBody: HTMLDivElement | null = $state(null);
-
-    let facetWidth: number | null = $state(null);
-    let facetHeight: number | null = $state(null);
-
-    let plotState: PlotState = $derived.by((x) => {
-        // now that we know the actual height and facet dimensions, we can compute
-        // the scales used in all the marks
-        const scales = computeScales(
-            plotOptions,
-            facetWidth || width,
-            facetHeight || height,
-            hasFilledDotMarks,
-            marks,
-            DEFAULTS
-        );
-        const colorSymbolRedundant =
-            scales.color.uniqueScaleProps.size === 1 &&
-            scales.symbol.uniqueScaleProps.size === 1 &&
-            [...scales.color.uniqueScaleProps.values()][0] ===
-                [...scales.symbol.uniqueScaleProps.values()][0];
-        return {
-            options: plotOptions,
-            width,
-            height,
-            facetWidth,
-            facetHeight,
-            plotHeight,
-            plotWidth,
-            scales,
-            colorSymbolRedundant,
-            hasFilledDotMarks,
-            body: plotBody
-        };
-    });
-
-    setContext('svelteplot', {
-        /**
-         * used by the Mark component to register new marks to the plot
-         */
-        addMark(mark: Mark<GenericMarkOptions>) {
-            marks = [...marks, mark];
-        },
-        /**
-         * used by the Mark component to update marks when its props change
-         */
-        updateMark(mark: Mark<GenericMarkOptions>) {
-            marks = marks.map((m) => (m.id === mark.id ? mark : m));
-        },
-        /**
-         * used by the Mark component to unregister marks when their
-         * respective components get removed from the plot
-         */
-        removeMark(mark: Mark<GenericMarkOptions>) {
-            marks = marks.filter((m) => m.id !== mark.id);
-        },
-        getPlotState() {
-            return plotState;
-        },
-        getTopLevelFacet() {
-            // we need to expose the facet options to allow marks to
-            // react to state changes by updating the fx and fy channels
-            return facet;
-        },
-        updateDimensions(w: number, h: number) {
-            if (facetWidth !== w) facetWidth = w;
-            if (facetHeight !== h) facetHeight = h;
+    let projectionOpts = $derived.by(() => {
+        if (projection && typeof projection !== 'function') {
+            const { type: projFactory, aspectRatio } = namedProjection(
+                isObject(projection) ? projection.type : projection
+            );
+            return {
+                ...(isObject(projection) ? projection : {}),
+                type: projFactory,
+                aspectRatio
+            };
         }
+        return projection;
     });
 
-    // TODO: perhaps we don't need this anymore
-    export function getWidth() {
-        return width;
-    }
-
-    function heightFromAspect(
-        x: PlotScale,
-        y: PlotScale,
-        aspectRatio: number,
-        plotWidth: number,
-        marginTop: number,
-        marginBottom: number
-    ) {
-        const xDomainExtent =
-            x.type === 'band' || x.type === 'point'
-                ? x.domain.length
-                : Math.abs(x.domain[1] - x.domain[0]);
-        const yDomainExtent =
-            y.type === 'band' || y.type === 'point'
-                ? y.domain.length
-                : Math.abs(y.domain[1] - y.domain[0]);
-        return (
-            ((plotWidth / xDomainExtent) * yDomainExtent) / aspectRatio + marginTop + marginBottom
-        );
-    }
-
-    function extendPlotOptions(
-        initialOpts: Partial<PlotOptions>,
-        opts: PlotOptionsParameters
-    ): PlotOptions {
-        return mergeDeep<PlotOptions>({}, smartDefaultPlotOptions(opts), initialOpts);
-    }
-
-    /**
-     * compute smart default options for the plot based on the scales and marks
-     */
-    function smartDefaultPlotOptions({
-        explicitScales,
-        hasProjection,
-        margins
-    }: PlotOptionsParameters): PlotOptions {
-        const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
-        const oneDimX = isOneDimensional && explicitScales.has('x');
-        const oneDimY = isOneDimensional && explicitScales.has('y');
-        const hasFZ = explicitScales.has('fz');
-        return {
-            title: '',
-            subtitle: '',
-            caption: '',
-            height: 'auto',
-            // maxWidth: oneDimY ? `${60 * e}px` : undefined,
-            marginLeft: hasProjection
-                ? 0
-                : margins != null
-                  ? margins
-                  : Math.max(maxMarginLeft + 1, 1),
-            marginRight: hasProjection
-                ? 0
-                : margins != null
-                  ? margins
-                  : oneDimY
-                    ? 0
-                    : Math.max(maxMarginRight + 1, 4),
-            marginTop: hasProjection
-                ? 0
-                : margins != null
-                  ? margins
-                  : oneDimX
-                    ? 0
-                    : Math.max(5, maxMarginTop),
-            marginBottom: hasProjection
-                ? 0
-                : margins != null
-                  ? margins
-                  : Math.max(5, maxMarginBottom),
-            inset: isOneDimensional ? 10 : DEFAULTS.inset,
-            grid: DEFAULTS.grid,
-            frame: DEFAULTS.frame,
-            projection: null,
-            aspectRatio: null,
-            facet: {},
-            padding: 0.1,
-            x: {
-                type: 'auto',
-                axis: oneDimY ? false : DEFAULTS.axisXAnchor,
-                labelAnchor: 'auto',
-                reverse: false,
-                clamp: false,
-                nice: false,
-                zero: false,
-                round: false,
-                percent: false,
-                align: 0.5,
-                tickSpacing: DEFAULTS.xTickSpacing,
-                tickFormat: 'auto',
-                grid: false
-            },
-            y: {
-                type: 'auto',
-                axis: oneDimX ? false : DEFAULTS.axisYAnchor,
-                labelAnchor: 'auto',
-                reverse: false,
-                clamp: false,
-                nice: false,
-                zero: false,
-                round: false,
-                percent: false,
-                align: 0.5,
-                tickSpacing: DEFAULTS.yTickSpacing,
-                tickFormat: 'auto',
-                grid: false
-            },
-            opacity: {
-                type: 'linear',
-                reverse: false,
-                clamp: false,
-                nice: false,
-                zero: false,
-                round: false,
-                tickSpacing: 0,
-                percent: false,
-                padding: 0.1,
-                align: 0.5
-            },
-            r: {
-                type: 'sqrt',
-                reverse: false,
-                clamp: false,
-                nice: false,
-                zero: true,
-                percent: false,
-                round: false,
-                padding: 0,
-                align: 0
-            },
-            color: { type: 'auto' },
-            length: { type: 'linear' },
-            symbol: { type: 'ordinal' },
-            fx: { type: 'band', axis: hasFZ ? null : 'top' },
-            fy: { type: 'band', axis: hasFZ ? null : 'right ' },
-            fz: { type: 'point', columns: 3 }
-        };
-    }
+    let scales = $derived(Object.fromEntries(
+        ['x', 'y', 'r', 'color', 'opacity', 'symbol', 'length', 'fx', 'fy', 'fz'].map((scale) => {
+            const scaleOpts = restOptions[scale] || {};
+            const scaleFn =
+                scaleOpts.scale ||
+                (scale === 'color'
+                    ? autoScaleColor
+                    : autoScale);
+            return [scale, { ...scaleOpts, scale: scaleFn }];
+        })
+    ));
 </script>
 
-<figure
-    class="svelteplot"
-    bind:clientWidth={width}
-    style:max-width={plotOptions.maxWidth}
-    data-testid={testid}
+{#snippet header()}
+    {#if restOptions.title}<h2>{restOptions.title}</h2>{/if}
+    {#if restOptions.subtitle}<h3>{restOptions.subtitle}</h3>{/if}
+    <!-- also pass on user header -->
+    {#if userHeader}{@render userHeader()}{/if}
+    {#if restOptions.color?.legend}
+        <ColorLegend />
+    {/if}
+    {#if restOptions.symbol?.legend}
+        <SymbolLegend />
+    {/if}
+{/snippet}
+
+{#snippet footer()}
+    {#if restOptions.caption}<div>{restOptions.caption}</div>{/if}
+    {#if userFooter}{@render userFooter()}{/if}
+{/snippet}
+
+<Plot
+    {overlay}
+    {underlay}
+    {...restOptions}
+    header={userHeader ||
+    restOptions.title ||
+    restOptions.subtitle ||
+    restOptions.color?.legend ||
+    restOptions.symbol?.legend
+        ? header
+        : null}
+    footer={userFooter || restOptions?.caption ? footer : null}
+    projection={projectionOpts}
+    {...scales}
 >
-    {#if plotOptions.title || plotOptions.subtitle || header || plotOptions.color.legend || plotOptions.symbol.legend}
-        <div class="plot-header">
-            {#if plotOptions.title}<h2>{plotOptions.title}</h2>{/if}
-            {#if plotOptions.subtitle}<h3>{plotOptions.subtitle}</h3>{/if}
-            {#if header}{@render header()}{/if}
-            {#if plotOptions.color.legend}
-                <ColorLegend />
+    {#snippet children({
+        hasProjection,
+        hasExplicitAxisX,
+        hasExplicitAxisY,
+        hasExplicitGridX,
+        hasExplicitGridY,
+        options,
+        scales,
+        width,
+        height
+    })}
+        <!-- implicit axes -->
+        {#if !hasProjection && !hasExplicitAxisX}
+            {#if options.x.axis === 'top' || options.x.axis === 'both'}
+                <AxisX anchor="top" automatic />
             {/if}
-            {#if plotOptions.symbol.legend}
-                <SymbolLegend />
+            {#if options.x.axis === 'bottom' || options.x.axis === 'both'}
+                <AxisX anchor="bottom" automatic />
             {/if}
-        </div>
-    {/if}
-    <div class="plot-body" bind:this={plotBody}>
-        {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
-        <svg
-            {width}
-            {height}
-            fill="currentColor"
-            viewBox="0 0 {width} {height}"
-            font-family="system-ui, sans-serif"
-        >
-            <FacetGrid marks={explicitMarks}>
-                {#if !hasProjection && !hasExplicitAxisX}
-                    {#if plotOptions.x.axis === 'top' || plotOptions.x.axis === 'both'}
-                        <AxisX anchor="top" automatic />
-                    {/if}
-                    {#if plotOptions.x.axis === 'bottom' || plotOptions.x.axis === 'both'}
-                        <AxisX anchor="bottom" automatic />
-                    {/if}
-                {/if}
-                {#if !hasProjection && !hasExplicitAxisY}
-                    {#if plotOptions.y.axis === 'left' || plotOptions.y.axis === 'both'}
-                        <AxisY anchor="left" automatic />
-                    {/if}
-                    {#if plotOptions.y.axis === 'right' || plotOptions.y.axis === 'both'}
-                        <AxisY anchor="right" automatic />
-                    {/if}
-                {/if}
-                {#if !hasExplicitGridX && (plotOptions.grid || plotOptions.x.grid)}
-                    <GridX automatic />
-                {/if}
-                {#if !hasExplicitGridY && (plotOptions.grid || plotOptions.y.grid)}
-                    <GridY automatic />
-                {/if}
-                {#if plotOptions.frame}
-                    <Frame automatic />
-                {/if}
-                {#if children}
-                    {@render children({
-                        width,
-                        height,
-                        options: plotOptions,
-                        scales: plotState.scales
-                    })}
-                {/if}
-            </FacetGrid>
-        </svg>
-        {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}
-    </div>
-    {#if plotOptions.caption || footer}
-        <figcaption class="plot-footer">
-            {#if plotOptions.caption}<div>{plotOptions.caption}</div>{/if}
-            {#if footer}{@render footer()}{/if}
-        </figcaption>
-    {/if}
-</figure>
+        {/if}
+        {#if !hasProjection && !hasExplicitAxisY}
+            {#if options.y.axis === 'left' || options.y.axis === 'both'}
+                <AxisY anchor="left" automatic />
+            {/if}
+            {#if options.y.axis === 'right' || options.y.axis === 'both'}
+                <AxisY anchor="right" automatic />
+            {/if}
+        {/if}
+        <!-- implicit grids -->
+        {#if !hasExplicitGridX && (options.grid || options.x.grid)}
+            <GridX automatic />
+        {/if}
+        {#if !hasExplicitGridY && (options.grid || options.y.grid)}
+            <GridY automatic />
+        {/if}
+        <!-- implicit frame -->
+        {#if options.frame}
+            <Frame automatic />
+        {/if}
+        {#if children}
+            {@render children({
+                width,
+                height,
+                options,
+                scales
+            })}
+        {/if}
+    {/snippet}
+</Plot>
 
 <style>
     :root {
         --plot-bg: white;
         --plot-fg: currentColor;
-    }
-
-    figure {
-        margin: 0;
-        padding: 0;
-    }
-
-    .plot-body {
-        position: relative;
-    }
-
-    .plot-overlay,
-    .plot-underlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: none;
-    }
-
-    .plot-underlay {
-        z-index: -1;
-    }
-
-    .plot-header {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.35rem;
-    }
-
-    .plot-header :global(h2),
-    .plot-header :global(h3) {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-    }
-
-    .plot-header :global(h3) {
-        font-weight: 500;
-    }
-
-    .plot-footer {
-        margin-bottom: 2rem;
-    }
-
-    .plot-footer :global(> div) {
-        font-size: 12px;
-        font-style: italic;
-        opacity: 0.7;
     }
 </style>

@@ -5,12 +5,12 @@
 -->
 <script lang="ts">
     import { getContext, setContext, type Snippet } from 'svelte';
-    import type { PlotContext, GenericMarkOptions, Mark, RawValue } from './types.js';
+    import type { PlotContext, GenericMarkOptions, Mark, RawValue } from '../types.js';
     import { scaleBand } from 'd3-scale';
     import Facet from './Facet.svelte';
-    import BaseAxisX from './marks/helpers/BaseAxisX.svelte';
-    import BaseAxisY from './marks/helpers/BaseAxisY.svelte';
-    import { getEmptyFacets } from './helpers/facets.js';
+    import BaseAxisX from '../marks/helpers/BaseAxisX.svelte';
+    import BaseAxisY from '../marks/helpers/BaseAxisY.svelte';
+    import { getEmptyFacets } from '../helpers/facets.js';
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
     // we need the plot context for the overall width & height

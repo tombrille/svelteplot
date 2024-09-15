@@ -153,7 +153,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 Facetting with maps
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Geo, Text, Frame } from '$lib';
     import { Slider } from '$lib/ui';
@@ -187,8 +187,8 @@ Facetting with maps
         legend: true
     }}
     fz={{ columns }}
-    marginTop={20}
-    let:scales>
+    marginTop={20}>
+    {#snippet children({scales})}
     <Geo
         data={presidents}
         fz="year"
@@ -200,6 +200,7 @@ Facetting with maps
         frameAnchor="top"
         fz={(d) => d}
         text={(d) => d} />
+    {/snippet}
 </Plot>
 ```
 
@@ -211,8 +212,8 @@ Facetting with maps
         legend: true
     }}
     fz={{ columns }}
-    marginTop={20}
-    let:scales>
+    marginTop={20}>
+    {#snippet children({scales})}
     <Geo
         data={presidents}
         fz="year"
@@ -224,6 +225,7 @@ Facetting with maps
         frameAnchor="top"
         fz={(d) => d}
         text={(d) => d} />
+    {/snippet}
 </Plot>
 ```
 

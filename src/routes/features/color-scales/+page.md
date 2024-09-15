@@ -405,6 +405,64 @@ Alternatively you can change the center point of the diverging scale using the `
 </Plot>
 ```
 
+### Quantile
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { countries_2020 } = $derived($page.data.data);
+    import { Checkbox } from '$lib/ui';
+
+    let log = $state(true);
+</script>
+
+<Plot
+    grid
+    height={200}
+    y={{ type: 'log' }}
+    color={{
+        scheme: 'OrRd',
+        type: 'quantile',
+        legend: true
+    }}>
+    <Dot
+        data={countries_2020}
+        x="Life expectancy"
+        y="Population"
+        stroke="GDP per capita" />
+</Plot>
+```
+
+### Quantize
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { countries_2020 } = $derived($page.data.data);
+    import { Checkbox } from '$lib/ui';
+
+    let log = $state(true);
+</script>
+
+<Plot
+    grid
+    height={200}
+    y={{ type: 'log' }}
+    color={{
+        scheme: 'OrRd',
+        type: 'quantize',
+        legend: true
+    }}>
+    <Dot
+        data={countries_2020}
+        x="Life expectancy"
+        y="Population"
+        stroke="GDP per capita" />
+</Plot>
+```
+
 ### Logarithmic
 
 For mapping [power-law distributions](https://en.wikipedia.org/wiki/Power_law) (like income or population) to colors, a logarithmic scale is often useful. You can switch to log scale by passing `type: 'log'` to the color options:
@@ -447,6 +505,39 @@ For mapping [power-law distributions](https://en.wikipedia.org/wiki/Power_law) (
         x="Life expectancy"
         y="Population"
         stroke="GDP per capita" />
+</Plot>
+```
+
+### Bi-symmetric log
+
+Like log scales but allows for negative values.
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { RadioInput } from '$lib/ui';
+    import { csvFormat } from 'd3-dsv';
+    import { page } from '$app/stores';
+    let { symlog } = $derived($page.data.data);
+
+    let type = $state('diverging-symlog');
+</script>
+
+<RadioInput
+    options={[
+        'linear',
+        'diverging',
+        'symlog',
+        'diverging-symlog'
+    ]}
+    bind:value={type} />
+<Plot
+    color={{
+        legend: true,
+        scheme: 'BuYlRd',
+        type: type
+    }}>
+    <Dot canvas data={symlog} x="x" y="y" stroke="value" />
 </Plot>
 ```
 

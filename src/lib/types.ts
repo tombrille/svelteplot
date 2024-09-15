@@ -179,6 +179,14 @@ export type ColorScaleOptions = ScaleOptions & {
      * fallback color used for null/undefined
      */
     unknown: string;
+    /**
+     * center value for diverging scales
+     */
+    pivot: number;
+    /**
+     * number of colors for quantize and quantile-threshold scales
+     */
+    n: number;
     interpolate: (d: any) => typeof d;
 };
 

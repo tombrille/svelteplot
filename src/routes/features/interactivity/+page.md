@@ -312,9 +312,9 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
     {#snippet overlay()}
         <HTMLTooltip
             data={penguins}
-            let:datum
             x="culmen_length_mm"
             y="culmen_depth_mm">
+            {#snippet children({datum})}
             <div class="tt">
                 <div>Species: {datum.species}</div>
                 <div>Island: {datum.island}</div>
@@ -325,6 +325,7 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
                         ]} />
                 </div>
             </div>
+            {/snippet}
         </HTMLTooltip>
     {/snippet}
 </Plot>
@@ -367,9 +368,9 @@ You can even put another tiny plot inside the HTML tooltips:
     {#snippet overlay()}
         <HTMLTooltip
             data={penguins}
-            let:datum
             x="culmen_length_mm"
             y="culmen_depth_mm">
+            {#snippet children({datum})}
             <div style="width: 150px">
                 <Plot
                     inset={4}
@@ -392,6 +393,7 @@ You can even put another tiny plot inside the HTML tooltips:
                         fill="currentColor" />
                 </Plot>
             </div>
+            {/snippet}
         </HTMLTooltip>
     {/snippet}
 </Plot>

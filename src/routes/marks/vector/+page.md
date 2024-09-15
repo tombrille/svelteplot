@@ -49,7 +49,7 @@ Here's an example where all arrows point towards the mouse cursor:
     y={{ axis: false }}
     aspectRatio={1}
     length={{ range: [3.5, 20] }}
-    let:scales>
+    >
     <Vector
         {data}
         x="x"
@@ -88,7 +88,7 @@ Here's an example where all arrows point towards the mouse cursor:
     inset={10}
     aspectRatio={1}
     length={{ range: [3.5, 20] }}
-    let:scales>
+    >
     <Vector
         {data}
         x="x"
@@ -228,7 +228,7 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     y={{ axis: false }}
     aspectRatio={1}
     length={{ range: [5, 15] }}
-    let:scales>
+    >
     <Vector
         {data}
         x="x"

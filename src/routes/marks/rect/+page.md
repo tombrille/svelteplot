@@ -23,7 +23,7 @@ The interval transform may be used to convert a single value in x or y (or both)
                 }).format(new Date(2000, d, 1))
         }}
         testid="seattle-temp"
-        let:plot>
+       >
         <Rect
             data={seattle}
             filter={(d) => d.date.getUTCFullYear() === 2015}
