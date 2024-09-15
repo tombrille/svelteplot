@@ -27,6 +27,9 @@
             "types": "./dist/index.d.ts",
             "svelte": "./dist/index.js"
         },
+        "./*.svelte": {
+            "import": "./dist/*.svelte"
+        },
         "./core/*.svelte": {
             "import": "./dist/core/*.svelte"
         },

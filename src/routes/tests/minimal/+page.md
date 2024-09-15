@@ -25,7 +25,8 @@ Linear:
 
 </script>
 
-<Plot x={{ scale: linearScaleX  }}
+<Plot
+    x={{ scale: linearScaleX  }}
     y={{ scale: linearScaleY }}>
     <Dot data={penguins} x="culmen_length_mm" y="culmen_depth_mm" />
 </Plot>
