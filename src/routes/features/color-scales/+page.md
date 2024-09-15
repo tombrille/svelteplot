@@ -176,7 +176,7 @@ Note that the colors are picked in the order the categories appear in your datas
 </Plot>
 ```
 
-## Sequential color scales
+## Continuous color scales
 
 ### Linear
 
@@ -405,7 +405,9 @@ Alternatively you can change the center point of the diverging scale using the `
 </Plot>
 ```
 
-### Quantile
+### Quantile (continuous)
+
+You can set `type: 'quantile-cont'` for a continuous quantile interpolation. Not to be confused with the discrete [quantile](#Quantile-(discrete)) scale. 
 
 ```svelte live
 <script>
@@ -423,36 +425,7 @@ Alternatively you can change the center point of the diverging scale using the `
     y={{ type: 'log' }}
     color={{
         scheme: 'OrRd',
-        type: 'quantile',
-        legend: true
-    }}>
-    <Dot
-        data={countries_2020}
-        x="Life expectancy"
-        y="Population"
-        stroke="GDP per capita" />
-</Plot>
-```
-
-### Quantize
-
-```svelte live
-<script>
-    import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { countries_2020 } = $derived($page.data.data);
-    import { Checkbox } from '$lib/ui';
-
-    let log = $state(true);
-</script>
-
-<Plot
-    grid
-    height={200}
-    y={{ type: 'log' }}
-    color={{
-        scheme: 'OrRd',
-        type: 'quantize',
+        type: 'quantile-cont',
         legend: true
     }}>
     <Dot
@@ -541,7 +514,111 @@ Like log scales but allows for negative values.
 </Plot>
 ```
 
-## Ordinal color scales
+## Discrete color scales
+
+Discrete color scales map a continuous input domain to a discrete number of colors, controllable via the `n` option.
+
+### Quantize
+
+Quantize is like a "stepped" linear scale, where a continuous input domain is mapped onto a discrete number of colors . With greater `n` values, the quantize scale will look more identical to a linear scale.
+
+```svelte live
+<script>
+    import { Plot, Cell, formatMonth } from '$lib';
+    import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+    let n = $state(5);
+    let { seattle } = $derived($page.data.data);
+</script>
+
+<Slider label="n" bind:value={n} min={2} max={15} />
+<Plot
+    padding={0}
+    aspectRatio={1}
+    color={{ scheme: 'OrRd', type: 'quantize', n, legend: true, nice: true }}
+    y={{
+        ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        tickFormat: formatMonth('en', 'short')
+    }}
+    testid="seattle-temp">
+    <Cell
+        data={seattle}
+        filter={(d) => d.date.getUTCFullYear() === 2015}
+        x={(d) => d.date.getUTCDate()}
+        y={(d) => d.date.getUTCMonth()}
+        fill="temp_max"
+        inset="0.5" />
+</Plot>
+```
+
+### Quantile (discrete)
+
+Similiar to the `quantile` scale. Not to be confused with the continuous [quantile](#Quantile-(continuous)) scale.
+
+```svelte live
+<script>
+    import { Plot, Cell, formatMonth } from '$lib';
+    import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+    let n = $state(5);
+    let { seattle } = $derived($page.data.data);
+</script>
+
+<Slider label="n" bind:value={n} min={2} max={15} />
+<Plot
+    padding={0}
+    aspectRatio={1}
+    color={{ scheme: 'OrRd', type: 'quantile', n, legend: true }}
+    y={{
+        ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        tickFormat: formatMonth('en', 'short')
+    }}
+    testid="seattle-temp">
+    <Cell
+        data={seattle}
+        filter={(d) => d.date.getUTCFullYear() === 2015}
+        x={(d) => d.date.getUTCDate()}
+        y={(d) => d.date.getUTCMonth()}
+        fill="temp_max"
+        inset="0.5" />
+</Plot>
+```
+
+### Threshold
+
+Threshold scales give you absolute freedom for the breaks:
+
+```svelte live
+<script>
+    import { Plot, Cell, formatMonth } from '$lib';
+    import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+
+    let domain_raw = $state('5,10,15,20,25');
+    let domain = $derived(domain_raw.split(',').map(s => +s));
+    
+    let { seattle } = $derived($page.data.data);
+</script>
+
+<input type="text" bind:value={domain_raw} pattern="^(-?\d+(?:\.\d+)?)(,(-?\d+(?:\.\d+)?))*$" />
+<Plot
+    padding={0}
+    aspectRatio={1}
+    color={{ scheme: 'OrRd', type: 'threshold', domain, legend:true }}
+    y={{
+        ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        tickFormat: formatMonth('en', 'short')
+    }}
+    testid="seattle-temp">
+    <Cell
+        data={seattle}
+        filter={(d) => d.date.getUTCFullYear() === 2015}
+        x={(d) => d.date.getUTCDate()}
+        y={(d) => d.date.getUTCMonth()}
+        fill="temp_max"
+        inset="0.5" />
+</Plot>
+```
 
 ## Bypassing color scales
 
@@ -619,9 +696,7 @@ Note that SveltePlot also recognizes generic CSS variables as valid color names,
 </style>
 ```
 
-## Qualitative color scales
-
-If we change the stroke to `"weather"`, which is an attribute of our dataset rows, the color scale is used. Since the values are strings, SveltePlot defaults to a qualitative color scale. We can specify the _legend_ option of the color scale to show the color legend:
+You can also force SveltePlot to bypass the color scale using `scale: null`. 
 
 ```svelte live
 <script>
@@ -630,326 +705,34 @@ If we change the stroke to `"weather"`, which is an attribute of our dataset row
     let { seattle } = $derived($page.data.data);
 </script>
 
-<Plot testid="linear" color={{ legend: true }} height={180}>
+<Plot testid="linear" height={180}>
+    <defs>
+        <linearGradient id="gradient" y2="1" x2="0">
+            <stop offset="0%" stop-color="#f7f8c8" />
+            <stop offset="100%" stop-color="hotpink" />
+        </linearGradient>
+    </defs>
     <Dot
         data={seattle}
         x="date"
         y="temp_max"
-        stroke="weather" />
+        fill={{ scale:null, value: 'url(#gradient)' }} />
 </Plot>
 ```
 
 ```svelte
-<Plot color={{ legend: true }}>
+
+<Plot height={180}>
+    <defs>
+        <linearGradient id="gradient" y2="1" x2="0">
+            <stop offset="0%" stop-color="#f7f8c8" />
+            <stop offset="100%" stop-color="hotpink" />
+        </linearGradient>
+    </defs>
     <Dot
         data={seattle}
         x="date"
         y="temp_max"
-        stroke="weather" />
-</Plot>
-```
-
-The default color scheme shown above is called `observable10`, but we can change it to a number of other available schemes using the **scheme** option.
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    import { Select } from '$lib/ui';
-    let { seattle } = $derived($page.data.data);
-
-    const schemes = [
-        'accent',
-        'category10',
-        'dark2',
-        'paired',
-        'pastel1',
-        'pastel2',
-        'set1',
-        'set2',
-        'set3',
-        'tableau10',
-        'observable10'
-    ];
-
-    let scheme = $state('tableau10');
-</script>
-
-<Select
-    label="scheme:"
-    options={schemes}
-    bind:value={scheme} />
-<Plot
-    testid="linear"
-    color={{ legend: true, scheme }}
-    height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="weather" />
-</Plot>
-```
-
-We can also pass our own array of colors via the **scheme** option. Combined with providing a custom domain we can ensure that the categories map to the exact color we want:
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
-</script>
-
-<Plot
-    testid="linear"
-    color={{
-        legend: true,
-        scheme: [
-            'orange',
-            'lightsteelblue',
-            'lightseagreen',
-            'deepskyblue',
-            'gray'
-        ],
-        domain: ['sun', 'drizzle', 'rain', 'snow', 'fog']
-    }}
-    height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="weather" />
-</Plot>
-```
-
-```svelte
-<Plot
-    color={{
-        legend: true,
-        domain: ['sun', 'drizzle', 'rain', 'snow', 'fog'],
-        scheme: [
-            'orange',
-            'lightsteelblue',
-            'lightseagreen',
-            'deepskyblue',
-            'gray'
-        ]
-    }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="weather" />
-</Plot>
-```
-
-### Quantitative color scales
-
-Now, let's see how it looks if map the stroke channel to a numeric attribute of our dataset rows, e.g., `"temp_max"` (which we're also using for the y position channel). Now SveltePlot is using a quantitative color scale.
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
-</script>
-
-<Plot testid="linear" color={{ legend: true }} height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-```svelte
-<Plot color={{ legend: true }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-The default color scheme shown above is called `turbo`, but we can change it to a number of other available schemes using the **scheme** option.
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    import { Select } from '$lib/ui';
-    let { seattle } = $derived($page.data.data);
-
-    const schemes = [
-        'blues',
-        'BrBg',
-        'BuGn',
-        'BuPu',
-        'BuRd',
-        'BuYlRd',
-        'cividis',
-        'cool',
-        'cubehelix',
-        'GnBu',
-        'greens',
-        'greys',
-        'inferno',
-        'magma',
-        'oranges',
-        'OrRd',
-        'PiYG',
-        'plasma',
-        'PrGn',
-        'PuBu',
-        'PuBuGn',
-        'PuOr',
-        'PuRd',
-        'purples',
-        'rainbow',
-        'RdBu',
-        'RdGy',
-        'RdPu',
-        'RdYlBu',
-        'RdYlGn',
-        'reds',
-        'sinebow',
-        'spectral',
-        'turbo',
-        'viridis',
-        'warm',
-        'YlGn',
-        'YlGnBu',
-        'YlOrBr',
-        'YlOrRd'
-    ];
-
-    let scheme = $state('plasma');
-</script>
-
-<Select
-    label="scheme:"
-    options={schemes}
-    bind:value={scheme} />
-<Plot grid testid="linear" color={{ scheme }} height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-```svelte
-<Plot color={{ scheme: 'BuRd' }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-You may wonder why some of the color schemes don't use their entire range (e.g., try using the `BuYlRd` scheme above which is supposed to go from blue over yellow to red). That's because SveltePlot recognizes some schemes as _diverging_ and automatically adjusts the "center" (or _pivot_) of the domain to be zero.
-
-So in the plot above, the temperatures shown range from something like -2 to 38 degrees, but the color scale domain will range from _[-38, 0, 38]_ to ensure that the yellow center is at zero. You can change that by setting the **pivot** option:
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    import { Slider } from '$lib/ui';
-    let { seattle } = $derived($page.data.data);
-
-    let pivot = $state(10);
-</script>
-
-<Slider
-    label="pivot"
-    min={-1}
-    max={38}
-    bind:value={pivot} />
-<Plot
-    testid="linear"
-    color={{ scheme: 'BuYlRd', pivot }}
-    height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-```svelte
-<Plot color={{ scheme: 'BuYlRd', pivot: 15 }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-Alternatively you can also override the scale type to `"linear"` to have the colors spread out evenly across the domain:
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
-</script>
-
-<Plot
-    testid="linear"
-    color={{ scheme: 'BuYlRd', type: 'linear' }}
-    height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-```svelte
-<Plot color={{ scheme: 'BuYlRd', type: 'linear' }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="temp_max" />
-</Plot>
-```
-
-If you want you can also pass a custom scheme, either as **interpolate** option (taking a function that takes a value between _[0,1]_ as input and returns a color), or as convenient array of color strings:
-
-```svelte live
-<script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
-</script>
-
-<Plot
-    testid="linear"
-    color={{ scheme: ['pink', 'crimson'] }}
-    height={180}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="date" />
-</Plot>
-```
-
-```svelte
-<Plot color={{ scheme: ['pink', 'crimson'] }}>
-    <Dot
-        data={seattle}
-        x="date"
-        y="temp_max"
-        stroke="date" />
+        fill={{ scale:null, value: 'url(#gradient)' }} />
 </Plot>
 ```

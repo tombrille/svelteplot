@@ -18,7 +18,7 @@ export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
         'diverging',
         'quantile',
         'quantize',
-        'quantize',
+        'quantile-cont',
         'threshold',
         'log',
         'symlog',

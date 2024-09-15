@@ -55,6 +55,7 @@ export type ScaleType =
     | 'categorical'
     | 'cyclical'
     | 'threshold'
+    | 'quantile-cont'
     | 'quantile'
     | 'quantize'
     | 'diverging'

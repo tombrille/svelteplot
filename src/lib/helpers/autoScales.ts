@@ -25,21 +25,13 @@ import {
 } from 'd3-scale';
 import { range as d3Range } from 'd3-array';
 import type {
-    ChannelAccessor,
     ColorScaleOptions,
-    ColorScheme,
-    GenericMarkOptions,
-    Mark,
-    MarkType,
     PlotDefaults,
     PlotOptions,
-    PlotScales,
-    PlotState,
     RawValue,
     ScaleName,
     ScaleOptions,
     ScaleType,
-    ScaledChannelName
 } from '../types.js';
 import {
     categoricalSchemes,
@@ -79,7 +71,7 @@ const SequentialScales = {
     symlog: scaleSequentialSymlog,
     pow: scaleSequentialPow,
     sqrt: scaleSequentialSqrt,
-    quantile: scaleSequentialQuantile
+    'quantile-cont': scaleSequentialQuantile
 };
 
 const DivergingScales = {
@@ -95,7 +87,7 @@ const ThresholdScales = {
     threshold: scaleThreshold,
     // quantile scales
     quantize: scaleQuantize,
-    'threshold-quantile': scaleQuantile
+    'quantile': scaleQuantile
 };
 
 export function autoScale({
@@ -202,7 +194,7 @@ export function autoScaleColor({
     let fn;
     let range;
     // special treatment for color scales
-    const { scheme, interpolate, pivot, n = 9 } = scaleOptions;
+    const { scheme, interpolate, pivot, n = type === 'threshold' ? domain.length+1 : 9 } = scaleOptions;
 
     if (type === 'categorical') {
         // categorical 
@@ -214,28 +206,31 @@ export function autoScaleColor({
                 ? categoricalSchemes.get(scheme_)
                 : ordinalScheme(scheme_)(domain.length);
         fn = scaleOrdinal().domain(domain).range(range);
-    } else if (type === 'quantize') {
+    } else if (!!ThresholdScales[type]) {
         const scheme_ = scheme || plotDefaults.colorScheme;
-        if (Array.isArray(scheme_)) {
-            range = scheme_.slice(0);
-            if (scaleOptions.reverse) range.toReversed();
-            fn = scaleQuantize().domain(domain).range(range);
-        } else if (isOrdinalScheme(scheme_)) {
-            range = ordinalScheme(scheme_)(n);
-            // console.log({domain, scheme_, range})
-            if (scaleOptions.reverse) range.toReversed();
-            fn = scaleQuantize().domain(domain).range(range);
-        } else {
-            throw new Error('no ordinal scheme ' + scheme_);
+
+        range = Array.isArray(scheme_) && (scaleOptions.n == null || scaleOptions.n === scheme_.length) ?
+            scheme_.slice(0) :
+            Array.isArray(scheme_) ?
+            // interpolate n colors from custom colors
+            d3Range(n).map(scaleLinear(
+                [0, n - 1],
+                scheme_
+            ).interpolate(interpolateLab)) :
+            interpolate ? 
+            d3Range(n).map(i => interpolate(i / (n - 1))) :
+            isOrdinalScheme(scheme_) ?
+            ordinalScheme(scheme_)(n) :
+            null;
+
+        if (range == null) {
+            throw new Error('unknown ordinal scheme ' + scheme_);
         }
-    } else if (type === 'threshold') {
-        const scheme_ = scheme || plotDefaults.colorScheme;
-        if (isOrdinalScheme(scheme_)) {
-            range = ordinalScheme(scheme_)(n);
-            if (scaleOptions.reverse) range.reverse();
-            fn = scaleThreshold().domain(domain).range(range);
-        }
+         
+        if (scaleOptions.reverse) range = range.toReversed();
+        fn = ThresholdScales[type]().domain(domain).range(range);
     } else if (!!SequentialScales[type] || !!DivergingScales[type]) {
+        // continuous color scale
         const scale = SequentialScales[type] || DivergingScales[type];
 
         const scheme_ = scheme || plotDefaults.colorScheme;
@@ -271,8 +266,6 @@ export function autoScaleColor({
         if (type === 'log') {
             fn.ticks = (count: number) => getLogTicks(domain, count);
         }
-
-        //
     }
     if (!fn) {
         console.warn(

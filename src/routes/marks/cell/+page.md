@@ -21,7 +21,7 @@ For example, the heatmap below shows the decline of _The Simpsons_ after Season 
     marginTop={40}
     x={{ type: 'band', axis: 'top' }}
     y={{ type: 'band' }}
-    color={{ type: 'linear', scheme: 'PiYG' }}
+    color={{ type: 'quantile', scheme: 'PiYG' }}
     testid="simpsons">
     <Cell
         data={simpsons}

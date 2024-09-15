@@ -356,7 +356,7 @@ export function createScale<T extends ScaleOptions>(
             type === 'ordinal' ||
             type === 'categorical' ||
             type === 'quantile' ||
-            type === 'quantize'
+            type === 'quantile-cont' 
           ? name === 'y'
               ? valueArr.toReversed()
               : valueArr
@@ -409,7 +409,7 @@ export function inferScaleType(
         if (dataValues.every(isNumberOrNullOrNaN)) return 'linear';
         if (dataValues.every(isDateOrNull)) return 'linear';
         if (dataValues.every(isStringOrNull)) return 'categorical';
-        return 'ordinal';
+        return 'categorical';
     }
     if (name === 'symbol') return 'ordinal';
     // for positional scales, try to pick a scale that's required by the mark types
