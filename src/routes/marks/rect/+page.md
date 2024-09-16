@@ -22,8 +22,7 @@ The interval transform may be used to convert a single value in x or y (or both)
                     month: 'narrow'
                 }).format(new Date(2000, d, 1))
         }}
-        testid="seattle-temp"
-       >
+        testid="seattle-temp">
         <Rect
             data={seattle}
             filter={(d) => d.date.getUTCFullYear() === 2015}

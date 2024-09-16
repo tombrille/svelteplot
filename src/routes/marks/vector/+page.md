@@ -48,8 +48,7 @@ Here's an example where all arrows point towards the mouse cursor:
     x={{ axis: false }}
     y={{ axis: false }}
     aspectRatio={1}
-    length={{ range: [3.5, 20] }}
-    >
+    length={{ range: [3.5, 20] }}>
     <Vector
         {data}
         x="x"
@@ -87,8 +86,7 @@ Here's an example where all arrows point towards the mouse cursor:
 <Plot
     inset={10}
     aspectRatio={1}
-    length={{ range: [3.5, 20] }}
-    >
+    length={{ range: [3.5, 20] }}>
     <Vector
         {data}
         x="x"
@@ -227,8 +225,7 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     x={{ axis: false }}
     y={{ axis: false }}
     aspectRatio={1}
-    length={{ range: [5, 15] }}
-    >
+    length={{ range: [5, 15] }}>
     <Vector
         {data}
         x="x"

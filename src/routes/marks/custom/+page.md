@@ -47,11 +47,11 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
             data={penguins}
             x="culmen_length_mm"
             y="culmen_depth_mm">
-            {#snippet children({datum})}
-            <div
-                style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center">
-                {datum.species}
-            </div>
+            {#snippet children({ datum })}
+                <div
+                    style="width:80px;height: 2em;position:absolute;top:-1em;left:-40px; text-align:center">
+                    {datum.species}
+                </div>
             {/snippet}
         </CustomMarkHTML>
     {/snippet}

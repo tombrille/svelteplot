@@ -356,7 +356,7 @@ export function createScale<T extends ScaleOptions>(
             type === 'ordinal' ||
             type === 'categorical' ||
             type === 'quantile' ||
-            type === 'quantile-cont' 
+            type === 'quantile-cont'
           ? name === 'y'
               ? valueArr.toReversed()
               : valueArr

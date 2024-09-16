@@ -32,6 +32,7 @@ export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
     x: new Set([
         'linear',
         'log',
+        'symlog',
         'time',
         'ordinal',
         'band',
@@ -43,6 +44,7 @@ export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
     y: new Set([
         'linear',
         'log',
+        'symlog',
         'time',
         'ordinal',
         'band',

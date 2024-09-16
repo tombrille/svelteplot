@@ -33,6 +33,10 @@ export default {
                 {
                     title: 'Transforms',
                     to: '/features/transforms/'
+                },
+                {
+                    title: 'Scales',
+                    to: '/features/scales/'
                 }
             ]
         },
@@ -84,14 +88,6 @@ export default {
             title: 'Advanced use',
             collapsible: true,
             items: [
-                {
-                    title: 'Scales',
-                    to: '/features/scales/'
-                },
-                {
-                    title: 'Color scales',
-                    to: '/features/color-scales/'
-                },
                 {
                     title: 'Facets',
                     to: '/features/facets/'

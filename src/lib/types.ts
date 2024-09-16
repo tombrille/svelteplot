@@ -3,6 +3,7 @@ import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
 import type { MarkerShape } from './marks/helpers/Marker.svelte';
 import type { Writable } from 'svelte/store';
+import type { constant } from './helpers/arrowPath.js';
 
 export type MarkType =
     | 'area'
@@ -158,6 +159,8 @@ export type ScaleOptions = {
               channel: string;
               order: 'ascending' | 'descending';
           };
+    // symlog scales
+    constant?: number;
 };
 
 export type ColorScaleOptions = ScaleOptions & {

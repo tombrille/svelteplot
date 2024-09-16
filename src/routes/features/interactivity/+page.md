@@ -314,17 +314,17 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
             data={penguins}
             x="culmen_length_mm"
             y="culmen_depth_mm">
-            {#snippet children({datum})}
-            <div class="tt">
-                <div>Species: {datum.species}</div>
-                <div>Island: {datum.island}</div>
-                <div>
-                    <img
-                        src={speciesImages[
-                            datum.species
-                        ]} />
+            {#snippet children({ datum })}
+                <div class="tt">
+                    <div>Species: {datum.species}</div>
+                    <div>Island: {datum.island}</div>
+                    <div>
+                        <img
+                            src={speciesImages[
+                                datum.species
+                            ]} />
+                    </div>
                 </div>
-            </div>
             {/snippet}
         </HTMLTooltip>
     {/snippet}
@@ -370,29 +370,29 @@ You can even put another tiny plot inside the HTML tooltips:
             data={penguins}
             x="culmen_length_mm"
             y="culmen_depth_mm">
-            {#snippet children({datum})}
-            <div style="width: 150px">
-                <Plot
-                    inset={4}
-                    margins={0}
-                    x={{ label: null, axis: false }}
-                    y={{ label: null, axis: false }}
-                    height={130}>
-                    <Dot
-                        data={penguins}
-                        x="culmen_length_mm"
-                        y="culmen_depth_mm"
-                        stroke="species"
-                        r={2}
-                        opacity={0.2} />
-                    <Dot
-                        data={[datum]}
-                        x="culmen_length_mm"
-                        y="culmen_depth_mm"
-                        r={4}
-                        fill="currentColor" />
-                </Plot>
-            </div>
+            {#snippet children({ datum })}
+                <div style="width: 150px">
+                    <Plot
+                        inset={4}
+                        margins={0}
+                        x={{ label: null, axis: false }}
+                        y={{ label: null, axis: false }}
+                        height={130}>
+                        <Dot
+                            data={penguins}
+                            x="culmen_length_mm"
+                            y="culmen_depth_mm"
+                            stroke="species"
+                            r={2}
+                            opacity={0.2} />
+                        <Dot
+                            data={[datum]}
+                            x="culmen_length_mm"
+                            y="culmen_depth_mm"
+                            r={4}
+                            fill="currentColor" />
+                    </Plot>
+                </div>
             {/snippet}
         </HTMLTooltip>
     {/snippet}

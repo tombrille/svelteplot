@@ -188,18 +188,18 @@ Facetting with maps
     }}
     fz={{ columns }}
     marginTop={20}>
-    {#snippet children({scales})}
-    <Geo
-        data={presidents}
-        fz="year"
-        fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={(d) => statesGeo.get(d.state_fips)} />
-    <Text
-        fontWeight="bold"
-        data={scales.fz.domain}
-        frameAnchor="top"
-        fz={(d) => d}
-        text={(d) => d} />
+    {#snippet children({ scales })}
+        <Geo
+            data={presidents}
+            fz="year"
+            fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
+            geometry={(d) => statesGeo.get(d.state_fips)} />
+        <Text
+            fontWeight="bold"
+            data={scales.fz.domain}
+            frameAnchor="top"
+            fz={(d) => d}
+            text={(d) => d} />
     {/snippet}
 </Plot>
 ```
@@ -213,18 +213,18 @@ Facetting with maps
     }}
     fz={{ columns }}
     marginTop={20}>
-    {#snippet children({scales})}
-    <Geo
-        data={presidents}
-        fz="year"
-        fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
-        geometry={(d) => statesGeo.get(d.state_fips)} />
-    <Text
-        data={scales.fz.domain}
-        fontWeight="bold"
-        frameAnchor="top"
-        fz={(d) => d}
-        text={(d) => d} />
+    {#snippet children({ scales })}
+        <Geo
+            data={presidents}
+            fz="year"
+            fill={(d) => d.DEMOCRAT - d.REPUBLICAN}
+            geometry={(d) => statesGeo.get(d.state_fips)} />
+        <Text
+            data={scales.fz.domain}
+            fontWeight="bold"
+            frameAnchor="top"
+            fz={(d) => d}
+            text={(d) => d} />
     {/snippet}
 </Plot>
 ```

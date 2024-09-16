@@ -12,8 +12,9 @@
     } = $props();
 </script>
 
+<div style="display:inline-block">
 {#if label}
-    <label>{label}</label>
+    <label>{label}:</label>
 {/if}
 {#each options as p}
     <label>
@@ -21,3 +22,4 @@
         {format(p)}
     </label>
 {/each}
+</div>

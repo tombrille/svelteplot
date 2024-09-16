@@ -31,7 +31,7 @@ import type {
     RawValue,
     ScaleName,
     ScaleOptions,
-    ScaleType,
+    ScaleType
 } from '../types.js';
 import {
     categoricalSchemes,
@@ -87,7 +87,7 @@ const ThresholdScales = {
     threshold: scaleThreshold,
     // quantile scales
     quantize: scaleQuantize,
-    'quantile': scaleQuantile
+    quantile: scaleQuantile
 };
 
 export function autoScale({
@@ -137,27 +137,30 @@ export function autoScale({
         range,
         ...((type === 'linear' || type === 'log') && scaleOptions.nice
             ? {
-                nice: scaleOptions.nice ? niceTickCount : true
-            }
+                  nice: scaleOptions.nice ? niceTickCount : true
+              }
             : {}),
         ...(type === 'linear'
             ? {
-                clamp: scaleOptions.clamp,
-                ...(scaleOptions.round ? { interpolate: interpolateRound } : {})
-            }
+                  clamp: scaleOptions.clamp,
+                  ...(scaleOptions.round ? { interpolate: interpolateRound } : {})
+              }
             : {}),
         ...(type === 'log'
             ? {
-                base: scaleOptions.base || 10
-            }
+                  base: scaleOptions.base || 10
+              }
+            : {}),
+            ...(type === 'symlog'
+            ? {
+                  constant: scaleOptions.constant || 1
+              }
             : {}),
         ...(type === 'band' || type === 'point'
             ? {
-                align: scaleOptions.align,
-                padding: maybeNumber(
-                    coalesce(scaleOptions.padding, plotOptions.padding, 0.15)
-                )
-            }
+                  align: scaleOptions.align,
+                  padding: maybeNumber(coalesce(scaleOptions.padding, plotOptions.padding, 0.15))
+              }
             : {})
     };
 
@@ -167,6 +170,13 @@ export function autoScale({
     }
     if (type === 'log') {
         fn.ticks = (count: number) => getLogTicks(domain, count);
+    } else if (type === 'symlog') {
+        const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
+        fn.ticks = (count: number) => {
+            const ticks = getLogTicks([scaleProps.constant+1, maxabs], count/2);
+            return [...ticks.map((t) => -t).reverse(), 0, ...ticks];
+        }
+
     }
     return fn;
 }
@@ -194,39 +204,42 @@ export function autoScaleColor({
     let fn;
     let range;
     // special treatment for color scales
-    const { scheme, interpolate, pivot, n = type === 'threshold' ? domain.length+1 : 9 } = scaleOptions;
+    const {
+        scheme,
+        interpolate,
+        pivot,
+        n = type === 'threshold' ? domain.length + 1 : 9
+    } = scaleOptions;
 
     if (type === 'categorical') {
-        // categorical 
+        // categorical
         const scheme_ = scheme || plotDefaults.categoricalColorScheme;
         // categorical scale
         range = Array.isArray(scheme_)
             ? scheme_
             : isCategoricalScheme(scheme_)
-                ? categoricalSchemes.get(scheme_)
-                : ordinalScheme(scheme_)(domain.length);
+              ? categoricalSchemes.get(scheme_)
+              : ordinalScheme(scheme_)(domain.length);
         fn = scaleOrdinal().domain(domain).range(range);
     } else if (!!ThresholdScales[type]) {
         const scheme_ = scheme || plotDefaults.colorScheme;
 
-        range = Array.isArray(scheme_) && (scaleOptions.n == null || scaleOptions.n === scheme_.length) ?
-            scheme_.slice(0) :
-            Array.isArray(scheme_) ?
-            // interpolate n colors from custom colors
-            d3Range(n).map(scaleLinear(
-                [0, n - 1],
-                scheme_
-            ).interpolate(interpolateLab)) :
-            interpolate ? 
-            d3Range(n).map(i => interpolate(i / (n - 1))) :
-            isOrdinalScheme(scheme_) ?
-            ordinalScheme(scheme_)(n) :
-            null;
+        range =
+            Array.isArray(scheme_) && (scaleOptions.n == null || scaleOptions.n === scheme_.length)
+                ? scheme_.slice(0)
+                : Array.isArray(scheme_)
+                  ? // interpolate n colors from custom colors
+                    d3Range(n).map(scaleLinear([0, n - 1], scheme_).interpolate(interpolateLab))
+                  : interpolate
+                    ? d3Range(n).map((i) => interpolate(i / (n - 1)))
+                    : isOrdinalScheme(scheme_)
+                      ? ordinalScheme(scheme_)(n)
+                      : null;
 
         if (range == null) {
             throw new Error('unknown ordinal scheme ' + scheme_);
         }
-         
+
         if (scaleOptions.reverse) range = range.toReversed();
         fn = ThresholdScales[type]().domain(domain).range(range);
     } else if (!!SequentialScales[type] || !!DivergingScales[type]) {
@@ -253,8 +266,7 @@ export function autoScaleColor({
         ) {
             // diverging color scheme, explicit or auto-detected
             const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
-            const domain_ =
-                pivot != null ? [domain[0], pivot, domain[1]] : [-maxabs, 0, maxabs];
+            const domain_ = pivot != null ? [domain[0], pivot, domain[1]] : [-maxabs, 0, maxabs];
             fn = scale(domain_, quantitativeScheme(scheme_));
         } else if (
             !!SequentialScales[type] ||
@@ -268,10 +280,7 @@ export function autoScaleColor({
         }
     }
     if (!fn) {
-        console.warn(
-            'color problem',
-            type,
-        );
+        console.warn('color problem', type);
         // problem
         fn = () => 'red';
         fn.range = () => ['red'];
@@ -292,25 +301,25 @@ function getScaleRange(
     return name === 'opacity'
         ? [0, 1]
         : name === 'length'
-            ? [0, 20]
-            : name === 'x'
-                ? [
-                    marginLeft + (insetLeft || inset || 0),
-                    marginLeft + plotWidth - (insetRight || inset || 0)
+          ? [0, 20]
+          : name === 'x'
+            ? [
+                  marginLeft + (insetLeft || inset || 0),
+                  marginLeft + plotWidth - (insetRight || inset || 0)
+              ]
+            : name === 'y'
+              ? [
+                    plotHeight + marginTop - (insetBottom || inset || 0),
+                    marginTop + (insetTop || inset || 0)
                 ]
-                : name === 'y'
-                    ? [
-                        plotHeight + marginTop - (insetBottom || inset || 0),
-                        marginTop + (insetTop || inset || 0)
-                    ]
-                    : name === 'r'
-                        ? [0, 10]
-                        : name === 'symbol'
-                            ? // Plot is smart enough to pick different default shapes depending on wether
-                            // or not there are filled dot marks in the plot, so we have to pass this
-                            // information all the way here
-                            plotHasFilledDotMarks
-                                ? ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye']
-                                : ['circle', 'plus', 'times', 'triangle2', 'asterisk', 'square2', 'diamond2']
-                            : [];
+              : name === 'r'
+                ? [0, 10]
+                : name === 'symbol'
+                  ? // Plot is smart enough to pick different default shapes depending on wether
+                    // or not there are filled dot marks in the plot, so we have to pass this
+                    // information all the way here
+                    plotHasFilledDotMarks
+                      ? ['circle', 'cross', 'diamond', 'square', 'star', 'triangle', 'wye']
+                      : ['circle', 'plus', 'times', 'triangle2', 'asterisk', 'square2', 'diamond2']
+                  : [];
 }
