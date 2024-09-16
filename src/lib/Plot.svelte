@@ -6,24 +6,7 @@
 <script lang="ts">
     import Plot from './core/Plot.svelte';
 
-    import { getContext, setContext } from 'svelte';
-    import { SvelteMap } from 'svelte/reactivity';
-    import { writable } from 'svelte/store';
-
-    import type {
-        PlotOptions,
-        GenericMarkOptions,
-        Mark,
-        PlotScales,
-        ScaleName,
-        PlotScale,
-        PlotDefaults,
-        PlotState
-    } from './types.js';
-
-    import mergeDeep from './helpers/mergeDeep.js';
-    import { computeScales } from './helpers/scales.js';
-    import { CHANNEL_SCALE } from './constants.js';
+    import type { PlotOptions } from './types.js';
 
     // implicit marks
     import AxisX from './marks/AxisX.svelte';
@@ -39,8 +22,6 @@
     import { namedProjection } from './helpers/autoProjection.js';
     import { isObject } from './helpers/index.js';
 
-    let width = $state(500);
-
     let {
         header: userHeader,
         footer: userFooter,
@@ -52,14 +33,6 @@
         projection,
         ...restOptions
     }: Partial<PlotOptions> = $props();
-
-    // information that influences the default plot options
-    type PlotOptionsParameters = {
-        explicitScales: Set<ScaleName>;
-        hasProjection: boolean;
-        margins?: number;
-        inset?: number;
-    };
 
     let projectionOpts = $derived.by(() => {
         if (projection && typeof projection !== 'function') {
@@ -106,6 +79,9 @@
     {#if restOptions.caption}<div>{restOptions.caption}</div>{/if}
     {#if userFooter}{@render userFooter()}{/if}
 {/snippet}
+
+<!-- There's a bug triggering RangeError: Maximum call stack size exceeded 
+     when using SveltePlot in ssr, so for now, we're disabling it -->
 
 <Plot
     {overlay}

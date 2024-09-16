@@ -42,11 +42,8 @@
     let plot = $derived(getPlotState());
     let facet = $derived(getTopLevelFacet());
 
-    let ssr = $state(true);
-    $effect(() => { ssr = false });
-
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
-    let { left, top } = $derived(ssr ? {left:0, top: 0} : getFacetState());
+    let { left, top } = $derived(getFacetState());
 
     const mark: Mark<GenericMarkOptions> = {
         id: Symbol(),
