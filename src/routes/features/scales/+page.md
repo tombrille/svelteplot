@@ -194,7 +194,7 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
 
 ### Bi-symmetrical log scales
 
-For input domains ranging multiple magnitudes above and below zero, the bi-symmertrical log scale may be useful. It can be controlled using the `constant` option. 
+For input domains ranging multiple magnitudes above and below zero, the bi-symmertrical log scale may be useful. It can be controlled using the `constant` option.
 
 ```svelte live
 <script>
@@ -204,19 +204,38 @@ For input domains ranging multiple magnitudes above and below zero, the bi-symme
     let constant = $state(1);
 </script>
 
-<Slider label="constant" bind:value={constant} min={1} max={40} />
+<Slider
+    label="constant"
+    bind:value={constant}
+    min={1}
+    max={40} />
 <Plot
-    x={{ domain: [-1e6, 1e6], type: 'symlog', grid: true, constant }}
+    x={{
+        domain: [-1e6, 1e6],
+        type: 'symlog',
+        grid: true,
+        constant
+    }}
     marginTop={0}
     marginLeft={10}
     marginRight={20}
     height={70}>
-    <RectX data={[1]} x1={-constant} x2={constant} opacity={0.05} />
-    </Plot>
+    <RectX
+        data={[1]}
+        x1={-constant}
+        x2={constant}
+        opacity={0.05} />
+</Plot>
 ```
 
 ```svelte
-<Plot x={{ domain: [-1e6, 1e6], type: 'symlog', grid: true, constant: 1 }}>
+<Plot
+    x={{
+        domain: [-1e6, 1e6],
+        type: 'symlog',
+        grid: true,
+        constant: 1
+    }}>
     <RectX x1={-1} x2={1} opacity={0.05} />
 </Plot>
 ```
@@ -235,8 +254,15 @@ This is useful for showing datasets ranging over a long time span. Here we're sh
 </script>
 
 <div style="display:flex;justify-content: space-between">
-<Slider label="constant" bind:value={constant} min={100} max={2000} />
-<RadioInput label="type" options={['symlog', 'linear']} bind:value={type} />
+    <Slider
+        label="constant"
+        bind:value={constant}
+        min={100}
+        max={2000} />
+    <RadioInput
+        label="type"
+        options={['symlog', 'linear']}
+        bind:value={type} />
 </div>
 <Plot grid height={300} x={{ type, constant }}>
     <Line data={kneeling} x="year" y="co2" />
@@ -244,7 +270,10 @@ This is useful for showing datasets ranging over a long time span. Here we're sh
 ```
 
 ```svelte
-<Plot grid height={300} x={{ type: 'symlog', constant: 2000 }}>
+<Plot
+    grid
+    height={300}
+    x={{ type: 'symlog', constant: 2000 }}>
     <Line data={kneeling} x="year" y="co2" />
 </Plot>
 ```
@@ -278,7 +307,8 @@ Point scales map a discrete input domain to single coordinates in your plot. Sve
             {
                 r: 'count'
             }
-        )} fill />
+        )}
+        fill />
 </Plot>
 ```
 
@@ -294,7 +324,8 @@ Point scales map a discrete input domain to single coordinates in your plot. Sve
             {
                 r: 'count'
             }
-        )} fill />
+        )}
+        fill />
 </Plot>
 ```
 
@@ -323,15 +354,13 @@ We can force the y scale to use a point scale, too, by setting `type: 'point'` o
             {
                 r: 'count'
             }
-        )} fill />
+        )}
+        fill />
 </Plot>
 ```
 
 ```svelte
-<Plot
-    grid
-    x={{ tickRotate: -90 }}
-    y={{ type: 'point' }}>
+<Plot grid x={{ tickRotate: -90 }} y={{ type: 'point' }}>
     <Dot
         {...group(
             {
@@ -342,7 +371,8 @@ We can force the y scale to use a point scale, too, by setting `type: 'point'` o
             {
                 r: 'count'
             }
-        )} fill />
+        )}
+        fill />
 </Plot>
 ```
 
@@ -371,15 +401,14 @@ We can also see that the scale is no longer sorted by cylinders, as the domain o
             {
                 r: 'count'
             }
-        )} fill sort="-cylinders" />
+        )}
+        fill
+        sort="-cylinders" />
 </Plot>
 ```
 
 ```svelte
-<Plot
-    grid
-    x={{ tickRotate: -90 }}
-    y={{ type: 'point' }}>
+<Plot grid x={{ tickRotate: -90 }} y={{ type: 'point' }}>
     <Dot
         {...group(
             {
@@ -390,7 +419,9 @@ We can also see that the scale is no longer sorted by cylinders, as the domain o
             {
                 r: 'count'
             }
-        )} fill sort="-cylinders" />
+        )}
+        fill
+        sort="-cylinders" />
 </Plot>
 ```
 
@@ -682,6 +713,40 @@ The default color scheme shown above is called `turbo`, but we can change it to 
 </Plot>
 ```
 
+You can also interpolate between custom colors of your liking by passing them as array via the `scheme` option:
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot
+    grid
+    height={200}
+    color={{
+        legend: true,
+        scheme: ['#fa6244', '#ececec', '#00abe1']
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
+```svelte
+<Plot grid color={{ legend: true }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
 ### Diverging
 
 You may wonder why some of the color schemes don't use their entire range (e.g., try using the `BuYlRd` scheme above which is supposed to go from blue over yellow to red). That's because SveltePlot recognizes some schemes as `diverging` and automatically adjusts the "center" (or _pivot_) of the domain to be zero.
@@ -948,6 +1013,95 @@ Quantize is like a "stepped" linear scale, where a continuous input domain is ma
         inset="0.5" />
 </Plot>
 ```
+
+Again, you can use your custom colors using the `scheme` option. If you omit the `n` option, SveltePlot will automatically use as many output values as you provided colors in your scheme.
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot
+    grid
+    height={200}
+    color={{
+        legend: true,
+        type: 'quantize',
+        scheme: ['#fa6244', '#ececec', '#00abe1']
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
+```svelte
+<Plot
+    grid
+    color={{
+        legend: true,
+        type: 'quantize',
+        scheme: ['#fa6244', '#ececec', '#00abe1']
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
+If you also pass the `n` option to set a different number of output values, SveltePlot will interpolate the colors for you:
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+import { Slider } from '$lib/ui';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+    let n = $state(5);
+</script>
+
+<Slider label="n" bind:value={n} min={2} max={9} />
+
+<Plot
+    grid
+    height={200}
+    color={{
+        legend: true,
+        type: 'quantize',
+        scheme: ['#fa6244', '#ececec', '#00abe1'],
+        n
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
+```svelte
+<Plot
+    grid
+    color={{
+        legend: true,
+        type: 'quantize',
+        scheme: ['#fa6244', '#ececec', '#00abe1'],
+        n: 5,
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="body_mass_g" />
+</Plot>
+```
+
 
 ### Quantile (discrete)
 

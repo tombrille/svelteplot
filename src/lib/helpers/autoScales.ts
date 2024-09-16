@@ -151,7 +151,7 @@ export function autoScale({
                   base: scaleOptions.base || 10
               }
             : {}),
-            ...(type === 'symlog'
+        ...(type === 'symlog'
             ? {
                   constant: scaleOptions.constant || 1
               }
@@ -173,10 +173,9 @@ export function autoScale({
     } else if (type === 'symlog') {
         const maxabs = Math.max(Math.abs(domain[0]), Math.abs(domain[1]));
         fn.ticks = (count: number) => {
-            const ticks = getLogTicks([scaleProps.constant+1, maxabs], count/2);
+            const ticks = getLogTicks([scaleProps.constant + 1, maxabs], count / 2);
             return [...ticks.map((t) => -t).reverse(), 0, ...ticks];
-        }
-
+        };
     }
     return fn;
 }
@@ -211,7 +210,7 @@ export function autoScaleColor({
         n = type === 'threshold' ? domain.length + 1 : 9
     } = scaleOptions;
 
-    if (type === 'categorical') {
+    if (type === 'categorical' || type === 'ordinal') {
         // categorical
         const scheme_ = scheme || plotDefaults.categoricalColorScheme;
         // categorical scale
@@ -229,7 +228,10 @@ export function autoScaleColor({
                 ? scheme_.slice(0)
                 : Array.isArray(scheme_)
                   ? // interpolate n colors from custom colors
-                    d3Range(n).map(scaleLinear([0, n - 1], scheme_).interpolate(interpolateLab))
+                    d3Range(n)
+                        .map(i => i / (n-1))
+                        .map(scaleLinear(scheme_.map((c,i) => i / (scheme_.length-1)), scheme_)
+                            .interpolate(interpolateLab))
                   : interpolate
                     ? d3Range(n).map((i) => interpolate(i / (n - 1)))
                     : isOrdinalScheme(scheme_)
@@ -252,7 +254,7 @@ export function autoScaleColor({
             fn = scale(domain, interpolate);
         } else if (Array.isArray(scheme_)) {
             // custom user-defined colors to interpolate from
-            const step = 1 / scheme_.length;
+            const step = 1 / (scheme_.length - 1);
             fn = scale(
                 domain,
                 (type === 'linear' ? scaleLinear : scaleLog)(

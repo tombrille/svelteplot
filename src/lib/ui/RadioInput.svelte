@@ -13,13 +13,13 @@
 </script>
 
 <div style="display:inline-block">
-{#if label}
-    <label>{label}:</label>
-{/if}
-{#each options as p}
-    <label>
-        <input type="radio" bind:group={value} value={p} />
-        {format(p)}
-    </label>
-{/each}
+    {#if label}
+        <label>{label}:</label>
+    {/if}
+    {#each options as p}
+        <label>
+            <input type="radio" bind:group={value} value={p} />
+            {format(p)}
+        </label>
+    {/each}
 </div>
