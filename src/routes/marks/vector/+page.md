@@ -112,7 +112,7 @@ Here's an example where all arrows point towards the mouse cursor:
 </Plot>
 ```
 
-Vector mark can deal with projection system:
+Vector mark can deal with projection system, allowing you to create shift maps:
 
 ```svelte live
 <script>
@@ -148,6 +148,33 @@ Vector mark can deal with projection system:
 
 <Plot
     projection="albers-usa"
+    length={{ range: [3, 40], type: 'sqrt' }}
+    color={{ scheme: 'BuRd' }}>
+    <Geo data={[nation]} stroke="currentColor" />
+    <Geo
+        data={[stateMesh]}
+        stroke="currentColor"
+        strokeWidth="0.5" />
+    <Vector
+        {...geoCentroid({ data: counties })}
+        length={(d) =>
+            Math.abs(
+                d.properties.margin2020 * d.properties.votes
+            )}
+        shape="arrow-filled"
+        strokeLinecap="round"
+        fill={(d) =>
+            d.properties.margin2020 > 0
+                ? 'var(--svp-red)'
+                : 'var(--svp-blue)'}
+        rotate={(d) =>
+            d.properties.margin2020 > 0 ? 60 : -60} />
+</Plot>
+```
+
+```svelte
+<Plot
+    projection="albers-usa"
     length={{ type: 'sqrt', range: [3, 40] }}
     color={{ scheme: 'BuRd' }}>
     <Geo data={[nation]} stroke="currentColor" />
@@ -161,7 +188,8 @@ Vector mark can deal with projection system:
             Math.abs(
                 d.properties.margin2020 * d.properties.votes
             )}
-        stroke={(d) =>
+        shape="arrow-filled"
+        fill={(d) =>
             d.properties.margin2020 > 0
                 ? 'var(--svp-red)'
                 : 'var(--svp-blue)'}
@@ -193,13 +221,14 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
     };
 </script>
 
-<Plot
-    ><Vector {data} x="x" y="y" shape={shapeA} ... /></Plot>
+<Plot>
+    <Vector {data} x="x" y="y" shape={shapeA} ... />
+</Plot>
 ```
 
 ```svelte live
 <script>
-    import { Plot, Vector, Frame } from '$lib';
+    import { Plot, Vector, Frame, Dot } from '$lib';
     import { page } from '$app/stores';
     import { range } from 'd3-array';
 
@@ -217,6 +246,7 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
         .map((x) => range(20).map((y) => ({ x, y })))
         .flat();
     let pointer = $state([0, 0]);
+    let raw = $state([0, 0]);
 </script>
 
 <Plot

@@ -5,7 +5,8 @@ export const load: PageLoad = async ({ fetch }) => {
     return {
         data: {
             us: await loadJSON(fetch, 'us-counties-10m'),
-            ...(await loadDatasets(['wind', 'election'], fetch))
+            europe: await loadJSON(fetch, 'europe'),
+            ...(await loadDatasets(['wind', 'election', 'shifts'], fetch))
         }
     };
 };

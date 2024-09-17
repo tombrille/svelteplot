@@ -229,9 +229,13 @@ export function autoScaleColor({
                 : Array.isArray(scheme_)
                   ? // interpolate n colors from custom colors
                     d3Range(n)
-                        .map(i => i / (n-1))
-                        .map(scaleLinear(scheme_.map((c,i) => i / (scheme_.length-1)), scheme_)
-                            .interpolate(interpolateLab))
+                        .map((i) => i / (n - 1))
+                        .map(
+                            scaleLinear(
+                                scheme_.map((c, i) => i / (scheme_.length - 1)),
+                                scheme_
+                            ).interpolate(interpolateLab)
+                        )
                   : interpolate
                     ? d3Range(n).map((i) => interpolate(i / (n - 1)))
                     : isOrdinalScheme(scheme_)

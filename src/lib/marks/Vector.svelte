@@ -91,8 +91,29 @@
         }
     };
 
+    const shapeArrowFilled: ShapeRenderer = {
+        draw(context: D3Path, l: number, r: number) {
+            // const wing = (l * r) / wingRatio;
+            const headLength = Math.max(3, l * 0.3);
+            const headSpike = headLength * 0.2;
+            const headWidth = Math.max(2, l * 0.3);
+            const tailWidth = Math.max(2, l * 0.3) * 0.3;
+
+            context.moveTo(0, 0);
+
+            context.lineTo(tailWidth * 0.5, -l + headLength - headSpike);
+            context.lineTo(headWidth * 0.5, -l + headLength);
+            context.lineTo(0, -l);
+            context.lineTo(-headWidth * 0.5, -l + headLength);
+            context.lineTo(-tailWidth * 0.5, -l + headLength - headSpike);
+
+            context.closePath();
+        }
+    };
+
     const shapes = new Map([
         ['arrow', shapeArrow],
+        ['arrow-filled', shapeArrowFilled],
         ['spike', shapeSpike]
     ]);
 
@@ -187,7 +208,7 @@
                                         },
                                         usedScales,
                                         plot,
-                                        'stroke'
+                                        shape === 'arrow-filled' ? 'fill' : 'stroke'
                                     )}
                                 />
                             {/if}

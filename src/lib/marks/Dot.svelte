@@ -120,7 +120,7 @@
                                         'stroke'
                                     )}
                                     use:addEventHandlers={{
-                                        scales: plot.scales,
+                                        getPlotState,
                                         options: mark.options,
                                         datum
                                     }}

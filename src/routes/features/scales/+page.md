@@ -1060,7 +1060,7 @@ If you also pass the `n` option to set a different number of output values, Svel
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-import { Slider } from '$lib/ui';
+    import { Slider } from '$lib/ui';
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
     let n = $state(5);
@@ -1092,7 +1092,7 @@ import { Slider } from '$lib/ui';
         legend: true,
         type: 'quantize',
         scheme: ['#fa6244', '#ececec', '#00abe1'],
-        n: 5,
+        n: 5
     }}>
     <Dot
         data={penguins}
@@ -1101,7 +1101,6 @@ import { Slider } from '$lib/ui';
         stroke="body_mass_g" />
 </Plot>
 ```
-
 
 ### Quantile (discrete)
 

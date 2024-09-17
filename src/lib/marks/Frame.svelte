@@ -30,7 +30,7 @@
         ry={resolveProp(options.ry, null, null)}
         width={plot.facetWidth}
         height={plot.facetHeight}
-        use:addEventHandlers={{ scales: plot.scales, options: options, datum: {} }}
+        use:addEventHandlers={{ getPlotState, options: options, datum: {} }}
     />
 </Mark>
 

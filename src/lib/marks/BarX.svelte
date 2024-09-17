@@ -70,7 +70,7 @@
                             rx={resolveProp(args.rx, datum, null)}
                             ry={resolveProp(args.ry, datum, null)}
                             use:addEventHandlers={{
-                                scales: plot.scales,
+                                getPlotState,
                                 options: mark.options,
                                 datum
                             }}

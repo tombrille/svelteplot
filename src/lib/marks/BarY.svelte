@@ -79,7 +79,7 @@
                         height={maxy - miny}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        use:addEventHandlers={{ scales: plot.scales, options: mark.options, datum }}
+                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
                     />
                 {/if}
             {/each}

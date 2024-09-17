@@ -111,7 +111,7 @@
 <g
     {transform}
     stroke-width={strokeWidth_}
-    use:addEventHandlers={{ scales: scales, options: mark.options, datum }}
+    use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
 >
     {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
         {@const markerId = `marker-${key === 'all' ? '' : `${key}-`}${id}`}
@@ -141,7 +141,7 @@
         marker-end={markerEnd || marker ? `url(#marker-${markerEnd ? 'end-' : ''}${id})` : null}
         {d}
         {style}
-        use:addEventHandlers={{ scales: scales, options: mark.options, datum }}
+        use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
     />
     {#if text}
         <!-- since textPath.side is not yet supported, we have to use an invisible

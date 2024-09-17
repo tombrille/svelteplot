@@ -67,7 +67,7 @@
                                 preferStroke.has(geometry.type) ? 'stroke' : 'fill'
                             )}
                             use:addEventHandlers={{
-                                scales: plot.scales,
+                                getPlotState,
                                 options: mark.options,
                                 datum
                             }}

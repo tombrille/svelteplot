@@ -126,7 +126,7 @@
                         <g
                             transform={dx || dy ? `translate(${dx}, ${dy})` : null}
                             use:addEventHandlers={{
-                                scales: plot.scales,
+                                getPlotState,
                                 options: mark.options,
                                 datum
                             }}

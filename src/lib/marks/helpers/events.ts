@@ -1,10 +1,10 @@
-import type { BaseMarkProps, DataRecord, PlotScales } from '$lib/types.js';
+import type { BaseMarkProps, DataRecord, PlotScales, PlotState } from '$lib/types.js';
 import type { MouseEventHandler } from 'svelte/elements';
 import { pick } from '$lib/helpers';
 
 export function addEventHandlers(
     node: SVGElement,
-    { scales, options, datum }: { scales: PlotScales; options: BaseMarkProps; datum: DataRecord }
+    { options, datum, getPlotState }: { options: BaseMarkProps; datum: DataRecord, getPlotState: () => PlotState }
 ) {
     const events = pick(
         options,
@@ -33,9 +33,11 @@ export function addEventHandlers(
 
     const listeners = new Map<string, MouseEventHandler<SVGElement>>();
     // attach event handlers
+    
     for (const [eventName, eventHandler] of Object.entries(events)) {
         if (eventHandler) {
             const wrappedHandler = (origEvent: Event) => {
+                const { scales } = getPlotState();
                 if (origEvent.layerX !== undefined) {
                     if (scales.projection) {
                         const [x, y] = scales.projection.invert([
