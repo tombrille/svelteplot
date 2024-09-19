@@ -21,7 +21,7 @@
 
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
-    import { projectX, projectXY, projectY } from '$lib/helpers/scales.js';
+    import { projectXY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
 
     let { data, children, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
@@ -64,7 +64,6 @@
         plot.body?.addEventListener('mousemove', onMouseMove);
         plot.body?.addEventListener('mouseleave', onMouseLeave);
         plot.body?.addEventListener('touchmove', onTouchMove);
-        plot.body;
 
         return () => {
             plot.body?.removeEventListener('mousemove', onMouseMove);

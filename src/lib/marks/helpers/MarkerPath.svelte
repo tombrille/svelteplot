@@ -11,9 +11,11 @@
         ConstantAccessor,
         DataRecord,
         Mark,
+        PlotContext,
         PlotScales
     } from '$lib/types.js';
     import { addEventHandlers } from './events.js';
+    import { getContext } from 'svelte';
 
     type MarkerPathProps = BaseMarkProps & {
         /**
@@ -72,6 +74,8 @@
     }: MarkerPathProps = $props();
 
     const id = randomId();
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
 
     let points = $derived(text && d != null ? d.split(/[LMC]/).slice(1) : []);
     let hasPath = $derived(points.length > 0);
