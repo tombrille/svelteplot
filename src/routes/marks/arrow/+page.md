@@ -2,6 +2,8 @@
 title: Arrow mark
 ---
 
+The arrow mark is useful for connecting two points in data space with an arrow. If you want to control the arrow length and angle directly, consider using the [vector](/marks/vector) mark instead.
+
 Metro dataset:
 
 ```svelte live
