@@ -24,7 +24,7 @@
     import { projectXY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
 
-    let { data, children, x, y, z, maxDistance = 15 }: PointerMarkProps = $props();
+    let { data, children, x, y, z, maxDistance = 15, onupdate = null }: PointerMarkProps = $props();
 
     let selectedData = $state([]);
 
@@ -50,6 +50,7 @@
 
     function onMouseLeave() {
         selectedData = [];
+        if (onupdate) onupdate(selectedData);
     }
 
     function updateSelection(ex: number, ey: number) {
@@ -58,6 +59,7 @@
             tree.find(x != null ? ex : 0, y != null ? ey : 0, maxDistance)
         );
         selectedData = points.filter((d) => d != null);
+        if (onupdate) onupdate(selectedData);
     }
 
     $effect(() => {

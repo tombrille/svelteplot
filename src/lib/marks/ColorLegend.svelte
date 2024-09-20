@@ -8,7 +8,7 @@
 
     import type { PlotContext } from '../types.js';
 
-    let { width = 250 }: { width?: number } = $props();
+    let { width = 250, tickSpacing=30 }: { width?: number } = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -122,7 +122,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, tickSpacing: 30 }}
+                x={{ domain, tickSpacing }}
             >
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
