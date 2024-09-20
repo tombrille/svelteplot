@@ -14,7 +14,6 @@
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
     import { isValid } from '$lib/helpers/index.js';
-    import { text } from '@sveltejs/kit';
 
     type TextMarkProps = BaseMarkProps & {
         data: DataRecord[];
