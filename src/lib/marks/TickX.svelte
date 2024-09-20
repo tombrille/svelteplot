@@ -42,8 +42,7 @@
 <Mark
     type="tickX"
     channels={['x', 'y', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="tick-x">
             {#each args.data as datum}
@@ -70,8 +69,7 @@
                             transform="translate({x}, {0})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             y1={y1 + inset}
-                            y2={y2 - inset}
-                        />
+                            y2={y2 - inset} />
                     {/if}
                 {/if}
             {/each}

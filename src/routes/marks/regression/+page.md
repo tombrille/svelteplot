@@ -262,3 +262,5 @@ Returns a linear regression mark where x is the dependent variable and y is the 
         x="power (hp)" />
 </Plot>
 ```
+
+You can set `confidence` to `false` to omit the confidence band.

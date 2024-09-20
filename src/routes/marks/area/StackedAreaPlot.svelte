@@ -36,6 +36,5 @@
         fill="group"
         href="/marks/line"
         {curve}
-        stack={{ order, reverse }}
-    />
+        stack={{ order, reverse }} />
 </Plot>

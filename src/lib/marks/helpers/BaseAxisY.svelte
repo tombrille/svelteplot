@@ -146,13 +146,11 @@
                 class="tick"
                 transform="translate({tick.dx +
                     marginLeft +
-                    (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})"
-            >
+                    (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})">
                 {#if tickSize}
                     <line
                         style={resolveScaledStyles(tick.value, options, {}, plot, 'stroke')}
-                        x2={anchor === 'left' ? -tickSize : tickSize}
-                    />
+                        x2={anchor === 'left' ? -tickSize : tickSize} />
                 {/if}
                 <text
                     bind:this={tickTexts[t]}
@@ -166,8 +164,7 @@
                     )}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
                     dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                    >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text
-                >
+                    >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text>
             </g>
         {/if}
     {/each}

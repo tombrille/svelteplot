@@ -18,8 +18,7 @@
         {#each options as p}
             <option value={p}>{format(p)}</option>
         {/each}
-    </select></label
->
+    </select></label>
 
 <style>
     label {

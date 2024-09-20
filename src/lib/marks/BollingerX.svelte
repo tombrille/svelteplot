@@ -28,8 +28,11 @@
 
 <g class="bollinger">
     <Line
-        {...{ x: '__avg', y: '__x', ...pick(args, ['data', 'stroke', 'strokeOpacity', 'opacity']) }}
-    />
+        {...{
+            x: '__avg',
+            y: '__x',
+            ...pick(args, ['data', 'stroke', 'strokeOpacity', 'opacity'])
+        }} />
     <Area
         {...{
             y1: '__x',
@@ -37,6 +40,5 @@
             x2: '__hi',
             fillOpacity: 0.2,
             ...pick(args, ['data', 'fill', 'fillOpacity', 'opacity'])
-        }}
-    />
+        }} />
 </g>

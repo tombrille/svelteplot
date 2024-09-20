@@ -40,8 +40,7 @@
 <Mark
     type="ruleX"
     channels={['x', 'y1', 'y2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="rule-x">
             {#each args.data as datum}
@@ -78,8 +77,7 @@
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             y1={(inset || insetTop) + (y1_ != null ? y1 : plot.options.marginTop)}
                             y2={(y2_ != null ? y2 : plot.facetHeight + plot.options.marginTop) -
-                                (inset || insetBottom)}
-                        />
+                                (inset || insetBottom)} />
                     {/if}
                 {/if}
             {/each}

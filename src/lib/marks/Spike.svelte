@@ -12,5 +12,4 @@
     stroke="currentColor"
     sort={{ channel: '-y' }}
     {...options}
-    shape="spike"
-/>
+    shape="spike" />

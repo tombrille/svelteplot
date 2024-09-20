@@ -420,8 +420,7 @@
     class="svelteplot"
     bind:clientWidth={width}
     style:max-width={plotOptions.maxWidth}
-    data-testid={testid}
->
+    data-testid={testid}>
     {#if header}
         <div class="plot-header">
             {#if header}{@render header()}{/if}
@@ -434,8 +433,7 @@
             {height}
             fill="currentColor"
             viewBox="0 0 {width} {height}"
-            font-family="system-ui, sans-serif"
-        >
+            font-family="system-ui, sans-serif">
             <FacetGrid marks={explicitMarks}>
                 {#if children}
                     {@render children({

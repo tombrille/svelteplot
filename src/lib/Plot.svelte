@@ -96,8 +96,7 @@
         : null}
     footer={userFooter || restOptions?.caption ? footer : null}
     projection={projectionOpts}
-    {...scales}
->
+    {...scales}>
     {#snippet children({
         hasProjection,
         hasExplicitAxisX,

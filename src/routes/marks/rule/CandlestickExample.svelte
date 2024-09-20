@@ -19,8 +19,7 @@
         y1="Open"
         y2="Close"
         strokeWidth="5"
-        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'lightseagreen' : 'crimson')}
-    />
+        stroke={(d) => ((d as AAPL).Close > (d as AAPL).Open ? 'lightseagreen' : 'crimson')} />
 </Plot>
 
 {#if code}
@@ -40,6 +39,5 @@
         y2="Close"
         strokeWidth="5"
         stroke={(d) => d.Close > d.Open ? 'lightseagreen' : 'crimson'} />
-</Plot>`}
-    />
+</Plot>`} />
 {/if}

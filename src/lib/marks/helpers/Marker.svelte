@@ -80,8 +80,7 @@
     orient={MARKERS[shape].orient}
     markerHeight={MARKERS[shape].height}
     stroke-width="1.5"
-    {...markerColors}
->
+    {...markerColors}>
     {#if shape === 'dot' || shape === 'circle' || shape === 'circle-stroke'}
         <circle r="3" />
     {:else}

@@ -80,8 +80,7 @@
             x="__x"
             y="median"
             strokeWidth={2}
-            {...typeof tickMedian === 'object' ? tickMedian : {}}
-        />
+            {...typeof tickMedian === 'object' ? tickMedian : {}} />
     {/if}
     {#if tickMinMax}
         <TickY
@@ -89,15 +88,13 @@
             x="__x"
             y="min"
             inset="20%"
-            {...typeof tickMinMax === 'object' ? tickMinMax : {}}
-        />
+            {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
         <TickY
             data={boxData}
             x="__x"
             y="max"
             inset="20%"
-            {...typeof tickMinMax === 'object' ? tickMinMax : {}}
-        />
+            {...typeof tickMinMax === 'object' ? tickMinMax : {}} />
     {/if}
     <Dot data={boxData.map((d) => d.outliers).flat()} {x} {y} {...dot || {}} />
 </GroupMultiple>

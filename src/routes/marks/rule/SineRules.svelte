@@ -19,7 +19,6 @@
         y2={(d) => Math.sin(Number(d))}
         stroke="teal"
         strokeOpacity="0.8"
-        strokeWidth={4}
-    />
+        strokeWidth={4} />
     <RuleY data={[0]} />
 </Plot>

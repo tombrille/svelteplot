@@ -27,8 +27,7 @@
             bind:value
             {min}
             {max}
-            {step}
-        />
+            {step} />
     {/if}
 </label>
 

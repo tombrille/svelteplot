@@ -86,8 +86,7 @@
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         {@const sweep = maybeSweep(args.sweep)}
         <GroupMultiple class="arrow" length={args.data.length}>
@@ -142,20 +141,23 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        >
+                            }}>
                             {#if options.onmouseenter || options.onclick}
                                 <!-- add invisible path in bg for easier mouse access -->
                                 <path
                                     d={arrPath}
                                     style="fill:none;stroke-width: {(strokeWidth || 1) +
-                                        10}; stroke: red; stroke-opacity:0"
-                                />
+                                        10}; stroke: red; stroke-opacity:0" />
                             {/if}
                             <path
                                 d={arrPath}
-                                style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            />
+                                style={resolveScaledStyles(
+                                    datum,
+                                    args,
+                                    usedScales,
+                                    plot,
+                                    'stroke'
+                                )} />
                         </g>
                     {/if}
                 {/if}

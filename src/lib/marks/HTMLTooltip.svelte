@@ -65,8 +65,7 @@
     class="tooltip"
     class:hide={!!!datum}
     style:left="{tooltipX ? projectX('x', plot.scales, tooltipX) : 0}px"
-    style:top="{tooltipY ? projectY('y', plot.scales, tooltipY) : 0}px"
->
+    style:top="{tooltipY ? projectY('y', plot.scales, tooltipY) : 0}px">
     <div class="tooltip-body">
         <slot {datum} />
     </div>

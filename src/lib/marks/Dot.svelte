@@ -76,8 +76,7 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="dots">
             {#if canvas}
@@ -123,8 +122,7 @@
                                         getPlotState,
                                         options: mark.options,
                                         datum
-                                    }}
-                                />
+                                    }} />
                             {/if}
                         {/if}
                     {/if}

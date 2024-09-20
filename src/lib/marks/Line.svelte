@@ -148,8 +148,7 @@
     type="line"
     channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy', 'fz']}
     required={['x', 'y']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         {#if data.length > 0}
             <g class="lines">
@@ -185,8 +184,7 @@
                                     { stroke: false },
                                     plot,
                                     'stroke'
-                                )}
-                            />
+                                )} />
                         {/if}
                         <MarkerPath
                             {mark}
@@ -227,8 +225,7 @@
                                 plot,
                                 'fill'
                             )}
-                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                        />
+                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
                     {/if}
                 {/each}
             </g>

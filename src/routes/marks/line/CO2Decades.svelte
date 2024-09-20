@@ -30,15 +30,13 @@
     color={{
         scheme: ['#2f8fe3', '#a09ebc', '#c28b81', '#c06146', '#a62a1b'],
         type: 'linear'
-    }}
->
+    }}>
     <!-- grid -->
     <RectY
         data={range(310, 420, 20).map((low) => ({ low, high: low + 10 }))}
         y1="low"
         y2="high"
-        opacity={0.05}
-    />
+        opacity={0.05} />
 
     <!-- annotation -->
     <RuleY data={[350]} strokeWidth={3} opacity={0.2} />
@@ -51,8 +49,7 @@
         lineAnchor="top"
         dy="3"
         fontStyle="italic"
-        opacity={0.5}
-    />
+        opacity={0.5} />
 
     <!-- data -->
     <Line
@@ -63,8 +60,7 @@
         x="yearInDecade"
         stroke="average"
         strokeWidth="1.7"
-        y="average"
-    />
+        y="average" />
 
     <!-- labels -->
     <Text
@@ -80,8 +76,7 @@
         dx="5"
         stroke="var(--svelteplot-bg)"
         strokeWidth={3}
-        fill="average"
-    />
+        fill="average" />
 
     <Pointer data={co2decades} x="yearInDecade" z="decadeBaseYear">
         {#snippet children({ data })}
@@ -96,8 +91,7 @@
                 dy="-20"
                 stroke="var(--svelteplot-bg)"
                 strokeWidth={3}
-                fill="average"
-            />
+                fill="average" />
         {/snippet}
     </Pointer>
 </Plot>

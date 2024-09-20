@@ -101,8 +101,7 @@
             fill={options.positiveFill || 'red'}
             x1={coalesce(x2, x)}
             y1={coalesce(y2, y)}
-            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }}
-        />
+            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }} />
     </clipPath>
     <!-- pos area goes from top to line 1 -->
     <Area
@@ -113,8 +112,7 @@
         fillOpacity={coalesce(options.positiveFillOpacity, 1)}
         x1={coalesce(x1, x2, x)}
         y1={{ scale: null, value: 0 }}
-        y2={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)}
-    />
+        y2={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)} />
 </g>
 <g class="negative difference">
     <!-- neg clips goes from bottom of plot area to the line 1 -->
@@ -125,8 +123,7 @@
             fill={options.negativeFill || 'blue'}
             x1={coalesce(x1, x2, x)}
             y1={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)}
-            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }}
-        />
+            y2={{ scale: null, value: plot.options.marginTop + plot.facetHeight }} />
     </clipPath>
     <!-- neg area goes from top to line 2 -->
     <Area
@@ -137,8 +134,7 @@
         fillOpacity={coalesce(options.negativeFillOpacity, 1)}
         x1={coalesce(x2, x)}
         y1={{ scale: null, value: 0 }}
-        y2={coalesce(y2, y)}
-    />
+        y2={coalesce(y2, y)} />
 </g>
 {#if stroke != null}
     <!-- set stroke to false to hide the line -->
@@ -147,6 +143,5 @@
         {...options}
         stroke={stroke === true ? 'currentColor' : stroke}
         x={coalesce(x2, x)}
-        y={coalesce(y2, y)}
-    />
+        y={coalesce(y2, y)} />
 {/if}

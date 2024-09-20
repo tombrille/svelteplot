@@ -152,13 +152,11 @@
             <g
                 class="tick"
                 transform="translate({tick.x + tick.dx}, {tickY + tick.dy})"
-                text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}
-            >
+                text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}>
                 {#if tickSize}
                     <line
                         style={resolveScaledStyles(tick, options, {}, plot, 'stroke')}
-                        y2={anchor === 'bottom' ? tickSize : -tickSize}
-                    />
+                        y2={anchor === 'bottom' ? tickSize : -tickSize} />
                 {/if}
 
                 <text
@@ -178,8 +176,7 @@
                         ? 'central'
                         : anchor === 'bottom'
                           ? 'hanging'
-                          : 'auto'}
-                >
+                          : 'auto'}>
                     {#if ticks.length > 0 || t === 0 || t === ticks.length - 1}
                         {#if textLines.length === 1}
                             {textLines[0]}
@@ -188,8 +185,7 @@
                                 <tspan x="0" dy={i ? 12 : 0}
                                     >{!prevTextLines || prevTextLines[i] !== line
                                         ? line
-                                        : ''}</tspan
-                                >
+                                        : ''}</tspan>
                             {/each}
                         {/if}
                     {/if}

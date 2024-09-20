@@ -151,8 +151,7 @@
     data={data.length ? data.map((tick) => ({ __x: tick })) : []}
     channels={['x']}
     {...{ ...options, x: '__x' }}
-    {automatic}
->
+    {automatic}>
     {#if left && top && useTitle}
         <text
             style={resolveScaledStyles(
@@ -175,8 +174,7 @@
                 plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
             y={anchor === 'top' ? 13 : plot.height - 13}
             class="axis-x-title"
-            dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text
-        >
+            dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text>
     {/if}
     {#if showAxis}
         <BaseAxisX
@@ -192,8 +190,7 @@
             {tickFontSize}
             {options}
             title={useTitle}
-            {plot}
-        />
+            {plot} />
     {/if}
 </Mark>
 

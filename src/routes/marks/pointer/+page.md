@@ -10,7 +10,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
 
-    let sel= $state([]);
+    let sel = $state([]);
 </script>
 
 <Plot testid="aapl-line-frame" marginRight={20}>
@@ -304,5 +304,5 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
 ## Synchronized tooltips
 
 You can pass an `onupdate` event handler to synchronize the tooltips between two plots
- 
- TODO: Example
+
+TODO: Example

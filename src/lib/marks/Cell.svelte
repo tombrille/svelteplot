@@ -64,8 +64,7 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="rect" data-fill={usedScales.fillOpacity}>
             {#each args.data as datum}
@@ -104,8 +103,7 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        />
+                            }} />
                     {/if}
                 {/if}
             {/each}

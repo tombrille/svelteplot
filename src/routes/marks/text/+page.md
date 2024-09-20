@@ -32,9 +32,9 @@ Useful for showing SVG labels!
         strokeWidth={5}
         strokeOpacity={0.7}
         dx={-3}
-        dy={-6}
+        dy={-5}
         textAnchor="start"
-        lineAnchor="bottom"
+        lineAnchor="bottom" 
         fontWeight={(d) =>
             d.species === 'Gentoo' ? 'bold' : 'normal'}
         text={(d) => d.island} />
@@ -63,3 +63,5 @@ The following channels are required:
 ## Text options
 
 -   **fontSize** - the font size in pixels
+
+TODO: add example for multiline text

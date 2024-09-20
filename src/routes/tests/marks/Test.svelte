@@ -15,8 +15,7 @@
         scheme: 'BuRd',
         label: 'Change in inequality from 1980 to 2015',
         legend: true
-    }}
->
+    }}>
     <Arrow
         data={metros}
         x1="POP_1980"
@@ -25,6 +24,5 @@
         y2="R90_10_2015"
         bend
         opacity={0.2}
-        stroke={(d) => d.R90_10_2015 - d.R90_10_1980}
-    />
+        stroke={(d) => d.R90_10_2015 - d.R90_10_1980} />
 </Plot>

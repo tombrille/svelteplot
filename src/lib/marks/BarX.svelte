@@ -44,8 +44,7 @@
 <Mark
     type="barX"
     channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
@@ -73,8 +72,7 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        />
+                            }} />
                     {/if}
                 {/if}
             {/each}

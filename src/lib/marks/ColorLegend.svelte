@@ -46,16 +46,13 @@
                                     style:stroke={plot.hasFilledDotMarks
                                         ? null
                                         : plot.scales.color.fn(value)}
-                                    d={d3Symbol(symbolType, 40)()}
-                                />
+                                    d={d3Symbol(symbolType, 40)()} />
                             {:else}
                                 <rect
                                     style:fill={plot.scales.color.fn(value)}
                                     width="15"
-                                    height="15"
-                                />
-                            {/if}</svg
-                        >
+                                    height="15" />
+                            {/if}</svg>
                     </div>
                     <span class="item-label">{value}</span>
                 </div>
@@ -84,8 +81,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, ticks, tickFormat: (t, i) => numeral(tickLabels[i]).format('0.[0]') }}
-            >
+                x={{ domain, ticks, tickFormat: (t, i) => numeral(tickLabels[i]).format('0.[0]') }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         <stop offset="0%" stop-color={range[0]} />
@@ -93,12 +89,10 @@
                             {@const offset = (100 * (t - domain[0])) / (domain[1] - domain[0])}
                             <stop
                                 offset="{offset - 0.001}%"
-                                stop-color={plot.scales.color.fn(tickLabels[i] - 0.1)}
-                            />
+                                stop-color={plot.scales.color.fn(tickLabels[i] - 0.1)} />
                             <stop
                                 offset="{offset}%"
-                                stop-color={plot.scales.color.fn(tickLabels[i])}
-                            />
+                                stop-color={plot.scales.color.fn(tickLabels[i])} />
                         {/each}
                         <stop offset="100%" stop-color={range.at(-1)} />
                     </linearGradient>
@@ -122,15 +116,13 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, tickSpacing }}
-            >
+                x={{ domain, tickSpacing }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         {#each ticks as t}
                             <stop
                                 offset="{(100 * (t - domain[0])) / (domain[1] - domain[0])}%"
-                                stop-color={plot.scales.color.fn(t)}
-                            />
+                                stop-color={plot.scales.color.fn(t)} />
                         {/each}
                     </linearGradient>
                 </defs>

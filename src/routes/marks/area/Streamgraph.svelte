@@ -27,8 +27,7 @@
     x={{ grid: true }}
     y={{ axis: false }}
     color={{ legend: true }}
-    testid="area-y1"
->
+    testid="area-y1">
     <AreaY
         data={riaa}
         x="year"
@@ -36,8 +35,7 @@
         z="format"
         curve="basis"
         fill="group"
-        stack={{ offset }}
-    />
+        stack={{ offset }} />
 </Plot>
 
 TODO: y domain doesn't update when changing the offset

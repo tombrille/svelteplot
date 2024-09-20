@@ -20,5 +20,4 @@
 <Plot>
     <RuleX data={range(500).map(randomNormal(0,1))} strokeOpacity={0.5} />
 </Plot>`}
-    repl="https://svelte-5-preview.vercel.app/#H4sIAAAAAAAAE2WPTQrCMBCFrxKyaQvVVsRNjYIXEHElWBehSSWQNGGSCqXk7iYtlIqzGebN9-ZnxK2Q3OLqOeKOKo4rfDEG59gNJhb2w6Xjoba6hyYqxDYgjDvXXe2EMhocGtFNapejey_5A3nUglYoma0mdJLjDwy0Y1pdNSgqF5rtN7P-D7_5mqIAdIgQKZZLSNwfMgpB5isYdfQ0Tu70UJbZVlGTrjenZb7LMo-K6C-mAeFNpZloBWe4ctBz__JfYqhi_yEBAAA="
-/>
+    repl="https://svelte-5-preview.vercel.app/#H4sIAAAAAAAAE2WPTQrCMBCFrxKyaQvVVsRNjYIXEHElWBehSSWQNGGSCqXk7iYtlIqzGebN9-ZnxK2Q3OLqOeKOKo4rfDEG59gNJhb2w6Xjoba6hyYqxDYgjDvXXe2EMhocGtFNapejey_5A3nUglYoma0mdJLjDwy0Y1pdNSgqF5rtN7P-D7_5mqIAdIgQKZZLSNwfMgpB5isYdfQ0Tu70UJbZVlGTrjenZb7LMo-K6C-mAeFNpZloBWe4ctBz__JfYqhi_yEBAAA=" />

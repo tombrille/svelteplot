@@ -32,8 +32,7 @@
                             transform="translate(7.5,7.5)"
                             style:fill={plot.hasFilledDotMarks ? color : 'none'}
                             style:stroke={plot.hasFilledDotMarks ? null : color}
-                            d={d3Symbol(symbolType, 40)()}
-                        />
+                            d={d3Symbol(symbolType, 40)()} />
                     </svg>
                 </div>
                 <span class="item-label">{value}</span>

@@ -48,8 +48,7 @@
 <Mark
     type="geo"
     channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r', 'fx', 'fy', 'fz']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g aria-label="geo" class="geo{geoType ? ` geo-${geoType}` : ''}" style="fill:currentColor">
             {#each args.data as datum}
@@ -70,16 +69,14 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        >
+                            }}>
                             {#if title}<title>{title}</title>{/if}
                         </path>
                     {/snippet}
                     {#if options.href}
                         <a
                             href={resolveProp(args.href, datum, '')}
-                            target={resolveProp(args.target, datum, '_self')}
-                        >
+                            target={resolveProp(args.target, datum, '_self')}>
                             {@render el(datum)}
                         </a>
                     {:else}

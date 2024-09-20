@@ -34,8 +34,7 @@
         <RuleX data={[new Date(2016, 4, 14)]} stroke="red" strokeWidth="3" opacity="0.5" />
         <Line data={aapl} x="Date" y="Close" />
         <RuleY data={[0]} />
-    </Plot>`}
-    />
+    </Plot>`} />
 
     <p class="block">
         By defining the <b>x</b>, <b>y1</b> and <b>y2</b> properties, rules can be used for showing data,

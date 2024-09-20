@@ -65,8 +65,7 @@
             options={{}}
             height={plot.plotHeight}
             marginTop={plot.options.marginTop}
-            {plot}
-        />
+            {plot} />
     </g>
 {/if}
 {#if fyValues.length > 1 && plot.options.fy.axis}
@@ -83,8 +82,7 @@
             options={{ dx: 0, dy: 0 }}
             width={plot.plotWidth}
             marginLeft={plot.options.marginLeft}
-            {plot}
-        />
+            {plot} />
     </g>
 {/if}
 
@@ -96,8 +94,7 @@
             style:display={emptyFacets.get(facetX)?.get(facetY) ? 'none' : 'block'}
             transform="translate({useFacetX ? facetXScale(facetX) : 0}, {useFacetY
                 ? facetYScale(facetY)
-                : 0})"
-        >
+                : 0})">
             <Facet
                 fx={facetX}
                 fy={facetY}
@@ -113,8 +110,7 @@
                 )}
                 bottomEmpty={!!(
                     j === fyValues.length - 1 || emptyFacets.get(facetX)?.get(fyValues[j + 1])
-                )}
-            >
+                )}>
                 {@render children()}
             </Facet>
         </g>

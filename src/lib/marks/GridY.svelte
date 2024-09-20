@@ -39,8 +39,7 @@
     data={data.length ? data.map((tick) => ({ ___orig___: tick })) : []}
     channels={['x1', 'x2', 'y', 'stroke', 'strokeOpacity']}
     {...{ ...options, y: '___orig___' }}
-    {automatic}
->
+    {automatic}>
     {#snippet children({ usedScales })}
         <g class="grid-y">
             {#each ticks as tick}
@@ -56,8 +55,7 @@
                         transform="translate({plot.options.marginLeft},{y})"
                         style={resolveScaledStyles(tick, options, usedScales, plot, 'stroke')}
                         {x1}
-                        {x2}
-                    />
+                        {x2} />
                 {/if}
             {/each}
         </g>

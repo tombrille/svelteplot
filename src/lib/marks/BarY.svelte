@@ -55,8 +55,7 @@
 <Mark
     type="barY"
     channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-y" length={args.data.length}>
             {#each args.data as datum}
@@ -79,8 +78,7 @@
                         height={maxy - miny}
                         rx={resolveProp(args.rx, datum, null)}
                         ry={resolveProp(args.ry, datum, null)}
-                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
-                    />
+                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
                 {/if}
             {/each}
         </GroupMultiple>

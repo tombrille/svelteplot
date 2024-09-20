@@ -61,15 +61,13 @@
             inset="5"
             insetStart={(d) => d.source.id.length * 1.1}
             insetEnd={(d) => d.target.id.length * 1.1}
-            opacity="0.2"
-        />
+            opacity="0.2" />
         <Dot
             data={nodes}
             r={(d) => d.id.length}
             stroke="var(--svelteplot-bg)"
             fill="group"
             x="x"
-            y="y"
-        />
+            y="y" />
     {/if}
 </Plot>

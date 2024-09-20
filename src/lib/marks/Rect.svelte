@@ -61,8 +61,7 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="rect" length={args.data.length}>
             {#each args.data as datum}
@@ -124,8 +123,7 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        />
+                            }} />
                     {/if}
                 {/if}
             {/each}

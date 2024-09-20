@@ -122,6 +122,8 @@
     );
 
     let confBandGen = $derived(
+        confidence !== false
+            ?
         confidenceInterval(
             data
                 .map((d) => ({
@@ -131,11 +133,11 @@
                 .filter(({ x, y }) => (Number.isFinite(x) || isDate(x)) && Number.isFinite(y)),
             regression.predict,
             1 - confidence
-        )
+        ) : null
     );
 
     let confBandData = $derived(
-        regression.predict
+        confidence !== false && regression.predict
             ? regrPoints.map((x) => {
                   const { x: __x, left, right } = confBandGen(x);
                   return { __x, __y1: left, __y2: right };
@@ -154,8 +156,7 @@
             stroke,
             x: dependent === 'y' ? '__x' : '__y',
             y: dependent === 'y' ? '__y' : '__x'
-        }}
-    />
+        }} />
     {#if confBandData.length}
         <Area
             data={confBandData}
@@ -163,7 +164,6 @@
                 ? { x1: '__x', y1: '__y1', y2: '__y2' }
                 : { y1: '__x', x1: '__y1', x2: '__y2' }}
             fill={stroke || 'currentColor'}
-            opacity={0.15}
-        />
+            opacity={0.15} />
     {/if}
 {/if}

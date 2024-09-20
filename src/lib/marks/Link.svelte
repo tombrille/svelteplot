@@ -94,8 +94,7 @@
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="arrow" data-use-x={usedScales.x ? 1 : 0}>
             {#each args.data as datum}
@@ -145,8 +144,7 @@
                                 plot,
                                 'fill'
                             )}
-                            transform={dx || dy ? `translate(${dx}, ${dy})` : null}
-                        />
+                            transform={dx || dy ? `translate(${dx}, ${dy})` : null} />
                     {/if}
                 {/if}
             {/each}

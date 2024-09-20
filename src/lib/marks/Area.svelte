@@ -148,8 +148,7 @@
         'strokeOpacity'
     ]}
     required={['x1', 'y1']}
-    {...options}
->
+    {...options}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple length={sortedGroups.length} class="areas">
             {#each sortedGroups as areaData}
@@ -165,14 +164,12 @@
                                     : areaData.filter((d) => resolveProp(options.filter, d))
                             )}
                             style={resolveScaledStyles(datum, options, usedScales, plot, 'fill')}
-                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null}
-                        />
+                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
                     {/snippet}
                     {#if options.href}
                         <a
                             href={resolveProp(options.href, areaData[0], '')}
-                            target={resolveProp(options.target, areaData[0], '_self')}
-                        >
+                            target={resolveProp(options.target, areaData[0], '_self')}>
                             {@render el(areaData[0])}
                         </a>
                     {:else}

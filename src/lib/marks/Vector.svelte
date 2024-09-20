@@ -160,14 +160,12 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="vector" data-l={usedScales.length}>
             {#if canvas}
                 <text x="30" y="30" style="color:red"
-                    >implement canvas rendering for vector mark</text
-                >
+                    >implement canvas rendering for vector mark</text>
             {:else}
                 {#each args.data as datum}
                     {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
@@ -209,8 +207,7 @@
                                         usedScales,
                                         plot,
                                         shape === 'arrow-filled' ? 'fill' : 'stroke'
-                                    )}
-                                />
+                                    )} />
                             {/if}
                         {/if}
                     {/if}

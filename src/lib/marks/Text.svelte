@@ -14,6 +14,7 @@
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
     import { isValid } from '$lib/helpers/index.js';
+    import { text } from '@sveltejs/kit';
 
     type TextMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -82,10 +83,9 @@
         'strokeOpacity',
         'fillOpacity'
     ]}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="text" data-use-x={usedScales.x ? 1 : 0}>
+        <g class="text">
             {#each args.data as datum}
                 {#if testFacet(datum, mark.options) && (args.filter == null || resolveProp(args.filter, datum))}
                     {@const _x = resolveChannel('x', datum, args)}
@@ -134,22 +134,29 @@
                             {@const textLines = String(resolveProp(args.text, datum, '')).split(
                                 '\n'
                             )}
+                            {@const lineAnchor = resolveProp(
+                                args.lineAnchor,
+                                datum,
+                                args.y != null
+                                    ? 'middle'
+                                    : isTop
+                                      ? 'top'
+                                      : isBottom
+                                        ? 'bottom'
+                                        : 'middle'
+                            )}
+
                             {#if textLines.length > 1}
+                                {@const fontSize = resolveProp(args.fontSize, datum) || 12}
                                 <text
-                                    dominant-baseline={LINE_ANCHOR[
-                                        resolveProp(
-                                            args.lineAnchor,
-                                            datum,
-                                            args.y != null ? 'middle' : 'top'
-                                        )
-                                    ]}
+                                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
                                     transform="translate({[
                                         Math.round(x + dx),
-                                        Math.round(y + dy)
+                                        Math.round(y + dy - (lineAnchor === 'bottom' ? (textLines.length - 1) : lineAnchor === 'middle' ? (textLines.length - 1)*0.5 : 0) * fontSize)
                                     ]})"
                                     >{#each textLines as line, l}<tspan
                                             x="0"
-                                            dy={l ? resolveProp(args.fontSize, datum) || 12 : 0}
+                                            dy={l ? fontSize : 0}
                                             style={resolveScaledStyles(
                                                 { ...datum, __tspanIndex: l },
                                                 {
@@ -164,23 +171,10 @@
                                                 plot,
                                                 'fill'
                                             )}>{line}</tspan
-                                        >{/each}{#if title}<title>{title}</title>{/if}</text
-                                >
+                                        >{/each}{#if title}<title>{title}</title>{/if}</text>
                             {:else}
                                 <text
-                                    dominant-baseline={LINE_ANCHOR[
-                                        resolveProp(
-                                            args.lineAnchor,
-                                            datum,
-                                            args.y != null
-                                                ? 'middle'
-                                                : isTop
-                                                  ? 'top'
-                                                  : isBottom
-                                                    ? 'bottom'
-                                                    : 'middle'
-                                        )
-                                    ]}
+                                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
                                     transform="translate({[
                                         Math.round(x + dx),
                                         Math.round(y + dy)
@@ -199,8 +193,7 @@
                                         plot,
                                         'fill'
                                     )}
-                                    >{textLines[0]}{#if title}<title>{title}</title>{/if}</text
-                                >
+                                    >{textLines[0]}{#if title}<title>{title}</title>{/if}</text>
                             {/if}
                         {/if}
                     {/if}

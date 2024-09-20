@@ -41,8 +41,7 @@
 <Mark
     type="ruleY"
     channels={['y', 'x1', 'x2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="rule-y" length={args.data.length}>
             {#each args.data as datum}
@@ -81,8 +80,7 @@
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             x1={(inset || insetLeft) + (x1_ != null ? x1 : plot.options.marginLeft)}
                             x2={(x2_ != null ? x2 : plot.facetWidth + plot.options.marginLeft) -
-                                (inset || insetRight)}
-                        />
+                                (inset || insetRight)} />
                     {/if}
                 {/if}
             {/each}
