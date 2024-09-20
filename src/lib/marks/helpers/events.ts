@@ -4,7 +4,11 @@ import { pick } from '$lib/helpers';
 
 export function addEventHandlers(
     node: SVGElement,
-    { options, datum, getPlotState }: { options: BaseMarkProps; datum: DataRecord, getPlotState: () => PlotState }
+    {
+        options,
+        datum,
+        getPlotState
+    }: { options: BaseMarkProps; datum: DataRecord; getPlotState: () => PlotState }
 ) {
     const events = pick(
         options,
@@ -33,7 +37,7 @@ export function addEventHandlers(
 
     const listeners = new Map<string, MouseEventHandler<SVGElement>>();
     // attach event handlers
-    
+
     for (const [eventName, eventHandler] of Object.entries(events)) {
         if (eventHandler) {
             const wrappedHandler = (origEvent: Event) => {

@@ -7,7 +7,15 @@
         x?: ChannelAccessor;
         y?: ChannelAccessor;
         z?: ChannelAccessor;
+        /**
+         * maximum cursor distance to select data points
+         */
         maxDistance: number;
+        /**
+         * called whenever the selection changes
+         * @param data
+         */
+        onupdate: (data: DataRow[]) => void;
     };
 </script>
 
@@ -103,6 +111,8 @@
     );
 </script>
 
-<g class="pointer">
-    {@render children({ data: selectedData })}
-</g>
+{#if children}
+    <g class="pointer">
+        {@render children({ data: selectedData })}
+    </g>
+{/if}
