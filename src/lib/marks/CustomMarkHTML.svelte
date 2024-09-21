@@ -22,7 +22,7 @@
     let plot = $derived(getPlotState());
 
     import { resolveChannel } from '$lib/helpers/resolve.js';
-    import { projectX, projectY } from '$lib/helpers/scales.js';
+    import { projectX, projectY, projectXY } from '$lib/helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
 
     let { data, x, y, children }: HTMLMarkProps = $props();
@@ -32,8 +32,7 @@
     {@const x_ = resolveChannel('x', datum, { x, y })}
     {@const y_ = resolveChannel('y', datum, { x, y })}
     {#if isValid(x_) && isValid(y_)}
-        {@const px = projectX('x', plot.scales, resolveChannel('x', datum, { x, y }))}
-        {@const py = projectY('y', plot.scales, resolveChannel('y', datum, { x, y }))}
+        {@const [px, py] = projectXY(plot.scales, x_, y_)}
         <div class="custom-mark-html" style:left="{px.toFixed(0)}px" style:top="{py.toFixed(0)}px">
             {@render children({ datum, x: px, y: py })}
         </div>
