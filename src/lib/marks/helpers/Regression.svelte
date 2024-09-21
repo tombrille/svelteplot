@@ -71,6 +71,7 @@
         base = 2.71828,
         span = 0.3,
         confidence = 0.99,
+        class: className = null,
         ...options
     }: RegressionMarkProps & { dependent: 'x' | 'y' } = $props();
 
@@ -123,17 +124,19 @@
 
     let confBandGen = $derived(
         confidence !== false
-            ?
-        confidenceInterval(
-            data
-                .map((d) => ({
-                    x: resolveChannel(independent, d, options),
-                    y: resolveChannel(dependent, d, options)
-                }))
-                .filter(({ x, y }) => (Number.isFinite(x) || isDate(x)) && Number.isFinite(y)),
-            regression.predict,
-            1 - confidence
-        ) : null
+            ? confidenceInterval(
+                  data
+                      .map((d) => ({
+                          x: resolveChannel(independent, d, options),
+                          y: resolveChannel(dependent, d, options)
+                      }))
+                      .filter(
+                          ({ x, y }) => (Number.isFinite(x) || isDate(x)) && Number.isFinite(y)
+                      ),
+                  regression.predict,
+                  1 - confidence
+              )
+            : null
     );
 
     let confBandData = $derived(
@@ -147,23 +150,25 @@
 </script>
 
 {#if filteredData.length}
-    <Line
-        data={regrData}
-        {...{
-            ...options,
-            fx: null,
-            fy: null,
-            stroke,
-            x: dependent === 'y' ? '__x' : '__y',
-            y: dependent === 'y' ? '__y' : '__x'
-        }} />
-    {#if confBandData.length}
-        <Area
-            data={confBandData}
-            {...dependent === 'y'
-                ? { x1: '__x', y1: '__y1', y2: '__y2' }
-                : { y1: '__x', x1: '__y1', x2: '__y2' }}
-            fill={stroke || 'currentColor'}
-            opacity={0.15} />
-    {/if}
+    <g class="regression-{independent} {className || ''}">
+        <Line
+            data={regrData}
+            {...{
+                ...options,
+                fx: null,
+                fy: null,
+                stroke,
+                x: dependent === 'y' ? '__x' : '__y',
+                y: dependent === 'y' ? '__y' : '__x'
+            }} />
+        {#if confBandData.length}
+            <Area
+                data={confBandData}
+                {...dependent === 'y'
+                    ? { x1: '__x', y1: '__y1', y2: '__y2' }
+                    : { y1: '__x', x1: '__y1', x2: '__y2' }}
+                fill={stroke || 'currentColor'}
+                opacity={0.15} />
+        {/if}
+    </g>
 {/if}

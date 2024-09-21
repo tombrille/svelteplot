@@ -148,7 +148,7 @@ Ordinal axis:
     }} />
 ```
 
-You can rotate tick labels:
+You can rotate tick labels using `tickRotate`:
 
 ```svelte live
 <script>
@@ -187,6 +187,50 @@ You can rotate tick labels:
 :::warning
 Keep in mind that rotated texts are a lot harder to read, so if possible, avoid rotated axis ticks (e.g. by flipping a column chart to bar chart) or at least limit rotation to 45 degrees.
 :::
+
+You can assign custom class to ticks based on the tick value by passing a `tickClass` function
+
+```svelte live
+<script>
+    import { Plot, AxisX } from '$lib';
+</script>
+
+<Plot
+    marginBottom={50}
+    x={{
+        domain: [-30, 60]
+    }}>
+    <AxisX
+        tickClass={(d) =>
+            d < 0 ? 'negative' : d > 0 ? 'positive' : ''} />
+</Plot>
+
+<style>
+    :global(.tick.negative text) {
+        fill: var(--svp-red) !important;
+    }
+    :global(.tick.positive text) {
+        fill: var(--svp-blue) !important;
+    }
+</style>
+```
+
+```svelte
+<Plot x={{ domain: [-30, 60] }}>
+    <AxisX
+        tickClass={(d) =>
+            d < 0 ? 'negative' : d > 0 ? 'positive' : ''} />
+</Plot>
+
+<style>
+    :global(.tick.negative text) {
+        fill: red !important;
+    }
+    :global(.tick.positive text) {
+        fill: blue !important;
+    }
+</style>
+```
 
 You can change the defaults for SveltePlot grids by defining the `svelteplot/defaults` context:
 

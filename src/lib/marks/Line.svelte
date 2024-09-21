@@ -57,7 +57,14 @@
     import { facetWrap } from '$lib/transforms/facet.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
 
-    let { data, curve = 'auto', tension = 0, text, ...options }: LineMarkProps = $props();
+    let {
+        data,
+        curve = 'auto',
+        tension = 0,
+        text,
+        class: className = null,
+        ...options
+    }: LineMarkProps = $props();
 
     let args = $derived(facetWrap(sort(recordizeXY({ data, ...options }))));
 
@@ -151,7 +158,7 @@
     {...args}>
     {#snippet children({ mark, usedScales })}
         {#if data.length > 0}
-            <g class="lines">
+            <g class="lines {className || ''}">
                 {#each groups as lineData, i}
                     {#if testFacet(lineData[0], mark.options) && lineData.length > 0}
                         {@const dx_ = resolveProp(args.dx, lineData[0], 0)}

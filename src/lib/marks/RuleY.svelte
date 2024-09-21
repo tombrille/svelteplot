@@ -27,7 +27,7 @@
         dy?: ConstantAccessor<number>;
     };
 
-    let { data, ...options }: RuleYMarkProps = $props();
+    let { data, class: className = null, ...options }: RuleYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -43,7 +43,7 @@
     channels={['y', 'x1', 'x2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="rule-y" length={args.data.length}>
+        <GroupMultiple class="rule-y {className || ''}" length={className ? 2 : args.data.length}>
             {#each args.data as datum}
                 {#if testFacet(datum, mark.options) && testFilter(datum, mark.options)}
                     {@const y_ = resolveChannel('y', datum, args)}

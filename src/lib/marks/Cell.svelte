@@ -26,7 +26,7 @@
         y?: ChannelAccessor;
     } & BaseRectMarkProps;
 
-    let { data, ...options }: CellProps = $props();
+    let { data, class: className = null, ...options }: CellProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -66,7 +66,7 @@
     ]}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="rect" data-fill={usedScales.fillOpacity}>
+        <g class="cell {className || ''}" data-fill={usedScales.fillOpacity}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const x_ = resolveChannel('x', datum, args)}

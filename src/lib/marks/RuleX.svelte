@@ -1,5 +1,6 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
+    import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
     import { recordizeX } from '$lib/transforms/recordize.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
@@ -26,7 +27,7 @@
         dy?: ConstantAccessor<number>;
     };
 
-    let { data, ...options }: RuleXMarkProps = $props();
+    let { data, class: className = null, ...options }: RuleXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -42,7 +43,7 @@
     channels={['x', 'y1', 'y2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="rule-x">
+        <GroupMultiple class="rule-x {className || ''}" length={className ? 2 : args.data.length}>
             {#each args.data as datum}
                 {#if testFacet(datum, mark.options) && testFilter(datum, mark.options)}
                     {@const x_ = resolveChannel('x', datum, args)}
@@ -81,7 +82,7 @@
                     {/if}
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
 

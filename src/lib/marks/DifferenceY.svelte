@@ -46,7 +46,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data, stroke, ...options }: DifferenceYMarkProps = $props();
+    let { data, stroke, class: className = null, ...options }: DifferenceYMarkProps = $props();
     let { x, x1, x2, y, y1, y2 } = $derived(options);
 
     let x1x2Differ = $derived((x1 == null || x2 == null) && x1 !== x2);
@@ -86,13 +86,10 @@
             : data
     );
 
-    // $inspect({ x1x2Differ, xExtent, x1Extent, x2Extent, maxMin, minMax, croppedData })
-    $inspect({ data, x, x1, x2 });
-
     const id = randomId();
 </script>
 
-<g class="positive difference">
+<g class="positive difference {className || ''}">
     <!-- pos clips goes from bottom of plot area to the line 2 -->
     <clipPath id="pos-clip-{id}">
         <Area
@@ -114,7 +111,7 @@
         y1={{ scale: null, value: 0 }}
         y2={coalesce(y1, x1x2Differ ? coalesce(y2, y) : 0)} />
 </g>
-<g class="negative difference">
+<g class="negative difference {className || ''}">
     <!-- neg clips goes from bottom of plot area to the line 1 -->
     <clipPath id="neg-clip-{id}">
         <Area

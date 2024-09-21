@@ -37,6 +37,7 @@
         tickFontSize?: ConstantAccessor<number>;
         tickPadding?: number;
         tickFormat?: string | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string>;
     };
 
     let {
@@ -50,6 +51,7 @@
         tickFontSize = DEFAULTS.tickFontSize,
         tickPadding = DEFAULTS.tickPadding,
         tickFormat,
+        tickClass,
         ...options
     }: AxisYProps = $props();
 
@@ -163,6 +165,7 @@
             {tickSize}
             {tickPadding}
             {tickFontSize}
+            {tickClass}
             {options}
             title={useTitle}
             {plot} />

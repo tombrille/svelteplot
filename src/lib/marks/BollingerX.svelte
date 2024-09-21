@@ -21,12 +21,12 @@
         k?: number;
     };
 
-    let { data, n = 20, k = 2, ...options }: BollingerXProps = $props();
+    let { data, class: className = null, n = 20, k = 2, ...options }: BollingerXProps = $props();
 
     let args = $derived(bollingerX(recordizeX({ data, ...options }), { n, k }));
 </script>
 
-<g class="bollinger">
+<g class="bollinger {className || ''}">
     <Line
         {...{
             x: '__avg',

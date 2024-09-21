@@ -20,7 +20,7 @@
         dragRotate: boolean;
     } & BaseMarkProps;
 
-    let { data, geoType, dragRotate, ...options }: GeoMarkProps = $props();
+    let { data, geoType, dragRotate, class: className = null, ...options }: GeoMarkProps = $props();
 
     let path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {
@@ -50,7 +50,10 @@
     channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r', 'fx', 'fy', 'fz']}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g aria-label="geo" class="geo{geoType ? ` geo-${geoType}` : ''}" style="fill:currentColor">
+        <g
+            aria-label="geo"
+            class="geo{geoType ? ` geo-${geoType}` : ''} {className || ''}"
+            style="fill:currentColor">
             {#each args.data as datum}
                 {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
                     {#snippet el(datum)}

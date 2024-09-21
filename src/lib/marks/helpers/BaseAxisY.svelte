@@ -41,6 +41,7 @@
         tickSize,
         tickPadding,
         tickFontSize,
+        tickClass,
         marginLeft,
         width,
         title,
@@ -142,8 +143,9 @@
 <g class="axis-y">
     {#each positionedTicks as tick, t}
         {#if testFilter(tick.value, options) && !tick.hidden}
+            {@const tickClass_ = resolveProp(tickClass, tick.value)}
             <g
-                class="tick"
+                class="tick {tickClass_ || ''}"
                 transform="translate({tick.dx +
                     marginLeft +
                     (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})">

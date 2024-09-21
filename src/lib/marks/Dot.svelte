@@ -34,7 +34,7 @@
         canvas: boolean;
     };
 
-    let { data, canvas = false, ...options }: DotProps = $props();
+    let { data, canvas = false, class: className = null, ...options }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -78,7 +78,7 @@
     ]}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="dots">
+        <g class="dots {className || ''}">
             {#if canvas}
                 <DotCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
             {:else}

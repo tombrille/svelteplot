@@ -32,7 +32,7 @@
         interval?: number | string;
     } & BaseRectMarkProps;
 
-    let { data, ...options }: RectMarkProps = $props();
+    let { data, class: className = null, ...options }: RectMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -63,7 +63,7 @@
     ]}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="rect" length={args.data.length}>
+        <GroupMultiple class="rect {className || ''}" length={className ? 2 : args.data.length}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const x1_ = resolveChannel('x1', datum, args)}

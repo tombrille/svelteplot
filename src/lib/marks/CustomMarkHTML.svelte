@@ -25,19 +25,32 @@
     import { projectX, projectY, projectXY } from '$lib/helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
 
-    let { data, x, y, children }: HTMLMarkProps = $props();
+    let { data, x, y, children, class: className = null }: HTMLMarkProps = $props();
 </script>
 
-{#each data as datum}
-    {@const x_ = resolveChannel('x', datum, { x, y })}
-    {@const y_ = resolveChannel('y', datum, { x, y })}
-    {#if isValid(x_) && isValid(y_)}
-        {@const [px, py] = projectXY(plot.scales, x_, y_)}
-        <div class="custom-mark-html" style:left="{px.toFixed(0)}px" style:top="{py.toFixed(0)}px">
-            {@render children({ datum, x: px, y: py })}
-        </div>
-    {/if}
-{/each}
+{#snippet customMarks()}
+    {#each data as datum}
+        {@const x_ = resolveChannel('x', datum, { x, y })}
+        {@const y_ = resolveChannel('y', datum, { x, y })}
+        {#if isValid(x_) && isValid(y_)}
+            {@const [px, py] = projectXY(plot.scales, x_, y_)}
+            <div
+                class="custom-mark-html"
+                style:left="{px.toFixed(0)}px"
+                style:top="{py.toFixed(0)}px">
+                {@render children({ datum, x: px, y: py })}
+            </div>
+        {/if}
+    {/each}
+{/snippet}
+
+{#if data.length > 1 || className}
+    <div class="g-custom-mark-html {className || ''}">
+        {@render customMarks()}
+    </div>
+{:else}
+    {@render customMarks()}
+{/if}
 
 <style>
     .custom-mark-html {

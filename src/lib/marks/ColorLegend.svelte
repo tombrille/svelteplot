@@ -8,7 +8,11 @@
 
     import type { PlotContext } from '../types.js';
 
-    let { width = 250, tickSpacing = 30 }: { width?: number } = $props();
+    let {
+        width = 250,
+        tickSpacing = 30,
+        class: className = null
+    }: { width?: number; tickSpacing?: number; class?: string } = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -26,7 +30,7 @@
 -->
 
 {#if plot.scales.color.manualActiveMarks > 0}
-    <div class="color-legend">
+    <div class="color-legend {className || ''}">
         {#if legendTitle}
             <div class="title">{legendTitle}</div>
         {/if}

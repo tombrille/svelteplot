@@ -11,7 +11,7 @@
             automatic?: boolean;
         };
 
-    let { automatic, ...options }: FrameMarkProps = $props();
+    let { automatic, class: className = null, ...options }: FrameMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -22,6 +22,7 @@
 
 <Mark type="frame" {automatic}>
     <rect
+        class={className}
         transform={dx || dy ? `translate(${dx},${dy})` : null}
         style={resolveScaledStyles({}, options, {}, plot, 'stroke')}
         x={plot.options.marginLeft}

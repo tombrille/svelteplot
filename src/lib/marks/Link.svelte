@@ -37,7 +37,14 @@
         children?: Snippet;
     } & MarkerOptions;
 
-    let { data, curve = 'auto', tension = 0, text, ...options }: LinkMarkProps = $props();
+    let {
+        data,
+        curve = 'auto',
+        tension = 0,
+        text,
+        class: className = null,
+        ...options
+    }: LinkMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -96,7 +103,7 @@
     channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="arrow" data-use-x={usedScales.x ? 1 : 0}>
+        <g class="arrow {className || ''}" data-use-x={usedScales.x ? 1 : 0}>
             {#each args.data as datum}
                 {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const x1 = resolveChannel('x1', datum, args)}

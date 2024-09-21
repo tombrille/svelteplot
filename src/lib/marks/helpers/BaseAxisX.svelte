@@ -24,6 +24,7 @@
         tickSize: number;
         tickPadding: number;
         tickFontSize: ConstantAccessor<number>;
+        tickClass: ConstantAccessor<string>;
         marginTop: number;
         height: number;
         title: string;
@@ -44,6 +45,7 @@
         tickSize,
         tickPadding,
         tickFontSize,
+        tickClass,
         marginTop,
         height,
         options,
@@ -130,6 +132,8 @@
         }
     });
 
+    $inspect(tickClass ? tickClass('ordinal') : null);
+
     $effect(() => {
         // clear margins on destroy
         return () => {
@@ -145,12 +149,13 @@
             {@const textLines = tick.text}
             {@const prevTextLines = t && positionedTicks[t - 1].text}
             {@const fontSize = resolveProp(tickFontSize, tick)}
+            {@const tickClass_ = resolveProp(tickClass, tick.value)}
             {@const estLabelWidth = max(textLines.map((t) => t.length)) * fontSize * 0.2}
             {@const moveDown =
                 (tickSize + tickPadding + (tickRotate !== 0 ? tickFontSize * 0.35 : 0)) *
                 (anchor === 'bottom' ? 1 : -1)}
             <g
-                class="tick"
+                class="tick {tickClass_ || ''}"
                 transform="translate({tick.x + tick.dx}, {tickY + tick.dy})"
                 text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}>
                 {#if tickSize}

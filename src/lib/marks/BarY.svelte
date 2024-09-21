@@ -35,7 +35,7 @@
         interval?: number | string;
     } & RectMarkProps;
 
-    let { data, stack, ...options }: BarYProps = $props();
+    let { data, class: className = null, stack, ...options }: BarYProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -72,6 +72,7 @@
                 {@const dy = resolveProp(args.dy, datum, 0)}
                 {#if isValid(x) && isValid(y1) && isValid(y2)}
                     <rect
+                        class={className}
                         style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
                         transform="translate({[x + inset + dx, miny + dy]})"
                         width={plot.scales.x.fn.bandwidth() - inset * 2}

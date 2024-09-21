@@ -33,12 +33,20 @@ Useful for showing SVG labels!
         strokeOpacity={0.7}
         dx={-3}
         dy={-5}
+        textClass={(d) =>
+            d.species === 'Chinstrap' ? 'text-italic' : ''}
         textAnchor="start"
-        lineAnchor="bottom" 
+        lineAnchor="bottom"
         fontWeight={(d) =>
             d.species === 'Gentoo' ? 'bold' : 'normal'}
         text={(d) => d.island} />
 </Plot>
+
+<style>
+    :global(.text-italic) {
+        font-style: italic;
+    }
+</style>
 ```
 
 ```svelte
@@ -59,9 +67,17 @@ The following channels are required:
 -   **text** - the text contents (a string, possibly with multiple lines)
 -   **x** - the horizontal position; bound to the _x_ scale
 -   **y** - the vertical position; bound to the _y_ scale
+-   **dx** - horizontal offset in px
+-   **dy** - vertical offset in px
+-   **textAnchor** - `start`, `end`, or `middle`
+-   **lineAnchor** - `top`, `bottom` or `middle`
+-   **frameAnchor** -
+-   **class** - CSS class name to applied to the `<g>` around all texts
+-   **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
 
-## Text options
+## Styling options
 
 -   **fontSize** - the font size in pixels
+-   **fontWeight** - the font size in pixels
 
 TODO: add example for multiline text

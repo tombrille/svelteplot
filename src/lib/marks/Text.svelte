@@ -1,5 +1,6 @@
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
     import type {
         PlotContext,
         DataRecord,
@@ -27,6 +28,10 @@
         text: ConstantAccessor<string>;
         title: ConstantAccessor<string>;
         /**
+         * if you want to apply class names to individual text elements
+         */
+        textClass: ConstantAccessor<string>;
+        /**
          * the line anchor for vertical position; top, bottom, or middle
          */
         lineAnchor?: ConstantAccessor<'bottom' | 'top' | 'middle'>;
@@ -42,7 +47,7 @@
         >;
     };
 
-    let { data, ...options }: TextMarkProps = $props();
+    let { data, class: className = null, ...options }: TextMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -84,7 +89,7 @@
     ]}
     {...args}>
     {#snippet children({ mark, usedScales })}
-        <g class="text">
+        <GroupMultiple class="text {className || null}" length={className ? 2 : args.data.length}>
             {#each args.data as datum}
                 {#if testFacet(datum, mark.options) && (args.filter == null || resolveProp(args.filter, datum))}
                     {@const _x = resolveChannel('x', datum, args)}
@@ -144,14 +149,25 @@
                                         ? 'bottom'
                                         : 'middle'
                             )}
+                            {@const textClassName = resolveProp(args.textClass, datum, null)}
 
                             {#if textLines.length > 1}
                                 {@const fontSize = resolveProp(args.fontSize, datum) || 12}
                                 <text
+                                    class={textClassName}
                                     dominant-baseline={LINE_ANCHOR[lineAnchor]}
                                     transform="translate({[
                                         Math.round(x + dx),
-                                        Math.round(y + dy - (lineAnchor === 'bottom' ? (textLines.length - 1) : lineAnchor === 'middle' ? (textLines.length - 1)*0.5 : 0) * fontSize)
+                                        Math.round(
+                                            y +
+                                                dy -
+                                                (lineAnchor === 'bottom'
+                                                    ? textLines.length - 1
+                                                    : lineAnchor === 'middle'
+                                                      ? (textLines.length - 1) * 0.5
+                                                      : 0) *
+                                                    fontSize
+                                        )
                                     ]})"
                                     >{#each textLines as line, l}<tspan
                                             x="0"
@@ -173,6 +189,7 @@
                                         >{/each}{#if title}<title>{title}</title>{/if}</text>
                             {:else}
                                 <text
+                                    class={textClassName}
                                     dominant-baseline={LINE_ANCHOR[lineAnchor]}
                                     transform="translate({[
                                         Math.round(x + dx),
@@ -198,7 +215,7 @@
                     {/if}
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
 

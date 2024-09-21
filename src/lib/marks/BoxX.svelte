@@ -4,7 +4,17 @@
     import { BarX, TickX, RuleY, Dot, groupY } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
 
-    let { data, x, y, rule, bar, tickMedian = true, tickMinMax = false, dot }: BoxProps = $props();
+    let {
+        data,
+        x,
+        y,
+        rule,
+        bar,
+        tickMedian = true,
+        tickMinMax = false,
+        dot,
+        class: className = null
+    }: BoxProps = $props();
 
     let { data: grouped } = $derived(
         groupY(
@@ -44,7 +54,7 @@
     );
 </script>
 
-<GroupMultiple class="box-x" length={grouped.length}>
+<GroupMultiple class="box-x {className || ''}" length={className ? 2 : grouped.length}>
     <RuleY data={boxData} y="__y" x1="min" x2="max" {...rule || {}} />
     <BarX data={boxData} y="__y" x1="p25" x2="p75" fill="#ddd" {...bar || {}} />
     {#if tickMedian}

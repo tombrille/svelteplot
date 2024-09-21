@@ -57,7 +57,7 @@
         children?: Snippet;
     };
 
-    let { data, ...options }: ArrowProps = $props();
+    let { data, class: className = null, ...options }: ArrowProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -134,6 +134,7 @@
                             sweep
                         )}
                         <g
+                            class={className}
                             data-y1={_y1}
                             data-y1_={y1}
                             transform={dx || dy ? `translate(${dx}, ${dy})` : null}

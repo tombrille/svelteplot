@@ -35,6 +35,7 @@
         children,
         testid,
         facet,
+        class: className = '',
         ...initialOpts
     }: Partial<PlotOptions> = $props();
 
@@ -417,7 +418,7 @@
 </script>
 
 <figure
-    class="svelteplot"
+    class="svelteplot {className}"
     bind:clientWidth={width}
     style:max-width={plotOptions.maxWidth}
     data-testid={testid}>

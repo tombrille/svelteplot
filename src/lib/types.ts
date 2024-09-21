@@ -371,6 +371,10 @@ export type PlotOptions = {
      * can be useful for automatic testing
      */
     testid: string;
+    /**
+     * in case you want to give your Plot element an extra CSS class
+     */
+    class: string;
 };
 
 export type PlotDefaults = {
@@ -643,6 +647,10 @@ export type BaseMarkProps = Partial<{
      */
     href: ConstantAccessor<string>;
     target: ConstantAccessor<'_self' | '_blank' | string>;
+    /**
+     * if you want to give your mark element an extra CSS class
+     */
+    class: string;
 }>;
 
 export type BaseRectMarkProps = {

@@ -52,6 +52,7 @@
         /** the curve */
         curve = 'linear',
         tension = 0,
+        class: className = null,
         ...options
     }: AreaProps = $props();
 
@@ -157,6 +158,7 @@
                     {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
                     {#snippet el(datum)}
                         <path
+                            class={className}
                             clip-path={options.clipPath}
                             d={areaPath(usedScales)(
                                 options.filter == null
