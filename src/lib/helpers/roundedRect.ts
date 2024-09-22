@@ -8,12 +8,13 @@ export function roundedRect(x: number, y: number, width: number, height: number,
   return `
     M ${x + (borderRadius.topLeft || 0)} ${y}
     L ${x + width - (borderRadius.topRight || 0)} ${y}
-    Q ${x + width} ${y} ${x + width} ${y + (borderRadius.topRight || 0)}
+    ${borderRadius.topRight ? `Q ${x + width} ${y} ${x + width} ${y + (borderRadius.topRight || 0)}` : ''}
     L ${x + width} ${y + height - (borderRadius.bottomRight || 0)}
-    Q ${x + width} ${y + height} ${x + width - (borderRadius.bottomRight || 0)} ${y + height}
+    ${borderRadius.bottomRight ? `Q ${x + width} ${y + height} ${x + width - (borderRadius.bottomRight || 0)} ${y + height}` : ''}
     L ${x + (borderRadius.bottomLeft || 0)} ${y + height}
-    Q ${x} ${y + height} ${x} ${y + height - (borderRadius.bottomLeft || 0)}
+    ${borderRadius.bottomLeft ? `Q ${x} ${y + height} ${x} ${y + height - (borderRadius.bottomLeft || 0)}` : ''}
     L ${x} ${y + (borderRadius.topLeft || 0)}
-    Q ${x} ${y} ${x + (borderRadius.topLeft || 0)} ${y}
+    ${borderRadius.topLeft ? `Q ${x} ${y} ${x + (borderRadius.topLeft || 0)} ${y}` : ''}
+    Z
   `
 }
