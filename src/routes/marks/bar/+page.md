@@ -128,27 +128,43 @@ You can create stacked bar charts by defining a fill channel which will be used 
 -   `x1`
 -   `x2`
 
+## Border radius
 
-You can set border radius 
+You can set a border radius for the bars either as number for all corners or as `{'{ topLeft, topRight, bottomRight, bottomLeft }'}` object to specify a border radius for individual corners:.
+
+:::caution
+Please be aware that by setting a border radius, you are slightly distorting the area of the bars.
+:::
 
 ```svelte live
 <script>
     import { Plot, BarX, RuleX } from '$lib';
+    import { Slider } from '$lib/ui';
+
+    let radius = $state(10);
 </script>
 
-<Plot
-    y={{ type: 'band' }}
-    x={{ grid: true }}
-    height={200}
-    marginTop={0}>
-    <BarX data={[1, 2, 3, 4, 5]} borderRadius={{topRight:10, bottomRight:10}} />
+<Slider
+    bind:value={radius}
+    min={0}
+    max={20}
+    label="radius" />
+<Plot x={{ axis: false }} y={{ type: 'band', axis: false }}>
+    <BarX
+        data={[1, 2, 3, 4, 5]}
+        borderRadius={{
+            topRight: radius,
+            bottomRight: radius
+        }} />
     <RuleX data={[0]} />
 </Plot>
 ```
 
 ```svelte
-<Plot y={{ type: 'band' }} x={{ grid: true }} height={120}>
-    <BarX data={[1, 2, 3, 4, 5]} />
+<Plot x={{ axis: false }} y={{ type: 'band', axis: false }}>
+    <BarX
+        data={[1, 2, 3, 4, 5]}
+        borderRadius={{ topRight: 10, bottomRight: 10 }} />
     <RuleX data={[0]} />
 </Plot>
 ```

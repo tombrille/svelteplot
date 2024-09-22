@@ -97,7 +97,6 @@ html {
     .admonition {
         border-left-width: 4px;
         padding: 0.75rem 1.5rem 0.75rem 1rem;
-        font-size: 0.95rem;
     }
 
     .admonition-heading {
@@ -106,7 +105,7 @@ html {
 
     .admonition-content {
         p {
-            font-size: small;
+            font-size: 0.9rem;
             line-height: 1.5rem !important;
             &:first-child {
                 margin-top: 0 !important;

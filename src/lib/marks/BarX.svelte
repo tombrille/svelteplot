@@ -23,12 +23,14 @@
         x2?: ChannelAccessor;
         y?: ChannelAccessor;
         stack?: StackOptions;
-        borderRadius?: number | {
-            topLeft?: number;
-            topRight?: number;
-            bottomRight?: number;
-            bottomLeft?: number;
-        }
+        borderRadius?:
+            | number
+            | {
+                  topLeft?: number;
+                  topRight?: number;
+                  bottomRight?: number;
+                  bottomLeft?: number;
+              };
     } & RectMarkProps;
 
     let { data, class: className = null, stack, ...options }: BarXProps = $props();
@@ -51,8 +53,7 @@
 <Mark
     type="barX"
     channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
@@ -75,7 +76,7 @@
                                 0,
                                 maxx - minx,
                                 plot.scales.y.fn.bandwidth() - inset * 2,
-                               options.borderRadius
+                                options.borderRadius
                             )}
                             class={className}
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
@@ -86,8 +87,7 @@
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }}
-                        />
+                            }} />
                     {/if}
                 {/if}
             {/each}

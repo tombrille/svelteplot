@@ -1,20 +1,42 @@
 /**
- * 
+ *
  */
-export function roundedRect(x: number, y: number, width: number, height: number, borderRadius: number | { topLeft?: number; topRight?: number; bottomLeft?: number; bottomRight?: number } = {topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0}) {
-  if (typeof borderRadius === 'number') {
-    borderRadius = {topLeft: borderRadius, topRight: borderRadius, bottomLeft: borderRadius, bottomRight: borderRadius};
-  }
-  return `
-    M ${x + (borderRadius.topLeft || 0)} ${y}
-    L ${x + width - (borderRadius.topRight || 0)} ${y}
-    ${borderRadius.topRight ? `Q ${x + width} ${y} ${x + width} ${y + (borderRadius.topRight || 0)}` : ''}
-    L ${x + width} ${y + height - (borderRadius.bottomRight || 0)}
-    ${borderRadius.bottomRight ? `Q ${x + width} ${y + height} ${x + width - (borderRadius.bottomRight || 0)} ${y + height}` : ''}
-    L ${x + (borderRadius.bottomLeft || 0)} ${y + height}
-    ${borderRadius.bottomLeft ? `Q ${x} ${y + height} ${x} ${y + height - (borderRadius.bottomLeft || 0)}` : ''}
-    L ${x} ${y + (borderRadius.topLeft || 0)}
-    ${borderRadius.topLeft ? `Q ${x} ${y} ${x + (borderRadius.topLeft || 0)} ${y}` : ''}
+export function roundedRect(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    borderRadius:
+        | number
+        | { topLeft?: number; topRight?: number; bottomLeft?: number; bottomRight?: number } = {
+        topLeft: 0,
+        topRight: 0,
+        bottomLeft: 0,
+        bottomRight: 0
+    }
+) {
+    const maxRadius = Math.min(width, height) / 2;
+    const [tl, tr, bl, br] = (
+        typeof borderRadius === 'number'
+            ? new Array(4).fill(borderRadius)
+            : [
+                  borderRadius?.topLeft || 0,
+                  borderRadius?.topRight || 0,
+                  borderRadius?.bottomLeft || 0,
+                  borderRadius?.bottomRight || 0
+              ]
+    ).map((r) => Math.min(r, maxRadius));
+
+    return `
+    M ${x + tl} ${y}
+    H ${x + width - tr}
+    ${tr ? `A ${tr} ${tr} 0 0 1 ${x + width} ${y + tr}` : ''}
+    V ${y + height - br}
+    ${br ? `A ${br} ${br} 0 0 1 ${x + width - br} ${y + height}` : ''}
+    H ${x + bl}
+    ${bl ? `A ${bl} ${bl} 0 0 1 ${x} ${y + height - bl}` : ''}
+    V ${y + tl}
+    ${tl ? `A ${tl} ${tl} 0 0 1 ${x + tl} ${y}` : ''}
     Z
-  `
+  `;
 }

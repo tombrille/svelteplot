@@ -34,12 +34,14 @@
          * implicit stacking
          */
         interval?: number | string;
-        borderRadius?: number | {
-            topLeft?: number;
-            topRight?: number;
-            bottomRight?: number;
-            bottomLeft?: number;
-        }
+        borderRadius?:
+            | number
+            | {
+                  topLeft?: number;
+                  topRight?: number;
+                  bottomRight?: number;
+                  bottomLeft?: number;
+              };
     } & RectMarkProps;
 
     let { data, class: className = null, stack, ...options }: BarYProps = $props();
@@ -62,8 +64,7 @@
 <Mark
     type="barY"
     channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}
->
+    {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-y" length={args.data.length}>
             {#each args.data as datum}
@@ -90,8 +91,7 @@
                         class={className}
                         style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
                         transform="translate({[x + inset + dx, miny + dy]})"
-                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
-                    />
+                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
                 {/if}
             {/each}
         </GroupMultiple>
