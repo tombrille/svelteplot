@@ -8,6 +8,7 @@
     import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { roundedRect } from '../helpers/roundedRect.js';
     import type { PlotContext, BaseMarkProps, RectMarkProps, ChannelAccessor } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
@@ -22,6 +23,12 @@
         x2?: ChannelAccessor;
         y?: ChannelAccessor;
         stack?: StackOptions;
+        borderRadius?: number | {
+            topLeft?: number;
+            topRight?: number;
+            bottomRight?: number;
+            bottomLeft?: number;
+        }
     } & RectMarkProps;
 
     let { data, class: className = null, stack, ...options }: BarXProps = $props();
@@ -44,7 +51,8 @@
 <Mark
     type="barX"
     channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}>
+    {...args}
+>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
@@ -61,19 +69,25 @@
                     {@const dx = resolveProp(args.dx, datum, 0)}
                     {@const dy = resolveProp(args.dy, datum, 0)}
                     {#if isValid(y) && isValid(x1) && isValid(x2)}
-                        <rect
+                        <path
+                            d={roundedRect(
+                                0,
+                                0,
+                                maxx - minx,
+                                plot.scales.y.fn.bandwidth() - inset * 2,
+                               options.borderRadius
+                            )}
                             class={className}
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
                             transform="translate({[minx + dx, y + inset + dy]})"
                             width={maxx - minx}
                             height={plot.scales.y.fn.bandwidth() - inset * 2}
-                            rx={resolveProp(args.rx, datum, null)}
-                            ry={resolveProp(args.ry, datum, null)}
                             use:addEventHandlers={{
                                 getPlotState,
                                 options: mark.options,
                                 datum
-                            }} />
+                            }}
+                        />
                     {/if}
                 {/if}
             {/each}

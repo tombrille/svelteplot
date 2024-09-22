@@ -127,3 +127,28 @@ You can create stacked bar charts by defining a fill channel which will be used 
 -   `y`
 -   `x1`
 -   `x2`
+
+
+You can set border radius 
+
+```svelte live
+<script>
+    import { Plot, BarX, RuleX } from '$lib';
+</script>
+
+<Plot
+    y={{ type: 'band' }}
+    x={{ grid: true }}
+    height={200}
+    marginTop={0}>
+    <BarX data={[1, 2, 3, 4, 5]} borderRadius={{topRight:10, bottomRight:10}} />
+    <RuleX data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot y={{ type: 'band' }} x={{ grid: true }} height={120}>
+    <BarX data={[1, 2, 3, 4, 5]} />
+    <RuleX data={[0]} />
+</Plot>
+```

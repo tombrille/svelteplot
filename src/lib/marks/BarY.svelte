@@ -8,6 +8,7 @@
     import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { roundedRect } from '../helpers/roundedRect.js';
     import type {
         PlotContext,
         BaseMarkProps,
@@ -33,6 +34,12 @@
          * implicit stacking
          */
         interval?: number | string;
+        borderRadius?: number | {
+            topLeft?: number;
+            topRight?: number;
+            bottomRight?: number;
+            bottomLeft?: number;
+        }
     } & RectMarkProps;
 
     let { data, class: className = null, stack, ...options }: BarYProps = $props();
@@ -55,7 +62,8 @@
 <Mark
     type="barY"
     channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
-    {...args}>
+    {...args}
+>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-y" length={args.data.length}>
             {#each args.data as datum}
@@ -71,15 +79,19 @@
                 {@const dx = resolveProp(args.dx, datum, 0)}
                 {@const dy = resolveProp(args.dy, datum, 0)}
                 {#if isValid(x) && isValid(y1) && isValid(y2)}
-                    <rect
+                    <path
+                        d={roundedRect(
+                            0,
+                            0,
+                            plot.scales.x.fn.bandwidth() - inset * 2,
+                            maxy - miny,
+                            options.borderRadius
+                        )}
                         class={className}
                         style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
                         transform="translate({[x + inset + dx, miny + dy]})"
-                        width={plot.scales.x.fn.bandwidth() - inset * 2}
-                        height={maxy - miny}
-                        rx={resolveProp(args.rx, datum, null)}
-                        ry={resolveProp(args.ry, datum, null)}
-                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
+                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }}
+                    />
                 {/if}
             {/each}
         </GroupMultiple>
