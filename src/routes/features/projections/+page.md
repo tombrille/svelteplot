@@ -61,7 +61,6 @@ title: Projections
         window.requestAnimationFrame(step);
     }
 
-    $inspect(earthquakes);
 </script>
 
 <Select

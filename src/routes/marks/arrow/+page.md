@@ -13,7 +13,6 @@ Metro dataset:
     let { metros } = $derived($page.data.data);
 
     let hl = $state(false);
-    $inspect({ hl });
 </script>
 
 <Plot

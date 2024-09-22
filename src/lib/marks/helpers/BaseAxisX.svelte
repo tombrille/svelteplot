@@ -132,8 +132,6 @@
         }
     });
 
-    $inspect(tickClass ? tickClass('ordinal') : null);
-
     $effect(() => {
         // clear margins on destroy
         return () => {

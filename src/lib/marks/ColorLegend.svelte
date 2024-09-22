@@ -20,7 +20,6 @@
     let legendTitle = $derived(plot.options.color.label);
     let scaleType = $derived(plot.scales.color.type);
     let tickFormat = $derived(plot.options.color?.tickFormat ?? ((t) => numeral(t).format('0.[0]')));
-        $inspect(plot.scales.color);
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>
 
@@ -34,7 +33,7 @@
 {#if plot.scales.color.manualActiveMarks > 0}
     <div class="color-legend {className || ''}">
         {#if legendTitle}
-            <div class="title">{legendTitle}</div>
+            <div class="title">{@html legendTitle}</div>
         {/if}
         {#if scaleType === 'ordinal' || scaleType === 'categorical'}
             {#each plot.scales.color.domain as value}
