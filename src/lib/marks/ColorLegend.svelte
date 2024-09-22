@@ -19,6 +19,8 @@
 
     let legendTitle = $derived(plot.options.color.label);
     let scaleType = $derived(plot.scales.color.type);
+    let tickFormat = $derived(plot.options.color?.tickFormat ?? ((t) => numeral(t).format('0.[0]')));
+        $inspect(plot.scales.color);
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>
 
@@ -105,6 +107,7 @@
                 <AxisX tickSize={18} dy={-17} />
             </Plot>
         {:else}
+    <!--- continuous -->
             {@const domain = plot.scales.color.domain}
             {@const ticks = new Set([
                 domain[0],
@@ -120,7 +123,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, tickSpacing }}>
+                x={{ domain, tickSpacing, tickFormat }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         {#each ticks as t}
