@@ -27,7 +27,7 @@
         footer: userFooter,
         overlay,
         underlay,
-        children,
+        children: parentChildren,
         testid,
         facet,
         projection,
@@ -135,13 +135,11 @@
         {#if options.frame}
             <Frame automatic />
         {/if}
-        {#if children}
-            {@render children({
-                options,
-                scales,
-                ...restProps
-            })}
-        {/if}
+        {@render parentChildren?.({
+            options,
+            scales,
+            ...restProps
+        })}
     {/snippet}
 </Plot>
 
