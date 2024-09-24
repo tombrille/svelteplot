@@ -494,7 +494,7 @@ export function projectXY(
     y: RawValue,
     useXScale = true,
     useYScale = true
-) {
+): [number, number] {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
         // efficiantly, in observable plot, all data points of a mark are projected using
@@ -509,7 +509,7 @@ export function projectXY(
         stream.point(x, y);
         return [x_, y_];
     }
-    return [useXScale ? projectX('x', scales, x) : x, useYScale ? projectY('y', scales, y) : y];
+    return [useXScale ? projectX('x', scales, x) : x as number, useYScale ? projectY('y', scales, y) : y as number];
 }
 
 export function projectX(channel: 'x' | 'x1' | 'x2', scales: PlotScales, value: RawValue) {

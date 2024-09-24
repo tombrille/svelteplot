@@ -105,8 +105,7 @@
         hasExplicitGridY,
         options,
         scales,
-        width,
-        height
+        ...restProps
     })}
         <!-- implicit axes -->
         {#if !hasProjection && !hasExplicitAxisX}
@@ -138,10 +137,9 @@
         {/if}
         {#if children}
             {@render children({
-                width,
-                height,
                 options,
-                scales
+                scales,
+                ...restProps
             })}
         {/if}
     {/snippet}

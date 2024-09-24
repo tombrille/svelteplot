@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { setContext } from 'svelte';
+    import { setContext, type Snippet } from 'svelte';
     import { resolveChannel } from '../helpers/resolve.js';
     import type { BaseMarkProps, DataRecord, PlotScale, RawValue } from '../types.js';
     import { identity } from '$lib/helpers';
@@ -15,7 +15,8 @@
         topEmpty,
         bottomEmpty,
         leftEmpty,
-        rightEmpty
+        rightEmpty,
+        children
     }: {
         fx: RawValue;
         fy: RawValue;
@@ -28,6 +29,7 @@
         bottomEmpty: boolean;
         leftEmpty: boolean;
         rightEmpty: boolean;
+        children?: Snippet;
     } = $props();
 
     setContext('svelteplot/facet', {
@@ -59,4 +61,4 @@
     });
 </script>
 
-<slot />
+{@render children?.()}

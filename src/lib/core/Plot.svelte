@@ -17,12 +17,13 @@
         ScaleName,
         PlotScale,
         PlotDefaults,
-        PlotState
+        PlotState,
+        RawValue
     } from './types.js';
     import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '../helpers/mergeDeep.js';
-    import { computeScales } from '../helpers/scales.js';
+    import { computeScales, projectXY } from '../helpers/scales.js';
     import { CHANNEL_SCALE } from '../constants.js';
 
     let width = $state(500);
@@ -415,6 +416,11 @@
             fz: { type: 'point', columns: 3 }
         };
     }
+
+    const mapXY = $derived((x: RawValue, y: RawValue) => {
+        const [px,py] = projectXY(plotState.scales, x, y);
+        return { x: px, y: py };
+    });
 </script>
 
 <figure
@@ -442,6 +448,7 @@
                         height,
                         options: plotOptions,
                         scales: plotState.scales,
+                        mapXY,
                         hasProjection,
                         hasExplicitAxisX,
                         hasExplicitAxisY,
