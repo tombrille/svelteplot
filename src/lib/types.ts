@@ -402,6 +402,10 @@ export type PlotDefaults = {
      */
     frame: boolean;
     grid: boolean;
+    /**
+     * initial width of the plot before measuring the actual width
+     */
+    initialWidth: number
 };
 
 export type GenericMarkOptions = Record<string, any>;

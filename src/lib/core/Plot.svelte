@@ -26,8 +26,6 @@
     import { computeScales, projectXY } from '../helpers/scales.js';
     import { CHANNEL_SCALE } from '../constants.js';
 
-    let width = $state(500);
-
     let {
         header,
         footer,
@@ -70,6 +68,7 @@
         xTickSpacing: 80,
         yTickSpacing: 50,
         height: 350,
+        initialWidth: 500,
         inset: 0,
         colorScheme: 'turbo',
         dotRadius: 3,
@@ -80,6 +79,8 @@
         bandScaleHeight: 30,
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
+
+    let width = $state(DEFAULTS.initialWidth);
 
     setContext('svelteplot/_defaults', DEFAULTS);
 
