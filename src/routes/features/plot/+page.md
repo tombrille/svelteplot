@@ -175,3 +175,71 @@ to add events and scoped styles.
     }
 </style>
 ```
+
+## Core plot
+
+SveltePlot provides a lot of convenience features with the unfortunate side-effect of blowing up the bundle size a bit. In situations where this is a concern, you may use a more light-weight version of the Plot component. Note that you need to explicitely include all marks that you want, such as grids or axis marks.
+
+```svelte live
+<script>
+    import Plot from '$lib/core/Plot.svelte';
+    import { Line } from '$lib';
+    import { page } from '$app/stores';
+    const { aapl } = $derived($page.data.data);
+
+    // custom x and y scale
+    function scaleX({ domain, plotWidth, plotOptions }) {
+        const { marginLeft, marginRight } = plotOptions;
+        const range = [marginLeft, plotWidth - marginLeft - marginRight];
+        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]) + range[0];
+        fn.range = () => range;
+        return fn;
+    } 
+    function scaleY({ domain, plotHeight, plotOptions }) {
+        const { marginTop, marginBottom } = plotOptions;
+        const range = [plotHeight - marginTop - marginBottom, marginBottom];
+        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) *  (range[1] - range[0]) + range[0];
+        fn.range = () => range;
+        return fn;
+    } 
+</script>
+
+<Plot  
+    x={{ scale: scaleX  }}
+    y={{ scale: scaleY }}>
+    <Line data={aapl} 
+        x={d => new Date(d.Date)}  
+        y="Adj Close" />
+</Plot>
+```
+
+
+```svelte
+<script>
+    import Plot from '@gka/svelteplot/core/Plot.svelte';
+    import { Line } from '@gka/svelteplot';
+
+    function scaleX({ domain, plotWidth, plotOptions }) {
+        const { marginLeft, marginRight } = plotOptions;
+        const range = [marginLeft, plotWidth - marginLeft - marginRight];
+        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]) + range[0];
+        fn.range = () => range;
+        return fn;
+    } 
+    function scaleY({ domain, plotHeight, plotOptions }) {
+        const { marginTop, marginBottom } = plotOptions;
+        const range = [plotHeight - marginTop - marginBottom, marginBottom];
+        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) *  (range[1] - range[0]) + range[0];
+        fn.range = () => range;
+        return fn;
+    } 
+</script>
+
+<Plot  
+    x={{ scale: scaleX  }}
+    y={{ scale: scaleY }}>
+    <Line data={aapl} 
+        x={d => new Date(d.Date)} 
+        y="Adj Close" />
+</Plot>
+```

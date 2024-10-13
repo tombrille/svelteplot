@@ -216,11 +216,11 @@ export function createScale<T extends ScaleOptions>(
     plotHasFilledDotMarks: boolean,
     plotDefaults: PlotDefaults
 ) {
-    if (!scaleOptions.scale) {
+    if (!plotOptions.implicitScales && !scaleOptions.scale) {
         // no scale defined, return a dummy scale
         const fn = name === 'color' ? () => 'currentColor' : () => 0;
         fn.range = name === 'color' ? () => ['currentColor'] : () => [0];
-        return { type: 'linear', domain: [0], range: [0], fn, skip: new Map() };
+        return { type: 'linear', domain: [0], range: [0], fn, skip: new Map(), isDummy: true };
     }
     // gather all marks that use channels which support this scale
     const dataValues = new Set<RawValue>();
@@ -252,6 +252,9 @@ export function createScale<T extends ScaleOptions>(
                 // by passing `{ scale: null }` as prop
                 const useScale =
                     channelOptions.scale === name &&
+                    // only use scale if implicit scales are enabled or use has explicitly
+                    // defined a scale
+                    (plotOptions.implicitScales || scaleOptions.scale) &&
                     // type number means, someone is defining a channel as constant, e.g.
                     // <Dot r={10} /> in which case we don't want to pass it through a scale
                     // typeof channelOptions.value !== 'number' &&
@@ -467,7 +470,7 @@ export function getUsedScales(
             const skipMarks = plot.scales[scale].skip.get(channel) || new Set();
             return [
                 channel,
-                !skipMarks.has(mark.id) && toChannelOption(channel, options[channel]).scale !== null
+                !skipMarks.has(mark.id) && toChannelOption(channel, options[channel]).scale !== null && !plot.scales[scale].isDummy
             ];
         })
     ) as { [k in ScaledChannelName]: boolean };

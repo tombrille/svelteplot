@@ -96,6 +96,7 @@
         : null}
     footer={userFooter || restOptions?.caption ? footer : null}
     projection={projectionOpts}
+    implicitScales
     {...scales}>
     {#snippet children({
         hasProjection,
