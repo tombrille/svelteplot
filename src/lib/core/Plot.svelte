@@ -19,7 +19,7 @@
         PlotDefaults,
         PlotState,
         RawValue
-    } from './types.js';
+    } from '../types.js';
     import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '../helpers/mergeDeep.js';
@@ -32,6 +32,7 @@
         overlay,
         underlay,
         children,
+        facetAxes,
         testid,
         facet,
         class: className = '',
@@ -442,6 +443,7 @@
             fill="currentColor"
             viewBox="0 0 {width} {height}"
             font-family="system-ui, sans-serif">
+            {@render facetAxes?.()}
             <FacetGrid marks={explicitMarks}>
                 {#if children}
                     {@render children({

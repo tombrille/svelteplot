@@ -1,15 +1,13 @@
 <!-- 
     @component
-    The FacetGrid component renders the facet axes and repeats the
+    The FacetGrid component repeats the
     marks for each facet domain value 
 -->
 <script lang="ts">
     import { getContext, setContext, type Snippet } from 'svelte';
-    import type { PlotContext, GenericMarkOptions, Mark, RawValue } from '../types.js';
+    import type { PlotContext, GenericMarkOptions, Mark } from '../types.js';
     import { scaleBand } from 'd3-scale';
     import Facet from './Facet.svelte';
-    import BaseAxisX from '../marks/helpers/BaseAxisX.svelte';
-    import BaseAxisY from '../marks/helpers/BaseAxisY.svelte';
     import { getEmptyFacets } from '../helpers/facets.js';
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
@@ -51,40 +49,6 @@
     });
 </script>
 
-<!-- facet grid -->
-{#if fxValues.length > 1 && plot.options.fx.axis}
-    <g transform="translate({plot.options.marginLeft}, 0)">
-        <BaseAxisX
-            scaleFn={facetXScale}
-            scaleType="band"
-            ticks={fxValues}
-            tickFormat={(d) => d}
-            tickSize={0}
-            tickPadding={5}
-            anchor={plot.options.fx.axis}
-            options={{}}
-            height={plot.plotHeight}
-            marginTop={plot.options.marginTop}
-            {plot} />
-    </g>
-{/if}
-{#if fyValues.length > 1 && plot.options.fy.axis}
-    <g transform="translate(0, {plot.options.marginTop})">
-        <BaseAxisY
-            scaleFn={facetYScale}
-            scaleType="band"
-            ticks={fyValues}
-            tickFormat={(d) => d}
-            tickSize={0}
-            tickPadding={5}
-            anchor={plot.options.fy.axis}
-            lineAnchor="center"
-            options={{ dx: 0, dy: 0 }}
-            width={plot.plotWidth}
-            marginLeft={plot.options.marginLeft}
-            {plot} />
-    </g>
-{/if}
 
 {#each fxValues as facetX, i}
     {#each fyValues as facetY, j}

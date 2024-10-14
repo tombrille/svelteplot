@@ -366,6 +366,7 @@ export type PlotOptions = {
      * in front of the SVG body of your plot, e.g. for HTML tooltips.
      */
     overlay: Snippet;
+    facetAxes: Snippet;
     /**
      * if you set testid, the plot container will get a data-testid attribute which
      * can be useful for automatic testing

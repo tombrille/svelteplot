@@ -19,13 +19,16 @@ import { constant, isObject, isValid } from './index.js';
 
 const identity = constant({ stream: (stream) => stream });
 
-const reflectY = constant(
-    geoTransform({
+const reflectY = constant({
+    ...geoTransform({
         point(x, y) {
             this.stream.point(x, -y);
         }
-    })
-);
+    }),
+    invert(x, y) {
+        return [x, -y];
+    }
+});
 
 const pi = Math.PI;
 const tau = 2 * pi;

@@ -16,6 +16,7 @@
     import GridX from './marks/GridX.svelte';
     import GridY from './marks/GridY.svelte';
     import SymbolLegend from './marks/SymbolLegend.svelte';
+    import FacetAxes from './core/FacetAxes.svelte';
 
     // automatic scales
     import { autoScale, autoScaleColor } from './helpers/autoScales.js';
@@ -141,6 +142,9 @@
             scales,
             ...restProps
         })}
+    {/snippet}
+    {#snippet facetAxes()}
+        <FacetAxes />
     {/snippet}
 </Plot>
 
