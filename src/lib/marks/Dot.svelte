@@ -97,7 +97,7 @@
                             )}
                             {#if isValid(x) && isValid(y)}
                                 {@const dx = +resolveProp(args.dx, datum, 0)}
-                                {@const dy = +resolveProp(args.dx, datum, 0)}
+                                {@const dy = +resolveProp(args.dy, datum, 0)}
                                 {@const r = usedScales.r ? +plot.scales.r.fn(_r) : +_r}
                                 {@const size = r * r * Math.PI}
                                 {@const symbol_ = resolveChannel('symbol', datum, {
