@@ -11,9 +11,6 @@
         DefaultOptions
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-    import dayjs from 'dayjs';
-    import advancedFormat from 'dayjs/plugin/advancedFormat';
-    dayjs.extend(advancedFormat);
     import { derived } from 'svelte/store';
     import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
@@ -88,12 +85,7 @@
             : plot.scales.x.type === 'band' || plot.scales.x.type === 'point'
               ? (d) => d
               : plot.scales.x.type === 'time'
-                ? typeof tickFmt === 'string' && tickFmt !== 'auto'
-                    ? (d: Date) =>
-                          dayjs(d)
-                              .format(tickFmt as string)
-                              .split('\n')
-                    : autoTimeFormat(plot.scales.x, plot.plotWidth)
+                ? autoTimeFormat(plot.scales.x, plot.plotWidth)
                 : typeof tickFmt === 'string'
                   ? (d: number) =>
                         numeral(plot.options.x.percent ? d * 100 : d).format(

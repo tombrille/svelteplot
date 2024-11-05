@@ -12,7 +12,6 @@
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-    import dayjs from 'dayjs';
     import numeral from 'numeral';
     import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
@@ -85,12 +84,7 @@
             : plot.scales.y.type === 'band' || plot.scales.y.type === 'point'
               ? (d) => d
               : plot.scales.y.type === 'time'
-                ? typeof tickFmt === 'string' && tickFmt !== 'auto'
-                    ? (d: Date) =>
-                          dayjs(d)
-                              .format(tickFmt as string)
-                              .split('\n')
-                    : autoTimeFormat(plot.scales.y, plot.plotHeight)
+                ? autoTimeFormat(plot.scales.y, plot.plotHeight)
                 : typeof tickFmt === 'string'
                   ? (d: number) =>
                         numeral(plot.options.y.percent ? d * 100 : d).format(

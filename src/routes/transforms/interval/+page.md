@@ -10,7 +10,13 @@ The interval transform is often used for time-series bar charts. For example, co
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import dayjs from 'dayjs';
+
+    const MONTH_YEAR = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        year: 'numeric'
+    });
+    const tickFormat = (date: Date) =>
+        MONTH_YEAR.format(date).split(' ');
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
@@ -18,10 +24,7 @@ The interval transform is often used for time-series bar charts. For example, co
 
 <Plot
     marginLeft={40}
-    x={{
-        tickFormat: (d) =>
-            dayjs(d).format('D\nMMM').split('\n')
-    }}
+    x={{ tickFormat }}
     grid>
     <BarY data={aapl.slice(-40)} x="Date" y="Volume" />
     <RuleY data={[0]} />
@@ -34,7 +37,6 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 <script lang="ts">
     import { Plot, RectY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import dayjs from 'dayjs';
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
@@ -69,18 +71,21 @@ The meaning of the interval mark option depends on the associated mark, such as 
 <script lang="ts">
     import { Plot, BarY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
-    import dayjs from 'dayjs';
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
+
+    const MONTH_DAY = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        date: 'numeric'
+    });
+    const tickFormat = (date: Date) =>
+        MONTH_DAY.format(date).split(' ');
 </script>
 
 <Plot
     marginLeft={40}
-    x={{
-        tickFormat: (d) =>
-            dayjs(d).format('D\nMMM').split('\n')
-    }}
+    x={{ tickFormat }}
     grid>
     <BarY
         data={aapl.slice(-40)}
@@ -96,8 +101,7 @@ The meaning of the interval mark option depends on the associated mark, such as 
     marginLeft={40}
     x={{
         /* force date ticks for band scale */
-        tickFormat: (d) =>
-            dayjs(d).format('D\nMMM').split('\n')
+        tickFormat
     }}
     grid>
     <BarY
