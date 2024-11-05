@@ -37,6 +37,7 @@
             "import": "./dist/marks/*.svelte"
         }
     },
+    "main": "./dist/index.js",
     "files": [
         "dist",
         "!dist/**/*.test.*",
