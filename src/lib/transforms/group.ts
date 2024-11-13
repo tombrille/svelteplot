@@ -161,12 +161,13 @@ function groupXYZ(
 
     groups.forEach(([groupKey, items]) => {
         const baseRecord = dim === 'z' ? {} : { [propName]: groupKey };
-        // copy properties from first item of each group
-        options.copy?.forEach((prop) => {
-            baseRecord[prop] = items[0][prop];
-        });
         const newGroupChannels = groupFacetsAndZ(items, channels, (items, itemGroupProps) => {
-            const item = { ...baseRecord, ...itemGroupProps };
+            const copiedProps = {};
+            // copy properties from first item of each group
+            options.copy?.forEach((prop) => {
+                copiedProps[prop] = items[0][prop];
+            });
+            const item = { ...baseRecord, ...copiedProps, ...itemGroupProps };
             reduceOutputs(item, items, options, outputs, channels, newChannels);
             newData.push(item);
         });
