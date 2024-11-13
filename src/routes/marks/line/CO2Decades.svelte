@@ -2,7 +2,6 @@
     import { Plot, Line, Pointer, Text, RectY, RuleY, Dot, selectLast } from '$lib/index.js';
     import { groups, range } from 'd3-array';
     import { page } from '$app/stores';
-    import dayjs from 'dayjs';
 
     let { co2 } = $derived($page.data.data);
 
@@ -14,6 +13,8 @@
             return { ...d, decadeBaseYear, yearInDecade };
         })
     );
+
+    const dateFormat = (date) => date.toLocaleString('default', { month: 'short', year: 'numeric' });
 </script>
 
 <Plot
@@ -85,7 +86,7 @@
                 {data}
                 x="yearInDecade"
                 y="average"
-                text={(d) => `${dayjs(d.date).format("MMM 'YY")}\n${d.average.toFixed(0)}`}
+                text={(d) => `${dateFormat(d.date)}\n${d.average.toFixed(0)}`}
                 lineAnchor="bottom"
                 fontWeight={(d) => (d.__tspanIndex ? 'bold' : 'normal')}
                 dy="-20"

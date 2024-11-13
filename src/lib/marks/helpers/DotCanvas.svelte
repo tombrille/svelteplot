@@ -32,9 +32,19 @@
         return d3Symbol(maybeSymbol(symbolType), size).context(context)();
     }
 
+    function scaleHash(scale) {
+        return { domain: scale.domain, type: scale.type, range: scale.range };
+    }
+
     let _plotSize = $state([plot.width, plot.height]);
     let _usedScales = $state(usedScales);
     let _markOptions = $state(mark.options);
+    const xScale = $derived(scaleHash(plot.scales.x));
+    const yScale = $derived(scaleHash(plot.scales.y));
+    const rScale = $derived(scaleHash(plot.scales.r));
+    let _xScale = $state(xScale);
+    let _yScale = $state(yScale);
+    let _rScale = $state(rScale);
 
     const filteredData = $derived(
         data.filter((datum) => testFilter(datum, _markOptions) && testFacet(datum, _markOptions))
@@ -44,25 +54,31 @@
 
     $effect(() => {
         // update _usedScales only if changed
-        if (!isEqual(usedScales, _usedScales)) {
-            _usedScales = usedScales;
-        }
-        if (!isEqual(mark.options, _markOptions)) {
-            _markOptions = mark.options;
-        }
+        if (!isEqual(usedScales, _usedScales)) _usedScales = usedScales;
+        if (!isEqual(mark.options, _markOptions)) _markOptions = mark.options;
+
         const plotSize = [plot.width, plot.height];
-        if (!isEqual(plotSize, _plotSize)) {
-            _plotSize = plotSize;
-        }
-        if (_markOptions.filter ? !isEqual(filteredData, _filteredData) : filteredData.length !== _filteredData.length) {
+        if (!isEqual(plotSize, _plotSize)) _plotSize = plotSize;
+
+        if (
+            _markOptions.filter
+                ? !isEqual(filteredData, _filteredData)
+                : filteredData.length !== _filteredData.length
+        ) {
             _filteredData = filteredData;
         }
+        if (!isEqual(xScale, _xScale)) _xScale = xScale;
+        if (!isEqual(yScale, _yScale)) _yScale = yScale;
+        if (!isEqual(rScale, _rScale)) _rScale = rScale;
     });
 
     $effect(() => {
         // track plot size, since we're untracking the scales
         _plotSize;
         _markOptions;
+        _xScale;
+        _yScale;
+        _rScale;
         const plotScales = untrack(() => plot.scales);
         const context = canvas.getContext('2d');
         if (context === null) return;
