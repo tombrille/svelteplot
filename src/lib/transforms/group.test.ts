@@ -81,6 +81,15 @@ describe('groupX', () => {
             __y1_origField: 'Sum ( value )'
         });
     });
+
+    it('copies attributes into groups', () => {
+        const { data, ...channels } = groupX({ data: inputData, x: 'year' }, { copy: ['facet'] });
+        expect(data).toHaveLength(3);
+        expect(data[0].facet).toBe('A');
+        expect(data[1].facet).toBe('B');
+        expect(data[2].facet).toBe('A');
+        expect(channels).toStrictEqual({ x: '__x' });
+    })
 });
 
 describe('groupY', () => {
