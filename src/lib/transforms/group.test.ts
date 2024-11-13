@@ -18,29 +18,38 @@ describe('groupX', () => {
     it('groups by x channel', () => {
         const { data, ...channels } = groupX({ data: inputData, x: 'year' });
         expect(data).toHaveLength(3);
-        expect(data[0].__x).toBe(2000);
-        expect(data[1].__x).toBe(2001);
-        expect(data[2].__x).toBe(2002);
-        expect(channels).toStrictEqual({ x: '__x' });
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(channels).toStrictEqual({ x: 'year' });
+    });
+
+    it('groups by x channel with prop name', () => {
+        const { data, ...channels } = groupX({ data: inputData, x: 'year' }, { xPropName: 'YR'});
+        expect(data).toHaveLength(3);
+        expect(data[0].YR).toBe(2000);
+        expect(data[1].YR).toBe(2001);
+        expect(data[2].YR).toBe(2002);
+        expect(channels).toStrictEqual({ x: 'YR' });
     });
 
     it('groups by x channel and facets', () => {
         const { data, ...channels } = groupX({ data: inputData, x: 'year', fx: 'facet' });
         expect(data).toHaveLength(4);
-        expect(data[0].__x).toBe(2000);
-        expect(data[1].__x).toBe(2001);
-        expect(data[2].__x).toBe(2002);
-        expect(data[3].__x).toBe(2002);
-        expect(channels).toStrictEqual({ x: '__x', fx: 'facet' });
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(data[3].year).toBe(2002);
+        expect(channels).toStrictEqual({ x: 'year', fx: 'facet' });
     });
 
     it('groups by x channel', () => {
         const { data, ...channels } = groupX({ data: inputData, x: 'year' });
         expect(data).toHaveLength(3);
-        expect(data[0].__x).toBe(2000);
-        expect(data[1].__x).toBe(2001);
-        expect(data[2].__x).toBe(2002);
-        expect(channels).toStrictEqual({ x: '__x' });
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(channels).toStrictEqual({ x: 'year' });
     });
 
     it('throws error if there is no x channel', () => {
@@ -64,9 +73,9 @@ describe('groupX', () => {
             { y: 'count', y1: 'sum' }
         );
         expect(data).toHaveLength(3);
-        expect(data[0].__x).toBe(2000);
-        expect(data[1].__x).toBe(2001);
-        expect(data[2].__x).toBe(2002);
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
         expect(data[0].__y).toBe(2);
         expect(data[1].__y).toBe(2);
         expect(data[2].__y).toBe(3);
@@ -74,7 +83,7 @@ describe('groupX', () => {
         expect(data[1].__y1).toBe(40);
         expect(data[2].__y1).toBe(60);
         expect(channels).toStrictEqual({
-            x: '__x',
+            x: 'year',
             y: '__y',
             y1: '__y1',
             __y_origField: 'Frequency',
@@ -88,7 +97,7 @@ describe('groupX', () => {
         expect(data[0].facet).toBe('A');
         expect(data[1].facet).toBe('B');
         expect(data[2].facet).toBe('A');
-        expect(channels).toStrictEqual({ x: '__x' });
+        expect(channels).toStrictEqual({ x: 'year' });
     })
 });
 
@@ -96,10 +105,10 @@ describe('groupY', () => {
     it('groups by y channel', () => {
         const { data, ...channels } = groupY({ data: inputData, y: 'year' });
         expect(data).toHaveLength(3);
-        expect(data[0].__y).toBe(2000);
-        expect(data[1].__y).toBe(2001);
-        expect(data[2].__y).toBe(2002);
-        expect(channels).toStrictEqual({ y: '__y' });
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
+        expect(channels).toStrictEqual({ y: 'year' });
     });
 
     it('throws error if there is no y channel', () => {
@@ -114,9 +123,9 @@ describe('groupY', () => {
             { x: 'count', x1: 'sum' }
         );
         expect(data).toHaveLength(3);
-        expect(data[0].__y).toBe(2000);
-        expect(data[1].__y).toBe(2001);
-        expect(data[2].__y).toBe(2002);
+        expect(data[0].year).toBe(2000);
+        expect(data[1].year).toBe(2001);
+        expect(data[2].year).toBe(2002);
         expect(data[0].__x).toBe(2);
         expect(data[1].__x).toBe(2);
         expect(data[2].__x).toBe(3);
@@ -124,7 +133,7 @@ describe('groupY', () => {
         expect(data[1].__x1).toBe(40);
         expect(data[2].__x1).toBe(60);
         expect(channels).toStrictEqual({
-            y: '__y',
+            y: 'year',
             x: '__x',
             x1: '__x1',
             __x_origField: 'Frequency',

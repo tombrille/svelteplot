@@ -37,6 +37,7 @@ type GroupXOptions = GroupBaseOptions &
         y: ReducerOption;
         y1: ReducerOption;
         y2: ReducerOption;
+        xPropName: string;
     }>;
 
 type GroupYOptions = GroupBaseOptions &
@@ -45,6 +46,7 @@ type GroupYOptions = GroupBaseOptions &
         x: ReducerOption;
         x1: ReducerOption;
         x2: ReducerOption;
+        yPropName: string;
     }>;
 
 type GroupZOptions = GroupXOptions | GroupYOptions;
@@ -124,6 +126,8 @@ function groupXYZ(
     if ((dim === 'z' ? channels.z || channels.fill || channels.stroke : channels[dim]) == null)
         throw new Error('you must provide a channel to group on ' + dim);
 
+
+    const propName = options[`${dim}PropName`] != null ? options[`${dim}PropName`] : typeof channels[dim] === 'string' && !options.interval ? channels[dim] : `__${dim}`;
     const interval = options.interval ? maybeInterval(options.interval) : null;
 
     // group by x or y
@@ -139,7 +143,7 @@ function groupXYZ(
               );
     const newData: DataRecord[] = [];
     let newChannels = omit({ ...channels }, 'filter');
-    if (dim !== 'z') newChannels[dim] = `__${dim}`;
+    if (dim !== 'z') newChannels[dim] = propName;
 
     const outputs = [
         ...(dim === 'x'
@@ -156,7 +160,7 @@ function groupXYZ(
     ];
 
     groups.forEach(([groupKey, items]) => {
-        const baseRecord = dim === 'z' ? {} : { [`__${dim}`]: groupKey };
+        const baseRecord = dim === 'z' ? {} : { [propName]: groupKey };
         // copy properties from first item of each group
         options.copy?.forEach((prop) => {
             baseRecord[prop] = items[0][prop];

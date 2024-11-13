@@ -1,6 +1,6 @@
 <script lang="ts">
     import Rect from './Rect.svelte';
-    import { renameChannels, intervalX, stackY, recordizeY } from '$lib/index.js';
+    import { intervalX, stackY, recordizeY } from '$lib/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type {
         DataRecord,

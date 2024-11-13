@@ -4,6 +4,9 @@ import type { ScaledChannelName, TransformArg } from '$lib/types.js';
 type RenameChannelsOptions = Partial<Record<ScaledChannelName, ScaledChannelName>>;
 type ReplaceChannelsOptions = Partial<Record<ScaledChannelName, ScaledChannelName[]>>;
 
+/**
+ * renames a channel without modifying the data
+ */
 export function renameChannels<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,
     options: RenameChannelsOptions
@@ -16,6 +19,30 @@ export function renameChannels<T>(
         }
     }
     return { data, ...newChannels };
+}
+
+/**
+ * renames a channel and copy the data
+ */
+export function renameChannelsAndData<T>(
+    { data, ...channels }: TransformArg<T, DataRecord>,
+    options: RenameChannelsOptions
+): TransformArg<T, DataRecord> {
+    const newData = [];
+    for (const datum of data) {
+        const newDatum = { ...datum };
+        for (const [from, to] of Object.entries(options) as [
+            ScaledChannelName,
+            ScaledChannelName
+        ][]) {
+            if (channels[from] !== undefined) {
+                newDatum[to] = newDatum[from];
+                delete newDatum[from];
+            }
+        }
+        newData.push(newDatum);
+    }
+    return renameChannels({ data: newData, ...channels }, options);
 }
 
 export function replaceChannels<T>(
