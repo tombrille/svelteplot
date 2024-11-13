@@ -16,6 +16,10 @@ type GroupBaseOptions = {
     interval?: number | string;
     cumulative?: false | 1 | -1;
     reverse?: boolean;
+    /**
+     * copy properties from the first element of each group
+     */
+    copy?: string[];
 };
 
 type AdditionalOutputChannels = Partial<{
@@ -72,6 +76,10 @@ export function group(
         xGroups.forEach(([yGroupKey, items]) => {
             // console.log(groupKey, items)
             const baseRecord = { [xChannel]: xGroupKey, [yChannel]: yGroupKey }; // dim === 'z' ? {} : { [`__${dim}`]: groupKey };
+            // copy properties from first item of each group
+            options.copy?.forEach((prop) => {
+                baseRecord[prop] = items[0][prop];
+            });
             const newGroupChannels = groupFacetsAndZ(items, channels, (items, itemGroupProps) => {
                 const item = { ...baseRecord, ...itemGroupProps };
                 reduceOutputs(item, items, options, outputs, channels, newChannels);

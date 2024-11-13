@@ -150,6 +150,15 @@ You can also group by temporal intervals
 </Plot>
 ```
 
+## Group options
+
+- **interval** - optional interval to group on, e.g. `2 weeks`
+- **domain**
+- **thresholds**
+- **cumulative**
+- **reverse** - reverses the cumulative grouping
+- **copy** - copy attributes from first item of each group
+
 ## groupX
 
 Groups on the _x_ channel as well as an additional _z_, _fill_, or _stroke_ channel to create new groups and compute output channels (mostly _y_, but can also be used for other channels).
