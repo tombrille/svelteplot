@@ -5,6 +5,7 @@ import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';
 import { omit } from '$lib/helpers';
+import { maybeInterval } from '$lib/helpers/autoTicks.js';
 
 type ReducerFunc = (group: DataRow[]) => RawValue;
 type ReducerOption = ReducerName | ReducerFunc;
@@ -114,13 +115,19 @@ function groupXYZ(
 ) {
     if ((dim === 'z' ? channels.z || channels.fill || channels.stroke : channels[dim]) == null)
         throw new Error('you must provide a channel to group on ' + dim);
+
+    const interval = options.interval ? maybeInterval(options.interval) : null;
+
     // group by x or y
     const groups =
         dim === 'z'
             ? [[null, data]]
             : d3Groups(
                   data.filter((d) => testFilter(d, channels)),
-                  (d) => resolveChannel(dim, d, channels)
+                  (d) => {
+                    const v = resolveChannel(dim, d, channels);
+                    return interval ? interval.round(v) : v;
+                }
               );
     const newData: DataRecord[] = [];
     let newChannels = omit({ ...channels }, 'filter');

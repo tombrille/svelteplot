@@ -115,6 +115,41 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 </Plot>
 ```
 
+You can also group by temporal intervals
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line, groupX } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid height={300}>
+    <Line data={aapl} x="Date" y="Close" opacity="0.5" />
+    <Line
+        {...groupX(
+            { data: aapl, x: 'Date', y: 'Close' },
+            { interval: 'month', y: 'mean' }
+        )}
+        stroke="var(--svp-red)"
+        strokeWidth="2" 
+        curve="basis" />
+</Plot>
+```
+```svelte
+<Plot grid height={300}>
+    <Line data={aapl} x="Date" y="Close" opacity="0.5" />
+    <Line
+        {...groupX(
+            { data: aapl, x: 'Date', y: 'Close' },
+            { interval: 'month', y: 'mean' }
+        )}
+        stroke="red"
+        strokeWidth="2" 
+        curve="basis" />
+</Plot>
+```
+
 ## groupX
 
 Groups on the _x_ channel as well as an additional _z_, _fill_, or _stroke_ channel to create new groups and compute output channels (mostly _y_, but can also be used for other channels).
