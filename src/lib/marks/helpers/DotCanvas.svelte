@@ -54,7 +54,7 @@
         if (!isEqual(plotSize, _plotSize)) {
             _plotSize = plotSize;
         }
-        if (!isEqual(filteredData, _filteredData)) {
+        if (_markOptions.filter ? !isEqual(filteredData, _filteredData) : filteredData.length !== _filteredData.length) {
             _filteredData = filteredData;
         }
     });
