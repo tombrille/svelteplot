@@ -8,16 +8,24 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot, Pointer, RuleX } from '$lib';
+    import Slider from '$lib/ui/Slider.svelte';
 
     import { page } from '$app/stores';
     let { cars } = $derived($page.data.data);
 
     let fill = $state(false);
-    let canvas = $state(false);
+    let canvas = $state(true);
+    let maxCylinders = $state(10);
 </script>
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
+<input type="checkbox" bind:checked={canvas} /> use canvas<br />
+<Slider
+    label="max cylinders"
+    bind:value={maxCylinders}
+    min={1}
+    max={10} />
 
 <Plot grid height={500} testid="cars1">
     <Dot
@@ -25,9 +33,15 @@ y↑ and fuel efficiency in miles per gallon in x→.
         data={cars}
         x="economy (mpg)"
         y="power (hp)"
+        filter={d => d.cylinders <= maxCylinders}
         stroke={!fill ? 'manufactor' : null}
         fill={fill ? 'manufactor' : null}
         symbol="manufactor" />
+    <Pointer data={cars} x="economy (mpg)">
+        {#snippet children({data})}
+        <RuleX {data} x="economy (mpg)" />
+        {/snippet}
+    </Pointer>
 </Plot>
 ```
 

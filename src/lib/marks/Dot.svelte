@@ -47,6 +47,7 @@
     const { dotRadius } = getContext<PlotDefaults>('svelteplot/_defaults');
     let testFacet = $derived(getTestFacet());
 
+
     let args = $derived(
         sort(
             recordizeXY({
