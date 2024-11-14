@@ -22,7 +22,7 @@ SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plo
     bind:value={truncate}
     min={50}
     max={aapl.length} />
-<Plot inset={10} grid>
+<Plot locale="de-DE" inset={10} grid>
     <Line
         marker={truncate < 100}
         {data}

@@ -12,7 +12,6 @@
     } from '../types.js';
     import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-    import numeral from 'numeral';
     import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
@@ -35,7 +34,11 @@
         tickSize?: number;
         tickFontSize?: ConstantAccessor<number>;
         tickPadding?: number;
-        tickFormat?: string | ((d: RawValue) => string);
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
         tickClass?: ConstantAccessor<string>;
     };
 
@@ -83,14 +86,19 @@
             ? tickFmt
             : plot.scales.y.type === 'band' || plot.scales.y.type === 'point'
               ? (d) => d
-              : plot.scales.y.type === 'time'
-                ? autoTimeFormat(plot.scales.y, plot.plotHeight)
-                : typeof tickFmt === 'string'
-                  ? (d: number) =>
-                        numeral(plot.options.y.percent ? d * 100 : d).format(
-                            tickFmt === 'auto' ? '0.[00]a' : tickFmt
-                        )
-                  : (d: RawValue) => String(plot.options.y.percent ? +(d * 100.0).toFixed(5) : d)
+              : plot.scales.x.type === 'time'
+                ? // time scale
+                  typeof tickFmt === 'object'
+                    ? (d: Date) => Intl.DateTimeFormat(plot.options.locale, tickFmt).format(d)
+                    : autoTimeFormat(plot.scales.x, plot.plotWidth, plot.options.locale)
+                : // numeric scale
+                  typeof tickFmt === 'object'
+                  ? (d: number) => Intl.NumberFormat(plot.options.locale, tickFmt).format(d)
+                  : // auto
+                    (d: RawValue) =>
+                        Intl.NumberFormat(plot.options.locale, {
+                            style: plot.options.x.percent ? 'percent' : 'decimal'
+                        }).format(d)
     );
 
     let optionsLabel = $derived(plot.options.y.label);

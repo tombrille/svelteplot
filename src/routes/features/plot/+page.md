@@ -123,6 +123,7 @@ List of all plot options you can pass via props on the `<Plot />` component:
 -   `grid` - set this flag to activate automatic grids
 -   `x` - options for the x scale
 -   `y` - options for the y scale
+-   `locale` - locale used for automatic number and date formatting in axis ticks
 
 TODO: List all the options
 

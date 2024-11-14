@@ -29,6 +29,39 @@ Or you can add the **AxisX** and **AxisY** marks explicitely for more options, s
 layering grids on top of other marks. Note that in this case, custom grid ticks are not synchronized
 with the axes marks.
 
+```svelte live
+<script>
+    import { Plot, AxisX, AxisY } from '$lib';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot
+    frame
+    grid
+    x={{ domain: [0, 10] }}
+    y={{ domain: [0, 5] }}
+    marginBottom={40}
+    marginRight={30}>
+    <AxisX anchor="top" tickSize={10} tickFontSize="14px" />
+    <AxisX
+        stroke="cornflowerblue"
+        strokeWidth={3}
+        fontWeight="bold"
+        fill="navy" />
+    <AxisY
+        fill="green"
+        anchor="right"
+        tickSize={-5}
+        tickPadding={10} />
+    <AxisY
+        stroke="magenta"
+        fill="#dd0000"
+        ticks={[0, 1.5, 2, 2.5, 4, 5]} />
+</Plot>
+```
+
 ```svelte
 <Plot
     frame
@@ -281,7 +314,9 @@ You can explicitly add an x axis using the `AxisX` mark component:
     x={{
         domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)]
     }}>
-    <AxisX interval="quarter" tickFormat="[Q]Q" />
+    <AxisX
+        interval="quarter"
+        tickFormat={(d) => `Q${d.getMonth() / 3 + 1}`} />
     <AxisX
         interval="year"
         tickSize={0}
@@ -299,7 +334,9 @@ You can explicitly add an x axis using the `AxisX` mark component:
     x={{
         domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)]
     }}>
-    <AxisX interval="quarter" tickFormat="[Q]Q" />
+    <AxisX
+        interval="quarter"
+        tickFormat={(d) => `Q${d.getMonth() / 3 + 1}`} />
     <AxisX
         interval="year"
         tickSize={0}

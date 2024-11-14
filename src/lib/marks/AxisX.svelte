@@ -12,7 +12,6 @@
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { derived } from 'svelte/store';
-    import numeral from 'numeral';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
 
@@ -35,7 +34,11 @@
         tickSize?: number;
         tickFontSize?: ConstantAccessor<number>;
         tickPadding?: number;
-        tickFormat?: string | ((d: RawValue) => string);
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
         tickClass?: ConstantAccessor<string>;
     };
 
@@ -85,15 +88,18 @@
             : plot.scales.x.type === 'band' || plot.scales.x.type === 'point'
               ? (d) => d
               : plot.scales.x.type === 'time'
-                ? autoTimeFormat(plot.scales.x, plot.plotWidth)
-                : typeof tickFmt === 'string'
-                  ? (d: number) =>
-                        numeral(plot.options.x.percent ? d * 100 : d).format(
-                            tickFmt === 'auto'
-                                ? `0.[00]${plot.options.x.percent ? '%' : 'a'}`
-                                : tickFmt
-                        )
-                  : (d: RawValue) => String(plot.options.x.percent ? +(d * 100.0).toFixed(5) : d)
+                ? // time scale
+                  typeof tickFmt === 'object'
+                    ? (d: Date) => Intl.DateTimeFormat(plot.options.locale, tickFmt).format(d)
+                    : autoTimeFormat(plot.scales.x, plot.plotWidth, plot.options.locale)
+                : // numeric scale
+                  typeof tickFmt === 'object'
+                  ? (d: number) => Intl.NumberFormat(plot.options.locale, tickFmt).format(d)
+                  : // auto
+                    (d: RawValue) =>
+                        Intl.NumberFormat(plot.options.locale, {
+                            style: plot.options.x.percent ? 'percent' : 'decimal'
+                        }).format(d)
     );
 
     let optionsLabel = $derived(plot.options?.x?.label);

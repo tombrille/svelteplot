@@ -610,7 +610,6 @@ Another very common way to color plots is to map numbers to colors. If you simpl
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
-    import numeral from 'numeral';
 </script>
 
 <Plot
@@ -619,8 +618,7 @@ Another very common way to color plots is to map numbers to colors. If you simpl
     color={{
         legend: true,
         label: 'Body mass',
-        tickFormat: (d) =>
-            `${numeral(d / 1000).format('0.[0]')}kg`
+        tickFormat: d=> Intl.NumberFormat('en-US', { style: 'unit', unit: 'kilogram' }).format(d/1000)
     }}>
     <Dot
         data={penguins}

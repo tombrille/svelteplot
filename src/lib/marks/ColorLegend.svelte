@@ -3,7 +3,6 @@
     import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
     import { range as d3Range } from 'd3-array';
-    import numeral from 'numeral';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
     import type { PlotContext } from '../types.js';
@@ -20,7 +19,9 @@
     let legendTitle = $derived(plot.options.color.label);
     let scaleType = $derived(plot.scales.color.type);
     let tickFormat = $derived(
-        plot.options.color?.tickFormat ?? ((t) => numeral(t).format('0.[0]'))
+        typeof plot.options.color?.tickFormat === 'function'
+            ? plot.options.color.tickFormat
+            : (t) => Intl.NumberFormat(plot.options.locale, plot.options.color.tickFormat || {})
     );
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>
@@ -88,7 +89,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, ticks, tickFormat: (t, i) => numeral(tickLabels[i]).format('0.[0]') }}>
+                x={{ domain, ticks }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         <stop offset="0%" stop-color={range[0]} />

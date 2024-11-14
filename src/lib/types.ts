@@ -380,6 +380,10 @@ export type PlotOptions = {
      * if set to true, the plot will use the implicit scales
      */
     implicitScales: boolean;
+    /**
+     * locale used for automatic axis ticks
+     */
+    locale: string;
 };
 
 export type PlotDefaults = {
@@ -411,6 +415,10 @@ export type PlotDefaults = {
      * initial width of the plot before measuring the actual width
      */
     initialWidth: number;
+    /**
+     * locale, used for automatic axis ticks
+     */
+    locale: string;
 };
 
 export type GenericMarkOptions = Record<string, any>;

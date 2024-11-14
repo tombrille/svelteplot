@@ -78,6 +78,7 @@
         categoricalColorScheme: 'observable10',
         pointScaleHeight: 18,
         bandScaleHeight: 30,
+        locale: 'en-US',
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
 
@@ -415,7 +416,8 @@
             symbol: { type: 'ordinal' },
             fx: { type: 'band', axis: hasFZ ? null : 'top' },
             fy: { type: 'band', axis: hasFZ ? null : 'right ' },
-            fz: { type: 'point', columns: 3 }
+            fz: { type: 'point', columns: 3 },
+            locale: DEFAULTS.locale
         };
     }
 

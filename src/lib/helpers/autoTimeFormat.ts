@@ -1,35 +1,46 @@
 import type { Scale } from '$lib/classes/Scale.svelte.js';
 import { isDate } from '$lib/helpers/typeChecks';
 
-const DATE_TIME = new Intl.DateTimeFormat('en-US', {
+const DATE_TIME: Intl.DateTimeFormatOptions = {
     hour: 'numeric',
     minute: 'numeric',
     month: 'short',
     day: 'numeric'
-});
-const autoFormatDateTime = (date: Date) => DATE_TIME.format(date).replace(', ', '\n');
+};
 
-const DAY_MONTH = new Intl.DateTimeFormat('en-US', {
+const autoFormatDateTime = (locale: string) => {
+    const format = new Intl.DateTimeFormat(locale, DATE_TIME).format;
+    return (date: Date) => format(date).replace(', ', '\n');
+};
+
+const DAY_MONTH: Intl.DateTimeFormatOptions = {
     month: 'short',
     day: 'numeric'
-});
-const autoFormatDayMonth = (date: Date) => DAY_MONTH.format(date).replace(' ', '\n');
+};
+const autoFormatDayMonth = (locale: string) => {
+    const format = new Intl.DateTimeFormat(locale, DAY_MONTH).format;
+    return (date: Date) => format(date).replace(' ', '\n');
+};
 
-const MONTH_YEAR = new Intl.DateTimeFormat('en-US', {
+const MONTH_YEAR: Intl.DateTimeFormatOptions = {
     month: 'short',
     year: 'numeric'
-});
-const autoFormatMonthYear = (date: Date) => MONTH_YEAR.format(date).replace(' ', '\n');
+};
 
-export default function autoTimeFormat(x: Scale, plotWidth: number) {
+const autoFormatMonthYear = (locale: string) => {
+    const format = new Intl.DateTimeFormat(locale, MONTH_YEAR).format;
+    return (date: Date) => format(date).replace(' ', '\n');
+};
+
+export default function autoTimeFormat(x: Scale, plotWidth: number, plotLocale: string) {
     const daysPer100Px =
         ((toNumber(x.domain[1]) - toNumber(x.domain[0])) / plotWidth / 864e5) * 100;
     const format =
         daysPer100Px < 1
-            ? autoFormatDateTime
+            ? autoFormatDateTime(plotLocale)
             : daysPer100Px < 30
-              ? autoFormatDayMonth
-              : autoFormatMonthYear;
+              ? autoFormatDayMonth(plotLocale)
+              : autoFormatMonthYear(plotLocale);
     return (date: Date) => format(date).split('\n');
 }
 
