@@ -86,18 +86,18 @@
             ? tickFmt
             : plot.scales.y.type === 'band' || plot.scales.y.type === 'point'
               ? (d) => d
-              : plot.scales.x.type === 'time'
+              : plot.scales.y.type === 'time'
                 ? // time scale
                   typeof tickFmt === 'object'
                     ? (d: Date) => Intl.DateTimeFormat(plot.options.locale, tickFmt).format(d)
-                    : autoTimeFormat(plot.scales.x, plot.plotWidth, plot.options.locale)
+                    : autoTimeFormat(plot.scales.y, plot.plotWidth, plot.options.locale)
                 : // numeric scale
                   typeof tickFmt === 'object'
                   ? (d: number) => Intl.NumberFormat(plot.options.locale, tickFmt).format(d)
                   : // auto
                     (d: RawValue) =>
                         Intl.NumberFormat(plot.options.locale, {
-                            style: plot.options.x.percent ? 'percent' : 'decimal'
+                            style: plot.options.y.percent ? 'percent' : 'decimal'
                         }).format(d)
     );
 
