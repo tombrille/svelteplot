@@ -190,29 +190,39 @@ SveltePlot provides a lot of convenience features with the unfortunate side-effe
     // custom x and y scale
     function scaleX({ domain, plotWidth, plotOptions }) {
         const { marginLeft, marginRight } = plotOptions;
-        const range = [marginLeft, plotWidth - marginLeft - marginRight];
-        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]) + range[0];
+        const range = [
+            marginLeft,
+            plotWidth - marginLeft - marginRight
+        ];
+        const fn = (v) =>
+            ((v - domain[0]) / (domain[1] - domain[0])) *
+                (range[1] - range[0]) +
+            range[0];
         fn.range = () => range;
         return fn;
-    } 
+    }
     function scaleY({ domain, plotHeight, plotOptions }) {
         const { marginTop, marginBottom } = plotOptions;
-        const range = [plotHeight - marginTop - marginBottom, marginBottom];
-        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) *  (range[1] - range[0]) + range[0];
+        const range = [
+            plotHeight - marginTop - marginBottom,
+            marginBottom
+        ];
+        const fn = (v) =>
+            ((v - domain[0]) / (domain[1] - domain[0])) *
+                (range[1] - range[0]) +
+            range[0];
         fn.range = () => range;
         return fn;
-    } 
+    }
 </script>
 
-<Plot  
-    x={{ scale: scaleX  }}
-    y={{ scale: scaleY }}>
-    <Line data={aapl} 
-        x={d => new Date(d.Date)}  
+<Plot x={{ scale: scaleX }} y={{ scale: scaleY }}>
+    <Line
+        data={aapl}
+        x={(d) => new Date(d.Date)}
         y="Adj Close" />
 </Plot>
 ```
-
 
 ```svelte
 <script>
@@ -221,25 +231,36 @@ SveltePlot provides a lot of convenience features with the unfortunate side-effe
 
     function scaleX({ domain, plotWidth, plotOptions }) {
         const { marginLeft, marginRight } = plotOptions;
-        const range = [marginLeft, plotWidth - marginLeft - marginRight];
-        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]) + range[0];
+        const range = [
+            marginLeft,
+            plotWidth - marginLeft - marginRight
+        ];
+        const fn = (v) =>
+            ((v - domain[0]) / (domain[1] - domain[0])) *
+                (range[1] - range[0]) +
+            range[0];
         fn.range = () => range;
         return fn;
-    } 
+    }
     function scaleY({ domain, plotHeight, plotOptions }) {
         const { marginTop, marginBottom } = plotOptions;
-        const range = [plotHeight - marginTop - marginBottom, marginBottom];
-        const fn = (v) => (v - domain[0]) / (domain[1] - domain[0]) *  (range[1] - range[0]) + range[0];
+        const range = [
+            plotHeight - marginTop - marginBottom,
+            marginBottom
+        ];
+        const fn = (v) =>
+            ((v - domain[0]) / (domain[1] - domain[0])) *
+                (range[1] - range[0]) +
+            range[0];
         fn.range = () => range;
         return fn;
-    } 
+    }
 </script>
 
-<Plot  
-    x={{ scale: scaleX  }}
-    y={{ scale: scaleY }}>
-    <Line data={aapl} 
-        x={d => new Date(d.Date)} 
+<Plot x={{ scale: scaleX }} y={{ scale: scaleY }}>
+    <Line
+        data={aapl}
+        x={(d) => new Date(d.Date)}
         y="Adj Close" />
 </Plot>
 ```

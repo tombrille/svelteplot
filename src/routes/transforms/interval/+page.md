@@ -22,10 +22,7 @@ The interval transform is often used for time-series bar charts. For example, co
     let { aapl } = $derived($page.data.data);
 </script>
 
-<Plot
-    marginLeft={40}
-    x={{ tickFormat }}
-    grid>
+<Plot marginLeft={40} x={{ tickFormat }} grid>
     <BarY data={aapl.slice(-40)} x="Date" y="Volume" />
     <RuleY data={[0]} />
 </Plot>
@@ -83,10 +80,7 @@ The meaning of the interval mark option depends on the associated mark, such as 
         MONTH_DAY.format(date).split(' ');
 </script>
 
-<Plot
-    marginLeft={40}
-    x={{ tickFormat }}
-    grid>
+<Plot marginLeft={40} x={{ tickFormat }} grid>
     <BarY
         data={aapl.slice(-40)}
         x="Date"

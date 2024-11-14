@@ -420,7 +420,7 @@
     }
 
     const mapXY = $derived((x: RawValue, y: RawValue) => {
-        const [px,py] = projectXY(plotState.scales, x, y);
+        const [px, py] = projectXY(plotState.scales, x, y);
         return { x: px, y: py };
     });
 </script>

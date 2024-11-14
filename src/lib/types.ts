@@ -410,7 +410,7 @@ export type PlotDefaults = {
     /**
      * initial width of the plot before measuring the actual width
      */
-    initialWidth: number
+    initialWidth: number;
 };
 
 export type GenericMarkOptions = Record<string, any>;

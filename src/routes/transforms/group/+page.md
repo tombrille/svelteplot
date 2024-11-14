@@ -132,10 +132,11 @@ You can also group by temporal intervals
             { interval: 'month', y: 'mean' }
         )}
         stroke="var(--svp-red)"
-        strokeWidth="2" 
+        strokeWidth="2"
         curve="basis" />
 </Plot>
 ```
+
 ```svelte
 <Plot grid height={300}>
     <Line data={aapl} x="Date" y="Close" opacity="0.5" />
@@ -145,19 +146,19 @@ You can also group by temporal intervals
             { interval: 'month', y: 'mean' }
         )}
         stroke="red"
-        strokeWidth="2" 
+        strokeWidth="2"
         curve="basis" />
 </Plot>
 ```
 
 ## Group options
 
-- **interval** - optional interval to group on, e.g. `2 weeks`
-- **domain**
-- **thresholds**
-- **cumulative**
-- **reverse** - reverses the cumulative grouping
-- **copy** - copy attributes from first item of each group
+-   **interval** - optional interval to group on, e.g. `2 weeks`
+-   **domain**
+-   **thresholds**
+-   **cumulative**
+-   **reverse** - reverses the cumulative grouping
+-   **copy** - copy attributes from first item of each group
 
 ## groupX
 

@@ -14,7 +14,8 @@
         })
     );
 
-    const dateFormat = (date) => date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const dateFormat = (date) =>
+        date.toLocaleString('default', { month: 'short', year: 'numeric' });
 </script>
 
 <Plot

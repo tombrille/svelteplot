@@ -16,13 +16,19 @@ const inputData: DataRecord[] = [
 
 describe('renameChannels', () => {
     it('renames channels', () => {
-        const { data, ...channels } = renameChannels({ data: inputData, x: 'year' }, { x: 'year2' });
+        const { data, ...channels } = renameChannels(
+            { data: inputData, x: 'year' },
+            { x: 'year2' }
+        );
         expect(data).toStrictEqual(inputData);
         expect(channels).toStrictEqual({ year2: 'year' });
     });
 
     it('does not rename channels that do not exist', () => {
-        const { data, ...channels } = renameChannels({ data: inputData, x: 'year' }, { x2: 'year2' });
+        const { data, ...channels } = renameChannels(
+            { data: inputData, x: 'year' },
+            { x2: 'year2' }
+        );
         expect(data).toStrictEqual(inputData);
         expect(channels).toStrictEqual({ x: 'year' });
     });

@@ -144,7 +144,7 @@
     type="axisX"
     data={data.length ? data.map((tick) => ({ __x: tick })) : []}
     channels={['x']}
-    { ...options }
+    {...options}
     x="__x"
     {automatic}>
     {#if left && top && useTitle}

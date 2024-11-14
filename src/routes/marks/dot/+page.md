@@ -18,7 +18,9 @@ y↑ and fuel efficiency in miles per gallon in x→.
     let canvas = $state(true);
     let maxCylinders = $state(10);
 
-    const filteredCars = $derived(cars.filter(d => d.cylinders <= maxCylinders));
+    const filteredCars = $derived(
+        cars.filter((d) => d.cylinders <= maxCylinders)
+    );
 </script>
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
@@ -36,13 +38,13 @@ x
         data={filteredCars}
         x="economy (mpg)"
         y="power (hp)"
-        _filter={d => d.cylinders <= maxCylinders}
+        _filter={(d) => d.cylinders <= maxCylinders}
         stroke={!fill ? 'manufactor' : null}
         fill={fill ? 'manufactor' : null}
         symbol="manufactor" />
     <Pointer data={filteredCars} x="economy (mpg)">
-        {#snippet children({data})}
-        <RuleX {data} x="economy (mpg)" />
+        {#snippet children({ data })}
+            <RuleX {data} x="economy (mpg)" />
         {/snippet}
     </Pointer>
 </Plot>

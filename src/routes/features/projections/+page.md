@@ -60,7 +60,6 @@ title: Projections
         await tick();
         window.requestAnimationFrame(step);
     }
-
 </script>
 
 <Select

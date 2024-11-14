@@ -311,3 +311,42 @@ You can explicitly add an x axis using the `AxisX` mark component:
 ```
 
 ## AxisY
+
+Options:
+
+-   tickSize
+-   tickPadding
+
+### Ticks inside the plot
+
+To render y axis ticks inside the plot you need to use the explicit axis mark which lets you control `tickSize` and `tickPadding` as well as the vertical offset `dy`. Note that you likely need to adjust the horizontal inset to make sure the ticks don't overlap with your data marks.
+
+```svelte live
+<script>
+    import { Plot, Line, AxisY } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid x={{ insetLeft: 20 }}>
+    <AxisY
+        tickSize={0}
+        tickPadding={0}
+        dy={-5}
+        lineAnchor="bottom"
+        textAnchor="start" />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot grid x={{ insetLeft: 20 }}>
+    <AxisY
+        tickSize={0}
+        tickPadding={0}
+        dy={-5}
+        lineAnchor="bottom"
+        textAnchor="start" />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```

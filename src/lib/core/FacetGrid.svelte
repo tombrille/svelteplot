@@ -35,10 +35,16 @@
 
     // create band scales for fx and fy
     let facetXScale = $derived(
-        scaleBand().paddingInner(fxValues.length > 1 ? 0.1 : 0).domain(fxValues).rangeRound([0, plot.plotWidth])
+        scaleBand()
+            .paddingInner(fxValues.length > 1 ? 0.1 : 0)
+            .domain(fxValues)
+            .rangeRound([0, plot.plotWidth])
     );
     let facetYScale = $derived(
-        scaleBand().paddingInner(fyValues.length > 1 ? 0.1 : 0).domain(fyValues).rangeRound([0, plot.plotHeight])
+        scaleBand()
+            .paddingInner(fyValues.length > 1 ? 0.1 : 0)
+            .domain(fyValues)
+            .rangeRound([0, plot.plotHeight])
     );
 
     let facetWidth = $derived(useFacetX ? facetXScale.bandwidth() : plot.plotWidth);
@@ -48,7 +54,6 @@
         updateDimensions(facetWidth, facetHeight);
     });
 </script>
-
 
 {#each fxValues as facetX, i}
     {#each fyValues as facetY, j}

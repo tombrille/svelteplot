@@ -25,7 +25,7 @@ describe('groupX', () => {
     });
 
     it('groups by x channel with prop name', () => {
-        const { data, ...channels } = groupX({ data: inputData, x: 'year' }, { xPropName: 'YR'});
+        const { data, ...channels } = groupX({ data: inputData, x: 'year' }, { xPropName: 'YR' });
         expect(data).toHaveLength(3);
         expect(data[0].YR).toBe(2000);
         expect(data[1].YR).toBe(2001);
@@ -98,7 +98,7 @@ describe('groupX', () => {
         expect(data[1].facet).toBe('B');
         expect(data[2].facet).toBe('A');
         expect(channels).toStrictEqual({ x: 'year' });
-    })
+    });
 });
 
 describe('groupY', () => {

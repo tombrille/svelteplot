@@ -613,7 +613,15 @@ Another very common way to color plots is to map numbers to colors. If you simpl
     import numeral from 'numeral';
 </script>
 
-<Plot grid height={200} color={{ legend: true, label: 'Body mass', tickFormat: d => `${numeral(d/1000).format('0.[0]')}kg` }}>
+<Plot
+    grid
+    height={200}
+    color={{
+        legend: true,
+        label: 'Body mass',
+        tickFormat: (d) =>
+            `${numeral(d / 1000).format('0.[0]')}kg`
+    }}>
     <Dot
         data={penguins}
         x="culmen_length_mm"

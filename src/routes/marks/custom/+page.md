@@ -18,8 +18,15 @@ title: Custom marks
     x={{ domain: [31, 62] }}
     y={{ domain: [13, 21.9] }}>
     <defs>
-        <symbol id="spiral" width="24" height="24" viewBox="-12 -12 24 24">
-            <Spiral stroke="var(--svp-red)" finalRadius={10} duration={4} />
+        <symbol
+            id="spiral"
+            width="24"
+            height="24"
+            viewBox="-12 -12 24 24">
+            <Spiral
+                stroke="var(--svp-red)"
+                finalRadius={10}
+                duration={4} />
         </symbol>
     </defs>
     <CustomMark
@@ -27,7 +34,7 @@ title: Custom marks
         x="culmen_length_mm"
         y="culmen_depth_mm">
         {#snippet children({ datum })}
-            <use href="#spiral" x="-12" y="-12"/>
+            <use href="#spiral" x="-12" y="-12" />
         {/snippet}
     </CustomMark>
 </Plot>
@@ -187,7 +194,7 @@ Another way to use custom marks is to position them yourself using the `mapXY` m
     inset={40}>
     {#snippet children({ mapXY })}
         {#each data as { val1, val2 }}
-            {@const {x,y} = mapXY(val1, val2)}
+            {@const { x, y } = mapXY(val1, val2)}
             <g transform="translate({x},{y})">
                 <circle r={9} opacity={0.4} fill="red" />
             </g>
@@ -205,7 +212,7 @@ Another way to use custom marks is to position them yourself using the `mapXY` m
     inset={40}>
     {#snippet children({ mapXY })}
         {#each data as { val1, val2 }}
-            {@const {x,y} = mapXY(val1, val2)}
+            {@const { x, y } = mapXY(val1, val2)}
             <g transform="translate({x},{y})">
                 <circle r={9} opacity={0.4} fill="red" />
             </g>

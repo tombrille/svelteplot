@@ -470,7 +470,9 @@ export function getUsedScales(
             const skipMarks = plot.scales[scale].skip.get(channel) || new Set();
             return [
                 channel,
-                !skipMarks.has(mark.id) && toChannelOption(channel, options[channel]).scale !== null && !plot.scales[scale].isDummy
+                !skipMarks.has(mark.id) &&
+                    toChannelOption(channel, options[channel]).scale !== null &&
+                    !plot.scales[scale].isDummy
             ];
         })
     ) as { [k in ScaledChannelName]: boolean };
@@ -512,7 +514,10 @@ export function projectXY(
         stream.point(x, y);
         return [x_, y_];
     }
-    return [useXScale ? projectX('x', scales, x) : x as number, useYScale ? projectY('y', scales, y) : y as number];
+    return [
+        useXScale ? projectX('x', scales, x) : (x as number),
+        useYScale ? projectY('y', scales, y) : (y as number)
+    ];
 }
 
 export function projectX(channel: 'x' | 'x1' | 'x2', scales: PlotScales, value: RawValue) {

@@ -19,7 +19,9 @@
 
     let legendTitle = $derived(plot.options.color.label);
     let scaleType = $derived(plot.scales.color.type);
-    let tickFormat = $derived(plot.options.color?.tickFormat ?? ((t) => numeral(t).format('0.[0]')));
+    let tickFormat = $derived(
+        plot.options.color?.tickFormat ?? ((t) => numeral(t).format('0.[0]'))
+    );
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>
 
@@ -106,7 +108,7 @@
                 <AxisX tickSize={18} dy={-17} />
             </Plot>
         {:else}
-    <!--- continuous -->
+            <!--- continuous -->
             {@const domain = plot.scales.color.domain}
             {@const ticks = new Set([
                 domain[0],

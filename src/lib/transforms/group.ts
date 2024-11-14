@@ -126,8 +126,12 @@ function groupXYZ(
     if ((dim === 'z' ? channels.z || channels.fill || channels.stroke : channels[dim]) == null)
         throw new Error('you must provide a channel to group on ' + dim);
 
-
-    const propName = options[`${dim}PropName`] != null ? options[`${dim}PropName`] : typeof channels[dim] === 'string' && !options.interval ? channels[dim] : `__${dim}`;
+    const propName =
+        options[`${dim}PropName`] != null
+            ? options[`${dim}PropName`]
+            : typeof channels[dim] === 'string' && !options.interval
+              ? channels[dim]
+              : `__${dim}`;
     const interval = options.interval ? maybeInterval(options.interval) : null;
 
     // group by x or y
@@ -137,9 +141,9 @@ function groupXYZ(
             : d3Groups(
                   data.filter((d) => testFilter(d, channels)),
                   (d) => {
-                    const v = resolveChannel(dim, d, channels);
-                    return interval ? interval.round(v) : v;
-                }
+                      const v = resolveChannel(dim, d, channels);
+                      return interval ? interval.round(v) : v;
+                  }
               );
     const newData: DataRecord[] = [];
     let newChannels = omit({ ...channels }, 'filter');
