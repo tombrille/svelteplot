@@ -21,7 +21,7 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { geoPath } from 'd3-geo';
-    import { pick } from '$lib/helpers';
+    import { pick } from 'es-toolkit';
 
     type LinkMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -136,13 +136,12 @@
                                 datum,
                                 {
                                     textAnchor: 'middle',
-                                    ...pick(
-                                        args,
+                                    ...pick(args, [
                                         'fontSize',
                                         'fontWeight',
                                         'fontStyle',
                                         'textAnchor'
-                                    ),
+                                    ]),
                                     fill: args.textFill || args.stroke,
                                     stroke: args.textStroke,
                                     strokeWidth: args.textStrokeWidth

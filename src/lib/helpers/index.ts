@@ -64,12 +64,6 @@ export function parseInset(inset: number | string, width: number) {
     return +inset;
 }
 
-export function pick<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
-    return Object.fromEntries(
-        keys.filter((key) => key in obj).map((key) => [key, obj[key]])
-    ) as Pick<T, K>;
-}
-
 export function omit<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
     return Object.fromEntries(
         Object.entries(obj).filter(([key]) => !keys.includes(key as K))

@@ -1,6 +1,6 @@
 import type { BaseMarkProps, DataRecord, PlotScales, PlotState } from '$lib/types.js';
 import type { MouseEventHandler } from 'svelte/elements';
-import { pick } from '$lib/helpers';
+import { pick } from 'es-toolkit';
 
 export function addEventHandlers(
     node: SVGElement,
