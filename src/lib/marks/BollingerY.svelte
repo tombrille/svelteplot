@@ -5,7 +5,7 @@
 <script lang="ts">
     import { Area, Line, bollingerY, recordizeY } from '$lib/index.js';
     import type { BaseMarkProps, ChannelAccessor, DataRow } from '$lib/types.js';
-    import { pick } from '$lib/helpers';
+    import { pick } from 'es-toolkit';
 
     type BollingerYProps = BaseMarkProps & {
         data: DataRow[];
@@ -23,16 +23,11 @@
 
     let { data, n = 20, k = 2, class: className, ...options }: BollingerYProps = $props();
 
-    let args = $derived(bollingerY(recordizeY({ data, ...options }), { n, k }));
+    const args = $derived(bollingerY(recordizeY({ data, ...options }), { n, k }));
 </script>
 
 <g class="bollinger {className || ''}">
-    <Line
-        {...{
-            x: '__x',
-            y: '__avg',
-            ...pick(args, ['data', 'stroke', 'strokeOpacity', 'opacity'])
-        }} />
+    <Line {...pick(args, ['x', 'y', 'data', 'stroke', 'strokeOpacity', 'opacity'])} />
     <Area
         {...{
             x1: '__x',

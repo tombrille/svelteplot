@@ -5,7 +5,7 @@
 <script lang="ts">
     import { Area, Line, bollingerX, recordizeX } from '$lib/index.js';
     import type { BaseMarkProps, ChannelAccessor, DataRow } from '$lib/types.js';
-    import { pick } from '$lib/helpers';
+    import { pick } from 'es-toolkit';
 
     type BollingerXProps = BaseMarkProps & {
         data: DataRow[];

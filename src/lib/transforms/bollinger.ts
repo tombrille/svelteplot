@@ -60,22 +60,24 @@ export function bollingerDim(
 function bollinger(values: number[], N: number, K: number[]) {
     let i = 0;
     let sum = 0;
-    let sum2 = 0;
+    let sumSquared = 0;
+    // initialize bands
     const bands = K.map(() => new Float64Array(values.length).fill(NaN));
+    // compute sum and square of sums
     for (let n = Math.min(N - 1, values.length); i < n; ++i) {
         const value = values[i];
-        (sum += value), (sum2 += value ** 2);
+        (sum += value), (sumSquared += value ** 2);
     }
     for (let n = values.length, m = bands.length; i < n; ++i) {
         const value = values[i];
-        (sum += value), (sum2 += value ** 2);
+        (sum += value), (sumSquared += value ** 2);
         const mean = sum / N;
-        const deviation = Math.sqrt((sum2 - sum ** 2 / N) / (N - 1));
+        const deviation = Math.sqrt((sumSquared - sum ** 2 / N) / (N - 1));
         for (let j = 0; j < K.length; ++j) {
             bands[j][i] = mean + deviation * K[j];
         }
         const value0 = values[i - N + 1];
-        (sum -= value0), (sum2 -= value0 ** 2);
+        (sum -= value0), (sumSquared -= value0 ** 2);
     }
     return bands;
 }
