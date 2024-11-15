@@ -419,6 +419,10 @@ export type PlotDefaults = {
      * locale, used for automatic axis ticks
      */
     locale: string;
+    /**
+     * default number format for axis ticks
+     */
+    numberFormat: Intl.NumberFormatOptions;
 };
 
 export type GenericMarkOptions = Record<string, any>;
@@ -828,4 +832,12 @@ export type DefaultOptions = {
      * default step for graticule, in degrees
      */
     graticuleStep: number;
+    /**
+     * locale, used for automatic axis ticks
+     */
+    locale: string;
+    /**
+     * default number format for axis ticks
+     */
+    numberFormat: Intl.NumberFormatOptions;
 };

@@ -37,6 +37,8 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 | _xTickSpacing_           | Horizontal space between ticks in AxisX and GridX                                        | px      | `80`             |
 | _yTickSpacing_           | Vertical space between ticks in AxisY and GridY                                          | px      | `50`             |
 | _graticuleStep_          | Default step size in graticules                                                          | degrees | `10`             |
+| _locale_                 | Default locale used in axis ticks etc.                                                   | string  | `'en-US'`          |
+| _numberFormat_           | Default [number format options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) in axis ticks                                                      | object  |                  |
 
 <style>
     * :global(td) {

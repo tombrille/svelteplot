@@ -20,7 +20,7 @@
         tickPadding: 3,
         tickFontSize: 11,
         axisXAnchor: 'bottom',
-        ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
+        ...getContext<Partial<DefaultOptions>>('svelteplot/_defaults')
     };
 
     type AxisXProps = BaseMarkProps & {
@@ -98,6 +98,7 @@
                   : // auto
                     (d: RawValue) =>
                         Intl.NumberFormat(plot.options.locale, {
+                            ...DEFAULTS.numberFormat,
                             style: plot.options.x.percent ? 'percent' : 'decimal'
                         }).format(d)
     );

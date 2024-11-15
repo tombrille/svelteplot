@@ -79,6 +79,11 @@
         pointScaleHeight: 18,
         bandScaleHeight: 30,
         locale: 'en-US',
+        numberFormat: {
+            style: 'decimal',
+            notation: 'compact',
+            compactDisplay: 'short'
+        },
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
 

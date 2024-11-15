@@ -21,7 +21,7 @@
         tickPadding: 3,
         tickFontSize: 11,
         axisYAnchor: 'left',
-        ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
+        ...getContext<Partial<DefaultOptions>>('svelteplot/_defaults')
     };
 
     type AxisYProps = BaseMarkProps & {
@@ -58,13 +58,13 @@
     }: AxisYProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let autoTickCount = $derived(
+    const autoTickCount = $derived(
         Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
     );
 
-    let ticks: RawValue[] = $derived(
+    const ticks: RawValue[] = $derived(
         data.length > 0
             ? // use custom tick values if user passed any as prop
               data
@@ -79,9 +79,9 @@
               )
     );
 
-    let tickFmt = $derived(tickFormat || plot.options.y.tickFormat);
+    const tickFmt = $derived(tickFormat || plot.options.y.tickFormat);
 
-    let useTickFormat = $derived(
+    const useTickFormat = $derived(
         typeof tickFmt === 'function'
             ? tickFmt
             : plot.scales.y.type === 'band' || plot.scales.y.type === 'point'
@@ -97,13 +97,14 @@
                   : // auto
                     (d: RawValue) =>
                         Intl.NumberFormat(plot.options.locale, {
+                            ...DEFAULTS.numberFormat,
                             style: plot.options.y.percent ? 'percent' : 'decimal'
                         }).format(d)
     );
 
-    let optionsLabel = $derived(plot.options.y.label);
+    const optionsLabel = $derived(plot.options.y.label);
 
-    let useTitle = $derived(
+    const useTitle = $derived(
         title ||
             (optionsLabel === null
                 ? null
@@ -115,9 +116,9 @@
     );
 
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
-    let { left, leftEmpty, right, rightEmpty, top } = $derived(getFacetState());
+    const { left, leftEmpty, right, rightEmpty, top } = $derived(getFacetState());
 
-    let useFacetAnchor = $derived(
+    const useFacetAnchor = $derived(
         facetAnchor !== 'auto' ? facetAnchor : anchor === 'left' ? 'left-empty' : 'right-empty'
     );
 

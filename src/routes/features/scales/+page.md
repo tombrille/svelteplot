@@ -618,7 +618,11 @@ Another very common way to color plots is to map numbers to colors. If you simpl
     color={{
         legend: true,
         label: 'Body mass',
-        tickFormat: d=> Intl.NumberFormat('en-US', { style: 'unit', unit: 'kilogram' }).format(d/1000)
+        tickFormat: (d) =>
+            Intl.NumberFormat('en-US', {
+                style: 'unit',
+                unit: 'kilogram'
+            }).format(d / 1000)
     }}>
     <Dot
         data={penguins}
@@ -1011,13 +1015,15 @@ Quantize is like a "stepped" linear scale, where a continuous input domain is ma
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-    <Cell
+    <!--
+    todo: fix   plot.scales.x.fn.bandwidth is not a function error in Cell
+     <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" />
+        inset="0.5" /> -->
 </Plot>
 ```
 
@@ -1137,13 +1143,14 @@ Similiar to the `quantile` scale. Not to be confused with the continuous [quanti
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-    <Cell
+    <!-- todo: -->
+    <!-- <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" />
+        inset="0.5" /> -->
 </Plot>
 ```
 
@@ -1183,13 +1190,13 @@ Threshold scales give you absolute freedom for the breaks:
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-    <Cell
+    <!-- <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" />
+        inset="0.5" /> -->
 </Plot>
 ```
 

@@ -5,7 +5,7 @@
     import { range as d3Range } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
-    import type { PlotContext } from '../types.js';
+    import type { DefaultOptions, PlotContext } from '../types.js';
 
     let {
         width = 250,
@@ -14,14 +14,19 @@
     }: { width?: number; tickSpacing?: number; class?: string } = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let legendTitle = $derived(plot.options.color.label);
-    let scaleType = $derived(plot.scales.color.type);
-    let tickFormat = $derived(
+    const DEFAULTS = getContext<Partial<DefaultOptions>>('svelteplot/_defaults');
+
+    const legendTitle = $derived(plot.options.color.label);
+    const scaleType = $derived(plot.scales.color.type);
+    const tickFormat = $derived(
         typeof plot.options.color?.tickFormat === 'function'
             ? plot.options.color.tickFormat
-            : (t) => Intl.NumberFormat(plot.options.locale, plot.options.color.tickFormat || {})
+            : Intl.NumberFormat(
+                  plot.options.locale,
+                  plot.options.color.tickFormat || DEFAULTS.numberFormat
+              ).format
     );
     const randId = Math.round(Math.random() * 1e6).toFixed(32);
 </script>
@@ -113,7 +118,7 @@
             {@const domain = plot.scales.color.domain}
             {@const ticks = new Set([
                 domain[0],
-                ...plot.scales.color.fn.ticks(Math.ceil(width / 5)),
+                ...(plot.scales.color?.fn?.ticks?.(Math.ceil(width / 5)) ?? []),
                 domain[1]
             ])}
             <Plot

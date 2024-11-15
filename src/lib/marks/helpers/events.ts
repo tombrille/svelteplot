@@ -10,8 +10,7 @@ export function addEventHandlers(
         getPlotState
     }: { options: BaseMarkProps; datum: DataRecord; getPlotState: () => PlotState }
 ) {
-    const events = pick(
-        options,
+    const events = pick(options, [
         'onclick',
         'oncontextmenu',
         'ondblclick',
@@ -33,7 +32,7 @@ export function addEventHandlers(
         'ontouchend',
         'ontouchmove',
         'ontouchstart'
-    );
+    ]);
 
     const listeners = new Map<string, MouseEventHandler<SVGElement>>();
     // attach event handlers

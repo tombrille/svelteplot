@@ -131,7 +131,7 @@ You can also specify a custom marker icon using the `marker` snippet:
 
 <Plot grid height={300}>
     <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
-        {#snippet marker(id, color)}
+        <!-- {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -142,7 +142,7 @@ You can also specify a custom marker icon using the `marker` snippet:
                 orient="auto">
                 <path d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
             </marker>
-        {/snippet}
+        {/snippet} -->
     </Line>
 </Plot>
 ```
@@ -188,7 +188,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 
 <Plot grid height={300}>
     <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
-        {#snippet marker(id, color)}
+        <!-- {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -204,7 +204,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
                         d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
                 {/if}
             </marker>
-        {/snippet}
+        {/snippet} -->
     </Line>
 </Plot>
 ```

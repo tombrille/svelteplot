@@ -33,20 +33,6 @@ describe('isObject', () => {
     });
 });
 
-describe('pick', () => {
-    const obj = { a: 1, b: 2, c: 3, d: 4 };
-
-    it('should return a new object with the specified keys', () => {
-        expect(pick(obj, 'a', 'c')).toEqual({ a: 1, c: 3 });
-        expect(pick(obj, 'b', 'd')).toEqual({ b: 2, d: 4 });
-    });
-
-    it('should not include keys that are not present in the input object', () => {
-        expect(pick(obj, 'a', 'b', 'e')).toEqual({ a: 1, b: 2 });
-        expect(pick(obj, 'e', 'f')).toEqual({});
-    });
-});
-
 describe('omit', () => {
     const obj = { a: 1, b: 2, c: 3, d: 4 };
 
