@@ -1015,15 +1015,14 @@ Quantize is like a "stepped" linear scale, where a continuous input domain is ma
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-    <!--
-    todo: fix   plot.scales.x.fn.bandwidth is not a function error in Cell
+   
      <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" /> -->
+        inset="0.5" />
 </Plot>
 ```
 
@@ -1144,13 +1143,13 @@ Similiar to the `quantile` scale. Not to be confused with the continuous [quanti
     }}
     testid="seattle-temp">
     <!-- todo: -->
-    <!-- <Cell
+    <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" /> -->
+        inset="0.5" />
 </Plot>
 ```
 
@@ -1190,13 +1189,13 @@ Threshold scales give you absolute freedom for the breaks:
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-    <!-- <Cell
+    <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" /> -->
+        inset="0.5" />
 </Plot>
 ```
 

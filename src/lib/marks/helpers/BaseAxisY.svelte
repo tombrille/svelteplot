@@ -55,7 +55,7 @@
         bottom: 'auto'
     };
 
-    let positionedTicks = $derived.by(() => {
+    const positionedTicks = $derived.by(() => {
         let tickObjects = ticks.map((tick, i) => {
             return {
                 value: tick,
