@@ -32,9 +32,10 @@
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
         canvas: boolean;
+        dotClass: ConstantAccessor<string>;
     };
 
-    let { data, canvas = false, class: className = null, ...options }: DotProps = $props();
+    let { data, canvas = false, class: className = '', dotClass = null, ...options }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -108,6 +109,7 @@
                                     ? plot.scales.symbol.fn(symbol_)
                                     : symbol_}
                                 <path
+                                    class={dotClass ? resolveProp(dotClass, datum, null) : null}
                                     d={getSymbolPath(symbol, size)}
                                     transform="translate({x + dx}, {y + dy})"
                                     data-symbol={symbol}

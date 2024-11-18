@@ -1,10 +1,10 @@
 <script lang="ts">
     import type { Snippet } from 'svelte';
-    let { length, children, ...groupProps }: { children: Snippet; length: number } = $props();
+    let { length = 1, children, class: className = null, ...groupProps }: { children: Snippet; length?: number; class?: string|null } = $props();
 </script>
 
-{#if length > 1}
-    <g {...groupProps}>
+{#if length > 1 || className}
+    <g class={className} {...groupProps}>
         {@render children()}
     </g>
 {:else}

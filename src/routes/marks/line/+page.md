@@ -221,6 +221,8 @@ The following channels are supported:
 -   **z**
 -   **stroke** - bound to color scale
 -   **sort**
+-   **outlineStroke** - for adding an outline stroke aka casing behind the line
+-   **outlineStrokeWidth** -
 
 BLS Demo:
 

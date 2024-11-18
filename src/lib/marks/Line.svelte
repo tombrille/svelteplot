@@ -31,6 +31,7 @@
         textStroke?: ConstantAccessor<string>;
         textStartOffset?: ConstantAccessor<string>;
         textStrokeWidth?: ConstantAccessor<number>;
+        lineClass?: ConstantAccessor<string>;
     } & MarkerOptions;
 </script>
 
@@ -56,6 +57,7 @@
     import { sort } from '$lib/transforms/sort.js';
     import { facetWrap } from '$lib/transforms/facet.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     let {
         data,
@@ -63,6 +65,7 @@
         tension = 0,
         text,
         class: className = null,
+        lineClass = null,
         ...options
     }: LineMarkProps = $props();
 
@@ -176,62 +179,64 @@
                                 plot
                             )
                         )}
-                        {#if options.outlineStroke}
-                            <path
+                        <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
+                            {#if options.outlineStroke}
+                                <path
+                                    d={pathString}
+                                    style={resolveScaledStyles(
+                                        lineData[0],
+                                        {
+                                            ...args,
+                                            stroke: options.outlineStroke,
+                                            strokeWidth:
+                                                options.outlineStrokeWidth ||
+                                                (+options.strokeWidth || 1.4) + 2
+                                        },
+                                        { stroke: false },
+                                        plot,
+                                        'stroke'
+                                    )} />
+                            {/if}
+                            <MarkerPath
+                                {mark}
+                                scales={plot.scales}
+                                markerStart={args.markerStart}
+                                markerMid={args.markerMid}
+                                markerEnd={args.markerEnd}
+                                marker={args.marker}
+                                strokeWidth={args.strokeWidth}
+                                datum={lineData[0]}
                                 d={pathString}
+                                color={markerColor}
                                 style={resolveScaledStyles(
                                     lineData[0],
-                                    {
-                                        ...args,
-                                        stroke: options.outlineStroke,
-                                        strokeWidth:
-                                            options.outlineStrokeWidth ||
-                                            (+options.strokeWidth || 1.4) + 2
-                                    },
-                                    { stroke: false },
+                                    args,
+                                    usedScales,
                                     plot,
                                     'stroke'
-                                )} />
-                        {/if}
-                        <MarkerPath
-                            {mark}
-                            scales={plot.scales}
-                            markerStart={args.markerStart}
-                            markerMid={args.markerMid}
-                            markerEnd={args.markerEnd}
-                            marker={args.marker}
-                            strokeWidth={args.strokeWidth}
-                            datum={lineData[0]}
-                            d={pathString}
-                            color={markerColor}
-                            style={resolveScaledStyles(
-                                lineData[0],
-                                args,
-                                usedScales,
-                                plot,
-                                'stroke'
-                            )}
-                            text={text ? resolveProp(text, lineData[0]) : null}
-                            startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
-                            textStyle={resolveScaledStyles(
-                                lineData[0],
-                                {
-                                    textAnchor: 'middle',
-                                    ...pick(args, [
-                                        'fontSize',
-                                        'fontWeight',
-                                        'fontStyle',
-                                        'textAnchor'
-                                    ]),
-                                    fill: args.textFill || args.stroke,
-                                    stroke: args.textStroke,
-                                    strokeWidth: args.textStrokeWidth
-                                },
-                                usedScales,
-                                plot,
-                                'fill'
-                            )}
-                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
+                                )}
+                                text={text ? resolveProp(text, lineData[0]) : null}
+                                startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
+                                textStyle={resolveScaledStyles(
+                                    lineData[0],
+                                    {
+                                        textAnchor: 'middle',
+                                        ...pick(args, [
+                                            'fontSize',
+                                            'fontWeight',
+                                            'fontStyle',
+                                            'textAnchor'
+                                        ]),
+                                        fill: args.textFill || args.stroke,
+                                        stroke: args.textStroke,
+                                        strokeWidth: args.textStrokeWidth
+                                    },
+                                    usedScales,
+                                    plot,
+                                    'fill'
+                                )}
+                                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
+                        </GroupMultiple>
                     {/if}
                 {/each}
             </g>
