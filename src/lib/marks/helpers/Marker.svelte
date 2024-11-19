@@ -82,7 +82,7 @@
     stroke-width="1.5"
     {...markerColors}>
     {#if shape === 'dot' || shape === 'circle' || shape === 'circle-stroke'}
-        <circle r="3" />
+        <circle r="2.6" />
     {:else}
         <path d={MARKERS[shape].path} />
     {/if}

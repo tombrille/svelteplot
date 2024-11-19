@@ -77,15 +77,15 @@
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
 
-    let points = $derived(text && d != null ? d.split(/[LMC]/).slice(1) : []);
-    let hasPath = $derived(points.length > 0);
-    let firstPt = $derived(text && hasPath ? points.at(0).split(',').map(Number) : []);
-    let lastPt = $derived(text && hasPath ? points.at(-1).split(',').map(Number) : []);
-    let leftToRight = $derived(text && hasPath ? firstPt[0] < lastPt.at(-2) : true);
-    let pathIsCurve = $derived(text && hasPath ? d.includes('C') : false);
+    const points = $derived(text && d != null ? d.split(/[LMC]/).slice(1) : []);
+    const hasPath = $derived(points.length > 0);
+    const firstPt = $derived(text && hasPath ? points.at(0).split(',').map(Number) : []);
+    const lastPt = $derived(text && hasPath ? points.at(-1).split(',').map(Number) : []);
+    const leftToRight = $derived(text && hasPath ? firstPt[0] < lastPt.at(-2) : true);
+    const pathIsCurve = $derived(text && hasPath ? d.includes('C') : false);
     // this rather complicated code "reverses" the path to ensure that the text
     // is not turned upside down
-    let textPath = $derived(
+    const textPath = $derived(
         !text || leftToRight
             ? hasPath
             : pathIsCurve
@@ -109,7 +109,7 @@
                 ].join('')
     );
 
-    let strokeWidth_ = $derived(resolveProp(strokeWidth, datum, 1.4));
+    const strokeWidth_ = $derived(resolveProp(strokeWidth, datum, 1.4));
 </script>
 
 <g
