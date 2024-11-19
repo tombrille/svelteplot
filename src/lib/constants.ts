@@ -80,6 +80,8 @@ export const CSS_VAR = /^var\(--([a-z-0-9,\s]+)\)$/;
 export const CSS_COLOR = /^color\(/;
 export const CSS_COLOR_MIX = /^color-mix\(/; // just check for prefix
 export const CSS_COLOR_CONTRAST = /^color-contrast\(/; // just check for prefix
+export const CSS_RGBA = /^rgba\(/; // just check for prefix
+export const CSS_URL = /^url\(#/; // just check for prefix
 
 // export const CHANNEL_MAP: Record<ScaleName, ValueOf<typeof SCALE_TYPES>> = {
 // 	x: SCALE_TYPES.x,
