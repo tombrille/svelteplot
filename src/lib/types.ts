@@ -423,6 +423,7 @@ export type PlotDefaults = {
      * default number format for axis ticks
      */
     numberFormat: Intl.NumberFormatOptions;
+    markerDotRadius: number;
 };
 
 export type GenericMarkOptions = Record<string, any>;
@@ -451,6 +452,7 @@ export type PlotScale = {
         ScaleBand<RawValue> &
         ScaleOrdinal<string | Date, number> &
         ScaleOrdinal<string | Date, string>;
+   
 };
 
 export type CurveName =
@@ -840,4 +842,8 @@ export type DefaultOptions = {
      * default number format for axis ticks
      */
     numberFormat: Intl.NumberFormatOptions;
+    /**
+     * default dot radius for line markers, used in dot, circle, and circle-stroke markers
+     */
+    markerDotRadius: number;
 };

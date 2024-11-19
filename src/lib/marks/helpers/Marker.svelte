@@ -15,6 +15,8 @@
 -->
 
 <script lang="ts">
+    import { getContext } from "svelte";
+
     type MarkerProps = {
         id: string;
         shape: MarkerShape;
@@ -66,7 +68,9 @@
         }
     };
 
-    let markerColors = $derived({
+    const defaultDotRadius = getContext('svelteplot/_defaults').markerDotRadius;
+
+    const markerColors = $derived({
         fill: 'none',
         [MARKERS[shape].color]: color,
         ...(MARKERS[shape].bg ? { [MARKERS[shape].bg as string]: 'var(--svelteplot-bg)' } : {})
@@ -82,7 +86,7 @@
     stroke-width="1.5"
     {...markerColors}>
     {#if shape === 'dot' || shape === 'circle' || shape === 'circle-stroke'}
-        <circle r="2.6" />
+        <circle r={defaultDotRadius} />
     {:else}
         <path d={MARKERS[shape].path} />
     {/if}

@@ -84,6 +84,7 @@
             notation: 'compact',
             compactDisplay: 'short'
         },
+        markerDotRadius: 3,
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
 
