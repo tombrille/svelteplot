@@ -58,7 +58,7 @@
     const wingRatio = defaultRadius * 5;
 
     let {
-        data,
+        data = [{}],
         canvas,
         shape = 'arrow',
         anchor = 'middle',

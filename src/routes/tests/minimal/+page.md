@@ -11,13 +11,6 @@ Linear:
     import { page } from '$app/stores';
     let { penguins } = $derived($page.data.data);
 
-    function linearScaleX({ domain, plotWidth }) {
-        const fn = (v) =>
-            ((v - domain[0]) / (domain[1] - domain[0])) *
-            plotWidth;
-        fn.range = () => [0, plotWidth];
-        return fn;
-    }
     function linearScaleY({ domain, plotHeight }) {
         const fn = (v) =>
             ((v - domain[0]) / (domain[1] - domain[0])) *

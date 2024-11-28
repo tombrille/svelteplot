@@ -7,7 +7,10 @@
         BaseMarkProps,
         ChannelAccessor,
         DataRow,
-        FacetContext
+        FacetContext,
+
+        ConstantAccessor
+
     } from '../types.js';
     import { recordizeY } from '$lib/index.js';
     import { projectX, projectY } from '../helpers/scales.js';
@@ -29,9 +32,14 @@
          */
         x?: ChannelAccessor;
         stroke?: ChannelAccessor;
+        /**
+         * if ticks are used on a non-bandwidth scale, this will determine the 
+         * length of the tick. Defaults to 10 pixel
+         */
+        tickLength?: ConstantAccessor<number>;
     };
 
-    let { data = [], ...options }: TickYMarkProps = $props();
+    let { data = [{}], ...options }: TickYMarkProps = $props();
 
     let args = $derived(recordizeY({ data, ...options }, { withIndex: false }));
 
@@ -50,6 +58,9 @@
                     {@const y_ = resolveChannel('y', datum, args)}
                     {@const x_ = resolveChannel('x', datum, args)}
                     {@const inset_ = resolveProp(args.inset, datum, 0)}
+                    {@const tickLength_ = resolveProp(args.tickLength, datum, 10)}
+                    {@const dx_ = resolveProp(args.dx, datum, 0)}
+                    {@const dy_ = resolveProp(args.dy, datum, 0)}
                     {#if isValid(y_) && (isValid(x_) || args.x == null)}
                         {@const y = usedScales.y ? projectY('y', plot.scales, y_) : y_}
                         {@const x1 =
@@ -66,10 +77,10 @@
                                 : plot.options.marginLeft + plot.facetWidth}
                         {@const inset = parseInset(inset_, Math.abs(x2 - x1))}
                         <line
-                            transform="translate({0}, {y})"
+                            transform="translate({dx_}, {y + dy_})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            x1={x1 + inset}
-                            x2={x2 - inset} />
+                            x1={x1 + inset + (x1 === x2 ? tickLength_ * 0.5 : 0)}
+                            x2={x2 - inset - (x1 === x2 ? tickLength_ * 0.5 : 0)} />
                     {/if}
                 {/if}
             {/each}

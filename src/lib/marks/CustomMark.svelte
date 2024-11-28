@@ -26,7 +26,7 @@
     import { isValid } from '$lib/helpers/index.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
-    let { data, x, y, children, class: className = null }: HTMLMarkProps = $props();
+    let { data = [{}], x, y, children, class: className = null }: HTMLMarkProps = $props();
 </script>
 
 <GroupMultiple class="g-custom-mark {className || ''}" length={className ? 2 : data.length}>

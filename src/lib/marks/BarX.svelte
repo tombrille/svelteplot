@@ -33,7 +33,7 @@
               };
     } & RectMarkProps;
 
-    let { data, class: className = null, stack, ...options }: BarXProps = $props();
+    let { data = [{}], class: className = null, stack, ...options }: BarXProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

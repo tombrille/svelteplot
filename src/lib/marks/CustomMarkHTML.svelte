@@ -25,7 +25,7 @@
     import { projectXY } from '$lib/helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
 
-    let { data, x, y, children, class: className = null }: HTMLMarkProps = $props();
+    let { data = [{}], x, y, children, class: className = null }: HTMLMarkProps = $props();
 </script>
 
 {#snippet customMarks()}

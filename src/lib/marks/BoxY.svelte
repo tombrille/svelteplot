@@ -33,7 +33,7 @@
     import { resolveChannel } from '$lib/helpers/resolve.js';
 
     let {
-        data,
+        data = [{}],
         x,
         y,
         rule,

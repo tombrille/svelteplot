@@ -5,7 +5,7 @@
     import Regression, { type RegressionMarkProps } from './helpers/Regression.svelte';
     import { groups as d3Groups } from 'd3-array';
 
-    let { data, ...options }: RegressionMarkProps = $props();
+    let { data = [{}], ...options }: RegressionMarkProps = $props();
 
     let groupBy: ChannelName | null =
         options.stroke != null ? 'stroke' : options.z != null ? 'z' : null;

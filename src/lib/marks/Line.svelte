@@ -60,7 +60,7 @@
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
     let {
-        data,
+        data = [{}],
         curve = 'auto',
         tension = 0,
         text,

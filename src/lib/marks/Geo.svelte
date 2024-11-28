@@ -20,7 +20,7 @@
         dragRotate: boolean;
     } & BaseMarkProps;
 
-    let { data, geoType, dragRotate, class: className = null, ...options }: GeoMarkProps = $props();
+    let { data = [{}], geoType, dragRotate, class: className = null, ...options }: GeoMarkProps = $props();
 
     let path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {

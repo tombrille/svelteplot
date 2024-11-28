@@ -38,7 +38,7 @@
     } & MarkerOptions;
 
     let {
-        data,
+        data = [{}],
         curve = 'auto',
         tension = 0,
         text,

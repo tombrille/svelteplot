@@ -57,7 +57,7 @@
         children?: Snippet;
     };
 
-    let { data, class: className = null, ...options }: ArrowProps = $props();
+    let { data = [{}], class: className = null, ...options }: ArrowProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

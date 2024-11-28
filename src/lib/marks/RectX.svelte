@@ -22,7 +22,7 @@
         interval?: number | string;
     } & BaseRectMarkProps;
 
-    let { data, stack, ...options }: RectXMarkProps = $props();
+    let { data = [{}], stack, ...options }: RectXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

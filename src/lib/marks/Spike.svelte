@@ -1,6 +1,6 @@
 <script lang="ts">
     import Vector, { type VectorMarkProps } from './Vector.svelte';
-    let { data, ...options }: VectorMarkProps = $props();
+    let { data = [{}], ...options }: VectorMarkProps = $props();
 </script>
 
 <Vector

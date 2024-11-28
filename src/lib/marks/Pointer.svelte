@@ -32,7 +32,7 @@
     import { projectXY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
 
-    let { data, children, x, y, z, maxDistance = 15, onupdate = null }: PointerMarkProps = $props();
+    let { data = [{}], children, x, y, z, maxDistance = 15, onupdate = null }: PointerMarkProps = $props();
 
     let selectedData = $state([]);
 

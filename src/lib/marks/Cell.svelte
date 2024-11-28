@@ -26,7 +26,7 @@
         y?: ChannelAccessor;
     } & BaseRectMarkProps;
 
-    let { data, class: className = null, ...options }: CellProps = $props();
+    let { data = [{}], class: className = null, ...options }: CellProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

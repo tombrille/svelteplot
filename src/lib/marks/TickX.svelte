@@ -29,9 +29,14 @@
          */
         y?: ChannelAccessor;
         stroke?: ChannelAccessor;
+        /**
+         * if ticks are used on a non-bandwidth scale, this will determine the 
+         * length of the tick. Defaults to 10 pixel
+         */
+         tickLength?: ConstantAccessor<number>;
     };
 
-    let { data = [], ...options }: TickXMarkProps = $props();
+    let { data = [{}], ...options }: TickXMarkProps = $props();
 
     let args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
 
@@ -50,6 +55,9 @@
                     {@const x_ = resolveChannel('x', datum, args)}
                     {@const y_ = resolveChannel('y', datum, args)}
                     {@const inset_ = resolveProp(args.inset, datum, 0)}
+                    {@const tickLength_ = resolveProp(args.tickLength, datum, 10)}
+                    {@const dx_ = resolveProp(args.dx, datum, 0)}
+                    {@const dy_ = resolveProp(args.dy, datum, 0)}
                     {#if isValid(x_) && (isValid(y_) || args.y == null) && (args.filter == null || resolveProp(args.filter, datum))}
                         {@const x = usedScales.x ? projectX('x', plot.scales, x_) : x_}
                         {@const y1 =
@@ -66,10 +74,10 @@
                                 : plot.options.marginTop + plot.plotHeight}
                         {@const inset = parseInset(inset_, Math.abs(y2 - y1))}
                         <line
-                            transform="translate({x}, {0})"
+                            transform="translate({x+dx_}, {dy_})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            y1={y1 + inset}
-                            y2={y2 - inset} />
+                            y1={y1 + inset + (y1 === y2 ? tickLength_ * 0.5 : 0)}
+                            y2={y2 - inset - (y1 === y2 ? tickLength_ * 0.5 : 0)} />
                     {/if}
                 {/if}
             {/each}
