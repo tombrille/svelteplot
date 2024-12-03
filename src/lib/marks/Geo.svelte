@@ -10,19 +10,28 @@
     import { testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import { facetWrap } from '$lib/transforms/facet.js';
+    import GeoCanvas from './helpers/GeoCanvas.svelte';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     type GeoMarkProps = {
         data: DataRecord[];
         geoType?: 'sphere' | 'graticule';
         dragRotate: boolean;
+        canvas: boolean;
     } & BaseMarkProps;
 
-    let { data = [{}], geoType, dragRotate, class: className = null, ...options }: GeoMarkProps = $props();
+    let {
+        data = [{}],
+        canvas = false,
+        geoType,
+        dragRotate,
+        class: className = null,
+        ...options
+    }: GeoMarkProps = $props();
 
-    let path = $derived(
+    const path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {
             ...(options.r
                 ? { pointRadius: (d) => plot.scales.r.fn(resolveChannel('r', d, options)) }
@@ -30,7 +39,7 @@
         })
     );
 
-    let args = $derived(
+    const args = $derived(
         facetWrap(
             sort({
                 data,
@@ -42,7 +51,7 @@
     const preferStroke = new Set(['MultiLineString', 'LineString']);
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
+    const testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -54,39 +63,43 @@
             aria-label="geo"
             class="geo{geoType ? ` geo-${geoType}` : ''} {className || ''}"
             style="fill:currentColor">
-            {#each args.data as datum}
-                {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                    {#snippet el(datum)}
-                        {@const title = resolveProp(args.title, datum, '')}
-                        {@const geometry = resolveProp(args.geometry, datum, datum)}
-                        <path
-                            d={path(geometry)}
-                            style={resolveScaledStyles(
-                                datum,
-                                args,
-                                usedScales,
-                                plot,
-                                preferStroke.has(geometry.type) ? 'stroke' : 'fill'
-                            )}
-                            use:addEventHandlers={{
-                                getPlotState,
-                                options: mark.options,
-                                datum
-                            }}>
-                            {#if title}<title>{title}</title>{/if}
-                        </path>
-                    {/snippet}
-                    {#if options.href}
-                        <a
-                            href={resolveProp(args.href, datum, '')}
-                            target={resolveProp(args.target, datum, '_self')}>
+            {#if canvas}
+                <GeoCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
+            {:else}
+                {#each args.data as datum}
+                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
+                        {#snippet el(datum)}
+                            {@const title = resolveProp(args.title, datum, '')}
+                            {@const geometry = resolveProp(args.geometry, datum, datum)}
+                            <path
+                                d={path(geometry)}
+                                style={resolveScaledStyles(
+                                    datum,
+                                    args,
+                                    usedScales,
+                                    plot,
+                                    preferStroke.has(geometry.type) ? 'stroke' : 'fill'
+                                )}
+                                use:addEventHandlers={{
+                                    getPlotState,
+                                    options: mark.options,
+                                    datum
+                                }}>
+                                {#if title}<title>{title}</title>{/if}
+                            </path>
+                        {/snippet}
+                        {#if options.href}
+                            <a
+                                href={resolveProp(args.href, datum, '')}
+                                target={resolveProp(args.target, datum, '_self')}>
+                                {@render el(datum)}
+                            </a>
+                        {:else}
                             {@render el(datum)}
-                        </a>
-                    {:else}
-                        {@render el(datum)}
+                        {/if}
                     {/if}
-                {/if}
-            {/each}
+                {/each}
+            {/if}
         </g>
     {/snippet}
 </Mark>
