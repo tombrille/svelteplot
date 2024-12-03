@@ -216,13 +216,13 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
 
 The following channels are supported:
 
--   **x** - bound to x scale
--   **y** - bound to y scale
--   **z**
--   **stroke** - bound to color scale
--   **sort**
--   **outlineStroke** - for adding an outline stroke aka casing behind the line
--   **outlineStrokeWidth** -
+- **x** - bound to x scale
+- **y** - bound to y scale
+- **z**
+- **stroke** - bound to color scale
+- **sort**
+- **outlineStroke** - for adding an outline stroke aka casing behind the line
+- **outlineStrokeWidth** -
 
 BLS Demo:
 

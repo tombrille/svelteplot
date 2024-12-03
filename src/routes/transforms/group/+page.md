@@ -153,12 +153,12 @@ You can also group by temporal intervals
 
 ## Group options
 
--   **interval** - optional interval to group on, e.g. `2 weeks`
--   **domain**
--   **thresholds**
--   **cumulative**
--   **reverse** - reverses the cumulative grouping
--   **copy** - copy attributes from first item of each group
+- **interval** - optional interval to group on, e.g. `2 weeks`
+- **domain**
+- **thresholds**
+- **cumulative**
+- **reverse** - reverses the cumulative grouping
+- **copy** - copy attributes from first item of each group
 
 ## groupX
 

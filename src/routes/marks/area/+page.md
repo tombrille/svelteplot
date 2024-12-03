@@ -93,8 +93,8 @@ Implicit stacking over y
 
 Required channels:
 
--   `x`
--   either `y` for implicit stacking or `y1` and `y2` if you want to control the offsets directly
+- `x`
+- either `y` for implicit stacking or `y1` and `y2` if you want to control the offsets directly
 
 You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 
@@ -157,9 +157,9 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 
 You can control the stacking for the implicit [stackY](/transforms/stack) transform using the `stack` options:
 
--   `order` - can be one of `none`, `appearance`, `inside-out`, or `sum`.
--   `reverse` - for reversing the order
--   `offset`
+- `order` - can be one of `none`, `appearance`, `inside-out`, or `sum`.
+- `reverse` - for reversing the order
+- `offset`
 
 ```svelte live
 <script>
@@ -222,9 +222,9 @@ the topline and a <b>RuleY</b> for the baseline:
 
 Required channels for horizontal area charts:
 
--   `x`, `y1`, and `y2` (for horizontal → area charts)
--   `y`, `x1` and `x2` (for vertical area charts)
--   `z` to group multiple areas
+- `x`, `y1`, and `y2` (for horizontal → area charts)
+- `y`, `x1` and `x2` (for vertical area charts)
+- `z` to group multiple areas
 
 ```svelte live
 <script lang="ts">

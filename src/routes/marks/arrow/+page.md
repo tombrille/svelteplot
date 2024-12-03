@@ -285,14 +285,14 @@ Another thing you can use the arrow mark for is drawing network diagrams:
 
 Options:
 
--   **x1**, **y1**, **x2**, **y2** - coordinates of start and end points
--   **bend** - the bend angle, in degrees; defaults to 0°; _true_ for 22.5°
--   **insetEnd** - inset at the end of the arrow (useful if the arrow points to a dot)
--   **insetStart** - inset at the start of the arrow
--   **inset** - shorthand for the two insets
--   **headLength** - the arrowhead scale; defaults to 8
--   **headAngle** - the arrowhead angle, in degrees; defaults to 60°
--   **sweep** - controls the direction in which the arrow bends, possible options are _1_, _0_ (no bending), _-1_, _+x_, _-x_, _+y_, _-y_ (see demo below)
+- **x1**, **y1**, **x2**, **y2** - coordinates of start and end points
+- **bend** - the bend angle, in degrees; defaults to 0°; _true_ for 22.5°
+- **insetEnd** - inset at the end of the arrow (useful if the arrow points to a dot)
+- **insetStart** - inset at the start of the arrow
+- **inset** - shorthand for the two insets
+- **headLength** - the arrowhead scale; defaults to 8
+- **headAngle** - the arrowhead angle, in degrees; defaults to 60°
+- **sweep** - controls the direction in which the arrow bends, possible options are _1_, _0_ (no bending), _-1_, _+x_, _-x_, _+y_, _-y_ (see demo below)
 
 ```svelte live
 <script lang="ts">

@@ -120,13 +120,13 @@ You can create stacked bar charts by defining a fill channel which will be used 
 </Plot>
 ```
 
--   `x`
--   `y1`
--   `y2`
+- `x`
+- `y1`
+- `y2`
 
--   `y`
--   `x1`
--   `x2`
+- `y`
+- `x1`
+- `x2`
 
 ## Border radius
 

@@ -23,22 +23,22 @@ If you're using SveltePlot in a SvelteKit project, you can even set the defaults
 
 ## Options
 
-| Name                     | Description                                                                              | Unit    | Default          |
-| ------------------------ | ---------------------------------------------------------------------------------------- | ------- | ---------------- |
-| _height_                 | Plot height                                                                              | px      | `350`            |
-| _inset_                  | Plot inset                                                                               | px      | `0`              |
-| _colorScheme_            | Default scheme for color scale                                                           | string  | `'turbo'`        |
-| _categoricalColorScheme_ | Default scheme for [categorical color scales](/features/color-scales#Categorical-colors) | string  | `'observable10'` |
-| _tickSize_               | Axis tick line length                                                                    | px      | `6`              |
-| _tickPadding_            | Distance between tick line and label                                                     | px      | `3`              |
-| _tickFontSize_           | Tick label font size                                                                     | px      | `11`             |
-| _axisXAnchor_            | Alignment of AxisX                                                                       |         | `'bottom'`       |
-| _axisYAnchor_            | Alignment of AxisY                                                                       |         | `'left'`         |
-| _xTickSpacing_           | Horizontal space between ticks in AxisX and GridX                                        | px      | `80`             |
-| _yTickSpacing_           | Vertical space between ticks in AxisY and GridY                                          | px      | `50`             |
-| _graticuleStep_          | Default step size in graticules                                                          | degrees | `10`             |
-| _locale_                 | Default locale used in axis ticks etc.                                                   | string  | `'en-US'`          |
-| _numberFormat_           | Default [number format options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) in axis ticks                                                      | object  |                  |
+| Name                     | Description                                                                                                                                                            | Unit    | Default          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------- |
+| _height_                 | Plot height                                                                                                                                                            | px      | `350`            |
+| _inset_                  | Plot inset                                                                                                                                                             | px      | `0`              |
+| _colorScheme_            | Default scheme for color scale                                                                                                                                         | string  | `'turbo'`        |
+| _categoricalColorScheme_ | Default scheme for [categorical color scales](/features/color-scales#Categorical-colors)                                                                               | string  | `'observable10'` |
+| _tickSize_               | Axis tick line length                                                                                                                                                  | px      | `6`              |
+| _tickPadding_            | Distance between tick line and label                                                                                                                                   | px      | `3`              |
+| _tickFontSize_           | Tick label font size                                                                                                                                                   | px      | `11`             |
+| _axisXAnchor_            | Alignment of AxisX                                                                                                                                                     |         | `'bottom'`       |
+| _axisYAnchor_            | Alignment of AxisY                                                                                                                                                     |         | `'left'`         |
+| _xTickSpacing_           | Horizontal space between ticks in AxisX and GridX                                                                                                                      | px      | `80`             |
+| _yTickSpacing_           | Vertical space between ticks in AxisY and GridY                                                                                                                        | px      | `50`             |
+| _graticuleStep_          | Default step size in graticules                                                                                                                                        | degrees | `10`             |
+| _locale_                 | Default locale used in axis ticks etc.                                                                                                                                 | string  | `'en-US'`        |
+| _numberFormat_           | Default [number format options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) in axis ticks | object  |                  |
 
 <style>
     * :global(td) {

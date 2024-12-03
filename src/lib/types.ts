@@ -296,6 +296,10 @@ export type PlotOptions = {
      */
     grid: boolean;
     /**
+     * Activates the implicit AxisX and AxisY marks.
+     */
+    axes: boolean;
+    /**
      * Activates the implicit frame marks
      */
     frame: boolean;
@@ -411,6 +415,7 @@ export type PlotDefaults = {
      */
     frame: boolean;
     grid: boolean;
+    axes: boolean;
     /**
      * initial width of the plot before measuring the actual width
      */
@@ -452,7 +457,6 @@ export type PlotScale = {
         ScaleBand<RawValue> &
         ScaleOrdinal<string | Date, number> &
         ScaleOrdinal<string | Date, string>;
-   
 };
 
 export type CurveName =

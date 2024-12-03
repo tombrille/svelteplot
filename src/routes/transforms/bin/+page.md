@@ -253,9 +253,9 @@ While the mixBlendMode option is useful for mitigating occlusion, it can be slow
 
 The bin transform comes in three orientations:
 
--   [binX](/transforms/bin#binX) bins on **x**, and often outputs **y** as in a histogram with vertical↑ rects;
--   [binY](/transforms/bin#binY) bins on **y**, and often outputs **x** as in a histogram with horizontal→ rects; and
--   [bin](/transforms/bin#bin) bins on both **x** and **y**, and often outputs to **fill** or **r** as in a heatmap.
+- [binX](/transforms/bin#binX) bins on **x**, and often outputs **y** as in a histogram with vertical↑ rects;
+- [binY](/transforms/bin#binY) bins on **y**, and often outputs **x** as in a histogram with horizontal→ rects; and
+- [bin](/transforms/bin#bin) bins on both **x** and **y**, and often outputs to **fill** or **r** as in a heatmap.
 
 As you might guess, the binY transform with the rectX mark produces a histogram with horizontal→ rects.
 
@@ -306,11 +306,11 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
 
 The supported bin options are:
 
--   the output channels to be computed for each bin. For binX the supported outputs are _y_, _y1_, and _y2_, for binY the outputs are _x_, _x1_, and _x2_.
--   **thresholds** defines how the bin thresholds should be computed (see examples below)
--   **interval** in addition to thresholds you can also define the interval at which the bin thresholds should be computed
--   **reverse**
--   **cumulative**
+- the output channels to be computed for each bin. For binX the supported outputs are _y_, _y1_, and _y2_, for binY the outputs are _x_, _x1_, and _x2_.
+- **thresholds** defines how the bin thresholds should be computed (see examples below)
+- **interval** in addition to thresholds you can also define the interval at which the bin thresholds should be computed
+- **reverse**
+- **cumulative**
 
 You can define _thresholds_ as a number
 

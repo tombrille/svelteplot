@@ -111,18 +111,18 @@
     })}
         <!-- implicit axes -->
         {#if !hasProjection && !hasExplicitAxisX}
-            {#if options.x.axis === 'top' || options.x.axis === 'both'}
+            {#if options.axes && (options.x.axis === 'top' || options.x.axis === 'both')}
                 <AxisX anchor="top" automatic />
             {/if}
-            {#if options.x.axis === 'bottom' || options.x.axis === 'both'}
+            {#if options.axes && (options.x.axis === 'bottom' || options.x.axis === 'both')}
                 <AxisX anchor="bottom" automatic />
             {/if}
         {/if}
         {#if !hasProjection && !hasExplicitAxisY}
-            {#if options.y.axis === 'left' || options.y.axis === 'both'}
+            {#if options.axes && (options.y.axis === 'left' || options.y.axis === 'both')}
                 <AxisY anchor="left" automatic />
             {/if}
-            {#if options.y.axis === 'right' || options.y.axis === 'both'}
+            {#if options.axes && (options.y.axis === 'right' || options.y.axis === 'both')}
                 <AxisY anchor="right" automatic />
             {/if}
         {/if}

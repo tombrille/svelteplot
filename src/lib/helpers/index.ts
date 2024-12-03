@@ -23,9 +23,10 @@ export function randomId() {
     return Math.ceil(1e9 + Math.random() * 1e9).toString(36);
 }
 
-export function isSnippet(object: unknown): object is Snippet {
-    return !!object && object[Symbol.for('svelte.snippet')] === true;
+export function isSnippet (value: unknown): value is Snippet {
+    return typeof value === 'function' && value.length === 1;
 }
+	
 
 export function isValid(value: RawValue): value is number | Date | string {
     return value !== null && value !== undefined && !Number.isNaN(value);

@@ -47,11 +47,11 @@ Box marks are a compound mark consisting of a bar, rule, dots and tick marks (se
 
 You can style box plots by passing separate options for the marks
 
--   **bar** - options passed to the inter-quartile range bar marks
--   **rule** - options passed to the min/max range rule marks
--   **dot** - options passed to the dot marks representing the outliers
--   **tickMedian** - options passed to the tick marks representing the median
--   **tickMinMax** - options passed to the tick marks representing the lower and upper quartiles
+- **bar** - options passed to the inter-quartile range bar marks
+- **rule** - options passed to the min/max range rule marks
+- **dot** - options passed to the dot marks representing the outliers
+- **tickMedian** - options passed to the tick marks representing the median
+- **tickMinMax** - options passed to the tick marks representing the lower and upper quartiles
 
 ## BoxX
 

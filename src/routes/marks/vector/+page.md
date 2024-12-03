@@ -32,12 +32,12 @@ The vector mark lets you place shapes (like arrows) on your plot. If you want to
 
 ## Arrow options:
 
--   **x** - the horizontal postion (or longitude)
--   **y** - the vertical position (or latitude)
--   **length**
--   **rotate**
--   **shape** - Either _arrow_ or _spike_, or a custom shape object (see below)
--   **anchor** - Controls where the vector is anchored in relation to the x, y position. If set to _'start'_, the arrow will start at the x, y position. If set to _'middle'_, the arrow will be centered at the x, y position. If set to _'end'_, the arrow will end at the x, y position. Default is _middle_.
+- **x** - the horizontal postion (or longitude)
+- **y** - the vertical position (or latitude)
+- **length**
+- **rotate**
+- **shape** - Either _arrow_ or _spike_, or a custom shape object (see below)
+- **anchor** - Controls where the vector is anchored in relation to the x, y position. If set to _'start'_, the arrow will start at the x, y position. If set to _'middle'_, the arrow will be centered at the x, y position. If set to _'end'_, the arrow will end at the x, y position. Default is _middle_.
 
 Here's an example where all arrows point towards the mouse cursor:
 

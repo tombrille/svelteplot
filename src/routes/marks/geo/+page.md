@@ -274,6 +274,6 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 
 You can customize the step size using the following options
 
--   **stepX** - default step size for the minor longitude grid, in degrees
--   **stepY** - default step size for the minor latitude grid, in degrees
--   **step** - convenience option for setting both _stepX_ and _stepY_
+- **stepX** - default step size for the minor longitude grid, in degrees
+- **stepY** - default step size for the minor latitude grid, in degrees
+- **step** - convenience option for setting both _stepX_ and _stepY_

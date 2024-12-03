@@ -15,7 +15,7 @@
 -->
 
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext } from 'svelte';
 
     type MarkerProps = {
         id: string;

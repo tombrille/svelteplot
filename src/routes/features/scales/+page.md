@@ -1015,8 +1015,7 @@ Quantize is like a "stepped" linear scale, where a continuous input domain is ma
         tickFormat: formatMonth('en', 'short')
     }}
     testid="seattle-temp">
-   
-     <Cell
+    <Cell
         data={seattle}
         filter={(d) => d.date.getUTCFullYear() === 2015}
         x={(d) => d.date.getUTCDate()}

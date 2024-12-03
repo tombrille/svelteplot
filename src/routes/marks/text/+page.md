@@ -64,20 +64,20 @@ Useful for showing SVG labels!
 
 The following channels are required:
 
--   **text** - the text contents (a string, possibly with multiple lines)
--   **x** - the horizontal position; bound to the _x_ scale
--   **y** - the vertical position; bound to the _y_ scale
--   **dx** - horizontal offset in px
--   **dy** - vertical offset in px
--   **textAnchor** - `start`, `end`, or `middle`
--   **lineAnchor** - `top`, `bottom` or `middle`
--   **frameAnchor** -
--   **class** - CSS class name to applied to the `<g>` around all texts
--   **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
+- **text** - the text contents (a string, possibly with multiple lines)
+- **x** - the horizontal position; bound to the _x_ scale
+- **y** - the vertical position; bound to the _y_ scale
+- **dx** - horizontal offset in px
+- **dy** - vertical offset in px
+- **textAnchor** - `start`, `end`, or `middle`
+- **lineAnchor** - `top`, `bottom` or `middle`
+- **frameAnchor** -
+- **class** - CSS class name to applied to the `<g>` around all texts
+- **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
 
 ## Styling options
 
--   **fontSize** - the font size in pixels
--   **fontWeight** - the font size in pixels
+- **fontSize** - the font size in pixels
+- **fontWeight** - the font size in pixels
 
 TODO: add example for multiline text

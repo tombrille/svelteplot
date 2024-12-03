@@ -35,7 +35,13 @@
         dotClass: ConstantAccessor<string>;
     };
 
-    let { data = [{}], canvas = false, class: className = '', dotClass = null, ...options }: DotProps = $props();
+    let {
+        data = [{}],
+        canvas = false,
+        class: className = '',
+        dotClass = null,
+        ...options
+    }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

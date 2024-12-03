@@ -54,21 +54,21 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
 
 The supported marker options are:
 
--   **markerStart** - the marker for the starting point of a line segment
--   **markerMid** - the marker for any intermediate point of a line segment
--   **markerEnd** - the marker for the end point of a line segment
--   **marker** - shorthand for setting the marker on all points
+- **markerStart** - the marker for the starting point of a line segment
+- **markerMid** - the marker for any intermediate point of a line segment
+- **markerEnd** - the marker for the end point of a line segment
+- **marker** - shorthand for setting the marker on all points
 
 The following named markers are supported:
 
--   _dot_ - a filled circle without a stroke and 2.5px radius
--   _circle_ - a filled circle with a white stroke and 3px radius
--   _circle-stroke_ - a hollow circle with a colored stroke and a white fill and 3px radius
--   _arrow_ - an arrowhead with auto orientation
--   _arrow-reverse_ - an reversed arrowhead with auto orientation
--   _tick_ - a small perpendicular line
--   _tick-x_ - a small horizontal line
--   _tick-y_ - a small vertical line
+- _dot_ - a filled circle without a stroke and 2.5px radius
+- _circle_ - a filled circle with a white stroke and 3px radius
+- _circle-stroke_ - a hollow circle with a colored stroke and a white fill and 3px radius
+- _arrow_ - an arrowhead with auto orientation
+- _arrow-reverse_ - an reversed arrowhead with auto orientation
+- _tick_ - a small perpendicular line
+- _tick-x_ - a small horizontal line
+- _tick-y_ - a small vertical line
 
 You can specify the markers separately for the start of the line (**markerStart**), the end of the line (**markerEnd**) or the points in-between (**markerMid**) -- or you can set the **marker** option for all of them.
 
@@ -131,7 +131,7 @@ You can also specify a custom marker icon using the `marker` snippet:
 
 <Plot grid height={300}>
     <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
-        <!-- {#snippet marker(id, color)}
+        {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -142,7 +142,7 @@ You can also specify a custom marker icon using the `marker` snippet:
                 orient="auto">
                 <path d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
             </marker>
-        {/snippet} -->
+        {/snippet}
     </Line>
 </Plot>
 ```
@@ -188,7 +188,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 
 <Plot grid height={300}>
     <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
-        <!-- {#snippet marker(id, color)}
+        {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -204,7 +204,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
                         d="M0,-10L0,-2m-3,-3 l3,3l3,-3" />
                 {/if}
             </marker>
-        {/snippet} -->
+        {/snippet}
     </Line>
 </Plot>
 ```

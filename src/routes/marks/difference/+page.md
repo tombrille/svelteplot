@@ -190,26 +190,26 @@ In combination with the [shift transform](/transforms/shift) you can compare a s
 
 At the very least, you need to provide an x2 and y2 channel for the _metric_ line.
 
--   **x2** (or _x_) - the horizontal position of the metric line, bound to the x scale
--   **y2** (or _y_) - the vertical position of the metric line, bound to the x scale
+- **x2** (or _x_) - the horizontal position of the metric line, bound to the x scale
+- **y2** (or _y_) - the vertical position of the metric line, bound to the x scale
 
 The following optional channels are supported:
 
--   **x1** - the horizontal position of the comparison; bound to the x scale
--   **y1** - the vertical position of the comparison; bound to the x scale
--   positiveFill
--   negativeFill
+- **x1** - the horizontal position of the comparison; bound to the x scale
+- **y1** - the vertical position of the comparison; bound to the x scale
+- positiveFill
+- negativeFill
 
 If **x1** is not specified, it defaults to **x2**. If **y1** is not specified, it defaults to 0 if **x1** and **x2** are equal, and to **y2** otherwise. These defaults facilitate sharing _x_ or _y_ coordinates between the metric and its comparison.
 
 The standard fill option is ignored; instead, there are separate channels based on the sign of the difference:
 
--   **positiveFill** - the color for when the metric is greater, defaults to green
--   **negativeFill** - the color for when the comparison is greater, defaults to blue
--   **fillOpacity** - the areas’ opacity, defaults to 1
--   **positiveFillOpacity** - the positive area’s opacity, defaults to opacity
--   **negativeFillOpacity** - the negative area’s opacity, defaults to opacity
--   **stroke** - the metric line’s stroke color, defaults to currentColor
--   **strokeOpacity** - the metric line’s opacity, defaults to 1
+- **positiveFill** - the color for when the metric is greater, defaults to green
+- **negativeFill** - the color for when the comparison is greater, defaults to blue
+- **fillOpacity** - the areas’ opacity, defaults to 1
+- **positiveFillOpacity** - the positive area’s opacity, defaults to opacity
+- **negativeFillOpacity** - the negative area’s opacity, defaults to opacity
+- **stroke** - the metric line’s stroke color, defaults to currentColor
+- **strokeOpacity** - the metric line’s opacity, defaults to 1
 
 ## DifferenceY

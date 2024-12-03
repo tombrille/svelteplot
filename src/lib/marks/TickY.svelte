@@ -8,9 +8,7 @@
         ChannelAccessor,
         DataRow,
         FacetContext,
-
         ConstantAccessor
-
     } from '../types.js';
     import { recordizeY } from '$lib/index.js';
     import { projectX, projectY } from '../helpers/scales.js';
@@ -33,7 +31,7 @@
         x?: ChannelAccessor;
         stroke?: ChannelAccessor;
         /**
-         * if ticks are used on a non-bandwidth scale, this will determine the 
+         * if ticks are used on a non-bandwidth scale, this will determine the
          * length of the tick. Defaults to 10 pixel
          */
         tickLength?: ConstantAccessor<number>;

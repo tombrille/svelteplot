@@ -30,10 +30,10 @@
         y?: ChannelAccessor;
         stroke?: ChannelAccessor;
         /**
-         * if ticks are used on a non-bandwidth scale, this will determine the 
+         * if ticks are used on a non-bandwidth scale, this will determine the
          * length of the tick. Defaults to 10 pixel
          */
-         tickLength?: ConstantAccessor<number>;
+        tickLength?: ConstantAccessor<number>;
     };
 
     let { data = [{}], ...options }: TickXMarkProps = $props();
@@ -74,7 +74,7 @@
                                 : plot.options.marginTop + plot.plotHeight}
                         {@const inset = parseInset(inset_, Math.abs(y2 - y1))}
                         <line
-                            transform="translate({x+dx_}, {dy_})"
+                            transform="translate({x + dx_}, {dy_})"
                             style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                             y1={y1 + inset + (y1 === y2 ? tickLength_ * 0.5 : 0)}
                             y2={y2 - inset - (y1 === y2 ? tickLength_ * 0.5 : 0)} />

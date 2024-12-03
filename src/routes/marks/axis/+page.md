@@ -354,20 +354,32 @@ Note that you can achive a similar axis using a custom tick format function that
     import { Plot, AxisX } from '$lib';
 </script>
 
-<Plot 
+<Plot
     marginLeft={30}
     x={{
-        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)],
-        tickFormat: (d) => [`Q${d.getMonth() / 3 + 1}`, d.getFullYear()]
+        domain: [
+            new Date(2022, 0, 1),
+            new Date(2024, 1, 1)
+        ],
+        tickFormat: (d) => [
+            `Q${d.getMonth() / 3 + 1}`,
+            d.getFullYear()
+        ]
     }}>
 </Plot>
 ```
 
 ```svelte
-<Plot 
+<Plot
     x={{
-        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)],
-        tickFormat: (d) => [`Q${d.getMonth() / 3 + 1}`, d.getFullYear()]
+        domain: [
+            new Date(2022, 0, 1),
+            new Date(2024, 1, 1)
+        ],
+        tickFormat: (d) => [
+            `Q${d.getMonth() / 3 + 1}`,
+            d.getFullYear()
+        ]
     }}>
 </Plot>
 ```
@@ -376,8 +388,8 @@ Note that you can achive a similar axis using a custom tick format function that
 
 Options:
 
--   tickSize
--   tickPadding
+- tickSize
+- tickPadding
 
 ### Ticks inside the plot
 

@@ -1,7 +1,14 @@
 import type { RawValue } from '$lib/types.js';
 import { isSymbol } from './symbols.js';
 import { color } from 'd3-color';
-import { CSS_COLOR, CSS_COLOR_MIX, CSS_COLOR_CONTRAST, CSS_VAR, CSS_URL, CSS_RGBA } from '$lib/constants.js';
+import {
+    CSS_COLOR,
+    CSS_COLOR_MIX,
+    CSS_COLOR_CONTRAST,
+    CSS_VAR,
+    CSS_URL,
+    CSS_RGBA
+} from '$lib/constants.js';
 
 export function isBooleanOrNull(v: RawValue) {
     return v == null || typeof v === 'boolean';

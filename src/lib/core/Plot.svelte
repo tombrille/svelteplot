@@ -74,6 +74,7 @@
         colorScheme: 'turbo',
         dotRadius: 3,
         frame: false,
+        axes: true,
         grid: false,
         categoricalColorScheme: 'observable10',
         pointScaleHeight: 18,
@@ -217,7 +218,7 @@
     let facetWidth: number | null = $state(null);
     let facetHeight: number | null = $state(null);
 
-    let plotState: PlotState = $derived.by((x) => {
+    const plotState: PlotState = $derived.by((x) => {
         // now that we know the actual height and facet dimensions, we can compute
         // the scales used in all the marks
         const scales = computeScales(
@@ -359,6 +360,7 @@
                   : Math.max(5, maxMarginBottom),
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
             grid: DEFAULTS.grid,
+            axes: DEFAULTS.axes,
             frame: DEFAULTS.frame,
             projection: null,
             aspectRatio: null,
