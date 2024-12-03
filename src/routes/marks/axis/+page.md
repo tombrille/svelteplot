@@ -301,7 +301,7 @@ You can change the defaults for SveltePlot grids by defining the `svelteplot/def
 
 ## AxisX
 
-You can explicitly add an x axis using the `AxisX` mark component:
+You can explicitly add an x axis using the `AxisX` mark component. Here we're using two AxisX marks for two layers of ticks
 
 ```svelte live
 <script>
@@ -344,6 +344,31 @@ You can explicitly add an x axis using the `AxisX` mark component:
         tickPadding={25}
         tickFormat="YYYY"
         fill="#999" />
+</Plot>
+```
+
+Note that you can achive a similar axis using a custom tick format function that returns an array. Repeating tick text lines are being omitted automatically:
+
+```svelte live
+<script>
+    import { Plot, AxisX } from '$lib';
+</script>
+
+<Plot 
+    marginLeft={30}
+    x={{
+        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)],
+        tickFormat: (d) => [`Q${d.getMonth() / 3 + 1}`, d.getFullYear()]
+    }}>
+</Plot>
+```
+
+```svelte
+<Plot 
+    x={{
+        domain: [new Date(2022, 0, 1), new Date(2024, 1, 1)],
+        tickFormat: (d) => [`Q${d.getMonth() / 3 + 1}`, d.getFullYear()]
+    }}>
 </Plot>
 ```
 
