@@ -3,13 +3,13 @@ title: What is SveltePlot?
 description: How to use SveltePlot
 ---
 
-:::caution
-SveltePlot is still in a very, very early alpha stage, so early that it's **not recommended** to use it, yet.
-:::
-
 SveltePlot is a Svelte 5 framework for visualizing tabular data. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as a set of reactive components (you can find out about the [differences here](/differences-to-plot))
 
 You can use SveltePlot to create charts with a concise and minimal API. It abstracts away the rendering details using **marks** and allows for basic client-side data **transforms**.
+
+:::info
+The fastest way to learn SveltePlot is to familiarize yourself with [Observable Plot](https://observablehq.com/plot/)! SveltePlot is using a lot of the same concepts and marks.
+:::
 
 ## Marks
 

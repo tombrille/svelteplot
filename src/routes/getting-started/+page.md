@@ -4,7 +4,7 @@ description: This page explains how to start using SveltePlot.
 ---
 
 :::caution
-SveltePlot is still in its alpha phase, so you're free to use it for experimentation, but usage in production is not recommented, yet. Also keep in mind that SveltePlot is a Svelte 5 library and Svelte 5 is [not even released, yet](https://svelte-5-preview.vercel.app/status).
+SveltePlot is still in a very early alpha stage, and its API is subject to changes. Use at your own risk.
 :::
 
 ## Try online

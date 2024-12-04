@@ -369,9 +369,6 @@ Another difference to Observable Plot is that you can pass event handlers to the
 
 You can extend SveltePlot by injecting regular Svelte snippets. For instance, the Line mark allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
 
-:::warning
-this example is currently broken in the static docs builds
-:::
 
 ```svelte live
 <script lang="ts">
@@ -397,7 +394,7 @@ this example is currently broken in the static docs builds
         curve="basis"
         x="Date"
         y="Adj Close">
-        <!-- {#snippet marker(id, color)}
+        {#snippet marker(id, color)}
             <marker
                 {id}
                 fill="none"
@@ -415,7 +412,7 @@ this example is currently broken in the static docs builds
                     />
                 {/if}
             </marker>
-        {/snippet} -->
+        {/snippet}
     </Line>
 </Plot>
 ```
