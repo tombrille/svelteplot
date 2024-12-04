@@ -49,26 +49,26 @@
     let { data, stroke, class: className = null, ...options }: DifferenceYMarkProps = $props();
     let { x, x1, x2, y, y1, y2 } = $derived(options);
 
-    let x1x2Differ = $derived((x1 == null || x2 == null) && x1 !== x2);
+    const x1x2Differ = $derived((x1 == null || x2 == null) && x1 !== x2);
 
-    let xExtent = $derived(
+    const xExtent = $derived(
         x1x2Differ && x != null ? extent(data, (d) => resolveChannel('x', d, options)) : null
     );
-    let x1Extent = $derived(
+    const x1Extent = $derived(
         x1x2Differ && x1 != null ? extent(data, (d) => resolveChannel('x1', d, options)) : null
     );
-    let x2Extent = $derived(
+    const x2Extent = $derived(
         x1x2Differ && x2 != null ? extent(data, (d) => resolveChannel('x2', d, options)) : null
     );
 
-    let maxMin = $derived(
+    const maxMin = $derived(
         max([xExtent, x1Extent, x2Extent].filter((d) => d != null).map((d) => d[0]))
     );
-    let minMax = $derived(
+    const minMax = $derived(
         min([xExtent, x1Extent, x2Extent].filter((d) => d != null).map((d) => d[1]))
     );
 
-    let croppedX1 = $derived(
+    const croppedX1 = $derived(
         x1x2Differ
             ? data.filter((d) => {
                   const x1val = resolveChannel(x1 != null ? 'x1' : 'x', d, options);
@@ -77,7 +77,7 @@
             : data
     );
 
-    let croppedX2 = $derived(
+    const croppedX2 = $derived(
         x1x2Differ
             ? data.filter((d) => {
                   const x2val = resolveChannel(x2 != null ? 'x2' : 'x', d, options);

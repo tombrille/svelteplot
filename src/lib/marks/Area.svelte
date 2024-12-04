@@ -151,14 +151,14 @@
     required={['x1', 'y1']}
     {...options}>
     {#snippet children({ mark, usedScales })}
-        <GroupMultiple length={sortedGroups.length} class="areas">
+        <GroupMultiple length={sortedGroups.length}>
             {#each sortedGroups as areaData}
                 {#if testFacet(areaData[0], mark.options)}
                     {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
                     {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
                     {#snippet el(datum)}
                         <path
-                            class={className}
+                            class="svelteplot-area {className}"
                             clip-path={options.clipPath}
                             d={areaPath(usedScales)(
                                 options.filter == null
