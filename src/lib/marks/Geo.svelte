@@ -64,7 +64,7 @@
             class="geo{geoType ? ` geo-${geoType}` : ''} {className || ''}"
             style="fill:currentColor">
             {#if canvas}
-                <GeoCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
+                <GeoCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} {path} />
             {:else}
                 {#each args.data as datum}
                     {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}

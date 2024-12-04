@@ -11,6 +11,7 @@
     import { isEqual } from 'es-toolkit';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { geoPath, type GeoPath } from 'd3-geo';
+    import type options from 'virtual:sveltepress/theme-default';
 
     let canvas: HTMLCanvasElement | undefined = $state();
     let devicePixelRatio = $state(1);
@@ -20,22 +21,16 @@
         plot,
         data,
         testFacet,
-        usedScales
+        usedScales,
+        path
     }: {
         mark: Mark<BaseMarkProps>;
         plot: PlotState;
         data: DataRecord[];
         testFacet: any;
         usedScales: any;
+        path: GeoPath;
     } = $props();
-
-    const path = $derived(
-        callWithProps(geoPath, [plot.scales.projection], {
-            ...(options.r
-                ? { pointRadius: (d) => plot.scales.r.fn(resolveChannel('r', d, options)) }
-                : { pointRadius: 3 })
-        }) as GeoPath
-    );
 
     function scaleHash(scale) {
         return { domain: scale.domain, type: scale.type, range: scale.range };
@@ -44,12 +39,6 @@
     let _plotSize = $state([plot.width, plot.height]);
     let _usedScales = $state(usedScales);
     let _markOptions = $state(mark.options);
-    const xScale = $derived(scaleHash(plot.scales.x));
-    const yScale = $derived(scaleHash(plot.scales.y));
-    const rScale = $derived(scaleHash(plot.scales.r));
-    let _xScale = $state(xScale);
-    let _yScale = $state(yScale);
-    let _rScale = $state(rScale);
 
     const filteredData = $derived(
         data.filter((datum) => testFilter(datum, _markOptions) && testFacet(datum, _markOptions))
@@ -72,18 +61,13 @@
         ) {
             _filteredData = filteredData;
         }
-        if (!isEqual(xScale, _xScale)) _xScale = xScale;
-        if (!isEqual(yScale, _yScale)) _yScale = yScale;
-        if (!isEqual(rScale, _rScale)) _rScale = rScale;
     });
 
     $effect(() => {
         // track plot size, since we're untracking the scales
         _plotSize;
         _markOptions;
-        _xScale;
-        _yScale;
-        _rScale;
+
         const plotScales = untrack(() => plot.scales);
         const context = canvas.getContext('2d');
         if (context === null) return;
@@ -91,26 +75,40 @@
         context.resetTransform();
         context.scale(devicePixelRatio, devicePixelRatio);
 
+        let currentColor;
+
         path.context(context);
+
+        console.log({ _markOptions });
+        const plot_ = untrack(() => plot);
 
         for (const datum of _filteredData) {
             // untrack the filter test to avoid redrawing when not necessary
-            let { stroke, strokeOpacity, fillOpacity, fill, opacity } = resolveScaledStyleProps(
+            let { stroke, fill, opacity, ...restStyles } = resolveScaledStyleProps(
                 datum,
                 _markOptions,
                 _usedScales,
-                untrack(() => plot),
-                'stroke'
+                plot_,
+                'fill'
             );
 
+            console.log({ stroke });
+
+            const fillOpacity = restStyles['fill-opacity'];
+            const strokeOpacity = restStyles['stroke-opacity'];
+
             if (`${fill}`.toLowerCase() === 'currentcolor')
-                fill = getComputedStyle(canvas.parentElement.parentElement).getPropertyValue(
-                    'color'
-                );
+                fill =
+                    currentColor ||
+                    (currentColor = getComputedStyle(
+                        canvas?.parentElement?.parentElement
+                    ).getPropertyValue('color'));
             if (`${stroke}`.toLowerCase() === 'currentcolor')
-                stroke = getComputedStyle(canvas.parentElement.parentElement).getPropertyValue(
-                    'color'
-                );
+                stroke =
+                    currentColor ||
+                    (currentColor = getComputedStyle(
+                        canvas?.parentElement?.parentElement
+                    ).getPropertyValue('color'));
             if (CSS_VAR.test(fill))
                 fill = getComputedStyle(canvas).getPropertyValue(fill.slice(4, -1));
             if (CSS_VAR.test(stroke))
@@ -129,6 +127,7 @@
 
             if (opacity != null) context.globalAlpha = opacity ?? 1;
             if (fillOpacity != null) context.globalAlpha = (opacity ?? 1) * fillOpacity;
+
             if (fill && fill !== 'none') context.fill();
             if (strokeOpacity != null) context.globalAlpha = (opacity ?? 1) * strokeOpacity;
             if (stroke && stroke !== 'none') context.stroke();

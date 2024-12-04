@@ -116,8 +116,7 @@ Our dataset contains daily data, but what if we want to show weekly aggregates i
         {...binX(
             { data: aapl, x: 'Date', y: 'Close' },
             { interval: 'week', y: 'mean' }
-        )}
-        />
+        )} />
 </Plot>
 ```
 
@@ -127,7 +126,7 @@ Our dataset contains daily data, but what if we want to show weekly aggregates i
         {...binX(
             { data: aapl, x: 'Date', y: 'Close' },
             { interval: 'week', y: 'mean' }
-        )} 
+        )}
         marker="circle" />
 </Plot>
 ```
@@ -146,19 +145,20 @@ We can also use the binX transform to compute the min and max closing value of e
         {...binX(
             { data: aapl, x: 'Date', y: 'Close' },
             { interval: 'week', y: 'mean' }
-        )}
-        />
+        )} />
     <Area
-        fill="red" 
+        fill="red"
         {...binX(
-            { data: aapl, x: 'Date', y1: 'Close', y2: 'Close'  },
+            {
+                data: aapl,
+                x: 'Date',
+                y1: 'Close',
+                y2: 'Close'
+            },
             { interval: 'week', y1: 'min', y2: 'max' }
-        )}
-        />
+        )} />
 </Plot>
 ```
-
-
 
 ## sdsd
 

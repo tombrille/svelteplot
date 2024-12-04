@@ -70,7 +70,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 </Plot>
 ```
 
-Earthquakes
+Earthquakes SVG
 
 ```svelte live
 <script>
@@ -91,6 +91,35 @@ Earthquakes
         data={earthquakes.features}
         stroke="var(--svp-red)"
         fill="var(--svp-red)"
+        fillOpacity="0.2"
+        title={(d) => d.properties.title}
+        href={(d) => d.properties.url}
+        r={(d) => Math.pow(10, d.properties.mag)} />
+</Plot>
+```
+
+Earthquakes Canvas
+
+```svelte live
+<script>
+    import { Plot, Geo, Sphere } from '$lib';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+
+    let { world, earthquakes } = $derived($page.data.data);
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
+</script>
+
+<Plot r={{ range: [0.5, 25] }} projection="equirectangular">
+    <Geo canvas data={[land]} fillOpacity="0.2" />
+    <Sphere stroke="currentColor" />
+    <Geo
+        data={earthquakes.features}
+        stroke="var(--svp-red)"
+        fill="var(--svp-red)"
+        canvas
         fillOpacity="0.2"
         title={(d) => d.properties.title}
         href={(d) => d.properties.url}
@@ -128,6 +157,40 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
             .center([-175.38, -20.57])
             .radius((r) => r)}
         stroke={(r) => r * 111.2}
+        strokeWidth={2} />
+</Plot>
+```
+
+```svelte live
+<script>
+    import { Plot, Geo, Sphere } from '$lib';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+    import { geoCircle } from 'd3-geo';
+    import { range } from 'd3-array';
+
+    let { world, earthquakes } = $derived($page.data.data);
+    let land = $derived(
+        topojson.feature(world, world.objects.land)
+    );
+</script>
+
+<Plot
+    color={{
+        legend: true,
+        label: 'Distance from Tonga (km)'
+    }}
+    projection={{ type: 'equal-earth', rotate: [90, 0] }}>
+    <Sphere stroke="currentColor" />
+    <Geo data={[land]} canvas stroke="currentColor" />
+    <Geo
+        canvas
+        data={[0.5, 179.5].concat(range(10, 171, 10))}
+        geometry={geoCircle()
+            .center([-175.38, -20.57])
+            .radius((r) => r)}
+        stroke="red"
+        _stroke={(r) => r * 111.2}
         strokeWidth={2} />
 </Plot>
 ```

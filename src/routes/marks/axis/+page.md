@@ -48,7 +48,6 @@ You can turn the implicit axes off by adding `axis: false`
 </Plot>
 ```
 
-
 ```svelte live
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
@@ -133,7 +132,6 @@ If you add the `AxisX` and `AxisY` marks to your plot, SveltePlot will disable t
 </Plot>
 ```
 
-
 ```svelte
 <Plot
     frame
@@ -165,8 +163,6 @@ The automatic ticks can be customized using the <b>tickSpacing</b> option:
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
-
-
 
 Ordinal axis:
 
