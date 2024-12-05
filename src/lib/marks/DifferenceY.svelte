@@ -7,7 +7,7 @@
         DataRecord,
         PlotContext
     } from '$lib/types.js';
-    import { Line, Area, RuleX } from '$lib';
+    import { Line, Area } from '$lib/index.js';
     import { randomId, coalesce } from '$lib/helpers/index.js';
     import { getContext } from 'svelte';
     import { extent, max, min } from 'd3-array';

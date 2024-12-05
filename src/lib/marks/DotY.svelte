@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
     import Dot from './Dot.svelte';
-    import { recordizeY } from '$lib';
+    import { recordizeY } from '$lib/index.js';
 
     let { data = [{}], ...options } = $props();
 

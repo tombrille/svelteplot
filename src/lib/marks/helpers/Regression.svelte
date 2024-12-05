@@ -28,7 +28,7 @@
 
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { Line, Area } from '$lib';
+    import { Line, Area } from '$lib/index.js';
 
     import {
         regressionLinear,
