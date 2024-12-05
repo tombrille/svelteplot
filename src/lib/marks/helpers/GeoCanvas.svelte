@@ -79,7 +79,6 @@
 
         path.context(context);
 
-        console.log({ _markOptions });
         const plot_ = untrack(() => plot);
 
         for (const datum of _filteredData) {
@@ -91,8 +90,6 @@
                 plot_,
                 'fill'
             );
-
-            console.log({ stroke });
 
             const fillOpacity = restStyles['fill-opacity'];
             const strokeOpacity = restStyles['stroke-opacity'];

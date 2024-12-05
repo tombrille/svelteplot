@@ -40,7 +40,7 @@
             const inside = data
                 .filter((d) => d.__x >= lower && d.__x <= upper)
                 .sort((a, b) => a.__x - b.__x);
-            if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
+            // if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
             return {
                 __y: row.__y,
                 p25: row.__x1,

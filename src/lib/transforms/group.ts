@@ -76,7 +76,6 @@ export function group(
 
     groups.forEach(([xGroupKey, xGroups]) => {
         xGroups.forEach(([yGroupKey, items]) => {
-            // console.log(groupKey, items)
             const baseRecord = { [xChannel]: xGroupKey, [yChannel]: yGroupKey }; // dim === 'z' ? {} : { [`__${dim}`]: groupKey };
             // copy properties from first item of each group
             options.copy?.forEach((prop) => {
