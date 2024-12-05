@@ -38,7 +38,7 @@
         regressionLog,
         regressionPow,
         regressionLoess
-    } from 'd3-regression';
+    } from 'd3-regression/dist/d3-regression.esm.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { confidenceInterval } from '$lib/helpers/math.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
