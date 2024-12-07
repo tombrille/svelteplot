@@ -77,7 +77,6 @@
         let lastGroupValue;
         for (const d of data) {
             const groupValue = resolveProp(groupByKey, d);
-            // console.log({d, groupValue})
             if (groupValue === lastGroupValue) {
                 group.push(d);
             } else {
