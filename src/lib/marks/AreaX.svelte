@@ -3,6 +3,7 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackX } from '$lib/transforms/stack.js';
     import { recordizeX } from '$lib/transforms/recordize.js';
+    import { omit } from 'es-toolkit';
     import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
 
     type AreaXProps = BaseMarkProps & {
@@ -13,10 +14,14 @@
         y?: ChannelAccessor;
     } & AreaMarkProps;
 
+    // we're discarding y1 and y2 props since they are not
     let { data, stack, ...options }: AreaXProps = $props();
 
-    let args = $derived(
-        renameChannels<AreaXProps>(stackX(recordizeX({ data, ...options }), stack), { y: 'y1' })
+    const args = $derived(
+        renameChannels<AreaXProps>(
+            stackX(recordizeX({ data, ...options, y1: null, y2: null }), stack),
+            { y: 'y1' }
+        )
     );
 </script>
 

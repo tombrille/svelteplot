@@ -620,6 +620,48 @@ Requires input channel _x_. Valid output channels for `binX()` are _y_, _y1_, _y
 </script>
 ```
 
+Demo with area
+
+```svelte live
+<script>
+    import { Plot, Line, AreaY, binX } from '$lib';
+
+    import { page } from '$app/stores';
+    const { aapl } = $derived($page.data.data);
+
+    const r = $derived(
+        binX(
+            {
+                data: aapl,
+                x: 'Date',
+                y1: 'Close',
+                y2: 'Close'
+            },
+            { interval: '3 weeks', y1: 'min', y2: 'max' }
+        )
+    );
+
+    $inspect({ r });
+</script>
+
+<Plot x={{ grid: true }}>
+    <AreaY
+        curve="basis"
+        fill="var(--svp-red)"
+        opacity={0.2}
+        {...binX(
+            {
+                data: aapl,
+                x: 'Date',
+                y1: 'Close',
+                y2: 'Close'
+            },
+            { interval: '5 weeks', y1: 'min', y2: 'max' }
+        )} />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
 ## binY
 
     binY({ data, ...input }, { ...options, ...output })

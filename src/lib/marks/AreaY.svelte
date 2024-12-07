@@ -11,8 +11,8 @@
     type AreaYProps = BaseMarkProps & {
         data: DataRecord[];
         x?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
         /**
          * this some extensive help for the y channel
          */
@@ -21,8 +21,11 @@
 
     let { data, stack, ...options }: AreaYProps = $props();
 
-    let args = $derived(
-        renameChannels<AreaYProps>(stackY(recordizeY({ data, ...options }), stack), { x: 'x1' })
+    const args = $derived(
+        renameChannels<AreaYProps>(
+            stackY(recordizeY({ data, ...options, x1: null, x2: null }), stack),
+            { x: 'x1' }
+        )
     );
 </script>
 

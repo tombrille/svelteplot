@@ -52,12 +52,12 @@ If we want to plot a line showing the closing price over time, all we have to wr
 Noticed how SveltePlot added **axes automatically**? That's because it assumes that most plots will benefit from axes and it adds them implicitely. (You can disable this by passing `axes={false}` to the Plot component).
 :::
 
-Let's say we also want a horizontal rule at zero and a grid, so we extend our code from above a little bit: We activate the implicit grids by setting the grid flag and add a RuleY mark and passed zero as y channel.
+Let's say we also want to add a grid and a horizontal rule at zero, and fill the area between the line and the rule. To activate the implicit grids we set the `grid` flag. Then we add the `RuleY` and `AreaY` marks.
 
 ```svelte
 <Plot grid>
-    <Line data={aapl} x="Date" y="Close" />
     <RuleY y={0} />
+    <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
@@ -78,31 +78,107 @@ Let's say we also want a horizontal rule at zero and a grid, so we extend our co
 Noticed how SveltePlot automatically extended the range of the y axis? That's because the Plot component "collects" the data from all the marks to automatically compute the scale extents.
 :::
 
-There are a lot marks in SveltePlot and each comes with a lot of useful features! For instance, if we want to show a dot at the end of the line, we can use the built-in support for markers:
+Now, let's also fill the area between the line and the horizontal rule by adding the `AreaY` mark and setting the same props as we used for the `Line` mark plus the opacity for a nicer look.
 
 ```svelte
 <Plot grid>
-    <Line data={aapl} x="Date" y="Close" markerEnd="dot" />
     <RuleY y={0} />
+    <AreaY data={aapl} x="Date" y="Close" opacity={0.2} />
+    <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, AreaY, RuleY } from '$lib';
     import { page } from '$app/stores';
     const { aapl } = $derived($page.data.data);
 </script>
 
 <Plot grid>
-    <Line data={aapl} x="Date" y="Close" markerEnd="dot" />
     <RuleY y={0} />
+    <AreaY data={aapl} x="Date" y="Close" opacity={0.2} />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want to fill the area with a [linear gradient](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient):
+
+```svelte
+<Plot grid>
+    <RuleY y={0} />
+    <defs>
+        <linearGradient
+            id="my-gradient"
+            gradientTransform="rotate(90)">
+            <stop
+                offset="0%"
+                stop-color="gold"
+                stop-opacity={0.5} />
+            <stop
+                offset="100%"
+                stop-color="red"
+                stop-opacity={0.01} />
+        </linearGradient>
+    </defs>
+    <AreaY
+        data={aapl}
+        x="Date"
+        y="Close"
+        fill="url(#my-gradient)" />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte live
+<script>
+    import { Plot, Line, AreaY, RuleY } from '$lib';
+    import { page } from '$app/stores';
+    const { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid>
+    <RuleY y={0} />
+    <defs>
+        <linearGradient
+            id="my-gradient"
+            gradientTransform="rotate(90)">
+            <stop
+                offset="0%"
+                stop-color="gold"
+                stop-opacity={0.5} />
+            <stop
+                offset="100%"
+                stop-color="red"
+                stop-opacity={0.01} />
+        </linearGradient>
+    </defs>
+    <AreaY
+        data={aapl}
+        x="Date"
+        y="Close"
+        fill="url(#my-gradient)" />
+    <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
 ## Transforms
 
-Our dataset contains daily data, but what if we want to show weekly aggregates instead? Thanks to the **transforms** you don't have to leave
+Our dataset contains daily data, but what if we want to show monthly aggregates instead? Thanks to the **transforms** you can do this in your visualization code. The [binX](/transforms/bin) transform can aggregate temporal data into "bins" based on a specified interval ([REPL](https://svelte.dev/playground/e5057e8db853469893108c2e1d501eee))
+
+```svelte
+<Plot grid>
+    <!-- daily data -->
+    <Line data={aapl} x="Date" y="Close" opacity={0.3} />
+    <!-- monthly averages -->
+    <Line
+        {...binX(
+            { data: aapl, x: 'Date', y: 'Close' },
+            { interval: 'month', y: 'mean' }
+        )}
+        curve="basis" />
+</Plot>
+```
 
 ```svelte live
 <script>
@@ -112,42 +188,24 @@ Our dataset contains daily data, but what if we want to show weekly aggregates i
 </script>
 
 <Plot grid>
+    <Line data={aapl} x="Date" y="Close" opacity={0.3} />
     <Line
+        curve="basis"
         {...binX(
             { data: aapl, x: 'Date', y: 'Close' },
-            { interval: 'week', y: 'mean' }
+            { interval: 'month', y: 'mean' }
         )} />
-</Plot>
-```
-
-```svelte
-<Plot grid>
-    <Line
-        {...binX(
-            { data: aapl, x: 'Date', y: 'Close' },
-            { interval: 'week', y: 'mean' }
-        )}
-        marker="circle" />
 </Plot>
 ```
 
 We can also use the binX transform to compute the min and max closing value of each week and show it as an Area:
 
-```svelte live
-<script>
-    import { Plot, Line, Area, binX } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
-</script>
-
+```svelte
 <Plot grid>
-    <Line
-        {...binX(
-            { data: aapl, x: 'Date', y: 'Close' },
-            { interval: 'week', y: 'mean' }
-        )} />
-    <Area
+    <Line data={aapl} x="Date" y="Close" />
+    <AreaY
         fill="red"
+        opacity={0.3}
         {...binX(
             {
                 data: aapl,
@@ -155,7 +213,31 @@ We can also use the binX transform to compute the min and max closing value of e
                 y1: 'Close',
                 y2: 'Close'
             },
-            { interval: 'week', y1: 'min', y2: 'max' }
+            { interval: 'month', y1: 'min', y2: 'max' }
+        )} />
+</Plot>
+```
+
+```svelte live
+<script>
+    import { Plot, Line, AreaY, binX } from '$lib';
+    import { page } from '$app/stores';
+    const { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid>
+    <Line data={aapl} x="Date" y="Close" />
+    <AreaY
+        fill="var(--svp-red)"
+        opacity={0.3}
+        {...binX(
+            {
+                data: aapl,
+                x: 'Date',
+                y1: 'Close',
+                y2: 'Close'
+            },
+            { interval: 'month', y1: 'min', y2: 'max' }
         )} />
 </Plot>
 ```
