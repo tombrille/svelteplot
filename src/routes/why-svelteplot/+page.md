@@ -176,20 +176,20 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 ```svelte live
 <script>
     import { Plot, RuleY, BarY } from '$lib';
-    import { tweened } from 'svelte/motion';
+    import { Tween } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
     import { extent } from 'd3-array';
     import { fade } from 'svelte/transition';
 
     let data = $state([1, 2, 3, 4, 5]);
 
-    const domain = tweened(extent([0, ...data]), {
+    const domain = new Tween(extent([0, ...data]), {
         duration: 1000,
         easing: cubicOut
     });
 
     $effect(() => {
-        $domain = extent([0, ...data]);
+        domain.target = extent([0, ...data]);
     });
 </script>
 
@@ -204,28 +204,27 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 
 <Plot
     x={{ axis: false, padding: data.length < 60 ? 0.1 : 0 }}
-    color={{ scheme: 'RdBu' }}
-    y={{ grid: true, domain: $domain }}>
-    <BarY {data} fill={(d) => d} t={fade} />
+    y={{ grid: true, domain: domain.current }}>
+    <BarY {data} fill={(d) => d} />
     <RuleY data={[0]} />
 </Plot>
 ```
 
 ```svelte
 <script>
-    import { tweened } from 'svelte/motion';
+    import { Tween } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
 
     let data = $state([1, 2, 3, 4, 5]);
 
-    const domain = tweened(extent([0, ...data]), {
+    const domain = new Tween(extent([0, ...data]), {
         duration: 1000,
         easing: cubicOut
     });
 
     $effect(() => {
         // update domain whenever data changes
-        $domain = extent([0, ...data]);
+        domain.target = extent([0, ...data]);
     });
 </script>
 
@@ -234,8 +233,8 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 
 <Plot
     color={{ scheme: 'RdBu' }}
-    y={{ grid: true, domain: $domain }}>
-    <BarY {data} fill={(d) => d} />
+    y={{ grid: true, domain: domain.current }}>
+    <BarY {data} />
     <RuleY data={[0]} />
 </Plot>
 ```

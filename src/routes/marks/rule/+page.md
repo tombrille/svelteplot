@@ -81,7 +81,27 @@ Rules can be used for barcode plots:
 </Plot>
 ```
 
-Or candlestick
+Or candlestick ([demo](https://svelte.dev/playground/f2b2ada0c65d403c92777250c14a740a))
+
+```svelte
+<Plot grid>
+    <RuleX
+        data={aapl.slice(750, 800)}
+        x="Date"
+        y1="Low"
+        y2="High"
+        strokeWidth="2"
+        opacity="0.3" />
+    <RuleX
+        data={aapl.slice(750, 800)}
+        x="Date"
+        y1="Open"
+        y2="Close"
+        strokeWidth="5"
+        stroke={(d) =>
+            d.Close > d.Open ? 'green' : 'red'} />
+</Plot>
+```
 
 ```svelte live
 <script lang="ts">
@@ -112,30 +132,18 @@ Or candlestick
 </Plot>
 ```
 
-```svelte
-<Plot grid>
-    <RuleX
-        data={aapl.slice(750, 800)}
-        x="Date"
-        y1="Low"
-        y2="High"
-        strokeWidth="2"
-        opacity="0.3" />
-    <RuleX
-        data={aapl.slice(750, 800)}
-        x="Date"
-        y1="Open"
-        y2="Close"
-        strokeWidth="5"
-        stroke={(d) =>
-            d.Close > d.Open ? 'green' : 'red'} />
-</Plot>
-```
-
 ## RuleX
 
 For vertical lines
 
+- **x** - required
+- **y1** - optional start of the line
+- **y2** - optional end of the line
+
 ## RuleY
 
 For horizontal lines
+
+- **y** - required
+- **x1** - optional start of the line
+- **x2** - optional end of the line
