@@ -2,7 +2,37 @@
 title: Rule mark
 ---
 
-Rules can be used for highlighting certain axis values, most commonly zero. They come in two variants: [RuleX](#RuleX) for vertical lines and [RuleY](#RuleY) for horizontal lines.
+Rules can be used for highlighting certain axis values but they can also be used to show data. Rules come in two variants: [RuleX](#RuleX) for vertical lines (located along the x scale) and [RuleY](#RuleY) for horizontal lines (located along the y scale).
+
+```svelte
+<Plot>
+    <RuleY y={0} />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line, RuleY } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot height={350}>
+    <RuleY y={0} />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+Like most other marks, rules also accept data for displaying multiple lines at once:
+
+
+```svelte
+<Plot>
+    <RuleY data={[50, 100, 150]} strokeDasharray="3,3" opacity={0.5} />
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
 
 ```svelte live
 <script lang="ts">
@@ -14,17 +44,14 @@ Rules can be used for highlighting certain axis values, most commonly zero. They
 </script>
 
 <Plot height={350}>
-    <RuleY data={[0, 100]} />
+    <RuleY data={[50, 100, 150]} strokeDasharray="3,3" opacity={0.5} />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
-```svelte
-<Plot>
-    <RuleY data={[0, 100]} />
-    <Line data={aapl} x="Date" y="Close" />
-</Plot>
-```
+:::info
+While you can use rules for adding grid lines to your plot, you may also want to consider using the special [Grid](/marks/grid) marks, which synchronize the lines with Axis mark ticks.
+:::
 
 Rules can be used for barcode plots:
 
@@ -39,11 +66,15 @@ Rules can be used for barcode plots:
     );
 </script>
 
-<Plot
-    testid="barcode"
-    margins={0}
-    marginBottom={35}
-    height={70}>
+<Plot>
+    <RuleX
+        data={range(500).map(seededNormal(0, 1))}
+        strokeOpacity={0.5} />
+</Plot>
+```
+
+```svelte
+<Plot>
     <RuleX
         data={range(500).map(seededNormal(0, 1))}
         strokeOpacity={0.5} />

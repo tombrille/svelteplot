@@ -35,9 +35,10 @@ Box marks are a compound mark consisting of a bar, rule, dots and tick marks (se
     x={{ type: 'log' }}>
     <BoxX
         data={filteredData}
-        bar={{ fill: '__y', rx: 6 }}
+        bar={{ fill: 'Continent', rx: 6 }}
+        dot={{ stroke: 'Continent' }}
         tickMinMax
-        tickMedian={{ stroke: 'white' }}
+        tickMedian={{ stroke: 'var(--svelteplot-bg)' }}
         y="Continent"
         x="GDP per capita" />
 </Plot>
@@ -69,7 +70,7 @@ You can style box plots by passing separate options for the marks
         tickMinMax
         y="class"
         dot={{ fill: true }}
-        bar={{ fill: 'white', stroke: 'currentColor' }} />
+        bar={{ fill: 'var(--svelteplot-bg)', stroke: 'currentColor' }} />
 </Plot>
 ```
 
@@ -81,7 +82,7 @@ You can style box plots by passing separate options for the marks
         tickMinMax
         y="class"
         dot={{ fill: true }}
-        bar={{ fill: 'white', stroke: 'currentColor' }} />
+        bar={{ fill: 'var(--svelteplot-bg)', stroke: 'currentColor' }} />
 </Plot>
 ```
 
@@ -99,7 +100,7 @@ You can style box plots by passing separate options for the marks
         data={mpg}
         x="class"
         y="hwy"
-        tickMedian={{ stroke: 'white', strokeWidth: 3 }} />
+        tickMedian={{ stroke: 'var(--svelteplot-bg)', strokeWidth: 3 }} />
 </Plot>
 ```
 
@@ -109,6 +110,6 @@ You can style box plots by passing separate options for the marks
         data={mpg}
         x="class"
         y="hwy"
-        tickMedian={{ stroke: 'white', strokeWidth: 3 }} />
+        tickMedian={{ stroke: 'var(--svelteplot-bg)', strokeWidth: 3 }} />
 </Plot>
 ```

@@ -42,6 +42,7 @@
                 .sort((a, b) => a.__x - b.__x);
             // if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
             return {
+                [y]: row[y],
                 __y: row[y],
                 p25: row.__x1,
                 p75: row.__x2,
