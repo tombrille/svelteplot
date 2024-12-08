@@ -2,7 +2,7 @@
 title: Plot
 ---
 
-The <b>Plot</b> component is the base for each plot. It takes care of creating the shared scales, computes smart default options and implicitly creates the axis, grid, frame, and legend marks.
+The <b>Plot</b> component is the base for each plot. It takes care of managing the shared [scales](/features/scales), computes smart default options and implicitly creates axis, grid, frame, and legend marks.
 
 In the following example, you can see that the `<Plot>` component has added axes, grids, and a frame for us, so we don't have to add them to our plots every time we need them.
 
@@ -19,12 +19,21 @@ In the following example, you can see that the `<Plot>` component has added axes
 ```
 
 ```svelte
+<script>
+    import { Plot, Line } from '@gka/svelteplot';
+    import aapl from './aapl.csv';
+</script>
+
 <Plot grid frame>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
 
-But if we wanted to, we can add these marks individually, and it would look just the same:
+:::info
+The implicit axes are added by default.
+:::
+
+But if we wanted to, we can add these marks individually, and it would look just the same. Using the explicit marks gives us more control over styling and the rendering order.
 
 ```svelte live
 <script>
@@ -52,6 +61,19 @@ But if we wanted to, we can add these marks individually, and it would look just
 ```
 
 ```svelte
+<script>
+    import {
+        Plot,
+        Frame,
+        GridX,
+        GridY,
+        AxisX,
+        AxisY,
+        Line
+    } from '@gka/svelteplot';
+    import aapl from './aapl.csv';
+</script>
+
 <Plot>
     <Frame />
     <GridX />
@@ -89,7 +111,7 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
 </script>
 
 <Plot
-    frame
+    grid
     title="This is a plot title"
     subtitle="This is a subtitle"
     caption="This is the caption"
@@ -99,10 +121,30 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
 ```
 
 ```svelte
-<Plot frame
+<Plot grid
     title="This is a plot title"
     subtitle="This is a subtitle"
     caption="This is the caption"">
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+By default, the Plot element will fill 100% of it's parent container width, but you can set a custom **maxWidth**, too:
+
+```svelte live
+<script>
+    import { Plot, Line } from '$lib';
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot grid maxWidth="300px">
+    <Line data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot grid maxWidth="300px">
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -111,18 +153,46 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
 
 List of all plot options you can pass via props on the `<Plot />` component:
 
-- `title` - you can set the max-width of the plot element
-- `subtitle` - you can set the max-width of the plot element
-- `caption` - a caption to be displayed below the plot
+- `class` - set a HTML class to be added to the `<figure>` element. Useful for applying additional CSS styling.
+- `title` - a title to be displayed as `<h2>` element above the plot
+- `subtitle` - a subtitle to be displayed as `<h3>` element above the plot
+- `caption` - a caption to be displayed as `<figcaption>` below the plot
+- `locale` - locale to be used for number and date formatting, e.g. in axis ticks
+
+**Size and margins**
 - `maxWidth` - you can set the max-width of the plot element to prevent the plot from scaling to the container div width
+- `height` 
 - `marginTop` - plot margins
-- `marginBottom` -
-- `marginLeft` -
-- `marginRight` -
-- `inset` -
-- `grid` - set this flag to activate automatic grids
-- `x` - options for the x scale
+- `marginBottom` -  margins
+- `marginLeft` - margins
+- `marginRight` - margins
+- `margin` - shortcut to set all 4 margins to the same value
+- `inset` - shortcut for setting all insets. To set individual insets, see `x` and `y` scale options.
+
+**Implicit marks**
+- `grid` - set this flag to activate implicit grids
+- `axes` - set this flag to activate implicit axes
+- `frame` - set this flag to activate implicit frame
+
+**Scale options**
+- `x` - options for the x scale:
+  - `axis`
+  - `insetLeft`
+  - `insetRight`
+  - `ticks`
+  - `tickFormat`
 - `y` - options for the y scale
+- `r` - options for the radius scale
+- `color` - options for the color scale
+- `opacity` - options for the opacity scale
+- `symbol` - options for the symbol scale
+- `length` - options for the length scale
+
+- You can set the following shared scale options for all the scales listed above.
+  - `domain`
+  - `range`
+  - `range`
+
 - `locale` - locale used for automatic number and date formatting in axis ticks
 
 TODO: List all the options

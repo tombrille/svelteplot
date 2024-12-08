@@ -9,7 +9,7 @@ SveltePlot is still in a very early alpha stage, and its API is subject to chang
 
 ## Try online
 
-You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev).
+You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev) or the [Svelte Playground](https://svelte.dev/playground/db6bcdf02859413fa9b3af456f9b9047).
 
 ```svelte live
 <script>
@@ -32,6 +32,8 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 ```svelte
 <script>
     import { Plot, RectY, binX } from '@gka/svelteplot';
+    import { range } from 'd3-array';
+    import { randomNormal } from 'd3-random';
 </script>
 
 <Plot grid>

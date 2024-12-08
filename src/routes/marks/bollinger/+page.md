@@ -19,7 +19,7 @@ bollinger foo
 <Slider
     label="Window size (n)"
     bind:value={n}
-    min={1}
+    min={2}
     max={100} />
 <Slider
     label="Radius (k)"
@@ -28,7 +28,7 @@ bollinger foo
     max={10}
     step={0.01} />
 <Plot grid>
-    <Line data={aapl} x="Date" y="Adj Close" />
+    <!-- <Line data={aapl} x="Date" y="Adj Close" /> -->
     <BollingerY
         data={aapl}
         x="Date"

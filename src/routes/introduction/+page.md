@@ -3,7 +3,7 @@ title: What is SveltePlot?
 description: How to use SveltePlot
 ---
 
-SveltePlot is a Svelte 5 framework for visualizing tabular data. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as a set of reactive components (you can find out about the [differences here](/differences-to-plot))
+SveltePlot is a Svelte 5 framework for visualizing tabular data. SveltePlot is _heavily_ inspired by [Observable Plot](https://observablehq.com/plot/), but implemented as a set of reactive components (you can find out about the [differences here](/why-svelteplot))
 
 You can use SveltePlot to create charts with a concise and minimal API. It abstracts away the rendering details using **marks** and allows for basic client-side data **transforms**.
 
@@ -34,7 +34,7 @@ If we want to plot a line showing the closing price over time, all we have to wr
 </Plot>
 ```
 
-...and we get this nice plot:
+...and we get this nice plot ([demo](https://svelte.dev/playground/ec67a8a48dce45c29373781a6b68491a))
 
 ```svelte live
 <script>
@@ -52,7 +52,7 @@ If we want to plot a line showing the closing price over time, all we have to wr
 Noticed how SveltePlot added **axes automatically**? That's because it assumes that most plots will benefit from axes and it adds them implicitely. (You can disable this by passing `axes={false}` to the Plot component).
 :::
 
-Let's say we also want to add a grid and a horizontal rule at zero, and fill the area between the line and the rule. To activate the implicit grids we set the `grid` flag. Then we add the `RuleY` and `AreaY` marks.
+Let's say we also want to add a grid and a horizontal rule at zero. To activate the implicit grids we set the `grid` flag. Then we add the `RuleY` mark with `y` set to zero.
 
 ```svelte
 <Plot grid>
@@ -78,7 +78,7 @@ Let's say we also want to add a grid and a horizontal rule at zero, and fill the
 Noticed how SveltePlot automatically extended the range of the y axis? That's because the Plot component "collects" the data from all the marks to automatically compute the scale extents.
 :::
 
-Now, let's also fill the area between the line and the horizontal rule by adding the `AreaY` mark and setting the same props as we used for the `Line` mark plus the opacity for a nicer look.
+Now, let's also fill the area between the line and the horizontal rule by adding the `AreaY` mark and setting the same props as we used for the `Line` mark plus the opacity for a nicer look ([demo](https://svelte.dev/playground/a69fab2b3d9d445ab0adaef7f5d17006))
 
 ```svelte
 <Plot grid>
@@ -102,7 +102,7 @@ Now, let's also fill the area between the line and the horizontal rule by adding
 </Plot>
 ```
 
-Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want to fill the area with a [linear gradient](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient):
+Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want to fill the area with a [linear gradient](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient). We can just use the `<linearGradient>` in SVG and use its `id` as `fill` url for the Area mark ([demo](https://svelte.dev/playground/b77bacafa8534118b86d397be79bfad4)):
 
 ```svelte
 <Plot grid>
@@ -161,10 +161,12 @@ Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want t
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+You can learn more about all the marks in the documentation, e.g. [Area](/marks/area)
 
 ## Transforms
 
-Our dataset contains daily data, but what if we want to show monthly aggregates instead? Thanks to the **transforms** you can do this in your visualization code. The [binX](/transforms/bin) transform can aggregate temporal data into "bins" based on a specified interval ([REPL](https://svelte.dev/playground/e5057e8db853469893108c2e1d501eee))
+Our dataset contains daily data, but what if we want to show monthly aggregates instead? Thanks to the **transforms** you can do this in your visualization code. The [binX](/transforms/bin) transform can aggregate temporal data into "bins" based on a specified interval ([demo](https://svelte.dev/playground/e5057e8db853469893108c2e1d501eee))
 
 ```svelte
 <Plot grid>
@@ -198,7 +200,7 @@ Our dataset contains daily data, but what if we want to show monthly aggregates 
 </Plot>
 ```
 
-We can also use the binX transform to compute the min and max closing value of each week and show it as an Area:
+We can also use the binX transform to compute the min and max closing value of each week and show it as an area ([demo](https://svelte.dev/playground/f9d1b38f91cc4f24ab63a616a3e1c1c3)):
 
 ```svelte
 <Plot grid>

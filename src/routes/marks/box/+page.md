@@ -16,7 +16,7 @@ Box marks are a compound mark consisting of a bar, rule, dots and tick marks (se
     let filteredData = $derived(
         countries.filter(
             (d) =>
-                d.Year === year &&
+                Math.abs(d.Year - year) < 20 &&
                 d.Continent &&
                 d.Continent !== '#N/A'
         )

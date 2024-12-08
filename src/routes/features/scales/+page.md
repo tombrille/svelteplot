@@ -6,13 +6,13 @@ A core feature of SveltePlot is automatically inferred scale types and domains b
 
 In the example below, we have a line mark with the x channel to `"Date"` and y channel mapped to `"Close"`, which are keys of the data objects in the `aapl` array.
 
+The x channel is bound to the _x_ scale, (other marks may also bind channels like x1 or x2 to the same scale). To figure out the scale type, SveltePlot looks at all data values mapped to the x scale. In this case, they are all Date objects, so it infers a _time_ scale. The scale domain is automatically set to the extent of all data values.
+
 ```svelte
 <Plot grid>
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
-
-The x channel is bound to the _x_ scale, (other marks may also bind channels like x1 or x2 to the same scale). To figure out the scale type, SveltePlot looks at all data values mapped to the x scale. In this case, they are all Date objects, so it infers a _time_ scale. The scale domain is automatically set to the extent of all data values.
 
 ```svelte live
 <script>

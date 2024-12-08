@@ -69,7 +69,7 @@
                 .filter((d) => d.__y >= lower && d.__y <= upper)
                 .sort((a, b) => a.__y - b.__y);
             return {
-                __x: row.__x,
+                __x: row[x],
                 p25: row.__y1,
                 p75: row.__y2,
                 median: row.__y,

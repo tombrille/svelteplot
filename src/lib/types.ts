@@ -270,6 +270,9 @@ export type PlotOptions = {
      * setting the maxWidth style property you can limit the width of your plot.
      */
     maxWidth?: string;
+    /**
+     * force the plot into a fixed height 
+     */
     height: 'auto' | number | ((d: number) => number);
     /**
      * Convenience option for setting all four margins at once, in px.
@@ -337,7 +340,13 @@ export type PlotOptions = {
      * Options for the shared x scale.
      */
     x: Partial<XScaleOptions>;
+    /**
+     * Options for the shared y scale
+     */
     y: Partial<YScaleOptions>;
+     /**
+     * Options for the shared radius scale
+     */
     r: ScaleOptions;
     color: ColorScaleOptions;
     opacity: ScaleOptions;

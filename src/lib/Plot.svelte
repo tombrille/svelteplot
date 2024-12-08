@@ -35,7 +35,7 @@
         ...restOptions
     }: Partial<PlotOptions> = $props();
 
-    let projectionOpts = $derived.by(() => {
+    const projectionOpts = $derived.by(() => {
         if (projection && typeof projection !== 'function') {
             const { type: projFactory, aspectRatio } = namedProjection(
                 isObject(projection) ? projection.type : projection
@@ -49,7 +49,7 @@
         return projection;
     });
 
-    let scales = $derived(
+    const scales = $derived(
         Object.fromEntries(
             ['x', 'y', 'r', 'color', 'opacity', 'symbol', 'length', 'fx', 'fy', 'fz'].map(
                 (scale) => {

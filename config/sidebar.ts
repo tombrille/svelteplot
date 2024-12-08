@@ -8,6 +8,7 @@ export default {
                     title: 'Getting started',
                     to: '/getting-started/'
                 },
+                
                 {
                     title: 'Introduction',
                     to: '/introduction/'
@@ -26,6 +27,10 @@ export default {
                     title: 'Plot',
                     to: '/features/plot/'
                 },
+                {
+                    title: 'Scales',
+                    to: '/features/scales/'
+                },
                 // {
                 //     title: 'Marks',
                 //     to: '/features/marks/'
@@ -34,10 +39,7 @@ export default {
                     title: 'Transforms',
                     to: '/features/transforms/'
                 },
-                {
-                    title: 'Scales',
-                    to: '/features/scales/'
-                }
+                
             ]
         },
         {

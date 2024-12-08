@@ -16,7 +16,7 @@
         class: className = null
     }: BoxProps = $props();
 
-    let { data: grouped } = $derived(
+    const { data: grouped } = $derived(
         groupY(
             {
                 data: data.filter((d) => resolveChannel('x', d, { x, y }) != null),
@@ -29,7 +29,7 @@
         )
     );
 
-    let boxData = $derived(
+    const boxData = $derived(
         grouped.map((row) => {
             const iqr = row.__x2 - row.__x1;
             const whisker = iqr * 1.5;
@@ -42,7 +42,7 @@
                 .sort((a, b) => a.__x - b.__x);
             // if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
             return {
-                __y: row.__y,
+                __y: row[y],
                 p25: row.__x1,
                 p75: row.__x2,
                 median: row.__x,
@@ -50,7 +50,7 @@
                 max: inside.at(-1).__x,
                 outliers
             };
-        })
+        }).sort((a,b) => b.median - a.median)
     );
 </script>
 
