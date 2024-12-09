@@ -3,7 +3,6 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackX } from '$lib/transforms/stack.js';
     import { recordizeX } from '$lib/transforms/recordize.js';
-    import { omit } from 'es-toolkit';
     import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
 
     type AreaXProps = BaseMarkProps & {
