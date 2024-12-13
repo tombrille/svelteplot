@@ -257,7 +257,7 @@ Plot provides a variety of built-in projections. And as above, all world project
 
 ## Custom projections
 
-You can use custom projections:
+You can use custom projections if you need more control over the projection parameters like `scale`.
 
 ```svelte live
 <script>
