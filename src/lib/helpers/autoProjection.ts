@@ -15,7 +15,7 @@ import {
     geoTransverseMercator,
     geoTransform
 } from 'd3-geo';
-import { constant, isObject, isValid } from './index.js';
+import { constant } from './index.js';
 
 const identity = constant({ stream: (stream) => stream });
 

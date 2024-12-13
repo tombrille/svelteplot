@@ -43,7 +43,7 @@
     import { pathRound as path } from 'd3-path';
 
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales, projectXY } from '../helpers/scales.js';
+    import { projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     //import DotCanvas from './helpers/DotCanvas.svelte';
@@ -67,10 +67,10 @@
     }: VectorMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
+    const testFacet = $derived(getTestFacet());
 
     const shapeArrow: ShapeRenderer = {
         draw(context: D3Path, l: number, r: number) {
