@@ -254,3 +254,73 @@ Plot provides a variety of built-in projections. And as above, all world project
     <Geo data={[selected]} />
 </Plot>
 ```
+
+## Custom projections
+
+You can use custom projections:
+
+```svelte live
+<script>
+    import { Slider } from '$lib/ui';
+    import { Plot, Geo, Sphere, Graticule } from '$lib';
+    import { page } from '$app/stores';
+    import * as topojson from 'topojson-client';
+    import { geoOrthographic } from 'd3-geo';
+
+    const { world } = $derived($page.data.data);
+
+    let lon = $state(0);
+    let zoom = $state(1);
+
+    const countries = $derived(
+        topojson.feature(world, world.objects.countries)
+            .features
+    );
+</script>
+
+<Slider bind:value={lon} min={-180} max={180} label="lon" />
+<Slider
+    bind:value={zoom}
+    min={0.1}
+    max={10}
+    step={0.01}
+    label="zoom" />
+<Plot
+    inset={5}
+    projection={{
+        type: ({ width, height }) => geoOrthographic()
+            .translate([width * 0.5, height * 0.5])
+            .scale(width * 0.5 * zoom)
+            .rotate([-lon, 0])
+    }}
+    height={(w) => w}>
+    >
+    <Graticule opacity={0.1} />
+    <Geo
+        data={countries}
+        fill="currentColor"
+        opacity={0.3}
+        stroke="var(--svelteplot-bg)" />
+</Plot>
+```
+
+```svelte
+<Plot
+    inset={5}
+    projection={{
+        type: ({ width, height }) =>
+            geoOrthographic()
+                .translate([width * 0.5, height * 0.5])
+                .scale(width * 0.5 * zoom)
+                .rotate([-lon, 0])
+    }}
+    height={(w) => w}>
+    >
+    <Graticule opacity={0.1} />
+    <Geo
+        data={countries}
+        fill="currentColor"
+        opacity={0.3}
+        stroke="var(--svelteplot-bg)" />
+</Plot>
+```
