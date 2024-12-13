@@ -36,7 +36,7 @@
     }: Partial<PlotOptions> = $props();
 
     const projectionOpts = $derived.by(() => {
-        if (projection && typeof projection !== 'function') {
+        if (projection && typeof projection !== 'function' && typeof projection?.type !== 'function') {
             const { type: projFactory, aspectRatio } = namedProjection(
                 isObject(projection) ? projection.type : projection
             );
