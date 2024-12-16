@@ -4,7 +4,7 @@
     "license": "ISC",
     "author": {
         "name": "Gregor Aisch",
-        "email": "gka@datawrapper.de"
+        "email": "gka@users.noreply.github.com"
     },
     "scripts": {
         "dev": "vite dev",
