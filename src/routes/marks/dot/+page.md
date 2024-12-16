@@ -144,27 +144,24 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
 
 <Plot
     frame
-    inset={10}
+    inset={20}
     testid="languages"
     x={{
         type: 'log',
-        domain: [50e6, 2000e6],
         axis: 'both',
         label: 'NUMBER OF SPEAKERS',
         labelAnchor: 'center'
     }}
-    y={{ type: 'point', label: '' }}
-    marginTop={40}
-    marginBottom={40}>
+    y={{ type: 'point', label: '' }}>
     <GridY strokeDasharray="1,3" strokeOpacity="0.5" />
     <Dot
         data={languages.filter(
-            (d) => d['Total speakers'] >= 70
+            (d) => d['Total speakers'] >= 70e6
         )}
         fill="currentColor"
         sort={{ channel: '-x' }}
         y="Language"
-        x={(d) => d['Total speakers'] * 1e6} />
+        x="Total speakers" />
 </Plot>
 ```
 

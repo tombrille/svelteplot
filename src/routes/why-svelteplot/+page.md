@@ -3,7 +3,220 @@ title: Why SveltePlot?
 description: SveltePlot is heavily inspired by Observable Plot, so much so that you may ask, why do it even exists
 ---
 
-SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/). But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
+There are plenty of visualization frameworks that can be used in Svelte, so why do we need another one?
+
+
+## Grammar of graphics style plotting
+
+In contrast to template-based frameworks like [LayerChart](https://www.layerchart.com/) or [UnoVis](https://unovis.dev/), SveltePlot is following the ideas of *grammar of graphics* frameworks like [Observable Plot](https://observablehq.com/plot/what-is-plot), [VegaLite](https://vega.github.io/vega-lite/) or [ggplot2](https://ggplot2.tidyverse.org/).
+
+In short this means there is no "scatterplot" component in SveltePlot, but you can use the [Dot mark](/marks/dot) to create a scatterplot. 
+
+```svelte live
+<script>
+    import { Plot, Dot } from '$lib';
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot
+    grid
+    color={{ legend: true }}
+    testid="penguins">
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species" />
+</Plot>
+```
+
+```svelte
+<Plot grid color={{ legend: true }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species" />
+</Plot>
+```
+
+You can use the exact same Dot mark to create a symbol map, a bubble treemap, or a Cleveland-style dot plot:
+
+```svelte live
+<script>
+    import { Plot, Dot, GridY, AxisX } from '$lib';
+    import { page } from '$app/stores';
+    const { languages } = $derived($page.data.data);
+    $inspect({languages})
+</script>
+
+<Plot
+    x={{
+        type: 'log',
+        insetLeft: 20,
+        insetRight: 20,
+        axis: 'top',
+    }}
+    y={{ type: 'point', label: ''  }}>
+    <GridY strokeDasharray="1,3" strokeOpacity="0.5" />
+    <Dot
+        data={languages.filter(
+            (d) => d['Total speakers'] >= 90e6
+        )}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+```svelte
+<Plot
+    x={{
+        type: 'log',
+        insetLeft: 20,
+        insetRight: 20,
+        axis: 'top',
+    }}
+    y={{ type: 'point', label: ''  }}>
+    <!-- dotted lines for grid -->
+    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
+    <!-- and the dots: -->
+    <Dot
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer:
+
+```svelte live
+<script>
+    import { Plot, Dot, Line, GridY } from '$lib';
+    import { page } from '$app/stores';
+    let { languages: allLanguages } = $derived($page.data.data);
+    const languages = $derived(allLanguages.filter(
+        (d) => d['Total speakers'] >= 90e6
+    ));
+</script>
+
+<Plot
+    x={{
+        type: 'log',
+        axis: 'top',
+        insetLeft: 20,
+        insetRight: 20,
+    }}
+    y={{ type: 'point', label: ''  }}>
+    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
+    <Line
+        opacity={0.5}
+        data={languages}
+        x="Total speakers"
+        y="Language" />
+    <Dot
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+```svelte
+<Plot /* ... */ >
+    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
+    <Line
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        opacity={0.5}/>
+    <Dot
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+And if we wanted to add uncertainty ranges, we could add the rule mark:
+
+```svelte live
+<script>
+    import { Plot, Dot, Line, GridY, RuleY } from '$lib';
+    import { page } from '$app/stores';
+
+    let { languages: allLanguages } = $derived($page.data.data);
+    const languages = $derived(allLanguages.filter(
+        (d) => d['Total speakers'] >= 90e6
+    ));
+</script>
+
+<Plot
+    x={{
+        type: 'log',
+        axis: 'top',
+        insetLeft: 20,
+        insetRight: 20,
+    }}
+    y={{ type: 'point', label: ''  }}>
+    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
+    <Line
+        opacity={0.5}
+        data={languages}
+        x="Total speakers"
+        y="Language" />
+    <RuleY
+        data={languages}
+        y="Language"
+        x1={(d) => d['Total speakers'] - d['First-language']*0.2}
+        x2={(d) => d['Total speakers'] + d['First-language']*0.2} />
+    <Dot
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+```svelte
+<Plot /* ... */ >
+    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
+    <Line
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        opacity={0.5}/>
+    <!-- we use fake uncertainties just for the demo -->
+    <RuleY
+        data={languages}
+        y="Language"
+        x1={(d) => d['Total speakers'] - d['First-language']*0.2}
+        x2={(d) => d['Total speakers'] + d['First-language']*0.2} />
+    <Dot
+        data={languages}
+        x="Total speakers"
+        y="Language"
+        fill
+        sort={{ channel: '-x' }} />
+</Plot>
+```
+
+The main point is that we can create all these variations of our chart without having to switch the chart template or looking for extra options in an existing template. Instead we can just mix and match the marks and transforms in SveltePlot!
+
+## SveltePlot is pure Svelte 5
+
+SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/), but under the hood, the entire framework has been rewritten in Svelte 5. This means it benefits from the
+
+But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
 
 ```svelte live
 <script>
@@ -31,6 +244,9 @@ SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plo
         curve="monotone-x" />
 </Plot>
 ```
+
+
+
 
 ## Reactive plotting
 

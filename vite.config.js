@@ -16,7 +16,7 @@ export default defineConfig({
         sveltepress({
             theme: defaultTheme({
                 logo: '/favicon.png',
-                github: 'https://github.com/svelteplot/svelteplot',
+                github: 'https://github.com/gka/svelteplot',
                 themeColor: {
                     light: '#ffffff',
                     dark: '#18181b',
@@ -61,7 +61,7 @@ export default defineConfig({
                 description: 'The best data visualizations are built with Svelte.'
             },
 
-            addInspect: true
+            // addInspect: true
         })
     ],
 
