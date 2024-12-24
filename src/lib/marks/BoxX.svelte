@@ -30,28 +30,33 @@
     );
 
     const boxData = $derived(
-        grouped.map((row) => {
-            const iqr = row.__x2 - row.__x1;
-            const whisker = iqr * 1.5;
-            const lower = row.__x1 - whisker;
-            const upper = row.__x2 + whisker;
-            const data = row.__fill.map((d) => ({ ...d, __x: resolveChannel('x', d, { x, y }) }));
-            const outliers = data.filter((d) => d.__x < lower || d.__x > upper);
-            const inside = data
-                .filter((d) => d.__x >= lower && d.__x <= upper)
-                .sort((a, b) => a.__x - b.__x);
-            // if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
-            return {
-                [y]: row[y],
-                __y: row[y],
-                p25: row.__x1,
-                p75: row.__x2,
-                median: row.__x,
-                min: inside[0].__x,
-                max: inside.at(-1).__x,
-                outliers
-            };
-        }).sort((a,b) => b.median - a.median)
+        grouped
+            .map((row) => {
+                const iqr = row.__x2 - row.__x1;
+                const whisker = iqr * 1.5;
+                const lower = row.__x1 - whisker;
+                const upper = row.__x2 + whisker;
+                const data = row.__fill.map((d) => ({
+                    ...d,
+                    __x: resolveChannel('x', d, { x, y })
+                }));
+                const outliers = data.filter((d) => d.__x < lower || d.__x > upper);
+                const inside = data
+                    .filter((d) => d.__x >= lower && d.__x <= upper)
+                    .sort((a, b) => a.__x - b.__x);
+                // if (inside.length === 0) console.log('No data inside boxplot', data, row, lower, upper);
+                return {
+                    [y]: row[y],
+                    __y: row[y],
+                    p25: row.__x1,
+                    p75: row.__x2,
+                    median: row.__x,
+                    min: inside[0].__x,
+                    max: inside.at(-1).__x,
+                    outliers
+                };
+            })
+            .sort((a, b) => b.median - a.median)
     );
 </script>
 

@@ -5,10 +5,9 @@ description: Why do we need yet another Svelte visualization framework?
 
 SveltePlot combines the concise API and concepts of Observable Plot with Svelte reactivity. It is not just a Svelte-wrapper, but re-implemented from scratch on top of D3. Svelte 5 for all the DOM manipulation and reactivity flow. But what makes SveltePlot better than the existing visualization frameworks in Svelte?
 
-
 ## Layered grammar of graphics
 
-In contrast to [other](https://unovis.dev/docs/quick-start) [frameworks](https://www.layerchart.com/) SveltePlot is following the ideas of *[layered grammar of graphics](https://vita.had.co.nz/papers/layered-grammar.html)* style frameworks like [ggplot2](https://ggplot2.tidyverse.org/), [VegaLite](https://vega.github.io/vega-lite/) or [Observable Plot](https://observablehq.com/plot/what-is-plot).
+In contrast to [other](https://unovis.dev/docs/quick-start) [frameworks](https://www.layerchart.com/) SveltePlot is following the ideas of _[layered grammar of graphics](https://vita.had.co.nz/papers/layered-grammar.html)_ style frameworks like [ggplot2](https://ggplot2.tidyverse.org/), [VegaLite](https://vega.github.io/vega-lite/) or [Observable Plot](https://observablehq.com/plot/what-is-plot).
 
 This means there is no "scatterplot" component in SveltePlot, but you can use the [Dot mark](/marks/dot) to create a scatterplot:
 
@@ -19,10 +18,7 @@ This means there is no "scatterplot" component in SveltePlot, but you can use th
     let { penguins } = $derived($page.data.data);
 </script>
 
-<Plot
-    grid
-    color={{ legend: true }}
-    testid="penguins">
+<Plot grid color={{ legend: true }} testid="penguins">
     <Dot
         data={penguins}
         x="culmen_length_mm"
@@ -42,8 +38,8 @@ This means there is no "scatterplot" component in SveltePlot, but you can use th
         symbol="species" />
 </Plot>
 ```
-[fork](https://svelte.dev/playground/ec6da6d3ab314edd89ef038281b419c5?version=5.14.0)
 
+[fork](https://svelte.dev/playground/ec6da6d3ab314edd89ef038281b419c5?version=5.14.0)
 
 You can think of marks as the building blocks for your visualizations -- or the _nouns_ in your visual language, to stick with the grammar metaphor. We can use the exact same Dot we used for the above scatterplot to create a symbol map, a bubble heatmap, or a Cleveland-style dot plot:
 
@@ -52,7 +48,7 @@ You can think of marks as the building blocks for your visualizations -- or the 
     import { Plot, Dot, GridY, AxisX } from '$lib';
     import { page } from '$app/stores';
     const { languages } = $derived($page.data.data);
-    $inspect({languages})
+    $inspect({ languages });
 </script>
 
 <Plot
@@ -60,9 +56,9 @@ You can think of marks as the building blocks for your visualizations -- or the 
         type: 'log',
         insetLeft: 20,
         insetRight: 20,
-        axis: 'top',
+        axis: 'top'
     }}
-    y={{ type: 'point', label: ''  }}>
+    y={{ type: 'point', label: '' }}>
     <GridY strokeDasharray="1,3" strokeOpacity="0.5" />
     <Dot
         data={languages.filter(
@@ -81,9 +77,9 @@ You can think of marks as the building blocks for your visualizations -- or the 
         type: 'log',
         insetLeft: 20,
         insetRight: 20,
-        axis: 'top',
+        axis: 'top'
     }}
-    y={{ type: 'point', label: ''  }}>
+    y={{ type: 'point', label: '' }}>
     <!-- dotted lines for grid -->
     <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
     <!-- and the dots: -->
@@ -95,18 +91,23 @@ You can think of marks as the building blocks for your visualizations -- or the 
         sort={{ channel: '-x' }} />
 </Plot>
 ```
+
 [fork](https://svelte.dev/playground/b329bb028a5445ba8f884291f0475be6?version=5.15.0)
 
-This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer. 
+This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer.
 
 ```svelte live
 <script>
     import { Plot, Dot, Line, GridY } from '$lib';
     import { page } from '$app/stores';
-    let { languages: allLanguages } = $derived($page.data.data);
-    const languages = $derived(allLanguages.filter(
-        (d) => d['Total speakers'] >= 90e6
-    ));
+    let { languages: allLanguages } = $derived(
+        $page.data.data
+    );
+    const languages = $derived(
+        allLanguages.filter(
+            (d) => d['Total speakers'] >= 90e6
+        )
+    );
 </script>
 
 <Plot
@@ -114,9 +115,9 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
         type: 'log',
         axis: 'top',
         insetLeft: 20,
-        insetRight: 20,
+        insetRight: 20
     }}
-    y={{ type: 'point', label: ''  }}>
+    y={{ type: 'point', label: '' }}>
     <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
     <Line
         opacity={0.5}
@@ -151,16 +152,19 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
 
 And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 
-
 ```svelte live
 <script>
     import { Plot, Dot, Line, GridY, RuleY } from '$lib';
     import { page } from '$app/stores';
 
-    let { languages: allLanguages } = $derived($page.data.data);
-    const languages = $derived(allLanguages.filter(
-        (d) => d['Total speakers'] >= 90e6
-    ));
+    let { languages: allLanguages } = $derived(
+        $page.data.data
+    );
+    const languages = $derived(
+        allLanguages.filter(
+            (d) => d['Total speakers'] >= 90e6
+        )
+    );
 </script>
 
 <Plot
@@ -168,9 +172,9 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
         type: 'log',
         axis: 'top',
         insetLeft: 20,
-        insetRight: 20,
+        insetRight: 20
     }}
-    y={{ type: 'point', label: ''  }}>
+    y={{ type: 'point', label: '' }}>
     <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
     <Line
         opacity={0.5}
@@ -180,8 +184,11 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
     <RuleY
         data={languages}
         y="Language"
-        x1={(d) => d['Total speakers'] - d['First-language']*0.2}
-        x2={(d) => d['Total speakers'] + d['First-language']*0.2} />
+        x1={(d) =>
+            d['Total speakers'] - d['First-language'] * 0.2}
+        x2={(d) =>
+            d['Total speakers'] +
+            d['First-language'] * 0.2} />
     <Dot
         data={languages}
         x="Total speakers"
@@ -193,14 +200,13 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 
 [fork](https://svelte.dev/playground/7bf86302c8b64e749c9b2d44bac2832c?version=5.14.0)
 
-
-Would you still call this a dot plot or is it a line chart already? Perhaps a dot-line-range chart? The beauty of grammar of graphics style frameworks that *it doesn't matter* how you call your plot! We can create tons of chart variations without having to "switch" the chart template or go through a list of special options in existing templates. Instead, we can just mix the marks and transforms in SveltePlot!
+Would you still call this a dot plot or is it a line chart already? Perhaps a dot-line-range chart? The beauty of grammar of graphics style frameworks that _it doesn't matter_ how you call your plot! We can create tons of chart variations without having to "switch" the chart template or go through a list of special options in existing templates. Instead, we can just mix the marks and transforms in SveltePlot!
 
 ## Plotting in pure Svelte 5
 
 If [Observable Plot](https://observablehq.com/plot/) is so great, why not just use it and the [recommended Svelte wrapper](https://observablehq.com/plot/getting-started#plot-in-svelte)? The short answer: because it's not the Svelte way!
 
-Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)). Whenever you make changes to a chart config, the next render call will throw away the entire SVG DOM and replace it with a new one. 
+Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)). Whenever you make changes to a chart config, the next render call will throw away the entire SVG DOM and replace it with a new one.
 
 In contrast, in **SveltePlot** the plot and mark components are _Svelte components_, so the _data_ and _channel_ definitions are just the props you pass to them. Whenever you change a channel assignment or the data array, the plot will update itself, re-using the existing DOM.
 
@@ -217,7 +223,10 @@ Take the following example, where you can filter the data using the [filter](/tr
     let noAxisTitle = $state(false);
 </script>
 
-<Slider bind:value={min} label="min economy (mpg)" max={50} />
+<Slider
+    bind:value={min}
+    label="min economy (mpg)"
+    max={50} />
 
 <Plot grid testid="cars" color={{ type: 'linear' }}>
     <Dot
@@ -261,7 +270,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
             );
             const i = prevI + mag;
             const pt = {
-                x: i, 
+                x: i,
                 y:
                     (noise(i / 40 / mag) * 100 - 50) *
                     Math.log10(mag * 10) *
@@ -318,6 +327,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
     {/if}
 </Plot>
 ```
+
 [fork](https://svelte.dev/playground/e136cdefec7943cba5e6d7b604a2e50c?version=5.14.0)
 
 Also, simply by being a Svelte framework, SveltePlot can support tweens and transitions! In the following plot, we're using the [Tween state](https://svelte.dev/docs/svelte-motion#Tween) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
@@ -362,10 +372,13 @@ Also, simply by being a Svelte framework, SveltePlot can support tweens and tran
 
     let data = $state([1, 2, 3, 4, 5]);
 
-    const domain = new Tween.of(() => extent([0, ...data]), {
-        duration: 1000,
-        easing: cubicOut
-    });
+    const domain = new Tween.of(
+        () => extent([0, ...data]),
+        {
+            duration: 1000,
+            easing: cubicOut
+        }
+    );
 </script>
 
 <button onclick={(d) => data.push(Math.random())}
@@ -385,7 +398,11 @@ Finally, most of SveltePlot marks support transitions!
 <script>
     import { Plot, Dot } from '$lib';
     import { fade, scale, fly } from 'svelte/transition';
-    import { expoIn, cubicIn, bounceOut } from 'svelte/easing';
+    import {
+        expoIn,
+        cubicIn,
+        bounceOut
+    } from 'svelte/easing';
     import { Slider } from '$lib/ui';
     import { page } from '$app/stores';
     import { sampleSize, range } from 'es-toolkit';
@@ -405,7 +422,6 @@ Finally, most of SveltePlot marks support transitions!
         }, 100);
         return () => clearInterval(t);
     });
-
 </script>
 
 {min}
@@ -418,14 +434,19 @@ Finally, most of SveltePlot marks support transitions!
         r={4}
         stroke="economy (mpg)">
         {#snippet wrap(dot, args)}
-            <g in:scale|global={{ duration: 300, easing: expoIn }}
-                out:fly|global={{ y: '70px', easing: cubicIn }}
-                >{@render dot(args)}</g>
+            <g
+                in:scale|global={{
+                    duration: 300,
+                    easing: expoIn
+                }}
+                out:fly|global={{
+                    y: '70px',
+                    easing: cubicIn
+                }}>{@render dot(args)}</g>
         {/snippet}
     </Dot>
 </Plot>
 ```
-
 
 ## Easy to extend
 

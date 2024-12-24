@@ -288,10 +288,11 @@ You can use custom projections if you need more control over the projection para
 <Plot
     inset={5}
     projection={{
-        type: ({ width, height }) => geoOrthographic()
-            .translate([width * 0.5, height * 0.5])
-            .scale(width * 0.5 * zoom)
-            .rotate([-lon, 0])
+        type: ({ width, height }) =>
+            geoOrthographic()
+                .translate([width * 0.5, height * 0.5])
+                .scale(width * 0.5 * zoom)
+                .rotate([-lon, 0])
     }}
     height={(w) => w}>
     >

@@ -2,7 +2,7 @@
 title: SveltePlot
 description: The best visualizations are built with <span>Svelte.</span>
 heroImage: /logo.png
-tagline: Inspired by Observable Plot, written in Svelte 5, built on top of D3.js!
+tagline: A reactive visualization framework based on the layered grammar of graphics principles. Think of Observable Plot, but re-written in Svelte!
 actions:
     - label: Getting started
       type: flat
@@ -55,7 +55,7 @@ _features:
       link: /features/scales
 ---
 
-<style>
+<style lang="scss">
   main {
 
   }
@@ -63,9 +63,15 @@ _features:
    margin-left: auto;
    margin-right: auto;
   }
-  :global(.intro .description) {
-    font-size: 2.8rem!important;
-    font-weight: 600!important;
-    line-height: 1.1!important;
+  :global {
+    .intro .description {
+      font-size: 2.8rem!important;
+      font-weight: 600!important;
+      line-height: 1.1!important;
+      text-wrap: balance;
+    }
+    .svp-action--primary span {
+      color: white;
+    }
   }
 </style>

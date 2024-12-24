@@ -131,7 +131,7 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
 
 But better to use a RectX here:
 
-```svelte --live
+```svelte 0live
 <script>
     import { Plot, RectX, Text } from '$lib';
 

@@ -122,7 +122,7 @@ describe('groupY', () => {
             { data: inputData, y: 'year', x1: 'value' },
             { x: 'count', x1: 'sum' }
         );
-        console.log(data, channels)
+        console.log(data, channels);
         expect(data).toHaveLength(3);
         expect(data[0].year).toBe(2000);
         expect(data[1].year).toBe(2001);

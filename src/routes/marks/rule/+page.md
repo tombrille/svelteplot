@@ -26,10 +26,12 @@ Rules can be used for highlighting certain axis values but they can also be used
 
 Like most other marks, rules also accept data for displaying multiple lines at once:
 
-
 ```svelte
 <Plot>
-    <RuleY data={[50, 100, 150]} strokeDasharray="3,3" opacity={0.5} />
+    <RuleY
+        data={[50, 100, 150]}
+        strokeDasharray="3,3"
+        opacity={0.5} />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
@@ -44,7 +46,10 @@ Like most other marks, rules also accept data for displaying multiple lines at o
 </script>
 
 <Plot height={350}>
-    <RuleY data={[50, 100, 150]} strokeDasharray="3,3" opacity={0.5} />
+    <RuleY
+        data={[50, 100, 150]}
+        strokeDasharray="3,3"
+        opacity={0.5} />
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```

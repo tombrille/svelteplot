@@ -8,14 +8,13 @@ export default {
                     title: 'Getting started',
                     to: '/getting-started/'
                 },
-                
-                {
-                    title: 'Introduction',
-                    to: '/introduction/'
-                },
                 {
                     title: 'Why SveltePlot?',
                     to: '/why-svelteplot/'
+                },
+                {
+                    title: 'Introduction',
+                    to: '/introduction/'
                 }
             ]
         },
@@ -38,8 +37,7 @@ export default {
                 {
                     title: 'Transforms',
                     to: '/features/transforms/'
-                },
-                
+                }
             ]
         },
         {

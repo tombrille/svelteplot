@@ -160,27 +160,30 @@ List of all plot options you can pass via props on the `<Plot />` component:
 - `locale` - locale to be used for number and date formatting, e.g. in axis ticks
 
 **Size and margins**
+
 - `maxWidth` - you can set the max-width of the plot element to prevent the plot from scaling to the container div width
-- `height` 
+- `height`
 - `marginTop` - plot margins
-- `marginBottom` -  margins
+- `marginBottom` - margins
 - `marginLeft` - margins
 - `marginRight` - margins
 - `margin` - shortcut to set all 4 margins to the same value
 - `inset` - shortcut for setting all insets. To set individual insets, see `x` and `y` scale options.
 
 **Implicit marks**
+
 - `grid` - set this flag to activate implicit grids
 - `axes` - set this flag to activate implicit axes
 - `frame` - set this flag to activate implicit frame
 
 **Scale options**
+
 - `x` - options for the x scale:
-  - `axis`
-  - `insetLeft`
-  - `insetRight`
-  - `ticks`
-  - `tickFormat`
+    - `axis`
+    - `insetLeft`
+    - `insetRight`
+    - `ticks`
+    - `tickFormat`
 - `y` - options for the y scale
 - `r` - options for the radius scale
 - `color` - options for the color scale
@@ -189,9 +192,10 @@ List of all plot options you can pass via props on the `<Plot />` component:
 - `length` - options for the length scale
 
 - You can set the following shared scale options for all the scales listed above.
-  - `domain`
-  - `range`
-  - `range`
+
+    - `domain`
+    - `range`
+    - `range`
 
 - `locale` - locale used for automatic number and date formatting in axis ticks
 

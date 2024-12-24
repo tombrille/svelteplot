@@ -9,7 +9,7 @@
         FacetContext,
         PlotDefaults
     } from '../types.js';
-    import { fade} from 'svelte/transition';
+    import { fade } from 'svelte/transition';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
@@ -55,7 +55,7 @@
         ...options
     }: DotProps = $props();
 
-    $inspect({tIn});
+    $inspect({ tIn });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -85,18 +85,12 @@
     {@render dot(args)}
 {/snippet}
 
-{#snippet dot({datum, args, usedScales, mark, plot})}
+{#snippet dot({ datum, args, usedScales, mark, plot })}
     {@const _x = resolveChannel('x', datum, args)}
     {@const _y = resolveChannel('y', datum, args)}
     {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
     {#if isValid(_x) && isValid(_y) && isValid(_r)}
-        {@const [x, y] = projectXY(
-            plot.scales,
-            _x,
-            _y,
-            usedScales.x,
-            usedScales.y
-        )}
+        {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
         {#if isValid(x) && isValid(y)}
             {@const dx = +resolveProp(args.dx, datum, 0)}
             {@const dy = +resolveProp(args.dy, datum, 0)}
@@ -106,21 +100,13 @@
                 symbol: 'circle',
                 ...args
             })}
-            {@const symbol = usedScales.symbol
-                ? plot.scales.symbol.fn(symbol_)
-                : symbol_}
+            {@const symbol = usedScales.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
             <path
                 class={dotClass ? resolveProp(dotClass, datum, null) : null}
                 d={getSymbolPath(symbol, size)}
                 transform="translate({x + dx}, {y + dy})"
                 data-symbol={symbol}
-                style={resolveScaledStyles(
-                    datum,
-                    args,
-                    usedScales,
-                    plot,
-                    'stroke'
-                )}
+                style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
                 use:addEventHandlers={{
                     getPlotState,
                     options: mark.options,
@@ -154,7 +140,7 @@
             {:else}
                 {#each args.data as datum}
                     {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                        {@render wrap(dot, { mark, datum, args, usedScales, plot})}
+                        {@render wrap(dot, { mark, datum, args, usedScales, plot })}
                     {/if}
                 {/each}
             {/if}

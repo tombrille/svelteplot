@@ -9,7 +9,7 @@ SveltePlot is still in a very early alpha stage, and its API is subject to chang
 
 ## Try online
 
-You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev) or the [Svelte Playground](https://svelte.dev/playground/db6bcdf02859413fa9b3af456f9b9047).
+You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev). You can click the "Fork" button next to all examples in the SveltePlot documenation to edit them in the **Svelte playground**.
 
 ```svelte live
 <script>
@@ -29,6 +29,8 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 </Plot>
 ```
 
+[Fork](https://svelte.dev/playground/db6bcdf02859413fa9b3af456f9b9047).
+
 ```svelte
 <script>
     import { Plot, RectY, binX } from '@gka/svelteplot';
@@ -47,12 +49,24 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 
 ## Use SveltePlot in Svelte 5
 
-Just install SveltePlot via `npm` or `pnpm`, and import and use the components!
+Just install SveltePlot via `npm` or `pnpm`
 
 ```sh
 npm install @gka/svelteplot
 # or
 pnpm add @gka/svelteplot
+```
+
+..and import and use the components!
+
+```svelte
+<script>
+    import { Plot, BarX } from '@gka/svelteplot';
+</script>
+
+<Plot grid>
+    <BarX data={[1, 2, 3, 4]} />
+</Plot>
 ```
 
 ```svelte live
@@ -65,21 +79,13 @@ pnpm add @gka/svelteplot
 </Plot>
 ```
 
-```svelte
-<script>
-    import { Plot, BarX } from '@gka/svelteplot';
-</script>
-
-<Plot grid>
-    <BarX data={[1, 2, 3, 4]} />
-</Plot>
-```
+[Fork](https://svelte.dev/playground/7637c04038f14499a7230af60def22b5?version=5.14.0)
 
 ## Use SveltePlot in Svelte 4
 
-Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to it's heavy use of [runes](https://svelte-5-preview.vercel.app/docs/runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
+Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to it's heavy use of [runes](https://svelte.dev/docs/svelte/what-are-runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
 
-To upgrade to Svelte 5, you can follow the official [Svelte documentation](https://svelte-5-preview.vercel.app/docs/introduction) on how to upgrade your project.
+You can follow the official [Svelte 5 documentation](https://svelte.dev/docs/svelte/) on how to [upgrade your project](https://svelte.dev/docs/svelte/v5-migration-guide).
 
 ## Use SveltePlot in vanilla HTML
 

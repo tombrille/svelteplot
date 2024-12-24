@@ -34,7 +34,7 @@ If we want to plot a line showing the closing price over time, all we have to wr
 </Plot>
 ```
 
-...and we get this nice plot ([demo](https://svelte.dev/playground/ec67a8a48dce45c29373781a6b68491a))
+...and we get this nice plot:
 
 ```svelte live
 <script>
@@ -47,6 +47,8 @@ If we want to plot a line showing the closing price over time, all we have to wr
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+[Fork](https://svelte.dev/playground/ec67a8a48dce45c29373781a6b68491a)
 
 :::info
 Noticed how SveltePlot added **axes automatically**? That's because it assumes that most plots will benefit from axes and it adds them implicitely. (You can disable this by passing `axes={false}` to the Plot component).
@@ -78,7 +80,7 @@ Let's say we also want to add a grid and a horizontal rule at zero. To activate 
 Noticed how SveltePlot automatically extended the range of the y axis? That's because the Plot component "collects" the data from all the marks to automatically compute the scale extents.
 :::
 
-Now, let's also fill the area between the line and the horizontal rule by adding the `AreaY` mark and setting the same props as we used for the `Line` mark plus the opacity for a nicer look ([demo](https://svelte.dev/playground/a69fab2b3d9d445ab0adaef7f5d17006))
+Now, let's also fill the area between the line and the horizontal rule by adding the `AreaY` mark and setting the same props as we used for the `Line` mark plus the opacity for a nicer look
 
 ```svelte
 <Plot grid>
@@ -102,7 +104,9 @@ Now, let's also fill the area between the line and the horizontal rule by adding
 </Plot>
 ```
 
-Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want to fill the area with a [linear gradient](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient). We can just use the `<linearGradient>` in SVG and use its `id` as `fill` url for the Area mark ([demo](https://svelte.dev/playground/b77bacafa8534118b86d397be79bfad4)):
+[Fork](https://svelte.dev/playground/a69fab2b3d9d445ab0adaef7f5d17006)
+
+Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want to fill the area with a [linear gradient](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/linearGradient). We can just use the `<linearGradient>` in SVG and use its `id` as `fill` url for the Area mark:
 
 ```svelte
 <Plot grid>
@@ -161,12 +165,14 @@ Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want t
     <Line data={aapl} x="Date" y="Close" />
 </Plot>
 ```
+
+[Fork](https://svelte.dev/playground/b77bacafa8534118b86d397be79bfad4)
 
 You can learn more about all the marks in the documentation, e.g. [Area](/marks/area)
 
 ## Transforms
 
-Our dataset contains daily data, but what if we want to show monthly aggregates instead? Thanks to the **transforms** you can do this in your visualization code. The [binX](/transforms/bin) transform can aggregate temporal data into "bins" based on a specified interval ([demo](https://svelte.dev/playground/e5057e8db853469893108c2e1d501eee))
+Our dataset contains daily data, but what if we want to show monthly aggregates instead? Thanks to the **transforms** you can do this in your visualization code. The [binX](/transforms/bin) transform can aggregate temporal data into "bins" based on a specified interval:
 
 ```svelte
 <Plot grid>
@@ -200,7 +206,9 @@ Our dataset contains daily data, but what if we want to show monthly aggregates 
 </Plot>
 ```
 
-We can also use the binX transform to compute the min and max closing value of each week and show it as an area ([demo](https://svelte.dev/playground/f9d1b38f91cc4f24ab63a616a3e1c1c3)):
+[Fork](https://svelte.dev/playground/e5057e8db853469893108c2e1d501eee)
+
+We can also use the binX transform to compute the min and max closing value of each week and show it as an area:
 
 ```svelte
 <Plot grid>
@@ -243,6 +251,8 @@ We can also use the binX transform to compute the min and max closing value of e
         )} />
 </Plot>
 ```
+
+[Fork](https://svelte.dev/playground/f9d1b38f91cc4f24ab63a616a3e1c1c3)
 
 ## sdsd
 

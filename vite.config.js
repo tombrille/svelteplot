@@ -58,8 +58,8 @@ export default defineConfig({
 
             siteConfig: {
                 title: 'SveltePlot',
-                description: 'The best data visualizations are built with Svelte.'
-            },
+                description: 'The best visualizations are built with Svelte.'
+            }
 
             // addInspect: true
         })

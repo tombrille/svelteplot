@@ -70,7 +70,10 @@ You can style box plots by passing separate options for the marks
         tickMinMax
         y="class"
         dot={{ fill: true }}
-        bar={{ fill: 'var(--svelteplot-bg)', stroke: 'currentColor' }} />
+        bar={{
+            fill: 'var(--svelteplot-bg)',
+            stroke: 'currentColor'
+        }} />
 </Plot>
 ```
 
@@ -82,7 +85,10 @@ You can style box plots by passing separate options for the marks
         tickMinMax
         y="class"
         dot={{ fill: true }}
-        bar={{ fill: 'var(--svelteplot-bg)', stroke: 'currentColor' }} />
+        bar={{
+            fill: 'var(--svelteplot-bg)',
+            stroke: 'currentColor'
+        }} />
 </Plot>
 ```
 
@@ -100,7 +106,10 @@ You can style box plots by passing separate options for the marks
         data={mpg}
         x="class"
         y="hwy"
-        tickMedian={{ stroke: 'var(--svelteplot-bg)', strokeWidth: 3 }} />
+        tickMedian={{
+            stroke: 'var(--svelteplot-bg)',
+            strokeWidth: 3
+        }} />
 </Plot>
 ```
 
@@ -110,6 +119,9 @@ You can style box plots by passing separate options for the marks
         data={mpg}
         x="class"
         y="hwy"
-        tickMedian={{ stroke: 'var(--svelteplot-bg)', strokeWidth: 3 }} />
+        tickMedian={{
+            stroke: 'var(--svelteplot-bg)',
+            strokeWidth: 3
+        }} />
 </Plot>
 ```

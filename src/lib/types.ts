@@ -271,7 +271,7 @@ export type PlotOptions = {
      */
     maxWidth?: string;
     /**
-     * force the plot into a fixed height 
+     * force the plot into a fixed height
      */
     height: 'auto' | number | ((d: number) => number);
     /**
@@ -344,7 +344,7 @@ export type PlotOptions = {
      * Options for the shared y scale
      */
     y: Partial<YScaleOptions>;
-     /**
+    /**
      * Options for the shared radius scale
      */
     r: ScaleOptions;
