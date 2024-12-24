@@ -5,6 +5,47 @@
     }
 }
 
+blockquote {
+    text-indent: 0;
+    padding-left: 1em;
+    color: currentColor;
+    font-style: italic;
+}
+
+a.link.highlight {
+//     display: inline;
+//     span { display: contents;}
+    > svg { display: none;}
+}
+
+a.link.highlight[href^="https://svelte.dev/playground/"] {
+    position: relative;
+    display: block;
+    height: 0.01em;
+    > span {
+        color: ButtonText;
+        display: flex;
+        background: ButtonFace;
+        padding: 1px 7px;
+        border-radius: 3px;
+        font-size: 12px;
+        text-decoration: none;
+        opacity: 0.75;
+        position: absolute;
+        top: -2em;
+        right: 0;
+        &:hover {
+            opacity: 1;
+        }
+        &::after {
+            content: '→';
+            rotate: -45deg;
+            display: inherit;
+        }
+    }
+    
+}
+
 :root {
     --svelteplot-bg: #fff;
     --svp-accent: #d81a5b;

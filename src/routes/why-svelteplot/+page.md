@@ -1,16 +1,16 @@
 ---
 title: Why SveltePlot?
-description: SveltePlot is heavily inspired by Observable Plot, so much so that you may ask, why do it even exists
+description: Why do we need yet another Svelte visualization framework?
 ---
 
-There are plenty of visualization frameworks that can be used in Svelte, so why do we need another one?
+SveltePlot combines the concise API and concepts of Observable Plot with Svelte reactivity. It is not just a Svelte-wrapper, but re-implemented from scratch on top of D3. Svelte 5 for all the DOM manipulation and reactivity flow. But what makes SveltePlot better than the existing visualization frameworks in Svelte?
 
 
-## Grammar of graphics style plotting
+## Layered grammar of graphics
 
-In contrast to template-based frameworks like [LayerChart](https://www.layerchart.com/) or [UnoVis](https://unovis.dev/), SveltePlot is following the ideas of *grammar of graphics* frameworks like [Observable Plot](https://observablehq.com/plot/what-is-plot), [VegaLite](https://vega.github.io/vega-lite/) or [ggplot2](https://ggplot2.tidyverse.org/).
+In contrast to [other](https://unovis.dev/docs/quick-start) [frameworks](https://www.layerchart.com/) SveltePlot is following the ideas of *[layered grammar of graphics](https://vita.had.co.nz/papers/layered-grammar.html)* style frameworks like [ggplot2](https://ggplot2.tidyverse.org/), [VegaLite](https://vega.github.io/vega-lite/) or [Observable Plot](https://observablehq.com/plot/what-is-plot).
 
-In short this means there is no "scatterplot" component in SveltePlot, but you can use the [Dot mark](/marks/dot) to create a scatterplot. 
+This means there is no "scatterplot" component in SveltePlot, but you can use the [Dot mark](/marks/dot) to create a scatterplot:
 
 ```svelte live
 <script>
@@ -42,8 +42,10 @@ In short this means there is no "scatterplot" component in SveltePlot, but you c
         symbol="species" />
 </Plot>
 ```
+[fork](https://svelte.dev/playground/ec6da6d3ab314edd89ef038281b419c5?version=5.14.0)
 
-You can use the exact same Dot mark to create a symbol map, a bubble treemap, or a Cleveland-style dot plot:
+
+You can think of marks as the building blocks for your visualizations -- or the _nouns_ in your visual language, to stick with the grammar metaphor. We can use the exact same Dot we used for the above scatterplot to create a symbol map, a bubble heatmap, or a Cleveland-style dot plot:
 
 ```svelte live
 <script>
@@ -93,8 +95,9 @@ You can use the exact same Dot mark to create a symbol map, a bubble treemap, or
         sort={{ channel: '-x' }} />
 </Plot>
 ```
+[fork](https://svelte.dev/playground/b329bb028a5445ba8f884291f0475be6?version=5.15.0)
 
-This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer:
+This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer. 
 
 ```svelte live
 <script>
@@ -146,7 +149,8 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
 </Plot>
 ```
 
-And if we wanted to add uncertainty ranges, we could add the rule mark:
+And if we wanted to add uncertainty ranges, we can add a rule mark as well.
+
 
 ```svelte live
 <script>
@@ -187,105 +191,35 @@ And if we wanted to add uncertainty ranges, we could add the rule mark:
 </Plot>
 ```
 
-```svelte
-<Plot /* ... */ >
-    <GridY strokeDasharray="1,3" strokeOpacity="0.3" />
-    <Line
-        data={languages}
-        x="Total speakers"
-        y="Language"
-        opacity={0.5}/>
-    <!-- we use fake uncertainties just for the demo -->
-    <RuleY
-        data={languages}
-        y="Language"
-        x1={(d) => d['Total speakers'] - d['First-language']*0.2}
-        x2={(d) => d['Total speakers'] + d['First-language']*0.2} />
-    <Dot
-        data={languages}
-        x="Total speakers"
-        y="Language"
-        fill
-        sort={{ channel: '-x' }} />
-</Plot>
-```
-
-The main point is that we can create all these variations of our chart without having to switch the chart template or looking for extra options in an existing template. Instead we can just mix and match the marks and transforms in SveltePlot!
-
-## SveltePlot is pure Svelte 5
-
-SveltePlot is heavily inspired by [Observable Plot](https://observablehq.com/plot/), but under the hood, the entire framework has been rewritten in Svelte 5. This means it benefits from the
-
-But while it draws on the same concepts and follows a close-to-identical API, SveltePlot is also very different in many regards.
-
-```svelte live
-<script>
-    import { Plot, Line, AxisY } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
-
-    import { Slider } from '$lib/ui';
-
-    let truncate = $state(aapl.length);
-    let data = $derived(aapl.slice(0, truncate));
-</script>
-
-<Slider
-    label="truncate"
-    bind:value={truncate}
-    min={50}
-    max={aapl.length} />
-<Plot locale="de-DE" inset={10} grid>
-    <Line
-        marker={truncate < 100}
-        {data}
-        x="Date"
-        y="Close"
-        curve="monotone-x" />
-</Plot>
-```
+[fork](https://svelte.dev/playground/7bf86302c8b64e749c9b2d44bac2832c?version=5.14.0)
 
 
+Would you still call this a dot plot or is it a line chart already? Perhaps a dot-line-range chart? The beauty of grammar of graphics style frameworks that *it doesn't matter* how you call your plot! We can create tons of chart variations without having to "switch" the chart template or go through a list of special options in existing templates. Instead, we can just mix the marks and transforms in SveltePlot!
 
+## Plotting in pure Svelte 5
 
-## Reactive plotting
+If [Observable Plot](https://observablehq.com/plot/) is so great, why not just use it and the [recommended Svelte wrapper](https://observablehq.com/plot/getting-started#plot-in-svelte)? The short answer: because it's not the Svelte way!
 
-Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a basically static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)).
+Observable Plot follows a fire-and-forget logic: You pass your config options to `Plot.plot()` and it returns a static SVG element with the chart (see the official [documentation](https://observablehq.com/plot/features/interactions#custom-reactivity)). Whenever you make changes to a chart config, the next render call will throw away the entire SVG DOM and replace it with a new one. 
 
-In contrast, in **SveltePlot** the plot and mark components are _reactive components_, so the _data_ and _channel_ definitions are just the properties you pass into. Whenever you change a channel assignment or the data array, the plot will update itself, re-using the existing DOM.
+In contrast, in **SveltePlot** the plot and mark components are _Svelte components_, so the _data_ and _channel_ definitions are just the props you pass to them. Whenever you change a channel assignment or the data array, the plot will update itself, re-using the existing DOM.
 
-Take the following example, where you can filter the data using the [filter](/transforms/filter/) transform, which is bound to a range input. When the plot updates itself, only the dot marks get updated:
+Take the following example, where you can filter the data using the [filter](/transforms/filter/) transform, which is bound to a range input. When the plot updates, only the affected `<path>` elements get updated while the rest remains in the DOM:
 
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
+    import { Slider } from '$lib/ui';
     import { page } from '$app/stores';
-    let { cars } = $derived($page.data.data);
+    const { cars } = $derived($page.data.data);
     let min = $state(0);
     let noAxisX = $state(false);
     let noAxisTitle = $state(false);
 </script>
 
-<label
-    >min economy (mpg): <input
-        type="range"
-        max={50}
-        bind:value={min} />
-    ({min})</label>
+<Slider bind:value={min} label="min economy (mpg)" max={50} />
 
 <Plot grid testid="cars" color={{ type: 'linear' }}>
-    <Dot
-        data={cars}
-        filter={(d) => d['economy (mpg)'] > min}
-        y="weight (lb)"
-        x="power (hp)"
-        r={4}
-        stroke="economy (mpg)" />
-</Plot>
-```
-
-```svelte
-<Plot grid color={{ type: 'linear' }}>
     <Dot
         data={cars}
         filter={(d) => d['economy (mpg)'] > min}
@@ -327,7 +261,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
             );
             const i = prevI + mag;
             const pt = {
-                x: i,
+                x: i, 
                 y:
                     (noise(i / 40 / mag) * 100 - 50) *
                     Math.log10(mag * 10) *
@@ -335,9 +269,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
             };
             rand = [...rand.slice(-maxLen), pt];
         } while (rand.length < 150);
-        maxLen =
-            noise(S + rand.at(-1).x / 60 / mag) * 80 + 200;
-        setTimeout(addLine, 50);
+        window.requestAnimationFrame(addLine);
     }
 
     $effect(async () => {
@@ -386,8 +318,9 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
     {/if}
 </Plot>
 ```
+[fork](https://svelte.dev/playground/e136cdefec7943cba5e6d7b604a2e50c?version=5.14.0)
 
-Also, simply by being a reactive Svelte framework, SveltePlot supports using **tweened transitions** out of the box! In the following plot, we're using the [tweened store](https://svelte.dev/docs/svelte-motion#tweened) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
+Also, simply by being a Svelte framework, SveltePlot can support tweens and transitions! In the following plot, we're using the [Tween state](https://svelte.dev/docs/svelte-motion#Tween) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
 
 ```svelte live
 <script>
@@ -399,13 +332,9 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 
     let data = $state([1, 2, 3, 4, 5]);
 
-    const domain = new Tween(extent([0, ...data]), {
+    const domain = Tween.of(() => extent([0, ...data]), {
         duration: 1000,
         easing: cubicOut
-    });
-
-    $effect(() => {
-        domain.target = extent([0, ...data]);
     });
 </script>
 
@@ -433,14 +362,9 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 
     let data = $state([1, 2, 3, 4, 5]);
 
-    const domain = new Tween(extent([0, ...data]), {
+    const domain = new Tween.of(() => extent([0, ...data]), {
         duration: 1000,
         easing: cubicOut
-    });
-
-    $effect(() => {
-        // update domain whenever data changes
-        domain.target = extent([0, ...data]);
     });
 </script>
 
@@ -455,130 +379,53 @@ Also, simply by being a reactive Svelte framework, SveltePlot supports using **t
 </Plot>
 ```
 
-## Responsive plot design
-
-Being a reactive framework, SveltePlot also makes it easier to design responsive plots, or -- in other words -- plots that react to their width. Note that again, changing the width of the plot doesn't lead to a full re-rendering.
-
-In the following example, we're switching from the implicit y axis to a custom AxisY mark when the plot width goes below 600 pixels. The custom AxisY is configured to display the tick labels "inside" the plot.
+Finally, most of SveltePlot marks support transitions!
 
 ```svelte live
 <script>
-    import { Plot, Line, AxisY } from '$lib';
+    import { Plot, Dot } from '$lib';
+    import { fade, scale, fly } from 'svelte/transition';
+    import { expoIn, cubicIn, bounceOut } from 'svelte/easing';
+    import { Slider } from '$lib/ui';
     import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { sampleSize, range } from 'es-toolkit';
 
-    let plotWidth = $state(600);
-    let isMobile = $derived(plotWidth < 600);
+    const { cars } = $derived($page.data.data);
+
+    let min = $state(0);
+    let dir = $state(1);
+    let noAxisX = $state(false);
+    let noAxisTitle = $state(false);
+
+    $effect(() => {
+        const t = setInterval(() => {
+            min += dir;
+            if (min > 60) dir = -1;
+            if (min === 0) dir = 1;
+        }, 100);
+        return () => clearInterval(t);
+    });
+
 </script>
 
-{plotWidth}
-{isMobile}
-<div bind:clientWidth={plotWidth}>
-    <Plot
-        grid
-        x={{
-            insetLeft: isMobile ? 25 : 10,
-            tickFormat: isMobile ? "'YY" : 'YYYY'
-        }}
-        height={isMobile ? 300 : 400}>
-        {#if isMobile}
-            <AxisY
-                tickSize={0}
-                tickPadding={0}
-                dy={-5}
-                lineAnchor="bottom"
-                textAnchor="start" />
-        {/if}
-        <Line data={aapl} x="Date" y="Close" />
-    </Plot>
-</div>
-```
-
-```svelte
-<Plot
-    grid
-    marginRight={isMobile ? 0 : 20}
-    marginLeft={isMobile ? 0 : 40}
-    x={{
-        insetLeft: isMobile ? 25 : 10,
-        tickFormat: isMobile ? "'YY" : 'YYYY'
-    }}
-    height={isMobile ? 300 : 400}
-    inset={isMobile ? 5 : 10}>
-    {#if isMobile}
-        <!-- custom y axis on mobile -->
-        <AxisY
-            tickSize={0}
-            tickPadding={0}
-            dy={-5}
-            lineAnchor="bottom"
-            textAnchor="start" />
-    {/if}
-    <Line data={aapl} x="Date" y="Close" />
+{min}
+<Plot grid color={{ type: 'linear' }}>
+    <Dot
+        data={cars}
+        filter={(d) => d['economy (mpg)'] > min}
+        y="weight (lb)"
+        x="power (hp)"
+        r={4}
+        stroke="economy (mpg)">
+        {#snippet wrap(dot, args)}
+            <g in:scale|global={{ duration: 300, easing: expoIn }}
+                out:fly|global={{ y: '70px', easing: cubicIn }}
+                >{@render dot(args)}</g>
+        {/snippet}
+    </Dot>
 </Plot>
 ```
 
-## Events!
-
-Another difference to Observable Plot is that you can pass event handlers to the marks to make them part of your interactive app.
-
-```svelte live
-<script>
-    import { Plot, RuleY, BarY } from '$lib';
-
-    let clicked = $state();
-    let hover = $state(null);
-
-    let src = $state([-2, -1, 2, 4, 6, 9, 5]);
-    let data = $derived(
-        src.map((y, x) => ({ x, y, hover: hover === x }))
-    );
-    let title = $derived(
-        clicked
-            ? `You clicked ${JSON.stringify(clicked.y)}`
-            : 'Click the bars'
-    );
-</script>
-
-<Plot
-    x={{ axis: false }}
-    y={{ grid: true }}
-    color={{ type: 'linear', scheme: 'reds' }}
-    {title}>
-    <BarY
-        {data}
-        x="x"
-        y="y"
-        fill={(d) => d.x}
-        cursor="pointer"
-        opacity={{
-            scale: null,
-            value: (d) =>
-                !clicked || clicked.x === d.x ? 1 : 0.5
-        }}
-        onclick={(evt, d) => (src[d.x] *= 1.1)}
-        onmouseenter={(evt, d) => (clicked = d)}
-        onmouseleave={(evt, d) => (hover = null)} />
-    <RuleY data={[0]} />
-</Plot>
-
-{hover}
-```
-
-```svelte
-<Plot x={{ axis: false }} y={{ grid: true }} {title}>
-    <BarY
-        data={[-2, -1, 2, 4, 6, 9, 5]}
-        cursor="pointer"
-        opacity={{
-            scale: null,
-            value: (d) =>
-                !clicked || clicked === d ? 1 : 0.5
-        }}
-        onclick={(d) => (clicked = d)} />
-    <RuleY data={[0]} />
-</Plot>
-```
 
 ## Easy to extend
 
@@ -671,180 +518,6 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 </Plot>
 ```
 
-## Everything is a channel
+## Built on top of D3
 
-In Observable Plot, there's a distinction between _channels_ and _non-channels_. Channels can be defined using keys or functions, while the non-channels can only be assigned constant values. That means, for instance, that for the text mark, you can set the `fontSize` as a function but not the `fontWeight`.
-
-In SveltePlot there's no such distinction and you can define almost all options either as function, as data key, or as a constant value. The only difference is that in some cases, the channels are bound to a _scale_.
-
-Like Observable Plot, SveltePlot tries to automatically detect wether or not to map values to a scale. Consider the following example, where the _fill_ channel is mapped to the `"species"` key, while the _stroke_ channel is mapped to a function returning either `"red"` or `"blue"`. SveltePlot will bind the fill channel to the color scale, but not the stroke channel, since it already maps to valid colors.
-
-```svelte
-<Plot>
-    <Dot
-        data={penguins}
-        fill="species"
-        stroke={(d) => (d.sex === 'M' ? 'red' : 'blue')} />
-</Plot>
-```
-
-## Custom SVG
-
-You can nest and combine marks with regular SVG. This may be useful for styling or for implementing custom interactions. Essentially, everything you can do in raw SVG, you can throw into a Plot body:
-
-```svelte live
-<script lang="ts">
-    import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
-</script>
-
-<Plot grid>
-    {#snippet children({ width, height })}
-        <defs>
-            <filter id="neon">
-                <feFlood
-                    flood-color="rgb(255,0,128)"
-                    flood-opacity="0.5"
-                    in="SourceGraphic" />
-                <feComposite
-                    operator="in"
-                    in2="SourceGraphic" />
-                <feGaussianBlur stdDeviation="5" />
-                <feComponentTransfer result="glow1">
-                    <feFuncA
-                        type="linear"
-                        slope="4"
-                        intercept="0" />
-                </feComponentTransfer>
-                <feMerge>
-                    <feMergeNode in="glow1" />
-                    <feMergeNode in="SourceGraphic" />
-                </feMerge>
-            </filter>
-        </defs>
-        <circle
-            cx={width * 0.5}
-            cy={height * 0.5}
-            r="130"
-            opacity="0.1"
-            fill="currentColor" />
-        <g filter="url(#neon)">
-            <Line data={aapl} x="Date" y="Adj Close" />
-        </g>
-    {/snippet}
-</Plot>
-```
-
-```svelte
-<Plot grid>
-    {#snippet children({ width, height })}
-        <defs>
-            <filter id="neon"><!-- ... --></filter>
-        </defs>
-        <circle
-            cx={width * 0.5}
-            cy={height * 0.5}
-            r="130"
-            opacity="0.1"
-            fill="currentColor" />
-        <g filter="url(#neon)">
-            <Line data={aapl} x="Date" y="Adj Close" />
-        </g>
-    {/snippet}
-</Plot>
-```
-
-## Custom HTML
-
-SveltePlot also lets you throw in custom HTML markup using the _overlay_ and _underlay_ snippets. The **overlay** snippet is rendered in a DIV element above your plot, so you can use it for HTML tooltips or legends positioned inside a plot. The corresponding **underlay** snippet is put behind the plot, which can be used for things like watermarks and background images.
-
-Since the markup is defined in your code and passed as [snippet](https://svelte-5-preview.vercel.app/docs/snippets), you can also make use of the scoped styles and other Svelte features!
-
-```svelte live
-<script lang="ts">
-    import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
-</script>
-
-<Plot grid testid="overlay">
-    {#snippet overlay()}
-        <p>
-            Occaecat tempor mollit <strong
-                >labore proident</strong>
-            officia eu sit tempor deserunt commodo. In
-            <a href="#top">Lorem deserunt</a> sint excepteur
-            ullamco Lorem id do.
-        </p>
-    {/snippet}
-    {#snippet underlay()}
-        <div class="bg" />
-    {/snippet}
-    <Line
-        data={aapl}
-        x="Date"
-        y="Adj Close"
-        strokeWidth={2} />
-</Plot>
-
-<style>
-    p {
-        position: relative;
-        top: 1em;
-        left: 3em;
-        padding: 1ex 1em;
-        background: var(--svelteplot-bg);
-        border: 1px solid #77777799;
-        border-radius: 4px;
-        max-width: 40%;
-        box-shadow: 2px 2px 6px #00000055;
-    }
-    p a {
-        text-decoration: underline;
-        color: #d7195a;
-    }
-    .bg {
-        position: absolute;
-        left: 2em;
-        right: 2em;
-        top: 2em;
-        bottom: 2em;
-        opacity: 0.3;
-        background: transparent url(/logo.png) no-repeat
-            center center;
-        background-size: contain;
-    }
-</style>
-```
-
-```svelte
-<Plot grid>
-    {#snippet overlay()}
-        <p>
-            Occaecat tempor mollit <strong
-                >labore proident</strong> off...
-        </p>
-    {/snippet}
-    {#snippet underlay()}
-        <div class="bg" />
-    {/snippet}
-    <Line
-        data={aapl}
-        x="Date"
-        y="Adj Close"
-        strokeWidth={2} />
-</Plot>
-
-<style>
-    p {
-        /* fire away */
-    }
-    .bg {
-        background: transparent url(/logo.png) no-repeat
-            center center;
-        background-size: contain;
-        /* ... */
-    }
-</style>
-```
+Like its inspiration Observale Plot, SveltePlot is built on top of D3.
