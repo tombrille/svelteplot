@@ -12,7 +12,7 @@
 
     const { getPlotState, updateDimensions } = getContext<PlotContext>('svelteplot');
     // we need the plot context for the overall width & height
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     let {
         children,
@@ -22,33 +22,33 @@
         marks: Mark<GenericMarkOptions>[];
     } = $props();
 
-    let useFacetX = $derived(plot.scales.fx.domain.length > 0);
-    let useFacetY = $derived(plot.scales.fy.domain.length > 0);
+    const useFacetX = $derived(plot.scales.fx.domain.length > 0);
+    const useFacetY = $derived(plot.scales.fy.domain.length > 0);
 
-    let fxValues = $derived(useFacetX ? plot.scales.fx.domain : [true]);
-    let fyValues = $derived(useFacetY ? plot.scales.fy.domain : [true]);
+    const fxValues = $derived(useFacetX ? plot.scales.fx.domain : [true]);
+    const fyValues = $derived(useFacetY ? plot.scales.fy.domain : [true]);
 
     // we need to track which facets are "empty", meaning that they don't contain
     // any "faceted" data points. this can happen when fx and fy are combined and
     // certain combinations don't yield results
-    let emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues, plot.scales.fz));
+    const emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues, plot.scales.fz));
 
     // create band scales for fx and fy
-    let facetXScale = $derived(
+    const facetXScale = $derived(
         scaleBand()
             .paddingInner(fxValues.length > 1 ? 0.1 : 0)
             .domain(fxValues)
             .rangeRound([0, plot.plotWidth])
     );
-    let facetYScale = $derived(
+    const facetYScale = $derived(
         scaleBand()
             .paddingInner(fyValues.length > 1 ? 0.1 : 0)
             .domain(fyValues)
             .rangeRound([0, plot.plotHeight])
     );
 
-    let facetWidth = $derived(useFacetX ? facetXScale.bandwidth() : plot.plotWidth);
-    let facetHeight = $derived(useFacetY ? facetYScale.bandwidth() : plot.plotHeight);
+    const facetWidth = $derived(useFacetX ? facetXScale.bandwidth() : plot.plotWidth);
+    const facetHeight = $derived(useFacetY ? facetYScale.bandwidth() : plot.plotHeight);
 
     $effect.pre(() => {
         updateDimensions(facetWidth, facetHeight);

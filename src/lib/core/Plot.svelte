@@ -56,10 +56,10 @@
 
     // compute maximum margins to either side of the plot from the
     // automatic margins defined by marks
-    let maxMarginLeft = $derived(Math.max(...$autoMarginLeft.values()));
-    let maxMarginRight = $derived(Math.max(...$autoMarginRight.values()));
-    let maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
-    let maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
+    const maxMarginLeft = $derived(Math.max(...$autoMarginLeft.values()));
+    const maxMarginRight = $derived(Math.max(...$autoMarginRight.values()));
+    const maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
+    const maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
 
     // default settings in the plot and marks can be overwritten by
     // defining the svelteplot/defaults context outside of Plot
@@ -423,7 +423,7 @@
             length: { type: 'linear' },
             symbol: { type: 'ordinal' },
             fx: { type: 'band', axis: hasFZ ? null : 'top' },
-            fy: { type: 'band', axis: hasFZ ? null : 'right ' },
+            fy: { type: 'band', axis: hasFZ ? null : 'right' },
             fz: { type: 'point', columns: 3 },
             locale: DEFAULTS.locale
         };

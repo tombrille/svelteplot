@@ -7,7 +7,7 @@ description: This page explains how to start using SveltePlot.
 SveltePlot is still in a very early alpha stage, and its API is subject to changes. Use at your own risk.
 :::
 
-## Try online
+## Try SveltePlot online
 
 You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev). You can click the "Fork" button next to all examples in the SveltePlot documenation to edit them in the **Svelte playground**.
 
@@ -81,17 +81,18 @@ pnpm add @gka/svelteplot
 
 [Fork](https://svelte.dev/playground/7637c04038f14499a7230af60def22b5?version=5.14.0)
 
-## Use SveltePlot in Svelte 4
+
+## Use SveltePlot in vanilla HTML
+
+The core idea of SveltePlot is to be used in Svelte applications, but Svelte being Svelte, nothing is stopping you from pre-compiling your visualization code (including the Svelte runtime) as a standalone JavaScript bundle and embedding it anywhere you want.
+
+All you need for this is to clone this starter repo (TODO) and run `npm run build`.
+
+## Can I use SveltePlot in Svelte 4?
 
 Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to it's heavy use of [runes](https://svelte.dev/docs/svelte/what-are-runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
 
 You can follow the official [Svelte 5 documentation](https://svelte.dev/docs/svelte/) on how to [upgrade your project](https://svelte.dev/docs/svelte/v5-migration-guide).
-
-## Use SveltePlot in vanilla HTML
-
-The core idea of SveltePlot is to be used inside Svelte applications, but Svelte being Svelte, nothing is stopping you from pre-compiling your visualization code (including the Svelte runtime) as a standalone JavaScript bundle and embedding it anywhere you want.
-
-All you need for this is to clone this starter repo (TODO) and run `npm run build`.
 
 ## Use SveltePlot in React, Vue, etc.
 
