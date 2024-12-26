@@ -2,11 +2,13 @@
 title: Facets
 ---
 
+Facets are a way to split a plot into multiple panels
+
 ```svelte live
 <script>
     import { Plot, Dot, AxisX } from '$lib/index';
     import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    const { penguins } = $derived($page.data.data);
 </script>
 
 {#if penguins.length}
@@ -50,6 +52,7 @@ title: Facets
         fx="sex" />
 </Plot>
 ```
+[Fork](https://svelte.dev/playground/fe8b6ab8f5ea4e06a6d733d1eae71f52?version=5.16.0)
 
 Apply top-level facet options automatically:
 

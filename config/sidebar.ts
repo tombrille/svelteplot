@@ -37,7 +37,11 @@ export default {
                 {
                     title: 'Transforms',
                     to: '/features/transforms/'
-                }
+                },
+                 {
+                    title: 'Facets',
+                    to: '/features/facets/'
+                },
             ]
         },
         {
@@ -88,10 +92,7 @@ export default {
             title: 'Advanced use',
             collapsible: true,
             items: [
-                {
-                    title: 'Facets',
-                    to: '/features/facets/'
-                },
+               
                 {
                     title: 'Markers',
                     to: '/features/markers/'
