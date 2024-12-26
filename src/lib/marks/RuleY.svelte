@@ -38,10 +38,7 @@
     let testFacet = $derived(getTestFacet());
 </script>
 
-<Mark
-    type="ruleY"
-    channels={['y', 'x1', 'x2', 'fx', 'fy', 'fz', 'stroke', 'opacity', 'strokeOpacity']}
-    {...args}>
+<Mark type="ruleY" channels={['y', 'x1', 'x2', 'stroke', 'opacity', 'strokeOpacity']} {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="rule-y {className || ''}" length={className ? 2 : args.data.length}>
             {#each args.data as datum}

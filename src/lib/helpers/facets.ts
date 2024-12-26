@@ -15,7 +15,6 @@ export function getEmptyFacets(
     marks: Mark<GenericMarkOptions>[],
     fxValues: RawValue[],
     fyValues: RawValue[],
-    fz: PlotScale & { toFx: (d: RawValue) => RawValue; toFy: (d: RawValue) => RawValue }
 ) {
     const facettedMarks = marks.filter((mark) => {
         return (
@@ -32,8 +31,8 @@ export function getEmptyFacets(
                 const fx = resolveChannel('fx', datum, mark.options);
                 const fy = resolveChannel('fy', datum, mark.options);
                 return {
-                    fx: fz ? fz.toFx(fx) : fx,
-                    fy: fz ? fz.toFy(fy) : fy
+                    fx,
+                    fy
                 };
             })
         )

@@ -85,7 +85,7 @@
 <Mark
     type="arrow"
     required={['x1', 'x2', 'y1', 'y2']}
-    channels={['x1', 'y1', 'x2', 'y2', 'fx', 'fy', 'fz', 'opacity', 'stroke', 'strokeOpacity']}
+    channels={['x1', 'y1', 'x2', 'y2', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
         {@const sweep = maybeSweep(args.sweep)}

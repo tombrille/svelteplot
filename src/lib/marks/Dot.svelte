@@ -55,8 +55,6 @@
         ...options
     }: DotProps = $props();
 
-    $inspect({ tIn });
-
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
@@ -122,8 +120,6 @@
     channels={[
         'x',
         'y',
-        'fx',
-        'fy',
         'r',
         'symbol',
         'fill',

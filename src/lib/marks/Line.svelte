@@ -55,7 +55,6 @@
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
-    import { facetWrap } from '$lib/transforms/facet.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
@@ -69,7 +68,7 @@
         ...options
     }: LineMarkProps = $props();
 
-    let args = $derived(facetWrap(sort(recordizeXY({ data, ...options }))));
+    let args = $derived(sort(recordizeXY({ data, ...options })));
 
     function groupIndex(data, groupByKey) {
         let group = [];
@@ -155,7 +154,7 @@
 
 <Mark
     type="line"
-    channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity', 'fx', 'fy', 'fz']}
+    channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity']}
     required={['x', 'y']}
     {...args}>
     {#snippet children({ mark, usedScales })}

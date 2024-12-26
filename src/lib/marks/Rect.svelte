@@ -48,19 +48,7 @@
 <Mark
     type="rect"
     required={[]}
-    channels={[
-        'x1',
-        'x2',
-        'y1',
-        'y2',
-        'fx',
-        'fy',
-        'fill',
-        'stroke',
-        'opacity',
-        'fillOpacity',
-        'strokeOpacity'
-    ]}
+    channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="rect {className || ''}" length={className ? 2 : args.data.length}>

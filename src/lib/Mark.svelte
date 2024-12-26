@@ -36,6 +36,8 @@
         ...options
     }: MarkProps = $props();
 
+    const channelsWithFacets: ScaledChannelName[] = $derived([...channels, 'fx', 'fy']);
+
     const { addMark, updateMark, removeMark, getTopLevelFacet, getPlotState } =
         getContext<PlotContext>('svelteplot');
 
@@ -48,9 +50,9 @@
     const mark: Mark<GenericMarkOptions> = {
         id: Symbol(),
         type,
-        channels,
+        channels: channelsWithFacets,
         scales: new Set(
-            channels
+            channelsWithFacets
                 .filter((channel) => options[channel] !== 0)
                 .map((channel) => CHANNEL_SCALE[channel])
         ),
@@ -62,7 +64,7 @@
     };
 
     let mark2 = $state(mark);
-    let facetMode = $derived(options.facet || 'auto');
+    const facetMode = $derived(options.facet || 'auto');
 
     addMark(mark);
 
@@ -74,7 +76,7 @@
         updateMark(mark);
     });
 
-    let errors = $derived(
+    const errors = $derived(
         required
             .filter((name) => options[name] == null)
             .map((name) => `missing channel value for ${mark.type} mark: ${name}`)

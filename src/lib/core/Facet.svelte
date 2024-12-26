@@ -7,7 +7,6 @@
     let {
         fx,
         fy,
-        fz,
         left,
         top,
         right,
@@ -20,7 +19,6 @@
     }: {
         fx: RawValue;
         fy: RawValue;
-        fz: PlotScale & { toFx: (d: RawValue) => RawValue; toFy: (d: RawValue) => RawValue };
         left: boolean;
         top: boolean;
         right: boolean;
@@ -35,12 +33,9 @@
     setContext('svelteplot/facet', {
         getTestFacet() {
             return (datum: DataRecord, options: Partial<BaseMarkProps>) => {
-                const toFx = fz ? fz.toFx : identity;
-                const toFy = fz ? fz.toFy : identity;
-                // console.log('testFacet', { datum, fx, fz, r: resolveChannel('fx', datum, options), t: toFx(resolveChannel('fx', datum, options)) })
                 return (
-                    (options.fx == null || toFx(resolveChannel('fx', datum, options)) === fx) &&
-                    (options.fy == null || toFy(resolveChannel('fy', datum, options)) === fy)
+                    (options.fx == null || resolveChannel('fx', datum, options) === fx) &&
+                    (options.fy == null || resolveChannel('fy', datum, options) === fy)
                 );
             };
         },

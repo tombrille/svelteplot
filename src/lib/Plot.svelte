@@ -55,14 +55,11 @@
 
     const scales = $derived(
         Object.fromEntries(
-            ['x', 'y', 'r', 'color', 'opacity', 'symbol', 'length', 'fx', 'fy', 'fz'].map(
-                (scale) => {
-                    const scaleOpts = restOptions[scale] || {};
-                    const scaleFn =
-                        scaleOpts.scale || (scale === 'color' ? autoScaleColor : autoScale);
-                    return [scale, { ...scaleOpts, scale: scaleFn }];
-                }
-            )
+            ['x', 'y', 'r', 'color', 'opacity', 'symbol', 'length', 'fx', 'fy'].map((scale) => {
+                const scaleOpts = restOptions[scale] || {};
+                const scaleFn = scaleOpts.scale || (scale === 'color' ? autoScaleColor : autoScale);
+                return [scale, { ...scaleOpts, scale: scaleFn }];
+            })
         )
     );
 </script>

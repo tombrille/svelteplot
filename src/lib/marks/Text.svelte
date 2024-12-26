@@ -9,7 +9,6 @@
         ChannelAccessor,
         FacetContext
     } from '../types.js';
-    import { facetWrap } from '$lib/transforms/facet.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
     import { projectX, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
@@ -59,12 +58,10 @@
     };
 
     let args = $derived(
-        facetWrap(
-            sort({
-                data,
-                ...options
-            })
-        )
+        sort({
+            data,
+            ...options
+        })
     );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
@@ -77,9 +74,6 @@
         'x',
         'y',
         'r',
-        'fx',
-        'fy',
-        'fz',
         'symbol',
         'fill',
         'stroke',

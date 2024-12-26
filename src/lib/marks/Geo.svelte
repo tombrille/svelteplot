@@ -9,7 +9,6 @@
     import { sort } from '$lib/index.js';
     import { testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
-    import { facetWrap } from '$lib/transforms/facet.js';
     import GeoCanvas from './helpers/GeoCanvas.svelte';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
@@ -40,13 +39,11 @@
     );
 
     const args = $derived(
-        facetWrap(
-            sort({
-                data,
-                ...(options.r ? { sort: { channel: '-r' } } : {}),
-                ...options
-            })
-        )
+        sort({
+            data,
+            ...(options.r ? { sort: { channel: '-r' } } : {}),
+            ...options
+        })
     );
     const preferStroke = new Set(['MultiLineString', 'LineString']);
 
@@ -56,7 +53,7 @@
 
 <Mark
     type="geo"
-    channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r', 'fx', 'fy', 'fz']}
+    channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r']}
     {...args}>
     {#snippet children({ mark, usedScales })}
         <g

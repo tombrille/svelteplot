@@ -81,7 +81,6 @@ pnpm add @gka/svelteplot
 
 [Fork](https://svelte.dev/playground/7637c04038f14499a7230af60def22b5?version=5.14.0)
 
-
 ## Use SveltePlot in vanilla HTML
 
 The core idea of SveltePlot is to be used in Svelte applications, but Svelte being Svelte, nothing is stopping you from pre-compiling your visualization code (including the Svelte runtime) as a standalone JavaScript bundle and embedding it anywhere you want.

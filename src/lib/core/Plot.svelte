@@ -327,7 +327,6 @@
         const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
         const oneDimX = isOneDimensional && explicitScales.has('x');
         const oneDimY = isOneDimensional && explicitScales.has('y');
-        const hasFZ = explicitScales.has('fz');
         return {
             title: '',
             subtitle: '',
@@ -422,9 +421,8 @@
             color: { type: 'auto' },
             length: { type: 'linear' },
             symbol: { type: 'ordinal' },
-            fx: { type: 'band', axis: hasFZ ? null : 'top' },
-            fy: { type: 'band', axis: hasFZ ? null : 'right' },
-            fz: { type: 'point', columns: 3 },
+            fx: { type: 'band', axis: 'top' },
+            fy: { type: 'band', axis: 'right' },
             locale: DEFAULTS.locale
         };
     }

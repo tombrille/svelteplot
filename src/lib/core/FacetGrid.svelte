@@ -31,7 +31,7 @@
     // we need to track which facets are "empty", meaning that they don't contain
     // any "faceted" data points. this can happen when fx and fy are combined and
     // certain combinations don't yield results
-    const emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues, plot.scales.fz));
+    const emptyFacets = $derived(getEmptyFacets(marks, fxValues, fyValues));
 
     // create band scales for fx and fy
     const facetXScale = $derived(
@@ -67,7 +67,6 @@
             <Facet
                 fx={facetX}
                 fy={facetY}
-                fz={plot.scales.fz}
                 left={i === 0}
                 right={i === fxValues.length - 1}
                 top={j === 0}

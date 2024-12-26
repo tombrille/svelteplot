@@ -39,7 +39,6 @@ export type ScaleName =
     | 'symbol'
     | 'fx'
     | 'fy'
-    | 'fz'
     | 'projection';
 
 export type ScaleType =
@@ -85,7 +84,6 @@ export type ScaledChannelName =
     | 'symbol'
     | 'fx'
     | 'fy'
-    | 'fz'
     | 'x'
     | 'x1'
     | 'x2'
@@ -354,12 +352,6 @@ export type PlotOptions = {
     length: ScaleOptions;
     fx: Partial<ScaleOptions>;
     fy: Partial<ScaleOptions>;
-    fz: Partial<ScaleOptions> & {
-        /**
-         * the number of columns to wrap the facets
-         */
-        columns: number;
-    };
     children: Snippet<
         [{ width: number; height: number; options: PlotOptions; scales: PlotScales }]
     >;

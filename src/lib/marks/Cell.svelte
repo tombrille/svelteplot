@@ -52,18 +52,7 @@
 <Mark
     type="cell"
     required={['x', 'y']}
-    channels={[
-        'x',
-        'y',
-        'fx',
-        'fy',
-        'fz',
-        'fill',
-        'stroke',
-        'opacity',
-        'fillOpacity',
-        'strokeOpacity'
-    ]}
+    channels={['x', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="cell {className || ''}" data-fill={usedScales.fillOpacity}>

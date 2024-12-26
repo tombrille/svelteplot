@@ -149,8 +149,6 @@
     channels={[
         'x',
         'y',
-        'fx',
-        'fy',
         'r',
         'length',
         'symbol',
