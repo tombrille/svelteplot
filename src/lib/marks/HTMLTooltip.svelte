@@ -24,14 +24,14 @@
     import { quadtree } from 'd3-quadtree';
     import { projectX, projectY } from '$lib/helpers/scales.js';
 
-    let { data, x, y, r }: HTMLTooltipMarkProps = $props();
+    let { data, x, y, r, children }: HTMLTooltipMarkProps = $props();
 
     let datum = $state(false);
     let tooltipX = $state();
     let tooltipY = $state();
 
     function onMouseMove(evt: MouseEvent) {
-        const pt = tree.find(evt.layerX, evt.layerY, 15);
+        const pt = tree.find(evt.layerX, evt.layerY, 25);
         if (pt) {
             tooltipX = resolveChannel('x', pt, { x, y, r });
             tooltipY = resolveChannel('y', pt, { x, y, r });
@@ -62,12 +62,11 @@
 </script>
 
 <div
-    class="tooltip"
-    class:hide={!!!datum}
+    class={['tooltip', { hide: !datum }]}
     style:left="{tooltipX ? projectX('x', plot.scales, tooltipX) : 0}px"
     style:top="{tooltipY ? projectY('y', plot.scales, tooltipY) : 0}px">
     <div class="tooltip-body">
-        <slot {datum} />
+        {@render children({ datum })}
     </div>
 </div>
 
