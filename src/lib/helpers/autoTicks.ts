@@ -11,11 +11,13 @@ export function maybeInterval(interval: null | number | string | (<T>(d: T) => T
         return interval < 0
             ? {
                   floor: (d) => Math.floor(d * n) / n,
+                  round: (d) => Math.round(d * n) / n,
                   offset: (d) => (d * n + 1) / n, // note: no optional step for simplicity
                   range: (lo, hi) => rangei(Math.ceil(lo * n), hi * n).map((x) => x / n)
               }
             : {
                   floor: (d) => Math.floor(d / n) * n,
+                  round: (d) => Math.round(d / n) * n,
                   offset: (d) => d + n, // note: no optional step for simplicity
                   range: (lo, hi) => rangei(Math.ceil(lo / n), hi / n).map((x) => x * n)
               };
