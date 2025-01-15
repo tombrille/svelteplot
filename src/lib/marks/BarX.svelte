@@ -48,6 +48,9 @@
             stack
         )
     );
+
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -57,7 +60,7 @@
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-x" length={args.data.length}>
             {#each args.data as datum}
-                {#if testFilter(datum, args)}
+                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
                     {@const y_ = resolveChannel('y', datum, args)}
                     {@const x1_ = resolveChannel('x1', datum, args)}
                     {@const x2_ = resolveChannel('x2', datum, args)}

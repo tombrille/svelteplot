@@ -119,3 +119,27 @@ Apply top-level facet options automatically:
     </Plot>
 {/if}
 ```
+
+Bar chart facets
+
+```svelte live
+<script>
+    import { Plot, BarY } from '$lib/index';
+    const resultsLong = [
+        { party: 'Union', year: 2025, percent: 30 },
+        { party: 'Union', year: 2021, percent: 22 },
+        { party: 'SPD', year: 2025, percent: 20 },
+        { party: 'SPD', year: 2021, percent: 27 },
+        { party: 'Grüne', year: 2025, percent: 16 },
+        { party: 'Grüne', year: 2021, percent: 21 },
+        { party: 'FDP', year: 2025, percent: 6 },
+        { party: 'FDP', year: 2021, percent: 12 },
+        { party: 'Linke', year: 2025, percent: 4 },
+        { party: 'Linke', year: 2021, percent: 7 }
+    ];
+</script>
+
+<Plot opacity={{ range: [0.4, 1]}} y={{ insetTop: 10}}>
+    <BarY data={resultsLong} x="year" y="percent" fx="party" fill="party" opacity="year" />
+</Plot>
+```

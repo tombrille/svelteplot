@@ -7,18 +7,19 @@
     import { getContext } from 'svelte';
     import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
+    import { projectX, projectY } from '../helpers/scales.js';
     import { roundedRect } from '../helpers/roundedRect.js';
-    import type {
-        PlotContext,
-        BaseMarkProps,
-        RectMarkProps,
-        ChannelAccessor,
-        DataRow
+    import {
+        type PlotContext,
+        type BaseMarkProps,
+        type RectMarkProps,
+        type ChannelAccessor,
+        type DataRow,
+        type FacetContext
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import { maybeData } from '$lib/helpers/index.js';
+    import { maybeData, testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
@@ -59,6 +60,9 @@
             stack
         )
     );
+
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -68,30 +72,32 @@
     {#snippet children({ mark, usedScales })}
         <GroupMultiple class="bar-y" length={args.data.length}>
             {#each args.data as datum}
-                {@const x_ = resolveChannel('x', datum, args)}
-                {@const y1_ = resolveChannel('y1', datum, args)}
-                {@const y2_ = resolveChannel('y2', datum, args)}
-                {@const x = usedScales.x ? projectX('x1', plot.scales, x_) : x_}
-                {@const y1 = usedScales.y1 ? projectY('y1', plot.scales, y1_) : y1_}
-                {@const y2 = usedScales.y2 ? projectY('y1', plot.scales, y2_) : y2_}
-                {@const miny = Math.min(y1, y2)}
-                {@const maxy = Math.max(y1, y2)}
-                {@const inset = resolveProp(args.inset, datum, 0)}
-                {@const dx = resolveProp(args.dx, datum, 0)}
-                {@const dy = resolveProp(args.dy, datum, 0)}
-                {#if isValid(x) && isValid(y1) && isValid(y2)}
-                    <path
-                        d={roundedRect(
-                            0,
-                            0,
-                            plot.scales.x.fn.bandwidth() - inset * 2,
-                            maxy - miny,
-                            options.borderRadius
-                        )}
-                        class={className}
-                        style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
-                        transform="translate({[x + inset + dx, miny + dy]})"
-                        use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
+                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
+                    {@const x_ = resolveChannel('x', datum, args)}
+                    {@const y1_ = resolveChannel('y1', datum, args)}
+                    {@const y2_ = resolveChannel('y2', datum, args)}
+                    {@const x = usedScales.x ? projectX('x1', plot.scales, x_) : x_}
+                    {@const y1 = usedScales.y1 ? projectY('y1', plot.scales, y1_) : y1_}
+                    {@const y2 = usedScales.y2 ? projectY('y1', plot.scales, y2_) : y2_}
+                    {@const miny = Math.min(y1, y2)}
+                    {@const maxy = Math.max(y1, y2)}
+                    {@const inset = resolveProp(args.inset, datum, 0)}
+                    {@const dx = resolveProp(args.dx, datum, 0)}
+                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    {#if isValid(x) && isValid(y1) && isValid(y2)}
+                        <path
+                            d={roundedRect(
+                                0,
+                                0,
+                                plot.scales.x.fn.bandwidth() - inset * 2,
+                                maxy - miny,
+                                options.borderRadius
+                            )}
+                            class={className}
+                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
+                            transform="translate({[x + inset + dx, miny + dy]})"
+                            use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
+                    {/if}
                 {/if}
             {/each}
         </GroupMultiple>
