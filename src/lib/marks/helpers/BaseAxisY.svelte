@@ -156,7 +156,7 @@
                 {/if}
                 <text
                     bind:this={tickTexts[t]}
-                    class={{'is-left': anchor === 'left'}}
+                    class={{ 'is-left': anchor === 'left' }}
                     style={resolveScaledStyles(
                         tick.value,
                         { ...options, fontSize: tickFontSize, stroke: null },

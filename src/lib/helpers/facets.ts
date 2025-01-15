@@ -14,7 +14,7 @@ import { resolveChannel } from './resolve.js';
 export function getEmptyFacets(
     marks: Mark<GenericMarkOptions>[],
     fxValues: RawValue[],
-    fyValues: RawValue[],
+    fyValues: RawValue[]
 ) {
     const facettedMarks = marks.filter((mark) => {
         return (

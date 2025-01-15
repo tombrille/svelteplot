@@ -39,7 +39,8 @@
             tickSize={0}
             tickPadding={5}
             anchor={plot.options.fx.axis}
-            options={{}}
+            options={plot.options.fx.axisOptions || {}}
+            {...plot.options.fx.axisProps || {}}
             height={plot.plotHeight}
             marginTop={plot.options.marginTop}
             {plot} />
@@ -56,7 +57,8 @@
             tickPadding={5}
             anchor={plot.options.fy.axis}
             lineAnchor="center"
-            options={{ dx: 0, dy: 0 }}
+            options={plot.options.fy.axisOptions || {}}
+            {...plot.options.fy.axisProps || {}}
             width={plot.plotWidth}
             marginLeft={plot.options.marginLeft}
             {plot} />

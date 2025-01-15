@@ -233,7 +233,6 @@ Pointer along the x dimension
 </Plot>
 ```
 
-
 Click the bar chart!
 
 ```svelte live

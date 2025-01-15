@@ -139,7 +139,22 @@ Bar chart facets
     ];
 </script>
 
-<Plot opacity={{ range: [0.4, 1]}} y={{ insetTop: 10}}>
-    <BarY data={resultsLong} x="year" y="percent" fx="party" fill="party" opacity="year" />
+<Plot
+    x={{ label: ' ' }}
+    y={{ label: '' }}
+    opacity={{ range: [0.4, 1] }}
+    fx={{
+        axis: 'bottom',
+        axisProps: { fontWeight: 'bold', tickFontSize: 13 },
+        axisOptions: { dy: 20 }
+    }}>
+    <BarY
+        data={resultsLong}
+        x="year"
+        y="percent"
+        dx={(d) => (d.year === 2021 ? 10 : -10)}
+        fx="party"
+        fill="party"
+        opacity="year" />
 </Plot>
 ```
