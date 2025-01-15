@@ -178,7 +178,7 @@ PointerY
 </Plot>
 ```
 
-PointerX
+Pointer along the x dimension
 
 ```svelte live
 <script>
@@ -232,6 +232,7 @@ PointerX
     </Pointer>
 </Plot>
 ```
+
 
 Click the bar chart!
 
