@@ -2,6 +2,12 @@
     @component
     The Plot component is the container for plots. It collects the marks with
     their data and channels and computes the shared scales.
+
+    The Plot component is split into two parts. This is the outer Plot which 
+    provides convenient defaults and automatically adds axes etc to the grapihcs.
+    The downside is that it adds a bunch of imports that you may not be using.
+    To help with this you can use the core/Plot component directly for a more
+    low-level Plot wrapper.
 -->
 <script lang="ts">
     import Plot from './core/Plot.svelte';

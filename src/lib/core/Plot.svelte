@@ -3,6 +3,9 @@
     The core Plot component handles the main layout of the plot but it does not
     include smart automatic scales and marks. It is to be used in cases where
     you want to reduce the footprint of the plot to the bare minimum.
+
+    Keep in mind that you will have to create your own scales if you're using
+    this component. 
 -->
 <script lang="ts">
     import { getContext, setContext } from 'svelte';
