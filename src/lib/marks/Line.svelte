@@ -2,7 +2,7 @@
     @component
     Line mark, useful for line charts
 -->
-<script context="module" lang="ts">
+<script module lang="ts">
     import type {
         CurveName,
         PlotContext,
@@ -12,7 +12,10 @@
         ChannelAccessor,
         MarkerOptions,
         FacetContext,
-        PlotState
+        PlotState,
+
+        ScaledDataRecord
+
     } from '../types.js';
 
     export type BaseLineMarkProps = {
@@ -70,12 +73,13 @@
 
     let args = $derived(sort(recordizeXY({ data, ...options })));
 
-    function groupIndex(data, groupByKey) {
+    function groupIndex(data: ScaledDataRecord[], groupByKey) {
+        if (!groupByKey) return [data];
         let group = [];
         const groups = [group];
         let lastGroupValue;
         for (const d of data) {
-            const groupValue = resolveProp(groupByKey, d);
+            const groupValue = resolveProp(groupByKey, d.datum);
             if (groupValue === lastGroupValue) {
                 group.push(d);
             } else {
@@ -90,10 +94,9 @@
             }
         }
         return groups;
-        // return Object.values(groupBy(args.data, (d) => ))
     }
 
-    let groupByKey = $derived(args.z || args.stroke);
+    const groupByKey = $derived(args.z || args.stroke);
 
     let groups = $derived(
         groupByKey && args.data.length > 0 ? groupIndex(args.data, groupByKey) : [args.data]
@@ -109,21 +112,19 @@
             ? sphereLine(plot.scales.projection)
             : callWithProps(line, [], {
                   curve: maybeCurve(curve === 'auto' ? 'linear' : curve, tension),
-                  x: (d) => d.__px,
-                  y: (d) => d.__py,
-                  defined: (d) => isValid(d.__px) && isValid(d.__py)
+                  x: (d) => d.x,
+                  y: (d) => d.y,
+                  defined: (d) => isValid(d.x) && isValid(d.y)
               })
     );
 
     function sphereLine(projection) {
         const path = geoPath(projection);
-        return (lineData: DataRecord[]) => {
+        return (lineData: ScaledDataRecord[]) => {
             let line = [];
             const lines = [line];
-            for (const datum of lineData) {
+            for (const {x,y} of lineData) {
                 // if x or y is undefined, start a new line segment
-                const x = resolveChannel('x', datum, args);
-                const y = resolveChannel('y', datum, args);
                 if (!isValid(x) || !isValid(y)) {
                     line = [];
                     lines.push(line);
@@ -134,22 +135,7 @@
             return path({ type: 'MultiLineString', coordinates: lines });
         };
     }
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
-
-    function projectLineData(lineData: DataRecord[], plot: PlotState) {
-        return lineData.map((d) => {
-            const [__px, __py] = projectXY(
-                plot.scales,
-                resolveChannel('x', d, args),
-                resolveChannel('y', d, args),
-                true,
-                true
-            );
-            return { ...d, __px, __py };
-        });
-    }
+   
 </script>
 
 <Mark
@@ -157,26 +143,13 @@
     channels={['x', 'y', 'opacity', 'stroke', 'strokeOpacity']}
     required={['x', 'y']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
-        {#if data.length > 0}
-            <g class="lines {className || ''}">
-                {#each groups as lineData, i}
-                    {#if testFacet(lineData[0], mark.options) && lineData.length > 0}
-                        {@const dx_ = resolveProp(args.dx, lineData[0], 0)}
-                        {@const dy_ = resolveProp(args.dy, lineData[0], 0)}
-                        {@const markerColor_ =
-                            resolveChannel('stroke', lineData[0], args, true) || 'currentColor'}
-                        {@const markerColor = usedScales.stroke
-                            ? plot.scales.color.fn(markerColor_)
-                            : markerColor_}
-                        {@const pathString = linePath(
-                            projectLineData(
-                                args.filter == null
-                                    ? lineData
-                                    : lineData.filter((d) => resolveProp(args.filter, d)),
-                                plot
-                            )
-                        )}
+    {#snippet children({ mark, usedScales, scaledData })}
+        {#if scaledData.length > 0}
+            <g class={['lines', className]}>
+                {#each groupIndex(scaledData, groupByKey) as lineData,i}
+                    {@const pathString = linePath(lineData)}
+                    {console.log({lineData})}
+                    {#if pathString}
                         <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
                             {#if options.outlineStroke}
                                 <path
@@ -205,9 +178,9 @@
                                 strokeWidth={args.strokeWidth}
                                 datum={lineData[0]}
                                 d={pathString}
-                                color={markerColor}
+                                color={lineData[0].stroke}
                                 style={resolveScaledStyles(
-                                    lineData[0],
+                                    lineData[0].datum,
                                     args,
                                     usedScales,
                                     plot,
@@ -232,8 +205,7 @@
                                     usedScales,
                                     plot,
                                     'fill'
-                                )}
-                                transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
+                                )} />
                         </GroupMultiple>
                     {/if}
                 {/each}

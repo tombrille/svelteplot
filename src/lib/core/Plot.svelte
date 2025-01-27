@@ -39,6 +39,7 @@
         testid,
         facet,
         class: className = '',
+        css,
         ...initialOpts
     }: Partial<PlotOptions> = $props();
 
@@ -112,16 +113,16 @@
     /**
      *
      */
-    let explicitMarks = $derived(marks.filter((m) => !m.options.automatic));
+    const explicitMarks = $derived(marks.filter((m) => !m.options.automatic));
 
     // knowing if the plot includes explicit grids and marks is useful for
     // including the automatic/implicit axes/grids
-    let hasExplicitAxisX = $derived(!!explicitMarks.find((m) => m.type === 'axisX'));
-    let hasExplicitAxisY = $derived(!!explicitMarks.find((m) => m.type === 'axisY'));
-    let hasExplicitGridX = $derived(!!explicitMarks.find((m) => m.type === 'gridX'));
-    let hasExplicitGridY = $derived(!!explicitMarks.find((m) => m.type === 'gridY'));
+    const hasExplicitAxisX = $derived(!!explicitMarks.find((m) => m.type === 'axisX'));
+    const hasExplicitAxisY = $derived(!!explicitMarks.find((m) => m.type === 'axisY'));
+    const hasExplicitGridX = $derived(!!explicitMarks.find((m) => m.type === 'gridX'));
+    const hasExplicitGridY = $derived(!!explicitMarks.find((m) => m.type === 'gridY'));
 
-    let explicitScales = $derived(
+    const explicitScales = $derived(
         new Set(
             explicitMarks
                 .map((m) =>
@@ -138,11 +139,11 @@
     );
 
     // one-dimensional plots have different automatic margins and heights
-    let isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
+    const isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
 
     // construct the plot options from the user-defined options (top-level props) as well
     // as extending them from smart context-aware defaults
-    let plotOptions = $derived(
+    const plotOptions = $derived(
         extendPlotOptions(initialOpts, {
             explicitScales,
             hasProjection: !!initialOpts.projection,
@@ -154,24 +155,24 @@
     // if the plot is showing filled dot marks we're using different defaults
     // for the symbol axis range, so we're passing on this info to the createScales
     // function below
-    let hasFilledDotMarks = $derived(
+    const hasFilledDotMarks = $derived(
         !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)
     );
 
     // compute preliminary scales with a fixed height, since we don't have
     // height defined at this point, but still need some of the scales
-    let preScales: PlotScales = $derived(
+    const preScales: PlotScales = $derived(
         computeScales(plotOptions, width, 400, hasFilledDotMarks, marks, DEFAULTS)
     );
 
-    let hasProjection = $derived(!!preScales.projection);
+    const hasProjection = $derived(!!preScales.projection);
 
-    let plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
+    const plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
 
     // the facet and y domain counts are used for computing the automatic height
-    let xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
-    let yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
-    let yDomainCount = $derived(
+    const xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
+    const yFacetCount = $derived(Math.max(1, preScales.fy.domain.length));
+    const yDomainCount = $derived(
         isOneDimensional && explicitScales.has('x') ? 1 : preScales.y.domain.length
     );
     // compute the (automatic) height based on various factors:
@@ -181,7 +182,7 @@
     //   method to compute the height based on the preliminary x and y scales
     // - for one-dimensional scales using the x scale we set a fixed height
     // - for y band-scales we use the number of items in the y domain
-    let height = $derived(
+    const height = $derived(
         plotOptions.height === 'auto'
             ? Math.round(
                   preScales.projection && preScales.projection.aspectRatio
@@ -213,7 +214,7 @@
               : plotOptions.height
     );
 
-    let plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
+    const plotHeight = $derived(height - plotOptions.marginTop - plotOptions.marginBottom);
 
     // TODO: check if there's still a reason to store and expose the plot body element
     let plotBody: HTMLDivElement | null = $state(null);
@@ -248,7 +249,8 @@
             scales,
             colorSymbolRedundant,
             hasFilledDotMarks,
-            body: plotBody
+            body: plotBody,
+            css
         };
     });
 
@@ -257,6 +259,8 @@
          * used by the Mark component to register new marks to the plot
          */
         addMark(mark: Mark<GenericMarkOptions>) {
+            if (marks.find((m) => m.id === mark.id)) return;
+            console.log('add mark', mark.type, $state.snapshot(mark.options));
             marks = [...marks, mark];
         },
         /**

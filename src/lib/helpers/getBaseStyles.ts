@@ -2,9 +2,11 @@ import type { Channels } from '$lib/types.js';
 import type { MarkStyleProps, DataRow } from '$lib/types.js';
 import { resolveProp } from './resolve.js';
 
+/**
+ * all style props that can be applied via channels but
+ * are not scaled
+ */
 const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
-    // fill: 'fill',
-    // stroke: 'stroke',
     strokeWidth: 'stroke-width',
     strokeDasharray: 'stroke-dasharray',
     strokeLinejoin: 'stroke-linejoin',
@@ -13,12 +15,9 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     clipPath: 'clip-path',
     mask: 'mask',
     filter: 'filter',
-    // fillOpacity: 'fill-opacity',
-    // strokeOpacity: 'stroke-opacity',
     fontSize: 'font-size',
     fontWeight: 'font-weight',
     fontStyle: 'font-style',
-    // opacity: 'opacity',
     textAnchor: 'text-anchor',
     cursor: 'cursor',
     pointerEvents: 'pointer-events'

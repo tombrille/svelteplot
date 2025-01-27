@@ -10,7 +10,12 @@
         PlotDefaults
     } from '../types.js';
     import { fade } from 'svelte/transition';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import {
+        resolveChannel,
+        resolveProp,
+        resolveScaledStyles,
+        resolveStyles
+    } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
@@ -51,7 +56,6 @@
         inParams = undefined,
         out: tOut = undefined,
         outParams = undefined,
-        wrap = dotWrap,
         ...options
     }: DotProps = $props();
 
@@ -67,6 +71,7 @@
     let testFacet = $derived(getTestFacet());
 
     let args = $derived(
+        // todo: move sorting to Mark
         sort(
             recordizeXY({
                 data: maybeData(data),
@@ -79,11 +84,7 @@
     );
 </script>
 
-{#snippet dotWrap(dot, args)}
-    {@render dot(args)}
-{/snippet}
-
-{#snippet dot({ datum, args, usedScales, mark, plot })}
+{#snippet dot({ datum, scaledDatum, args, usedScales, mark, plot })}
     {@const _x = resolveChannel('x', datum, args)}
     {@const _y = resolveChannel('y', datum, args)}
     {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
@@ -128,15 +129,29 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
+    defaults={{ r: dotRadius, symbol: 'circle' }}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, usedScales, scaledData })}
         <g class="dots {className || ''}">
             {#if canvas}
                 <DotCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
             {:else}
-                {#each args.data as datum}
-                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                        {@render wrap(dot, { mark, datum, args, usedScales, plot })}
+                {#each scaledData as d}
+                    {#if isValid(d.x) && isValid(d.y) && isValid(d.r)}
+                        {@const [style, styleClass] = resolveStyles(plot, d, {strokeWidth: 1.6, ...args}, 'stroke', usedScales)}
+                        <path
+                            transform="translate({d.x}, {d.y})"
+                            d={getSymbolPath(d.symbol, d.r ** 2 * Math.PI)}
+                            class={[
+                                dotClass ? resolveProp(dotClass, d.datum, null) : null,
+                                styleClass
+                            ]}
+                            {style}
+                            use:addEventHandlers={{
+                                getPlotState,
+                                options: mark.options,
+                                datum: d.datum
+                            }} />
                     {/if}
                 {/each}
             {/if}
@@ -145,7 +160,5 @@
 </Mark>
 
 <style>
-    path {
-        stroke-width: 1.6px;
-    }
+
 </style>

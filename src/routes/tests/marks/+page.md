@@ -2,29 +2,24 @@
 title: Test
 ---
 
+Link to [empty page](empty).
+
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { css } from '@emotion/css';
+    import { Plot, Line, Dot } from '$lib';
+    import { Slider } from '$lib/ui';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/stores';
     let { aapl } = $derived($page.data.data);
+    let len = $state(80);
 </script>
 
-<Plot grid height={300}>
-    <Line data={aapl.slice(-40)} x="Date" y="Adj Close">
-        {#snippet marker(id, color)}
-            <marker
-                {id}
-                fill="var(--svelteplot-bg)"
-                stroke={color}
-                markerWidth="6"
-                markerHeight="6"
-                viewBox="-4 -8 8 8"
-                orient="auto">
-                <path d="M-3,-6 L0,0 L3,-6h-6z" />
-            </marker>
-        {/snippet}
-    </Line>
+<Slider bind:value={len} min={10} max={200} />
+
+<Plot grid height={400} {css}>
+    <Line data={aapl.slice(-len)} stroke={d => d.Close > 170} x="Date" y="Adj Close" />
+    <Dot data={aapl.slice(-len)} stroke={d => d.Close > 170} x="Date" y="Adj Close" />
 </Plot>
 ```

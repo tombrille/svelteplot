@@ -157,11 +157,3 @@
         </g>
     {/snippet}
 </Mark>
-
-<style>
-    path {
-        stroke-width: 1.6px;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-</style>

@@ -56,6 +56,9 @@ export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
     // ...
 };
 
+/**
+ * Map of all scaled channels
+ */
 export const CHANNEL_SCALE: Record<ScaledChannelName, ScaleName> = {
     x: 'x',
     x1: 'x',

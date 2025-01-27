@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     export type AreaMarkProps = {
         z?: ChannelAccessor;
         fill?: ChannelAccessor;
@@ -77,8 +77,6 @@
               )
             : groups
     );
-
-    let mark: Mark = $state();
 
     let areaPath: (d: DataRecord[]) => string = $derived(
         (useScale: ReturnType<typeof getUsedScales>) =>

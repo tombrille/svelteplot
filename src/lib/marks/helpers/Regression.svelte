@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     import type { BaseMarkProps, ChannelAccessor, FacetContext, PlotContext } from '../../types.js';
 
     type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';

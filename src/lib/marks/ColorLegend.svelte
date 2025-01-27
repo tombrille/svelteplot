@@ -41,6 +41,7 @@
 {#if plot.scales.color.manualActiveMarks > 0}
     <div class="color-legend {className || ''}">
         {#if legendTitle}
+            <!-- eslint-disable-next-line svelte/no-at-html-tags -->
             <div class="title">{@html legendTitle}</div>
         {/if}
         {#if scaleType === 'ordinal' || scaleType === 'categorical'}
