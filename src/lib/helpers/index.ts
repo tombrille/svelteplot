@@ -33,7 +33,7 @@ export function isSnippet(value: unknown): value is Snippet {
     return typeof value === 'function' && value.length === 1;
 }
 
-export function isValid(value: RawValue): value is number | Date | string {
+export function isValid(value: RawValue | undefined): value is number | Date | string {
     return value !== null && value !== undefined && !Number.isNaN(value);
 }
 

@@ -128,7 +128,7 @@ const scaledStyleProps: Partial<{ [key in ScaledChannelName]: string }> = {
 const scaledStylePropsKeys = Object.keys(scaledStyleProps) as ScaledChannelName[];
 
 // TODO: find a better name
-const oppositeColor: Record<'fill'|'stroke', 'fill'|'stroke'> = {
+const oppositeColor: Record<'fill' | 'stroke', 'fill' | 'stroke'> = {
     fill: 'stroke',
     stroke: 'fill'
 };
@@ -192,21 +192,24 @@ export function resolveStyles(
     datum: ScaledDataRecord,
     channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
     defaultColorProp: 'fill' | 'stroke' | null = null,
-    useScale: Record<ScaledChannelName, boolean>,
+    useScale: Record<ScaledChannelName, boolean>
 ): [string | null, string | null] {
     const styleProps = {
-            ...getBaseStylesObject(datum.datum, channels),
-            fill: 'none',
-            stroke: 'none',
-            ...(defaultColorProp && channels[oppositeColor[defaultColorProp]] == null
+        ...getBaseStylesObject(datum.datum, channels),
+        fill: 'none',
+        stroke: 'none',
+        ...(defaultColorProp && channels[oppositeColor[defaultColorProp]] == null
             ? { [defaultColorProp]: 'currentColor' }
             : {}),
-            ...Object.fromEntries(
-                (Object.entries(scaledStyleProps) as [ScaledChannelName, string][])
-                    .filter(([key]) => channels[key] != null)
-                    .map(([key, cssAttr]) => [key, cssAttr, datum[key]])
-                    .filter(([key, , value]) => isValid(value as RawValue) || key === 'fill' || key === 'stroke')
-                    .map(([key, cssAttr, value]) => {
+        ...Object.fromEntries(
+            (Object.entries(scaledStyleProps) as [ScaledChannelName, string][])
+                .filter(([key]) => channels[key] != null)
+                .map(([key, cssAttr]) => [key, cssAttr, datum[key]])
+                .filter(
+                    ([key, , value]) =>
+                        isValid(value as RawValue) || key === 'fill' || key === 'stroke'
+                )
+                .map(([key, cssAttr, value]) => {
                     if (useScale[key as ScaledChannelName]) {
                         if (
                             value == undefined &&
@@ -217,13 +220,12 @@ export function resolveStyles(
                         }
                     }
                     return [cssAttr, value];
-                }))
-        }
+                })
+        )
+    };
     if (plot.css) {
         return [null, plot.css(stylePropsToCSS(styleProps))];
     } else {
         return [stylePropsToCSS(styleProps), null];
-      
     }
-    
 }

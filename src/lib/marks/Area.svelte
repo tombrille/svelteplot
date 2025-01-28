@@ -16,7 +16,7 @@
     import Mark from '../Mark.svelte';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveScaledStyles, resolveStyles } from '../helpers/resolve.js';
     import { groups as d3Groups } from 'd3-array';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
@@ -30,7 +30,8 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext
+        FacetContext,
+        ScaledDataRecord
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
@@ -56,75 +57,48 @@
         ...options
     }: AreaProps = $props();
 
-    let data2 = $derived(maybeData(data));
-
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let groupByKey = $derived(options.z || options.fill || options.stroke);
+    const groupByKey = $derived(options.z || options.fill || options.stroke);
 
-    let groups = $derived(
-        groupByKey ? d3Groups(data2, (d) => resolveProp(groupByKey, d)).map((d) => d[1]) : [data]
-    );
 
-    // let sortBy = $derived(sort && isDataRecord(sort) ? sort.channel === 'stroke' ? stroke : fill : sort);
-    let sortedGroups = $derived(
-        options.sort
-            ? groups.sort((a, b) =>
-                  resolveChannel('sort', a[0], options) > resolveChannel('sort', b[0], options)
-                      ? 1
-                      : -1
-              )
-            : groups
-    );
-
-    let areaPath: (d: DataRecord[]) => string = $derived(
-        (useScale: ReturnType<typeof getUsedScales>) =>
-            callWithProps(area, [], {
+    const areaPath: (d: ScaledDataRecord[]) => string = $derived(
+        callWithProps(area, [], {
                 curve: maybeCurve(curve, tension),
-                defined: (d: DataRecord) =>
+                defined: (d: ScaledDataRecord) =>
                     options.x1 != null && options.x2 != null
                         ? // vertical
-                          isValid(resolveChannel('y1', d, options)) &&
-                          isValid(resolveChannel('x1', d, options)) &&
-                          isValid(resolveChannel('x2', d, options))
+                          isValid(d.y1) && isValid(d.x1) && isValid(d.x2)
                         : // horizontal
-                          isValid(resolveChannel('x1', d, options)) &&
-                          isValid(resolveChannel('y1', d, options)) &&
-                          isValid(resolveChannel('y2', d, options)),
+                          isValid(d.x1) && isValid(d.y1) && isValid(d.y2),
                 ...(options.x1 != null && options.x2 != null
                     ? {
                           // "vertical" area
-                          x0: (d) =>
-                              useScale.x1
-                                  ? projectX('x1', plot.scales, resolveChannel('x1', d, options))
-                                  : resolveChannel('x1', d, options),
-                          x1: (d) =>
-                              useScale.x2
-                                  ? projectX('x2', plot.scales, resolveChannel('x2', d, options))
-                                  : resolveChannel('x2', d, options),
-                          y: (d) =>
-                              useScale.y1
-                                  ? projectY('y1', plot.scales, resolveChannel('y1', d, options))
-                                  : resolveChannel('y1', d, options)
+                          x0: (d: ScaledDataRecord) => d.x1,
+                          x1: (d: ScaledDataRecord) => d.x2,
+                          y: (d: ScaledDataRecord) => d.y1
                       }
                     : {
                           // "horizontal" area
-                          x: (d) =>
-                              useScale.x1
-                                  ? projectX('x', plot.scales, resolveChannel('x1', d, options))
-                                  : resolveChannel('x1', d, options),
-                          y0: (d) =>
-                              useScale.y1
-                                  ? projectY('y1', plot.scales, resolveChannel('y1', d, options))
-                                  : resolveChannel('y1', d, options),
-                          y1: (d) =>
-                              useScale.y2
-                                  ? projectY('y2', plot.scales, resolveChannel('y2', d, options))
-                                  : resolveChannel('y2', d, options)
+                          x: (d: ScaledDataRecord) => d.x1,
+                          y0: (d: ScaledDataRecord) => d.y1,
+                          y1: (d: ScaledDataRecord) => d.y2
                       })
             })
     );
+
+    function groupAndSort(data: ScaledDataRecord[]) {
+        const groups = groupByKey ? d3Groups(data, (d) => resolveProp(groupByKey, d.datum)).map((d) => d[1]) : [data];
+        if (options.sort) {
+            return groups.toSorted((a, b) =>
+                  resolveChannel('sort', a[0].datum, options) > resolveChannel('sort', b[0].datum, options)
+                      ? 1
+                      : -1
+              );
+        }
+        return groups;
+    }
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     let testFacet = $derived(getTestFacet());
@@ -132,38 +106,38 @@
 
 <Mark
     type="area"
-    data={data2}
+    {data}
     channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     required={['x1', 'y1']}
     {...options}>
-    {#snippet children({ mark, usedScales })}
-        <GroupMultiple length={sortedGroups.length}>
-            {#each sortedGroups as areaData}
-                {#if testFacet(areaData[0], mark.options)}
-                    {@const dx_ = resolveProp(options.dx, areaData[0], 0)}
-                    {@const dy_ = resolveProp(options.dy, areaData[0], 0)}
-                    {#snippet el(datum)}
+    {#snippet children({ mark, usedScales, scaledData })}
+        {@const grouped = groupAndSort(scaledData)}
+        <GroupMultiple length={grouped.length}>
+            {#each grouped as areaData}
+                    {#snippet el(datum: ScaledDataRecord)}
+                         {@const [style, styleClass] = resolveStyles(
+                            plot,
+                            datum,
+                            options,
+                            'fill',
+                            usedScales
+                        )}
                         <path
-                            class="svelteplot-area {className}"
+                            class={['svelteplot-area', className, styleClass]}
                             clip-path={options.clipPath}
-                            d={areaPath(usedScales)(
-                                options.filter == null
-                                    ? areaData
-                                    : areaData.filter((d) => resolveProp(options.filter, d))
-                            )}
-                            style={resolveScaledStyles(datum, options, usedScales, plot, 'fill')}
-                            transform={dx_ || dy_ ? `translate(${dx_},${dy_})` : null} />
+                            d={areaPath(areaData)}
+                            {style}
+                            />
                     {/snippet}
                     {#if options.href}
                         <a
-                            href={resolveProp(options.href, areaData[0], '')}
-                            target={resolveProp(options.target, areaData[0], '_self')}>
+                            href={resolveProp(options.href, areaData[0].datum, '')}
+                            target={resolveProp(options.target, areaData[0].datum, '_self')}>
                             {@render el(areaData[0])}
                         </a>
                     {:else}
                         {@render el(areaData[0])}
                     {/if}
-                {/if}
             {/each}
         </GroupMultiple>
     {/snippet}

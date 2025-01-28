@@ -7,7 +7,7 @@ Link to [empty page](empty).
 ```svelte live
 <script lang="ts">
     import { css } from '@emotion/css';
-    import { Plot, Line, Dot } from '$lib';
+    import { Plot, Line, Dot, AreaY } from '$lib';
     import { Slider } from '$lib/ui';
     import type { Datasets } from '$lib/types.js';
 
@@ -19,7 +19,16 @@ Link to [empty page](empty).
 <Slider bind:value={len} min={10} max={200} />
 
 <Plot grid height={400} {css}>
-    <Line data={aapl.slice(-len)} stroke={d => d.Close > 170} x="Date" y="Adj Close" />
-    <Dot data={aapl.slice(-len)} stroke={d => d.Close > 170} x="Date" y="Adj Close" />
+    <AreaY
+        data={aapl.slice(-len)}
+        opacity={0.2}
+        y1="Open"
+        x="Date"
+        y2="Close" />
+    <Dot
+        data={aapl.slice(-len)}
+        stroke={(d) => d.Close > 170}
+        x="Date"
+        y="Adj Close" />
 </Plot>
 ```

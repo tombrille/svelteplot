@@ -138,7 +138,13 @@
             {:else}
                 {#each scaledData as d}
                     {#if isValid(d.x) && isValid(d.y) && isValid(d.r)}
-                        {@const [style, styleClass] = resolveStyles(plot, d, {strokeWidth: 1.6, ...args}, 'stroke', usedScales)}
+                        {@const [style, styleClass] = resolveStyles(
+                            plot,
+                            d,
+                            { strokeWidth: 1.6, ...args },
+                            'stroke',
+                            usedScales
+                        )}
                         <path
                             transform="translate({d.x}, {d.y})"
                             d={getSymbolPath(d.symbol, d.r ** 2 * Math.PI)}
@@ -160,5 +166,4 @@
 </Mark>
 
 <style>
-
 </style>

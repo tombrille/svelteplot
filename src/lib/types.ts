@@ -390,9 +390,9 @@ export type PlotOptions = {
      */
     locale: string;
     /**
-     * 
+     *
      */
-    css: (d: string) => string
+    css: (d: string) => string;
 };
 
 export type PlotDefaults = {
@@ -537,7 +537,7 @@ export type PlotState = {
      * True if the plot is using filled dot marks.
      */
     hasFilledDotMarks: boolean;
-    css: ((d: string) => string)|null;
+    css: ((d: string) => string) | null;
 };
 
 export type PlotContext = {

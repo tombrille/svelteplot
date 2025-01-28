@@ -13,9 +13,7 @@
         MarkerOptions,
         FacetContext,
         PlotState,
-
         ScaledDataRecord
-
     } from '../types.js';
 
     export type BaseLineMarkProps = {
@@ -123,7 +121,7 @@
         return (lineData: ScaledDataRecord[]) => {
             let line = [];
             const lines = [line];
-            for (const {x,y} of lineData) {
+            for (const { x, y } of lineData) {
                 // if x or y is undefined, start a new line segment
                 if (!isValid(x) || !isValid(y)) {
                     line = [];
@@ -135,7 +133,6 @@
             return path({ type: 'MultiLineString', coordinates: lines });
         };
     }
-   
 </script>
 
 <Mark
@@ -146,9 +143,9 @@
     {#snippet children({ mark, usedScales, scaledData })}
         {#if scaledData.length > 0}
             <g class={['lines', className]}>
-                {#each groupIndex(scaledData, groupByKey) as lineData,i}
+                {#each groupIndex(scaledData, groupByKey) as lineData, i}
                     {@const pathString = linePath(lineData)}
-                    {console.log({lineData})}
+                    {console.log({ lineData })}
                     {#if pathString}
                         <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
                             {#if options.outlineStroke}
