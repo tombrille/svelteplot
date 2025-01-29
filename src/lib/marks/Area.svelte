@@ -16,7 +16,12 @@
     import Mark from '../Mark.svelte';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
-    import { resolveChannel, resolveProp, resolveScaledStyles, resolveStyles } from '../helpers/resolve.js';
+    import {
+        resolveChannel,
+        resolveProp,
+        resolveScaledStyles,
+        resolveStyles
+    } from '../helpers/resolve.js';
     import { groups as d3Groups } from 'd3-array';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
@@ -62,40 +67,42 @@
 
     const groupByKey = $derived(options.z || options.fill || options.stroke);
 
-
     const areaPath: (d: ScaledDataRecord[]) => string = $derived(
         callWithProps(area, [], {
-                curve: maybeCurve(curve, tension),
-                defined: (d: ScaledDataRecord) =>
-                    options.x1 != null && options.x2 != null
-                        ? // vertical
-                          isValid(d.y1) && isValid(d.x1) && isValid(d.x2)
-                        : // horizontal
-                          isValid(d.x1) && isValid(d.y1) && isValid(d.y2),
-                ...(options.x1 != null && options.x2 != null
-                    ? {
-                          // "vertical" area
-                          x0: (d: ScaledDataRecord) => d.x1,
-                          x1: (d: ScaledDataRecord) => d.x2,
-                          y: (d: ScaledDataRecord) => d.y1
-                      }
-                    : {
-                          // "horizontal" area
-                          x: (d: ScaledDataRecord) => d.x1,
-                          y0: (d: ScaledDataRecord) => d.y1,
-                          y1: (d: ScaledDataRecord) => d.y2
-                      })
-            })
+            curve: maybeCurve(curve, tension),
+            defined: (d: ScaledDataRecord) =>
+                options.x1 != null && options.x2 != null
+                    ? // vertical
+                      isValid(d.y1) && isValid(d.x1) && isValid(d.x2)
+                    : // horizontal
+                      isValid(d.x1) && isValid(d.y1) && isValid(d.y2),
+            ...(options.x1 != null && options.x2 != null
+                ? {
+                      // "vertical" area
+                      x0: (d: ScaledDataRecord) => d.x1,
+                      x1: (d: ScaledDataRecord) => d.x2,
+                      y: (d: ScaledDataRecord) => d.y1
+                  }
+                : {
+                      // "horizontal" area
+                      x: (d: ScaledDataRecord) => d.x1,
+                      y0: (d: ScaledDataRecord) => d.y1,
+                      y1: (d: ScaledDataRecord) => d.y2
+                  })
+        })
     );
 
     function groupAndSort(data: ScaledDataRecord[]) {
-        const groups = groupByKey ? d3Groups(data, (d) => resolveProp(groupByKey, d.datum)).map((d) => d[1]) : [data];
+        const groups = groupByKey
+            ? d3Groups(data, (d) => resolveProp(groupByKey, d.datum)).map((d) => d[1])
+            : [data];
         if (options.sort) {
             return groups.toSorted((a, b) =>
-                  resolveChannel('sort', a[0].datum, options) > resolveChannel('sort', b[0].datum, options)
-                      ? 1
-                      : -1
-              );
+                resolveChannel('sort', a[0].datum, options) >
+                resolveChannel('sort', b[0].datum, options)
+                    ? 1
+                    : -1
+            );
         }
         return groups;
     }
@@ -114,30 +121,29 @@
         {@const grouped = groupAndSort(scaledData)}
         <GroupMultiple length={grouped.length}>
             {#each grouped as areaData}
-                    {#snippet el(datum: ScaledDataRecord)}
-                         {@const [style, styleClass] = resolveStyles(
-                            plot,
-                            datum,
-                            options,
-                            'fill',
-                            usedScales
-                        )}
-                        <path
-                            class={['svelteplot-area', className, styleClass]}
-                            clip-path={options.clipPath}
-                            d={areaPath(areaData)}
-                            {style}
-                            />
-                    {/snippet}
-                    {#if options.href}
-                        <a
-                            href={resolveProp(options.href, areaData[0].datum, '')}
-                            target={resolveProp(options.target, areaData[0].datum, '_self')}>
-                            {@render el(areaData[0])}
-                        </a>
-                    {:else}
+                {#snippet el(datum: ScaledDataRecord)}
+                    {@const [style, styleClass] = resolveStyles(
+                        plot,
+                        datum,
+                        options,
+                        'fill',
+                        usedScales
+                    )}
+                    <path
+                        class={['svelteplot-area', className, styleClass]}
+                        clip-path={options.clipPath}
+                        d={areaPath(areaData)}
+                        {style} />
+                {/snippet}
+                {#if options.href}
+                    <a
+                        href={resolveProp(options.href, areaData[0].datum, '')}
+                        target={resolveProp(options.target, areaData[0].datum, '_self')}>
                         {@render el(areaData[0])}
-                    {/if}
+                    </a>
+                {:else}
+                    {@render el(areaData[0])}
+                {/if}
             {/each}
         </GroupMultiple>
     {/snippet}

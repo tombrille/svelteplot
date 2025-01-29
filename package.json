@@ -69,8 +69,8 @@
         "@types/d3-scale": "^4.0.8",
         "@types/d3-scale-chromatic": "^3.1.0",
         "@types/d3-shape": "^3.1.7",
-        "@typescript-eslint/eslint-plugin": "^8.21.0",
-        "@typescript-eslint/parser": "^8.21.0",
+        "@typescript-eslint/eslint-plugin": "^8.22.0",
+        "@typescript-eslint/parser": "^8.22.0",
         "d3-dsv": "^3.0.1",
         "d3-fetch": "^3.0.1",
         "d3-force": "^3.0.0",
@@ -113,6 +113,6 @@
         "es-toolkit": "^1.31.0",
         "fast-equals": "^5.2.2",
         "merge-deep": "^3.0.3",
-        "svelte": "5.19.3"
+        "svelte": "5.19.4"
     }
 }
