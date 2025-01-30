@@ -667,16 +667,26 @@ export type BaseMarkProps = Partial<{
     >;
     paintOrder: ConstantAccessor<string>;
     onclick?: MouseEventHandler<SVGPathElement>;
+    ondblclick?: MouseEventHandler<SVGPathElement>;
     onmouseup?: MouseEventHandler<SVGPathElement>;
     onmousedown?: MouseEventHandler<SVGPathElement>;
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmousemove?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
+    onmouseout?: MouseEventHandler<SVGPathElement>;
+    ondrag?: MouseEventHandler<SVGPathElement>;
+    ondrop?: MouseEventHandler<SVGPathElement>;
     ondragstart?: MouseEventHandler<SVGPathElement>;
+    ondragenter?: MouseEventHandler<SVGPathElement>;
+    ondragleave?: MouseEventHandler<SVGPathElement>;
+    ondragover?: MouseEventHandler<SVGPathElement>;
     ondragend?: MouseEventHandler<SVGPathElement>;
     ontouchstart?: MouseEventHandler<SVGPathElement>;
     ontouchmove?: MouseEventHandler<SVGPathElement>;
     ontouchend?: MouseEventHandler<SVGPathElement>;
+    ontouchcancel?: MouseEventHandler<SVGPathElement>;
+    oncontextmenu?: MouseEventHandler<SVGPathElement>;
+    onwheel?: MouseEventHandler<SVGPathElement>;
     /**
      * simple browser tooltip to be displayed on mouseover
      */

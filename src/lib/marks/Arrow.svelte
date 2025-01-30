@@ -107,7 +107,7 @@
                     {@const [style, styleClass] = resolveStyles(
                         plot,
                         d,
-                        { ...args, strokeWidth },
+                        { strokeLinecap: 'round', strokeLinejoin: 'round', ...args, strokeWidth: strokeWidth ?? 1.6 },
                         'stroke',
                         usedScales
                     )}
@@ -137,10 +137,3 @@
     {/snippet}
 </Mark>
 
-<style>
-    path {
-        stroke-width: 1.6px;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-</style>

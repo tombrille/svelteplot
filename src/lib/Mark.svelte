@@ -73,7 +73,6 @@
         options: GenericMarkOptions = $state({});
 
         constructor(type: MarkType) {
-            console.log('new mark', type);
             this.id = Symbol();
             this.type = type;
         }
@@ -83,7 +82,6 @@
 
     $effect(() => {
         return () => {
-            console.log('remove mark', mark.type);
             removeMark(mark);
         };
     });
@@ -112,7 +110,8 @@
                 .map((channel) => CHANNEL_SCALE[channel])
         );
         mark.data = data;
-        mark.options = optionsWithAutoFacet;
+        console.log($state.snapshot(options))
+        mark.options = { ...$state.snapshot(options), __firstFacet: left && top }; //optionsWithAutoFacet;
         addMark(mark);
     });
 

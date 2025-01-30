@@ -260,7 +260,6 @@
          */
         addMark(mark: Mark<GenericMarkOptions>) {
             if (marks.find((m) => m.id === mark.id)) return;
-            console.log('add mark', mark.type, $state.snapshot(mark.options));
             marks = [...marks, mark];
         },
         /**

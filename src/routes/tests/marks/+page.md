@@ -9,26 +9,22 @@ Link to [empty page](empty).
     import { css } from '@emotion/css';
     import { Plot, Line, Dot, AreaY } from '$lib';
     import { Slider } from '$lib/ui';
-    import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
-    let len = $state(80);
+    let { aapl, penguins } = $derived($page.data.data);
+    let inset = $state(10);
 </script>
 
-<Slider bind:value={len} min={10} max={200} />
+<Slider bind:value={inset} min={-20} max={30} />
 
-<Plot grid height={400} {css}>
-    <AreaY
-        data={aapl.slice(-len)}
-        opacity={0.2}
-        y1="Open"
-        x="Date"
-        y2="Close" />
+<Plot grid frame marginTop={35} {css} {inset}>
     <Dot
-        data={aapl.slice(-len)}
-        stroke={(d) => d.Close > 170}
-        x="Date"
-        y="Adj Close" />
+        data={penguins}
+        fx="species"
+        fy="sex"
+        fill
+        onmouseenter={(d, e) => console.log(e)}
+        x="culmen_length_mm"
+        y="culmen_depth_mm" />
 </Plot>
 ```

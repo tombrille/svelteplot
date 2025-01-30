@@ -1,7 +1,7 @@
 import { CHANNEL_SCALE } from '$lib/constants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
-import type { PlotState, ScaledDataRecord } from '$lib/types.js';
+import type { MarkStyleProps, PlotState, ScaledDataRecord } from '$lib/types.js';
 import { isValid } from './isValid.js';
 import { pick } from 'es-toolkit';
 
@@ -190,7 +190,7 @@ function stylePropsToCSS(props: Record<string, string>): string {
 export function resolveStyles(
     plot: PlotState,
     datum: ScaledDataRecord,
-    channels: Partial<Record<ScaledChannelName, ChannelAccessor>>,
+    channels: Partial<Record<ChannelName & MarkStyleProps, ChannelAccessor>>,
     defaultColorProp: 'fill' | 'stroke' | null = null,
     useScale: Record<ScaledChannelName, boolean>
 ): [string | null, string | null] {

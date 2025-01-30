@@ -8,6 +8,7 @@ Metro dataset:
 
 ```svelte live
 <script lang="ts">
+    import { css } from '@emotion/css';
     import { Plot, Arrow, Dot, Text } from '$lib/index.js';
     import { page } from '$app/stores';
     let { metros } = $derived($page.data.data);
@@ -15,6 +16,7 @@ Metro dataset:
     let hl = $state(false);
 </script>
 
+{hl}
 <Plot
     grid
     marginRight={20}
@@ -22,8 +24,8 @@ Metro dataset:
     height={450}
     x={{ type: 'log', label: 'Population' }}
     y={{ label: 'Inequality' }}
+    {css}
     color={{
-        scheme: 'BuRd',
         label: 'Change in inequality from 1980 to 2015',
         legend: true,
         tickFormat: '+f'
@@ -105,7 +107,7 @@ Metro dataset:
 
 Works as well with a point scale:
 
-```svelte live
+```svelte --live
 <script lang="ts">
     import {
         Plot,
@@ -150,7 +152,7 @@ Works as well with a point scale:
 
 Another thing you can use the arrow mark for is drawing network diagrams:
 
-```svelte live
+```svelte --live
 <script lang="ts">
     import {
         Plot,
