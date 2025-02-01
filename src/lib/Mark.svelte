@@ -110,8 +110,7 @@
                 .map((channel) => CHANNEL_SCALE[channel])
         );
         mark.data = data;
-        console.log($state.snapshot(options))
-        mark.options = { ...$state.snapshot(options), __firstFacet: left && top }; //optionsWithAutoFacet;
+        mark.options = optionsWithAutoFacet; //optionsWithAutoFacet;
         addMark(mark);
     });
 

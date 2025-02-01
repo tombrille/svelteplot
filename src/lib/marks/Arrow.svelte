@@ -125,13 +125,9 @@
                                 style="fill:none;stroke-width: {(strokeWidth || 1) +
                                     10}; stroke: red; stroke-opacity:0" />
                         {/if}
-                        <path
-                            class={[styleClass]}
-                            d={arrPath}
-                            {style} />
+                        <path class={[styleClass]} d={arrPath} {style} />
                     </g>
                 {/if}
-               
             {/each}
         </GroupMultiple>
     {/snippet}
