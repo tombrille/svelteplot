@@ -67,10 +67,10 @@
     class Mark {
         id;
         type;
-        channels: ScaledChannelName[] = $state([]);
-        scales: Set<ScaleName> = $state(new Set());
-        data: DataRecord[] = $state([]);
-        options: GenericMarkOptions = $state({});
+        channels: ScaledChannelName[] = $state.raw([]);
+        scales: Set<ScaleName> = $state.raw(new Set());
+        data: DataRecord[] = $state.raw([]);
+        options: GenericMarkOptions = $state.raw({});
 
         constructor(type: MarkType) {
             this.id = Symbol();

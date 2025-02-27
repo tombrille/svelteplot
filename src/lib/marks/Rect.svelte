@@ -42,7 +42,7 @@
     );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
+    const testFacet = $derived(getTestFacet());
 </script>
 
 <Mark

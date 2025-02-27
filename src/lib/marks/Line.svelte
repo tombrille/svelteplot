@@ -145,7 +145,6 @@
             <g class={['lines', className]}>
                 {#each groupIndex(scaledData, groupByKey) as lineData, i}
                     {@const pathString = linePath(lineData)}
-                    {console.log({ lineData })}
                     {#if pathString}
                         <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
                             {#if options.outlineStroke}

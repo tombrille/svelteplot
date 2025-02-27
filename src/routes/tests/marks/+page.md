@@ -5,6 +5,29 @@ title: Test
 Link to [empty page](empty).
 
 ```svelte live
+<script>
+    import { Plot, Line, RectX } from '$lib';
+
+    import { page } from '$app/stores';
+    let { aapl } = $derived($page.data.data);
+</script>
+
+<Plot>
+    <!-- <Line data={aapl} x="Date" y="Close" /> -->
+    <RectX
+        data={[
+            {
+                from: new Date(2014, 0, 1),
+                to: new Date(2016, 0, 1)
+            }
+        ]}
+        x1="from"
+        x2="to"
+        fillOpacity={0.1} />
+</Plot>
+```
+
+```svelte
 <script lang="ts">
     import { css } from '@emotion/css';
     import { Plot, Line, Dot, AreaY } from '$lib';
