@@ -259,7 +259,9 @@
          * used by the Mark component to register new marks to the plot
          */
         addMark(mark: Mark<GenericMarkOptions>) {
-            if (marks.find((m) => m.id === mark.id)) return;
+            if (marks.find((m) => m.id === mark.id)) {
+                return;
+            }
             marks = [...marks, mark];
         },
         /**

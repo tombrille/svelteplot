@@ -19,14 +19,13 @@
     import {
         resolveChannel,
         resolveProp,
-        resolveScaledStyles,
         resolveStyles
     } from '../helpers/resolve.js';
     import { groups as d3Groups } from 'd3-array';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
-    import { isValid, maybeData } from '$lib/helpers/index.js';
+    import { isValid } from '$lib/helpers/index.js';
 
     import type {
         CurveName,
@@ -39,7 +38,6 @@
         ScaledDataRecord
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
     type AreaProps = BaseMarkProps & {
@@ -135,14 +133,16 @@
                         d={areaPath(areaData)}
                         {style} />
                 {/snippet}
-                {#if options.href}
-                    <a
-                        href={resolveProp(options.href, areaData[0].datum, '')}
-                        target={resolveProp(options.target, areaData[0].datum, '_self')}>
+                {#if areaData.length > 0}
+                    {#if options.href}
+                        <a
+                            href={resolveProp(options.href, areaData[0].datum, '')}
+                            target={resolveProp(options.target, areaData[0].datum, '_self')}>
+                            {@render el(areaData[0])}
+                        </a>
+                    {:else}
                         {@render el(areaData[0])}
-                    </a>
-                {:else}
-                    {@render el(areaData[0])}
+                    {/if}
                 {/if}
             {/each}
         </GroupMultiple>

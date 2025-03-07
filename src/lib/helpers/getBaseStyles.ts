@@ -14,7 +14,6 @@ const styleProps: Partial<Record<MarkStyleProps, string | null>> = {
     blend: 'mix-blend-mode',
     clipPath: 'clip-path',
     mask: 'mask',
-    filter: 'filter',
     fontSize: 'font-size',
     fontWeight: 'font-weight',
     fontStyle: 'font-style',

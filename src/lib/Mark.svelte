@@ -1,11 +1,9 @@
 <script lang="ts">
-    import { getContext, type Snippet } from 'svelte';
-    import { deepEqual } from 'fast-equals';
+    import { getContext, untrack, type Snippet } from 'svelte';
 
     import { CHANNEL_SCALE } from '$lib/constants.js';
     import type {
         ScaledChannelName,
-        Mark as TMark,
         MarkType,
         DataRecord,
         PlotContext,
@@ -14,14 +12,12 @@
         ChannelAccessor,
         BaseMarkProps,
         FacetContext,
-        PlotScale,
-        PlotState,
         ScaleName,
         RawValue,
         ScaledDataRecord
     } from './types.js';
     import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
-    import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
+    import { testFilter, isValid } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from './helpers/resolve.js';
 
     type MarkProps = {
@@ -102,15 +98,20 @@
             : {})
     });
 
+
     $effect(() => {
-        mark.channels = channelsWithFacets;
+        // without using untrack() here we end up with inexplicable
+        // circular dependency updates resulting in a stack overflow
+        const channels = untrack(() => channelsWithFacets);
+        mark.channels = channels;
         mark.scales = new Set(
-            channelsWithFacets
+            channels
                 .filter((channel) => options[channel] !== 0)
                 .map((channel) => CHANNEL_SCALE[channel])
         );
-        mark.data = data;
-        mark.options = optionsWithAutoFacet; //optionsWithAutoFacet;
+        mark.data = untrack(() => data);
+        mark.options = untrack(() => optionsWithAutoFacet);
+        console.log('addMark', mark.type)
         addMark(mark);
     });
 
