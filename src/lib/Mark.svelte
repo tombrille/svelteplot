@@ -14,9 +14,16 @@
         FacetContext,
         ScaleName,
         RawValue,
-        ScaledDataRecord
+        ScaledDataRecord,
+        ScaleType
     } from './types.js';
-    import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
+    import {
+        getUsedScales,
+        projectXY,
+        projectX,
+        projectY,
+        computeScales
+    } from './helpers/scales.js';
     import { testFilter, isValid } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from './helpers/resolve.js';
 
@@ -26,6 +33,7 @@
         type: MarkType;
         channels?: ScaledChannelName[];
         required?: ScaledChannelName[];
+        requiredScales?: Partial<Record<ScaleName, ScaleType[]>>;
         children?: Snippet<
             [
                 {
@@ -45,6 +53,7 @@
         type,
         channels = [],
         required = [],
+        requiredScales = {},
         defaults = {},
         ...options
     }: MarkProps = $props();
@@ -118,11 +127,18 @@
         added = true;
     });
 
-    const errors = $derived(
-        required
+    const errors = $derived([
+        ...required
             .filter((name) => options[name] == null)
-            .map((name) => `missing channel value for ${mark.type} mark: ${name}`)
-    );
+            .map((name) => `missing channel value for ${mark.type} mark: ${name}`),
+        ...Object.entries(requiredScales)
+            .filter(([scale, types]) => {
+                return !types.includes(plot.scales[scale].type);
+            })
+            .map(
+                ([scale, types]) => `scale type mismatch for ${scale} (needs ${types.join(' or ')})`
+            )
+    ]);
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     const testFacet = $derived(getTestFacet());
