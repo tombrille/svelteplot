@@ -79,6 +79,7 @@
     $effect(() => {
         return () => {
             removeMark(mark);
+            added = false;
         };
     });
 
@@ -98,8 +99,10 @@
             : {})
     });
 
+    let added = false;
 
     $effect(() => {
+        if (added) return;
         // without using untrack() here we end up with inexplicable
         // circular dependency updates resulting in a stack overflow
         const channels = untrack(() => channelsWithFacets);
@@ -111,8 +114,8 @@
         );
         mark.data = untrack(() => data);
         mark.options = untrack(() => optionsWithAutoFacet);
-        console.log('addMark', mark.type)
         addMark(mark);
+        added = true;
     });
 
     const errors = $derived(

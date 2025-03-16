@@ -7,14 +7,20 @@ title: Test
     import { Plot, Rect } from '$lib';
 </script>
 
-<Plot grid>
-    <Rect data={[{ x1: 10, x2: 60, y1: -30, y2: 20 }]} x1="x1" x2="x2" y1="y1" y2="y2" opacity={0.5} />
+<Plot>
+    <Rect
+        data={[{ x1: 10, x2: 60, y1: -30, y2: 20 }]}
+        x1="x1"
+        x2="x2"
+        y1="y1"
+        y2="y2"
+        opacity={0.5} />
 </Plot>
 ```
 
 Link to [empty page](empty).
 
-```svelte live
+```svelte --live
 <script>
     import { Plot, Line, RectX } from '$lib';
 
@@ -60,7 +66,11 @@ Link to [empty page](empty).
     ]);
 </script>
 
-<Slider bind:value={year} label="year" min={2000} max={2030} />
+<Slider
+    bind:value={year}
+    label="year"
+    min={2000}
+    max={2030} />
 <Slider bind:value={inset} min={-20} max={30} />
 
 <Plot grid frame marginTop={35} {inset}>
