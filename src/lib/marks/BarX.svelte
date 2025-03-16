@@ -11,7 +11,6 @@
     import type { PlotContext, BaseMarkProps, RectMarkProps, ChannelAccessor } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
-    import { isValid, testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
@@ -55,7 +54,7 @@
     channels={['x1', 'x2', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
     {#snippet children({ mark, usedScales, scaledData })}
-        <GroupMultiple class="bar-x" length={args.data.length}>
+        <GroupMultiple class="bar-x" length={scaledData.length}>
             {#each scaledData as d}
                 {@const bw = plot.scales.y.fn.bandwidth()}
                 {@const minx = Math.min(d.x1, d.x2)}
