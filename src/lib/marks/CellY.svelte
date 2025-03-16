@@ -1,24 +1,24 @@
 <script lang="ts">
     import Cell from './Cell.svelte';
-    import { recordizeX, recordizeY } from '$lib/index.js';
+    import { recordizeX } from '$lib/index.js';
     import type { BaseMarkProps, DataRow, RectMarkProps } from '../types.js';
     import type { ChannelAccessor } from '$lib/types.js';
 
-    type CellXProps = BaseMarkProps & {
+    type CellYProps = BaseMarkProps & {
         data: DataRow[];
-        x?: ChannelAccessor;
+        y?: ChannelAccessor;
         fill?: ChannelAccessor;
         stroke?: ChannelAccessor;
     } & RectMarkProps;
 
-    let { data = [{}], ...options }: CellXProps = $props();
+    let { data = [{}], ...options }: CellYProps = $props();
 
     const args = $derived(
-        recordizeY<CellXProps>({
+        recordizeX<CellYProps>({
             data,
             ...options
         })
     );
 </script>
 
-<Cell {...args} y="0" fill={options.fill || '__value'} />
+<Cell {...args} x="0" fill={options.fill || '__value'} />

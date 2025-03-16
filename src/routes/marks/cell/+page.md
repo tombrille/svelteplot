@@ -69,63 +69,128 @@ Seattle temperatures
 </Plot>
 ```
 
+```svelte live
+<script>
+    import { Plot, Cell, Text } from '$lib';
+
+    import { page } from '$app/stores';
+    let { simpsons } = $derived($page.data.data);
+    let first28 = $derived(
+        simpsons.filter((d) => d.season < 4)
+    );
+</script>
+
+<Plot
+    marginTop={40}
+    inset={0}
+    color={{ type: 'quantile', scheme: 'PiYG' }}
+    testid="first28">
+    <Cell data={first28} x="id" y="0" fill="imdb_rating" />
+</Plot>
+```
+
 ## CellX
 
 Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not specified, it defaults to \[0, 1, 2, …\], and if the **fill** option is not specified and **stroke** is not a channel, the fill defaults to the identity function and assumes that _data_ = \[_x₀_, _x₁_, _x₂_, …\].
 
 ```svelte live
 <script>
-    import { Plot, CellX, Text } from '$lib';
+    import { Plot, CellX, Text, groupX } from '$lib';
 
     import { page } from '$app/stores';
     let { simpsons } = $derived($page.data.data);
-    let first28 = $derived(
-        simpsons.filter((d) => d.season < 29)
-    );
 </script>
 
 <Plot
-    padding={0}
-    margins={5}
-    marginTop={40}
-    height={70}
     inset={0}
-    x={{
-        type: 'band',
-        axis: 'top',
-        label: 'Season',
-        ticks: first28
-            .filter((d) => d.episode === 1)
-            .map((d) => d.id),
-        tickFormat: (x) =>
-            first28.find((d) => d.id === x).season
-    }}
-    color={{ type: 'linear', scheme: 'PiYG' }}
-    testid="first28">
+    y={{ axis: false }}
+    color={{
+        type: 'quantile',
+        scheme: 'PiYG'
+    }}>
     <CellX
-        data={first28.sort((a, b) => b.id - a.id)}
-        x="id"
-        fill="imdb_rating" />
+        {...groupX(
+            {
+                data: simpsons,
+                x: 'season',
+                fill: 'imdb_rating'
+            },
+            { fill: 'mean' }
+        )} />
 </Plot>
 ```
 
-```svelte
+```svelte -
 <Plot
-    x={{
-        type: 'band',
-        axis: 'top',
-        label: 'Season',
-        ticks: simpsons
-            .filter((d) => d.episode === 1)
-            .map((d) => d.id),
-        tickFormat: (x) =>
-            simpsons.find((d) => d.id === x).season
-    }}
-    color={{ type: 'linear', scheme: 'PiYG' }}>
+    inset={0}
+    x={{ axis: false }}
+    color={{
+        type: 'quantile',
+        scheme: 'PiYG'
+    }}>
     <CellX
-        data={simpsons.sort((a, b) => b.id - a.id)}
-        x="id"
-        fill="imdb_rating" />
+        {...groupX(
+            {
+                data: simpsons,
+                x: 'season',
+                fill: 'imdb_rating'
+            },
+            { fill: 'mean' }
+        )} />
+</Plot>
+```
+
+## CellY
+
+Equivalent to [cell](/marks/cell#Cell), except that if the **y** option is not specified, it defaults to \[0, 1, 2, …\], and if the **fill** option is not specified and **stroke** is not a channel, the fill defaults to the identity function and assumes that _data_ = \[_x₀_, _x₁_, _x₂_, …\].
+
+```svelte live
+<script>
+    import { Plot, CellY, Text, groupY } from '$lib';
+
+    import { page } from '$app/stores';
+    let { simpsons } = $derived($page.data.data);
+</script>
+
+<Plot
+    inset={0}
+    maxWidth="60px"
+    height={500}
+    x={{ axis: false }}
+    color={{
+        type: 'quantile',
+        scheme: 'PiYG'
+    }}>
+    <CellY
+        {...groupY(
+            {
+                data: simpsons,
+                y: 'season',
+                fill: 'imdb_rating'
+            },
+            { fill: 'mean' }
+        )} />
+</Plot>
+```
+
+```svelte -
+<Plot
+    inset={0}
+    maxWidth="60px"
+    height={500}
+    color={{
+        type: 'quantile',
+        scheme: 'PiYG'
+    }}>
+    <CellY
+        {...groupY(
+            {
+                data: simpsons,
+                y: 'season',
+                fill: 'imdb_rating'
+            },
+            { fill: 'mean' }
+        )} />
 </Plot>
 ```
 
