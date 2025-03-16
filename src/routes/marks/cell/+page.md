@@ -65,7 +65,7 @@ Seattle temperatures
         x={(d) => d.date.getUTCDate()}
         y={(d) => d.date.getUTCMonth()}
         fill="temp_max"
-        inset="0.5" />
+        inset={0.5} />
 </Plot>
 ```
 
