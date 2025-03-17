@@ -17,13 +17,7 @@
         ScaledDataRecord,
         ScaleType
     } from './types.js';
-    import {
-        getUsedScales,
-        projectXY,
-        projectX,
-        projectY,
-        computeScales
-    } from './helpers/scales.js';
+    import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
     import { testFilter, isValid } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from './helpers/resolve.js';
 
