@@ -9,7 +9,6 @@
         FacetContext,
         PlotDefaults
     } from '../types.js';
-    import { fade } from 'svelte/transition';
     import {
         resolveChannel,
         resolveProp,
@@ -18,7 +17,7 @@
     } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { getUsedScales, projectXY } from '../helpers/scales.js';
+    import { projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';

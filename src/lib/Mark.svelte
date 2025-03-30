@@ -188,7 +188,8 @@
                                 : scale === 'y'
                                   ? projectY(channel as 'y' | 'y1' | 'y1', plot.scales, value)
                                   : plot.scales[scale].fn(value)
-                            : value;
+                            : plot.scales[scale].fn(value);
+
                         out.valid = out.valid && isValid(value);
                         // apply dx/dy transform
                         out[channel] =
