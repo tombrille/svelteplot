@@ -58,7 +58,7 @@
     {#snippet children({ mark, usedScales })}
         <g
             aria-label="geo"
-            class="geo{geoType ? ` geo-${geoType}` : ''} {className || ''}"
+            class={['geo', geoType && `geo-${geoType}`, className]}
             style="fill:currentColor">
             {#if canvas}
                 <GeoCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} {path} />

@@ -380,7 +380,7 @@ export type PlotOptions = {
     /**
      * in case you want to give your Plot element an extra CSS class
      */
-    class: string;
+    class: string | null;
     /**
      * if set to true, the plot will use the implicit scales
      */

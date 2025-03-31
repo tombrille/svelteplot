@@ -83,37 +83,6 @@
     );
 </script>
 
-{#snippet dot({ datum, scaledDatum, args, usedScales, mark, plot })}
-    {@const _x = resolveChannel('x', datum, args)}
-    {@const _y = resolveChannel('y', datum, args)}
-    {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
-    {#if isValid(_x) && isValid(_y) && isValid(_r)}
-        {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
-        {#if isValid(x) && isValid(y)}
-            {@const dx = +resolveProp(args.dx, datum, 0)}
-            {@const dy = +resolveProp(args.dy, datum, 0)}
-            {@const r = usedScales.r ? +plot.scales.r.fn(_r) : +_r}
-            {@const size = r * r * Math.PI}
-            {@const symbol_ = resolveChannel('symbol', datum, {
-                symbol: 'circle',
-                ...args
-            })}
-            {@const symbol = usedScales.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
-            <path
-                class={dotClass ? resolveProp(dotClass, datum, null) : null}
-                d={getSymbolPath(symbol, size)}
-                transform="translate({x + dx}, {y + dy})"
-                data-symbol={symbol}
-                style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                use:addEventHandlers={{
-                    getPlotState,
-                    options: mark.options,
-                    datum
-                }} />
-        {/if}
-    {/if}
-{/snippet}
-
 <Mark
     type="dot"
     required={['x', 'y']}

@@ -161,50 +161,63 @@
             // compute dx/dy
             const dx = Number(resolveProp<number>(options.dx, out.datum, 0));
             const dy = Number(resolveProp<number>(options.dy, out.datum, 0));
+
+            // special handling if there's a projection
+            if (plot.scales.projection && mark.type !== 'geo') {
+                for (const suffix of ['', '1', '2']) {
+                    if (
+                        options?.[`x${suffix}`] !== undefined &&
+                        options?.[`y${suffix}`] !== undefined
+                    ) {
+                        // we have two-dimensional accessors
+                        // for the x and y channels
+                        const rx = resolveChannel(`x${suffix}`, row, options);
+                        const ry = resolveChannel(`y${suffix}`, row, options);
+                        const [x, y] = projectXY(
+                            plot.scales,
+                            rx,
+                            ry,
+                            usedScales.x,
+                            usedScales.y,
+                            suffix
+                        );
+                        out[`x${suffix}`] = x;
+                        out[`y${suffix}`] = y;
+                        out.valid = out.valid && isValid(rx) && isValid(ry);
+                    }
+                }
+            }
+
             // iterate over all scaled channels
             for (const [channel, scale] of Object.entries(CHANNEL_SCALE) as [
                 ScaledChannelName,
                 ScaleName
             ][]) {
-                if (plot.scales.projection && (channel === 'x' || channel === 'y') && !out.x) {
-                    // special handling for Geo mark which uses geoPath for more
-                    // performant projection
-                    if (mark.type !== 'geo') {
-                        const rx = resolveChannel('x', row, options);
-                        const ry = resolveChannel('y', row, options);
-                        const [x, y] = projectXY(plot.scales, rx, ry, usedScales.x, usedScales.y);
-                        out.x = x;
-                        out.y = y;
-                        out.valid = out.valid && isValid(rx) && isValid(ry);
-                    }
-                } else {
-                    // check if the mark has defined an accessor for this channel
-                    if (options?.[channel]) {
-                        // resolve value
-                        const value = resolveChannel(channel, row, options);
-                        const scaled = usedScales[channel]
-                            ? scale === 'x'
-                                ? projectX(channel as 'x' | 'x1' | 'x2', plot.scales, value)
-                                : scale === 'y'
-                                  ? projectY(channel as 'y' | 'y1' | 'y1', plot.scales, value)
-                                  : plot.scales[scale].fn(value)
-                            : plot.scales[scale].fn(value);
+                // check if the mark has defined an accessor for this channel
+                if (options?.[channel] !== undefined && out[channel] === undefined) {
+                    // resolve value
+                    const value = resolveChannel(channel, row, options);
+                    const scaled = usedScales[channel]
+                        ? scale === 'x'
+                            ? projectX(channel as 'x' | 'x1' | 'x2', plot.scales, value)
+                            : scale === 'y'
+                              ? projectY(channel as 'y' | 'y1' | 'y1', plot.scales, value)
+                              : plot.scales[scale].fn(value)
+                        : plot.scales[scale].fn(value);
 
-                        out.valid = out.valid && isValid(value);
-                        // apply dx/dy transform
-                        out[channel] =
-                            scale === 'x' && Number.isFinite(scaled)
-                                ? (scaled as number) + dx
-                                : scaled;
-                        out[channel] =
-                            scale === 'y' && Number.isFinite(scaled)
-                                ? (scaled as number) + dy
-                                : scaled;
-                    } else if (defaults[channel]) {
-                        out[channel] = defaults[channel];
-                    }
+                    if (scale === 'x' || scale === 'y') console.log({ channel, value, scaled });
+
+                    out.valid = out.valid && isValid(value);
+                    // apply dx/dy transform
+                    out[channel] =
+                        scale === 'x' && Number.isFinite(scaled) ? (scaled as number) + dx : scaled;
+                    out[channel] =
+                        scale === 'y' && Number.isFinite(scaled) ? (scaled as number) + dy : scaled;
+                } else if (defaults[channel]) {
+                    out[channel] = defaults[channel];
                 }
             }
+
             return [out];
         })
     );

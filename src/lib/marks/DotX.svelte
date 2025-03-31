@@ -11,7 +11,7 @@
 
     let { data = [{}], ...options }: DotXProps = $props();
 
-    let args = $derived(recordizeX({ data, ...options, y: 0 }, { withIndex: false }));
+    const args = $derived(recordizeX({ data, ...options, y: 1 }, { withIndex: false }));
 </script>
 
-<Dot {...args}>dot</Dot>
+<Dot {...args} />

@@ -4,7 +4,7 @@ title: Link mark
 
 For connecting two points with a line.
 
-```svelte live
+```svelte --live
 <script lang="ts">
     import { Plot, Link, Dot, Text } from '$lib/index.js';
     import { page } from '$app/stores';
@@ -22,6 +22,7 @@ For connecting two points with a line.
     y={{ label: 'Inequality' }}
     color={{
         scheme: 'BuRd',
+        pivot: 1.5,
         label: 'Change in inequality from 1980 to 2015',
         legend: true,
         tickFormat: '+f'
@@ -77,15 +78,13 @@ Link support spherical projections:
     );
 
     const link = [-122.4194, 37.7749, 2.3522, 48.8566];
-
-    let hl = $state(false);
 </script>
 
 <Plot projection="equal-earth">
     <Geo data={[land]} fillOpacity="0.3" />
     <Link
         data={[link]}
-        text="curve"
+        text="curve."
         x1="2"
         y1="3"
         x2="0"

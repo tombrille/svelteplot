@@ -25,7 +25,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
 <input type="checkbox" bind:checked={canvas} /> use canvas<br />
-x
+
 <Slider
     label="max cylinders"
     bind:value={maxCylinders}
@@ -42,11 +42,6 @@ x
         stroke={!fill ? 'manufactor' : null}
         fill={fill ? 'manufactor' : null}
         symbol="manufactor" />
-    <Pointer data={filteredCars} x="economy (mpg)">
-        {#snippet children({ data })}
-            <RuleX {data} x="economy (mpg)" />
-        {/snippet}
-    </Pointer>
 </Plot>
 ```
 
@@ -104,7 +99,7 @@ dsdsd sd sd sdsd sd
 
 One more
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot } from '$lib';
     import { page } from '$app/stores';
@@ -135,7 +130,7 @@ max radius: <input
 
 You can also use a point scale for dot dimensions to create dot plots, such as this recreation of William S. Cleveland's dot plot from [The Elements of Graphing Data (1985)](https://archive.org/details/elementsofgraphi0000clev):
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Dot, GridY, AxisX } from '$lib';
     import { page } from '$app/stores';
@@ -169,7 +164,7 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
 
 Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, DotX } from '$lib';
     import { page } from '$app/stores';
@@ -185,7 +180,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
 Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, DotY } from '$lib';
     import { page } from '$app/stores';
@@ -201,7 +196,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 You can use the color channel for encoding a third quantitative variable.
 
-```svelte --live
+```svelte live
 <script lang="ts">
     import { Plot, Dot, RuleY } from '$lib';
     import { page } from '$app/stores';

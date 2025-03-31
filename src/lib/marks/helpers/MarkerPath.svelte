@@ -47,6 +47,7 @@
         style: string;
         startOffset: string;
         textStyle: string;
+        textStyleClass?: string | null;
         text: string;
         transform: string;
         color: string;
@@ -63,14 +64,15 @@
         marker,
         d,
         style,
+        class: className = null,
+        textStyleClass = null,
         startOffset,
         textStyle,
         text,
         transform,
         color,
         strokeWidth,
-        mark,
-        scales
+        mark
     }: MarkerPathProps = $props();
 
     const id = randomId();
@@ -114,6 +116,7 @@
 
 <g
     {transform}
+    class={className}
     stroke-width={strokeWidth_}
     use:addEventHandlers={{ getPlotState, options: mark.options, datum }}>
     {#each Object.entries( { start: markerStart, mid: markerMid, end: markerEnd, all: marker } ) as [key, marker]}
@@ -147,7 +150,7 @@
         <!-- since textPath.side is not yet supported, we have to use an invisible
             path in order to keep the text from turning upside down -->
         <path d={textPath} {id} stroke="none" fill="none" />
-        <text dy="-3" style={textStyle}>
+        <text dy="-3" style={textStyle} class={textStyleClass}>
             <textPath {startOffset} href="#{id}">{text}</textPath>
         </text>
     {/if}
