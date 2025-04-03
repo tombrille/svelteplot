@@ -143,7 +143,7 @@
         }
     });
 
-    const usedScales = $derived(getUsedScales(plot, mark.options, mark));
+    const usedScales = $derived(getUsedScales(plot, optionsWithAutoFacet, mark));
 
     /**
      * based on the data and the global scales we can now map the data
@@ -203,9 +203,7 @@
                             : scale === 'y'
                               ? projectY(channel as 'y' | 'y1' | 'y1', plot.scales, value)
                               : plot.scales[scale].fn(value)
-                        : plot.scales[scale].fn(value);
-
-                    if (scale === 'x' || scale === 'y') console.log({ channel, value, scaled });
+                        : value;
 
                     out.valid = out.valid && isValid(value);
                     // apply dx/dy transform

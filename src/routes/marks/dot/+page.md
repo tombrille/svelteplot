@@ -83,17 +83,13 @@ dsdsd sd sd sdsd sd
     const { penguins } = $derived($page.data.data);
 </script>
 
-<Plot
-    grid
-    height={500}
-    color={{ legend: true }}
-    testid="penguins">
+<Plot grid color={{ legend: true }}>
     <Dot
         data={penguins}
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species" />
+        symbol="island" />
 </Plot>
 ```
 

@@ -60,6 +60,29 @@ Useful for showing SVG labels!
 </Plot>
 ```
 
+Frame anchor:
+
+```svelte live
+<script>
+    import { Plot, Dot, Text } from '$lib';
+
+    import { page } from '$app/stores';
+    let { penguins } = $derived($page.data.data);
+</script>
+
+<Plot
+    grid
+    height={500}
+    color={{ legend: true }}
+    testid="penguins">
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        fill="currentColor" />
+</Plot>
+```
+
 ## Text options
 
 The following channels are required:
@@ -71,7 +94,7 @@ The following channels are required:
 - **dy** - vertical offset in px
 - **textAnchor** - `start`, `end`, or `middle`
 - **lineAnchor** - `top`, `bottom` or `middle`
-- **frameAnchor** -
+- **frameAnchor** - if no x or y is given, the text can be positioned relative to the plot frame - `bottom`, `top`, `left`, `right`, `top-left`, `bottom-left`, `top-right`, `bottom-right`
 - **class** - CSS class name to applied to the `<g>` around all texts
 - **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
 
