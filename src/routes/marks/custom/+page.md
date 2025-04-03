@@ -15,7 +15,7 @@ title: Custom marks
 <Plot
     grid
     height={400}
-    x={{ domain: [31, 62] }}
+    x={{ domain: [30, 62] }}
     y={{ domain: [13, 21.9] }}>
     <defs>
         <symbol
@@ -169,6 +169,13 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
     {/snippet}
 </Plot>
 ```
+
+### Options
+
+- data
+- x
+- y
+- frameAnchor (see [Text](/marks/text) mark)
 
 ## mapXY
 
