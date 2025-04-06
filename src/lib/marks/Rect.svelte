@@ -73,7 +73,7 @@
                     {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
                     {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
                     {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
-                  
+
                     {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
                     <rect
                         class={[styleClass]}

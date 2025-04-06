@@ -107,7 +107,12 @@
                     {@const [style, styleClass] = resolveStyles(
                         plot,
                         d,
-                        { strokeLinecap: 'round', strokeLinejoin: 'round', ...args, strokeWidth: strokeWidth ?? 1.6 },
+                        {
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                            ...args,
+                            strokeWidth: strokeWidth ?? 1.6
+                        },
                         'stroke',
                         usedScales
                     )}
@@ -132,4 +137,3 @@
         </GroupMultiple>
     {/snippet}
 </Mark>
-

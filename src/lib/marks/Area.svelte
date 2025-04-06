@@ -16,11 +16,7 @@
     import Mark from '../Mark.svelte';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
-    import {
-        resolveChannel,
-        resolveProp,
-        resolveStyles
-    } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { groups as d3Groups } from 'd3-array';
     import { area, type CurveFactory } from 'd3-shape';
     import callWithProps from '$lib/helpers/callWithProps.js';
