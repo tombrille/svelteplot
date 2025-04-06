@@ -7,8 +7,24 @@ export const SCALE_TYPES: Record<ScaleName, symbol> = {
     y: Symbol('position'),
     symbol: Symbol('symbol'),
     r: Symbol('radius'),
-    length: Symbol('length')
+    length: Symbol('length'),
+    fx: Symbol('fx'),
+    fy: Symbol('fy'),
+    projection: Symbol('projection')
 };
+
+export const SCALES: ScaleName[] = [
+    'x',
+    'y',
+    'color',
+    'opacity',
+    'symbol',
+    'r',
+    'length',
+    'fx',
+    'fy',
+    'projection'
+];
 
 export const VALID_SCALE_TYPES: Record<ScaleName, Set<ScaleType>> = {
     color: new Set([

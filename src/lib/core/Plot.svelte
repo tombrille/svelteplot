@@ -27,7 +27,7 @@
 
     import mergeDeep from '../helpers/mergeDeep.js';
     import { computeScales, projectXY } from '../helpers/scales.js';
-    import { CHANNEL_SCALE } from '../constants.js';
+    import { CHANNEL_SCALE, SCALES } from '../constants.js';
 
     let {
         header,
@@ -100,6 +100,7 @@
     // information that influences the default plot options
     type PlotOptionsParameters = {
         explicitScales: Set<ScaleName>;
+        explicitDomains: Set<ScaleName>;
         hasProjection: boolean;
         margins?: number;
         inset?: number;
@@ -138,6 +139,8 @@
         )
     );
 
+    const explicitDomains = $derived(new Set(SCALES.filter(scale => !!(initialOpts[scale]?.domain))));
+
     // one-dimensional plots have different automatic margins and heights
     const isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
 
@@ -146,6 +149,7 @@
     const plotOptions = $derived(
         extendPlotOptions(initialOpts, {
             explicitScales,
+            explicitDomains,
             hasProjection: !!initialOpts.projection,
             margins: initialOpts.margins,
             inset: initialOpts.inset
@@ -329,12 +333,15 @@
      */
     function smartDefaultPlotOptions({
         explicitScales,
+        explicitDomains,
         hasProjection,
         margins
     }: PlotOptionsParameters): PlotOptions {
-        const isOneDimensional = explicitScales.has('x') != explicitScales.has('y');
-        const oneDimX = isOneDimensional && explicitScales.has('x');
-        const oneDimY = isOneDimensional && explicitScales.has('y');
+        const autoXAxis = explicitScales.has('x') || explicitDomains.has('x');
+        const autoYAxis = explicitScales.has('y') || explicitDomains.has('y');
+        const isOneDimensional = autoXAxis !== autoYAxis;
+        const oneDimX = autoXAxis && !autoYAxis;
+        const oneDimY = autoYAxis && !autoXAxis;
         return {
             title: '',
             subtitle: '',
@@ -375,7 +382,7 @@
             padding: 0.1,
             x: {
                 type: 'auto',
-                axis: oneDimY ? false : DEFAULTS.axisXAnchor,
+                axis: autoXAxis ? DEFAULTS.axisXAnchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -390,7 +397,7 @@
             },
             y: {
                 type: 'auto',
-                axis: oneDimX ? false : DEFAULTS.axisYAnchor,
+                axis: autoYAxis ? DEFAULTS.axisYAnchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,

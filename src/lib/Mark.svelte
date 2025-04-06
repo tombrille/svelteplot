@@ -144,7 +144,6 @@
     });
 
     const usedScales = $derived(getUsedScales(plot, optionsWithAutoFacet, mark));
-
     /**
      * based on the data and the global scales we can now map the data
      * elements to the scales
@@ -197,6 +196,7 @@
                 if (options?.[channel] !== undefined && out[channel] === undefined) {
                     // resolve value
                     const value = resolveChannel(channel, row, options);
+                    
                     const scaled = usedScales[channel]
                         ? scale === 'x'
                             ? projectX(channel as 'x' | 'x1' | 'x2', plot.scales, value)
