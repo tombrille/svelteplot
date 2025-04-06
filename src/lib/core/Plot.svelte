@@ -139,7 +139,9 @@
         )
     );
 
-    const explicitDomains = $derived(new Set(SCALES.filter(scale => !!(initialOpts[scale]?.domain))));
+    const explicitDomains = $derived(
+        new Set(SCALES.filter((scale) => !!initialOpts[scale]?.domain))
+    );
 
     // one-dimensional plots have different automatic margins and heights
     const isOneDimensional = $derived(explicitScales.has('x') !== explicitScales.has('y'));
