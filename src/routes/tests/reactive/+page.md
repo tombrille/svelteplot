@@ -9,8 +9,8 @@ Plot scales react to mark data changes
     import { Plot, Line } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let cutoff = $state(0);
 
@@ -36,8 +36,8 @@ Plot reacts to channel changes:
     import { Plot, Line } from '$lib';
     import Select from '$lib/ui/Select.svelte';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
     let y = $state('Close');
 </script>
 
@@ -57,8 +57,8 @@ Plot reacts to channel changes:
     import Slider from '$lib/ui/Slider.svelte';
     import { Plot, Dot, RuleY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     let filter = $state(false);
     let facet = $state(false);

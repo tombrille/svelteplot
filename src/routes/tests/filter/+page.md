@@ -7,8 +7,8 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, AreaY } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={200} testid="area">
@@ -25,8 +25,8 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, Arrow } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -61,9 +61,9 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, BarX, groupY } from '$lib/index';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={50} testid="barx">
@@ -85,9 +85,9 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, BarX, groupY } from '$lib/index';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={50} testid="groupy">
@@ -109,8 +109,8 @@ title: Test filters
 ```svelte live
 <script>
     import { Plot, Cell, formatMonth } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { seattle } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -138,8 +138,8 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, Dot } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={200} testid="dot">
@@ -169,8 +169,8 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={200} testid="line">
@@ -187,8 +187,8 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, Link } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={300} marginBottom={45} testid="link">
@@ -207,9 +207,9 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, RectX } from '$lib/index';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={70} testid="rectx">
@@ -228,9 +228,9 @@ title: Test filters
 ```svelte live
 <script lang="ts">
     import { Plot, RectY } from '$lib/index';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={40} height={250} testid="recty">
@@ -262,8 +262,8 @@ title: Test filters
 ```svelte live
 <script>
     import { Plot, Text, formatMonth } from '$lib';
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { seattle } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -293,8 +293,8 @@ title: Test filters
 <script lang="ts">
     import { Plot, TickX } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -316,8 +316,8 @@ title: Test filters
 <script lang="ts">
     import { Plot, TickY } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 </script>
 
 <Plot

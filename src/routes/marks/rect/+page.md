@@ -4,15 +4,13 @@ title: Rect mark
 
 The Rect mark can be used to add rectangles to the plot, defined by x1, y1, x2, and y2 coordinates:
 
-
-
 The interval transform may be used to convert a single value in x or y (or both) into an extent. For example, the chart below shows the observed daily maximum temperature in Seattle for the year 2015. The day-in-month and month-in-year numbers are expanded to unit intervals by setting the [interval option](/transforms/interval) to 1.
 
 ```svelte live
 <script>
     import { Plot, Rect, Text } from '$lib';
-    import { page } from '$app/stores';
-    const { seattle } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { seattle } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -65,8 +63,8 @@ RectX can be used for range annotations:
 <script>
     import { Plot, Line, RectX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -108,8 +106,8 @@ RectY can be used for range annotations:
 <script>
     import { Plot, Line, RectY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>

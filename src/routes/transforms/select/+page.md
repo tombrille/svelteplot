@@ -13,8 +13,8 @@ The select transform filters a mark’s index to show a subset of the data. For 
         selectLast,
         Text
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid marginRight={30}>
@@ -62,8 +62,8 @@ Using _selectMinY_ and _selectMaxY_, you can label the extreme values.
         selectMaxY,
         Text
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid marginRight={30}>
@@ -126,8 +126,8 @@ The select transform groups data into series using the **z**, **fill**, or **str
         selectLast,
         Text
     } from '$lib';
-    import { page } from '$app/stores';
-    let { stocks } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stocks } = $derived(page.data.data);
 </script>
 
 <Plot grid marginRight={50}>

@@ -59,10 +59,10 @@ SveltePlot is also relying on CSS variables.
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { setContext } from 'svelte';
 
-    let { penguins } = $derived($page.data.data);
+    let { penguins } = $derived(page.data.data);
     setContext('svelteplot/defaults', {
         dotRadius: 5,
         tickSize: 0,

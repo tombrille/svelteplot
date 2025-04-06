@@ -31,8 +31,8 @@ In the returned `data` array, each item will have new properties `__y1` and `__y
     import { Plot, BarY, RuleY, stackY } from '$lib';
     import { rollups } from 'd3-array';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     let data = $derived(
         rollups(
@@ -68,8 +68,8 @@ More text here
 ```svelte
 <script>
     import { Plot, BarY, RuleY, stackY } from 'svelteplot';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot grid>

@@ -10,8 +10,8 @@ For example, the heatmap below shows the decline of _The Simpsons_ after Season 
 <script>
     import { Plot, Cell, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -47,8 +47,8 @@ Seattle temperatures
 <script>
     import { Plot, Cell, formatMonth } from '$lib';
 
-    import { page } from '$app/stores';
-    let { seattle } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { seattle } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -73,8 +73,8 @@ Seattle temperatures
 <script>
     import { Plot, Cell, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
     let first28 = $derived(
         simpsons.filter((d) => d.season < 4)
     );
@@ -97,8 +97,8 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
 <script>
     import { Plot, CellX, Text, groupX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -148,8 +148,8 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **y** option is not s
 <script>
     import { Plot, CellY, Text, groupY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -200,8 +200,8 @@ But better to use a RectX here:
 <script>
     import { Plot, RectX, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
     let first28 = $derived(
         simpsons.filter((d) => d.season < 29)
     );

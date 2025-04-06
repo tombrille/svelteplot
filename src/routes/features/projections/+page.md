@@ -14,11 +14,11 @@ title: Projections
     } from '$lib';
     import { Slider, Select } from '$lib/ui';
     import { tick } from 'svelte';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { geoEqualEarth, geoCircle } from 'd3-geo';
     import * as topojson from 'topojson-client';
 
-    let { world, earthquakes } = $derived($page.data.data);
+    let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
@@ -155,11 +155,11 @@ Plot provides a variety of built-in projections. And as above, all world project
 <script>
     import { Plot, Geo, Sphere, Graticule } from '$lib';
     import { Select } from '$lib/ui';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { geoEqualEarth } from 'd3-geo';
     import * as topojson from 'topojson-client';
 
-    let { world } = $derived($page.data.data);
+    let { world } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
@@ -207,14 +207,14 @@ Plot provides a variety of built-in projections. And as above, all world project
 <script>
     import { Slider } from '$lib/ui';
     import { Plot, Geo, Sphere, Graticule } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCentroid } from 'd3-geo';
 
     let aspect = $state(0.75);
     let inset = $state(10);
 
-    let { world } = $derived($page.data.data);
+    let { world } = $derived(page.data.data);
 
     let countries = $derived(
         topojson.feature(world, world.objects.countries)
@@ -263,11 +263,11 @@ You can use custom projections if you need more control over the projection para
 <script>
     import { Slider } from '$lib/ui';
     import { Plot, Geo, Sphere, Graticule } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoOrthographic } from 'd3-geo';
 
-    const { world } = $derived($page.data.data);
+    const { world } = $derived(page.data.data);
 
     let lon = $state(0);
     let zoom = $state(1);

@@ -10,8 +10,8 @@ Metro dataset:
 <script lang="ts">
     import { css } from '@emotion/css';
     import { Plot, Arrow, Dot, Text } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { metros } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { metros } = $derived(page.data.data);
 
     let hl = $state(false);
 </script>
@@ -117,8 +117,8 @@ Works as well with a point scale:
         AxisY,
         GridY
     } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { metros } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { metros } = $derived(page.data.data);
 </script>
 
 <Plot

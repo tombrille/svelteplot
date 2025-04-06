@@ -16,8 +16,8 @@ Supplying undefined values is not the same as filtering the data: the latter wil
 ```svelte live
 <script lang="ts">
     import { Plot, AreaY, LineY, RuleY } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -74,8 +74,8 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
 ```svelte live
 <script>
     import { Plot, AreaY } from '$lib/index';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -130,8 +130,8 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 ```svelte live
 <script>
     import { Plot, AreaY } from '$lib';
-    import { page } from '$app/stores';
-    let { riaa } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -164,9 +164,9 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 ```svelte live
 <script>
     import { Plot, AreaY } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { Select } from '$lib/ui';
-    let { riaa } = $derived($page.data.data);
+    let { riaa } = $derived(page.data.data);
 
     const CURVES =
         'basis,basis-open,bump-x,bump-y,bundle,cardinal,cardinal-open,catmull-rom,catmull-rom-open,catmull,linear,monotone-x,monotone-y,natural,step,step-after,step-before'.split(
@@ -206,8 +206,8 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
 ```svelte live
 <script>
     import { Plot, AreaX } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="area-x" height={600} maxWidth="300px">
@@ -237,8 +237,8 @@ Required channels for horizontal area charts:
         Line,
         RuleY
     } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="area-line-rule">

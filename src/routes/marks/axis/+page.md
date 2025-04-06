@@ -12,8 +12,8 @@ By default SveltePlot will create axis marks automatically:
 <script>
     import { Plot, Line } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="axis">
@@ -33,8 +33,8 @@ You can turn the implicit axes off by adding `axis: false`
 <script>
     import { Plot, Line } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot axes={false}>
@@ -52,8 +52,8 @@ You can turn the implicit axes off by adding `axis: false`
 <script lang="ts">
     import { Plot, Line, Dot } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <p>
@@ -84,8 +84,8 @@ You can also control the implicit axes using the x and y options:
 <script>
     import { Plot, Line } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot x={{ axis: 'both' }} y={{ axis: false }}>
@@ -113,8 +113,8 @@ If you add the `AxisX` and `AxisY` marks to your plot, SveltePlot will disable t
 <script>
     import { Plot, Line, AxisX, AxisY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -278,8 +278,8 @@ You can change the defaults for SveltePlot grids by defining the `svelteplot/def
 <script>
     import { Plot, Line } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="axis">
@@ -405,8 +405,8 @@ To render y axis ticks inside the plot you need to use the explicit axis mark wh
 ```svelte live
 <script>
     import { Plot, Line, AxisY } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid x={{ insetLeft: 20 }}>

@@ -24,8 +24,8 @@ Link to [empty page](empty).
 <script>
     import { Plot, Line, RectX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -49,8 +49,8 @@ Link to [empty page](empty).
     import { Plot, Line, Dot, AreaY, RectX } from '$lib';
     import { Slider } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { aapl, penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl, penguins } = $derived(page.data.data);
     let inset = $state(10);
     let year = $state(2015);
 

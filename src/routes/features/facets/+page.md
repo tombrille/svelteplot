@@ -7,8 +7,8 @@ Facets are a way to split a plot into multiple panels
 ```svelte live
 <script>
     import { Plot, Dot, AxisX } from '$lib/index';
-    import { page } from '$app/stores';
-    const { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { penguins } = $derived(page.data.data);
 </script>
 
 {#if penguins.length}
@@ -60,8 +60,8 @@ Here's a histogram of Olympian athlete weights faceted by sex:
 ```svelte live
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot grid height={300}>
@@ -92,8 +92,8 @@ Apply top-level facet options automatically:
 ```svelte --live
 <script>
     import { Plot, Dot, Frame } from '$lib/index';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 {#if penguins.length}

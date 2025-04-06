@@ -10,8 +10,8 @@ For example, below is a stacked area chart of [deaths in the Crimean War](https:
 <script lang="ts">
     import { Plot, AreaY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { crimea } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { crimea } = $derived(page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -31,8 +31,8 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 <script lang="ts">
     import { Plot, Area, stackY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { crimea } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { crimea } = $derived(page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -68,8 +68,8 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 <script lang="ts">
     import { Plot, RectY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { crimea } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { crimea } = $derived(page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }}>
@@ -92,8 +92,8 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 <script lang="ts">
     import { Plot, Area, stackY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { riaa } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot grid title="Stack transform">
@@ -121,8 +121,8 @@ You can pass options to the implicit stack transforms using the mark **stack** o
         stackY
     } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot

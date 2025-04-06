@@ -8,8 +8,8 @@ Linear:
 <script lang="ts">
     import Plot from '$lib/core/Plot.svelte';
     import Dot from '$lib/marks/Dot.svelte';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     function linearScaleY({ domain, plotHeight }) {
         const fn = (v) =>

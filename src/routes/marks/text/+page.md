@@ -8,8 +8,8 @@ Useful for showing SVG labels!
 <script>
     import { Plot, Dot, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -83,8 +83,8 @@ You can align text relative to the plot frame. This is useful for captions or an
 <script>
     import { Plot, Dot, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot

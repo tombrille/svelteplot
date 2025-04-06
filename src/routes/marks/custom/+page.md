@@ -8,8 +8,8 @@ title: Custom marks
 <script>
     import { Plot, Dot, CustomMark } from '$lib';
     import Spiral from '$lib/ui/Spiral.svelte';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -65,8 +65,8 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
 ```svelte live
 <script>
     import { Plot, Dot, CustomMarkHTML } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -119,8 +119,8 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
 ```svelte live
 <script>
     import { Plot, Dot, CustomMarkHTML } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
     import { sampleSize } from 'es-toolkit';
 
     let data = $derived(

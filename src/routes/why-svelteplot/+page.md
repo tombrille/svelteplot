@@ -14,8 +14,8 @@ This means there is no "scatterplot" component in SveltePlot, but you can use th
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot grid color={{ legend: true }} testid="penguins">
@@ -46,8 +46,8 @@ You can think of marks as the building blocks for your visualizations -- or the 
 ```svelte live
 <script>
     import { Plot, Dot, GridY, AxisX } from '$lib';
-    import { page } from '$app/stores';
-    const { languages } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { languages } = $derived(page.data.data);
     $inspect({ languages });
 </script>
 
@@ -99,7 +99,7 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
 ```svelte live
 <script>
     import { Plot, Dot, Line, GridY } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     let { languages: allLanguages } = $derived(
         $page.data.data
     );
@@ -155,7 +155,7 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 ```svelte live
 <script>
     import { Plot, Dot, Line, GridY, RuleY } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
     let { languages: allLanguages } = $derived(
         $page.data.data
@@ -216,8 +216,8 @@ Take the following example, where you can filter the data using the [filter](/tr
 <script>
     import { Plot, Dot } from '$lib';
     import { Slider } from '$lib/ui';
-    import { page } from '$app/stores';
-    const { cars } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { cars } = $derived(page.data.data);
     let min = $state(0);
     let noAxisX = $state(false);
     let noAxisTitle = $state(false);
@@ -404,10 +404,10 @@ Finally, most of SveltePlot marks support transitions!
         bounceOut
     } from 'svelte/easing';
     import { Slider } from '$lib/ui';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { sampleSize, range } from 'es-toolkit';
 
-    const { cars } = $derived($page.data.data);
+    const { cars } = $derived(page.data.data);
 
     let min = $state(0);
     let dir = $state(1);
@@ -457,8 +457,8 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
     import { Plot, Line } from '$lib';
     import { fly, fade } from 'svelte/transition';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let shown = $state(false);
 

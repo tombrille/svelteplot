@@ -8,11 +8,11 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 <script>
     import { Plot, Geo } from '$lib';
     import { Slider } from '$lib/ui';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { geoEqualEarth } from 'd3-geo';
     import * as topojson from 'topojson-client';
 
-    let { us, unemployment } = $derived($page.data.data);
+    let { us, unemployment } = $derived(page.data.data);
     let rateMap = $derived(
         new Map(unemployment.map((d) => [d.id, +d.rate]))
     );
@@ -75,10 +75,10 @@ Earthquakes SVG
 ```svelte live
 <script>
     import { Plot, Geo, Sphere } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
 
-    let { world, earthquakes } = $derived($page.data.data);
+    let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
@@ -103,10 +103,10 @@ Earthquakes Canvas
 ```svelte live
 <script>
     import { Plot, Geo, Sphere } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
 
-    let { world, earthquakes } = $derived($page.data.data);
+    let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
@@ -132,12 +132,12 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 ```svelte live
 <script>
     import { Plot, Geo, Sphere } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCircle } from 'd3-geo';
     import { range } from 'd3-array';
 
-    let { world, earthquakes } = $derived($page.data.data);
+    let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
@@ -164,12 +164,12 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 ```svelte live
 <script>
     import { Plot, Geo, Sphere } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCircle } from 'd3-geo';
     import { range } from 'd3-array';
 
-    let { world, earthquakes } = $derived($page.data.data);
+    let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );

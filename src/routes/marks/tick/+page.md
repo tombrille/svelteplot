@@ -11,8 +11,8 @@ Shows a vertical bar for each x position.
 ```svelte live
 <script lang="ts">
     import { Plot, RuleX, TickX } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 </script>
 
 <Plot x={{ grid: true, percent: true }}>
@@ -36,8 +36,8 @@ Shows a horizontal bar for each x position.
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 
     let padding = $state(0.3);
     let align = $state(0.5);
@@ -81,8 +81,8 @@ Same idea but with facet:
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 </script>
 
 <Plot y={{ grid: true, percent: true }}>

@@ -7,8 +7,8 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 ```svelte live
 <script>
     import { Plot, Line, Dot, Text, Pointer } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let sel = $state([]);
 </script>
@@ -77,8 +77,8 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
         AxisY,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <div style="touch-action: none">
@@ -144,8 +144,8 @@ PointerY
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame" marginRight={20}>
@@ -180,8 +180,8 @@ PointerY
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame" marginRight={20}>
@@ -218,8 +218,8 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { stocks } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stocks } = $derived(page.data.data);
     let stocks2 = $derived(
         stocks.filter((d) => d.Date < new Date(2018, 0, 1))
     );

@@ -23,8 +23,8 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
         'tick-y'
     ];
 
-    import { page } from '$app/stores';
-    let { crimea } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { crimea } = $derived(page.data.data);
 </script>
 
 <Select
@@ -125,8 +125,8 @@ You can also specify a custom marker icon using the `marker` snippet:
     import { Plot, Line } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid height={300}>
@@ -173,8 +173,8 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
     import { Plot, Line } from '$lib';
     import { fly, fade } from 'svelte/transition';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let shown = $state(false);
 

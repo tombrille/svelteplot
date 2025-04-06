@@ -9,8 +9,8 @@ Pointer mark
 ```svelte live
 <script>
     import { Plot, Line, Dot, Text, Pointer } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame">
@@ -77,8 +77,8 @@ You can create a "crosshair" mark
         AxisY,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame">
@@ -116,8 +116,8 @@ PointerY
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame" marginRight={20}>
@@ -152,8 +152,8 @@ PointerY
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame" marginRight={20}>
@@ -190,8 +190,8 @@ Pointer along the x dimension
         Text,
         Pointer
     } from '$lib';
-    import { page } from '$app/stores';
-    let { stocks } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stocks } = $derived(page.data.data);
     let stocks2 = $derived(
         stocks.filter((d) => d.Date < new Date(2018, 0, 1))
     );
@@ -291,8 +291,8 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
 <script>
     import { Plot, Dot, HTMLTooltip } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     const speciesImages = {
         Adelie: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg/346px-Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg',
@@ -347,8 +347,8 @@ You can even put another tiny plot inside the HTML tooltips:
 ```svelte live
 <script>
     import { Plot, Dot, HTMLTooltip, BarX } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     const speciesImages = {
         Adelie: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg/346px-Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg',

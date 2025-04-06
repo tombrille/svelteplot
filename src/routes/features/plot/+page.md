@@ -9,8 +9,8 @@ In the following example, you can see that the `<Plot>` component has added axes
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid frame testid="aapl-line-frame">
@@ -46,8 +46,8 @@ But if we wanted to, we can add these marks individually, and it would look just
         AxisY,
         Line
     } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot testid="aapl-line-frame">
@@ -89,8 +89,8 @@ This can be useful if you want to customize the styling of the frame or grids, f
 ```svelte live
 <script>
     import { Plot, Line, GridX, GridY, Frame } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot inset={10} testid="ggplot">
@@ -106,8 +106,8 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
 ```svelte live
 <script>
     import { Plot, Line, Frame } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -134,8 +134,8 @@ By default, the Plot element will fill 100% of it's parent container width, but 
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid maxWidth="300px">
@@ -218,8 +218,8 @@ to add events and scoped styles.
 ```svelte live
 <script>
     import { Plot, Line, Frame } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -259,8 +259,8 @@ SveltePlot provides a lot of convenience features with the unfortunate side-effe
 <script>
     import Plot from '$lib/core/Plot.svelte';
     import { Line } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 
     // custom x and y scale
     function scaleX({ domain, plotWidth, plotOptions }) {
