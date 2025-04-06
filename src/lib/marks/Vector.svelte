@@ -30,7 +30,7 @@
          * 'end', the arrow will end at the x, y position.
          */
         anchor: 'start' | 'middle' | 'end';
-        shape?: 'arrow' | 'spike' | ShapeRenderer;
+        shape?: 'arrow' | 'spike' | 'arrow-filled' | ShapeRenderer;
         children?: Snippet;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
@@ -42,7 +42,7 @@
     import { getContext, type Snippet } from 'svelte';
     import { pathRound as path } from 'd3-path';
 
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
@@ -121,20 +121,24 @@
         return value && typeof value.draw === 'function';
     }
 
-    function maybeShape(shape: 'arrow' | 'spike' | ShapeRenderer) {
+    function maybeShape(shape: 'arrow' | 'spike' | 'arrow-filled' | ShapeRenderer) {
         if (isShapeObject(shape)) return shape;
         const value = shapes.get(`${shape}`.toLowerCase());
         if (value) return value;
         throw new Error(`invalid shape: ${shape}`);
     }
 
-    function shapePath(shape: 'arrow' | 'spike' | ShapeRenderer, l: number, r: number) {
+    function shapePath(
+        shape: 'arrow' | 'spike' | 'arrow-filled' | ShapeRenderer,
+        l: number,
+        r: number
+    ) {
         const context = path();
         maybeShape(shape).draw(context, l, r);
         return context.toString();
     }
 
-    let args = $derived(
+    const args = $derived(
         sort({
             data: maybeData(data),
             // sort by descending radius by default
@@ -159,55 +163,42 @@
         'strokeOpacity'
     ]}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, scaledData, usedScales })}
         <g class="vector" data-l={usedScales.length}>
             {#if canvas}
                 <text x="30" y="30" style="color:red"
                     >implement canvas rendering for vector mark</text>
             {:else}
-                {#each args.data as datum}
-                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                        {@const _x = resolveChannel('x', datum, args)}
-                        {@const _y = resolveChannel('y', datum, args)}
-                        {@const _r = resolveChannel('r', datum, { r: 3, ...args })}
-                        {@const _l = resolveChannel('length', datum, { length: 10, ...args })}
-                        {#if isValid(_x) && isValid(_y) && isValid(_r)}
-                            {@const [x, y] = projectXY(
-                                plot.scales,
-                                _x,
-                                _y,
-                                usedScales.x,
-                                usedScales.y
-                            )}
-                            {@const l = usedScales.length ? plot.scales.length.fn(_l) : _l}
-                            {#if isValid(x) && isValid(y) && isValid(l)}
-                                {@const dx = +resolveProp(args.dx, datum, 0)}
-                                {@const dy = +resolveProp(args.dx, datum, 0)}
-                                <path
-                                    d={shapePath(shape, l, r)}
-                                    transform="translate({x + dx}, {y + dy}) rotate({resolveProp(
-                                        args.rotate,
-                                        datum,
-                                        0
-                                    )}) {anchor === 'start'
-                                        ? ''
-                                        : anchor === 'end'
-                                          ? `translate(0, ${l})`
-                                          : `translate(0, ${l / 2})`}"
-                                    style={resolveScaledStyles(
-                                        datum,
-                                        {
-                                            strokeWidth: 1.5,
-                                            strokeLinejoin: 'round',
-                                            strokeLinecap: 'round',
-                                            ...args
-                                        },
-                                        usedScales,
-                                        plot,
-                                        shape === 'arrow-filled' ? 'fill' : 'stroke'
-                                    )} />
-                            {/if}
-                        {/if}
+                {#each scaledData as d}
+                    {@const r = resolveChannel('r', d.datum, { r: 3, ...args })}
+                    {#if d.valid && isValid(r)}
+                        {@const dx = +resolveProp(args.dx, d.datum, 0)}
+                        {@const dy = +resolveProp(args.dx, d.datum, 0)}
+                        {@const [style, styleClass] = resolveStyles(
+                            plot,
+                            d,
+                            {
+                                strokeWidth: 1.5,
+                                strokeLinejoin: 'round',
+                                strokeLinecap: 'round',
+                                ...args
+                            },
+                            shape === 'arrow-filled' ? 'fill' : 'stroke',
+                            usedScales
+                        )}
+                        <path
+                            d={shapePath(shape, d.length, r)}
+                            transform="translate({d.x + dx}, {d.y + dy}) rotate({resolveProp(
+                                args.rotate,
+                                d.datum,
+                                0
+                            )}) {anchor === 'start'
+                                ? ''
+                                : anchor === 'end'
+                                  ? `translate(0, ${d.length})`
+                                  : `translate(0, ${d.length / 2})`}"
+                            {style}
+                            class={[styleClass]} />
                     {/if}
                 {/each}
             {/if}
