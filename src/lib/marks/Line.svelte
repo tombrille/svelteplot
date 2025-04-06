@@ -53,7 +53,6 @@
     } & BaseLineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
-    import { getUsedScales, projectXY } from '../helpers/scales.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
@@ -96,16 +95,16 @@
 
     const groupByKey = $derived(args.z || args.stroke);
 
-    let groups = $derived(
+    const groups = $derived(
         groupByKey && args.data.length > 0 ? groupIndex(args.data, groupByKey) : [args.data]
     );
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     type LinePath = (dr: DataRecord[]) => string;
 
-    let linePath: LinePath = $derived(
+    const linePath: LinePath = $derived(
         plot.scales.projection && curve === 'auto'
             ? sphereLine(plot.scales.projection)
             : callWithProps(line, [], {

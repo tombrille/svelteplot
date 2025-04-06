@@ -172,14 +172,17 @@
                         // for the x and y channels
                         const rx = resolveChannel(`x${suffix}`, row, options);
                         const ry = resolveChannel(`y${suffix}`, row, options);
-                        const [x, y] = projectXY(
-                            plot.scales,
-                            rx,
-                            ry,
-                            usedScales.x,
-                            usedScales.y,
-                            suffix
-                        );
+                        const [x, y] =
+                            mark.type === 'line'
+                                ? [rx, ry] // line paths are projected later
+                                : projectXY(
+                                      plot.scales,
+                                      rx,
+                                      ry,
+                                      usedScales.x,
+                                      usedScales.y,
+                                      suffix
+                                  );
                         out[`x${suffix}`] = x;
                         out[`y${suffix}`] = y;
                         out.valid = out.valid && isValid(rx) && isValid(ry);

@@ -402,8 +402,8 @@ With a [spherical projection](/features/projections), line segments become [geod
     import { Plot, Geo, Line } from '$lib';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
-    let { world, beagle } = $derived(page.data.data);
-    let land = $derived(
+    const { world, beagle } = $derived(page.data.data);
+    const land = $derived(
         topojson.feature(world, world.objects.land)
     );
 </script>
