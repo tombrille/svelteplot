@@ -25,7 +25,7 @@
     import { groups as d3Groups } from 'd3-array';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
@@ -90,11 +90,11 @@
         };
     });
 
-    let groups = $derived(
+    const groups = $derived(
         z != null ? d3Groups(data, (d) => resolveChannel('z', d, { x, z })) : [[null, data]]
     );
 
-    let trees = $derived(
+    const trees = $derived(
         groups.map(([, items]) =>
             quadtree()
                 .x(x != null ? (d) => d.__pointerX : () => 0)
