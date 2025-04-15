@@ -29,7 +29,6 @@ import type {
 import isDataRecord from './isDataRecord.js';
 
 import { createProjection } from './projection.js';
-import { autoScale, autoScaleColor } from './autoScales.js';
 
 /**
  * compute the plot scales
@@ -269,7 +268,7 @@ export function createScale<T extends ScaleOptions>(
                 }
             } else {
                 // also skip marks without data to prevent exceptions
-                (skip.get(channel) as Set<symbol>).add(mark.id);
+                // (skip.get(channel) as Set<symbol>).add(mark.id);
             }
         }
     }

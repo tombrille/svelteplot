@@ -48,7 +48,6 @@ You can think of marks as the building blocks for your visualizations -- or the 
     import { Plot, Dot, GridY, AxisX } from '$lib';
     import { page } from '$app/state';
     const { languages } = $derived(page.data.data);
-    $inspect({ languages });
 </script>
 
 <Plot

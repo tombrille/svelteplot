@@ -642,8 +642,6 @@ Demo with area
             { interval: '3 weeks', y1: 'min', y2: 'max' }
         )
     );
-
-    $inspect({ r });
 </script>
 
 <Plot x={{ grid: true }}>

@@ -93,7 +93,6 @@
             const y1 = resolveChannel('y1', d.datum, args);
             const x2 = resolveChannel('x2', d.datum, args);
             const y2 = resolveChannel('y2', d.datum, args);
-            console.log({ x1, y1, x2, y2 });
             return fn(x1, y1, x2, y2);
         };
     });

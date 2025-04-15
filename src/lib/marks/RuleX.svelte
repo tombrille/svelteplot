@@ -29,8 +29,6 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
     const args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
-
-    $inspect({ args });
 </script>
 
 <Mark type="ruleX" channels={['x', 'y1', 'y2', 'stroke', 'opacity', 'strokeOpacity']} {...args}>

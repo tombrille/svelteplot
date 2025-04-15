@@ -28,6 +28,7 @@
     import mergeDeep from '../helpers/mergeDeep.js';
     import { computeScales, projectXY } from '../helpers/scales.js';
     import { CHANNEL_SCALE, SCALES } from '../constants.js';
+    import { scale } from 'svelte/transition';
 
     let {
         header,
@@ -105,6 +106,8 @@
         margins?: number;
         inset?: number;
     };
+
+    let scaleCounter = $state(0);
 
     /**
      * the marks used in the plot
@@ -231,6 +234,7 @@
     const plotState: PlotState = $derived.by((x) => {
         // now that we know the actual height and facet dimensions, we can compute
         // the scales used in all the marks
+        scaleCounter;
         const scales = computeScales(
             plotOptions,
             facetWidth || width,
@@ -268,13 +272,14 @@
             if (marks.find((m) => m.id === mark.id)) {
                 return;
             }
+
             marks = [...marks, mark];
         },
         /**
          * used by the Mark component to update marks when its props change
          */
         updateMark(mark: Mark<GenericMarkOptions>) {
-            marks = marks.map((m) => (m.id === mark.id ? mark : m));
+            // marks = marks.map((m) => (m.id === mark.id ? mark : m));
         },
         /**
          * used by the Mark component to unregister marks when their

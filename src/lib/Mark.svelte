@@ -54,7 +54,7 @@
 
     const channelsWithFacets: ScaledChannelName[] = $derived([...channels, 'fx', 'fy']);
 
-    const { addMark, removeMark, getTopLevelFacet, getPlotState } =
+    const { addMark, updateMark, removeMark, getTopLevelFacet, getPlotState } =
         getContext<PlotContext>('svelteplot');
 
     const plot = $derived(getPlotState());
