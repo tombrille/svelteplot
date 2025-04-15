@@ -380,7 +380,7 @@ export type PlotOptions = {
     /**
      * in case you want to give your Plot element an extra CSS class
      */
-    class: string;
+    class: string | null;
     /**
      * if set to true, the plot will use the implicit scales
      */
@@ -389,6 +389,10 @@ export type PlotOptions = {
      * locale used for automatic axis ticks
      */
     locale: string;
+    /**
+     *
+     */
+    css: (d: string) => string;
 };
 
 export type PlotDefaults = {
@@ -436,6 +440,13 @@ export type GenericMarkOptions = Record<string, any>;
 
 export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
+};
+
+export type ScaledDataRecord = Partial<
+    Record<ScaledChannelName, number | string | boolean | undefined>
+> & {
+    datum: DataRecord;
+    valid: Boolean;
 };
 
 export type DataRow = DataRecord | RawValue | [number, number] | null;
@@ -526,6 +537,7 @@ export type PlotState = {
      * True if the plot is using filled dot marks.
      */
     hasFilledDotMarks: boolean;
+    css: ((d: string) => string) | null;
 };
 
 export type PlotContext = {
@@ -533,7 +545,7 @@ export type PlotContext = {
      * Registers a mark with the Plot component along with its
      * data and the channel mappings.
      */
-    addMark: (mark: Mark<GenericMarkOptions>) => void;
+    addMark: (mark: Mark<GenericMarkOptions>) => Mark<GenericMarkOptions>;
     /**
      * Updates a mark after either the data or the channel mappings
      * have been updated.
@@ -655,16 +667,26 @@ export type BaseMarkProps = Partial<{
     >;
     paintOrder: ConstantAccessor<string>;
     onclick?: MouseEventHandler<SVGPathElement>;
+    ondblclick?: MouseEventHandler<SVGPathElement>;
     onmouseup?: MouseEventHandler<SVGPathElement>;
     onmousedown?: MouseEventHandler<SVGPathElement>;
     onmouseenter?: MouseEventHandler<SVGPathElement>;
     onmousemove?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
+    onmouseout?: MouseEventHandler<SVGPathElement>;
+    ondrag?: MouseEventHandler<SVGPathElement>;
+    ondrop?: MouseEventHandler<SVGPathElement>;
     ondragstart?: MouseEventHandler<SVGPathElement>;
+    ondragenter?: MouseEventHandler<SVGPathElement>;
+    ondragleave?: MouseEventHandler<SVGPathElement>;
+    ondragover?: MouseEventHandler<SVGPathElement>;
     ondragend?: MouseEventHandler<SVGPathElement>;
     ontouchstart?: MouseEventHandler<SVGPathElement>;
     ontouchmove?: MouseEventHandler<SVGPathElement>;
     ontouchend?: MouseEventHandler<SVGPathElement>;
+    ontouchcancel?: MouseEventHandler<SVGPathElement>;
+    oncontextmenu?: MouseEventHandler<SVGPathElement>;
+    onwheel?: MouseEventHandler<SVGPathElement>;
     /**
      * simple browser tooltip to be displayed on mouseover
      */

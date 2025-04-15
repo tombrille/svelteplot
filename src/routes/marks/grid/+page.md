@@ -8,8 +8,8 @@ The Grid mark renders the faint grid lines in the background of your plots (the 
 <script lang="ts">
     import { Plot, Line } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="grid">

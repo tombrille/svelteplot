@@ -10,8 +10,8 @@ By default, ordinal scales are sorted alphabetically.
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -35,8 +35,8 @@ But you can change the sorting using the **sort** transform option, which will c
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -68,8 +68,8 @@ To invert the channel sorting, you can either add `order: 'descending` to the so
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -103,8 +103,8 @@ Sorts the data.
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -119,8 +119,8 @@ Sorts the data.
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -145,8 +145,8 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 
     let seed = $state(42);
 </script>
@@ -184,8 +184,8 @@ The reverse transform reverses the data order:
     import { Plot, BarY, RuleY, reverse } from '$lib';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ percent: true }} marginTop={25}>
@@ -225,8 +225,8 @@ There's a simpler way to reverse the order of a band scale by setting `reverse: 
     import { Plot, BarY, RuleY, reverse } from '$lib';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { alphabet } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { alphabet } = $derived(page.data.data);
 </script>
 
 <Plot

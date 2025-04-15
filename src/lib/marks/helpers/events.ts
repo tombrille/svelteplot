@@ -30,8 +30,7 @@ export function addEventHandlers(
         'onwheel',
         'ontouchcancel',
         'ontouchend',
-        'ontouchmove',
-        'ontouchstart'
+        'ontouchmove'
     ]);
 
     const listeners = new Map<string, MouseEventHandler<SVGElement>>();

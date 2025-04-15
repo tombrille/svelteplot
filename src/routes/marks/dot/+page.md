@@ -10,12 +10,12 @@ y↑ and fuel efficiency in miles per gallon in x→.
 <script>
     import { Plot, Dot, Pointer, RuleX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
+    import { page } from '$app/state';
 
-    import { page } from '$app/stores';
-    let { cars } = $derived($page.data.data);
+    const { cars } = $derived(page.data.data);
 
     let fill = $state(false);
-    let canvas = $state(true);
+    let canvas = $state(false);
     let maxCylinders = $state(10);
 
     const filteredCars = $derived(
@@ -25,7 +25,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 <input type="checkbox" bind:checked={fill} /> fill symbols<br />
 <input type="checkbox" bind:checked={canvas} /> use canvas<br />
-x
+
 <Slider
     label="max cylinders"
     bind:value={maxCylinders}
@@ -38,15 +38,8 @@ x
         data={filteredCars}
         x="economy (mpg)"
         y="power (hp)"
-        _filter={(d) => d.cylinders <= maxCylinders}
-        stroke={!fill ? 'manufactor' : null}
-        fill={fill ? 'manufactor' : null}
+        stroke="manufactor"
         symbol="manufactor" />
-    <Pointer data={filteredCars} x="economy (mpg)">
-        {#snippet children({ data })}
-            <RuleX {data} x="economy (mpg)" />
-        {/snippet}
-    </Pointer>
 </Plot>
 ```
 
@@ -84,21 +77,17 @@ dsdsd sd sd sdsd sd
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { penguins } = $derived(page.data.data);
 </script>
 
-<Plot
-    grid
-    height={500}
-    color={{ legend: true }}
-    testid="penguins">
+<Plot grid color={{ legend: true }}>
     <Dot
         data={penguins}
         x="culmen_length_mm"
         y="culmen_depth_mm"
         stroke="species"
-        symbol="species" />
+        symbol="island" />
 </Plot>
 ```
 
@@ -107,8 +96,8 @@ One more
 ```svelte live
 <script>
     import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 
     let maxRad = $state(10);
 </script>
@@ -119,7 +108,7 @@ max radius: <input
     min={0}
     max={20} /><br />
 
-<Plot grid r={{ range: [0, maxRad] }}>
+<Plot grid r={{ range: [0, maxRad] }} inset={maxRad}>
     <Dot
         data={penguins}
         x="culmen_length_mm"
@@ -138,8 +127,8 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
 ```svelte live
 <script>
     import { Plot, Dot, GridY, AxisX } from '$lib';
-    import { page } from '$app/stores';
-    let { languages } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { languages } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -172,8 +161,8 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 ```svelte live
 <script>
     import { Plot, DotX } from '$lib';
-    import { page } from '$app/stores';
-    let { cars } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cars } = $derived(page.data.data);
 </script>
 
 <Plot testid="dotx">
@@ -188,8 +177,8 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 ```svelte live
 <script>
     import { Plot, DotY } from '$lib';
-    import { page } from '$app/stores';
-    let { cars } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cars } = $derived(page.data.data);
 </script>
 
 <Plot testid="doty">
@@ -204,8 +193,8 @@ You can use the color channel for encoding a third quantitative variable.
 ```svelte live
 <script lang="ts">
     import { Plot, Dot, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { simpsons } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { simpsons } = $derived(page.data.data);
 
     let decline = $state(false);
 </script>

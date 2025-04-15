@@ -21,8 +21,8 @@ For example, here is a histogram showing the distribution of weights of Olympic 
         stackY
     } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot height={300}>
@@ -63,8 +63,8 @@ The [binX](#binX) transform takes **x** as input and outputs **x1** and **x2** r
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot color={{ scheme: $isDark ? 'turbo' : 'YlGnBu' }}>
@@ -92,8 +92,8 @@ Alternatively, you can also map to the _r_ channel.
 <script>
     import { Plot, DotX, binX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 
     let args = $derived(
         binX(
@@ -118,8 +118,8 @@ Alternatively, you can also map to the _r_ channel.
 <script>
     import { Plot, DotX, binX } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot testid="olympians-binned" y={{ grid: true }}>
@@ -163,8 +163,8 @@ You can also bin and group at the same time:
         stackY
     } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -208,8 +208,8 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -274,8 +274,8 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
         stackY
     } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot height={200}>
@@ -321,8 +321,8 @@ You can define _thresholds_ as a number
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 
     let thresholds = $state(20);
 </script>
@@ -350,8 +350,8 @@ You can also define an _interval_. For numeric scales intervals are defined as n
     import { Plot, RectY, RuleY, binX } from '$lib';
     import Slider from '$lib/ui/Slider.svelte';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 
     let interval = $state(10);
 </script>
@@ -378,8 +378,8 @@ Or as arbitrary bin bounds, passed as array of values via **thresholds**:
 <script>
     import { Plot, RectY, RuleY, binX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot height={200}>
@@ -416,8 +416,8 @@ If you want to compute statistics for each bin other than `count`, you also need
 <script>
     import { Plot, Dot, binX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot height={300} grid color={{ legend: true }}>
@@ -458,8 +458,8 @@ Here's an example where we use the bin transform to compute weekly aggregates fr
     import { Plot, Line, RectY, RuleX, binX } from '$lib';
     import { Select } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let interval = $state('week');
     const INTERVALS = [
@@ -542,8 +542,8 @@ You can also map to _r_ as output channel:
 <script>
     import { Plot, Dot, bin } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 
     let args = $derived(
         bin(
@@ -584,8 +584,8 @@ Requires _input_ channels _x_ and _y_. Valid output channels for `bin()` are _fi
 <script>
     import { Plot, Rect, bin } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
     import { getContext } from 'svelte';
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
@@ -628,8 +628,8 @@ Demo with area
 <script>
     import { Plot, Line, AreaY, binX } from '$lib';
 
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 
     const r = $derived(
         binX(
@@ -642,8 +642,6 @@ Demo with area
             { interval: '3 weeks', y1: 'min', y2: 'max' }
         )
     );
-
-    $inspect({ r });
 </script>
 
 <Plot x={{ grid: true }}>
@@ -674,8 +672,8 @@ Requires input channel _y_. Valid output channels for `binY()` are _x_, _x1_, _x
 <script>
     import { Plot, RectX, RuleX, binY } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot x={{ grid: true }}>

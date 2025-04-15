@@ -12,8 +12,8 @@ The **line mark** draws two-dimensional lines as in a line chart. Because the li
 ```svelte live
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot y={{ grid: true }}>
@@ -34,8 +34,8 @@ If the **x** and **y** options are not defined, the line mark assumes that the d
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -75,9 +75,9 @@ As with [areas](/marks/area), points in lines are connected in input order: the 
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { shuffle } from 'd3-array';
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot y={{ grid: true }}>
@@ -99,9 +99,9 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 ```svelte live
 <script lang="ts">
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { shuffle } from 'd3-array';
-    let { aapl } = $derived($page.data.data);
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot y={{ grid: true }}>
@@ -128,8 +128,8 @@ While the _x_ scale of a line chart often represents time, this is not required.
 ```svelte live
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { tdf } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { tdf } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -163,8 +163,8 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
 <script>
     import { Plot, Line, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { driving } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { driving } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -231,8 +231,8 @@ BLS Demo:
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { bls } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { bls } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -322,8 +322,8 @@ LineY can automatically group?
 ```svelte live
 <script lang="ts">
     import { Plot, LineY } from '$lib';
-    import { page } from '$app/stores';
-    let { riaa } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ nice: true }} height={350}>
@@ -351,8 +351,8 @@ While uncommon, you can draw a line with ordinal position values. For example be
 ```svelte live
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { stateage } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { stateage } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -400,10 +400,10 @@ With a [spherical projection](/features/projections), line segments become [geod
 ```svelte live
 <script lang="ts">
     import { Plot, Geo, Line } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import * as topojson from 'topojson-client';
-    let { world, beagle } = $derived($page.data.data);
-    let land = $derived(
+    const { world, beagle } = $derived(page.data.data);
+    const land = $derived(
         topojson.feature(world, world.objects.land)
     );
 </script>

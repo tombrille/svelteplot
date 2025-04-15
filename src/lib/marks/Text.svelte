@@ -6,14 +6,11 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor,
-        FacetContext
+        ChannelAccessor
     } from '../types.js';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { projectX, projectXY } from '../helpers/scales.js';
+    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
-    import { isValid } from '$lib/helpers/index.js';
 
     type TextMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -57,15 +54,12 @@
         top: 'hanging'
     };
 
-    let args = $derived(
+    const args = $derived(
         sort({
             data,
             ...options
         })
     );
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -82,130 +76,96 @@
         'fillOpacity'
     ]}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, scaledData, usedScales })}
         <GroupMultiple class="text {className || null}" length={className ? 2 : args.data.length}>
-            {#each args.data as datum}
-                {#if testFacet(datum, mark.options) && (args.filter == null || resolveProp(args.filter, datum))}
-                    {@const _x = resolveChannel('x', datum, args)}
-                    {@const _y = resolveChannel('y', datum, args)}
-                    {@const title = resolveProp(args.title, datum, '')}
-                    {@const frameAnchor = resolveProp(args.frameAnchor, datum)}
-                    {#if (args.x == null || isValid(_x)) && (args.y == null || isValid(_y))}
-                        {@const isLeft =
-                            frameAnchor === 'left' ||
-                            frameAnchor === 'top-left' ||
-                            frameAnchor === 'bottom-left'}
-                        {@const isRight =
-                            frameAnchor === 'right' ||
-                            frameAnchor === 'top-right' ||
-                            frameAnchor === 'bottom-right'}
-                        {@const isTop =
-                            frameAnchor === 'top' ||
-                            frameAnchor === 'top-left' ||
-                            frameAnchor === 'top-right'}
-                        {@const isBottom =
-                            frameAnchor === 'bottom' ||
-                            frameAnchor === 'bottom-left' ||
-                            frameAnchor === 'bottom-right'}
-                        {@const [x, y] =
-                            args.x != null && args.y != null
-                                ? projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)
-                                : [
-                                      args.x != null
-                                          ? projectX('x', plot.scales, _x)
-                                          : isLeft
-                                            ? 0
-                                            : isRight
-                                              ? plot.facetWidth
-                                              : plot.facetWidth * 0.5,
-                                      args.y != null
-                                          ? projectX('y', plot.scales, _y)
-                                          : isTop
-                                            ? 0
-                                            : isBottom
-                                              ? plot.facetHeight
-                                              : plot.facetHeight * 0.5
-                                  ]}
-                        {#if isValid(x) && isValid(y)}
-                            {@const dx = +resolveProp(args.dx, datum, 0)}
-                            {@const dy = +resolveProp(args.dy, datum, 0)}
-                            {@const textLines = String(resolveProp(args.text, datum, '')).split(
-                                '\n'
-                            )}
-                            {@const lineAnchor = resolveProp(
-                                args.lineAnchor,
-                                datum,
-                                args.y != null
-                                    ? 'middle'
-                                    : isTop
-                                      ? 'top'
-                                      : isBottom
-                                        ? 'bottom'
-                                        : 'middle'
-                            )}
-                            {@const textClassName = resolveProp(args.textClass, datum, null)}
+            {#each scaledData as d}
+                {#if d.valid}
+                    {@const title = resolveProp(args.title, d.datum, '')}
+                    {@const frameAnchor = resolveProp(args.frameAnchor, d.datum)}
+                    {@const isLeft =
+                        frameAnchor === 'left' ||
+                        frameAnchor === 'top-left' ||
+                        frameAnchor === 'bottom-left'}
+                    {@const isRight =
+                        frameAnchor === 'right' ||
+                        frameAnchor === 'top-right' ||
+                        frameAnchor === 'bottom-right'}
+                    {@const isTop =
+                        frameAnchor === 'top' ||
+                        frameAnchor === 'top-left' ||
+                        frameAnchor === 'top-right'}
+                    {@const isBottom =
+                        frameAnchor === 'bottom' ||
+                        frameAnchor === 'bottom-left' ||
+                        frameAnchor === 'bottom-right'}
+                    {@const [x, y] =
+                        args.x != null && args.y != null
+                            ? [d.x, d.y]
+                            : [
+                                  args.x != null
+                                      ? d.x
+                                      : isLeft
+                                        ? plot.options.marginLeft
+                                        : isRight
+                                          ? plot.options.marginLeft + plot.facetWidth
+                                          : plot.options.marginLeft + plot.facetWidth * 0.5,
+                                  args.y != null
+                                      ? d.y
+                                      : isTop
+                                        ? plot.options.marginTop
+                                        : isBottom
+                                          ? plot.options.marginTop + plot.facetHeight
+                                          : plot.options.marginTop + plot.facetHeight * 0.5
+                              ]}
 
-                            {#if textLines.length > 1}
-                                {@const fontSize = resolveProp(args.fontSize, datum) || 12}
-                                <text
-                                    class={textClassName}
-                                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                                    transform="translate({[
-                                        Math.round(x + dx),
-                                        Math.round(
-                                            y +
-                                                dy -
-                                                (lineAnchor === 'bottom'
-                                                    ? textLines.length - 1
-                                                    : lineAnchor === 'middle'
-                                                      ? (textLines.length - 1) * 0.5
-                                                      : 0) *
-                                                    fontSize
-                                        )
-                                    ]})"
-                                    >{#each textLines as line, l}<tspan
-                                            x="0"
-                                            dy={l ? fontSize : 0}
-                                            style={resolveScaledStyles(
-                                                { ...datum, __tspanIndex: l },
-                                                {
-                                                    textAnchor: isLeft
-                                                        ? 'start'
-                                                        : isRight
-                                                          ? 'end'
-                                                          : 'middle',
-                                                    ...args
-                                                },
-                                                usedScales,
-                                                plot,
-                                                'fill'
-                                            )}>{line}</tspan
-                                        >{/each}{#if title}<title>{title}</title>{/if}</text>
-                            {:else}
-                                <text
-                                    class={textClassName}
-                                    dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                                    transform="translate({[
-                                        Math.round(x + dx),
-                                        Math.round(y + dy)
-                                    ]})"
-                                    style={resolveScaledStyles(
-                                        { ...datum, __tspanIndex: 0 },
-                                        {
-                                            textAnchor: isLeft
-                                                ? 'start'
-                                                : isRight
-                                                  ? 'end'
-                                                  : 'middle',
-                                            ...args
-                                        },
-                                        usedScales,
-                                        plot,
-                                        'fill'
-                                    )}
-                                    >{textLines[0]}{#if title}<title>{title}</title>{/if}</text>
-                            {/if}
-                        {/if}
+                    {@const dx = +resolveProp(args.dx, d.datum, 0)}
+                    {@const dy = +resolveProp(args.dy, d.datum, 0)}
+                    {@const textLines = String(resolveProp(args.text, d.datum, '')).split('\n')}
+                    {@const lineAnchor = resolveProp(
+                        args.lineAnchor,
+                        d.datum,
+                        args.y != null ? 'middle' : isTop ? 'top' : isBottom ? 'bottom' : 'middle'
+                    )}
+                    {@const textClassName = resolveProp(args.textClass, d.datum, null)}
+
+                    {@const [style, styleClass] = resolveStyles(
+                        plot,
+                        { ...d, __tspanIndex: 0 },
+                        { textAnchor: isLeft ? 'start' : isRight ? 'end' : 'middle', ...args },
+                        'fill',
+                        usedScales
+                    )}
+
+                    {#if textLines.length > 1}
+                        <!-- multiline text-->
+                        {@const fontSize = resolveProp(args.fontSize, d.datum) || 12}
+                        <text
+                            class={[textClassName, styleClass]}
+                            dominant-baseline={LINE_ANCHOR[lineAnchor]}
+                            transform="translate({[
+                                Math.round(x + dx),
+                                Math.round(
+                                    y +
+                                        dy -
+                                        (lineAnchor === 'bottom'
+                                            ? textLines.length - 1
+                                            : lineAnchor === 'middle'
+                                              ? (textLines.length - 1) * 0.5
+                                              : 0) *
+                                            fontSize
+                                )
+                            ]})"
+                            >{#each textLines as line, l}<tspan x="0" dy={l ? fontSize : 0} {style}
+                                    >{line}</tspan
+                                >{/each}{#if title}<title>{title}</title>{/if}</text>
+                    {:else}
+                        <!-- singleline text-->
+                        <text
+                            class={[textClassName, styleClass]}
+                            dominant-baseline={LINE_ANCHOR[lineAnchor]}
+                            transform="translate({[Math.round(x + dx), Math.round(y + dy)]})"
+                            {style}
+                            >{textLines[0]}{#if title}<title>{title}</title>{/if}</text>
                     {/if}
                 {/if}
             {/each}

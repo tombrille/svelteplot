@@ -9,8 +9,8 @@ For example, the bar chart below shows a distribution of Olympic athletes by spo
 ```svelte live
 <script>
     import { Plot, BarY, RuleY, groupX } from '$lib';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -45,8 +45,8 @@ While the groupX transform is often used to generate **y**, it can output to any
 <script>
     import { Plot, DotX, RuleY, groupX } from '$lib';
 
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -76,8 +76,8 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 ```svelte live
 <script lang="ts">
     import { Plot, BarX, groupY, RuleX } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -120,8 +120,8 @@ You can also group by temporal intervals
 ```svelte live
 <script lang="ts">
     import { Plot, Line, groupX } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid height={300}>
@@ -185,8 +185,8 @@ Groups on _x_ and _y_ channels as an additional _z_, _fill_, or _stroke_ channel
 ```svelte live
 <script>
     import { group, Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot x={{ tickRotate: -90 }} grid>

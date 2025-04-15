@@ -2,7 +2,7 @@
     @component
     For showing custom HTML tooltips positioned at x/y coordinates
 -->
-<script context="module" lang="ts">
+<script module lang="ts">
     import type { ChannelAccessor, DataRow } from '$lib/types.js';
 
     export type HTMLTooltipMarkProps = {

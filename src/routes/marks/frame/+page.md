@@ -2,21 +2,14 @@
 title: Frame mark
 ---
 
-<script lang="ts">
-    import FramePlot1 from './FramePlot1.svelte';
-    import FramePlot2 from './FramePlot2.svelte';
-    import FramePlot3 from './FramePlot3.svelte';
-</script>
-
 The <b>frame</b> mark can be used to add a rectangle outside your plot boundaries. The
 easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid frame>
@@ -37,9 +30,8 @@ If you need more customization options, you can add the frame manually by explic
 ```svelte live
 <script>
     import { Plot, Frame, Line } from '$lib';
-
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="frame-demo" inset={20}>
@@ -65,9 +57,28 @@ If you need more customization options, you can add the frame manually by explic
 </Plot>
 ```
 
-You can even create ggplot style charts:
+You can use the explicit frame and grid marks to create ggplot style charts:
 
-<FramePlot3 />
+```svelte live
+<script lang="ts">
+    import {
+        Plot,
+        Frame,
+        Line,
+        GridX,
+        GridY
+    } from '$lib/index.js';
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
+</script>
+
+<Plot testid="frame-demo" inset={10}>
+    <Frame fill="#eaeaea" stroke="none" />
+    <GridX stroke="#fff" strokeOpacity={1} />
+    <GridY stroke="#fff" strokeOpacity={1} />
+    <Line data={aapl} x="Date" y="Close" stroke="#222" />
+</Plot>
+```
 
 ```svelte
 <Plot inset={10}>

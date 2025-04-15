@@ -22,7 +22,7 @@
 
 <Mark type="frame" {automatic}>
     <rect
-        class={className}
+        class={['frame', className]}
         transform={dx || dy ? `translate(${dx},${dy})` : null}
         style={resolveScaledStyles({}, options, {}, plot, 'stroke')}
         x={plot.options.marginLeft}

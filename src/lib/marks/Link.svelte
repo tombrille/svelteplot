@@ -9,9 +9,11 @@
         CurveName,
         MarkerOptions,
         RawValue,
-        FacetContext
+        FacetContext,
+        DataRow,
+        ScaledDataRecord
     } from '../types.js';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeData, testFilter } from '../helpers/index.js';
     import { getUsedScales, projectXY } from '../helpers/scales.js';
     import Mark from '../Mark.svelte';
@@ -53,7 +55,7 @@
         return value !== null && (typeof value === 'string' || !Number.isNaN(value));
     }
 
-    let sorted = $derived(
+    const sorted = $derived(
         options.sort
             ? maybeData(data).toSorted((a, b) =>
                   resolveChannel('sort', a, options) > resolveChannel('sort', b, options) ? 1 : -1
@@ -61,24 +63,45 @@
             : maybeData(data)
     );
 
-    let args = $derived(
+    const args = $derived(
         replaceChannels(
             { data: sorted, stroke: 'currentColor', ...options },
             { y: ['y1', 'y2'], x: ['x1', 'x2'] }
         )
     );
 
-    let sphericalLine = $derived(plot.scales.projection && curve === 'auto');
+    const sphericalLine = $derived(plot.scales.projection && curve === 'auto');
 
-    let linePath: (d: DataRecord[]) => string = $derived(
-        sphericalLine
-            ? sphereLine(plot.scales.projection)
-            : callWithProps(line, [], {
-                  curve: maybeCurve(curve === 'auto' ? 'linear' : curve, tension),
-                  x: (d) => d[0],
-                  y: (d) => d[1]
-              })
-    );
+    const linePath: (d: ScaledDataRecord) => string = $derived.by(() => {
+        const fn = callWithProps(line, [], {
+            curve: maybeCurve(curve === 'auto' ? 'linear' : curve, tension),
+            x: (d) => d[0],
+            y: (d) => d[1]
+        });
+
+        return (d: ScaledDataRecord) =>
+            fn([
+                [d.x1, d.y1],
+                [d.x2, d.y2]
+            ]);
+    });
+
+    const sphericalLinePath: (d: ScaledDataRecord) => string = $derived.by(() => {
+        const fn = sphereLine(plot.scales.projection);
+        return (d: ScaledDataRecord) => {
+            const x1 = resolveChannel('x1', d.datum, args);
+            const y1 = resolveChannel('y1', d.datum, args);
+            const x2 = resolveChannel('x2', d.datum, args);
+            const y2 = resolveChannel('y2', d.datum, args);
+            return fn(x1, y1, x2, y2);
+        };
+    });
+    //     sphericalLine
+    //         ?
+
+    //         sphereLine(plot.scales.projection)
+    //         :
+    // );
 
     function sphereLine(projection) {
         const path = geoPath(projection);
@@ -92,76 +115,59 @@
             });
         };
     }
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
-    type="arrow"
+    type="link"
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
-        <g class="arrow {className || ''}" data-use-x={usedScales.x ? 1 : 0}>
-            {#each args.data as datum}
-                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                    {@const x1 = resolveChannel('x1', datum, args)}
-                    {@const x2 = resolveChannel('x2', datum, args)}
-                    {@const y1 = resolveChannel('y1', datum, args)}
-                    {@const y2 = resolveChannel('y2', datum, args)}
-                    {@const color = resolveChannel('stroke', datum, args)}
-                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
-                        {@const dx = resolveProp(args.dx, datum, 0)}
-                        {@const dy = resolveProp(args.dx, datum, 0)}
-                        <MarkerPath
-                            {mark}
-                            scales={plot.scales}
-                            markerStart={args.markerStart}
-                            markerEnd={args.markerEnd}
-                            marker={args.marker}
-                            strokeWidth={args.strokeWidth}
-                            {datum}
-                            color={usedScales.stroke ? plot.scales.color.fn(color) : color}
-                            d={sphericalLine
-                                ? linePath(x1, y1, x2, y2)
-                                : linePath([
-                                      projectXY(plot.scales, x1, y1),
-                                      projectXY(plot.scales, x2, y2)
-                                  ])}
-                            style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                            text={text ? resolveProp(text, datum) : null}
-                            startOffset={resolveProp(args.textStartOffset, datum, '50%')}
-                            textStyle={resolveScaledStyles(
-                                datum,
-                                {
-                                    textAnchor: 'middle',
-                                    ...pick(args, [
-                                        'fontSize',
-                                        'fontWeight',
-                                        'fontStyle',
-                                        'textAnchor'
-                                    ]),
-                                    fill: args.textFill || args.stroke,
-                                    stroke: args.textStroke,
-                                    strokeWidth: args.textStrokeWidth
-                                },
-                                usedScales,
-                                plot,
-                                'fill'
-                            )}
-                            transform={dx || dy ? `translate(${dx}, ${dy})` : null} />
-                    {/if}
+    {#snippet children({ mark, scaledData, usedScales })}
+        <g class={['link', className]} data-use-x={usedScales.x ? 1 : 0}>
+            {#each scaledData as d}
+                {#if d.valid || true}
+                    {@const dx = resolveProp(args.dx, d.datum, 0)}
+                    {@const dy = resolveProp(args.dx, d.datum, 0)}
+                    {@const [style, styleClass] = resolveStyles(
+                        plot,
+                        d,
+                        { strokeWidth: 1.6, ...args },
+                        'stroke',
+                        usedScales
+                    )}
+                    {@const [textStyle, textStyleClass] = resolveStyles(
+                        plot,
+                        d,
+                        {
+                            textAnchor: 'middle',
+                            ...pick(args, ['fontSize', 'fontWeight', 'fontStyle', 'textAnchor']),
+                            fill: args.textFill || args.stroke,
+                            stroke: args.textStroke,
+                            strokeWidth: args.textStrokeWidth
+                        },
+                        'fill',
+                        usedScales
+                    )}
+
+                    <MarkerPath
+                        {mark}
+                        scales={plot.scales}
+                        markerStart={args.markerStart}
+                        markerEnd={args.markerEnd}
+                        marker={args.marker}
+                        class={styleClass}
+                        strokeWidth={args.strokeWidth}
+                        datum={d.datum}
+                        color={d.stroke}
+                        d={sphericalLine ? sphericalLinePath(d) : linePath(d)}
+                        {style}
+                        text={text ? resolveProp(text, d.datum) : null}
+                        startOffset={resolveProp(args.textStartOffset, d.datum, '50%')}
+                        {textStyle}
+                        {textStyleClass}
+                        transform={dx || dy ? `translate(${dx}, ${dy})` : null} />
                 {/if}
             {/each}
         </g>
     {/snippet}
 </Mark>
-
-<style>
-    path {
-        stroke-width: 1.6px;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-</style>

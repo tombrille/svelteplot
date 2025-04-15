@@ -1,5 +1,4 @@
 <script lang="ts">
-    import CanvasLayer from './CanvasLayer.svelte';
     import type { PlotState, Mark, DataRecord, BaseMarkProps } from '$lib/types.js';
     import { CSS_VAR } from '$lib/constants.js';
     import { isValid, testFilter } from '$lib/helpers/index.js';
@@ -7,7 +6,7 @@
     import { projectXY } from '$lib/helpers/scales.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { tick, untrack } from 'svelte';
+    import { untrack } from 'svelte';
     import { isEqual } from 'es-toolkit';
 
     let canvas: HTMLCanvasElement | undefined = $state();
@@ -50,7 +49,7 @@
         data.filter((datum) => testFilter(datum, _markOptions) && testFacet(datum, _markOptions))
     );
 
-    let _filteredData = $state(filteredData);
+    let _filteredData: DataRecord[] = $state([]);
 
     $effect(() => {
         // update _usedScales only if changed
@@ -174,7 +173,7 @@
         bind:this={canvas}
         width={plot.width * devicePixelRatio}
         height={plot.height * devicePixelRatio}
-        style="width: {plot.width}px; height: {plot.height}px;" />
+        style="width: {plot.width}px; height: {plot.height}px;"></canvas>
 </foreignObject>
 
 <style>

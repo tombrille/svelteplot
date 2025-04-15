@@ -9,8 +9,8 @@ Box marks are a compound mark consisting of a bar, rule, dots and tick marks (se
     import { Plot, BoxX, BoxY } from '$lib';
     import { Slider } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { countries } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { countries } = $derived(page.data.data);
 
     let year = $state(2021);
     let filteredData = $derived(
@@ -59,8 +59,8 @@ You can style box plots by passing separate options for the marks
 ```svelte live
 <script>
     import { Plot, BoxX } from '$lib';
-    import { page } from '$app/stores';
-    let { mpg } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { mpg } = $derived(page.data.data);
 </script>
 
 <Plot x={{ grid: true }}>
@@ -97,8 +97,8 @@ You can style box plots by passing separate options for the marks
 ```svelte live
 <script>
     import { Plot, BoxY } from '$lib';
-    import { page } from '$app/stores';
-    let { mpg } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { mpg } = $derived(page.data.data);
 </script>
 
 <Plot grid>

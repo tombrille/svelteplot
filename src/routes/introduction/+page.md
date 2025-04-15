@@ -39,8 +39,8 @@ If we want to plot a line showing the closing price over time, all we have to wr
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot>
@@ -66,8 +66,8 @@ Let's say we also want to add a grid and a horizontal rule at zero. To activate 
 ```svelte live
 <script>
     import { Plot, Line, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -93,8 +93,8 @@ Now, let's also fill the area between the line and the horizontal rule by adding
 ```svelte live
 <script>
     import { Plot, Line, AreaY, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -137,8 +137,8 @@ Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want t
 ```svelte live
 <script>
     import { Plot, Line, AreaY, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -191,8 +191,8 @@ Our dataset contains daily data, but what if we want to show monthly aggregates 
 ```svelte live
 <script>
     import { Plot, Line, binX } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -231,8 +231,8 @@ We can also use the binX transform to compute the min and max closing value of e
 ```svelte live
 <script>
     import { Plot, Line, AreaY, binX } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -269,8 +269,8 @@ Also, somehow, these axes already know the extent of our data! This is possible 
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot axes={false}>
@@ -289,8 +289,8 @@ Similarily you can enable the implicit grids by setting `grid` to `true`:
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-    import { page } from '$app/stores';
-    const { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid>
@@ -303,9 +303,9 @@ And somehow these axes already know the extent of the data we passed to the line
 ```svelte --live
 <script>
     import { Plot, Dot } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { olympians } = $derived($page.data.data);
+    let { olympians } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -346,8 +346,8 @@ This scatterplot suffers from overplotting: many dots are drawn in the same spot
 <script>
     import { Plot, Rect, bin } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 
     let args = $derived(
         bin(
@@ -385,8 +385,8 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
         binX
     } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 {#if olympians}
@@ -432,8 +432,8 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
         binX
     } from '$lib';
     import Mark from '$lib/Mark.svelte';
-    import { page } from '$app/stores';
-    let { olympians } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { olympians } = $derived(page.data.data);
 </script>
 
 {#if olympians}

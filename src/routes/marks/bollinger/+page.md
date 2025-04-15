@@ -9,8 +9,8 @@ bollinger foo
     import { Plot, Line, Area, BollingerY } from '$lib';
     import { Slider } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let n = $state(20);
     let k = $state(2);
@@ -62,8 +62,8 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
     } from '$lib/index';
     import { Slider } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let n = $state(20);
     let k = $state(2);
@@ -120,8 +120,8 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
     import { Plot, Line, Area, BollingerX } from '$lib';
     import { Slider } from '$lib/ui';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     let n = $state(20);
     let k = $state(2);

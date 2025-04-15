@@ -1,8 +1,9 @@
 import { CHANNEL_SCALE } from '$lib/constants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
-import type { PlotState } from '$lib/types.js';
+import type { MarkStyleProps, PlotState, ScaledDataRecord } from '$lib/types.js';
 import { isValid } from './isValid.js';
+import { pick } from 'es-toolkit';
 
 import type {
     ScaleName,
@@ -124,7 +125,10 @@ const scaledStyleProps: Partial<{ [key in ScaledChannelName]: string }> = {
     opacity: 'opacity'
 };
 
-const opositeColor = {
+const scaledStylePropsKeys = Object.keys(scaledStyleProps) as ScaledChannelName[];
+
+// TODO: find a better name
+const oppositeColor: Record<'fill' | 'stroke', 'fill' | 'stroke'> = {
     fill: 'stroke',
     stroke: 'fill'
 };
@@ -140,7 +144,7 @@ export function resolveScaledStyleProps(
         ...getBaseStylesObject(datum, channels),
         fill: 'none',
         stroke: 'none',
-        ...(defaultColorProp && channels[opositeColor[defaultColorProp]] == null
+        ...(defaultColorProp && channels[oppositeColor[defaultColorProp]] == null
             ? { [defaultColorProp]: 'currentColor' }
             : {}),
         ...Object.fromEntries(
@@ -172,9 +176,56 @@ export function resolveScaledStyles(
     plot: PlotState,
     defaultColorProp: 'fill' | 'stroke' | null = null
 ) {
-    return `${Object.entries(
+    return `${stylePropsToCSS(
         resolveScaledStyleProps(datum, channels, useScale, plot, defaultColorProp)
-    )
+    )};${channels.style || ''}`;
+}
+
+function stylePropsToCSS(props: Record<string, string>): string {
+    return `${Object.entries(props)
         .map(([key, value]) => `${key}: ${value}`)
-        .join(';')};${channels.style || ''}`;
+        .join(';')}`;
+}
+
+export function resolveStyles(
+    plot: PlotState,
+    datum: ScaledDataRecord,
+    channels: Partial<Record<ChannelName & MarkStyleProps, ChannelAccessor>>,
+    defaultColorProp: 'fill' | 'stroke' | null = null,
+    useScale: Record<ScaledChannelName, boolean>
+): [string | null, string | null] {
+    const styleProps = {
+        ...getBaseStylesObject(datum.datum, channels),
+        fill: 'none',
+        stroke: 'none',
+        ...(defaultColorProp && channels[oppositeColor[defaultColorProp]] == null
+            ? { [defaultColorProp]: 'currentColor' }
+            : {}),
+        ...Object.fromEntries(
+            (Object.entries(scaledStyleProps) as [ScaledChannelName, string][])
+                .filter(([key]) => channels[key] != null)
+                .map(([key, cssAttr]) => [key, cssAttr, datum[key]])
+                .filter(
+                    ([key, , value]) =>
+                        isValid(value as RawValue) || key === 'fill' || key === 'stroke'
+                )
+                .map(([key, cssAttr, value]) => {
+                    if (useScale[key as ScaledChannelName]) {
+                        if (
+                            value == undefined &&
+                            (key === 'fill' || key === 'stroke') &&
+                            plot.options.color.unknown
+                        ) {
+                            return [cssAttr, plot.options.color.unknown];
+                        }
+                    }
+                    return [cssAttr, value];
+                })
+        )
+    };
+    if (plot.css) {
+        return [null, plot.css(stylePropsToCSS(styleProps))];
+    } else {
+        return [stylePropsToCSS(styleProps), null];
+    }
 }

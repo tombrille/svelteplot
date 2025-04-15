@@ -81,8 +81,8 @@ You can create stacked bar charts by defining a fill channel which will be used 
     import { Plot, BarX, groupY, RuleX } from '$lib';
     import { getContext } from 'svelte';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot

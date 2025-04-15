@@ -25,9 +25,9 @@
     let { data = [{}], stack, ...options }: RectYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let args = $derived(stackY(intervalX(recordizeY({ data, ...options }), { plot }), stack));
+    const args = $derived(stackY(intervalX(recordizeY({ data, ...options }), { plot }), stack));
 </script>
 
 <Rect {...args}></Rect>

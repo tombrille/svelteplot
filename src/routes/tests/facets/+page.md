@@ -7,8 +7,8 @@ Facetted **area** chart:
 ```svelte live
 <script lang="ts">
     import { Plot, AreaY, RuleY } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { riaa } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -40,8 +40,8 @@ Facetted **dot** chart:
 ```svelte live
 <script>
     import { Plot, Dot, AxisX } from '$lib/index';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 {#if penguins.length}
@@ -76,8 +76,8 @@ Facetted **line** chart:
 ```svelte live
 <script lang="ts">
     import { Plot, LineY, RuleY } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { riaa } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -106,8 +106,8 @@ Facetted **rectX** chart
         RuleX,
         binY
     } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="rectx">
@@ -135,8 +135,8 @@ Facetted **rectY** chart
         RuleY,
         binX
     } from '$lib/index.js';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot grid testid="recty" marginRight={80}>
@@ -159,8 +159,8 @@ Facetted **regression** chart
 ```svelte live
 <script>
     import { Plot, Dot, RegressionY } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -195,8 +195,8 @@ Facetted **ruleX** chart
 ```svelte live
 <script>
     import { Plot, Dot, RuleX } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -220,8 +220,8 @@ Facetted **ruleY** chart
 ```svelte live
 <script>
     import { Plot, Dot, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -244,8 +244,8 @@ Facetted **text** chart
 ```svelte live
 <script>
     import { Plot, Text, AxisX } from '$lib/index';
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 {#if penguins.length}

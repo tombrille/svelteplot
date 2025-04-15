@@ -14,8 +14,8 @@ Rules can be used for highlighting certain axis values but they can also be used
 ```svelte live
 <script lang="ts">
     import { Plot, Line, RuleY } from '$lib';
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={350}>
@@ -41,8 +41,8 @@ Like most other marks, rules also accept data for displaying multiple lines at o
     import { Plot, Line, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot height={350}>
@@ -112,8 +112,8 @@ Or candlestick ([demo](https://svelte.dev/playground/f2b2ada0c65d403c92777250c14
 <script lang="ts">
     import { Plot, RuleX } from '$lib/index.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot grid height={250} testid="candlestick">

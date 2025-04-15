@@ -55,7 +55,14 @@ export function recordizeY(
             y: '__value'
         };
     }
-    return { data: data as DataRecord[], ...channels };
+    return {
+        data: Array.from(data).map((d, index) => ({
+            ...d,
+            ...(withIndex ? { __index: index } : {})
+        })) as DataRecord[],
+        x: '__index',
+        ...channels
+    };
 }
 
 /**

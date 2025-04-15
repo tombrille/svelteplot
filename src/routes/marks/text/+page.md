@@ -8,8 +8,8 @@ Useful for showing SVG labels!
 <script>
     import { Plot, Dot, Text } from '$lib';
 
-    import { page } from '$app/stores';
-    let { penguins } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
 </script>
 
 <Plot
@@ -71,9 +71,52 @@ The following channels are required:
 - **dy** - vertical offset in px
 - **textAnchor** - `start`, `end`, or `middle`
 - **lineAnchor** - `top`, `bottom` or `middle`
-- **frameAnchor** -
+- **frameAnchor** - if no x or y is given, the text can be positioned relative to the plot frame - `bottom`, `top`, `left`, `right`, `top-left`, `bottom-left`, `top-right`, `bottom-right`
 - **class** - CSS class name to applied to the `<g>` around all texts
 - **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
+
+### Frame anchor
+
+You can align text relative to the plot frame. This is useful for captions or annotation labels:
+
+```svelte live
+<script>
+    import { Plot, Dot, Text } from '$lib';
+
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
+</script>
+
+<Plot
+    grid
+    height={200}
+    axes={false}
+    x={{ domain: [0, 10] }}
+    y={{ domain: [0, 10] }}>
+    {#each ['top', 'bottom', 'center', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'] as frameAnchor}
+        <Text
+            {frameAnchor}
+            fontSize={15}
+            text={frameAnchor} />
+    {/each}
+</Plot>
+```
+
+```svelte
+<Plot
+    frame
+    grid
+    axes={false}
+    x={{ domain: [0, 10] }}
+    y={{ domain: [0, 10] }}>
+    {#each ['top', 'bottom', 'center', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'] as frameAnchor}
+        <Text
+            {frameAnchor}
+            text={frameAnchor}
+            fontSize={15} />
+    {/each}
+</Plot>
+```
 
 ## Styling options
 

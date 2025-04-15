@@ -27,7 +27,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(stackX(intervalY(recordizeX({ data, ...options }), { plot }), stack));
+    const args = $derived(stackX(intervalY(recordizeX({ data, ...options }), { plot }), stack));
 </script>
 
 <Rect {...args}></Rect>

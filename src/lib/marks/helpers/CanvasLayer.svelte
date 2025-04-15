@@ -27,7 +27,7 @@
         bind:this={canvas}
         width={plot.width * devicePixelRatio}
         height={plot.height * devicePixelRatio}
-        style="width: {plot.width}px; height: {plot.height}px;" />
+        style="width: {plot.width}px; height: {plot.height}px;"></canvas>
 </foreignObject>
 
 <style>

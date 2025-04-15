@@ -6,7 +6,12 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { recordizeY, intervalX, intervalY } from '$lib/index.js';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import {
+        resolveChannel,
+        resolveProp,
+        resolveScaledStyles,
+        resolveStyles
+    } from '../helpers/resolve.js';
     import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
     import { coalesce, testFilter, maybeNumber } from '../helpers/index.js';
     import type {
@@ -14,8 +19,7 @@
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
-        ChannelAccessor,
-        FacetContext
+        ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { addEventHandlers } from './helpers/events.js';
@@ -37,12 +41,9 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let args = $derived(
-        intervalY(intervalX(recordizeY({ data, ...options }), { plot }), { plot }) as RectMarkProps
+    const args = $derived(
+        intervalY(intervalX({ data, ...options }, { plot }), { plot }) as RectMarkProps
     );
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -50,72 +51,47 @@
     required={[]}
     channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="rect {className || ''}" length={className ? 2 : args.data.length}>
-            {#each args.data as datum}
-                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                    {@const x1_ = resolveChannel('x1', datum, args)}
-                    {@const x2_ = resolveChannel('x2', datum, args)}
-                    {@const y1_ = resolveChannel('y1', datum, args)}
-                    {@const y2_ = resolveChannel('y2', datum, args)}
-                    {@const x1 =
-                        x1_ == null
-                            ? plot.options.marginLeft
-                            : usedScales.x1
-                              ? projectX('x', plot.scales, x1_)
-                              : x1_}
-                    {@const x2 =
-                        x2_ == null
-                            ? plot.options.marginLeft + plot.facetWidth
-                            : usedScales.x2
-                              ? projectX('x', plot.scales, x2_)
-                              : x2_}
-                    {@const y1 =
-                        y1_ == null
-                            ? plot.options.marginTop
-                            : usedScales.y1
-                              ? projectY('y', plot.scales, y1_)
-                              : y1_}
-                    {@const y2 =
-                        y2_ == null
-                            ? plot.options.marginTop + plot.facetHeight
-                            : usedScales.y2
-                              ? projectY('y', plot.scales, y2_)
-                              : y2_}
+    {#snippet children({ mark, usedScales, scaledData })}
+        <g class="rect">
+            {#each scaledData as d}
+                {#if d.valid}
+                    {@const x1 = d.x1 == null ? plot.options.marginLeft : d.x1}
+                    {@const x2 = d.x2 == null ? plot.options.marginLeft + plot.facetWidth : d.x2}
+                    {@const y1 = d.y1 == null ? plot.options.marginTop : d.y1}
+                    {@const y2 = d.y2 == null ? plot.options.marginTop + plot.facetHeight : d.y2}
 
                     {@const miny = Math.min(y1, y2)}
                     {@const maxy = Math.max(y1, y2)}
                     {@const minx = Math.min(x1, x2)}
                     {@const maxx = Math.max(x1, x2)}
-                    {@const inset = resolveProp(args.inset, datum, 0)}
-                    {@const insetLeft = resolveProp(args.insetLeft, datum)}
-                    {@const insetRight = resolveProp(args.insetRight, datum)}
-                    {@const insetTop = resolveProp(args.insetTop, datum)}
-                    {@const insetBottom = resolveProp(args.insetBottom, datum)}
-                    {@const dx = resolveProp(args.dx, datum, 0)}
-                    {@const dy = resolveProp(args.dy, datum, 0)}
+                    {@const inset = resolveProp(args.inset, d.datum, 0)}
+                    {@const insetLeft = resolveProp(args.insetLeft, d.datum)}
+                    {@const insetRight = resolveProp(args.insetRight, d.datum)}
+                    {@const insetTop = resolveProp(args.insetTop, d.datum)}
+                    {@const insetBottom = resolveProp(args.insetBottom, d.datum)}
                     {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
                     {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
                     {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
                     {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
 
-                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2)}
-                        <rect
-                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
-                            transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
-                            width={maxx - minx - insetL - insetR}
-                            height={maxy - miny - insetT - insetB}
-                            rx={resolveProp(args.rx, datum, null)}
-                            ry={resolveProp(args.ry, datum, null)}
-                            use:addEventHandlers={{
-                                getPlotState,
-                                options: mark.options,
-                                datum
-                            }} />
-                    {/if}
+                    {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
+                    <rect
+                        class={[styleClass]}
+                        {style}
+                        x={minx + insetL}
+                        y={miny + insetT}
+                        width={maxx - minx - insetL - insetR}
+                        height={maxy - miny - insetT - insetB}
+                        rx={resolveProp(args.rx, d.datum, null)}
+                        ry={resolveProp(args.ry, d.datum, null)}
+                        use:addEventHandlers={{
+                            getPlotState,
+                            options: args,
+                            datum: d.datum
+                        }} />
                 {/if}
             {/each}
-        </GroupMultiple>
+        </g>
     {/snippet}
 </Mark>
 

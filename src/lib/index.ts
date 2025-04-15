@@ -13,6 +13,7 @@ export { default as BoxX } from './marks/BoxX.svelte';
 export { default as BoxY } from './marks/BoxY.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
+export { default as CellY } from './marks/CellY.svelte';
 export { default as CustomMark } from './marks/CustomMark.svelte';
 export { default as CustomMarkHTML } from './marks/CustomMarkHTML.svelte';
 export { default as DifferenceY } from './marks/DifferenceY.svelte';

@@ -38,7 +38,7 @@
         data.filter((datum) => testFilter(datum, _markOptions) && testFacet(datum, _markOptions))
     );
 
-    let _filteredData = $state(filteredData);
+    let _filteredData: DataRecord[] = $state([]);
 
     $effect(() => {
         // update _usedScales only if changed
@@ -154,7 +154,7 @@
         bind:this={canvas}
         width={plot.width * devicePixelRatio}
         height={plot.height * devicePixelRatio}
-        style="width: {plot.width}px; height: {plot.height}px;" />
+        style="width: {plot.width}px; height: {plot.height}px;"></canvas>
 </foreignObject>
 
 <style>

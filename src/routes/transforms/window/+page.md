@@ -6,9 +6,9 @@ title: Window transform
 <script>
     import { Plot, AreaY, Line, windowY } from '$lib';
     import { Slider, Select } from '$lib/ui';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 
-    let { sftemp } = $derived($page.data.data);
+    let { sftemp } = $derived(page.data.data);
     let k = $state(20);
     let reduce = $state('mean');
     let anchor = $state('middle');
@@ -157,11 +157,11 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
         Text,
         selectLast
     } from '$lib';
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { Slider } from '$lib/ui';
     import { groups } from 'd3-array';
 
-    let { stocks } = $derived($page.data.data);
+    let { stocks } = $derived(page.data.data);
     let stocks2 = $derived(
         stocks.filter((d) => d.Date.getFullYear() < 2016)
     );
@@ -268,8 +268,8 @@ Note that _{'{ k: 20 }'}_ doesn't ensure that you're computing a 20-year average
         windowY,
         binX
     } from '$lib';
-    import { page } from '$app/stores';
-    let { cherryblossom } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cherryblossom } = $derived(page.data.data);
 
     let data = $derived(
         cherryblossom.map(
@@ -316,8 +316,8 @@ If we just use the `windowY` transform with _{'{ k: 20, strict: 5 }'}_ to comput
         windowY,
         binX
     } from '$lib';
-    import { page } from '$app/stores';
-    let { cherryblossom } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cherryblossom } = $derived(page.data.data);
 
     let data = $derived(
         cherryblossom.map(
@@ -360,8 +360,8 @@ The problem is that especially in pre-modern times, there aren't nearly as many 
 ```svelte live
 <script lang="ts">
     import { Plot, Line, Dot, binX } from '$lib';
-    import { page } from '$app/stores';
-    let { cherryblossom } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cherryblossom } = $derived(page.data.data);
 
     let data = $derived(
         cherryblossom.map(
@@ -414,8 +414,8 @@ We can fix this problem by setting the _interval_ option of the window transform
         binX
     } from '$lib';
     import { Slider } from '$lib/ui';
-    import { page } from '$app/stores';
-    let { cherryblossom } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { cherryblossom } = $derived(page.data.data);
 
     let data = $derived(
         cherryblossom.map(

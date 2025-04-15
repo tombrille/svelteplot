@@ -6,8 +6,7 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { projectX, projectY } from '../helpers/scales.js';
+    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { roundedRect } from '../helpers/roundedRect.js';
     import {
         type PlotContext,
@@ -17,9 +16,8 @@
         type DataRow,
         type FacetContext
     } from '../types.js';
-    import { isValid } from '../helpers/isValid.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import { maybeData, testFilter } from '$lib/helpers/index.js';
+    import { maybeData } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
@@ -62,42 +60,34 @@
     );
 
     const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="barY"
+    requiredScales={{ x: ['band'] }}
     channels={['x', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
-        <GroupMultiple class="bar-y" length={args.data.length}>
-            {#each args.data as datum}
-                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                    {@const x_ = resolveChannel('x', datum, args)}
-                    {@const y1_ = resolveChannel('y1', datum, args)}
-                    {@const y2_ = resolveChannel('y2', datum, args)}
-                    {@const x = usedScales.x ? projectX('x1', plot.scales, x_) : x_}
-                    {@const y1 = usedScales.y1 ? projectY('y1', plot.scales, y1_) : y1_}
-                    {@const y2 = usedScales.y2 ? projectY('y1', plot.scales, y2_) : y2_}
-                    {@const miny = Math.min(y1, y2)}
-                    {@const maxy = Math.max(y1, y2)}
-                    {@const inset = resolveProp(args.inset, datum, 0)}
-                    {@const dx = resolveProp(args.dx, datum, 0)}
-                    {@const dy = resolveProp(args.dy, datum, 0)}
-                    {#if isValid(x) && isValid(y1) && isValid(y2)}
-                        <path
-                            d={roundedRect(
-                                0,
-                                0,
-                                plot.scales.x.fn.bandwidth() - inset * 2,
-                                maxy - miny,
-                                options.borderRadius
-                            )}
-                            class={className}
-                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
-                            transform="translate({[x + inset + dx, miny + dy]})"
-                            use:addEventHandlers={{ getPlotState, options: mark.options, datum }} />
-                    {/if}
+    {#snippet children({ mark, scaledData, usedScales })}
+        <GroupMultiple class="bar-y" length={scaledData.length}>
+            {#each scaledData as d}
+                {@const bw = plot.scales.x.fn.bandwidth()}
+                {@const miny = Math.min(d.y1, d.y2)}
+                {@const maxy = Math.max(d.y1, d.y2)}
+                {@const inset = resolveProp(args.inset, d.datum, 0)}
+                {@const dx = resolveProp(args.dx, d.datum, 0)}
+                {@const dy = resolveProp(args.dy, d.datum, 0)}
+                {#if d.valid}
+                    {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
+                    <path
+                        d={roundedRect(0, 0, bw - inset * 2, maxy - miny, options.borderRadius)}
+                        class={[styleClass, className]}
+                        {style}
+                        transform="translate({[d.x + inset + dx - bw * 0.5, miny + dy]})"
+                        use:addEventHandlers={{
+                            getPlotState,
+                            options: mark.options,
+                            datum: d.datum
+                        }} />
                 {/if}
             {/each}
         </GroupMultiple>

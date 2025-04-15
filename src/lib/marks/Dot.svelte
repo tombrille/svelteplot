@@ -9,11 +9,15 @@
         FacetContext,
         PlotDefaults
     } from '../types.js';
-    import { fade } from 'svelte/transition';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
+    import {
+        resolveChannel,
+        resolveProp,
+        resolveScaledStyles,
+        resolveStyles
+    } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { getUsedScales, projectXY } from '../helpers/scales.js';
+    import { projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
@@ -51,7 +55,6 @@
         inParams = undefined,
         out: tOut = undefined,
         outParams = undefined,
-        wrap = dotWrap,
         ...options
     }: DotProps = $props();
 
@@ -66,7 +69,8 @@
     const { dotRadius } = getContext<PlotDefaults>('svelteplot/_defaults');
     let testFacet = $derived(getTestFacet());
 
-    let args = $derived(
+    const args = $derived(
+        // todo: move sorting to Mark
         sort(
             recordizeXY({
                 data: maybeData(data),
@@ -78,41 +82,6 @@
         )
     );
 </script>
-
-{#snippet dotWrap(dot, args)}
-    {@render dot(args)}
-{/snippet}
-
-{#snippet dot({ datum, args, usedScales, mark, plot })}
-    {@const _x = resolveChannel('x', datum, args)}
-    {@const _y = resolveChannel('y', datum, args)}
-    {@const _r = resolveChannel('r', datum, { r: dotRadius, ...args })}
-    {#if isValid(_x) && isValid(_y) && isValid(_r)}
-        {@const [x, y] = projectXY(plot.scales, _x, _y, usedScales.x, usedScales.y)}
-        {#if isValid(x) && isValid(y)}
-            {@const dx = +resolveProp(args.dx, datum, 0)}
-            {@const dy = +resolveProp(args.dy, datum, 0)}
-            {@const r = usedScales.r ? +plot.scales.r.fn(_r) : +_r}
-            {@const size = r * r * Math.PI}
-            {@const symbol_ = resolveChannel('symbol', datum, {
-                symbol: 'circle',
-                ...args
-            })}
-            {@const symbol = usedScales.symbol ? plot.scales.symbol.fn(symbol_) : symbol_}
-            <path
-                class={dotClass ? resolveProp(dotClass, datum, null) : null}
-                d={getSymbolPath(symbol, size)}
-                transform="translate({x + dx}, {y + dy})"
-                data-symbol={symbol}
-                style={resolveScaledStyles(datum, args, usedScales, plot, 'stroke')}
-                use:addEventHandlers={{
-                    getPlotState,
-                    options: mark.options,
-                    datum
-                }} />
-        {/if}
-    {/if}
-{/snippet}
 
 <Mark
     type="dot"
@@ -128,15 +97,35 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
+    defaults={{ r: dotRadius, symbol: 'circle' }}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, usedScales, scaledData })}
         <g class="dots {className || ''}">
             {#if canvas}
                 <DotCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
             {:else}
-                {#each args.data as datum}
-                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                        {@render wrap(dot, { mark, datum, args, usedScales, plot })}
+                {#each scaledData as d}
+                    {#if d.valid && isValid(d.r)}
+                        {@const [style, styleClass] = resolveStyles(
+                            plot,
+                            d,
+                            { strokeWidth: 1.6, ...args },
+                            'stroke',
+                            usedScales
+                        )}
+                        <path
+                            transform="translate({d.x}, {d.y})"
+                            d={getSymbolPath(d.symbol, d.r ** 2 * Math.PI)}
+                            class={[
+                                dotClass ? resolveProp(dotClass, d.datum, null) : null,
+                                styleClass
+                            ]}
+                            {style}
+                            use:addEventHandlers={{
+                                getPlotState,
+                                options: mark.options,
+                                datum: d.datum
+                            }} />
                     {/if}
                 {/each}
             {/if}
@@ -145,7 +134,4 @@
 </Mark>
 
 <style>
-    path {
-        stroke-width: 1.6px;
-    }
 </style>

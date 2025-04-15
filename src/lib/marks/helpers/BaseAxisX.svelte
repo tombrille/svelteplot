@@ -71,7 +71,7 @@
 
     let tickTextElements = $state([] as SVGTextElement[]);
 
-    let positionedTicks = $derived.by(() => {
+    const positionedTicks = $derived.by(() => {
         let tickObjects = removeIdenticalLines(
             ticks.map((tick, i) => {
                 return {

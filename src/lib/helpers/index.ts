@@ -1,4 +1,10 @@
-import type { BaseMarkProps, ChannelName, DataRecord, RawValue } from '$lib/types.js';
+import type {
+    BaseMarkProps,
+    ChannelAccessor,
+    ChannelName,
+    DataRecord,
+    RawValue
+} from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
 import { isDate } from '$lib/helpers/typeChecks';
@@ -15,7 +21,7 @@ export function coalesce(...args: (RawValue | undefined | null)[]) {
     return null; // Return null if all arguments are null or undefined
 }
 
-export function testFilter(datum: DataRecord, options: Partial<BaseMarkProps>) {
+export function testFilter(datum: DataRecord, options: Record<ChannelName, ChannelAccessor>) {
     return options.filter == null || resolveProp(options.filter, datum);
 }
 
@@ -27,7 +33,7 @@ export function isSnippet(value: unknown): value is Snippet {
     return typeof value === 'function' && value.length === 1;
 }
 
-export function isValid(value: RawValue): value is number | Date | string {
+export function isValid(value: RawValue | undefined): value is number | Date | string {
     return value !== null && value !== undefined && !Number.isNaN(value);
 }
 

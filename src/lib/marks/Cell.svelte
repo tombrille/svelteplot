@@ -6,16 +6,15 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { recordizeY, sort } from '$lib/index.js';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
-    import { getUsedScales, projectX, projectY } from '../helpers/scales.js';
-    import { coalesce, testFilter, maybeNumber } from '../helpers/index.js';
+    import { roundedRect } from '../helpers/roundedRect.js';
+    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
+    import { coalesce, maybeNumber } from '../helpers/index.js';
     import type {
         PlotContext,
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
-        ChannelAccessor,
-        FacetContext
+        ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
     import { addEventHandlers } from './helpers/events.js';
@@ -24,14 +23,22 @@
         data: DataRecord[];
         x?: ChannelAccessor;
         y?: ChannelAccessor;
+        borderRadius?:
+            | number
+            | {
+                  topLeft?: number;
+                  topRight?: number;
+                  bottomRight?: number;
+                  bottomLeft?: number;
+              };
     } & BaseRectMarkProps;
 
     let { data = [{}], class: className = null, ...options }: CellProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let args = $derived(
+    const args = $derived(
         options.sort !== undefined
             ? // user has defined a custom sorting
               sort(recordizeY({ data, ...options }))
@@ -44,56 +51,51 @@
                   sort: { channel: 'y' }
               }) as Props)
     );
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="cell"
     required={['x', 'y']}
+    requiredScales={{ x: ['band'], y: ['band'] }}
     channels={['x', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, scaledData, usedScales })}
+        {@const bwx = plot.scales.x.fn.bandwidth()}
+        {@const bwy = plot.scales.y.fn.bandwidth()}
         <g class="cell {className || ''}" data-fill={usedScales.fillOpacity}>
-            {#each args.data as datum}
-                {#if testFilter(datum, args) && testFacet(datum, mark.options)}
-                    {@const x_ = resolveChannel('x', datum, args)}
-                    {@const y_ = resolveChannel('y', datum, args)}
-                    {@const x1 = usedScales.x ? projectX('x1', plot.scales, x_) : x_}
-                    {@const x2 = x1 + plot.scales.x.fn.bandwidth()}
-                    {@const y1 = usedScales.y ? projectY('y1', plot.scales, y_) : y_}
-                    {@const y2 = y1 + plot.scales.y.fn.bandwidth()}
-                    {@const miny = Math.min(y1, y2)}
-                    {@const maxy = Math.max(y1, y2)}
-                    {@const minx = Math.min(x1, x2)}
-                    {@const maxx = Math.max(x1, x2)}
-                    {@const inset = resolveProp(args.inset, datum, 0)}
-                    {@const insetLeft = resolveProp(args.insetLeft, datum)}
-                    {@const insetRight = resolveProp(args.insetRight, datum)}
-                    {@const insetTop = resolveProp(args.insetTop, datum)}
-                    {@const insetBottom = resolveProp(args.insetBottom, datum)}
-                    {@const dx = resolveProp(args.dx, datum, 0)}
-                    {@const dy = resolveProp(args.dy, datum, 0)}
-                    {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
-                    {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
-                    {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
-                    {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
-
-                    {#if isValid(x1) && isValid(x2) && isValid(y1) && isValid(y2) && (args.fill == null || isValid(resolveChannel('fill', datum, args)))}
-                        <rect
-                            style={resolveScaledStyles(datum, args, usedScales, plot, 'fill')}
-                            transform="translate({[minx + insetL + dx, miny + insetT + dy]})"
-                            width={maxx - minx - insetL - insetR}
-                            height={maxy - miny - insetT - insetB}
-                            rx={resolveProp(args.rx, datum, null)}
-                            ry={resolveProp(args.ry, datum, null)}
-                            use:addEventHandlers={{
-                                getPlotState,
-                                options: mark.options,
-                                datum
-                            }} />
-                    {/if}
+            {#each scaledData as d}
+                {@const inset = resolveProp(args.inset, d.datum, 0)}
+                {@const insetLeft = resolveProp(args.insetLeft, d.datum)}
+                {@const insetRight = resolveProp(args.insetRight, d.datum)}
+                {@const insetTop = resolveProp(args.insetTop, d.datum)}
+                {@const insetBottom = resolveProp(args.insetBottom, d.datum)}
+                {@const dx = resolveProp(args.dx, d.datum, 0)}
+                {@const dy = resolveProp(args.dy, d.datum, 0)}
+                {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
+                {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
+                {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
+                {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
+                {#if d.valid && (args.fill == null || isValid(resolveChannel('fill', d.datum, args)))}
+                    {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
+                    <path
+                        d={roundedRect(
+                            0,
+                            0,
+                            bwx - insetL - insetR,
+                            bwy - insetT - insetB,
+                            options.borderRadius
+                        )}
+                        class={[styleClass]}
+                        {style}
+                        transform="translate({[
+                            d.x + insetL + dx - bwx * 0.5,
+                            d.y + insetT + dy - bwy * 0.5
+                        ]})"
+                        use:addEventHandlers={{
+                            getPlotState,
+                            options: mark.options,
+                            datum: d.datum
+                        }} />
                 {/if}
             {/each}
         </g>

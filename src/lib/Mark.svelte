@@ -1,11 +1,9 @@
 <script lang="ts">
-    import { getContext, type Snippet } from 'svelte';
-    import { deepEqual } from 'fast-equals';
+    import { getContext, untrack, type Snippet } from 'svelte';
 
     import { CHANNEL_SCALE } from '$lib/constants.js';
     import type {
         ScaledChannelName,
-        Mark,
         MarkType,
         DataRecord,
         PlotContext,
@@ -13,9 +11,15 @@
         GenericMarkOptions,
         ChannelAccessor,
         BaseMarkProps,
-        FacetContext
+        FacetContext,
+        ScaleName,
+        RawValue,
+        ScaledDataRecord,
+        ScaleType
     } from './types.js';
-    import { getUsedScales } from './helpers/scales.js';
+    import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
+    import { testFilter, isValid } from '$lib/helpers/index.js';
+    import { resolveChannel, resolveProp } from './helpers/resolve.js';
 
     type MarkProps = {
         data?: DataRecord[];
@@ -23,7 +27,17 @@
         type: MarkType;
         channels?: ScaledChannelName[];
         required?: ScaledChannelName[];
-        children?: Snippet<[{ mark: Mark; usedScales: ReturnType<typeof getUsedScales> }]>;
+        requiredScales?: Partial<Record<ScaleName, ScaleType[]>>;
+        children?: Snippet<
+            [
+                {
+                    mark: Mark<GenericMarkOptions>;
+                    usedScales: ReturnType<typeof getUsedScales>;
+                    scaledData: ScaledDataRecord[];
+                }
+            ]
+        >;
+        defaults?: Partial<Record<ScaledChannelName, RawValue>>;
     } & Partial<Record<ChannelName, ChannelAccessor>> &
         Partial<BaseMarkProps>;
 
@@ -33,6 +47,8 @@
         type,
         channels = [],
         required = [],
+        requiredScales = {},
+        defaults = {},
         ...options
     }: MarkProps = $props();
 
@@ -41,46 +57,85 @@
     const { addMark, updateMark, removeMark, getTopLevelFacet, getPlotState } =
         getContext<PlotContext>('svelteplot');
 
-    let plot = $derived(getPlotState());
-    let facet = $derived(getTopLevelFacet());
+    const plot = $derived(getPlotState());
+    const facet = $derived(getTopLevelFacet());
 
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
-    let { left, top } = $derived(getFacetState());
+    const { left, top } = $derived(getFacetState());
 
-    const mark: Mark<GenericMarkOptions> = {
-        id: Symbol(),
-        type,
-        channels: channelsWithFacets,
-        scales: new Set(
-            channelsWithFacets
-                .filter((channel) => options[channel] !== 0)
-                .map((channel) => CHANNEL_SCALE[channel])
-        ),
-        data,
-        options: {
-            ...options,
-            __firstFacet: left && top
+    class Mark {
+        id;
+        type;
+        channels: ScaledChannelName[] = $state.raw([]);
+        scales: Set<ScaleName> = $state.raw(new Set());
+        data: DataRecord[] = $state.raw([]);
+        options: GenericMarkOptions = $state.raw({});
+
+        constructor(type: MarkType) {
+            this.id = Symbol();
+            this.type = type;
         }
-    };
+    }
 
-    let mark2 = $state(mark);
-    const facetMode = $derived(options.facet || 'auto');
-
-    addMark(mark);
+    const mark = new Mark(type);
 
     $effect(() => {
-        const opts = { ...options, __firstFacet: left && top };
-        if (deepEqual(opts, mark.options)) return;
-        mark.options = opts;
-        mark2.options = mark.options;
-        updateMark(mark);
+        return () => {
+            removeMark(mark);
+            added = false;
+        };
     });
 
-    const errors = $derived(
-        required
+    // let mark2 = $state(mark);
+    const facetMode = $derived(options.facet || 'auto');
+
+    const optionsWithAutoFacet = $derived({
+        ...options,
+        __firstFacet: left && top,
+        ...(facet &&
+        facet.data &&
+        ((facetMode === 'auto' && facet.data === data) || facetMode === 'include')
+            ? {
+                  fx: facet.x,
+                  fy: facet.y
+              }
+            : {})
+    });
+
+    let added = false;
+
+    $effect(() => {
+        if (added) return;
+        // without using untrack() here we end up with inexplicable
+        // circular dependency updates resulting in a stack overflow
+        const channels = untrack(() => channelsWithFacets);
+        mark.channels = channels;
+        mark.scales = new Set(
+            channels
+                .filter((channel) => options[channel] !== 0)
+                .map((channel) => CHANNEL_SCALE[channel])
+        );
+        mark.data = untrack(() => data);
+        mark.options = untrack(() => optionsWithAutoFacet);
+        addMark(mark);
+        added = true;
+    });
+
+    const errors = $derived([
+        ...required
             .filter((name) => options[name] == null)
-            .map((name) => `missing channel value for ${mark.type} mark: ${name}`)
-    );
+            .map((name) => `missing channel value for ${mark.type} mark: ${name}`),
+        ...Object.entries(requiredScales)
+            .filter(([scale, types]) => {
+                return !types.includes(plot.scales[scale].type);
+            })
+            .map(
+                ([scale, types]) => `scale type mismatch for ${scale} (needs ${types.join(' or ')})`
+            )
+    ]);
+
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    const testFacet = $derived(getTestFacet());
 
     $effect(() => {
         for (const name of required) {
@@ -88,31 +143,85 @@
         }
     });
 
-    $effect(() => {
-        if (deepEqual(data, mark.data)) return;
-        mark.data = data;
-        mark2.data = data;
-        updateMark(mark);
-    });
+    const usedScales = $derived(getUsedScales(plot, optionsWithAutoFacet, mark));
+    /**
+     * based on the data and the global scales we can now map the data
+     * elements to the scales
+     */
+    const scaledData = $derived(
+        data.flatMap((row) => {
+            const channels = options as Record<ChannelName, ChannelAccessor>;
+            if (!testFacet(row, channels) || !testFilter(row, channels)) return [];
 
-    $effect(() => {
-        if (
-            facet &&
-            facet.data &&
-            ((facetMode === 'auto' && facet.data === data) || facetMode === 'include')
-        ) {
-            mark.options = { fx: facet.x, fy: facet.y, ...options };
-            mark2.options = mark.options;
-        }
-    });
+            const out: ScaledDataRecord = {
+                datum: row,
+                valid: true
+            };
+            // compute dx/dy
+            const dx = Number(resolveProp<number>(options.dx, out.datum, 0));
+            const dy = Number(resolveProp<number>(options.dy, out.datum, 0));
 
-    let usedScales = $derived(getUsedScales(plot, mark2.options, mark2));
+            // special handling if there's a projection
+            if (plot.scales.projection && mark.type !== 'geo') {
+                for (const suffix of ['', '1', '2']) {
+                    if (
+                        options?.[`x${suffix}`] !== undefined &&
+                        options?.[`y${suffix}`] !== undefined
+                    ) {
+                        // we have two-dimensional accessors
+                        // for the x and y channels
+                        const rx = resolveChannel(`x${suffix}`, row, options);
+                        const ry = resolveChannel(`y${suffix}`, row, options);
+                        const [x, y] =
+                            mark.type === 'line'
+                                ? [rx, ry] // line paths are projected later
+                                : projectXY(
+                                      plot.scales,
+                                      rx,
+                                      ry,
+                                      usedScales.x,
+                                      usedScales.y,
+                                      suffix
+                                  );
+                        out[`x${suffix}`] = x;
+                        out[`y${suffix}`] = y;
+                        out.valid = out.valid && isValid(rx) && isValid(ry);
+                    }
+                }
+            }
 
-    $effect(() => {
-        return () => {
-            removeMark(mark);
-        };
-    });
+            // iterate over all scaled channels
+            for (const [channel, scale] of Object.entries(CHANNEL_SCALE) as [
+                ScaledChannelName,
+                ScaleName
+            ][]) {
+                // check if the mark has defined an accessor for this channel
+                if (options?.[channel] !== undefined && out[channel] === undefined) {
+                    // resolve value
+                    const value = resolveChannel(channel, row, options);
+
+                    const scaled = usedScales[channel]
+                        ? scale === 'x'
+                            ? projectX(channel as 'x' | 'x1' | 'x2', plot.scales, value)
+                            : scale === 'y'
+                              ? projectY(channel as 'y' | 'y1' | 'y1', plot.scales, value)
+                              : plot.scales[scale].fn(value)
+                        : value;
+
+                    out.valid = out.valid && isValid(value);
+                    // apply dx/dy transform
+                    out[channel] =
+                        scale === 'x' && Number.isFinite(scaled) ? (scaled as number) + dx : scaled;
+                    out[channel] =
+                        scale === 'y' && Number.isFinite(scaled) ? (scaled as number) + dy : scaled;
+                } else if (defaults[channel]) {
+                    out[channel] = defaults[channel];
+                }
+            }
+
+            return [out];
+        })
+    );
 </script>
 
 {#if errors.length}
@@ -122,7 +231,11 @@
         {/each}
     </text>
 {:else if children}
-    {@render children({ mark: mark2, usedScales })}
+    {@render children({
+        mark,
+        usedScales,
+        scaledData
+    })}
 {/if}
 
 <style>

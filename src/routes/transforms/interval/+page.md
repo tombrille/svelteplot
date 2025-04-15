@@ -18,8 +18,8 @@ The interval transform is often used for time-series bar charts. For example, co
     const tickFormat = (date: Date) =>
         MONTH_YEAR.format(date).split(' ');
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={40} x={{ tickFormat }} grid>
@@ -35,8 +35,8 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
     import { Plot, RectY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 </script>
 
 <Plot marginLeft={40} x={{ type: 'time' }} grid>
@@ -69,8 +69,8 @@ The meaning of the interval mark option depends on the associated mark, such as 
     import { Plot, BarY, RuleY } from '$lib';
     import type { Datasets } from '$lib/types.js';
 
-    import { page } from '$app/stores';
-    let { aapl } = $derived($page.data.data);
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
 
     const MONTH_DAY = new Intl.DateTimeFormat('en-US', {
         month: 'short',
