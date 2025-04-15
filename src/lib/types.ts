@@ -442,6 +442,12 @@ export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
 };
 
+export type ResolvedDataRecord =  Partial<
+    Record<ScaledChannelName, any>
+> & {
+    datum: DataRecord;
+};
+
 export type ScaledDataRecord = Partial<
     Record<ScaledChannelName, number | string | boolean | undefined>
 > & {

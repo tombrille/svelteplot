@@ -14,6 +14,7 @@
         FacetContext,
         ScaleName,
         RawValue,
+        ResolvedDataRecord,
         ScaledDataRecord,
         ScaleType
     } from './types.js';
@@ -54,7 +55,7 @@
 
     const channelsWithFacets: ScaledChannelName[] = $derived([...channels, 'fx', 'fy']);
 
-    const { addMark, updateMark, removeMark, getTopLevelFacet, getPlotState } =
+    const { addMark, updateMark, updatePlotState, removeMark, getTopLevelFacet, getPlotState } =
         getContext<PlotContext>('svelteplot');
 
     const plot = $derived(getPlotState());
@@ -121,6 +122,53 @@
         added = true;
     });
 
+    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
+    const testFacet = $derived(getTestFacet());
+
+    const resolvedData: ResolvedDataRecord[] = $derived(
+        data.flatMap((row) => {
+            const channels = options as Record<ChannelName, ChannelAccessor>;
+            if (!testFacet(row, channels) || !testFilter(row, channels)) return [];
+            const out: ResolvedDataRecord = {
+                datum: row
+            };
+            for (const [channel] of Object.entries(CHANNEL_SCALE) as [
+                ScaledChannelName,
+                ScaleName
+            ][]) {
+                // check if the mark has defined an accessor for this channel
+                if (options?.[channel] !== undefined && out[channel] === undefined) {
+                    // resolve value
+                    out[channel] = resolveChannel(channel, row, options);
+                }
+            }
+            return [out];
+        })
+    );
+
+    let prevResolvedData: ResolvedDataRecord[] = [];
+
+    $effect(() => {
+        if (isDifferent(resolvedData, prevResolvedData)) {
+            prevResolvedData = resolvedData;
+            // data has changed
+            mark.data = data;
+        }
+    });
+
+    function isDifferent(array1: ResolvedDataRecord[], array2: ResolvedDataRecord[]) {
+        if (array1.length !== array2.length) return true;
+        for (let i = 0; i < array1.length; i++) {
+            for (const [channel] of Object.entries(CHANNEL_SCALE) as [
+                ScaledChannelName,
+                ScaleName
+            ][]) {
+                if (array1[i][channel] !== array2[i][channel]) return true;
+            }
+        }
+        return false;
+    }
+
     const errors = $derived([
         ...required
             .filter((name) => options[name] == null)
@@ -134,9 +182,6 @@
             )
     ]);
 
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    const testFacet = $derived(getTestFacet());
-
     $effect(() => {
         for (const name of required) {
             if (options[name] == null) throw new Error(`missing channel value: ${name}`);
@@ -149,12 +194,9 @@
      * elements to the scales
      */
     const scaledData = $derived(
-        data.flatMap((row) => {
-            const channels = options as Record<ChannelName, ChannelAccessor>;
-            if (!testFacet(row, channels) || !testFilter(row, channels)) return [];
-
+        resolvedData.flatMap((row) => {
             const out: ScaledDataRecord = {
-                datum: row,
+                datum: row.datum,
                 valid: true
             };
             // compute dx/dy
@@ -198,7 +240,7 @@
                 // check if the mark has defined an accessor for this channel
                 if (options?.[channel] !== undefined && out[channel] === undefined) {
                     // resolve value
-                    const value = resolveChannel(channel, row, options);
+                    const value = row[channel];
 
                     const scaled = usedScales[channel]
                         ? scale === 'x'

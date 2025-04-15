@@ -100,7 +100,7 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
     import { Plot, Dot, Line, GridY } from '$lib';
     import { page } from '$app/state';
     let { languages: allLanguages } = $derived(
-        $page.data.data
+        page.data.data
     );
     const languages = $derived(
         allLanguages.filter(
@@ -157,7 +157,7 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
     import { page } from '$app/state';
 
     let { languages: allLanguages } = $derived(
-        $page.data.data
+        page.data.data
     );
     const languages = $derived(
         allLanguages.filter(

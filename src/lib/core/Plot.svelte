@@ -231,10 +231,15 @@
     let facetWidth: number | null = $state(null);
     let facetHeight: number | null = $state(null);
 
-    const plotState: PlotState = $derived.by((x) => {
+    let plotState: PlotState = $state(computePlotState());
+
+    $effect(() => {
+        plotState = computePlotState();
+    });
+
+    function computePlotState() {
         // now that we know the actual height and facet dimensions, we can compute
         // the scales used in all the marks
-        scaleCounter;
         const scales = computeScales(
             plotOptions,
             facetWidth || width,
@@ -262,7 +267,7 @@
             body: plotBody,
             css
         };
-    });
+    }
 
     setContext('svelteplot', {
         /**
@@ -299,6 +304,9 @@
         updateDimensions(w: number, h: number) {
             if (facetWidth !== w) facetWidth = w;
             if (facetHeight !== h) facetHeight = h;
+        },
+        updatePlotState() {
+            plotState = computePlotState();
         }
     });
 

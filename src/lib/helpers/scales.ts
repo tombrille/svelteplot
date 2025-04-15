@@ -308,6 +308,7 @@ export function createScale<T extends ScaleOptions>(
               : valueArr
           : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
+
     if (!scaleOptions.scale) {
         throw new Error(`No scale function defined for ${name}`);
     }
