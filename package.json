@@ -1,6 +1,6 @@
 {
     "name": "@gka/svelteplot",
-    "version": "0.1.2-x.0",
+    "version": "0.1.2-next.0",
     "license": "ISC",
     "author": {
         "name": "Gregor Aisch",
