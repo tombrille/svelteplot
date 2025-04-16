@@ -33,13 +33,41 @@ describe('intervalX', () => {
         const result = intervalX({ data, ...options }, { plot });
 
         expect(result.data).toEqual([
-            { x: new Date('2025-04-15T05:00:00Z'), __x1: new Date('2025-04-14T22:00:00Z'), __x2: new Date('2025-04-15T22:00:00Z') },
-            { x: new Date('2025-04-16T12:00:00Z'), __x1: new Date('2025-04-15T22:00:00Z'), __x2: new Date('2025-04-16T22:00:00Z') },
-            { x: new Date('2025-04-16T18:00:00Z'), __x1: new Date('2025-04-15T22:00:00Z'), __x2: new Date('2025-04-16T22:00:00Z') },
-            { x: new Date('2025-04-16T23:00:00Z'), __x1: new Date('2025-04-16T22:00:00Z'), __x2: new Date('2025-04-17T22:00:00Z') },
-            { x: new Date('2025-04-17T02:00:00Z'), __x1: new Date('2025-04-16T22:00:00Z'), __x2: new Date('2025-04-17T22:00:00Z') },
-            { x: new Date('2025-04-17T10:00:00Z'), __x1: new Date('2025-04-16T22:00:00Z'), __x2: new Date('2025-04-17T22:00:00Z') },
-            { x: new Date('2025-04-17T12:00:00Z'), __x1: new Date('2025-04-16T22:00:00Z'), __x2: new Date('2025-04-17T22:00:00Z') }
+            {
+                x: new Date('2025-04-15T05:00:00Z'),
+                __x1: new Date('2025-04-14T22:00:00Z'),
+                __x2: new Date('2025-04-15T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-16T12:00:00Z'),
+                __x1: new Date('2025-04-15T22:00:00Z'),
+                __x2: new Date('2025-04-16T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-16T18:00:00Z'),
+                __x1: new Date('2025-04-15T22:00:00Z'),
+                __x2: new Date('2025-04-16T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-16T23:00:00Z'),
+                __x1: new Date('2025-04-16T22:00:00Z'),
+                __x2: new Date('2025-04-17T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-17T02:00:00Z'),
+                __x1: new Date('2025-04-16T22:00:00Z'),
+                __x2: new Date('2025-04-17T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-17T10:00:00Z'),
+                __x1: new Date('2025-04-16T22:00:00Z'),
+                __x2: new Date('2025-04-17T22:00:00Z')
+            },
+            {
+                x: new Date('2025-04-17T12:00:00Z'),
+                __x1: new Date('2025-04-16T22:00:00Z'),
+                __x2: new Date('2025-04-17T22:00:00Z')
+            }
         ]);
         expect(result.x1).toBe('__x1');
         expect(result.x2).toBe('__x2');
@@ -73,8 +101,16 @@ describe('intervalY', () => {
         const result = intervalY({ data, ...options }, { plot });
 
         expect(result.data).toEqual([
-            { y: new Date('2025-04-16T12:00:00Z'), __y1: new Date('2025-04-14T22:00:00Z'), __y2: new Date('2025-04-16T22:00:00Z') },
-            { y: new Date('2025-04-17T12:00:00Z'), __y1: new Date('2025-04-16T22:00:00Z'), __y2: new Date('2025-04-18T22:00:00Z') }
+            {
+                y: new Date('2025-04-16T12:00:00Z'),
+                __y1: new Date('2025-04-14T22:00:00Z'),
+                __y2: new Date('2025-04-16T22:00:00Z')
+            },
+            {
+                y: new Date('2025-04-17T12:00:00Z'),
+                __y1: new Date('2025-04-16T22:00:00Z'),
+                __y2: new Date('2025-04-18T22:00:00Z')
+            }
         ]);
         expect(result.y1).toBe('__y1');
         expect(result.y2).toBe('__y2');

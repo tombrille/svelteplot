@@ -442,9 +442,7 @@ export type DataRecord = Record<string, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
 };
 
-export type ResolvedDataRecord =  Partial<
-    Record<ScaledChannelName, any>
-> & {
+export type ResolvedDataRecord = Partial<Record<ScaledChannelName, any>> & {
     datum: DataRecord;
 };
 
@@ -725,6 +723,7 @@ export type Channels = Record<
 >;
 
 export type TransformArg<K> = Channels & { data: K[] };
+export type MapArg<K> = Channels & { data: K[] };
 
 export type TransformArgsRow = Partial<Channels> & { data: DataRow[] };
 export type TransformArgsRecord = Partial<Channels> & { data: DataRecord[] };
@@ -880,3 +879,16 @@ export type DefaultOptions = {
      */
     markerDotRadius: number;
 };
+
+export type MapIndexObject = {
+    mapIndex: (I: number[], S: RawValue[], T: RawValue[]) => void;
+};
+
+export type MapMethod =
+    | 'cumsum'
+    | 'rank'
+    | 'quantile'
+    | ((I: number[], S: number[]) => number[])
+    | MapIndexObject;
+
+export type MapOptions = Partial<Record<ScaledChannelName, MapMethod>>;

@@ -81,6 +81,7 @@ export default {
                 { title: 'Group', to: '/transforms/group/' },
                 { title: 'Interval', to: '/transforms/interval/' },
                 { title: 'Map', to: '/transforms/map/' },
+                { title: 'Normalize', to: '/transforms/normalize/' },
                 { title: 'Select', to: '/transforms/select/' },
                 { title: 'Shift', to: '/transforms/shift/' },
                 { title: 'Sort', to: '/transforms/sort/' },
