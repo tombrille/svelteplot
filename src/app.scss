@@ -20,14 +20,16 @@ a.link.highlight {
     }
 }
 
-a.link.highlight[href^="https://svelte.dev/playground/"]
+p:has(a.link.highlight[href^="https://svelte.dev/playground/"])
 {
     position: relative;
     display: block;
-    height: 0.01em;
-    > span {
+    padding: 0;
+    margin: 0;
+   height: 0.01em;
+    a {
         color: ButtonText;
-        display: flex;
+        display: inline-flex;
         background: ButtonFace;
         padding: 1px 7px;
         border-radius: 3px;
@@ -35,8 +37,9 @@ a.link.highlight[href^="https://svelte.dev/playground/"]
         text-decoration: none;
         opacity: 0.75;
         position: absolute;
-        top: -2em;
-        right: 0;
+        top: -10.3ex;
+        z-index: 10;
+        right: 1ex;
         &:hover {
             opacity: 1;
         }

@@ -11,11 +11,11 @@ export default {
                 {
                     title: 'Why SveltePlot?',
                     to: '/why-svelteplot/'
-                },
-                {
-                    title: 'Introduction',
-                    to: '/introduction/'
                 }
+                // {
+                //     title: 'Introduction',
+                //     to: '/introduction/'
+                // }
             ]
         },
         {
