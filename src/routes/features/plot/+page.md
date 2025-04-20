@@ -206,15 +206,77 @@ List of all plot options you can pass via props on the `<Plot />` component:
 - `symbol` - options for the symbol scale
 - `length` - options for the length scale
 
-- You can set the following shared scale options for all the scales listed above.
+- You can set the following shared scale options for all the scales listed above:
 
-    - `domain`
-    - `range`
-    - `range`
+    - `domain` - custom domain for the scale
+    - `range` - custom range for the scale
+    - `reverse` - reverse the scale direction
+    - `type` - override automatic scale type detection
+    - `padding` - padding for band and point scales
+    - `align` - alignment for band and point scales
+    - `clamp` - whether to clamp values outside the domain
+    - `nice` - whether to extend the domain to nice round values
+    - `zero` - whether to include zero in the domain
+    - `round` - whether to round output values
+    - `percent` - whether to format values as percentages
+    - `transform` - a function to transform values
+    - `ticks` - custom tick values
+    - `tickSpacing` - spacing between ticks
+    - `tickFormat` - custom formatter for tick labels
+
+**Scale-specific options**
+
+- `x` also supports:
+
+    - `grid` - whether to show a grid
+    - `axis` - axis position ('top', 'bottom', 'both', or false)
+    - `tickRotate` - rotation angle for tick labels
+    - `labelAnchor` - position of axis label ('auto', 'left', 'center', 'right')
+    - `insetLeft` - left inset value
+    - `insetRight` - right inset value
+
+- `y` also supports:
+
+    - `grid` - whether to show a grid
+    - `axis` - axis position ('left', 'right', 'both', or false)
+    - `tickRotate` - rotation angle for tick labels
+    - `labelAnchor` - position of axis label ('auto', 'bottom', 'middle', 'top')
+    - `insetTop` - top inset value
+    - `insetBottom` - bottom inset value
+
+- `color` also supports:
+    - `legend` - whether to show a color legend
+    - `scheme` - color scheme name
+    - `unknown` - fallback color for null/undefined values
+    - `pivot` - center value for diverging scales
+    - `n` - number of colors for quantize/quantile scales
+- `symbol` also supports:
+    - `legend` - whether to show a symbol legend
+
+**Other plot options**
 
 - `locale` - locale used for automatic number and date formatting in axis ticks
+- `aspectRatio` - if set, computes height such that a variation in x of one unit corresponds to the given number of pixels as a variation in y of one unit
+- `padding` - convenience shortcut for setting both x and y scale paddings
+- `projection` - geo-projection type when using geographic data
+- `testid` - adds a data-testid attribute to the plot container for testing
+- `implicitScales` - if true, uses implicit scales for automated behavior
+- `css` - custom CSS styling function
+- `facet` - top-level faceting options:
+    - `data` - data to facet by
+    - `x` - accessor for horizontal facets
+    - `y` - accessor for vertical facets
 
-TODO: List all the options
+**Snippet options**
+
+These can be used to add custom markup to different parts of the plot:
+
+- `children` - content inside the SVG element (default slot)
+- `header` - custom HTML before the plot body
+- `footer` - custom HTML after the plot body
+- `overlay` - custom HTML floating in front of the plot body
+- `underlay` - custom HTML behind the plot body
+- `facetAxes` - custom axes for facets
 
 ## Snippets
 
