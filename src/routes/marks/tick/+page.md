@@ -35,7 +35,7 @@ Shows a horizontal bar for each x position.
 ```svelte live
 <script lang="ts">
     import { Plot, RuleY, TickY } from '$lib/index.js';
-
+    import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let { stateage } = $derived(page.data.data);
 
@@ -43,22 +43,18 @@ Shows a horizontal bar for each x position.
     let align = $state(0.5);
 </script>
 
-<label style="margin-right:2em"
-    >padding: <input
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        bind:value={padding} />
-    {padding}</label>
-<label
-    >align: <input
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        bind:value={align} />
-    {align}</label>
+<Slider
+    label="padding"
+    bind:value={padding}
+    min={0}
+    max={1}
+    step={0.01} />
+<Slider
+    label="align"
+    bind:value={align}
+    min={0}
+    max={1}
+    step={0.01} />
 
 <Plot
     x={{ padding, align }}
@@ -82,7 +78,7 @@ Same idea but with facet:
     import { Plot, RuleY, TickY } from '$lib/index.js';
 
     import { page } from '$app/state';
-    let { stateage } = $derived(page.data.data);
+    const { stateage } = $derived(page.data.data);
 </script>
 
 <Plot y={{ grid: true, percent: true }}>
