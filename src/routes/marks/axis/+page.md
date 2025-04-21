@@ -53,9 +53,8 @@ You can also control the implicit axes individually using the x and y options. H
 ```svelte live
 <script>
     import { Plot, Line } from '$lib';
-
     import { page } from '$app/state';
-    let { aapl } = $derived(page.data.data);
+    const { aapl } = $derived(page.data.data);
 </script>
 
 <Plot x={{ axis: false }} y={{ axis: 'both' }}>
@@ -128,46 +127,6 @@ A combination of options:
     <!-- plot content -->
 </Plot>
 ```
-
-You can rotate tick labels using `tickRotate`:
-
-```svelte live
-<script>
-    import { Plot, RuleY } from '$lib';
-    import { Slider } from '$lib/ui';
-
-    let tickRotate = $state(-45);
-</script>
-
-<Slider
-    label="tick angle"
-    min={-90}
-    max={90}
-    step={5}
-    bind:value={tickRotate} />
-<Plot
-    marginBottom={50}
-    x={{
-        tickRotate,
-        domain: 'These are some ordinal ticks on a band scale'.split(
-            ' '
-        )
-    }} />
-```
-
-```svelte
-<Plot
-    x={{
-        tickRotate: -45,
-        domain: 'These are some ordinal ticks on a band scale'.split(
-            ' '
-        )
-    }} />
-```
-
-:::warning
-Keep in mind that rotated texts are a lot harder to read, so if possible, avoid rotated axis ticks (e.g. by flipping a column chart to bar chart) or at least limit rotation to 45 degrees.
-:::
 
 ## Explicit axes
 
@@ -290,7 +249,7 @@ You can change the defaults for SveltePlot grids by defining the `svelteplot/def
 
 You can explicitly add an x axis using the `AxisX` mark component. The `AxisX` component provides more customization options than the implicit axes.
 
-### Options
+**Options**
 
 - `data` - array of custom tick values (if not provided, ticks are generated automatically)
 - `title` - axis title (overrides any automatic title)
@@ -311,7 +270,7 @@ The `AxisX` component also inherits all styling properties from the base mark co
 
 The `AxisY` component provides extensive customization options for y-axis presentation.
 
-### Options
+**Options**
 
 - `data` - array of custom tick values (if not provided, ticks are generated automatically)
 - `title` - axis title (overrides any automatic title)
@@ -327,11 +286,11 @@ The `AxisY` component provides extensive customization options for y-axis presen
 
 The `AxisY` component also inherits all styling properties from the base mark component (fill, stroke, strokeWidth, opacity, etc.).
 
-## Advanced
+## Advanced use
 
 ### Customizing axis ticks
 
-You can customize the automatic axis ticks using the `interval` and `tickSpacing` options:
+You can customize the automatic axis ticks using the `interval` and `tickSpacing` options. For numeric scales interval
 
 ```svelte live
 <script>
@@ -353,6 +312,51 @@ You can customize the automatic axis ticks using the `interval` and `tickSpacing
 <Plot x={{ domain: [0, 101], interval: 15 }} />
 ```
 
+[fork](https://svelte.dev/playground/9cb92cbfa837428686a7f4bc990b74f9?version=5.28.1)
+
+For time-scales you can define the interval as string:
+
+```svelte live
+<script>
+    import { Plot } from '$lib';
+    import { Select } from '$lib/ui';
+
+    let interval = $state('3 months');
+</script>
+
+<Select
+    label="Interval"
+    bind:value={interval}
+    options={[
+        '2 weeks',
+        '4 weeks',
+        '1 month',
+        '2 months',
+        '3 months'
+    ]} />
+<Plot
+    x={{
+        domain: [
+            new Date(2024, 0, 1),
+            new Date(2025, 0, 1)
+        ],
+        interval
+    }} />
+```
+
+```svelte
+<Plot
+    x={{
+        domain: [
+            new Date(2024, 0, 1),
+            new Date(2025, 0, 1)
+        ],
+        interval: '3 months'
+    }} />
+```
+
+Another way to customize the number of ticks shown is to set the **tickSpacing** option. Higher tick spacing means fewer ticks.
+
 ```svelte live
 <script>
     import { Plot } from '$lib';
@@ -372,6 +376,8 @@ You can customize the automatic axis ticks using the `interval` and `tickSpacing
 ```svelte
 <Plot x={{ domain: [0, 101], tickSpacing: 30 }} />
 ```
+
+[fork](https://svelte.dev/playground/6ccccb750ac84912bda3ac498c28e8b3?version=5.28.1)
 
 You can also define the ticks manually:
 
@@ -395,6 +401,10 @@ You can also define the ticks manually:
         ticks: [0, 10, 25, 50, 90, 100]
     }} />
 ```
+
+:::info
+Note that customizing ticks via the `x` or `y` scale options will also affect the implicit [grids](/marks/grid).
+:::
 
 ### Ticks inside the plot
 
@@ -480,7 +490,7 @@ You can assign custom class to ticks based on the tick value by passing a `tickC
 
 ### Two layers of ticks
 
-You can use two explicit axes to create multiple layers of ticks. The yearly ticks are moved down using the `tickPadding` option:
+You can use two explicit axes to create multiple layers of ticks. The yearly ticks are moved down using the `tickPadding` option. We're setting `tickSize` to 0 to avoid drawing another set of tick lines:
 
 ```svelte live
 <script>
@@ -564,3 +574,45 @@ Note that you can achieve a similar axis using a custom tick format function tha
 ```
 
 [fork](https://svelte.dev/playground/52b5047e28014118921ce753c8c601a7?version=5.28.1)
+
+### Rotated ticks
+
+You can rotate tick labels using `tickRotate`:
+
+:::warning
+Keep in mind that rotated texts are a lot harder to read, so if possible, avoid rotated axis ticks (e.g. by flipping a column chart to bar chart) or at least limit rotation to 45 degrees.
+:::
+
+```svelte live
+<script>
+    import { Plot, RuleY } from '$lib';
+    import { Slider } from '$lib/ui';
+
+    let tickRotate = $state(-45);
+</script>
+
+<Slider
+    label="tick angle"
+    min={-90}
+    max={90}
+    step={5}
+    bind:value={tickRotate} />
+<Plot
+    marginBottom={50}
+    x={{
+        tickRotate,
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
+```
+
+```svelte
+<Plot
+    x={{
+        tickRotate: -45,
+        domain: 'These are some ordinal ticks on a band scale'.split(
+            ' '
+        )
+    }} />
+```
