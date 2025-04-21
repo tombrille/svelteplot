@@ -1,5 +1,0 @@
-[**svelteplot**](README.md)
-
----
-
-# svelteplot
