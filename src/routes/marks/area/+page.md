@@ -3,13 +3,42 @@ title: Area mark
 ---
 
 <script lang="ts">
-    import AreaLineRulePlot from './AreaLineRulePlot.svelte';
-    import AreaY1Plot from './AreaY1Plot.svelte';
-    import StackedAreaPlot from './StackedAreaPlot.svelte';
     import Streamgraph from './Streamgraph.svelte';
 </script>
 
 The **area mark** draws the region between a baseline (x1, y1) and a topline (x2, y2) as in an area chart. Often the baseline represents y = 0, and because the area mark interpolates between adjacent data points, typically both the x and y scales are quantitative or temporal.
+
+```svelte live
+<script lang="ts">
+    import { Plot, AreaY } from '$lib/index';
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
+</script>
+
+<Plot grid>
+    <AreaY data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot grid>
+    <AreaY data={aapl} x="Date" y="Close" />
+</Plot>
+```
+
+If you supply `undefined` values
+
+```svelte live
+<script lang="ts">
+    import { Plot, AreaY } from '$lib/index';
+    import { page } from '$app/state';
+    const { aapl } = $derived(page.data.data);
+</script>
+
+<Plot grid>
+    <AreaY data={[1, 3, 2, undefined, 5, 4]} />
+</Plot>
+```
 
 Supplying undefined values is not the same as filtering the data: the latter will interpolate between the data points. Observe the conspicuous straight lines below!
 
@@ -59,14 +88,6 @@ Supplying undefined values is not the same as filtering the data: the latter wil
 ```
 
 ## AreaY
-
-<AreaY1Plot />
-
-```svelte
-<Plot>
-    <AreaY data={aapl} x="Date" y="Close" />
-</Plot>
-```
 
 If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels instead of
 <b>y</b> to disable the implicit stacking:
@@ -197,7 +218,37 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 
 Streamgraph example:
 
-<Streamgraph stackControls />
+```svelte live
+<script>
+    import { Plot, AreaY } from '$lib/index.js';
+    import { Select } from '$lib/ui';
+    import { page } from '$app/stores';
+    const { riaa } = $derived($page.data.data);
+    let offset = $state('wiggle');
+</script>
+
+<Select
+    label="offset"
+    bind:value={offset}
+    options={['none', 'wiggle', 'center', 'normalize']} />
+
+<Plot
+    grid
+    marginLeft={0}
+    x={{ grid: true }}
+    y={{ axis: false }}
+    color={{ legend: true }}
+    testid="area-y1">
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        curve="basis"
+        fill="group"
+        stack={{ offset }} />
+</Plot>
+```
 
 ## AreaX
 

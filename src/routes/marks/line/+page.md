@@ -125,6 +125,34 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 </Plot>
 ```
 
+Grouping
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line } from '$lib';
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
+</script>
+
+<Plot>
+    <Line
+        data={aapl}
+        x="Date"
+        stroke={(d) => d.Date.getFullYear()}
+        y="Close" />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <Line
+        data={aapl}
+        x="Date"
+        y="Close"
+        stroke={(d) => d.Date.getFullYear()} />
+</Plot>
+```
+
 While the _x_ scale of a line chart often represents time, this is not required. For example, we can plot the elevation profile of a Tour de France stage.
 
 ```svelte live
@@ -395,7 +423,7 @@ With a [spherical projection](/features/projections), line segments become [geod
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Geo, Line } from '$lib';
+    import { Plot, Geo, Dot, Line } from '$lib';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     const { world, beagle } = $derived(page.data.data);

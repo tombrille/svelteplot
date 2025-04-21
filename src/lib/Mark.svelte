@@ -203,7 +203,7 @@
             const dx = Number(resolveProp<number>(options.dx, out.datum, 0));
             const dy = Number(resolveProp<number>(options.dy, out.datum, 0));
 
-            // special handling if there's a projection
+            // special handling if there's a projection, e.g. a line mark
             if (plot.scales.projection && mark.type !== 'geo') {
                 for (const suffix of ['', '1', '2']) {
                     if (
@@ -212,22 +212,20 @@
                     ) {
                         // we have two-dimensional accessors
                         // for the x and y channels
-                        const rx = resolveChannel(`x${suffix}`, row, options);
-                        const ry = resolveChannel(`y${suffix}`, row, options);
                         const [x, y] =
                             mark.type === 'line'
-                                ? [rx, ry] // line paths are projected later
+                                ? [row.x, row.y] // line paths are projected later
                                 : projectXY(
                                       plot.scales,
-                                      rx,
-                                      ry,
+                                      row.x,
+                                      row.y,
                                       usedScales.x,
                                       usedScales.y,
                                       suffix
                                   );
                         out[`x${suffix}`] = x;
                         out[`y${suffix}`] = y;
-                        out.valid = out.valid && isValid(rx) && isValid(ry);
+                        out.valid = out.valid && isValid(row.x) && isValid(row.y);
                     }
                 }
             }
