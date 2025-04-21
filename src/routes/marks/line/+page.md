@@ -293,6 +293,10 @@ BLS Demo:
 </Plot>
 ```
 
+## Line
+
+Channels:
+
 ## LineX
 
 Convenience wrapper
@@ -462,6 +466,8 @@ With a [spherical projection](/features/projections), line segments become [geod
         fill="var(--svp-red)" />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/8f433172583d4b7eb4ae1d72572d2e31?version=5.28.1)
 
 ```svelte live
 <script lang="ts">
