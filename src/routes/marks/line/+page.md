@@ -439,4 +439,32 @@ With a [spherical projection](/features/projections), line segments become [geod
 </Plot>
 ```
 
-Polls
+```svelte live
+<script lang="ts">
+    import { Plot, Line, Dot } from '$lib';
+
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
+</script>
+
+<p>
+    This allows you to use a plot as tiny chart
+    <Plot
+        axes={false}
+        inset={3}
+        maxWidth="50px"
+        height={25}
+        margins={0}
+        testid="axis-off">
+        <Line data={aapl.slice(-60)} x="Date" y="Close" />
+    </Plot>, inside a text paragraph or table -- often
+    referred to as sparklines.
+</p>
+
+<style>
+    p :global(figure) {
+        display: inline-block;
+        vertical-align: baseline;
+    }
+</style>
+```
