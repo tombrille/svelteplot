@@ -2,7 +2,63 @@
 title: Text mark
 ---
 
-Useful for showing SVG labels!
+Useful for showing text labels. The text mark is using SVG `<text>` elements, so formatting is limited.
+
+```svelte live
+<script>
+    import { Plot, Line, Text } from '$lib';
+
+    import { page } from '$app/state';
+    let { driving } = $derived(page.data.data);
+</script>
+
+<Plot
+    inset={10}
+    grid
+    height={500}
+    x={{ label: 'Miles driven (per person-year) →' }}
+    y={{ label: '↑ Cost of gasoline ($ per gallon)' }}>
+    <Line
+        data={driving}
+        x="miles"
+        y="gas"
+        curve="catmull-rom"
+        marker="arrow" />
+    <Text
+        data={driving}
+        x="miles"
+        y="gas"
+        text="year"
+        fill="currentColor"
+        stroke="var(--svelteplot-bg)"
+        strokeWidth={3}
+        filter={(d) => d.year % 5 === 0}
+        dx={(d) =>
+            d.side === 'left'
+                ? -5
+                : d.side === 'right'
+                  ? 5
+                  : 0}
+        dy={(d) =>
+            d.side === 'top'
+                ? 5
+                : d.side === 'bottom'
+                  ? -5
+                  : 0}
+        textAnchor={(d) =>
+            d.side === 'left'
+                ? 'end'
+                : d.side === 'right'
+                  ? 'start'
+                  : 'center'}
+        lineAnchor={(d) =>
+            d.side === 'top'
+                ? 'top'
+                : d.side === 'bottom'
+                  ? 'bottom'
+                  : 'middle'} />
+</Plot>
+```
 
 ```svelte live
 <script>

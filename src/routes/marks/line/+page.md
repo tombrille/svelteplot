@@ -385,15 +385,9 @@ While uncommon, you can draw a line with ordinal position values. For example be
 </Plot>
 ```
 
-The following plot demonstrates combining grouping of lines with coloring by value. You can check out this [StackBlitz](https://stackblitz.com/edit/vitejs-vite-o4p5ss?file=src%2Fassets%2Fco2.csv,src%2FApp.svelte&terminal=dev) to see the source code
+The following plot demonstrates combining grouping of lines with coloring by value. You can check out this [Playground Demo](https://svelte.dev/playground/8adc0301f1b24de6a69a11594ea2bc06?version=5.28.1) to see the source code
 
 <CO2Decades />
-
-```svelte
-<Plot inset={10} grid>
-    <Line data={co2} x="date" y="average" />
-</Plot>
-```
 
 With a [spherical projection](/features/projections), line segments become [geodesics](https://en.wikipedia.org/wiki/Great-circle_distance), taking the shortest path between two points on the sphere and wrapping around the antimeridian at 180° longitude. The line below shows Charles Darwin’s voyage on HMS _Beagle_. (Data via [Benjamin Schmidt](https://observablehq.com/@bmschmidt/data-driven-projections-darwins-world).)
 
