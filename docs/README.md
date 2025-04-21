@@ -1,4 +1,4 @@
-**@gka/svelteplot**
+**svelteplot**
 
 ---
 

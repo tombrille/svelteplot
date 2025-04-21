@@ -20,7 +20,7 @@ In the following example, you can see that the `<Plot>` component has added axes
 
 ```svelte
 <script>
-    import { Plot, Line } from '@gka/svelteplot';
+    import { Plot, Line } from 'svelteplot';
     import aapl from './aapl.csv';
 </script>
 
@@ -72,7 +72,7 @@ But if we wanted to, we can add these marks individually, and it would look just
         AxisX,
         AxisY,
         Line
-    } from '@gka/svelteplot';
+    } from 'svelteplot';
     import aapl from './aapl.csv';
 </script>
 
@@ -378,8 +378,8 @@ SveltePlot provides a lot of convenience features with the unfortunate side-effe
 
 ```svelte
 <script>
-    import Plot from '@gka/svelteplot/core/Plot.svelte';
-    import { Line } from '@gka/svelteplot';
+    import Plot from 'svelteplot/core/Plot.svelte';
+    import { Line } from 'svelteplot';
 
     function scaleX({ domain, plotWidth, plotOptions }) {
         const { marginLeft, marginRight } = plotOptions;

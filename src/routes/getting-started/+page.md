@@ -34,7 +34,7 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 
 ```svelte
 <script>
-    import { Plot, RectY, binX } from '@gka/svelteplot';
+    import { Plot, RectY, binX } from 'svelteplot';
     import { range } from 'd3-array';
     import { randomNormal } from 'd3-random';
 </script>
@@ -53,16 +53,16 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 Just install SveltePlot via `npm` or `pnpm`
 
 ```sh
-npm install @gka/svelteplot
+npm install svelteplot
 # or
-pnpm add @gka/svelteplot
+pnpm add svelteplot
 ```
 
 ..and import and use the components!
 
 ```svelte
 <script>
-    import { Plot, BarX } from '@gka/svelteplot';
+    import { Plot, BarX } from 'svelteplot';
 </script>
 
 <Plot grid>

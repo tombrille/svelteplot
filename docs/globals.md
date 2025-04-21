@@ -1,5 +1,5 @@
-[**@gka/svelteplot**](README.md)
+[**svelteplot**](README.md)
 
 ---
 
-# @gka/svelteplot
+# svelteplot
