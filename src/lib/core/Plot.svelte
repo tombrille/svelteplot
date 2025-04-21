@@ -41,6 +41,7 @@
         facet,
         class: className = '',
         css,
+        width: fixedWidth,
         ...initialOpts
     }: Partial<PlotOptions> = $props();
 
@@ -176,7 +177,7 @@
 
     const hasProjection = $derived(!!preScales.projection);
 
-    const plotWidth = $derived(width - plotOptions.marginLeft - plotOptions.marginRight);
+    const plotWidth = $derived((fixedWidth || width) - plotOptions.marginLeft - plotOptions.marginRight);
 
     // the facet and y domain counts are used for computing the automatic height
     const xFacetCount = $derived(Math.max(1, preScales.fx.domain.length));
@@ -476,7 +477,7 @@
     <div class="plot-body" bind:this={plotBody}>
         {#if underlay}<div class="plot-underlay">{@render underlay(plotOptions)}</div>{/if}
         <svg
-            {width}
+            width={fixedWidth || width}
             {height}
             fill="currentColor"
             viewBox="0 0 {width} {height}"

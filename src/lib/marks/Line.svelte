@@ -11,8 +11,6 @@
         ConstantAccessor,
         ChannelAccessor,
         MarkerOptions,
-        FacetContext,
-        PlotState,
         ScaledDataRecord
     } from '../types.js';
 
@@ -40,7 +38,7 @@
     import Mark from '../Mark.svelte';
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
-    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
+    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { line, type CurveFactory } from 'd3-shape';
     import { geoPath } from 'd3-geo';
     import callWithProps from '$lib/helpers/callWithProps.js';
@@ -94,10 +92,6 @@
     }
 
     const groupByKey = $derived(args.z || args.stroke);
-
-    const groups = $derived(
-        groupByKey && args.data.length > 0 ? groupIndex(args.data, groupByKey) : [args.data]
-    );
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

@@ -391,62 +391,6 @@ Also, simply by being a Svelte framework, SveltePlot can support tweens and tran
 </Plot>
 ```
 
-Finally, most of SveltePlot marks support transitions!
-
-```svelte live
-<script>
-    import { Plot, Dot } from '$lib';
-    import { fade, scale, fly } from 'svelte/transition';
-    import {
-        expoIn,
-        cubicIn,
-        bounceOut
-    } from 'svelte/easing';
-    import { Slider } from '$lib/ui';
-    import { page } from '$app/state';
-    import { sampleSize, range } from 'es-toolkit';
-
-    const { cars } = $derived(page.data.data);
-
-    let min = $state(0);
-    let dir = $state(1);
-    let noAxisX = $state(false);
-    let noAxisTitle = $state(false);
-
-    $effect(() => {
-        const t = setInterval(() => {
-            min += dir;
-            if (min > 60) dir = -1;
-            if (min === 0) dir = 1;
-        }, 100);
-        return () => clearInterval(t);
-    });
-</script>
-
-{min}
-<Plot grid color={{ type: 'linear' }}>
-    <Dot
-        data={cars}
-        filter={(d) => d['economy (mpg)'] > min}
-        y="weight (lb)"
-        x="power (hp)"
-        r={4}
-        stroke="economy (mpg)">
-        {#snippet wrap(dot, args)}
-            <g
-                in:scale|global={{
-                    duration: 300,
-                    easing: expoIn
-                }}
-                out:fly|global={{
-                    y: '70px',
-                    easing: cubicIn
-                }}>{@render dot(args)}</g>
-        {/snippet}
-    </Dot>
-</Plot>
-```
-
 ## Easy to extend
 
 You can extend SveltePlot by injecting regular Svelte snippets. For instance, the Line mark allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
@@ -537,6 +481,8 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
     </Line>
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/45a256864cb14e0ba2d9578a1b21efeb?version=5.28.1)
 
 ## Built on top of D3
 

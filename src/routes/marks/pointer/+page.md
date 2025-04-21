@@ -13,7 +13,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
     let sel = $state([]);
 </script>
 
-<Plot testid="aapl-line-frame" marginRight={20}>
+<Plot>
     <Line data={aapl} x="Date" y="Close" />
     <Pointer
         data={aapl}
@@ -31,7 +31,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10" />
+                dy={-5} />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
@@ -39,13 +39,9 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 ```
 
 ```svelte
-<Plot testid="aapl-line-frame" marginRight={20}>
+<Plot>
     <Line data={aapl} x="Date" y="Close" />
-    <Pointer
-        data={aapl}
-        x="Date"
-        y="Close"
-        maxDistance={30}>
+    <Pointer data={aapl} x="Date">
         {#snippet children({ data })}
             <Text
                 {data}
@@ -57,12 +53,14 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
                 text={(d) => d.Close.toFixed()}
                 lineAnchor="bottom"
                 fontWeight="bold"
-                dy="-10" />
+                dy={-5} />
             <Dot {data} x="Date" y="Close" fill />
         {/snippet}
     </Pointer>
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/a1220e8cb4d74338a3b7468466113df2?version=5.28.1)
 
 You can create a "crosshair" mark by wrapping grids and axes marks inside a pointer mark:
 
@@ -82,7 +80,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
 </script>
 
 <div style="touch-action: none">
-    <Plot testid="aapl-line-frame">
+    <Plot marginBottom={30}>
         <AxisX />
         <AxisY />
         <Line data={aapl} x="Date" y="Close" />
@@ -131,8 +129,6 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
     </Pointer>
 </Plot>
 ```
-
-PointerY
 
 ```svelte live
 <script>
