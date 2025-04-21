@@ -2,7 +2,7 @@
 title: SveltePlot
 description: The best visualizations are built with <span>Svelte.</span>
 heroImage: /logo.png
-tagline: A reactive visualization framework based on the layered grammar of graphics principles. Think of Observable Plot, but re-written in Svelte!
+tagline: A Svelte-native visualization framework based on the layered grammar of graphics principles.
 actions:
     - label: Getting started
       type: flat

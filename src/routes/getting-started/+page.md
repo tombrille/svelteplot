@@ -4,7 +4,7 @@ description: This page explains how to start using SveltePlot.
 ---
 
 :::caution
-SveltePlot is still in a very early alpha stage, and its API is subject to changes. Use at your own risk.
+SveltePlot is still in an alpha stage, and its API may change. Use at your own risk.
 :::
 
 ## Try SveltePlot online
@@ -14,16 +14,17 @@ You can use SveltePlot inside any platform that supports Svelte 5, such as [Stac
 ```svelte live
 <script>
     import { Plot, RectY, binX } from '$lib/index';
-    import { range } from 'd3-array';
     import { randomNormal } from 'd3-random';
+
+    const randomNumbers = new Array(10000)
+        .fill(0)
+        .map(randomNormal());
 </script>
 
-<Plot grid height={300}>
+<Plot title="Histogram of random numbers" grid>
     <RectY
         {...binX(
-            {
-                data: range(10000).map(randomNormal())
-            },
+            { data: randomNumbers },
             { y: 'count' }
         )} />
 </Plot>
