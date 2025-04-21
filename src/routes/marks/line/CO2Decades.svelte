@@ -90,7 +90,7 @@
                 text={(d) => `${dateFormat(d.date)}\n${d.average.toFixed(0)}`}
                 lineAnchor="bottom"
                 fontWeight={(d) => (d.__tspanIndex ? 'bold' : 'normal')}
-                dy="-20"
+                dy={-5}
                 stroke="var(--svelteplot-bg)"
                 strokeWidth={3}
                 fill="average" />

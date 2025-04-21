@@ -20,7 +20,7 @@ a.link.highlight {
     }
 }
 
-p:has(a.link.highlight[href^="https://svelte.dev/playground/"])
+p:has(a.link.highlight[href^="https://svelte.dev/playground/"]:only-child)
 {
     position: relative;
     display: block;

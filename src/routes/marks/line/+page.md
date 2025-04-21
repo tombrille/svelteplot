@@ -27,6 +27,8 @@ The **line mark** draws two-dimensional lines as in a line chart. Because the li
 </Plot>
 ```
 
+[Fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
+
 If the **x** and **y** options are not defined, the line mark assumes that the data is an iterable of points \[\[_x₁_, _y₁_\], \[_x₂_, _y₂_\], …\].
 
 ```svelte live
@@ -385,7 +387,7 @@ While uncommon, you can draw a line with ordinal position values. For example be
 </Plot>
 ```
 
-The following plot demonstrates combining grouping of lines with coloring by value. You can check out this [Playground Demo](https://svelte.dev/playground/8adc0301f1b24de6a69a11594ea2bc06?version=5.28.1) to see the source code
+The following plot demonstrates combining grouping of lines with coloring by value. You can out this [Playground Demo](https://svelte.dev/playground/8adc0301f1b24de6a69a11594ea2bc06?version=5.28.1) to see and _edit_ the source code.
 
 <CO2Decades />
 
