@@ -1264,7 +1264,7 @@ You can also force SveltePlot to bypass the color scale using `scale: null`.
         data={seattle}
         x="date"
         y="temp_max"
-        fill={{ scale: null, value: 'url(#gradient)' }} />
+        fill="url(#gradient)" />
 </Plot>
 ```
 
@@ -1280,6 +1280,6 @@ You can also force SveltePlot to bypass the color scale using `scale: null`.
         data={seattle}
         x="date"
         y="temp_max"
-        fill={{ scale: null, value: 'url(#gradient)' }} />
+        fill="url(#gradient)" />
 </Plot>
 ```
