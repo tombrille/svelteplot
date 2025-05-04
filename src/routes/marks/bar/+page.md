@@ -81,6 +81,105 @@ You can create stacked bar charts by defining a fill channel which will be used 
 
 
 
+## BarX
+
+The `BarX` component renders horizontal bars, typically used with a band scale on the y-axis. This is ideal for categorical data where the categories run along the y-axis, and the values extend horizontally.
+
+### Properties
+
+- **data** - The data array to visualize
+- **x** - Value accessor for the x channel (length of bar)
+- **x1** - Start value accessor for the x channel
+- **x2** - End value accessor for the x channel
+- **y** - Value accessor for the y channel (position on the category axis)
+- **stack** - Configuration for stacking the bars. See [stack transform](/transforms/stack)
+- **borderRadius** - Border radius for the bar corners. Can be a single number for all corners or an object with separate values for topLeft, topRight, bottomRight, bottomLeft
+- **inset** - Inset value for all sides of the bar
+- **insetLeft** - Inset value for the left side of the bar
+- **insetRight** - Inset value for the right side of the bar
+- **insetTop** - Inset value for the top of the bar
+- **insetBottom** - Inset value for the bottom of the bar
+
+Additionally, `BarX` supports all common styling properties like `fill`, `stroke`, `opacity`, etc.
+
+### Example
+
+```svelte
+<Plot y={{ type: 'band' }} x={{ grid: true }}>
+  <BarX 
+    data={myData} 
+    y="category"  
+    x="value" 
+    fill="steelblue" 
+  />
+</Plot>
+```
+
+For stacked bar charts, provide a `fill` channel that will be used for grouping the series:
+
+```svelte
+<Plot y={{ type: 'band' }} color={{ legend: true }}>
+  <BarX 
+    data={myData} 
+    y="category"
+    x="value"
+    fill="group" 
+  />
+</Plot>
+```
+
+## BarY
+
+The `BarY` component renders vertical bars (columns), typically used with a band scale on the x-axis. This is ideal for categorical data where the categories run along the x-axis, and the values extend vertically.
+
+### Properties
+
+- **data** - The data array to visualize
+- **x** - Value accessor for the x channel (position on the category axis)
+- **y** - Value accessor for the y channel (height of bar)
+- **y1** - Start value accessor for the y channel
+- **y2** - End value accessor for the y channel
+- **stack** - Configuration for stacking the bars. See [stack transform](/transforms/stack)
+- **interval** - Converts y into y1/y2 ranges based on the provided interval. Disables implicit stacking
+- **borderRadius** - Border radius for the bar corners. Can be a single number for all corners or an object with separate values for topLeft, topRight, bottomRight, bottomLeft
+- **inset** - Inset value for all sides of the bar
+- **insetLeft** - Inset value for the left side of the bar
+- **insetRight** - Inset value for the right side of the bar
+- **insetTop** - Inset value for the top of the bar
+- **insetBottom** - Inset value for the bottom of the bar
+
+Additionally, `BarY` supports all common styling properties like `fill`, `stroke`, `opacity`, etc.
+
+### Example
+
+```svelte
+<Plot x={{ type: 'band' }} y={{ grid: true }}>
+  <BarY 
+    data={myData} 
+    x="category"  
+    y="value" 
+    fill="steelblue" 
+  />
+</Plot>
+```
+
+For stacked bar charts, provide a `fill` channel that will be used for grouping the series:
+
+```svelte
+<Plot x={{ type: 'band' }} color={{ legend: true }}>
+  <BarY 
+    data={myData} 
+    x="category"
+    y="value"
+    fill="group" 
+  />
+</Plot>
+```
+
+## Insets
+
+
+
 You can create bullet bars using the `inset` option and two `BarX` layers:
 
 ```svelte live
@@ -103,7 +202,7 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
 
 [fork](https://svelte.dev/playground/d8170543f02c482ba64e82787d716e40?version=5.28.2)
 
-Note that **inset** by default only applies along the band scale, but won't affect the width of a BarX or and height of a BarY. You can use insetLeft, insetRight, insetTop, and insetBottom directly, e.g. to add space in a stacked bar chart:
+Note that **inset** by default only applies along the band scale axis, but won't affect the "length" the bars. You can use insetLeft, insetRight, insetTop, and insetBottom directly, e.g. to add space in a stacked bar chart:
 
 ```svelte live
 <script lang="ts">
@@ -145,6 +244,9 @@ Note that **inset** by default only applies along the band scale, but won't affe
 
 [fork](https://svelte.dev/playground/6f5f4ae882e24f5b81c60842c6250f31?version=5.28.2)
 
+:::caution
+Please be aware that by setting insets, you are slightly distorting the area of the bars.
+:::
 
 ## Border radius
 
@@ -186,12 +288,3 @@ Please be aware that by setting a border radius, you are slightly distorting the
     <RuleX data={[0]} />
 </Plot>
 ```
-
-## BarX
-
-Required channels:
-
-- y (band scale) 
-- x1, x2
-
-## BarY
