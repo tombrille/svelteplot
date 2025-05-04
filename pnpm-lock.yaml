@@ -48,8 +48,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       es-toolkit:
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.37.2
+        version: 1.37.2
       fast-equals:
         specifier: ^5.2.2
         version: 5.2.2
@@ -187,11 +187,11 @@ importers:
         specifier: ^2.8.1
         version: 2.8.1
       typedoc:
-        specifier: ^0.28.3
-        version: 0.28.3(typescript@5.8.3)
+        specifier: ^0.28.4
+        version: 0.28.4(typescript@5.8.3)
       typedoc-plugin-markdown:
         specifier: ^4.6.3
-        version: 4.6.3(typedoc@0.28.3(typescript@5.8.3))
+        version: 4.6.3(typedoc@0.28.4(typescript@5.8.3))
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -2632,8 +2632,8 @@ packages:
     resolution: {integrity: sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==}
     engines: {node: '>= 0.4'}
 
-  es-toolkit@1.37.1:
-    resolution: {integrity: sha512-DdySDruhCtmP793ePSFKz3eD+m6YEDtXyBxeiDxSJeFJ95K7zeE8GhPgKRAAskJ21GvnDB60DPSvAVbK2mE9WQ==}
+  es-toolkit@1.37.2:
+    resolution: {integrity: sha512-ADDfk+pPFF0ofMpRAIc6on01p8heiuwuuJsYLzTP4UOjxVK9QsE2+0D1Q4J/zX2XBo6ac+27H5++YBIwmGAX/g==}
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -4427,8 +4427,8 @@ packages:
     peerDependencies:
       typedoc: 0.28.x
 
-  typedoc@0.28.3:
-    resolution: {integrity: sha512-5svOCTfXvVSh6zbZKSQluZhR8yN2tKpTeHZxlmWpE6N5vc3R8k/jhg9nnD6n5tN9/ObuQTojkONrOxFdUFUG9w==}
+  typedoc@0.28.4:
+    resolution: {integrity: sha512-xKvKpIywE1rnqqLgjkoq0F3wOqYaKO9nV6YkkSat6IxOWacUCc/7Es0hR3OPmkIqkPoEn7U3x+sYdG72rstZQA==}
     engines: {node: '>= 18', pnpm: '>= 10'}
     hasBin: true
     peerDependencies:
@@ -7557,7 +7557,7 @@ snapshots:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
 
-  es-toolkit@1.37.1: {}
+  es-toolkit@1.37.2: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -9730,11 +9730,11 @@ snapshots:
       for-each: 0.3.3
       is-typed-array: 1.1.12
 
-  typedoc-plugin-markdown@4.6.3(typedoc@0.28.3(typescript@5.8.3)):
+  typedoc-plugin-markdown@4.6.3(typedoc@0.28.4(typescript@5.8.3)):
     dependencies:
-      typedoc: 0.28.3(typescript@5.8.3)
+      typedoc: 0.28.4(typescript@5.8.3)
 
-  typedoc@0.28.3(typescript@5.8.3):
+  typedoc@0.28.4(typescript@5.8.3):
     dependencies:
       '@gerrit0/mini-shiki': 3.2.2
       lunr: 2.3.9

@@ -81,7 +81,6 @@ You can create stacked bar charts by defining a fill channel which will be used 
 
 
 
-
 You can create bullet bars using the `inset` option and two `BarX` layers:
 
 ```svelte live
@@ -132,26 +131,20 @@ Note that **inset** by default only applies along the band scale, but won't affe
 ```
 
 ```svelte
-
+<BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} 
+        insetRight={1} />
 ```
 
+[fork](https://svelte.dev/playground/6f5f4ae882e24f5b81c60842c6250f31?version=5.28.2)
 
-## BarY
-
-<BarPlot />
-
-@code(./BarPlot.svelte)
-
-
-
-
-- `x`
-- `y1`
-- `y2`
-
-- `y`
-- `x1`
-- `x2`
 
 ## Border radius
 
@@ -195,4 +188,10 @@ Please be aware that by setting a border radius, you are slightly distorting the
 ```
 
 ## BarX
+
+Required channels:
+
+- y (band scale) 
+- x1, x2
+
 ## BarY
