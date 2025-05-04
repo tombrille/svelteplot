@@ -174,10 +174,6 @@ Marks support interactive events that can be hooked into:
         { x: 4, y: 5, size: 12, category: 'C' },
         { x: 5, y: 4, size: 15, category: 'B' }
     ];
-
-    function handleClick(e, d) {
-        console.log(e, d);
-    }
 </script>
 
 <Plot
@@ -191,12 +187,12 @@ Marks support interactive events that can be hooked into:
         x="x"
         r="size"
         fill="category"
-        onclick={handleClick} />
+        onclick={(e,d) => alert(JSON.stringify(d))} />
 </Plot>
 ```
 
 ```svelte
-<Dot data={points} x="x" y="y" onclick={handleClick} />
+<Dot data={points} x="x" y="y" onclick={{(e,d) => alert(JSON.stringify(d))}} />
 ```
 
 ## Faceting

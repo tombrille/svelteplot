@@ -9,8 +9,6 @@ title: Bar mark
 
 Bars are cool. They come in two flavors: [BarY](#BarY) for vertical bars (columns) and [BarX](#BarX) for horizontal bars.
 
-## BarX
-
 Here's a very simple bar chart:
 
 ```svelte live
@@ -32,45 +30,6 @@ Here's a very simple bar chart:
 <Plot y={{ type: 'band' }} x={{ grid: true }} height={120}>
     <BarX data={[1, 2, 3, 4, 5]} />
     <RuleX data={[0]} />
-</Plot>
-```
-
-You can create bullet bars using the `inset` option and two `BarX` layers:
-
-```svelte live
-<script>
-    import { Plot, BarX, RuleX } from '$lib';
-</script>
-
-<Plot y={{ type: 'band' }} height={200} marginTop={0}>
-    <BarX data={[2.3, 4, 5, 3.7, 5.4]} opacity={0.3} />
-    <BarX data={[1, 2, 3, 4, 5]} inset={8} />
-</Plot>
-```
-
-## BarY
-
-<BarPlot />
-
-@code(./BarPlot.svelte)
-
-In its simplest form, you can just pass a few numbers as data to create a bar chart:
-
-```svelte live
-<script>
-    import { Plot, BarY, RuleY } from '$lib';
-</script>
-
-<Plot>
-    <BarY data={[1, 2, 3, 4, 5]} />
-    <RuleY data={[0]} />
-</Plot>
-```
-
-```svelte
-<Plot>
-    <BarY data={[1, 2, 3, 4, 5]} />
-    <RuleY data={[0]} />
 </Plot>
 ```
 
@@ -105,8 +64,7 @@ You can create stacked bar charts by defining a fill channel which will be used 
 ```svelte
 <Plot
     x={{ axis: 'top' }}
-    color={{ legend: true }}
-    marginTop={40}>
+    color={{ legend: true }}>
     <RuleX data={[0]} />
     <BarX
         {...groupY(
@@ -119,6 +77,73 @@ You can create stacked bar charts by defining a fill channel which will be used 
         )} />
 </Plot>
 ```
+[fork](https://svelte.dev/playground/6d334e103f9e444d99bb67c8af1335bc?version=5.28.2)
+
+
+
+
+You can create bullet bars using the `inset` option and two `BarX` layers:
+
+```svelte live
+<script>
+    import { Plot, BarX, RuleX } from '$lib';
+</script>
+
+<Plot y={{ type: 'band' }} height={200} marginTop={0}>
+    <BarX data={[2.3, 4, 5, 3.7, 5.4]} opacity={0.3} />
+    <BarX data={[1, 2, 3, 4, 5]} inset={8} />
+</Plot>
+```
+
+```svelte
+<Plot y={{ type: 'band' }} height={200} marginTop={0}>
+    <BarX data={[2.3, 4, 5, 3.7, 5.4]} opacity={0.3} />
+    <BarX data={[1, 2, 3, 4, 5]} inset={8} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/d8170543f02c482ba64e82787d716e40?version=5.28.2)
+
+Note that **inset** by default only applies along the band scale, but won't affect the width of a BarX or and height of a BarY. You can use insetLeft, insetRight, insetTop, and insetBottom directly, e.g. to add space in a stacked bar chart:
+
+```svelte live
+<script lang="ts">
+    import { Plot, BarX, groupY, RuleX } from '$lib';
+    import { getContext } from 'svelte';
+
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
+</script>
+
+<Plot
+    x={{ axis: 'top' }}>
+    <RuleX data={[0]} />
+    <BarX
+        {...groupY(
+            {
+                data: penguins,
+                y: 'island',
+                fill: 'species'
+            },
+            { x: 'count' }
+        )} 
+        insetRight={1} />
+</Plot>
+```
+
+```svelte
+
+```
+
+
+## BarY
+
+<BarPlot />
+
+@code(./BarPlot.svelte)
+
+
+
 
 - `x`
 - `y1`
@@ -168,3 +193,6 @@ Please be aware that by setting a border radius, you are slightly distorting the
     <RuleX data={[0]} />
 </Plot>
 ```
+
+## BarX
+## BarY

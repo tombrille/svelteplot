@@ -61,16 +61,19 @@
                 {@const bw = plot.scales.y.fn.bandwidth()}
                 {@const minx = Math.min(d.x1, d.x2)}
                 {@const maxx = Math.max(d.x1, d.x2)}
-                {@const inset = resolveProp(args.inset, d.datum, 0)}
+                {@const insetLeft = resolveProp(args.insetLeft, d.datum, 0)}
+                {@const insetRight = resolveProp(args.insetRight, d.datum, 0)}
+                {@const insetTop = resolveProp(args.insetTop || args.inset, d.datum, 0)}
+                {@const insetBottom = resolveProp(args.insetBottom  || args.inset, d.datum, 0)}
                 {@const dx = resolveProp(args.dx, d.datum, 0)}
                 {@const dy = resolveProp(args.dy, d.datum, 0)}
                 {#if d.valid}
                     {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
                     <path
-                        d={roundedRect(0, 0, maxx - minx, bw - inset * 2, options.borderRadius)}
+                        d={roundedRect(0, 0, maxx - minx - insetLeft - insetRight, bw - insetTop - insetBottom, options.borderRadius)}
                         class={[styleClass, className]}
                         {style}
-                        transform="translate({[minx + dx, d.y + inset + dy - bw * 0.5]})"
+                        transform="translate({[minx + dx + insetLeft, d.y + insetTop + dy - bw * 0.5]})"
                         use:addEventHandlers={{
                             getPlotState,
                             options: args,
