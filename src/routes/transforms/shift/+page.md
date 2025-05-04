@@ -36,6 +36,8 @@ In this example, we're shifting a line by adding 2 months to the x values.
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/cae30b2e191a405f9be88149c5d8feb2?version=5.28.2)
+
 You can also define exactly which channels the shifted values should be stored into:
 
 ```svelte live
@@ -69,6 +71,8 @@ You can also define exactly which channels the shifted values should be stored i
         opacity="0.2" />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/527ee338f64545cab2685332b3936e63?version=5.28.2)
 
 Note that data values can only be shifted by a constant.
 

@@ -64,7 +64,7 @@ The [AreaY mark](/marks/area) applies the stackY transform implicitly if you do 
 
 The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you can stack rects, too.
 
-```svelte live
+```svelte --live
 <script lang="ts">
     import { Plot, RectY } from '$lib';
 
@@ -88,7 +88,9 @@ The stack transform works with any mark that consumes y1 & y2 or x1 & x2, so you
 </Plot>
 ```
 
-```svelte live
+xxx
+
+```svelte --live
 <script lang="ts">
     import { Plot, Area, stackY } from '$lib';
 

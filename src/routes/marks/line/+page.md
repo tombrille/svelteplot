@@ -27,7 +27,7 @@ The **line mark** draws two-dimensional lines as in a line chart. Because the li
 </Plot>
 ```
 
-[Fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
 
 If the **x** and **y** options are not defined, the line mark assumes that the data is an iterable of points \[\[_x₁_, _y₁_\], \[_x₂_, _y₂_\], …\].
 
@@ -51,6 +51,8 @@ If the **x** and **y** options are not defined, the line mark assumes that the d
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
+
 The [LineY constructor](/marks/line#LineY) provides default channel definitions of **x** = index and **y** = [identity](/features/transforms#identity), letting you pass an array of numbers as data. The [LineX constructor](/marks/line#LineX) similarly provides **x** = identity and **y** = index defaults for lines that go up↑ instead of to the right→. Below, a random walk is made using [d3.cumsum](https://d3js.org/d3-array/summarize#cumsum) and [d3.randomNormal](https://d3js.org/d3-random#randomNormal).
 
 ```svelte live
@@ -71,6 +73,8 @@ The [LineY constructor](/marks/line#LineY) provides default channel definitions 
     <LineY data={cumsum(range(600).map(randomNormal()))} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/ede4503f8072438e934b7c09b1bea441?version=5.28.1)
 
 As with [areas](/marks/area), points in lines are connected in input order: the first point is connected to the second point, the second is connected to the third, and so on. Line data is typically in chronological order. Unsorted data may produce gibberish.
 
@@ -96,6 +100,8 @@ As with [areas](/marks/area), points in lines are connected in input order: the 
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/e21a4fa678c6427c84221e29cb68bf50?version=5.28.1)
+
 If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 
 ```svelte live
@@ -106,7 +112,7 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
     let { aapl } = $derived(page.data.data);
 </script>
 
-<Plot y={{ grid: true }}>
+<Plot>
     <Line
         data={shuffle(aapl.slice(0))}
         x="Date"
@@ -116,7 +122,7 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 ```
 
 ```svelte
-<Plot y={{ grid: true }}>
+<Plot>
     <Line
         data={shuffle(aapl)}
         x="Date"
@@ -125,7 +131,9 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 </Plot>
 ```
 
-Grouping
+[fork](https://svelte.dev/playground/0de37ed2d05341f8b7faa85bb7858b41?version=5.28.1)
+
+Lines are automatically grouped by `stroke`, `fill`, or the `z` channel. Only points within a group are connected with a line.
 
 ```svelte live
 <script lang="ts">
@@ -134,7 +142,7 @@ Grouping
     let { aapl } = $derived(page.data.data);
 </script>
 
-<Plot>
+<Plot color={{ scheme: 'rainbow' }}>
     <Line
         data={aapl}
         x="Date"
@@ -144,7 +152,7 @@ Grouping
 ```
 
 ```svelte
-<Plot>
+<Plot color={{ scheme: 'rainbow' }}>
     <Line
         data={aapl}
         x="Date"
@@ -152,6 +160,8 @@ Grouping
         stroke={(d) => d.Date.getFullYear()} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.2)
 
 While the _x_ scale of a line chart often represents time, this is not required. For example, we can plot the elevation profile of a Tour de France stage.
 
@@ -170,7 +180,7 @@ While the _x_ scale of a line chart often represents time, this is not required.
         label: 'Elevation (m)'
     }}>
     <Line data={tdf} x="distance" y="elevation" />
-    <RuleY data={[0]} />
+    <RuleY y={0} />
 </Plot>
 ```
 
@@ -183,9 +193,11 @@ While the _x_ scale of a line chart often represents time, this is not required.
         label: 'Elevation (m)'
     }}>
     <Line data={tdf} x="distance" y="elevation" />
-    <RuleY data={[0]} />
+    <RuleY y={0} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/83193494dc8142b69f9ca15988e4a47f?version=5.28.1)
 
 There is no requirement that **y** be dependent on **x**; lines can be used in connected scatterplots to show two independent (but often correlated) variables. (See also [phase plots](https://en.wikipedia.org/wiki/Phase_portrait).) The chart below recreates Hannah Fairfield’s [“Driving Shifts Into Reverse”](http://www.nytimes.com/imagepages/2010/05/02/business/02metrics.html) from 2009.
 
@@ -351,22 +363,43 @@ Convenience wrapper for wrapping a list of numbers over their indices
 </Plot>
 ```
 
-LineY can automatically group?
+LineY can automatically stack?
 
 ```svelte live
 <script lang="ts">
-    import { Plot, LineY } from '$lib';
+    import { Plot, Line } from '$lib';
     import { page } from '$app/state';
     let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot grid y={{ nice: true }} height={350}>
-    <LineY
+    <Line
         data={riaa}
         x="year"
         y="revenue"
         z="format"
         stroke="group" />
+</Plot>
+```
+
+Line charts do not support implicit stacking, but you can use the [stack](/transforms/stack) explicitely:
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line, stackY } from '$lib';
+    import { page } from '$app/state';
+    let { riaa } = $derived(page.data.data);
+</script>
+
+<Plot grid y={{ nice: true }} height={350}>
+    <Line
+        {...stackY({
+            data: riaa,
+            x: 'year',
+            y: 'revenue',
+            z: 'format',
+            stroke: 'group'
+        })} />
 </Plot>
 ```
 
