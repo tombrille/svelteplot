@@ -82,10 +82,19 @@
                 {#if d.valid}
                     {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
                     <path
-                        d={roundedRect(0, 0, bw - insetLeft - insetRight, maxy - miny - insetTop - insetBottom, options.borderRadius)}
+                        d={roundedRect(
+                            0,
+                            0,
+                            bw - insetLeft - insetRight,
+                            maxy - miny - insetTop - insetBottom,
+                            options.borderRadius
+                        )}
                         class={[styleClass, className]}
                         {style}
-                        transform="translate({[d.x + insetLeft + dx - bw * 0.5, miny + dy + insetTop]})"
+                        transform="translate({[
+                            d.x + insetLeft + dx - bw * 0.5,
+                            miny + dy + insetTop
+                        ]})"
                         use:addEventHandlers={{
                             getPlotState,
                             options: args,
