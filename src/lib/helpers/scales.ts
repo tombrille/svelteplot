@@ -12,7 +12,6 @@ import { isSymbolOrNull } from './typeChecks.js';
 import { resolveProp, toChannelOption } from './resolve.js';
 import type {
     ChannelAccessor,
-    ColorScheme,
     GenericMarkOptions,
     Mark,
     MarkType,
@@ -296,7 +295,9 @@ export function createScale<T extends ScaleOptions>(
     }
 
     const domain = scaleOptions.domain
-        ? extent(scaleOptions.zero ? [0, ...scaleOptions.domain] : scaleOptions.domain)
+        ? isOrdinal
+            ? scaleOptions.domain
+            : extent(scaleOptions.zero ? [0, ...scaleOptions.domain] : scaleOptions.domain)
         : type === 'band' ||
             type === 'point' ||
             type === 'ordinal' ||
