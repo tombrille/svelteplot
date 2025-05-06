@@ -6,7 +6,7 @@ Test
 
 ```svelte live
 <script>
-    import { Plot, AxisX, BarX } from '$lib';
+    import { Plot, AxisX, BarX } from 'svelteplot';
 </script>
 
 <Plot

@@ -133,7 +133,7 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 
 ```svelte live
 <script>
-    import { Plot, AreaY, RuleY } from '$lib';
+    import { Plot, AreaY, RuleY } from 'svelteplot';
     import { range } from 'd3-array';
 </script>
 
@@ -162,7 +162,7 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 
 ```svelte live
 <script>
-    import { Plot, AreaY } from '$lib';
+    import { Plot, AreaY } from 'svelteplot';
     import { page } from '$app/state';
     let { riaa } = $derived(page.data.data);
 </script>
@@ -196,7 +196,7 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 
 ```svelte live
 <script>
-    import { Plot, AreaY } from '$lib';
+    import { Plot, AreaY } from 'svelteplot';
     import { page } from '$app/state';
     import { Select } from '$lib/ui';
     let { riaa } = $derived(page.data.data);
@@ -268,7 +268,7 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
 
 ```svelte live
 <script>
-    import { Plot, AreaX } from '$lib';
+    import { Plot, AreaX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

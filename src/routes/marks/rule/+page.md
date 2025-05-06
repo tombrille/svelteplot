@@ -13,7 +13,7 @@ Rules can be used for highlighting certain axis values but they can also be used
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -38,7 +38,7 @@ Like most other marks, rules also accept data for displaying multiple lines at o
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';

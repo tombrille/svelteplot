@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, BarY, RuleY } from '$lib';
+    import { Plot, BarY, RuleY } from 'svelteplot';
     import { getContext } from 'svelte';
 
     import { page } from '$app/stores';

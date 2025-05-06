@@ -4,10 +4,44 @@ title: Trying to cut off bars
 
 ```svelte live
 <script>
-    import { Plot, BarX } from '$lib';
+    import { Plot, BarY, Text, stackY } from 'svelteplot';
+    import { page } from '$app/state';
+    let { bundlesizes } = $derived(page.data.data);
 </script>
 
-<Plot x={{}} marginRight={8}>
-    <BarX data={[11, 12, 13, 14]} />
+<Plot height={500} x={{ domain: ['normal', 'core', 'd3'] }}>
+    <BarY
+        data={bundlesizes}
+        y="size"
+        insetTop={1}
+        borderRadius={4}
+        x="scenario"
+        {...stackY({
+            data: bundlesizes,
+            y: 'size',
+            x: 'scenario',
+            z: 'package'
+        })}
+        fill="package" />
+         <BarY
+        data={bundlesizes}
+        y="size"
+        insetTop={2}
+        borderRadius={4}
+        x="scenario"
+        fill="package" />
+    <!-- <Text
+        {...stackY({
+            data: bundlesizes,
+            y: 'size',
+            x: 'scenario',
+            z: 'package'
+        })}
+        y={(d) => (d.__y1 + d.__y2) * 0.5}
+        text="package"
+        fill="white"
+        stroke="black"
+        strokeOpacity="0.4"
+        strokeWidth="2" /> -->
 </Plot>
 ```

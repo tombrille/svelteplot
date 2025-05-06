@@ -65,7 +65,7 @@ In the following bar chart, we put two grids, one below the bars and one above:
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX, GridX } from '$lib';
+    import { Plot, BarX, RuleX, GridX } from 'svelteplot';
 </script>
 
 <Plot marginTop={0}>

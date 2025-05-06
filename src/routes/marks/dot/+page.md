@@ -8,7 +8,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 
 ```svelte live
 <script>
-    import { Plot, Dot, Pointer, RuleX } from '$lib';
+    import { Plot, Dot, Pointer, RuleX } from 'svelteplot';
     import Slider from '$lib/ui/Slider.svelte';
     import { page } from '$app/state';
 
@@ -47,7 +47,7 @@ When showing plots with a lot of dots, you can switch to canvas rendering to imp
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { range } from 'd3-array';
     import { randomNormal } from 'd3-random';
 
@@ -76,7 +76,7 @@ dsdsd sd sd sdsd sd
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     const { penguins } = $derived(page.data.data);
 </script>
@@ -95,7 +95,7 @@ One more
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 
@@ -126,7 +126,7 @@ You can also use a point scale for dot dimensions to create dot plots, such as t
 
 ```svelte live
 <script>
-    import { Plot, Dot, GridY, AxisX } from '$lib';
+    import { Plot, Dot, GridY, AxisX } from 'svelteplot';
     import { page } from '$app/state';
     let { languages } = $derived(page.data.data);
 </script>
@@ -160,7 +160,7 @@ Using the **DotX** mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotX } from '$lib';
+    import { Plot, DotX } from 'svelteplot';
     import { page } from '$app/state';
     let { cars } = $derived(page.data.data);
 </script>
@@ -176,7 +176,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
 
 ```svelte live
 <script>
-    import { Plot, DotY } from '$lib';
+    import { Plot, DotY } from 'svelteplot';
     import { page } from '$app/state';
     let { cars } = $derived(page.data.data);
 </script>
@@ -192,7 +192,7 @@ You can use the color channel for encoding a third quantitative variable.
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Dot, RuleY } from '$lib';
+    import { Plot, Dot, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);
 

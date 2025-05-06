@@ -1,5 +1,5 @@
 <script>
-    import { Arrow, Plot } from '$lib';
+    import { Arrow, Plot } from 'svelteplot';
     let args = $props();
 </script>
 

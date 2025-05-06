@@ -47,7 +47,7 @@ title: Test filters
 
 ```svelte live
 <script>
-    import { Plot, AxisX, AxisY } from '$lib';
+    import { Plot, AxisX, AxisY } from 'svelteplot';
 </script>
 
 <Plot height={200} testid="axis">
@@ -108,7 +108,7 @@ title: Test filters
 
 ```svelte live
 <script>
-    import { Plot, Cell, formatMonth } from '$lib';
+    import { Plot, Cell, formatMonth } from 'svelteplot';
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
 </script>
@@ -155,7 +155,7 @@ title: Test filters
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY } from '$lib';
+    import { Plot, GridX, GridY } from 'svelteplot';
 </script>
 
 <Plot height={200} testid="grid">
@@ -248,7 +248,7 @@ title: Test filters
 
 ```svelte live
 <script>
-    import { Plot, RuleX, RuleY } from '$lib';
+    import { Plot, RuleX, RuleY } from 'svelteplot';
 </script>
 
 <Plot height={200} testid="rule">
@@ -261,7 +261,7 @@ title: Test filters
 
 ```svelte live
 <script>
-    import { Plot, Text, formatMonth } from '$lib';
+    import { Plot, Text, formatMonth } from 'svelteplot';
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
 </script>

@@ -12,7 +12,7 @@ The select transform filters a mark’s index to show a subset of the data. For 
         RuleY,
         selectLast,
         Text
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -61,7 +61,7 @@ Using _selectMinY_ and _selectMaxY_, you can label the extreme values.
         selectMinY,
         selectMaxY,
         Text
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -125,7 +125,7 @@ The select transform groups data into series using the **z**, **fill**, or **str
         RuleY,
         selectLast,
         Text
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { stocks } = $derived(page.data.data);
 </script>

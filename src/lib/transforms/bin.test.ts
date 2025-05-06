@@ -85,7 +85,7 @@ describe('binX', () => {
                 y: 'mean'
             }
         );
-        
+
         // Check individual properties instead of the entire object
         // This avoids issues with whitespace or property order
         expect(channels.insetLeft).toBe(0.5);
@@ -99,20 +99,20 @@ describe('binX', () => {
         expect(channels.__y_origField).toContain('Average');
         expect(channels.__y_origField).toContain('y');
         expect(data).toHaveLength(5);
-        
+
         // Make the test timezone-agnostic by checking date properties rather than exact date objects
         const firstBin = data[0];
         expect(firstBin.__y).toBe(1.5);
-        
+
         // Check that the dates are roughly a week apart (5-7 days)
         const x1Time = firstBin.__x1.getTime();
         const x2Time = firstBin.__x2.getTime();
         const xTime = firstBin.__x.getTime();
-        
+
         // Check that x is approximately in the middle of x1 and x2
         expect(xTime).toBeGreaterThan(x1Time);
         expect(xTime).toBeLessThan(x2Time);
-        
+
         // Verify the bin covers about a week (4-7 days in milliseconds based on implementation)
         const binDuration = x2Time - x1Time;
         expect(binDuration).toBeGreaterThanOrEqual(4 * 24 * 60 * 60 * 1000);

@@ -6,7 +6,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 
 ```svelte live
 <script>
-    import { Plot, Geo } from '$lib';
+    import { Plot, Geo } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     import { geoEqualEarth } from 'd3-geo';
@@ -74,7 +74,7 @@ Earthquakes SVG
 
 ```svelte live
 <script>
-    import { Plot, Geo, Sphere } from '$lib';
+    import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
 
@@ -102,7 +102,7 @@ Earthquakes Canvas
 
 ```svelte live
 <script>
-    import { Plot, Geo, Sphere } from '$lib';
+    import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
 
@@ -131,7 +131,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 ```svelte live
 <script>
-    import { Plot, Geo, Sphere } from '$lib';
+    import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCircle } from 'd3-geo';
@@ -163,7 +163,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 ```svelte live
 <script>
-    import { Plot, Geo, Sphere } from '$lib';
+    import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCircle } from 'd3-geo';
@@ -224,7 +224,7 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 
 ```svelte live
 <script>
-    import { Plot, Graticule, Sphere } from '$lib';
+    import { Plot, Graticule, Sphere } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let stepX = $state(10);

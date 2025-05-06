@@ -6,7 +6,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 
 ```svelte live
 <script>
-    import { Plot, Line, Dot, Text, Pointer } from '$lib';
+    import { Plot, Line, Dot, Text, Pointer } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 
@@ -74,7 +74,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
         AxisX,
         AxisY,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -139,7 +139,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -175,7 +175,7 @@ You can create a "crosshair" mark by wrapping grids and axes marks inside a poin
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -213,7 +213,7 @@ If you pass a **z** channel to the Pointer mark it will try to find up to one da
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { stocks } = $derived(page.data.data);
     let stocks2 = $derived(

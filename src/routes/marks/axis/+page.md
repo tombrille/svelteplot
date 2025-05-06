@@ -6,7 +6,7 @@ Axis marks are useful for rendering the x and y axes! Since they are useful in 9
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -29,7 +29,7 @@ You can turn the implicit axes off by adding `axis: false`
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -52,7 +52,7 @@ You can also control the implicit axes individually using the x and y options. H
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -92,7 +92,7 @@ A combination of options:
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -134,7 +134,7 @@ If you add the `AxisX` and `AxisY` marks to your plot, SveltePlot will disable t
 
 ```svelte live
 <script>
-    import { Plot, Line, AxisX, AxisY } from '$lib';
+    import { Plot, Line, AxisX, AxisY } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -191,7 +191,7 @@ Ordinal axis:
 
 ```svelte live
 <script>
-    import { Plot, RuleY } from '$lib';
+    import { Plot, RuleY } from 'svelteplot';
 </script>
 
 <Plot
@@ -215,7 +215,7 @@ You can change the defaults for SveltePlot grids by defining the `svelteplot/def
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -294,7 +294,7 @@ You can customize the automatic axis ticks using the `interval` and `tickSpacing
 
 ```svelte live
 <script>
-    import { Plot } from '$lib';
+    import { Plot } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let interval = $state(15);
@@ -318,7 +318,7 @@ For time-scales you can define the interval as string:
 
 ```svelte live
 <script>
-    import { Plot } from '$lib';
+    import { Plot } from 'svelteplot';
     import { Select } from '$lib/ui';
 
     let interval = $state('3 months');
@@ -359,7 +359,7 @@ Another way to customize the number of ticks shown is to set the **tickSpacing**
 
 ```svelte live
 <script>
-    import { Plot } from '$lib';
+    import { Plot } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let tickSpacing = $state(30);
@@ -383,7 +383,7 @@ You can also define the ticks manually:
 
 ```svelte live
 <script>
-    import { Plot } from '$lib';
+    import { Plot } from 'svelteplot';
     import { Slider } from '$lib/ui';
 </script>
 
@@ -412,7 +412,7 @@ To render y axis ticks inside the plot you need to use the explicit axis mark wh
 
 ```svelte live
 <script>
-    import { Plot, Line, AxisY } from '$lib';
+    import { Plot, Line, AxisY } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -446,7 +446,7 @@ You can assign custom class to ticks based on the tick value by passing a `tickC
 
 ```svelte live
 <script>
-    import { Plot, AxisX } from '$lib';
+    import { Plot, AxisX } from 'svelteplot';
 </script>
 
 <Plot
@@ -494,7 +494,7 @@ You can use two explicit axes to create multiple layers of ticks. The yearly tic
 
 ```svelte live
 <script>
-    import { Plot, AxisX } from '$lib';
+    import { Plot, AxisX } from 'svelteplot';
 </script>
 
 <Plot
@@ -542,7 +542,7 @@ Note that you can achieve a similar axis using a custom tick format function tha
 
 ```svelte live
 <script>
-    import { Plot, AxisX } from '$lib';
+    import { Plot, AxisX } from 'svelteplot';
 </script>
 
 <Plot
@@ -587,7 +587,7 @@ Keep in mind that rotated texts are a lot harder to read, so if possible, avoid 
 
 ```svelte live
 <script>
-    import { Plot, RuleY } from '$lib';
+    import { Plot, RuleY } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let tickRotate = $state(-45);

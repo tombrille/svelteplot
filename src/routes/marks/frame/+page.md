@@ -7,7 +7,7 @@ easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -29,7 +29,7 @@ If you need more customization options, you can add the frame manually by explic
 
 ```svelte live
 <script>
-    import { Plot, Frame, Line } from '$lib';
+    import { Plot, Frame, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>

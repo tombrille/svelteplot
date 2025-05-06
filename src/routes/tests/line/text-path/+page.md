@@ -4,7 +4,7 @@ title: Show text along path
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot } from '$lib';
+    import { Plot, Line, Dot } from 'svelteplot';
     import { Checkbox } from '$lib/ui';
 
     import { page } from '$app/state';

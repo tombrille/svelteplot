@@ -16,7 +16,7 @@ The x channel is bound to the _x_ scale, (other marks may also bind channels lik
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -38,7 +38,7 @@ Since we no longer have a single key, the y axis title is left empty.
 
 ```svelte live
 <script>
-    import { Plot, RuleX } from '$lib';
+    import { Plot, RuleX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -62,7 +62,7 @@ You can set a custom axis title or domain by providing global scale options:
 
 ```svelte live
 <script>
-    import { Plot, RuleX } from '$lib';
+    import { Plot, RuleX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -97,7 +97,7 @@ side of the plot while the second (x = 100) corresponds to the right side.
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line } from 'svelteplot';
 </script>
 
 <Plot
@@ -117,7 +117,7 @@ Scales can be reversed using the **reverse** option:
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line } from 'svelteplot';
 </script>
 
 <Plot
@@ -140,7 +140,7 @@ based on the Gregorian calendar.
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line } from 'svelteplot';
 </script>
 
 <Plot
@@ -176,7 +176,7 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Line } from '$lib';
+    import { Plot, GridX, GridY, Line } from 'svelteplot';
 </script>
 
 <Plot
@@ -198,7 +198,7 @@ For input domains ranging multiple magnitudes above and below zero, the bi-symme
 
 ```svelte live
 <script>
-    import { Plot, RectX } from '$lib';
+    import { Plot, RectX } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let constant = $state(1);
@@ -250,7 +250,7 @@ Point scales map a discrete input domain to single coordinates in your plot. Sve
 
 ```svelte live
 <script>
-    import { Plot, Dot, group } from '$lib';
+    import { Plot, Dot, group } from 'svelteplot';
     import { page } from '$app/state';
     let { cars } = $derived(page.data.data);
 </script>
@@ -299,7 +299,7 @@ We can force the y scale to use a point scale, too, by setting `type: 'point'` o
 
 ```svelte live
 <script>
-    import { Plot, Dot, group } from '$lib';
+    import { Plot, Dot, group } from 'svelteplot';
     import { page } from '$app/state';
     let { cars } = $derived(page.data.data);
 </script>
@@ -348,7 +348,7 @@ We can also see that the scale is no longer sorted by cylinders, as the domain o
 
 ```svelte live
 <script>
-    import { Plot, Dot, group } from '$lib';
+    import { Plot, Dot, group } from 'svelteplot';
     import { page } from '$app/state';
     let { cars } = $derived(page.data.data);
 </script>
@@ -403,7 +403,7 @@ Categorical color scales are useful for mapping categories to colors. The follow
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -431,7 +431,7 @@ There are 11 categorical schemes included in SveltePlot, the default is `observa
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { Select } from '$lib/ui';
     import { page } from '$app/state';
     let { countries_2020 } = $derived(page.data.data);
@@ -491,7 +491,7 @@ If you want to map custom colors to your data, you need to pass them via the `sc
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -533,7 +533,7 @@ Note that the colors are picked in the order the categories appear in your datas
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -577,7 +577,7 @@ Another very common way to color plots is to map numbers to colors. If you simpl
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -616,7 +616,7 @@ The default color scheme shown above is called `turbo`, but we can change it to 
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
+    import { Plot, GridX, GridY, Dot } from 'svelteplot';
     import { page } from '$app/state';
     import { Select } from '$lib/ui';
     let { penguins } = $derived(page.data.data);
@@ -698,7 +698,7 @@ You can also interpolate between custom colors of your liking by passing them as
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -734,7 +734,7 @@ You may wonder why some of the color schemes don't use their entire range (e.g.,
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -765,7 +765,7 @@ You can disable this by passing `type: 'linear'` to the color options:
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -806,7 +806,7 @@ Alternatively you can change the center point of the diverging scale using the `
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     import { Slider } from '$lib/ui';
     let { penguins } = $derived(page.data.data);
@@ -849,7 +849,7 @@ You can set `type: 'quantile-cont'` for a continuous quantile interpolation. Not
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { countries_2020 } = $derived(page.data.data);
     import { Checkbox } from '$lib/ui';
@@ -880,7 +880,7 @@ For mapping [power-law distributions](https://en.wikipedia.org/wiki/Power_law) (
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { countries_2020 } = $derived(page.data.data);
     import { Checkbox } from '$lib/ui';
@@ -925,7 +925,7 @@ Like log scales but allows for negative values.
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { RadioInput } from '$lib/ui';
     import { csvFormat } from 'd3-dsv';
     import { page } from '$app/state';
@@ -962,7 +962,7 @@ Quantize is like a "stepped" linear scale, where a continuous input domain is ma
 
 ```svelte live
 <script>
-    import { Plot, Cell, formatMonth } from '$lib';
+    import { Plot, Cell, formatMonth } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let n = $state(5);
@@ -999,7 +999,7 @@ Again, you can use your custom colors using the `scheme` option. If you omit the
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -1040,7 +1040,7 @@ If you also pass the `n` option to set a different number of output values, Svel
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
@@ -1089,7 +1089,7 @@ Similiar to the `quantile` scale. Not to be confused with the continuous [quanti
 
 ```svelte live
 <script>
-    import { Plot, Cell, formatMonth } from '$lib';
+    import { Plot, Cell, formatMonth } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let n = $state(5);
@@ -1128,7 +1128,7 @@ Threshold scales give you absolute freedom for the breaks:
 
 ```svelte live
 <script>
-    import { Plot, Cell, formatMonth } from '$lib';
+    import { Plot, Cell, formatMonth } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
 
@@ -1174,7 +1174,7 @@ The color scales are used whenever a _fill_ or _stroke_ channel is mapped to val
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
+    import { Plot, GridX, GridY, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
 </script>
@@ -1202,7 +1202,7 @@ Note that SveltePlot also recognizes generic CSS variables as valid color names,
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
+    import { Plot, GridX, GridY, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
 </script>
@@ -1248,7 +1248,7 @@ You can also force SveltePlot to bypass the color scale using `scale: null`.
 
 ```svelte live
 <script>
-    import { Plot, GridX, GridY, Dot } from '$lib';
+    import { Plot, GridX, GridY, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
 </script>

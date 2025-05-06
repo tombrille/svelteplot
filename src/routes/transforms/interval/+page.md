@@ -8,7 +8,7 @@ The interval transform is often used for time-series bar charts. For example, co
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarY, RuleY } from '$lib';
+    import { Plot, BarY, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     const MONTH_YEAR = new Intl.DateTimeFormat('en-US', {
@@ -32,7 +32,7 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 
 ```svelte live
 <script lang="ts">
-    import { Plot, RectY, RuleY } from '$lib';
+    import { Plot, RectY, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';
@@ -66,7 +66,7 @@ The meaning of the interval mark option depends on the associated mark, such as 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarY, RuleY } from '$lib';
+    import { Plot, BarY, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';

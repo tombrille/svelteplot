@@ -6,7 +6,7 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import Select from '$lib/ui/Select.svelte';
     import Slider from '$lib/ui/Slider.svelte';
 
@@ -122,7 +122,7 @@ You can also specify a custom marker icon using the `marker` snippet:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';
@@ -170,7 +170,7 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { fly, fade } from 'svelte/transition';
 
     import { page } from '$app/state';

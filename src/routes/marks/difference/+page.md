@@ -8,7 +8,7 @@ The following example shows trade between the USA and the UK, with the exports f
 
 ```svelte live
 <script>
-    import { Plot, Line, DifferenceY } from '$lib';
+    import { Plot, Line, DifferenceY } from 'svelteplot';
     import { page } from '$app/state';
     let { trade } = $derived(page.data.data);
 </script>
@@ -68,7 +68,7 @@ If just one _x_ and _y_ channel is defined, the value zero will be used as compa
 
 ```svelte live
 <script>
-    import { Plot, Line, DifferenceY, RuleY } from '$lib';
+    import { Plot, Line, DifferenceY, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { gistemp } = $derived(page.data.data);
 </script>
@@ -102,7 +102,7 @@ You can compare the metric to a different "baseline" by providing a constant _y1
 
 ```svelte live
 <script>
-    import { Plot, Line, DifferenceY, RuleY } from '$lib';
+    import { Plot, Line, DifferenceY, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { gistemp } = $derived(page.data.data);
     import { Slider } from '$lib/ui';
@@ -152,7 +152,7 @@ In combination with the [shift transform](/transforms/shift) you can compare a s
         DifferenceY,
         shiftX,
         RuleX
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     import { Slider } from '$lib/ui';
 

@@ -6,7 +6,7 @@ title: Custom marks
 
 ```svelte live
 <script>
-    import { Plot, Dot, CustomMark } from '$lib';
+    import { Plot, Dot, CustomMark } from 'svelteplot';
     import Spiral from '$lib/ui/Spiral.svelte';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
@@ -64,7 +64,7 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
 
 ```svelte live
 <script>
-    import { Plot, Dot, CustomMarkHTML } from '$lib';
+    import { Plot, Dot, CustomMarkHTML } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -118,7 +118,7 @@ You can arrange custom HTML elements in the plot using the `CustomMarkHTML` mark
 
 ```svelte live
 <script>
-    import { Plot, Dot, CustomMarkHTML } from '$lib';
+    import { Plot, Dot, CustomMarkHTML } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
     import { sampleSize } from 'es-toolkit';
@@ -183,7 +183,7 @@ Another way to use custom marks is to position them yourself using the `mapXY` m
 
 ```svelte live
 <script>
-    import { Plot, Dot, CustomMarkHTML } from '$lib';
+    import { Plot, Dot, CustomMarkHTML } from 'svelteplot';
 
     const data = [
         { val1: 8, val2: -8 },

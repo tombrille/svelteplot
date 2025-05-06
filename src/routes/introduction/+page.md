@@ -38,7 +38,7 @@ If we want to plot a line showing the closing price over time, all we have to wr
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -65,7 +65,7 @@ Let's say we also want to add a grid and a horizontal rule at zero. To activate 
 
 ```svelte live
 <script>
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -92,7 +92,7 @@ Now, let's also fill the area between the line and the horizontal rule by adding
 
 ```svelte live
 <script>
-    import { Plot, Line, AreaY, RuleY } from '$lib';
+    import { Plot, Line, AreaY, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -136,7 +136,7 @@ Since SveltePlots are just SVG, you can mix in SVG elements. Let's say we want t
 
 ```svelte live
 <script>
-    import { Plot, Line, AreaY, RuleY } from '$lib';
+    import { Plot, Line, AreaY, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -190,7 +190,7 @@ Our dataset contains daily data, but what if we want to show monthly aggregates 
 
 ```svelte live
 <script>
-    import { Plot, Line, binX } from '$lib';
+    import { Plot, Line, binX } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -230,7 +230,7 @@ We can also use the binX transform to compute the min and max closing value of e
 
 ```svelte live
 <script>
-    import { Plot, Line, AreaY, binX } from '$lib';
+    import { Plot, Line, AreaY, binX } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -268,7 +268,7 @@ Also, somehow, these axes already know the extent of our data! This is possible 
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -288,7 +288,7 @@ Similarily you can enable the implicit grids by setting `grid` to `true`:
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -302,7 +302,7 @@ And somehow these axes already know the extent of the data we passed to the line
 
 ```svelte --live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
 
     let { olympians } = $derived(page.data.data);
@@ -344,7 +344,7 @@ This scatterplot suffers from overplotting: many dots are drawn in the same spot
 
 ```svelte --live
 <script>
-    import { Plot, Rect, bin } from '$lib';
+    import { Plot, Rect, bin } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -383,7 +383,7 @@ We can use the [binX transform](/transforms/bin) to compute a weight distributio
         RuleY,
         DotX,
         binX
-    } from '$lib';
+    } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -430,7 +430,7 @@ Or we can use the built-in [faceting](/features/facets) to look at the distribut
         RuleY,
         DotX,
         binX
-    } from '$lib';
+    } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);

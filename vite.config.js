@@ -10,11 +10,13 @@ export default defineConfig({
     resolve: {
         ...(process.env.VITEST
             ? {
-                  conditions: ['browser']
-              }
+                conditions: ['browser']
+            }
             : undefined),
         alias: {
-            svelteplot: path.resolve(__dirname, './src/lib/index.js')
+            svelteplot: path.resolve(__dirname, './src/lib/index.js'),
+            $lib: path.resolve(__dirname, './src/lib'),
+            '$lib/*': path.resolve(__dirname, './src/lib') + '/*'
         }
     },
     plugins: [

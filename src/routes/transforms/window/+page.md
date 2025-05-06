@@ -4,7 +4,7 @@ title: Window transform
 
 ```svelte live
 <script>
-    import { Plot, AreaY, Line, windowY } from '$lib';
+    import { Plot, AreaY, Line, windowY } from 'svelteplot';
     import { Slider, Select } from '$lib/ui';
     import { page } from '$app/state';
 
@@ -156,7 +156,7 @@ Note that the window transform is series-aware (it groups by z/fill/stroke befor
         groupZ,
         Text,
         selectLast
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     import { Slider } from '$lib/ui';
     import { groups } from 'd3-array';
@@ -267,7 +267,7 @@ Note that _{'{ k: 20 }'}_ doesn't ensure that you're computing a 20-year average
         RuleY,
         windowY,
         binX
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { cherryblossom } = $derived(page.data.data);
 
@@ -315,7 +315,7 @@ If we just use the `windowY` transform with _{'{ k: 20, strict: 5 }'}_ to comput
         RuleY,
         windowY,
         binX
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { cherryblossom } = $derived(page.data.data);
 
@@ -359,7 +359,7 @@ The problem is that especially in pre-modern times, there aren't nearly as many 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot, binX } from '$lib';
+    import { Plot, Line, Dot, binX } from 'svelteplot';
     import { page } from '$app/state';
     let { cherryblossom } = $derived(page.data.data);
 
@@ -412,7 +412,7 @@ We can fix this problem by setting the _interval_ option of the window transform
         RuleY,
         windowY,
         binX
-    } from '$lib';
+    } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let { cherryblossom } = $derived(page.data.data);

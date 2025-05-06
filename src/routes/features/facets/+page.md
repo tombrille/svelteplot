@@ -59,7 +59,7 @@ Here's a histogram of Olympian athlete weights faceted by sex:
 
 ```svelte live
 <script>
-    import { Plot, RectY, RuleY, binX } from '$lib';
+    import { Plot, RectY, RuleY, binX } from 'svelteplot';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
 </script>

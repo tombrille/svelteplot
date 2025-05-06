@@ -6,7 +6,7 @@ By default, ordinal scales are sorted alphabetically.
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, sort } from '$lib';
+    import { Plot, BarY, RuleY, sort } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -31,7 +31,7 @@ But you can change the sorting using the **sort** transform option, which will c
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, sort } from '$lib';
+    import { Plot, BarY, RuleY, sort } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -64,7 +64,7 @@ To invert the channel sorting, you can either add `order: 'descending` to the so
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, sort } from '$lib';
+    import { Plot, BarY, RuleY, sort } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -99,7 +99,7 @@ Sorts the data.
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, sort } from '$lib';
+    import { Plot, BarY, RuleY, sort } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -115,7 +115,7 @@ Sorts the data.
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, sort } from '$lib';
+    import { Plot, BarY, RuleY, sort } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -141,7 +141,7 @@ Shuffles the data randomly. If a **seed** option is specified, a [linear congrue
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, shuffle } from '$lib';
+    import { Plot, BarY, RuleY, shuffle } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { getContext } from 'svelte';
 
@@ -181,7 +181,7 @@ The reverse transform reverses the data order:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarY, RuleY, reverse } from '$lib';
+    import { Plot, BarY, RuleY, reverse } from 'svelteplot';
     import { getContext } from 'svelte';
 
     import { page } from '$app/state';
@@ -201,7 +201,7 @@ The reverse transform reverses the data order:
 
 ```svelte
 <script lang="ts">
-    import { Plot, BarY, RuleY, reverse } from '$lib';
+    import { Plot, BarY, RuleY, reverse } from 'svelteplot';
     // ...
 </script>
 
@@ -222,7 +222,7 @@ There's a simpler way to reverse the order of a band scale by setting `reverse: 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarY, RuleY, reverse } from '$lib';
+    import { Plot, BarY, RuleY, reverse } from 'svelteplot';
     import { getContext } from 'svelte';
 
     import { page } from '$app/state';

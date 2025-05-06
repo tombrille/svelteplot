@@ -6,7 +6,7 @@ Useful for showing text labels. The text mark is using SVG `<text>` elements, so
 
 ```svelte live
 <script>
-    import { Plot, Line, Text } from '$lib';
+    import { Plot, Line, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { driving } = $derived(page.data.data);
@@ -62,7 +62,7 @@ Useful for showing text labels. The text mark is using SVG `<text>` elements, so
 
 ```svelte live
 <script>
-    import { Plot, Dot, Text } from '$lib';
+    import { Plot, Dot, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
@@ -137,7 +137,7 @@ You can align text relative to the plot frame. This is useful for captions or an
 
 ```svelte live
 <script>
-    import { Plot, Dot, Text } from '$lib';
+    import { Plot, Dot, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);

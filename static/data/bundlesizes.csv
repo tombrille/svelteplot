@@ -1,0 +1,9 @@
+scenario,package,size
+normal,svelteplot,31.25
+normal,svelte,16.33
+normal,d3,60.35
+core,svelte,16.13
+core,svelteplot,20.98
+core,d3,37.14
+d3,svelte,6.71
+d3,d3,12.21

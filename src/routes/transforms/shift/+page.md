@@ -8,7 +8,7 @@ In this example, we're shifting a line by adding 2 months to the x values.
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, shiftX } from '$lib';
+    import { Plot, Line, shiftX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -42,7 +42,7 @@ You can also define exactly which channels the shifted values should be stored i
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, AreaY, shiftY } from '$lib';
+    import { Plot, Line, AreaY, shiftY } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -80,7 +80,7 @@ Under the hood, the shift transform is using the interval helpers from [d3-time]
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, AreaY } from '$lib';
+    import { Plot, Line, AreaY } from 'svelteplot';
     import { page } from '$app/state';
     import { timeMonth } from 'd3-time';
     let { aapl } = $derived(page.data.data);

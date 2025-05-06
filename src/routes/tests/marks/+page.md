@@ -4,7 +4,7 @@ title: Test
 
 ```svelte live
 <script>
-    import { Plot, Rect } from '$lib';
+    import { Plot, Rect } from 'svelteplot';
 </script>
 
 <Plot>
@@ -22,7 +22,7 @@ Link to [empty page](empty).
 
 ```svelte --live
 <script>
-    import { Plot, Line, RectX } from '$lib';
+    import { Plot, Line, RectX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -46,7 +46,7 @@ Link to [empty page](empty).
 ```svelte
 <script lang="ts">
     import { css } from '@emotion/css';
-    import { Plot, Line, Dot, AreaY, RectX } from '$lib';
+    import { Plot, Line, Dot, AreaY, RectX } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     import { page } from '$app/state';

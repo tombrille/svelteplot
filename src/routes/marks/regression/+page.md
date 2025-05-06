@@ -6,7 +6,7 @@ Regressions are useful if you want to show the relationship between two variable
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Dot, RuleY, RegressionY } from '$lib';
+    import { Plot, Dot, RuleY, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     import { Select, Slider } from '$lib/ui';
 
@@ -70,7 +70,7 @@ Sometimes it's useful to look at regression within sub-groups of a dataset, sinc
 
 ```svelte live
 <script>
-    import { Plot, Dot, RegressionY } from '$lib';
+    import { Plot, Dot, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -101,7 +101,7 @@ You can combine the regression mark with grouping _and_ faceting:
 
 ```svelte live
 <script>
-    import { Plot, Dot, RegressionY } from '$lib';
+    import { Plot, Dot, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -157,7 +157,7 @@ Returns a linear regression mark where y is the dependent variable and x is the 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Dot, RuleY, RegressionY } from '$lib';
+    import { Plot, Dot, RuleY, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     import { Select, Slider } from '$lib/ui';
 
@@ -213,7 +213,7 @@ Returns a linear regression mark where x is the dependent variable and y is the 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Dot, RuleY, RegressionX } from '$lib';
+    import { Plot, Dot, RuleY, RegressionX } from 'svelteplot';
     import { page } from '$app/state';
     import { Select, Slider } from '$lib/ui';
 

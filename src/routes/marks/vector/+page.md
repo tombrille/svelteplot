@@ -6,7 +6,7 @@ The vector mark lets you place shapes (like arrows) on your plot. If you want to
 
 ```svelte live
 <script>
-    import { Plot, Vector } from '$lib';
+    import { Plot, Vector } from 'svelteplot';
     import { page } from '$app/state';
     let { wind } = $derived(page.data.data);
 </script>
@@ -43,7 +43,7 @@ Here's an example where all arrows point towards the mouse cursor:
 
 ```svelte live
 <script>
-    import { Plot, Vector, Frame } from '$lib';
+    import { Plot, Vector, Frame } from 'svelteplot';
     import { page } from '$app/state';
     import { range } from 'd3-array';
 
@@ -129,7 +129,7 @@ Vector mark can deal with projection system, allowing you to create shift maps:
 
 ```svelte live
 <script>
-    import { Plot, Geo, Vector, geoCentroid } from '$lib';
+    import { Plot, Geo, Vector, geoCentroid } from 'svelteplot';
     import * as topojson from 'topojson-client';
     import { page } from '$app/state';
     let { us, election } = $derived(page.data.data);
@@ -238,7 +238,7 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
 
 ```svelte live
 <script>
-    import { Plot, Vector, Frame, Dot } from '$lib';
+    import { Plot, Vector, Frame, Dot } from 'svelteplot';
     import { page } from '$app/state';
     import { range } from 'd3-array';
 
@@ -318,7 +318,7 @@ The **Spike** mark is a [convenience wrapper](https://github.com/svelteplot/svel
 
 ```svelte live
 <script>
-    import { Plot, Geo, Spike, geoCentroid } from '$lib';
+    import { Plot, Geo, Spike, geoCentroid } from 'svelteplot';
     import * as topojson from 'topojson-client';
     import { page } from '$app/state';
     const { us, election } = $derived(page.data.data);

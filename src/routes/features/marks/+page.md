@@ -65,7 +65,7 @@ Styles can also be defined as function, even for non-scaled attributes like
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
 
     // Sample data
     const data = [
@@ -111,7 +111,7 @@ Compare the DOM of the example below:
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { css } from '@emotion/css';
 
     // Sample data
@@ -163,7 +163,7 @@ Marks support interactive events that can be hooked into:
 
 ```svelte live
 <script>
-    import { Plot, Dot, AxisX, AxisY } from '$lib';
+    import { Plot, Dot, AxisX, AxisY } from 'svelteplot';
 
     // Sample data
     const data = [
@@ -187,7 +187,7 @@ Marks support interactive events that can be hooked into:
         x="x"
         r="size"
         fill="category"
-        onclick={(e,d) => alert(JSON.stringify(d))} />
+        onclick={(e, d) => alert(JSON.stringify(d))} />
 </Plot>
 ```
 

@@ -11,7 +11,7 @@ The **line mark** draws two-dimensional lines as in a line chart. Because the li
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -33,7 +33,7 @@ If the **x** and **y** options are not defined, the line mark assumes that the d
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';
@@ -57,7 +57,7 @@ The [LineY constructor](/marks/line#LineY) provides default channel definitions 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, LineY } from '$lib';
+    import { Plot, LineY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
     import { randomNormal } from 'd3-random';
     import { range, cumsum } from 'd3-array';
@@ -80,7 +80,7 @@ As with [areas](/marks/area), points in lines are connected in input order: the 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import { shuffle } from 'd3-array';
     let { aapl } = $derived(page.data.data);
@@ -106,7 +106,7 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import { shuffle } from 'd3-array';
     let { aapl } = $derived(page.data.data);
@@ -137,7 +137,7 @@ Lines are automatically grouped by `stroke`, `fill`, or the `z` channel. Only po
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -167,7 +167,7 @@ While the _x_ scale of a line chart often represents time, this is not required.
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { tdf } = $derived(page.data.data);
 </script>
@@ -203,7 +203,7 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
 
 ```svelte live
 <script>
-    import { Plot, Line, Text } from '$lib';
+    import { Plot, Line, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { driving } = $derived(page.data.data);
@@ -270,7 +270,7 @@ BLS Demo:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';
@@ -315,7 +315,7 @@ Convenience wrapper
 
 ```svelte live
 <script lang="ts">
-    import { Plot, LineX } from '$lib';
+    import { Plot, LineX } from 'svelteplot';
     import { range } from 'd3-array';
 </script>
 
@@ -342,7 +342,7 @@ Convenience wrapper for wrapping a list of numbers over their indices
 
 ```svelte live
 <script lang="ts">
-    import { Plot, LineY, AreaY } from '$lib';
+    import { Plot, LineY, AreaY } from 'svelteplot';
     import { range } from 'd3-array';
 </script>
 
@@ -367,7 +367,7 @@ LineY can automatically stack?
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     let { riaa } = $derived(page.data.data);
 </script>
@@ -386,7 +386,7 @@ Line charts do not support implicit stacking, but you can use the [stack](/trans
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, stackY } from '$lib';
+    import { Plot, Line, stackY } from 'svelteplot';
     import { page } from '$app/state';
     let { riaa } = $derived(page.data.data);
 </script>
@@ -415,8 +415,9 @@ You can set the line interpolation using the **interpolation** option.
 
     // curve demo
     const numbers = [
-        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12, 0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6,
-        0.09, 0.14, 0.95, 0.92, 0.89
+        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12,
+        0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6, 0.09, 0.14,
+        0.95, 0.92, 0.89
     ];
     let curve = $state('catmull-rom');
     let tension = $state(0.5);
@@ -429,19 +430,34 @@ You can set the line interpolation using the **interpolation** option.
 <Select label="curve" bind:value={curve} options={CURVES} />
 
 {#if curve.includes('bundle') || curve.includes('catmull') || curve.includes('cardinal')}
-    <Slider label="tension" bind:value={tension} min={0} max={2} step={0.1} />
+    <Slider
+        label="tension"
+        bind:value={tension}
+        min={0}
+        max={2}
+        step={0.1} />
 {/if}
 
 <Plot grid testid="curvedemo" height={300}>
     <LineY data={numbers} {curve} {tension} />
     <!-- TODO: use DotY here -->
-    <Dot data={numbers.map((d, i) => ({ value: d, index: i }))} symbol="plus" y="value" x="index" />
+    <Dot
+        data={numbers.map((d, i) => ({
+            value: d,
+            index: i
+        }))}
+        symbol="plus"
+        y="value"
+        x="index" />
 </Plot>
 ```
 
 ```svelte
 <Plot>
-    <LineY data={numbers} curve="catmul-rom" tension={0.3} />
+    <LineY
+        data={numbers}
+        curve="catmul-rom"
+        tension={0.3} />
 </Plot>
 ```
 
@@ -453,7 +469,7 @@ While uncommon, you can draw a line with ordinal position values. For example be
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { stateage } = $derived(page.data.data);
 </script>
@@ -496,7 +512,7 @@ With a [spherical projection](/features/projections), line segments become [geod
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Geo, Dot, Line } from '$lib';
+    import { Plot, Geo, Dot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     const { world, beagle } = $derived(page.data.data);
@@ -542,7 +558,7 @@ Lines can show a text label along the path:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot } from '$lib';
+    import { Plot, Line, Dot } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -560,7 +576,7 @@ Lines can show a text label along the path:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, Dot } from '$lib';
+    import { Plot, Line, Dot } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);

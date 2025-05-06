@@ -8,7 +8,7 @@ The interval transform may be used to convert a single value in x or y (or both)
 
 ```svelte live
 <script>
-    import { Plot, Rect, Text } from '$lib';
+    import { Plot, Rect, Text } from 'svelteplot';
     import { page } from '$app/state';
     const { seattle } = $derived(page.data.data);
 </script>
@@ -61,7 +61,7 @@ RectX can be used for range annotations:
 
 ```svelte live
 <script>
-    import { Plot, Line, RectX } from '$lib';
+    import { Plot, Line, RectX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -104,7 +104,7 @@ RectY can be used for range annotations:
 
 ```svelte live
 <script>
-    import { Plot, Line, RectY } from '$lib';
+    import { Plot, Line, RectY } from 'svelteplot';
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);

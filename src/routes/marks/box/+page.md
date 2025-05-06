@@ -6,7 +6,7 @@ Box marks are a compound mark consisting of a bar, rule, dots and tick marks (se
 
 ```svelte live
 <script>
-    import { Plot, BoxX, BoxY } from '$lib';
+    import { Plot, BoxX, BoxY } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     import { page } from '$app/state';
@@ -58,7 +58,7 @@ You can style box plots by passing separate options for the marks
 
 ```svelte live
 <script>
-    import { Plot, BoxX } from '$lib';
+    import { Plot, BoxX } from 'svelteplot';
     import { page } from '$app/state';
     let { mpg } = $derived(page.data.data);
 </script>
@@ -96,7 +96,7 @@ You can style box plots by passing separate options for the marks
 
 ```svelte live
 <script>
-    import { Plot, BoxY } from '$lib';
+    import { Plot, BoxY } from 'svelteplot';
     import { page } from '$app/state';
     let { mpg } = $derived(page.data.data);
 </script>

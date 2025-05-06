@@ -13,7 +13,7 @@ This means there is no "scatterplot" component in SveltePlot, but you can use th
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -45,7 +45,7 @@ You can think of marks as the building blocks for your visualizations -- or the 
 
 ```svelte live
 <script>
-    import { Plot, Dot, GridY, AxisX } from '$lib';
+    import { Plot, Dot, GridY, AxisX } from 'svelteplot';
     import { page } from '$app/state';
     const { languages } = $derived(page.data.data);
 </script>
@@ -97,7 +97,7 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
 
 ```svelte live
 <script>
-    import { Plot, Dot, Line, GridY } from '$lib';
+    import { Plot, Dot, Line, GridY } from 'svelteplot';
     import { page } from '$app/state';
     let { languages: allLanguages } = $derived(
         page.data.data
@@ -153,7 +153,7 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 
 ```svelte live
 <script>
-    import { Plot, Dot, Line, GridY, RuleY } from '$lib';
+    import { Plot, Dot, Line, GridY, RuleY } from 'svelteplot';
     import { page } from '$app/state';
 
     let { languages: allLanguages } = $derived(
@@ -213,7 +213,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     const { cars } = $derived(page.data.data);
@@ -333,7 +333,7 @@ Also, simply by being a Svelte framework, SveltePlot can support tweens and tran
 
 ```svelte live
 <script>
-    import { Plot, RuleY, BarY } from '$lib';
+    import { Plot, RuleY, BarY } from 'svelteplot';
     import { Tween } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
     import { extent } from 'd3-array';
@@ -398,7 +398,7 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { fly, fade } from 'svelte/transition';
 
     import { page } from '$app/state';

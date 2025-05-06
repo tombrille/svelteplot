@@ -6,7 +6,7 @@ Useful for normalizing data series of varying magnitude such as stock prices of 
 
 ```svelte live
 <script>
-    import { Plot, Line, normalizeY } from '$lib';
+    import { Plot, Line, normalizeY } from 'svelteplot';
     import { Select } from '$lib/ui';
     import { page } from '$app/state';
     let { tech7 } = $derived(page.data.data);
@@ -62,7 +62,7 @@ In addition to the named basis options you can define your own, e.g. to specify 
 
 ```svelte live
 <script>
-    import { Plot, Line, normalizeY } from '$lib';
+    import { Plot, Line, normalizeY } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     let { tech7 } = $derived(page.data.data);

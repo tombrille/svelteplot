@@ -1,5 +1,5 @@
 <script>
-    import { Line, Plot } from '$lib';
+    import { Line, Plot } from 'svelteplot';
     let args = $props();
 </script>
 

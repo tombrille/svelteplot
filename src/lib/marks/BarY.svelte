@@ -11,10 +11,8 @@
     import {
         type PlotContext,
         type BaseMarkProps,
-        type RectMarkProps,
         type ChannelAccessor,
-        type DataRow,
-        type FacetContext
+        type DataRow
     } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import { maybeData } from '$lib/helpers/index.js';
@@ -41,14 +39,14 @@
                   bottomRight?: number;
                   bottomLeft?: number;
               };
-    } & RectMarkProps;
+    };
 
     let { data = [{}], class: className = null, stack, ...options }: BarYProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let args = $derived(
+    const args = $derived(
         stackY(
             intervalY(
                 // by default, sort by x channel (the ordinal labels)
@@ -58,8 +56,6 @@
             stack
         )
     );
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
 </script>
 
 <Mark

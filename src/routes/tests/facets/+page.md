@@ -158,7 +158,7 @@ Facetted **regression** chart
 
 ```svelte live
 <script>
-    import { Plot, Dot, RegressionY } from '$lib';
+    import { Plot, Dot, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -194,7 +194,7 @@ Facetted **ruleX** chart
 
 ```svelte live
 <script>
-    import { Plot, Dot, RuleX } from '$lib';
+    import { Plot, Dot, RuleX } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -219,7 +219,7 @@ Facetted **ruleY** chart
 
 ```svelte live
 <script>
-    import { Plot, Dot, RuleY } from '$lib';
+    import { Plot, Dot, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>

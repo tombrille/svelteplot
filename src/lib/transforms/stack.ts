@@ -85,8 +85,8 @@ function stackXY(
             __facet:
                 groupFacetsBy.length > 0
                     ? groupFacetsBy
-                          .map((channel) => String(resolveChannel(channel, d, channels)))
-                          .join('---')
+                        .map((channel) => String(resolveChannel(channel, d, channels)))
+                        .join('---')
                     : 'F',
             [`__${byDim}`]: resolveChannel(byDim, d, channels)
         })) as DataRecord[];
@@ -117,8 +117,8 @@ function stackXY(
                 .offset(STACK_OFFSET[options.offset])
                 .keys(union(facetData.map((d) => d.__group) as string[]))
                 .value(([, group], key) => (group.get(key) ? group.get(key)[`__${byDim}`] : 0))(
-                indexed
-            );
+                    indexed
+                );
 
             // and combine it all back into a flat array
             const newData = series
@@ -154,6 +154,7 @@ function stackXY(
 }
 
 export function stackY<T>({ data, ...channels }: T, opts: Partial<StackOptions> = {}): T {
+    console.log('stackY', { data, ...channels })
     return stackXY('y', data, channels, applyDefaults(opts));
 }
 

@@ -6,7 +6,7 @@ Bollinger Bands are a [useful analysis tool](https://www.investopedia.com/terms/
 
 ```svelte live
 <script>
-    import { Plot, Line, Area, BollingerY } from '$lib';
+    import { Plot, Line, Area, BollingerY } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     import { page } from '$app/state';
@@ -117,7 +117,7 @@ For more flexibility you can also use the bollingerX and bollingerY as transform
 
 ```svelte live
 <script>
-    import { Plot, Line, Area, BollingerX } from '$lib';
+    import { Plot, Line, Area, BollingerX } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     import { page } from '$app/state';

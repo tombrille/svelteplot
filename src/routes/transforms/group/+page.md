@@ -8,7 +8,7 @@ For example, the bar chart below shows a distribution of Olympic athletes by spo
 
 ```svelte live
 <script>
-    import { Plot, BarY, RuleY, groupX } from '$lib';
+    import { Plot, BarY, RuleY, groupX } from 'svelteplot';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
 </script>
@@ -43,7 +43,7 @@ While the groupX transform is often used to generate **y**, it can output to any
 
 ```svelte live
 <script>
-    import { Plot, DotX, RuleY, groupX } from '$lib';
+    import { Plot, DotX, RuleY, groupX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -75,7 +75,7 @@ Grouping can be combined with the implicit stack transform of the bar marks:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarX, groupY, RuleX } from '$lib';
+    import { Plot, BarX, groupY, RuleX } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
@@ -119,7 +119,7 @@ You can also group by temporal intervals
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, groupX } from '$lib';
+    import { Plot, Line, groupX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -150,6 +150,7 @@ You can also group by temporal intervals
         curve="basis" />
 </Plot>
 ```
+
 [fork](https://svelte.dev/playground/8d65004eee1e4375b8b45b92e69f26cd?version=5.28.2)
 
 ## Group options
@@ -185,7 +186,7 @@ Groups on _x_ and _y_ channels as an additional _z_, _fill_, or _stroke_ channel
 
 ```svelte live
 <script>
-    import { group, Plot, Dot } from '$lib';
+    import { group, Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>

@@ -13,7 +13,7 @@ Here's a very simple bar chart:
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX } from '$lib';
+    import { Plot, BarX, RuleX } from 'svelteplot';
 </script>
 
 <Plot
@@ -37,7 +37,7 @@ You can create stacked bar charts by defining a fill channel which will be used 
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarX, groupY, RuleX } from '$lib';
+    import { Plot, BarX, groupY, RuleX } from 'svelteplot';
     import { getContext } from 'svelte';
 
     import { page } from '$app/state';
@@ -62,9 +62,7 @@ You can create stacked bar charts by defining a fill channel which will be used 
 ```
 
 ```svelte
-<Plot
-    x={{ axis: 'top' }}
-    color={{ legend: true }}>
+<Plot x={{ axis: 'top' }} color={{ legend: true }}>
     <RuleX data={[0]} />
     <BarX
         {...groupY(
@@ -77,9 +75,8 @@ You can create stacked bar charts by defining a fill channel which will be used 
         )} />
 </Plot>
 ```
+
 [fork](https://svelte.dev/playground/6d334e103f9e444d99bb67c8af1335bc?version=5.28.2)
-
-
 
 ## BarX
 
@@ -106,12 +103,11 @@ Additionally, `BarX` supports all common styling properties like `fill`, `stroke
 
 ```svelte
 <Plot y={{ type: 'band' }} x={{ grid: true }}>
-  <BarX 
-    data={myData} 
-    y="category"  
-    x="value" 
-    fill="steelblue" 
-  />
+    <BarX
+        data={myData}
+        y="category"
+        x="value"
+        fill="steelblue" />
 </Plot>
 ```
 
@@ -119,12 +115,11 @@ For stacked bar charts, provide a `fill` channel that will be used for grouping 
 
 ```svelte
 <Plot y={{ type: 'band' }} color={{ legend: true }}>
-  <BarX 
-    data={myData} 
-    y="category"
-    x="value"
-    fill="group" 
-  />
+    <BarX
+        data={myData}
+        y="category"
+        x="value"
+        fill="group" />
 </Plot>
 ```
 
@@ -154,12 +149,11 @@ Additionally, `BarY` supports all common styling properties like `fill`, `stroke
 
 ```svelte
 <Plot x={{ type: 'band' }} y={{ grid: true }}>
-  <BarY 
-    data={myData} 
-    x="category"  
-    y="value" 
-    fill="steelblue" 
-  />
+    <BarY
+        data={myData}
+        x="category"
+        y="value"
+        fill="steelblue" />
 </Plot>
 ```
 
@@ -167,24 +161,21 @@ For stacked bar charts, provide a `fill` channel that will be used for grouping 
 
 ```svelte
 <Plot x={{ type: 'band' }} color={{ legend: true }}>
-  <BarY 
-    data={myData} 
-    x="category"
-    y="value"
-    fill="group" 
-  />
+    <BarY
+        data={myData}
+        x="category"
+        y="value"
+        fill="group" />
 </Plot>
 ```
 
 ## Insets
 
-
-
 You can create bullet bars using the `inset` option and two `BarX` layers:
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX } from '$lib';
+    import { Plot, BarX, RuleX } from 'svelteplot';
 </script>
 
 <Plot y={{ type: 'band' }} height={200} marginTop={0}>
@@ -206,15 +197,14 @@ Note that **inset** by default only applies along the band scale axis, but won't
 
 ```svelte live
 <script lang="ts">
-    import { Plot, BarX, groupY, RuleX } from '$lib';
+    import { Plot, BarX, groupY, RuleX } from 'svelteplot';
     import { getContext } from 'svelte';
 
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>
 
-<Plot
-    x={{ axis: 'top' }}>
+<Plot x={{ axis: 'top' }}>
     <RuleX data={[0]} />
     <BarX
         {...groupY(
@@ -224,22 +214,22 @@ Note that **inset** by default only applies along the band scale axis, but won't
                 fill: 'species'
             },
             { x: 'count' }
-        )} 
+        )}
         insetRight={1} />
 </Plot>
 ```
 
 ```svelte
 <BarX
-        {...groupY(
-            {
-                data: penguins,
-                y: 'island',
-                fill: 'species'
-            },
-            { x: 'count' }
-        )} 
-        insetRight={1} />
+    {...groupY(
+        {
+            data: penguins,
+            y: 'island',
+            fill: 'species'
+        },
+        { x: 'count' }
+    )}
+    insetRight={1} />
 ```
 
 [fork](https://svelte.dev/playground/6f5f4ae882e24f5b81c60842c6250f31?version=5.28.2)
@@ -258,7 +248,7 @@ Please be aware that by setting a border radius, you are slightly distorting the
 
 ```svelte live
 <script>
-    import { Plot, BarX, RuleX } from '$lib';
+    import { Plot, BarX, RuleX } from 'svelteplot';
     import { Slider } from '$lib/ui';
 
     let radius = $state(10);

@@ -8,7 +8,7 @@ For example, the heatmap below shows the decline of _The Simpsons_ after Season 
 
 ```svelte live
 <script>
-    import { Plot, Cell, Text } from '$lib';
+    import { Plot, Cell, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);
@@ -71,7 +71,7 @@ Seattle temperatures
 
 ```svelte live
 <script>
-    import { Plot, Cell, formatMonth } from '$lib';
+    import { Plot, Cell, formatMonth } from 'svelteplot';
 
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);
@@ -97,7 +97,7 @@ Seattle temperatures
 
 ```svelte live
 <script>
-    import { Plot, Cell, Text } from '$lib';
+    import { Plot, Cell, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);
@@ -121,7 +121,7 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **x** option is not s
 
 ```svelte live
 <script>
-    import { Plot, CellX, Text, groupX } from '$lib';
+    import { Plot, CellX, Text, groupX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);
@@ -172,7 +172,7 @@ Equivalent to [cell](/marks/cell#Cell), except that if the **y** option is not s
 
 ```svelte live
 <script>
-    import { Plot, CellY, Text, groupY } from '$lib';
+    import { Plot, CellY, Text, groupY } from 'svelteplot';
 
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);
@@ -224,7 +224,7 @@ But better to use a RectX here:
 
 ```svelte --live
 <script>
-    import { Plot, RectX, Text } from '$lib';
+    import { Plot, RectX, Text } from 'svelteplot';
 
     import { page } from '$app/state';
     let { simpsons } = $derived(page.data.data);

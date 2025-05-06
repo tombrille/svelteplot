@@ -6,7 +6,7 @@ This is useful for showing datasets ranging over a long time span. Here we're sh
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import { Slider, RadioInput } from '$lib/ui';
 

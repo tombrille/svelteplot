@@ -21,7 +21,8 @@ const config = {
         // See https://kit.svelte.dev/docs/adapters for more information about adapters.
         adapter: adapter(),
         alias: {
-            svelteplot: '../../src/lib/index.js'
+            svelteplot: path.resolve(__dirname, './src/lib'),
+            $lib: path.resolve(__dirname, './src/lib')
         }
     }
 };

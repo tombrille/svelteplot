@@ -8,7 +8,7 @@ In the following example, you can see that the `<Plot>` component has added axes
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 </script>
@@ -47,7 +47,7 @@ But if we wanted to, we can add these marks individually, and it would look just
         AxisX,
         AxisY,
         Line
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -92,7 +92,7 @@ This can be useful if you want to customize the styling of the frame or grids, f
 
 ```svelte live
 <script>
-    import { Plot, Line, GridX, GridY, Frame } from '$lib';
+    import { Plot, Line, GridX, GridY, Frame } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -120,7 +120,7 @@ For convenience, you can pass **title**, **subtitle**, and **caption** to the Pl
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib';
+    import { Plot, Line, Frame } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -148,7 +148,7 @@ By default, the Plot element will fill 100% of it's parent container width, but 
 
 ```svelte live
 <script>
-    import { Plot, Line } from '$lib';
+    import { Plot, Line } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -294,7 +294,7 @@ to add events and scoped styles.
 
 ```svelte live
 <script>
-    import { Plot, Line, Frame } from '$lib';
+    import { Plot, Line, Frame } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -335,7 +335,7 @@ SveltePlot provides a lot of convenience features with the unfortunate side-effe
 ```svelte live
 <script>
     import Plot from '$lib/core/Plot.svelte';
-    import { Line } from '$lib';
+    import { Line } from 'svelteplot';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
 

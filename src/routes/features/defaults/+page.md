@@ -58,7 +58,7 @@ SveltePlot is also relying on CSS variables.
 
 ```svelte live
 <script>
-    import { Plot, Dot } from '$lib';
+    import { Plot, Dot } from 'svelteplot';
     import { page } from '$app/state';
     import { setContext } from 'svelte';
 

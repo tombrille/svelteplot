@@ -8,7 +8,7 @@ Pointer mark
 
 ```svelte live
 <script>
-    import { Plot, Line, Dot, Text, Pointer } from '$lib';
+    import { Plot, Line, Dot, Text, Pointer } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -76,7 +76,7 @@ You can create a "crosshair" mark
         AxisX,
         AxisY,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -115,7 +115,7 @@ PointerY
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -151,7 +151,7 @@ PointerY
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -189,7 +189,7 @@ Pointer along the x dimension
         Dot,
         Text,
         Pointer
-    } from '$lib';
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { stocks } = $derived(page.data.data);
     let stocks2 = $derived(
@@ -237,7 +237,7 @@ Click the bar chart!
 
 ```svelte live
 <script>
-    import { Plot, RuleY, BarY } from '$lib';
+    import { Plot, RuleY, BarY } from 'svelteplot';
 
     let clicked = $state();
 
@@ -289,7 +289,7 @@ You can use the [HTMLTooltip](/marks/tooltip) mark to show custom HTML tooltips 
 
 ```svelte live
 <script>
-    import { Plot, Dot, HTMLTooltip } from '$lib';
+    import { Plot, Dot, HTMLTooltip } from 'svelteplot';
 
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
@@ -346,7 +346,7 @@ You can even put another tiny plot inside the HTML tooltips:
 
 ```svelte live
 <script>
-    import { Plot, Dot, HTMLTooltip, BarX } from '$lib';
+    import { Plot, Dot, HTMLTooltip, BarX } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 

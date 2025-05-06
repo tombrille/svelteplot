@@ -19,7 +19,7 @@ For example, here is a histogram showing the distribution of weights of Olympic 
         RuleY,
         binX,
         stackY
-    } from '$lib';
+    } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -57,7 +57,7 @@ The [binX](#binX) transform takes **x** as input and outputs **x1** and **x2** r
         RuleY,
         binX,
         stackY
-    } from '$lib';
+    } from 'svelteplot';
 
     import { getContext } from 'svelte';
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
@@ -90,7 +90,7 @@ Alternatively, you can also map to the _r_ channel.
 
 ```svelte live
 <script>
-    import { Plot, DotX, binX } from '$lib';
+    import { Plot, DotX, binX } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -116,7 +116,7 @@ Alternatively, you can also map to the _r_ channel.
 
 ```svelte live
 <script>
-    import { Plot, DotX, binX } from '$lib';
+    import { Plot, DotX, binX } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -161,7 +161,7 @@ You can also bin and group at the same time:
         RuleY,
         binX,
         stackY
-    } from '$lib';
+    } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -202,7 +202,7 @@ You can opt-out of the implicit stackY transform by having binX generate **y1** 
         RuleY,
         binX,
         stackY
-    } from '$lib';
+    } from 'svelteplot';
 
     import { getContext } from 'svelte';
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
@@ -272,7 +272,7 @@ By default, the binX transform will set the _insetRight_ channel to 1, but you c
         RuleY,
         binX,
         stackY
-    } from '$lib';
+    } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -318,7 +318,7 @@ You can define _thresholds_ as a number
 
 ```svelte live
 <script>
-    import { Plot, RectY, RuleY, binX } from '$lib';
+    import { Plot, RectY, RuleY, binX } from 'svelteplot';
     import Slider from '$lib/ui/Slider.svelte';
 
     import { page } from '$app/state';
@@ -347,7 +347,7 @@ You can also define an _interval_. For numeric scales intervals are defined as n
 
 ```svelte live
 <script>
-    import { Plot, RectY, RuleY, binX } from '$lib';
+    import { Plot, RectY, RuleY, binX } from 'svelteplot';
     import Slider from '$lib/ui/Slider.svelte';
 
     import { page } from '$app/state';
@@ -376,7 +376,7 @@ Or as arbitrary bin bounds, passed as array of values via **thresholds**:
 
 ```svelte live
 <script>
-    import { Plot, RectY, RuleY, binX } from '$lib';
+    import { Plot, RectY, RuleY, binX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
@@ -414,7 +414,7 @@ If you want to compute statistics for each bin other than `count`, you also need
 
 ```svelte live
 <script>
-    import { Plot, Dot, binX } from '$lib';
+    import { Plot, Dot, binX } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -455,7 +455,7 @@ Here's an example where we use the bin transform to compute weekly aggregates fr
 
 ```svelte live
 <script>
-    import { Plot, Line, RectY, RuleX, binX } from '$lib';
+    import { Plot, Line, RectY, RuleX, binX } from 'svelteplot';
     import { Select } from '$lib/ui';
 
     import { page } from '$app/state';
@@ -540,7 +540,7 @@ You can also map to _r_ as output channel:
 
 ```svelte live
 <script>
-    import { Plot, Dot, bin } from '$lib';
+    import { Plot, Dot, bin } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -582,7 +582,7 @@ Requires _input_ channels _x_ and _y_. Valid output channels for `bin()` are _fi
 
 ```svelte live
 <script>
-    import { Plot, Rect, bin } from '$lib';
+    import { Plot, Rect, bin } from 'svelteplot';
     import Mark from '$lib/Mark.svelte';
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);
@@ -626,7 +626,7 @@ Demo with area
 
 ```svelte live
 <script>
-    import { Plot, Line, AreaY, binX } from '$lib';
+    import { Plot, Line, AreaY, binX } from 'svelteplot';
 
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
@@ -670,7 +670,7 @@ Requires input channel _y_. Valid output channels for `binY()` are _x_, _x1_, _x
 
 ```svelte live
 <script>
-    import { Plot, RectX, RuleX, binY } from '$lib';
+    import { Plot, RectX, RuleX, binY } from 'svelteplot';
 
     import { page } from '$app/state';
     let { olympians } = $derived(page.data.data);

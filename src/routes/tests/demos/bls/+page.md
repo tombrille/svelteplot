@@ -2,7 +2,7 @@ BLS Demo:
 
 ```svelte live
 <script lang="ts">
-    import { Plot, Line, RuleY } from '$lib';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
     import { page } from '$app/state';

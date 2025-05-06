@@ -4,7 +4,7 @@ title: Map transform
 
 ```svelte live
 <script>
-    import { Plot, BarX, mapX } from '$lib';
+    import { Plot, BarX, mapX } from 'svelteplot';
 </script>
 
 <Plot y={{ type: 'band' }}>

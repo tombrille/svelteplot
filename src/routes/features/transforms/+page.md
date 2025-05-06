@@ -28,7 +28,7 @@ In the returned `data` array, each item will have new properties `__y1` and `__y
 
 ```svelte --live
 <script>
-    import { Plot, BarY, RuleY, stackY } from '$lib';
+    import { Plot, BarY, RuleY, stackY } from 'svelteplot';
     import { rollups } from 'd3-array';
 
     import { page } from '$app/state';
