@@ -154,7 +154,6 @@ function stackXY(
 }
 
 export function stackY<T>({ data, ...channels }: T, opts: Partial<StackOptions> = {}): T {
-    console.log('stackY', { data, ...channels })
     return stackXY('y', data, channels, applyDefaults(opts));
 }
 

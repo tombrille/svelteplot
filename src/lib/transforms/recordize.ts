@@ -1,7 +1,8 @@
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import type { DataRecord, TransformArgsRow, TransformArgsRecord } from '$lib/types.js';
 
-export const RAW_VALUE = Symbol();
+export const INDEX = Symbol('index');
+export const RAW_VALUE = Symbol('originalValue');
 
 /*
  * This transform takes an array of raw values as input and returns data records
@@ -19,7 +20,6 @@ export function recordizeX(
                 __value: value,
                 ...(withIndex ? { __index: index } : {}),
                 [RAW_VALUE]: value,
-                // TODO: remove ___orig___ references
                 ___orig___: value
             })) as DataRecord[],
             ...channels,
@@ -44,14 +44,13 @@ export function recordizeY(
     if (dataIsRawValueArray) {
         return {
             data: Array.from(data).map((value, index) => ({
-                __value: value,
                 ...(withIndex ? { __index: index } : {}),
                 [RAW_VALUE]: value,
                 ___orig___: value
             })) as DataRecord[],
             ...channels,
             ...(withIndex ? { x: '__index' } : {}),
-            y: '__value'
+            y: RAW_VALUE
         };
     }
     return {
@@ -79,7 +78,7 @@ export function recordizeXY({ data, ...channels }: TransformArgsRow): TransformA
     ) {
         return {
             data: (data as [number, number][]).map(([x, y, ...rest]) => ({
-                ___orig___: [x, y, ...rest],
+                [RAW_VALUE]: [x, y, ...rest],
                 __x: x,
                 __y: y
             })) as DataRecord[],
