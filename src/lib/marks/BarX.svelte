@@ -46,8 +46,6 @@
             stack
         )
     );
-
-    $inspect({ args });
 </script>
 
 <Mark
