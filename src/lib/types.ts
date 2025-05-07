@@ -93,7 +93,7 @@ export type ScaledChannelName =
 
 export type ChannelName = ScaledChannelName | 'z' | 'sort' | 'filter' | 'interval';
 
-export type RawValue = number | Date | boolean | string;
+export type RawValue = number | Date | boolean | string | symbol;
 
 export type ScaleOptions = {
     /**

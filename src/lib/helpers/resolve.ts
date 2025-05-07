@@ -53,14 +53,14 @@ export function toChannelOption(
     return isDataRecord(channel)
         ? (channel as ChannelOptions)
         : {
-              value: channel,
-              scale:
-                  (!isPositionScale && !isOpacityScale && typeof channel === 'number') ||
-                  typeof channel === 'undefined'
-                      ? null
-                      : CHANNEL_SCALE[name],
-              channel: null
-          };
+            value: channel,
+            scale:
+                (!isPositionScale && !isOpacityScale && typeof channel === 'number') ||
+                    typeof channel === 'undefined'
+                    ? null
+                    : CHANNEL_SCALE[name],
+            channel: null
+        };
 }
 
 export function resolveChannel(
@@ -95,7 +95,7 @@ function resolve(
             // so we're passing the original value to accessor functions instead of our wrapped record
             return accessor(datum.___orig___ != null ? datum.___orig___ : datum);
         // use accessor string
-        if (typeof accessor === 'string' && datum[accessor] !== undefined) return datum[accessor];
+        if ((typeof accessor === 'string' || typeof accessor === 'symbol') && datum[accessor] !== undefined) return datum[accessor];
         // fallback to channel name as accessor
         if (accessor === null && datum[channel] !== undefined) return datum[channel];
         return isRawValue(accessor) ? accessor : null;
@@ -110,10 +110,10 @@ function resolve(
         return typeof accessor === 'function'
             ? accessor(datum)
             : accessor !== null && isRawValue(accessor)
-              ? accessor
-              : !Array.isArray(datum) && (scale === 'x' || scale === 'y')
-                ? datum
-                : null;
+                ? accessor
+                : !Array.isArray(datum) && (scale === 'x' || scale === 'y')
+                    ? datum
+                    : null;
     }
 }
 
