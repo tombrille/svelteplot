@@ -151,12 +151,12 @@ export type ScaleOptions = {
     base?: number;
     // sorting for band and point scales
     sort?:
-        | ChannelAccessor
-        | ((a: RawValue, b: RawValue) => number)
-        | {
-              channel: string;
-              order: 'ascending' | 'descending';
-          };
+    | ChannelAccessor
+    | ((a: RawValue, b: RawValue) => number)
+    | {
+        channel: string;
+        order: 'ascending' | 'descending';
+    };
     // symlog scales
     constant?: number;
 };
@@ -164,18 +164,18 @@ export type ScaleOptions = {
 export type ColorScaleOptions = ScaleOptions & {
     legend: boolean;
     type:
-        | ScaleType
-        | 'categorical'
-        | 'sequential'
-        | 'cyclical'
-        | 'threshold'
-        | 'quantile'
-        | 'quantize'
-        | 'diverging'
-        | 'diverging-log'
-        | 'diverging-pow'
-        | 'diverging-sqrt'
-        | 'diverging-symlog';
+    | ScaleType
+    | 'categorical'
+    | 'sequential'
+    | 'cyclical'
+    | 'threshold'
+    | 'quantile'
+    | 'quantize'
+    | 'diverging'
+    | 'diverging-log'
+    | 'diverging-pow'
+    | 'diverging-sqrt'
+    | 'diverging-symlog';
     scheme: string;
     /**
      * fallback color used for null/undefined
@@ -438,7 +438,7 @@ export type PlotDefaults = {
 
 export type GenericMarkOptions = Record<string, any>;
 
-export type DataRecord = Record<string, RawValue> & {
+export type DataRecord = Record<string | symbol, RawValue> & {
     ___orig___?: RawValue | [RawValue, RawValue];
 };
 
@@ -470,9 +470,9 @@ export type PlotScale = {
     uniqueScaleProps: Set<ChannelAccessor>;
     skip: Map<ScaledChannelName, Set<symbol>>;
     fn: ScaleLinear<RawValue, number> &
-        ScaleBand<RawValue> &
-        ScaleOrdinal<string | Date, number> &
-        ScaleOrdinal<string | Date, string>;
+    ScaleBand<RawValue> &
+    ScaleOrdinal<string | Date, number> &
+    ScaleOrdinal<string | Date, string>;
 };
 
 export type CurveName =
@@ -719,7 +719,7 @@ export type BaseRectMarkProps = {
 
 export type Channels = Record<
     string,
-    ChannelAccessor | ConstantAccessor<string | number | boolean>
+    ChannelAccessor | ConstantAccessor<string | number | boolean | symbol>
 >;
 
 export type TransformArg<K> = Channels & { data: K[] };

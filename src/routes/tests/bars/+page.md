@@ -20,9 +20,9 @@ title: Trying to cut off bars
             data: bundlesizes,
             y: 'size',
             x: 'scenario',
-            z: 'package'
+            fill: 'package'
         })}
-        fill="package" />
+         />
          <BarY
         data={bundlesizes}
         y="size"
