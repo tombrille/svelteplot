@@ -51,8 +51,8 @@
     required={[]}
     channels={['x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales, scaledData })}
-        <g class="rect">
+    {#snippet children({ usedScales, scaledData })}
+        <GroupMultiple class={scaledData.length > 1 ? 'rect' : null} length={scaledData.length}>
             {#each scaledData as d}
                 {#if d.valid}
                     {@const x1 = d.x1 == null ? plot.options.marginLeft : d.x1}
@@ -76,7 +76,7 @@
 
                     {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
                     <rect
-                        class={[styleClass]}
+                        class={[scaledData.length === 1 && 'rect', styleClass]}
                         {style}
                         x={minx + insetL}
                         y={miny + insetT}
@@ -91,7 +91,7 @@
                         }} />
                 {/if}
             {/each}
-        </g>
+        </GroupMultiple>
     {/snippet}
 </Mark>
 
