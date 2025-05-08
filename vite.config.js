@@ -23,7 +23,7 @@ export default defineConfig({
         sveltepress({
             theme: defaultTheme({
                 logo: '/favicon.png',
-                github: 'https://github.com/gka/svelteplot',
+                github: 'https://github.com/svelteplot/svelteplot',
                 discord: 'https://discord.gg/BJ5CJgDqWV',
                 themeColor: {
                     light: '#ffffff',
