@@ -227,7 +227,12 @@
                                   );
                         out[`x${suffix}`] = x;
                         out[`y${suffix}`] = y;
-                        out.valid = out.valid && isValid(row.x) && isValid(row.y);
+                        out.valid =
+                            out.valid &&
+                            isValid(row.x) &&
+                            isValid(row.y) &&
+                            isValid(x) &&
+                            isValid(y);
                     }
                 }
             }
