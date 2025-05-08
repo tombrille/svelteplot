@@ -487,4 +487,4 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 
 ## Built on top of D3
 
-Like its inspiration Observale Plot, SveltePlot is built on top of D3.
+Like its inspiration Observable Plot, SveltePlot is built on top of D3.
