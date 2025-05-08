@@ -9,15 +9,9 @@
         FacetContext,
         PlotDefaults
     } from '../types.js';
-    import {
-        resolveChannel,
-        resolveProp,
-        resolveScaledStyles,
-        resolveStyles
-    } from '../helpers/resolve.js';
+    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { projectXY } from '../helpers/scales.js';
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
@@ -132,6 +126,3 @@
         </g>
     {/snippet}
 </Mark>
-
-<style>
-</style>
