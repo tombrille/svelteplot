@@ -139,6 +139,7 @@ title: Window transform
         mixBlendMode="multiply" />
 </Plot>
 ```
+[fork](https://svelte.dev/playground/7d50144c67c74bf0b1363a6b965a9c3b?version=5.28.2)
 
 As you see above, the windowY transform will automatically transform any channel of y, y1, and y2 that is defined, so you can use it for area marks as well.
 
