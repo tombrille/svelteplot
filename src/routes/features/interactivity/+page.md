@@ -32,7 +32,7 @@ Pointer mark
                 lineAnchor="bottom"
                 fontWeight="bold"
                 dy="-10" />
-            <Dot {data} x="Date" y="Close" fill />
+            <Dot {data} x="Date" y="Close" fill="var(--svp-red)" />
         {/snippet}
     </Pointer>
 </Plot>
@@ -91,8 +91,8 @@ You can create a "crosshair" mark
         y="Close"
         maxDistance={30}>
         {#snippet children({ data })}
-            <RuleX {data} x="Date" opacity="0.3" />
-            <RuleY {data} y="Close" opacity="0.3" />
+            <RuleX {data} x="Date" opacity="0.5" stroke="var(--svp-red)" />
+            <RuleY {data} y="Close" opacity="0.5" stroke="var(--svp-red)" />
             <AxisX
                 data={data.map((d) => d.Date)}
                 tickFormat={(d) => d.getFullYear()} />
@@ -104,7 +104,7 @@ You can create a "crosshair" mark
 </Plot>
 ```
 
-PointerY
+Pointer along the y axis:
 
 ```svelte live
 <script>
@@ -124,7 +124,7 @@ PointerY
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} y="Close" maxDistance={30}>
         {#snippet children({ data })}
-            <RuleY {data} y="Close" opacity={0.2} />
+            <RuleY {data} y="Close" opacity="0.5" stroke="var(--svp-red)" />
             <Text
                 {data}
                 fill="currentColor"
@@ -215,7 +215,7 @@ Pointer along the x dimension
             <RuleX
                 data={data.length ? [data[0]] : []}
                 x="Date"
-                opacity={0.2} />
+                opacity="0.5" stroke="var(--svp-red)" />
             <Text
                 {data}
                 fill="Symbol"
@@ -349,13 +349,6 @@ You can even put another tiny plot inside the HTML tooltips:
     import { Plot, Dot, HTMLTooltip, BarX } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
-
-    const speciesImages = {
-        Adelie: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg/346px-Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg',
-        Chinstrap:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/A_chinstrap_penguin_%28Pygoscelis_antarcticus%29_on_Deception_Island_in_Antarctica.jpg/201px-A_chinstrap_penguin_%28Pygoscelis_antarcticus%29_on_Deception_Island_in_Antarctica.jpg',
-        Gentoo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/00_0304_Gentoo_Penguins.jpg/160px-00_0304_Gentoo_Penguins.jpg'
-    };
 </script>
 
 <Plot grid height={500}>
