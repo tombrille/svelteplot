@@ -90,7 +90,7 @@ All you need for this is to clone this starter repo (TODO) and run `npm run buil
 
 ## Can I use SveltePlot in Svelte 4?
 
-Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to it's heavy use of [runes](https://svelte.dev/docs/svelte/what-are-runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
+Unfortunately, SveltePlot is not compatible with Svelte 4 projects due to its heavy use of [runes](https://svelte.dev/docs/svelte/what-are-runes). However, upgrading your project to Svelte 5 should be relatively easy since it is mostly backwards compatible. This means that the majority of your existing code should work without major modifications.
 
 You can follow the official [Svelte 5 documentation](https://svelte.dev/docs/svelte/) on how to [upgrade your project](https://svelte.dev/docs/svelte/v5-migration-guide).
 
