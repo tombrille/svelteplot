@@ -4,7 +4,6 @@
     import type { PlotContext, BaseMarkProps, RawValue } from '../types.js';
     import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
-    import { getUsedScales } from '$lib/helpers/scales.js';
     import { testFilter } from '$lib/helpers/index.js';
 
     type GrixXMarkProps = BaseMarkProps & {
