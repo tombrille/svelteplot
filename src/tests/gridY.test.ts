@@ -17,7 +17,7 @@ describe('GridY mark', () => {
           stroke: '#008000',
           strokeOpacity: 0.5,
           strokeDasharray: '5, 5',
-          ticks: [0, 5, 10],
+          data: [0, 5, 10],
         },
       },
     });
