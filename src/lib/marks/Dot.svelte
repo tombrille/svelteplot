@@ -30,14 +30,14 @@
         children?: Snippet;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
-        canvas: boolean;
-        dotClass: ConstantAccessor<string>;
-        in: any;
-        inParams: any;
-        out: any;
-        outParams: any;
-        transition: any;
-        wrap: Snippet;
+        canvas?: boolean;
+        dotClass?: ConstantAccessor<string>;
+        in?: any;
+        inParams?: any;
+        out?: any;
+        outParams?: any;
+        transition?: any;
+        wrap?: Snippet;
     };
 
     let {

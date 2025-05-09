@@ -10,12 +10,12 @@
         /**
          * maximum cursor distance to select data points
          */
-        maxDistance: number;
+        maxDistance?: number;
         /**
          * called whenever the selection changes
          * @param data
          */
-        onupdate: (data: DataRow[]) => void;
+        onupdate?: (data: DataRow[]) => void;
     };
 </script>
 

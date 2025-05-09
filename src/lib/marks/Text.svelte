@@ -22,11 +22,11 @@
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
         text: ConstantAccessor<string>;
-        title: ConstantAccessor<string>;
+        title?: ConstantAccessor<string>;
         /**
          * if you want to apply class names to individual text elements
          */
-        textClass: ConstantAccessor<string>;
+        textClass?: ConstantAccessor<string>;
         /**
          * the line anchor for vertical position; top, bottom, or middle
          */
