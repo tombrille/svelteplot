@@ -2,23 +2,23 @@
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
-    import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
+    import { resolveChannel, resolveStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
-    import { getUsedScales } from '$lib/helpers/scales.js';
     import { testFilter } from '$lib/helpers/index.js';
+    import { RAW_VALUE } from '$lib/transforms/recordize.js';
 
     type GridYMarkProps = BaseMarkProps & { data?: RawValue[]; automatic?: boolean };
 
     let { data = [], automatic = false, ...options }: GridYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let autoTickCount = $derived(
+    const autoTickCount = $derived(
         Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
     );
 
-    let ticks: RawValue[] = $derived(
+    const ticks: RawValue[] = $derived(
         data.length > 0
             ? // use custom tick values if user passed any as prop
               data
@@ -51,9 +51,18 @@
                     {@const x2_ = resolveChannel('x2', tick, options)}
                     {@const x1 = options.x1 != null ? plot.scales.x.fn(x1_) : 0}
                     {@const x2 = options.x2 != null ? plot.scales.x.fn(x2_) : plot.facetWidth}
+                    {@const [style, styleClass] = resolveStyles(
+                        plot,
+                        { datum: { [RAW_VALUE]: tick } },
+                        options,
+                        'stroke',
+                        usedScales,
+                        true
+                    )}
                     <line
+                        {style}
+                        class={styleClass}
                         transform="translate({plot.options.marginLeft},{y})"
-                        style={resolveScaledStyles(tick, options, usedScales, plot, 'stroke')}
                         {x1}
                         {x2} />
                 {/if}

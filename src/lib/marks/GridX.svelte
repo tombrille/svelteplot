@@ -2,9 +2,10 @@
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import type { PlotContext, BaseMarkProps, RawValue } from '../types.js';
-    import { resolveChannel, resolveScaledStyles } from '../helpers/resolve.js';
+    import { resolveChannel, resolveStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { testFilter } from '$lib/helpers/index.js';
+    import { RAW_VALUE } from '$lib/transforms/recordize.js';
 
     type GrixXMarkProps = BaseMarkProps & {
         data?: RawValue[];
@@ -14,13 +15,13 @@
     let { data = [], automatic = false, ...options }: GrixXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let autoTickCount = $derived(
+    const autoTickCount = $derived(
         Math.max(3, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
     );
 
-    let ticks: RawValue[] = $derived(
+    const ticks: RawValue[] = $derived(
         data.length > 0
             ? // use custom tick values if user passed any as prop
               data
@@ -53,9 +54,18 @@
                     {@const y2_ = resolveChannel('y2', tick, options)}
                     {@const y1 = options.y1 != null ? plot.scales.y.fn(y1_) : 0}
                     {@const y2 = options.y2 != null ? plot.scales.y.fn(y2_) : plot.facetHeight}
+                    {@const [style, styleClass] = resolveStyles(
+                        plot,
+                        { datum: { [RAW_VALUE]: tick } },
+                        options,
+                        'stroke',
+                        usedScales,
+                        true
+                    )}
                     <line
+                        class={styleClass}
                         transform="translate({x},{plot.options.marginTop})"
-                        style={resolveScaledStyles(tick, options, usedScales, plot, 'stroke')}
+                        {style}
                         {y1}
                         {y2} />
                 {/if}
