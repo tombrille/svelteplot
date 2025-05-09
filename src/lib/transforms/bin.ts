@@ -39,17 +39,17 @@ type AdditionalOutputChannels = Partial<{
 export type BinXOptions = BinBaseOptions &
     AdditionalOutputChannels &
     Partial<{
-        y: typeof Reducer;
-        y1: typeof Reducer;
-        y2: typeof Reducer;
+        y: ReducerOption;
+        y1: ReducerOption;
+        y2: ReducerOption;
     }>;
 
 export type BinYOptions = BinBaseOptions &
     AdditionalOutputChannels &
     Partial<{
-        x: typeof Reducer;
-        x1: typeof Reducer;
-        x2: typeof Reducer;
+        x: ReducerOption;
+        x1: ReducerOption;
+        x2: ReducerOption;
     }>;
 
 type BinOptions = BinBaseOptions & AdditionalOutputChannels;
