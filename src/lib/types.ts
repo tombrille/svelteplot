@@ -709,6 +709,40 @@ export type BaseMarkProps = Partial<{
      * if you want to give your mark element an extra CSS class
      */
     class: string;
+    cursor: ConstantAccessor<
+        | 'alias'
+        | 'all-scroll'
+        | 'auto'
+        | 'cell'
+        | 'dot-resize'
+        | 'context-menu'
+        | 'copy'
+        | 'crosshair'
+        | 'default'
+        | 'e-resize'
+        | 'ew-resize'
+        | 'grab'
+        | 'grabbing'
+        | 'help'
+        | 'image-set'
+        | 'inherit'
+        | 'initial'
+        | 'move'
+        | 'n-resize'
+        | 'ne-resize'
+        | 'ns-resize'
+        | 'nesw-resize'
+        | 'no-drop'
+        | 'none'
+        | 'nw-resize'
+        | 'nwse-resize'
+        | 'not-allowed'
+        | 'pointer'
+        | 'progress'
+        | 'revert'
+        | 'revert-layer'
+        | 'row-resize'
+    >;
 }>;
 
 export type BaseRectMarkProps = {
