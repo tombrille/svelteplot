@@ -24,7 +24,7 @@ export default defineConfig({
             theme: defaultTheme({
                 logo: '/favicon.png',
                 github: 'https://github.com/svelteplot/svelteplot',
-                discord: 'https://discord.gg/BJ5CJgDqWV',
+                discord: 'https://discord.gg/pp2wRJqtHV',
                 themeColor: {
                     light: '#ffffff',
                     dark: '#18181b',
