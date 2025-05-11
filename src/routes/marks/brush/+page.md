@@ -57,3 +57,131 @@ The **brush mark** is useful for interactively selecting data.
     <Brush bind:brush />
 </Plot>
 ```
+
+Works with time scales, too?
+
+```svelte live
+<script>
+    import { Plot, Line, Rect, Brush } from 'svelteplot';
+    import { page } from '$app/state';
+
+    const { aapl } = $derived(page.data.data);
+
+    let brush = $state({
+        enabled: false
+    });
+</script>
+
+<Plot
+    grid
+    color={{ legend: true }}
+    x={{ label: '' }}
+    y={{ label: '', type: 'log' }}>
+    <Line data={aapl} x="Date" y="Volume" />
+    {#if brush.enabled}
+        <Rect
+            data={[brush]}
+            x1="x1"
+            x2="x2"
+            y1="y1"
+            y2="y2"
+            opacity={0.1} />
+    {/if}
+    <Brush bind:brush />
+</Plot>
+```
+
+You can also use the Brush mark to create a zoomable plot:
+
+```svelte live
+<script>
+    import { Plot, Dot, Rect, Brush } from 'svelteplot';
+    import { Tween } from 'svelte/motion';
+    import { cubicInOut } from 'svelte/easing';
+    import { page } from '$app/state';
+    import { extent } from 'd3-array';
+
+    const { penguins } = $derived(page.data.data);
+
+    let brush = $state({
+        x1: 40,
+        x2: 45,
+        y1: 15,
+        y2: 20,
+        enabled: false
+    });
+    let isZoomedIn = $state(false);
+
+    const fullDomainX = extent(
+        penguins,
+        (d) => d.culmen_length_mm
+    );
+    const fullDomainY = extent(
+        penguins,
+        (d) => d.culmen_depth_mm
+    );
+
+    let domainX = $state(fullDomainX);
+    let domainY = $state(fullDomainY);
+
+    function resetZoom() {
+        domainX = fullDomainX;
+        domainY = fullDomainY;
+        isZoomedIn = false;
+    }
+
+    const domainXT = Tween.of(() => domainX, {
+        easing: cubicInOut
+    });
+    const domainYT = Tween.of(() => domainY, {
+        easing: cubicInOut
+    });
+</script>
+
+<Plot
+    grid
+    x={{
+        domain: domainXT.current,
+        label: 'culmen_length_mm'
+    }}
+    y={{
+        domain: domainYT.current,
+        label: 'culmen_depth_mm'
+    }}
+    title="Zoomable scatterplot">
+    {#snippet header()}
+        {#if isZoomedIn}
+            <button onclick={resetZoom}>reset zoom</button>
+        {/if}
+    {/snippet}
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species" />
+    <Brush
+        bind:brush
+        cursor="zoom-in"
+        onbrushend={(e) => {
+            if (e.brush.enabled) {
+                domainX = [e.brush.x1, e.brush.x2];
+                domainY = [e.brush.y1, e.brush.y2];
+                brush.enabled = false;
+                isZoomedIn = true;
+            }
+        }} />
+</Plot>
+
+<style>
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 5px;
+    }
+    :global(.plot-header) {
+        position: relative;
+    }
+</style>
+```

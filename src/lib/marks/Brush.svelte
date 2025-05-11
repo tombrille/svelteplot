@@ -1,19 +1,53 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { Frame } from 'svelteplot';
-    import Rect from 'svelteplot/marks/Rect.svelte';
-    import type { PlotContext } from 'svelteplot/types.js';
+    import Frame from '$lib/marks/Frame.svelte';
+    import Rect from '$lib/marks/Rect.svelte';
+    import type { BaseMarkProps, PlotContext, RawValue } from '$lib/types.js';
+
+    type Brush = {
+        x1?: Date | number;
+        x2?: Date | number;
+        y1?: Date | number;
+        y2?: Date | number;
+        enabled: boolean;
+    };
+    type BrushEvent = MouseEvent & { brush: Brush };
+
+    type BrushMarkProps = {
+        brush: Brush;
+        limitDimension: false | 'x' | 'y';
+        onbrushstart?: (evt: BrushEvent) => void;
+        onbrushend?: (evt: BrushEvent) => void;
+        onbrush?: (evt: BrushEvent) => void;
+    } & Pick<
+        BaseMarkProps,
+        | 'cursor'
+        | 'stroke'
+        | 'strokeDasharray'
+        | 'strokeOpacity'
+        | 'strokeWidth'
+        | 'strokeLinecap'
+        | 'strokeDashoffset'
+        | 'strokeLinejoin'
+        | 'strokeMiterlimit'
+    >;
 
     let {
-        brush = {},
+        brush = { enabled: false },
         stroke = 'currentColor',
+        strokeWidth,
         strokeDasharray = '2,3',
         strokeOpacity = 0.6,
+        strokeLinecap,
+        strokeDashoffset,
+        strokeLinejoin,
+        strokeMiterlimit,
         cursor: forceCursor,
+        limitDimension = false, // 'x'|'y'|false
         onbrushstart,
         onbrushend,
         onbrush
-    } = $props();
+    }: BrushMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -40,11 +74,10 @@
         | 'sw-resize'
         | false = $state(false);
 
-    let dragStart = null;
-    let dragInitCoordinates = [0, 0];
+    let dragStart: number;
 
-    let pointer = $state([0, 0]);
-    const pxPointer = $derived([plot.scales.x.fn(pointer[0]), plot.scales.y.fn(pointer[1])]);
+    let pxPointer = $state([0, 0]);
+
     const pxBrush = $derived({
         x1: plot.scales.x.fn(brush.x1),
         x2: plot.scales.x.fn(brush.x2),
@@ -61,9 +94,7 @@
             pxPointer[1] > pxBrush.y2 + HALF_EDGE &&
             pxPointer[1] < pxBrush.y1 - HALF_EDGE
     );
-    /**
-     *
-     */
+
     const isXEdge: false | 'left' | 'right' = $derived(
         pxPointer[0] > pxBrush.x1 - HALF_EDGE && pxPointer[0] < pxBrush.x1 + HALF_EDGE
             ? 'left'
@@ -99,16 +130,15 @@
     );
 
     $effect(() => {
-        // TODO: add support for Dates
-        brush.x1 = constrain(Math.min(x1, x2), xDomain);
-        brush.x2 = constrain(Math.max(x1, x2), xDomain);
-        brush.y1 = constrain(Math.min(y1, y2), yDomain);
-        brush.y2 = constrain(Math.max(y1, y2), yDomain);
+        brush.x1 = limitDimension === 'y' ? undefined : constrain(x1 < x2 ? x1 : x2, xDomain);
+        brush.x2 = limitDimension === 'y' ? undefined : constrain(x1 > x2 ? x1 : x2, xDomain);
+        brush.y1 = limitDimension === 'x' ? undefined : constrain(y1 < y2 ? y1 : y2, yDomain);
+        brush.y2 = limitDimension === 'x' ? undefined : constrain(y1 > y2 ? y1 : y2, yDomain);
     });
 
-    function constrain(x: number, extent: number[]) {
-        const minE = Math.min(...extent);
-        const maxE = Math.max(...extent);
+    function constrain(x: number | Date, extent: (number | Date)[]) {
+        const minE = extent[0] < extent[1] ? extent[0] : extent[1];
+        const maxE = extent[0] > extent[1] ? extent[0] : extent[1];
         if (x < minE) return minE;
         if (x > maxE) return maxE;
         return x;
@@ -116,14 +146,16 @@
 
     const DRAG_DELAY = 100;
 
-    function onmousedown(e) {
+    function onmousedown(e: MouseEvent) {
         dragging = true;
         dragStart = Date.now();
-        dragInitCoordinates = [e.dataX, e.dataY];
+        pxPointer = [e.layerX, e.layerY];
 
         if (brush.enabled && isInsideBrush) {
+            // drag starts inside existing brush, if so, move the brush
             action = 'move';
         } else if (brush.enabled && (isXEdge || isYEdge)) {
+            // drag starts on a brush edge, so resize the brush
             action = `${[isYEdge, isXEdge]
                 .filter((d) => !!d)
                 .map((c) => CURSOR_MAP[c])
@@ -135,50 +167,53 @@
             y1 = y1 = e.dataY;
         }
         onbrushstart?.({ ...e, brush });
-
-        // check if new drag starts inside existing brush, if so, move the brush
     }
 
-    function onmousemove(e) {
-        pointer = [e.dataX, e.dataY];
+    function onmousemove(e: MouseEvent) {
+        const newPos = [e.layerX, e.layerY];
         if (dragging) {
-            const dx = e.dataX - dragInitCoordinates[0];
-            const dy = e.dataY - dragInitCoordinates[1];
+            const px = newPos[0] - pxPointer[0];
+            const py = newPos[1] - pxPointer[1];
+            const dx1 = plot.scales.x.fn.invert(plot.scales.x.fn(x1) + px);
+            const dx2 = plot.scales.x.fn.invert(plot.scales.x.fn(x2) + px);
+            const dy1 = plot.scales.y.fn.invert(plot.scales.y.fn(y1) + py);
+            const dy2 = plot.scales.y.fn.invert(plot.scales.y.fn(y2) + py);
             if (action === 'move') {
-                x1 += dx;
-                x2 += dx;
-                y1 += dy;
-                y2 += dy;
+                // move edges
+                x1 = dx1;
+                x2 = dx2;
+                y1 = dy1;
+                y2 = dy2;
             } else if (action === 'rect') {
                 x2 = e.dataX;
                 y2 = e.dataY;
             } else {
                 if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
-                    x2 += dx;
+                    x2 = dx2;
                 } else if (
                     action === 'w-resize' ||
                     action === 'nw-resize' ||
                     action === 'sw-resize'
                 ) {
-                    x1 += dx;
+                    x1 = dx1;
                 }
                 if (action === 'n-resize' || action === 'ne-resize' || action === 'nw-resize') {
-                    y2 += dy;
+                    y2 = dy2;
                 } else if (
                     action === 's-resize' ||
                     action === 'se-resize' ||
                     action === 'sw-resize'
                 ) {
-                    y1 += dy;
+                    y1 = dy1;
                 }
             }
-            dragInitCoordinates = [e.dataX, e.dataY];
             if (Date.now() - dragStart) brush.enabled = true;
             onbrush?.({ ...e, brush });
         }
+        pxPointer = [e.layerX, e.layerY];
     }
 
-    function onmouseup(e) {
+    function onmouseup(e: MouseEvent) {
         dragging = false;
         action = false;
         // fix coordinates
@@ -206,6 +241,11 @@
         y2="y2"
         {stroke}
         {strokeDasharray}
-        {strokeOpacity} />
+        {strokeOpacity}
+        {strokeDashoffset}
+        {strokeLinecap}
+        {strokeLinejoin}
+        {strokeMiterlimit}
+        {strokeWidth} />
 {/if}
 <Frame fill="transparent" inset={-20} {cursor} {onmousedown} {onmouseup} {onmousemove} />
