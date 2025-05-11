@@ -149,7 +149,7 @@
 
     const DRAG_DELAY = 100;
 
-    function onmousedown(e: MouseEvent) {
+    function onpointerdown(e: MouseEvent) {
         dragging = true;
         dragStart = Date.now();
         pxPointer = [e.layerX, e.layerY];
@@ -172,7 +172,7 @@
         onbrushstart?.({ ...e, brush });
     }
 
-    function onmousemove(e: MouseEvent) {
+    function onpointermove(e: MouseEvent) {
         const newPos = [e.layerX, e.layerY];
         if (dragging) {
             const px = newPos[0] - pxPointer[0];
@@ -216,7 +216,7 @@
         pxPointer = [e.layerX, e.layerY];
     }
 
-    function onmouseup(e: MouseEvent) {
+    function onpointerup(e: MouseEvent) {
         dragging = false;
         action = false;
         // fix coordinates
@@ -249,4 +249,4 @@
         {strokeMiterlimit}
         {strokeWidth} />
 {/if}
-<Frame fill="transparent" inset={-20} {cursor} {onmousedown} {onmouseup} {onmousemove} />
+<Frame fill="transparent" inset={-20} {cursor} {onpointerdown} {onpointerup} {onpointermove} />

@@ -661,6 +661,15 @@ export type BaseMarkProps = Partial<{
     onmousemove?: MouseEventHandler<SVGPathElement>;
     onmouseleave?: MouseEventHandler<SVGPathElement>;
     onmouseout?: MouseEventHandler<SVGPathElement>;
+    onmouseover?: MouseEventHandler<SVGPathElement>;
+    onpointercancel?: MouseEventHandler<SVGPathElement>;
+    onpointerdown?: MouseEventHandler<SVGPathElement>;
+    onpointerup?: MouseEventHandler<SVGPathElement>;
+    onpointerenter?: MouseEventHandler<SVGPathElement>;
+    onpointerleave?: MouseEventHandler<SVGPathElement>;
+    onpointermove?: MouseEventHandler<SVGPathElement>;
+    onpointerover?: MouseEventHandler<SVGPathElement>;
+    onpointerout?: MouseEventHandler<SVGPathElement>;
     ondrag?: MouseEventHandler<SVGPathElement>;
     ondrop?: MouseEventHandler<SVGPathElement>;
     ondragstart?: MouseEventHandler<SVGPathElement>;
