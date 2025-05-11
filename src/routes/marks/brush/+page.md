@@ -11,13 +11,7 @@ The **brush mark** is useful for interactively selecting data.
 
     const { penguins } = $derived(page.data.data);
 
-    let brush = $state({
-        x1: 40,
-        x2: 45,
-        y1: 15,
-        y2: 20,
-        enabled: true
-    });
+    let brush = $state({ enabled: false });
 </script>
 
 <Plot
@@ -58,34 +52,62 @@ The **brush mark** is useful for interactively selecting data.
 </Plot>
 ```
 
-Works with time scales, too?
+You can use the BrushX mark to create an overview + detail time series:
 
 ```svelte live
 <script>
-    import { Plot, Line, RectX, BrushX } from 'svelteplot';
+    import {
+        Plot,
+        Frame,
+        Line,
+        RectX,
+        BrushX
+    } from 'svelteplot';
     import { page } from '$app/state';
 
     const { aapl } = $derived(page.data.data);
 
     let brush = $state({
-        enabled: false
+        enabled: true,
+        x1: new Date(2017, 0, 1),
+        x2: new Date(2018, 0, 1)
     });
+
+    const filteredData = $derived(
+        brush.enabled
+            ? aapl.filter(
+                  (d) =>
+                      d.Date >= brush.x1 &&
+                      d.Date <= brush.x2
+              )
+            : aapl
+    );
 </script>
 
+<!-- detail plot -->
 <Plot
+    y={{ insetTop: 10, insetBottom: 10 }}
     grid
-    color={{ legend: true }}
-    x={{ label: '' }}
-    y={{ label: '', type: 'log' }}>
-    <Line data={aapl} x="Date" y="Volume" />
+    marginBottom={30}>
+    <Line data={filteredData} x="Date" y="Close" />
+</Plot>
+<!-- overview plot -->
+<Plot
+    height={90}
+    x={{ label: '', grid: true }}
+    y={{ axis: false, label: '' }}>
+    <Frame opacity={0.4} />
+    <Line data={aapl} x="Date" y="Close" opacity={0.3} />
     {#if brush.enabled}
         <RectX
             data={[brush]}
             x1="x1"
             x2="x2"
-            opacity={0.1} />
+            fill="var(--svp-blue)"
+            opacity={0.2} />
+        <Line data={filteredData} x="Date" y="Close" />
     {/if}
-    <BrushX bind:brush />
+    <BrushX bind:brush stroke={false} />
 </Plot>
 ```
 
