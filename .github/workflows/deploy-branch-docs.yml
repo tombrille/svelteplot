@@ -50,7 +50,7 @@ jobs:
               env:
                   # Set the base path for assets/links to the branch name with "~/" prefix
                   # This ensures relative links work correctly when deployed to a subdirectory
-                  BASE_PATH: '/svelteplot${{ env.BRANCH_NAME }}'
+                  BASE_PATH: ${{ env.BRANCH_NAME }}
 
             - name: Move generated docs into branch folder
               shell: bash
