@@ -377,10 +377,6 @@ export type PlotOptions = {
     overlay: Snippet;
     facetAxes: Snippet;
     /**
-     * A background color
-     */
-    background: string;
-    /**
      * if you set testid, the plot container will get a data-testid attribute which
      * can be useful for automatic testing
      */
