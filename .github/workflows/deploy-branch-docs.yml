@@ -1,0 +1,78 @@
+name: Deploy Branch Documentation to GitHub Pages
+
+# Permissions needed for GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+    group: 'pages-${{ github.ref }}'
+    cancel-in-progress: true
+
+on:
+    push:
+        branches:
+            - '**'
+            - '!main' # Main branch has its own workflow
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 10
+                  run_install: false
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Extract branch name with prefix
+              shell: bash
+              run: echo "BRANCH_NAME=/~/$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
+
+            - name: Build documentation
+              run: pnpm build
+              env:
+                  # Set the base path for assets/links to the branch name with "~/" prefix
+                  # This ensures relative links work correctly when deployed to a subdirectory
+                  BASE_PATH: ${{ env.BRANCH_NAME }}
+
+            - name: Move generated docs into branch folder
+              shell: bash
+              run: mkdir -p ./out$BASE_PATH && mv ./build/* ./out$BASE_PATH
+              env:
+                  BASE_PATH: ${{ env.BRANCH_NAME }}
+
+            # Setup Pages
+            - name: Setup Pages
+              uses: actions/configure-pages@v4
+
+            # Upload artifact
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: './out'
+
+            # Deploy to GitHub Pages
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
+
+            - name: Deployment Information
+              run: |
+                  echo "Documentation deployed to: ${{ steps.deployment.outputs.page_url }}${{ env.BRANCH_NAME }}/"

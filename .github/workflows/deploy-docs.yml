@@ -1,0 +1,64 @@
+name: Deploy Documentation to GitHub Pages
+
+# Permissions needed for GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+# Allow only one concurrent deployment for main branch
+concurrency:
+    group: 'pages-main'
+    cancel-in-progress: true
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 10
+                  run_install: false
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build documentation
+              run: pnpm build
+              # No base path for main branch deployment - it's at the root
+
+            # Setup Pages
+            - name: Setup Pages
+              uses: actions/configure-pages@v4
+
+            # Upload artifact
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: './build'
+
+            # Deploy to GitHub Pages
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
+
+            - name: Deployment Information
+              run: |
+                  echo "Main documentation deployed to: ${{ steps.deployment.outputs.page_url }}"
