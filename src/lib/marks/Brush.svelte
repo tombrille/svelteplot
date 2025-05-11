@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
     type Brush = {
         x1?: Date | number;
         x2?: Date | number;
