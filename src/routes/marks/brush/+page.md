@@ -25,7 +25,7 @@ The **brush mark** is useful for interactively selecting data.
     color={{ legend: true }}
     x={{ label: '' }}
     y={{ label: '' }}
-    title="Scatterplot {brush.enabled}">
+    title="Scatterplot">
     <Dot
         data={penguins}
         x="culmen_length_mm"
