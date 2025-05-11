@@ -1,9 +1,4 @@
-<script lang="ts">
-    import { getContext } from 'svelte';
-    import Frame from '$lib/marks/Frame.svelte';
-    import Rect from '$lib/marks/Rect.svelte';
-    import type { BaseMarkProps, PlotContext, RawValue } from '$lib/types.js';
-
+<script module>
     type Brush = {
         x1?: Date | number;
         x2?: Date | number;
@@ -11,9 +6,10 @@
         y2?: Date | number;
         enabled: boolean;
     };
+
     type BrushEvent = MouseEvent & { brush: Brush };
 
-    type BrushMarkProps = {
+    export type BrushMarkProps = {
         brush: Brush;
         limitDimension: false | 'x' | 'y';
         onbrushstart?: (evt: BrushEvent) => void;
@@ -31,9 +27,16 @@
         | 'strokeLinejoin'
         | 'strokeMiterlimit'
     >;
+</script>
+
+<script lang="ts">
+    import { getContext } from 'svelte';
+    import Frame from '$lib/marks/Frame.svelte';
+    import Rect from '$lib/marks/Rect.svelte';
+    import type { BaseMarkProps, PlotContext } from '$lib/types.js';
 
     let {
-        brush = { enabled: false },
+        brush = $bindable({ enabled: false }),
         stroke = 'currentColor',
         strokeWidth,
         strokeDasharray = '2,3',
@@ -89,10 +92,10 @@
     const HALF_EDGE = EDGE_SIZE * 0.5;
 
     const isInsideBrush = $derived(
-        pxPointer[0] > pxBrush.x1 + HALF_EDGE &&
-            pxPointer[0] < pxBrush.x2 - HALF_EDGE &&
-            pxPointer[1] > pxBrush.y2 + HALF_EDGE &&
-            pxPointer[1] < pxBrush.y1 - HALF_EDGE
+        (limitDimension === 'y' || pxPointer[0] > pxBrush.x1 + HALF_EDGE) &&
+            (limitDimension === 'y' || pxPointer[0] < pxBrush.x2 - HALF_EDGE) &&
+            (limitDimension === 'x' || pxPointer[1] > pxBrush.y2 + HALF_EDGE) &&
+            (limitDimension === 'x' || pxPointer[1] < pxBrush.y1 - HALF_EDGE)
     );
 
     const isXEdge: false | 'left' | 'right' = $derived(
@@ -235,10 +238,8 @@
 {#if stroke && brush.enabled}
     <Rect
         data={[brush]}
-        x1="x1"
-        x2="x2"
-        y1="y1"
-        y2="y2"
+        {...limitDimension === 'x' ? {} : { y1: 'y1', y2: 'y2' }}
+        {...limitDimension === 'y' ? {} : { x1: 'x1', x2: 'x2' }}
         {stroke}
         {strokeDasharray}
         {strokeOpacity}

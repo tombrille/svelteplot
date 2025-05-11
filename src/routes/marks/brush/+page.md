@@ -62,7 +62,7 @@ Works with time scales, too?
 
 ```svelte live
 <script>
-    import { Plot, Line, Rect, Brush } from 'svelteplot';
+    import { Plot, Line, RectX, BrushX } from 'svelteplot';
     import { page } from '$app/state';
 
     const { aapl } = $derived(page.data.data);
@@ -79,15 +79,13 @@ Works with time scales, too?
     y={{ label: '', type: 'log' }}>
     <Line data={aapl} x="Date" y="Volume" />
     {#if brush.enabled}
-        <Rect
+        <RectX
             data={[brush]}
             x1="x1"
             x2="x2"
-            y1="y1"
-            y2="y2"
             opacity={0.1} />
     {/if}
-    <Brush bind:brush />
+    <BrushX bind:brush />
 </Plot>
 ```
 
