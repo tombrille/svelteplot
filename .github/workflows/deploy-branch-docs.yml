@@ -43,7 +43,7 @@ jobs:
 
             - name: Extract branch name with prefix
               shell: bash
-              run: echo "BRANCH_NAME=~$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
+              run: echo "BRANCH_NAME=/~/$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
 
             - name: Build documentation
               run: pnpm build
