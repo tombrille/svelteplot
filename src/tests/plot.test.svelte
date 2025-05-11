@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
     import { Plot } from 'svelteplot';
-    let args = $props();
+    import type { ComponentProps } from 'svelte';
+
+    let args: ComponentProps<typeof Plot> = $props();
 </script>
 
 <Plot {...args} />

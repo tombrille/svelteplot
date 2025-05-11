@@ -67,7 +67,7 @@ describe('Arrow mark', () => {
         const arrows = container.querySelectorAll('g.arrow > g > path');
         expect(arrows.length).toBeGreaterThan(0);
 
-        const mainPath = arrows[0];
+        const mainPath = arrows[0] as SVGElement;
         expect(mainPath?.style.stroke).toBe('red');
         expect(mainPath?.style.strokeWidth).toBe('3px');
     });
