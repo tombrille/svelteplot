@@ -22,7 +22,7 @@ describe('BarX mark', () => {
                 plotArgs: {},
                 barArgs: {
                     data: [1, 2, 3, 4, 5],
-                    strokeWidth: d => d
+                    strokeWidth: (d: any) => d
                 }
             }
         });

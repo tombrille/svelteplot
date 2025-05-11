@@ -269,13 +269,17 @@ export type PlotOptions = {
      */
     maxWidth?: string;
     /**
+     * force the plot into a fixed width
+     */
+    width?: number;
+    /**
      * force the plot into a fixed height
      */
     height: 'auto' | number | ((d: number) => number);
     /**
      * Convenience option for setting all four margins at once, in px.
      */
-    margin: number;
+    margin: number | { top?: number; right?: number; bottom?: number; left?: number };
     /**
      * Left margin of the plot, in px.
      */
@@ -346,7 +350,7 @@ export type PlotOptions = {
      * Options for the shared radius scale
      */
     r: ScaleOptions;
-    color: ColorScaleOptions;
+    color: Partial<ColorScaleOptions>;
     opacity: ScaleOptions;
     symbol: LegendScaleOptions;
     length: ScaleOptions;
@@ -372,6 +376,10 @@ export type PlotOptions = {
      */
     overlay: Snippet;
     facetAxes: Snippet;
+    /**
+     * A background color
+     */
+    background: string;
     /**
      * if you set testid, the plot container will get a data-testid attribute which
      * can be useful for automatic testing

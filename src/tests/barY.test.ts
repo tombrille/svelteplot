@@ -3,7 +3,6 @@ import { render } from '@testing-library/svelte';
 import BarYTest from './barY.test.svelte';
 import ResizeObserver from 'resize-observer-polyfill';
 import { groupBy } from 'es-toolkit';
-import { stackY } from '$lib/index.js';
 
 global.ResizeObserver = ResizeObserver;
 
@@ -14,7 +13,7 @@ describe('BarY mark', () => {
                 plotArgs: {},
                 barArgs: {
                     data: [1, 2, 3, 4, 5],
-                    strokeWidth: d => d
+                    strokeWidth: (d: any) => d
                 }
             }
         });
