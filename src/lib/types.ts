@@ -3,7 +3,7 @@ import type { Snippet } from 'svelte';
 import type { MouseEventHandler } from 'svelte/elements';
 import type { MarkerShape } from './marks/helpers/Marker.svelte';
 import type { Writable } from 'svelte/store';
-import type { constant } from './helpers/arrowPath.js';
+import type * as CSS from 'csstype';
 
 export type MarkType =
     | 'area'
@@ -642,37 +642,16 @@ export type BaseMarkProps = Partial<{
     stroke: ConstantAccessor<string>;
     strokeWidth: ConstantAccessor<number>;
     strokeOpacity: ConstantAccessor<number>;
-    strokeLinejoin: ConstantAccessor<'bevel' | 'miter' | 'miter-clip' | 'round'>;
-    strokeLinecap: ConstantAccessor<'butt' | 'square' | 'round'>;
+    strokeLinejoin: ConstantAccessor<CSS.Property.StrokeLinejoin>;
+    strokeLinecap: ConstantAccessor<CSS.Property.StrokeLinecap>;
     strokeMiterlimit: ConstantAccessor<number>;
     opacity: ConstantAccessor<number>;
     strokeDasharray: ConstantAccessor<string>;
     strokeDashoffset: ConstantAccessor<number>;
-    mixBlendMode: ConstantAccessor<
-        | 'normal'
-        | 'multiply'
-        | 'screen'
-        | 'overlay'
-        | 'darken'
-        | 'lighten'
-        | 'color-dodge'
-        | 'color-burn'
-        | 'hard-light'
-        | 'soft-light'
-        | 'difference'
-        | 'exclusion'
-        | 'hue'
-        | 'saturation'
-        | 'color'
-        | 'luminosity'
-        | 'plus-darker'
-        | 'plus-lighter'
-    >;
+    mixBlendMode: ConstantAccessor<CSS.Property.MixBlendMode>;
     clipPath: string;
     imageFilter: ConstantAccessor<string>;
-    shapeRendering: ConstantAccessor<
-        'crispEdges' | 'geometricPrecision' | 'optimizeSpeed' | 'auto'
-    >;
+    shapeRendering: ConstantAccessor<CSS.Property.ShapeRendering>;
     paintOrder: ConstantAccessor<string>;
     onclick?: MouseEventHandler<SVGPathElement>;
     ondblclick?: MouseEventHandler<SVGPathElement>;
@@ -709,40 +688,7 @@ export type BaseMarkProps = Partial<{
      * if you want to give your mark element an extra CSS class
      */
     class: string;
-    cursor: ConstantAccessor<
-        | 'alias'
-        | 'all-scroll'
-        | 'auto'
-        | 'cell'
-        | 'dot-resize'
-        | 'context-menu'
-        | 'copy'
-        | 'crosshair'
-        | 'default'
-        | 'e-resize'
-        | 'ew-resize'
-        | 'grab'
-        | 'grabbing'
-        | 'help'
-        | 'image-set'
-        | 'inherit'
-        | 'initial'
-        | 'move'
-        | 'n-resize'
-        | 'ne-resize'
-        | 'ns-resize'
-        | 'nesw-resize'
-        | 'no-drop'
-        | 'none'
-        | 'nw-resize'
-        | 'nwse-resize'
-        | 'not-allowed'
-        | 'pointer'
-        | 'progress'
-        | 'revert'
-        | 'revert-layer'
-        | 'row-resize'
-    >;
+    cursor: ConstantAccessor<CSS.Property.Cursor>;
 }>;
 
 export type BaseRectMarkProps = {
