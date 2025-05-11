@@ -129,19 +129,21 @@ describe('Plot component', () => {
         expect(svg).not.toBeNull();
     });
 
-    it('background color', () => {
+    it('plot size', () => {
         const { container } = render(PlotTest, {
             props: {
                 width: 100,
-                height: 100,
-                background: '#f0f0f0'
+                height: 150,
             }
         });
 
         // Check for the presence of the background element
         // Here we're checking that the plot renders with a background property
         const svg = container.querySelector('svg');
+
         expect(svg).not.toBeNull();
+        expect(svg?.getAttribute('width')).toBe('100');
+        expect(svg?.getAttribute('height')).toBe('150');
     });
 });
 
