@@ -55,6 +55,7 @@ export default {
                 { title: 'Bar', to: '/marks/bar/' },
                 { title: 'Bollinger', to: '/marks/bollinger/' },
                 { title: 'Box', to: '/marks/box/' },
+                { title: 'Brush', to: '/marks/brush/' },
                 { title: 'Cell', to: '/marks/cell/' },
                 { title: 'Custom', to: '/marks/custom/' },
                 { title: 'Difference', to: '/marks/difference/' },

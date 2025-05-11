@@ -4,11 +4,21 @@ title: Interactivity
 
 Svelte makes interactive plots easy!
 
+## Events
+
+## Tooltips
+
 Pointer mark
 
 ```svelte live
 <script>
-    import { Plot, Line, Dot, Text, Pointer } from 'svelteplot';
+    import {
+        Plot,
+        Line,
+        Dot,
+        Text,
+        Pointer
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -32,7 +42,11 @@ Pointer mark
                 lineAnchor="bottom"
                 fontWeight="bold"
                 dy="-10" />
-            <Dot {data} x="Date" y="Close" fill="var(--svp-red)" />
+            <Dot
+                {data}
+                x="Date"
+                y="Close"
+                fill="var(--svp-red)" />
         {/snippet}
     </Pointer>
 </Plot>
@@ -64,6 +78,8 @@ Pointer mark
 </Plot>
 ```
 
+## Brushing
+
 You can create a "crosshair" mark
 
 ```svelte live
@@ -91,8 +107,16 @@ You can create a "crosshair" mark
         y="Close"
         maxDistance={30}>
         {#snippet children({ data })}
-            <RuleX {data} x="Date" opacity="0.5" stroke="var(--svp-red)" />
-            <RuleY {data} y="Close" opacity="0.5" stroke="var(--svp-red)" />
+            <RuleX
+                {data}
+                x="Date"
+                opacity="0.5"
+                stroke="var(--svp-red)" />
+            <RuleY
+                {data}
+                y="Close"
+                opacity="0.5"
+                stroke="var(--svp-red)" />
             <AxisX
                 data={data.map((d) => d.Date)}
                 tickFormat={(d) => d.getFullYear()} />
@@ -124,7 +148,11 @@ Pointer along the y axis:
     <Line data={aapl} x="Date" y="Close" />
     <Pointer data={aapl} y="Close" maxDistance={30}>
         {#snippet children({ data })}
-            <RuleY {data} y="Close" opacity="0.5" stroke="var(--svp-red)" />
+            <RuleY
+                {data}
+                y="Close"
+                opacity="0.5"
+                stroke="var(--svp-red)" />
             <Text
                 {data}
                 fill="currentColor"
@@ -215,7 +243,8 @@ Pointer along the x dimension
             <RuleX
                 data={data.length ? [data[0]] : []}
                 x="Date"
-                opacity="0.5" stroke="var(--svp-red)" />
+                opacity="0.5"
+                stroke="var(--svp-red)" />
             <Text
                 {data}
                 fill="Symbol"
@@ -346,7 +375,12 @@ You can even put another tiny plot inside the HTML tooltips:
 
 ```svelte live
 <script>
-    import { Plot, Dot, HTMLTooltip, BarX } from 'svelteplot';
+    import {
+        Plot,
+        Dot,
+        HTMLTooltip,
+        BarX
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>

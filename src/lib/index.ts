@@ -11,6 +11,7 @@ export { default as BollingerX } from './marks/BollingerX.svelte';
 export { default as BollingerY } from './marks/BollingerY.svelte';
 export { default as BoxX } from './marks/BoxX.svelte';
 export { default as BoxY } from './marks/BoxY.svelte';
+export { default as Brush } from './marks/Brush.svelte';
 export { default as Cell } from './marks/Cell.svelte';
 export { default as CellX } from './marks/CellX.svelte';
 export { default as CellY } from './marks/CellY.svelte';

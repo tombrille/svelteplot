@@ -8,7 +8,10 @@
         brush = {},
         stroke = 'currentColor',
         strokeDasharray = '2,3',
-        strokeOpacity = 0.4,
+        strokeOpacity = 0.6,
+        cursor: forceCursor,
+        onbrushstart,
+        onbrushend,
         onbrush
     } = $props();
 
@@ -79,18 +82,20 @@
     const CURSOR_MAP = { left: 'w', right: 'e', top: 's', bottom: 'n' };
 
     const cursor = $derived(
-        action
-            ? action === 'rect'
-                ? 'crosshair'
-                : action
-            : brush.enabled && isInsideBrush
-              ? 'move'
-              : brush.enabled && (isXEdge || isYEdge)
-                ? `${[isYEdge, isXEdge]
-                      .filter((d) => !!d)
-                      .map((c) => CURSOR_MAP[c])
-                      .join('')}-resize`
-                : 'crosshair'
+        forceCursor
+            ? forceCursor
+            : action
+              ? action === 'rect'
+                  ? 'crosshair'
+                  : action
+              : brush.enabled && isInsideBrush
+                ? 'move'
+                : brush.enabled && (isXEdge || isYEdge)
+                  ? `${[isYEdge, isXEdge]
+                        .filter((d) => !!d)
+                        .map((c) => CURSOR_MAP[c])
+                        .join('')}-resize`
+                  : 'crosshair'
     );
 
     $effect(() => {
@@ -129,6 +134,7 @@
             x1 = x2 = e.dataX;
             y1 = y1 = e.dataY;
         }
+        onbrushstart?.({ ...e, brush });
 
         // check if new drag starts inside existing brush, if so, move the brush
     }
@@ -168,6 +174,7 @@
             }
             dragInitCoordinates = [e.dataX, e.dataY];
             if (Date.now() - dragStart) brush.enabled = true;
+            onbrush?.({ ...e, brush });
         }
     }
 
@@ -186,10 +193,11 @@
             y1 = t;
         }
         brush.enabled = Date.now() - dragStart > DRAG_DELAY;
+        onbrushend?.({ ...e, brush });
     }
 </script>
 
-{#if stroke}
+{#if stroke && brush.enabled}
     <Rect
         data={[brush]}
         x1="x1"
