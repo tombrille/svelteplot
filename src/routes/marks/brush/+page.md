@@ -94,23 +94,29 @@ You can use the BrushX mark to create an overview + detail time series:
     <Line data={filteredData} x="Date" y="Close" />
 </Plot>
 <!-- overview plot -->
-<Plot
-    height={90}
-    x={{ label: '', grid: true }}
-    y={{ axis: false, label: '' }}>
-    <Frame opacity={0.4} />
-    <Line data={aapl} x="Date" y="Close" opacity={0.3} />
-    {#if brush.enabled}
-        <RectX
-            data={[brush]}
-            x1="x1"
-            x2="x2"
-            fill="var(--svp-blue)"
-            opacity={0.2} />
-        <Line data={filteredData} x="Date" y="Close" />
-    {/if}
-    <BrushX bind:brush stroke={false} />
-</Plot>
+<div style="touch-action: none">
+    <Plot
+        height={90}
+        x={{ label: '', grid: true }}
+        y={{ axis: false, label: '' }}>
+        <Frame opacity={0.4} />
+        <Line
+            data={aapl}
+            x="Date"
+            y="Close"
+            opacity={0.3} />
+        {#if brush.enabled}
+            <RectX
+                data={[brush]}
+                x1="x1"
+                x2="x2"
+                fill="var(--svp-blue)"
+                opacity={0.2} />
+            <Line data={filteredData} x="Date" y="Close" />
+        {/if}
+        <BrushX bind:brush stroke={false} />
+    </Plot>
+</div>
 ```
 
 You can also use the Brush mark to create a zoomable plot:
