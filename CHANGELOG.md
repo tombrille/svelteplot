@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.1
+## 0.2.0
 
 - Add Brush, BrushX, and BrushY components with comprehensive documentation and examples
 - Add support for onpointer\* events and add missing onmouseover event
