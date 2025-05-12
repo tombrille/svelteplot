@@ -179,6 +179,14 @@
         return [e.clientX - bbox.left, e.clientY - bbox.top];
     }
 
+    $effect(() => {
+        plot.body?.ownerDocument.body.addEventListener('pointerup', onpointerup);
+
+        return () => {
+            plot.body?.ownerDocument.body.removeEventListener('pointerup', onpointerup);
+        };
+    });
+
     function onpointerdown(e: MouseEvent) {
         dragging = true;
         dragStart = getLayerPos(e);
@@ -252,23 +260,25 @@
     }
 
     function onpointerup(e: MouseEvent) {
-        dragging = false;
-        action = false;
-        // fix coordinates
-        if (x2 < x1) {
-            const t = x2;
-            x2 = x1;
-            x1 = t;
+        if (dragging) {
+            dragging = false;
+            action = false;
+            // fix coordinates
+            if (x2 < x1) {
+                const t = x2;
+                x2 = x1;
+                x1 = t;
+            }
+            if (y2 < y1) {
+                const t = y2;
+                y2 = y1;
+                y1 = t;
+            }
+            brush.enabled =
+                Math.sqrt((dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2) >
+                DRAG_MIN_DISTANCE;
+            onbrushend?.({ ...e, brush });
         }
-        if (y2 < y1) {
-            const t = y2;
-            y2 = y1;
-            y1 = t;
-        }
-        brush.enabled =
-            Math.sqrt((dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2) >
-            DRAG_MIN_DISTANCE;
-        onbrushend?.({ ...e, brush });
     }
 </script>
 
@@ -286,4 +296,4 @@
         {strokeMiterlimit}
         {strokeWidth} />
 {/if}
-<Frame fill="transparent" inset={-20} {cursor} {onpointerdown} {onpointerup} {onpointermove} />
+<Frame fill="transparent" inset={-20} {cursor} {onpointerdown} {onpointermove} />
