@@ -231,6 +231,11 @@
         onbrushstart?.({ ...e, brush });
     }
 
+    const EAST: Set<ActionType> = new Set(['e-resize', 'ne-resize', 'se-resize']);
+    const WEST: Set<ActionType> = new Set(['w-resize', 'nw-resize', 'sw-resize']);
+    const NORTH: Set<ActionType> = new Set(['n-resize', 'ne-resize', 'nw-resize']);
+    const SOUTH: Set<ActionType> = new Set(['s-resize', 'se-resize', 'sw-resize']);
+
     function onpointermove(e: MouseEvent) {
         const newPos = getLayerPos(e);
 
@@ -244,23 +249,16 @@
                     px = constrain(px, [xRange[0] - pxBrush.x1, xRange[1] - pxBrush.x2]);
                     py = constrain(py, [yRange[0] - pxBrush.y1, yRange[1] - pxBrush.y2]);
                 } else if (action !== 'draw') {
-                    // limit resizing
-                    if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
+                    // limit horizontal resizing
+                    if (EAST.has(action)) {
                         px = constrain(px, [xRange[0] - pxBrush.x2, xRange[1] - pxBrush.x2]);
-                    } else if (
-                        action === 'w-resize' ||
-                        action === 'nw-resize' ||
-                        action === 'sw-resize'
-                    ) {
+                    } else if (WEST.has(action)) {
                         px = constrain(px, [xRange[0] - pxBrush.x1, xRange[1] - pxBrush.x1]);
                     }
-                    if (action === 'n-resize' || action === 'ne-resize' || action === 'nw-resize') {
+                    // limit vertical resizing
+                    if (NORTH.has(action)) {
                         py = constrain(py, [yRange[0] - pxBrush.y2, yRange[1] - pxBrush.y2]);
-                    } else if (
-                        action === 's-resize' ||
-                        action === 'se-resize' ||
-                        action === 'sw-resize'
-                    ) {
+                    } else if (SOUTH.has(action)) {
                         py = constrain(py, [yRange[0] - pxBrush.y1, yRange[1] - pxBrush.y1]);
                     }
                 }
@@ -289,22 +287,14 @@
                     y2 = constrain(y2, yDomain as [typeof y2, typeof y2]);
                 }
             } else {
-                if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
+                if (EAST.has(action)) {
                     x2 = dx2;
-                } else if (
-                    action === 'w-resize' ||
-                    action === 'nw-resize' ||
-                    action === 'sw-resize'
-                ) {
+                } else if (WEST.has(action)) {
                     x1 = dx1;
                 }
-                if (action === 'n-resize' || action === 'ne-resize' || action === 'nw-resize') {
+                if (NORTH.has(action)) {
                     y2 = dy2;
-                } else if (
-                    action === 's-resize' ||
-                    action === 'se-resize' ||
-                    action === 'sw-resize'
-                ) {
+                } else if (SOUTH.has(action)) {
                     y1 = dy1;
                 }
 
