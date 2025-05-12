@@ -218,6 +218,10 @@ html {
             white-space: nowrap;
         }
 
+        pre {
+            font-family: var(--svp-code-font);
+        }
+
         pre code {
             white-space: pre-wrap;
         }
