@@ -58,6 +58,15 @@
     const xDomain = $derived(plot.scales.x.domain);
     const yDomain = $derived(plot.scales.y.domain);
 
+    $effect(() => {
+        if (limitDimension !== 'y' && !plot.scales.x.fn.invert) {
+            throw new Error('brushing does not work with band/point scales');
+        }
+        if (limitDimension !== 'x' && !plot.scales.y.fn.invert) {
+            throw new Error('brushing does not work with band/point scales');
+        }
+    });
+
     let x1 = $state(brush.x1);
     let x2 = $state(brush.x2);
     let y1 = $state(brush.y1);
