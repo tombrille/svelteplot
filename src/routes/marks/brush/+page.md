@@ -413,8 +413,16 @@ The Brush mark provides three event handlers:
 
 ## BrushX
 
-Helper mark for brushing 1-dimensional selections along the x axis. Shorthand for `<Brush limitDimension="x" />`
+Helper mark for brushing 1-dimensional selections along the x axis. Shorthand for
+
+```svelte
+<Brush limitDimension="x" />
+```
 
 ## BrushY
 
-Helper mark for brushing 1-dimensional selections along the y axis. Shorthand for `<Brush limitDimension="y" />`
+Helper mark for brushing 1-dimensional selections along the y axis. Shorthand for
+
+```svelte
+<Brush limitDimension="y" />
+```
