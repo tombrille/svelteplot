@@ -224,7 +224,7 @@
             action = 'draw';
             // new drag
             x1 = x2 = e.dataX as Date | number;
-            y1 = y1 = e.dataY as Date | number;
+            y1 = y2 = e.dataY as Date | number;
         }
         onbrushstart?.({ ...e, brush });
     }
