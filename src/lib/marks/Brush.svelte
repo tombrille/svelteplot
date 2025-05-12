@@ -11,7 +11,18 @@
 
     export type BrushMarkProps = {
         brush: Brush;
+        /**
+         * limit brushing to x or y dimension
+         */
         limitDimension?: false | 'x' | 'y';
+        /**
+         * whether brush can move/resize outside domain
+         */
+        constrainToDomain?: boolean;
+        /**
+         * size of the (invisible) drag resize area around the edges of the brush selection
+         */
+        resizeHandleSize?: number;
         onbrushstart?: (evt: BrushEvent) => void;
         onbrushend?: (evt: BrushEvent) => void;
         onbrush?: (evt: BrushEvent) => void;
@@ -34,6 +45,7 @@
     import Frame from '$lib/marks/Frame.svelte';
     import Rect from '$lib/marks/Rect.svelte';
     import type { BaseMarkProps, PlotContext } from '$lib/types.js';
+    import { clientToLayerCoordinates } from './helpers/events.js';
 
     let {
         brush = $bindable({ enabled: false }),
@@ -46,7 +58,8 @@
         strokeLinejoin,
         strokeMiterlimit,
         cursor: forceCursor,
-        limitDimension = false, // 'x'|'y'|false
+        limitDimension = false,
+        constrainToDomain = false,
         resizeHandleSize = 10,
         onbrushstart,
         onbrushend,
@@ -56,8 +69,10 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
-    const xDomain = $derived(plot.scales.x.domain);
-    const yDomain = $derived(plot.scales.y.domain);
+    const xDomain = $derived(plot.scales.x.domain) as [number, number] | [Date, Date];
+    const xRange = $derived(plot.scales.x.range) as [number, number];
+    const yDomain = $derived(plot.scales.y.domain) as [number, number] | [Date, Date];
+    const yRange = $derived(plot.scales.y.range) as [number, number];
 
     $effect(() => {
         if (limitDimension !== 'y' && !plot.scales.x.fn.invert) {
@@ -76,7 +91,7 @@
     let dragging = false;
     let action:
         | 'move'
-        | 'rect'
+        | 'draw'
         | 'n-resize'
         | 's-resize'
         | 'w-resize'
@@ -128,7 +143,7 @@
         forceCursor
             ? forceCursor
             : action
-              ? action === 'rect'
+              ? action === 'draw'
                   ? 'crosshair'
                   : action
               : brush.enabled && isInsideBrush
@@ -160,7 +175,7 @@
                 : constrain(y1 > y2 ? y1 : y2, yDomain);
     });
 
-    function constrain(x: number | Date, extent: (number | Date)[]) {
+    function constrain<T extends number | Date>(x: T, extent: T[]) {
         const minE = extent[0] < extent[1] ? extent[0] : extent[1];
         const maxE = extent[0] > extent[1] ? extent[0] : extent[1];
         if (x < minE) return minE;
@@ -174,16 +189,17 @@
      * fallback to clientX/clientY to support basic user event testing
      */
     function getLayerPos(e: MouseEvent): [number, number] {
-        if (e.layerX !== undefined) return [e.layerX, e.layerY];
-        const bbox = (e.target as SVGElement).getBoundingClientRect() ?? { left: 0, top: 0 };
-        return [e.clientX - bbox.left, e.clientY - bbox.top];
+        // Use the clientToLayerCoordinates helper function
+        return clientToLayerCoordinates(e, plot.body);
     }
 
     $effect(() => {
         plot.body?.ownerDocument.body.addEventListener('pointerup', onpointerup);
+        plot.body?.ownerDocument.body.addEventListener('pointermove', onpointermove);
 
         return () => {
             plot.body?.ownerDocument.body.removeEventListener('pointerup', onpointerup);
+            plot.body?.ownerDocument.body.removeEventListener('pointermove', onpointermove);
         };
     });
 
@@ -202,7 +218,7 @@
                 .map((c) => CURSOR_MAP[c])
                 .join('')}-resize` as typeof action;
         } else {
-            action = 'rect';
+            action = 'draw';
             // new drag
             x1 = x2 = e.dataX;
             y1 = y1 = e.dataY;
@@ -213,23 +229,59 @@
     function onpointermove(e: MouseEvent) {
         const newPos = getLayerPos(e);
         if (dragging) {
-            const px = newPos[0] - pxPointer[0];
-            const py = newPos[1] - pxPointer[1];
+            let px = newPos[0] - pxPointer[0];
+            let py = newPos[1] - pxPointer[1];
+
+            if (constrainToDomain) {
+                if (action === 'move') {
+                    // limit selection movement
+                    px = constrain(px, [xRange[0] - pxBrush.x1, xRange[1] - pxBrush.x2]);
+                    py = constrain(py, [yRange[0] - pxBrush.y1, yRange[1] - pxBrush.y2]);
+                } else if (action !== 'draw') {
+                    // limit resizing
+                    if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
+                        px = constrain(px, [xRange[0] - pxBrush.x2, xRange[1] - pxBrush.x2]);
+                    } else if (
+                        action === 'w-resize' ||
+                        action === 'nw-resize' ||
+                        action === 'sw-resize'
+                    ) {
+                        px = constrain(px, [xRange[0] - pxBrush.x1, xRange[1] - pxBrush.x1]);
+                    }
+                    if (action === 'n-resize' || action === 'ne-resize' || action === 'nw-resize') {
+                        py = constrain(py, [yRange[0] - pxBrush.y2, yRange[1] - pxBrush.y2]);
+                    } else if (
+                        action === 's-resize' ||
+                        action === 'se-resize' ||
+                        action === 'sw-resize'
+                    ) {
+                        py = constrain(py, [yRange[0] - pxBrush.y1, yRange[1] - pxBrush.y1]);
+                    }
+                }
+            }
+
             const hasX = limitDimension !== 'y';
             const hasY = limitDimension !== 'x';
+
             const dx1 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x1) + px);
             const dx2 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x2) + px);
             const dy1 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y1) + py);
             const dy2 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y2) + py);
+
             if (action === 'move') {
                 // move edges
                 x1 = dx1;
                 x2 = dx2;
                 y1 = dy1;
                 y2 = dy2;
-            } else if (action === 'rect') {
-                x2 = e.dataX;
-                y2 = e.dataY;
+            } else if (action === 'draw') {
+                x2 = !hasX ? 0 : plot.scales.x.fn.invert(newPos[0]);
+                y2 = !hasY ? 0 : plot.scales.y.fn.invert(newPos[1]);
+
+                if (constrainToDomain) {
+                    x2 = constrain(x2, xDomain);
+                    y2 = constrain(y2, yDomain);
+                }
             } else {
                 if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
                     x2 = dx2;
@@ -249,7 +301,22 @@
                 ) {
                     y1 = dy1;
                 }
+
+                // fix coordinates
+                if (x2 < x1) {
+                    const t = x2;
+                    x2 = x1;
+                    x1 = t;
+                    action = `${action.split('-')[0].replace('e', 'W').replace('w', 'e').replace('W', 'w')}-resize`;
+                }
+                if (y2 < y1) {
+                    const t = y2;
+                    y2 = y1;
+                    y1 = t;
+                    action = `${action.split('-')[0].replace('n', 'S').replace('s', 'n').replace('S', 's')}-resize`;
+                }
             }
+
             const dist = Math.sqrt(
                 (dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2
             );
@@ -263,17 +330,7 @@
         if (dragging) {
             dragging = false;
             action = false;
-            // fix coordinates
-            if (x2 < x1) {
-                const t = x2;
-                x2 = x1;
-                x1 = t;
-            }
-            if (y2 < y1) {
-                const t = y2;
-                y2 = y1;
-                y1 = t;
-            }
+
             brush.enabled =
                 Math.sqrt((dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2) >
                 DRAG_MIN_DISTANCE;

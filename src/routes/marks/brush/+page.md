@@ -124,7 +124,7 @@ By default the brush mark will use a `<Rect>` mark to render the selection with 
 </Plot>
 ```
 
-You can limit the brushing dimension using the BrushX and BrushY marks. Here we create an overview + detail time series:
+You can limit the brushing dimension using the BrushX and BrushY marks. Here we create an overview + detail time series. Also note how the moving and resizing of the selection is constrained to the plot domains:
 
 ```svelte live
 <script>
@@ -175,7 +175,10 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
                 opacity={0.2} />
             <Line data={filteredData} x="Date" y="Close" />
         {/if}
-        <BrushX bind:brush stroke={false} />
+        <BrushX
+            bind:brush
+            stroke={false}
+            constrainToDomain />
     </Plot>
 </div>
 <!-- detail plot -->
@@ -197,7 +200,7 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
         <RectX {...brush} fill="blue" opacity={0.2} />
         <Line data={filteredData} x="Date" y="Close" />
     {/if}
-    <BrushX bind:brush stroke={false} />
+    <BrushX bind:brush stroke={false} constrainToDomain />
 </Plot>
 <!-- detail plot -->
 <Plot grid>
@@ -362,7 +365,8 @@ But you can still brush along a sequential dimension:
 ### Options
 
 - **brush** - Object containing brush state with x1, x2, y1, y2 coordinates and enabled flag
-- **limitDimension** - Restrict brush to a specific dimension: 'x', 'y', or false (default: false)
+- **limitDimension** - Restrict brushing to a specific dimension: 'x', 'y', or false (default: false)
+- **constrainToDomain** - Constrain resizing/moving of brush inside the plot domain (default: false)
 - **resizeHandleSize** - Width of the (invisible) drag resize handle area at the edges of the selection (default: 10)
 
 ### Events
