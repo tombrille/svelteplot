@@ -154,13 +154,6 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
     );
 </script>
 
-<!-- detail plot -->
-<Plot
-    y={{ insetTop: 10, insetBottom: 10 }}
-    grid
-    marginBottom={30}>
-    <Line data={filteredData} x="Date" y="Close" />
-</Plot>
 <!-- overview plot -->
 <div style="touch-action: none">
     <Plot
@@ -183,14 +176,17 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
         <BrushX bind:brush stroke={false} />
     </Plot>
 </div>
+<!-- detail plot -->
+<Plot
+    y={{ insetTop: 10, insetBottom: 10 }}
+    grid
+    marginBottom={30}>
+    <Line data={filteredData} x="Date" y="Close" />
+</Plot>
 ```
 
 ```svelte
-<!-- detail plot -->
-<Plot grid>
-    <Line data={filteredData} x="Date" y="Close" />
-</Plot>
-<!-- brushable overview plot -->
+<!-- brushable overview -->
 <Plot height={90}>
     <Frame opacity={0.4} />
     <Line data={aapl} x="Date" y="Close" opacity={0.3} />
@@ -200,6 +196,10 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
         <Line data={filteredData} x="Date" y="Close" />
     {/if}
     <BrushX bind:brush stroke={false} />
+</Plot>
+<!-- detail plot -->
+<Plot grid>
+    <Line data={filteredData} x="Date" y="Close" />
 </Plot>
 ```
 
