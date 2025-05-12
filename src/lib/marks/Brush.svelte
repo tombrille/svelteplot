@@ -91,8 +91,7 @@
     let y1 = $state(brush.y1 as Date | number);
     let y2 = $state(brush.y2 as Date | number);
 
-    let dragging = false;
-    let action:
+    type ActionType =
         | 'move'
         | 'draw'
         | 'n-resize'
@@ -103,7 +102,10 @@
         | 'nw-resize'
         | 'se-resize'
         | 'sw-resize'
-        | false = $state(false);
+        | false;
+
+    let dragging = false;
+    let action: ActionType = $state(false);
 
     let dragStart: [number, number];
 
@@ -219,7 +221,7 @@
             action = `${[isYEdge, isXEdge]
                 .filter((d) => !!d)
                 .map((c) => CURSOR_MAP[c])
-                .join('')}-resize` as typeof action;
+                .join('')}-resize` as ActionType;
         } else {
             action = 'draw';
             // new drag
@@ -306,21 +308,11 @@
                     y1 = dy1;
                 }
 
-                // fix coordinates
-                if (action && x2 < x1) {
-                    const t = x2;
-                    x2 = x1;
-                    x1 = t;
-                    action =
-                        `${action.split('-')[0].replace('e', 'W').replace('w', 'e').replace('W', 'w')}-resize` as typeof action;
-                }
-                if (action && y2 < y1) {
-                    const t = y2;
-                    y2 = y1;
-                    y1 = t;
-                    action =
-                        `${action.split('-')[0].replace('n', 'S').replace('s', 'n').replace('S', 's')}-resize` as typeof action;
-                }
+                // if the user drag-resizes a brush edge over the opposite edge we need to
+                // flip the coordinates and invert the resize action name
+
+                [x1, x2, action] = swapIfNeeded(x1, x2, action, 'e', 'w');
+                [y1, y2, action] = swapIfNeeded(y1, y2, action, 'n', 's');
             }
 
             const dist = Math.sqrt(
@@ -330,7 +322,26 @@
             onbrush?.({ ...e, brush });
 
             pxPointer = [pxPointer[0] + px, pxPointer[1] + py];
+        } else {
+            pxPointer = getLayerPos(e);
         }
+    }
+
+    function swapIfNeeded(
+        v1: number | Date,
+        v2: number | Date,
+        action: ActionType,
+        swapDir1: string,
+        swapDir2: string
+    ) {
+        if (action && v2 < v1) {
+            return [
+                v2,
+                v1,
+                `${action.split('-')[0].replace(swapDir1, 'X').replace(swapDir2, swapDir1).replace('X', swapDir2)}-resize` as ActionType
+            ];
+        }
+        return [v1, v2, action];
     }
 
     function onpointerup(e: MouseEvent) {
