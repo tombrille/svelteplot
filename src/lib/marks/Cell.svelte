@@ -101,10 +101,3 @@
         </g>
     {/snippet}
 </Mark>
-
-<style>
-    rect {
-        stroke: none;
-        /* fill: none; */
-    }
-</style>

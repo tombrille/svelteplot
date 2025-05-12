@@ -1,5 +1,5 @@
 <script module lang="ts">
-    type Brush = {
+    export type Brush = {
         x1?: Date | number;
         x2?: Date | number;
         y1?: Date | number;
@@ -11,7 +11,7 @@
 
     export type BrushMarkProps = {
         brush: Brush;
-        limitDimension: false | 'x' | 'y';
+        limitDimension?: false | 'x' | 'y';
         onbrushstart?: (evt: BrushEvent) => void;
         onbrushend?: (evt: BrushEvent) => void;
         onbrush?: (evt: BrushEvent) => void;
@@ -77,7 +77,7 @@
         | 'sw-resize'
         | false = $state(false);
 
-    let dragStart: number;
+    let dragStart: [number, number];
 
     let pxPointer = $state([0, 0]);
 
@@ -159,12 +159,21 @@
         return x;
     }
 
-    const DRAG_DELAY = 300;
+    const DRAG_MIN_DISTANCE = 5;
+
+    /**
+     * fallback to clientX/clientY to support basic user event testing
+     */
+    function getLayerPos(e: MouseEvent): [number, number] {
+        if (e.layerX !== undefined) return [e.layerX, e.layerY];
+        const bbox = (e.target as SVGElement).getBoundingClientRect() ?? { left: 0, top: 0 };
+        return [e.clientX - bbox.left, e.clientY - bbox.top];
+    }
 
     function onpointerdown(e: MouseEvent) {
         dragging = true;
-        dragStart = Date.now();
-        pxPointer = [e.layerX, e.layerY];
+        dragStart = getLayerPos(e);
+        pxPointer = getLayerPos(e);
 
         if (brush.enabled && isInsideBrush) {
             // drag starts inside existing brush, if so, move the brush
@@ -185,7 +194,7 @@
     }
 
     function onpointermove(e: MouseEvent) {
-        const newPos = [e.layerX, e.layerY];
+        const newPos = getLayerPos(e);
         if (dragging) {
             const px = newPos[0] - pxPointer[0];
             const py = newPos[1] - pxPointer[1];
@@ -222,10 +231,13 @@
                     y1 = dy1;
                 }
             }
-            if (Date.now() - dragStart) brush.enabled = true;
+            const dist = Math.sqrt(
+                (dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2
+            );
+            if (dist > DRAG_MIN_DISTANCE) brush.enabled = true;
             onbrush?.({ ...e, brush });
         }
-        pxPointer = [e.layerX, e.layerY];
+        pxPointer = getLayerPos(e);
     }
 
     function onpointerup(e: MouseEvent) {
@@ -242,13 +254,16 @@
             y2 = y1;
             y1 = t;
         }
-        brush.enabled = Date.now() - dragStart > DRAG_DELAY;
+        brush.enabled =
+            Math.sqrt((dragStart[0] - pxPointer[0]) ** 2 + (dragStart[1] - pxPointer[1]) ** 2) >
+            DRAG_MIN_DISTANCE;
         onbrushend?.({ ...e, brush });
     }
 </script>
 
 {#if stroke && brush.enabled}
     <Rect
+        class="brush-rect"
         {...limitDimension === 'x' ? {} : { y1: brush.y1, y2: brush.y2 }}
         {...limitDimension === 'y' ? {} : { x1: brush.x1, x2: brush.x2 }}
         {stroke}

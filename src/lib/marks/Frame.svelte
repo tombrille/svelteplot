@@ -7,11 +7,19 @@
     import { addEventHandlers } from './helpers/events.js';
 
     type FrameMarkProps = BaseMarkProps &
-        BaseRectMarkProps & {
+        Omit<
+            BaseRectMarkProps,
+            'inset' | 'insetLeft' | 'insetRight' | 'insetTop' | 'insetBottom'
+        > & {
             automatic?: boolean;
+            inset?: number;
+            insetLeft?: number;
+            insetRight?: number;
+            insetTop?: number;
+            insetBottom?: number;
         };
 
-    let { automatic, class: className = null, ...options }: FrameMarkProps = $props();
+    let { automatic, class: className = '', ...options }: FrameMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -40,6 +48,3 @@
         height={plot.facetHeight - (insetBottom || 0) - (insetTop || 0)}
         use:addEventHandlers={{ getPlotState, options: options, datum: {} }} />
 </Mark>
-
-<style>
-</style>
