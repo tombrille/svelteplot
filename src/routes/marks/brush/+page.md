@@ -2,7 +2,7 @@
 title: Brush mark
 ---
 
-The **brush mark** is useful for interactively selecting data.
+The **Brush** mark is useful for interactively selecting data.
 
 ```svelte live
 <script>
@@ -205,3 +205,17 @@ You can also use the Brush mark to create a zoomable plot:
     }
 </style>
 ```
+
+## Brush
+
+Options:
+
+...
+
+## BrushX
+
+Shorthand for `<Brush limitDimension="x" />`
+
+## BrushY
+
+Shorthand for `<Brush limitDimension="y" />`
