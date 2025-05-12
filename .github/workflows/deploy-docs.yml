@@ -18,6 +18,8 @@ on:
 
 jobs:
     build-and-deploy:
+        # Prevent this job from running on forks
+        if: github.repository == 'svelteplot/svelteplot'
         runs-on: ubuntu-latest
         environment:
             name: github-pages
