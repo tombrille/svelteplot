@@ -14,42 +14,44 @@ The **Brush** mark is useful for interactively selecting data.
     let brush = $state({ enabled: false });
 </script>
 
-<Plot
-    grid
-    color={{ legend: true }}
-    x={{ label: '' }}
-    y={{ label: '' }}
-    title="Scatterplot">
-    <Dot
-        data={penguins}
-        x="culmen_length_mm"
-        y="culmen_depth_mm"
-        opacity={brush.enabled ? 0.3 : 1}
-        stroke={(d) =>
-            brush.enabled ? 'lightgray' : d.species}
-        symbol="species" />
-    {#if brush.enabled}
-        <Rect
-            data={[brush]}
-            x1="x1"
-            x2="x2"
-            y1="y1"
-            y2="y2"
-            opacity={0.1} />
+<div style="touch-action: none">
+    <Plot
+        grid
+        color={{ legend: true }}
+        x={{ label: '' }}
+        y={{ label: '' }}
+        title="Scatterplot">
         <Dot
             data={penguins}
-            filter={(d) =>
-                d.culmen_length_mm >= brush.x1 &&
-                d.culmen_length_mm <= brush.x2 &&
-                d.culmen_depth_mm >= brush.y1 &&
-                d.culmen_depth_mm <= brush.y2}
             x="culmen_length_mm"
             y="culmen_depth_mm"
-            stroke="species"
+            opacity={brush.enabled ? 0.3 : 1}
+            stroke={(d) =>
+                brush.enabled ? 'lightgray' : d.species}
             symbol="species" />
-    {/if}
-    <Brush bind:brush />
-</Plot>
+        {#if brush.enabled}
+            <Rect
+                data={[brush]}
+                x1="x1"
+                x2="x2"
+                y1="y1"
+                y2="y2"
+                opacity={0.1} />
+            <Dot
+                data={penguins}
+                filter={(d) =>
+                    d.culmen_length_mm >= brush.x1 &&
+                    d.culmen_length_mm <= brush.x2 &&
+                    d.culmen_depth_mm >= brush.y1 &&
+                    d.culmen_depth_mm <= brush.y2}
+                x="culmen_length_mm"
+                y="culmen_depth_mm"
+                stroke="species"
+                symbol="species" />
+        {/if}
+        <Brush bind:brush />
+    </Plot>
+</div>
 ```
 
 You can use the BrushX mark to create an overview + detail time series:
@@ -158,40 +160,43 @@ You can also use the Brush mark to create a zoomable plot:
     });
 </script>
 
-<Plot
-    grid
-    x={{
-        domain: domainXT.current,
-        label: 'culmen_length_mm'
-    }}
-    y={{
-        domain: domainYT.current,
-        label: 'culmen_depth_mm'
-    }}
-    title="Zoomable scatterplot">
-    {#snippet header()}
-        {#if isZoomedIn}
-            <button onclick={resetZoom}>reset zoom</button>
-        {/if}
-    {/snippet}
-    <Dot
-        data={penguins}
-        x="culmen_length_mm"
-        y="culmen_depth_mm"
-        stroke="species"
-        symbol="species" />
-    <Brush
-        bind:brush
-        cursor="zoom-in"
-        onbrushend={(e) => {
-            if (e.brush.enabled) {
-                domainX = [e.brush.x1, e.brush.x2];
-                domainY = [e.brush.y1, e.brush.y2];
-                brush.enabled = false;
-                isZoomedIn = true;
-            }
-        }} />
-</Plot>
+<div style="touch-action: none">
+    <Plot
+        grid
+        x={{
+            domain: domainXT.current,
+            label: 'culmen_length_mm'
+        }}
+        y={{
+            domain: domainYT.current,
+            label: 'culmen_depth_mm'
+        }}
+        title="Zoomable scatterplot">
+        {#snippet header()}
+            {#if isZoomedIn}
+                <button onclick={resetZoom}
+                    >reset zoom</button>
+            {/if}
+        {/snippet}
+        <Dot
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            stroke="species"
+            symbol="species" />
+        <Brush
+            bind:brush
+            cursor="zoom-in"
+            onbrushend={(e) => {
+                if (e.brush.enabled) {
+                    domainX = [e.brush.x1, e.brush.x2];
+                    domainY = [e.brush.y1, e.brush.y2];
+                    brush.enabled = false;
+                    isZoomedIn = true;
+                }
+            }} />
+    </Plot>
+</div>
 
 <style>
     button {
