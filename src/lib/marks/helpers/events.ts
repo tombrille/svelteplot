@@ -4,6 +4,42 @@ import { invert, pick } from 'es-toolkit';
 import { RAW_VALUE } from '$lib/transforms/recordize.js';
 import { INDEX } from '$lib/constants.js';
 
+// Extend the MouseEvent type to include the properties we're using
+declare global {
+    interface MouseEvent {
+        layerX?: number;
+        layerY?: number;
+        dataX?: number | string | Date;
+        dataY?: number | string | Date;
+    }
+}
+
+/**
+ * Translates client coordinates (clientX, clientY) to the layer coordinates 
+ * of the plot frame, regardless of which element triggered the event
+ */
+export function clientToLayerCoordinates(
+    event: MouseEvent,
+    plotBody: HTMLElement | null | undefined
+): [number, number] {
+    // If layerX/Y already exist and the target is the plot frame (rect element), 
+    // we can use them directly
+    // if (event.layerX !== undefined && (event.target as SVGElement).tagName === 'rect') {
+    //     return [event.layerX, event.layerY];
+    // }
+
+    // Otherwise, transform from client coordinates to layer coordinates
+    // by getting the bounds of the plot body element and calculating the offset
+    if (!plotBody) return [0, 0];
+    const plotBodyRect = plotBody.getBoundingClientRect();
+
+    // Calculate the coordinates relative to the plot body
+    return [
+        event.clientX - plotBodyRect.left,
+        event.clientY - plotBodyRect.top
+    ];
+}
+
 export function addEventHandlers(
     node: SVGElement,
     {
@@ -28,11 +64,20 @@ export function addEventHandlers(
         'onmouseleave',
         'onmousemove',
         'onmouseout',
+        'onmouseover',
         'onmouseup',
-        'onwheel',
+        'onpointercancel',
+        'onpointerdown',
+        'onpointerenter',
+        'onpointerleave',
+        'onpointermove',
+        'onpointerout',
+        'onpointerover',
+        'onpointerup',
         'ontouchcancel',
         'ontouchend',
-        'ontouchmove'
+        'ontouchmove',
+        'onwheel',
     ]);
 
     const listeners = new Map<string, MouseEventHandler<SVGElement>>();
@@ -81,7 +126,6 @@ function invertScale(scale: PlotScale, position: number) {
     if (scale.type === 'band') {
         // invert band scale since scaleBand doesn't have an invert function
         const eachBand = scale.fn.step();
-        console.log({ eachBand, position });
         const index = Math.floor(position / eachBand);
         return scale.fn.domain()[index];
     }

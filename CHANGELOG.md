@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+- Add Brush, BrushX, and BrushY components with comprehensive documentation and examples
+- Add support for onpointer\* events and add missing onmouseover event
+- Replace types for CSS-properties with rules from csstype package
+- Improve documentation for interactivity features
+
 ## 0.1.1-alpha.29
 
 - fix bug in BoxX and BoxY marks when some groups are empty
