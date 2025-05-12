@@ -13,17 +13,19 @@ The **Brush** mark is useful for interactively selecting data. In contrast to th
 
     let brush = $state({ enabled: false });
     function fmt(o) {
-        return Object.fromEntries(
-            Object.entries(o).map(([k, v]) =>
-                typeof v === 'number'
-                    ? [k, +v.toFixed(2)]
-                    : [k, v]
+        return JSON.stringify(
+            Object.fromEntries(
+                Object.entries(o).map(([k, v]) =>
+                    typeof v === 'number'
+                        ? [k, +v.toFixed(2)]
+                        : [k, v]
+                )
             )
-        );
+        ).replace(/,/g, ', ');
     }
 </script>
 
-<pre>{JSON.stringify(fmt(brush))}</pre>
+<pre>{fmt(brush)}</pre>
 <div style="touch-action: none">
     <Plot grid>
         <Dot
@@ -329,17 +331,19 @@ But you can still brush along a sequential dimension:
     import { Plot, BarX, Rect, BrushX } from 'svelteplot';
     let brush = $state({ enabled: false });
     function fmt(o) {
-        return Object.fromEntries(
-            Object.entries(o).map(([k, v]) =>
-                typeof v === 'number'
-                    ? [k, +v.toFixed(2)]
-                    : [k, v]
+        return JSON.stringify(
+            Object.fromEntries(
+                Object.entries(o).map(([k, v]) =>
+                    typeof v === 'number'
+                        ? [k, +v.toFixed(2)]
+                        : [k, v]
+                )
             )
-        );
+        ).replace(/,/g, ', ');
     }
 </script>
 
-<pre>{JSON.stringify(fmt(brush))}</pre>
+<pre>{fmt(brush)}</pre>
 <Plot>
     <BarX data={[1, 2, 4]} opacity={0.5} />
     <BrushX bind:brush />
