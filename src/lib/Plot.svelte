@@ -116,39 +116,47 @@
         scales,
         ...restProps
     })}
-        <!-- implicit axes -->
-        {#if !hasProjection && !hasExplicitAxisX}
-            {#if options.axes && (options.x.axis === 'top' || options.x.axis === 'both')}
-                <AxisX anchor="top" automatic />
+        <svelte:boundary onerror={(err) => console.warn(err)}>
+            <!-- implicit axes -->
+            {#if !hasProjection && !hasExplicitAxisX}
+                {#if options.axes && (options.x.axis === 'top' || options.x.axis === 'both')}
+                    <AxisX anchor="top" automatic />
+                {/if}
+                {#if options.axes && (options.x.axis === 'bottom' || options.x.axis === 'both')}
+                    <AxisX anchor="bottom" automatic />
+                {/if}
             {/if}
-            {#if options.axes && (options.x.axis === 'bottom' || options.x.axis === 'both')}
-                <AxisX anchor="bottom" automatic />
+            {#if !hasProjection && !hasExplicitAxisY}
+                {#if options.axes && (options.y.axis === 'left' || options.y.axis === 'both')}
+                    <AxisY anchor="left" automatic />
+                {/if}
+                {#if options.axes && (options.y.axis === 'right' || options.y.axis === 'both')}
+                    <AxisY anchor="right" automatic />
+                {/if}
             {/if}
-        {/if}
-        {#if !hasProjection && !hasExplicitAxisY}
-            {#if options.axes && (options.y.axis === 'left' || options.y.axis === 'both')}
-                <AxisY anchor="left" automatic />
+            <!-- implicit grids -->
+            {#if !hasExplicitGridX && (options.grid || options.x.grid)}
+                <GridX automatic />
             {/if}
-            {#if options.axes && (options.y.axis === 'right' || options.y.axis === 'both')}
-                <AxisY anchor="right" automatic />
+            {#if !hasExplicitGridY && (options.grid || options.y.grid)}
+                <GridY automatic />
             {/if}
-        {/if}
-        <!-- implicit grids -->
-        {#if !hasExplicitGridX && (options.grid || options.x.grid)}
-            <GridX automatic />
-        {/if}
-        {#if !hasExplicitGridY && (options.grid || options.y.grid)}
-            <GridY automatic />
-        {/if}
-        <!-- implicit frame -->
-        {#if options.frame}
-            <Frame automatic />
-        {/if}
-        {@render parentChildren?.({
-            options,
-            scales,
-            ...restProps
-        })}
+            <!-- implicit frame -->
+            {#if options.frame}
+                <Frame automatic />
+            {/if}
+            {@render parentChildren?.({
+                options,
+                scales,
+                ...restProps
+            })}
+            {#snippet failed(error, reset)}
+                <text class="error" transform="translate(10,10)">
+                    {#each error.message.split('\n') as line, i}
+                        <tspan x="0" dy={i ? 14 : 0}>{line}</tspan>
+                    {/each}
+                </text>{/snippet}
+        </svelte:boundary>
     {/snippet}
     {#snippet facetAxes()}
         <FacetAxes />
@@ -159,5 +167,13 @@
     :root {
         --plot-bg: white;
         --plot-fg: currentColor;
+    }
+    text.error {
+        stroke: var(--plot-bg);
+        fill: crimson;
+        font-size: 11px;
+        stroke-width: 3px;
+        font-weight: bold;
+        paint-order: stroke fill;
     }
 </style>
