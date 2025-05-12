@@ -2,7 +2,56 @@
 title: Brush mark
 ---
 
-The **Brush** mark is useful for interactively selecting data.
+The **Brush** mark is useful for interactively selecting data. In contrast to the [Pointer](/marks/pointer) mark, the brush mark is not bound to data. It will simply let you drag a rectangular selection and bind to the `brush` property or listen to brush events.
+
+```svelte live
+<script>
+    import { Plot, Dot, Rect, Brush } from 'svelteplot';
+    import { page } from '$app/state';
+
+    const { penguins } = $derived(page.data.data);
+
+    let brush = $state({ enabled: false });
+    function fmt(o) {
+        return Object.fromEntries(
+            Object.entries(o).map(([k, v]) =>
+                typeof v === 'number'
+                    ? [k, +v.toFixed(2)]
+                    : [k, v]
+            )
+        );
+    }
+</script>
+
+<pre>{JSON.stringify(fmt(brush))}</pre>
+<div style="touch-action: none">
+    <Plot grid>
+        <Dot
+            data={penguins}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            stroke="species"
+            symbol="species" />
+
+        <Brush bind:brush />
+    </Plot>
+</div>
+```
+
+```svelte
+<pre>{JSON.stringify(brush)}</pre>
+<Plot grid>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="species"
+        symbol="species" />
+    <Brush bind:brush />
+</Plot>
+```
+
+By default the brush mark will use a `<Rect>` mark to render the selection with a dashed outline. You can prevent this by passing `stroke={false}` to the Brush mark. This is useful if you want to highlight the brushed elements in a different way.
 
 ```svelte live
 <script>
@@ -15,28 +64,17 @@ The **Brush** mark is useful for interactively selecting data.
 </script>
 
 <div style="touch-action: none">
-    <Plot
-        grid
-        color={{ legend: true }}
-        x={{ label: '' }}
-        y={{ label: '' }}
-        title="Scatterplot">
+    <Plot grid>
         <Dot
             data={penguins}
             x="culmen_length_mm"
             y="culmen_depth_mm"
             opacity={brush.enabled ? 0.3 : 1}
             stroke={(d) =>
-                brush.enabled ? 'lightgray' : d.species}
+                brush.enabled ? 'gray' : d.species}
             symbol="species" />
         {#if brush.enabled}
-            <Rect
-                data={[brush]}
-                x1="x1"
-                x2="x2"
-                y1="y1"
-                y2="y2"
-                opacity={0.1} />
+            <Rect {...brush} opacity={0.1} />
             <Dot
                 data={penguins}
                 filter={(d) =>
@@ -49,12 +87,42 @@ The **Brush** mark is useful for interactively selecting data.
                 stroke="species"
                 symbol="species" />
         {/if}
-        <Brush bind:brush />
+        <Brush bind:brush stroke={false} />
     </Plot>
 </div>
 ```
 
-You can use the BrushX mark to create an overview + detail time series:
+```svelte
+<Plot grid>
+    <!-- gray symbols if brush is enabled -->
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke={(d) => (brush.enabled ? 'gray' : d.species)}
+        opacity={brush.enabled ? 0.3 : 1}
+        symbol="species" />
+    {#if brush.enabled}
+        <!-- custom rectangle to show brush selection -->
+        <Rect {...brush} opacity={0.1} />
+        <!-- colored symbol inside the brush selection -->
+        <Dot
+            data={penguins}
+            filter={(d) =>
+                d.culmen_length_mm >= brush.x1 &&
+                d.culmen_length_mm <= brush.x2 &&
+                d.culmen_depth_mm >= brush.y1 &&
+                d.culmen_depth_mm <= brush.y2}
+            x="culmen_length_mm"
+            y="culmen_depth_mm"
+            stroke="species"
+            symbol="species" />
+    {/if}
+    <Brush bind:brush stroke={false} />
+</Plot>
+```
+
+You can limit the brushing dimension using the BrushX and BrushY marks. Here we create an overview + detail time series:
 
 ```svelte live
 <script>
@@ -107,9 +175,7 @@ You can use the BrushX mark to create an overview + detail time series:
             opacity={0.3} />
         {#if brush.enabled}
             <RectX
-                data={[brush]}
-                x1="x1"
-                x2="x2"
+                {...brush}
                 fill="var(--svp-blue)"
                 opacity={0.2} />
             <Line data={filteredData} x="Date" y="Close" />
@@ -119,11 +185,35 @@ You can use the BrushX mark to create an overview + detail time series:
 </div>
 ```
 
-You can also use the Brush mark to create a zoomable plot:
+```svelte
+<!-- detail plot -->
+<Plot grid>
+    <Line data={filteredData} x="Date" y="Close" />
+</Plot>
+<!-- brushable overview plot -->
+<Plot height={90}>
+    <Frame opacity={0.4} />
+    <Line data={aapl} x="Date" y="Close" opacity={0.3} />
+    {#if brush.enabled}
+        <!-- show highlighted selection -->
+        <RectX {...brush} fill="blue" opacity={0.2} />
+        <Line data={filteredData} x="Date" y="Close" />
+    {/if}
+    <BrushX bind:brush stroke={false} />
+</Plot>
+```
+
+Another use case for the Brush mark would be to use create a zoomable plot by changing the (tweened) plot domains in the `brushend` event handler:
 
 ```svelte live
 <script>
-    import { Plot, Dot, Rect, Brush } from 'svelteplot';
+    import {
+        Plot,
+        Dot,
+        Rect,
+        Brush,
+        Frame
+    } from 'svelteplot';
     import { Tween } from 'svelte/motion';
     import { cubicInOut } from 'svelte/easing';
     import { page } from '$app/state';
@@ -131,13 +221,7 @@ You can also use the Brush mark to create a zoomable plot:
 
     const { penguins } = $derived(page.data.data);
 
-    let brush = $state({
-        x1: 40,
-        x2: 45,
-        y1: 15,
-        y2: 20,
-        enabled: false
-    });
+    let brush = $state({ enabled: false });
     let isZoomedIn = $state(false);
 
     const fullDomainX = extent(
@@ -176,52 +260,84 @@ You can also use the Brush mark to create a zoomable plot:
         y={{
             domain: domainYT.current,
             label: 'culmen_depth_mm'
-        }}
-        title="Zoomable scatterplot">
-        {#snippet header()}
-            {#if isZoomedIn}
-                <button onclick={resetZoom}
-                    >reset zoom</button>
-            {/if}
-        {/snippet}
+        }}>
         <Dot
             data={penguins}
             x="culmen_length_mm"
             y="culmen_depth_mm"
             stroke="species"
             symbol="species" />
-        <Brush
-            bind:brush
-            cursor="zoom-in"
-            onbrushend={(e) => {
-                if (e.brush.enabled) {
-                    domainX = [e.brush.x1, e.brush.x2];
-                    domainY = [e.brush.y1, e.brush.y2];
-                    brush.enabled = false;
-                    isZoomedIn = true;
-                }
-            }} />
+        {#if !isZoomedIn}
+            <Brush
+                bind:brush
+                cursor="zoom-in"
+                onbrushend={(e) => {
+                    if (e.brush.enabled) {
+                        domainX = [e.brush.x1, e.brush.x2];
+                        domainY = [e.brush.y1, e.brush.y2];
+                        brush.enabled = false;
+                        isZoomedIn = true;
+                    }
+                }} />
+        {:else}
+            <Frame
+                fill="transparent"
+                cursor="zoom-out"
+                onpointerup={resetZoom} />
+        {/if}
     </Plot>
 </div>
+```
 
-<style>
-    button {
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 5px;
-    }
-    :global(.plot-header) {
-        position: relative;
-    }
-</style>
+```svelte
+<Brush
+    bind:brush
+    cursor="zoom-in"
+    onbrushend={(e) => {
+        if (e.brush.enabled) {
+            domainX = [e.brush.x1, e.brush.x2];
+            domainY = [e.brush.y1, e.brush.y2];
+            e.brush.enabled = false;
+        }
+    }} />
 ```
 
 ## Brush
 
-Options:
+### Options
 
-...
+- **brush** - Object containing brush state with x1, x2, y1, y2 coordinates and enabled flag
+- **limitDimension** - Restrict brush to a specific dimension: 'x', 'y', or false (default: false)
+
+### Events
+
+The Brush mark provides three event handlers:
+
+- **onbrushstart** - Event handler triggered when brush interaction begins
+- **onbrushend** - Event handler triggered when brush interaction ends
+- **onbrush** - Event handler triggered during brush movement/resizing
+
+```svelte
+<Brush
+    onbrush={(e) => {
+        console.log('Brushing', e.brush);
+    }}
+    onbrushend={(e) => {
+        console.log('Brush ended', e.brush);
+    }} />
+```
+
+### Styling
+
+- **stroke** - Color of the brush outline (default: 'currentColor'). Set this to `false` to disable the implicit brush rectangle
+- **strokeWidth** - Width of the brush outline
+- **strokeDasharray** - Dash pattern for brush outline (default: '2,3')
+- **strokeOpacity** - Opacity of the brush outline (default: 0.6)
+- **strokeLinecap** - Line cap style for brush outline
+- **strokeDashoffset** - Offset for the dash pattern
+- **strokeLinejoin** - Line join style for brush outline
+- **strokeMiterlimit** - Miter limit for brush outline
+- **cursor** - Override default cursor behavior
 
 ## BrushX
 
