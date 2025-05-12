@@ -231,6 +231,7 @@
 
     function onpointermove(e: MouseEvent) {
         const newPos = getLayerPos(e);
+
         if (dragging) {
             let px = newPos[0] - pxPointer[0];
             let py = newPos[1] - pxPointer[1];
@@ -327,8 +328,9 @@
             );
             if (dist > DRAG_MIN_DISTANCE) brush.enabled = true;
             onbrush?.({ ...e, brush });
+
+            pxPointer = [pxPointer[0] + px, pxPointer[1] + py];
         }
-        pxPointer = getLayerPos(e);
     }
 
     function onpointerup(e: MouseEvent) {
