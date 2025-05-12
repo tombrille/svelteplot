@@ -223,10 +223,10 @@
                 .map((c) => CURSOR_MAP[c])
                 .join('')}-resize` as ActionType;
         } else {
+            // draw new brush selection
             action = 'draw';
-            // new drag
-            x1 = x2 = e.dataX as Date | number;
-            y1 = y2 = e.dataY as Date | number;
+            x1 = x2 = xScaleFn.invert(dragStart[0]);
+            y1 = y2 = yScaleFn.invert(dragStart[1]);
         }
         onbrushstart?.({ ...e, brush });
     }
