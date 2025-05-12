@@ -69,24 +69,27 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
+    const xScaleFn = $derived(plot.scales.x.fn);
+    const yScaleFn = $derived(plot.scales.y.fn);
+
     const xDomain = $derived(plot.scales.x.domain) as [number, number] | [Date, Date];
     const xRange = $derived(plot.scales.x.range) as [number, number];
     const yDomain = $derived(plot.scales.y.domain) as [number, number] | [Date, Date];
     const yRange = $derived(plot.scales.y.range) as [number, number];
 
     $effect(() => {
-        if (limitDimension !== 'y' && !plot.scales.x.fn.invert) {
+        if (limitDimension !== 'y' && !xScaleFn.invert) {
             throw new Error('brushing does not work with band/point scales');
         }
-        if (limitDimension !== 'x' && !plot.scales.y.fn.invert) {
+        if (limitDimension !== 'x' && !yScaleFn.invert) {
             throw new Error('brushing does not work with band/point scales');
         }
     });
 
-    let x1 = $state(brush.x1);
-    let x2 = $state(brush.x2);
-    let y1 = $state(brush.y1);
-    let y2 = $state(brush.y2);
+    let x1 = $state(brush.x1 as Date | number);
+    let x2 = $state(brush.x2 as Date | number);
+    let y1 = $state(brush.y1 as Date | number);
+    let y2 = $state(brush.y2 as Date | number);
 
     let dragging = false;
     let action:
@@ -107,10 +110,10 @@
     let pxPointer = $state([0, 0]);
 
     const pxBrush = $derived({
-        x1: plot.scales.x.fn(brush.x1),
-        x2: plot.scales.x.fn(brush.x2),
-        y1: plot.scales.y.fn(brush.y1),
-        y2: plot.scales.y.fn(brush.y2)
+        x1: xScaleFn(brush.x1 as Date | number),
+        x2: xScaleFn(brush.x2 as Date | number),
+        y1: yScaleFn(brush.y1 as Date | number),
+        y2: yScaleFn(brush.y2 as Date | number)
     });
 
     const HALF_EDGE = $derived(resizeHandleSize * 0.5);
@@ -160,7 +163,7 @@
         brush.x1 =
             !brush.enabled || limitDimension === 'y'
                 ? undefined
-                : constrain(x1 < x2 ? x1 : x2, xDomain);
+                : constrain((x1 < x2 ? x1 : x2) as Date | number, xDomain);
         brush.x2 =
             !brush.enabled || limitDimension === 'y'
                 ? undefined
@@ -175,7 +178,7 @@
                 : constrain(y1 > y2 ? y1 : y2, yDomain);
     });
 
-    function constrain<T extends number | Date>(x: T, extent: T[]) {
+    function constrain<T extends number | Date>(x: T, extent: [typeof x, typeof x]) {
         const minE = extent[0] < extent[1] ? extent[0] : extent[1];
         const maxE = extent[0] > extent[1] ? extent[0] : extent[1];
         if (x < minE) return minE;
@@ -220,8 +223,8 @@
         } else {
             action = 'draw';
             // new drag
-            x1 = x2 = e.dataX;
-            y1 = y1 = e.dataY;
+            x1 = x2 = e.dataX as Date | number;
+            y1 = y1 = e.dataY as Date | number;
         }
         onbrushstart?.({ ...e, brush });
     }
@@ -263,10 +266,10 @@
             const hasX = limitDimension !== 'y';
             const hasY = limitDimension !== 'x';
 
-            const dx1 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x1) + px);
-            const dx2 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x2) + px);
-            const dy1 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y1) + py);
-            const dy2 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y2) + py);
+            const dx1 = !hasX ? 0 : xScaleFn.invert(xScaleFn(x1) + px);
+            const dx2 = !hasX ? 0 : xScaleFn.invert(xScaleFn(x2) + px);
+            const dy1 = !hasY ? 0 : yScaleFn.invert(yScaleFn(y1) + py);
+            const dy2 = !hasY ? 0 : yScaleFn.invert(yScaleFn(y2) + py);
 
             if (action === 'move') {
                 // move edges
@@ -275,12 +278,12 @@
                 y1 = dy1;
                 y2 = dy2;
             } else if (action === 'draw') {
-                x2 = !hasX ? 0 : plot.scales.x.fn.invert(newPos[0]);
-                y2 = !hasY ? 0 : plot.scales.y.fn.invert(newPos[1]);
+                x2 = !hasX ? 0 : xScaleFn.invert(newPos[0]);
+                y2 = !hasY ? 0 : yScaleFn.invert(newPos[1]);
 
                 if (constrainToDomain) {
-                    x2 = constrain(x2, xDomain);
-                    y2 = constrain(y2, yDomain);
+                    x2 = constrain(x2, xDomain as [typeof x2, typeof x2]);
+                    y2 = constrain(y2, yDomain as [typeof y2, typeof y2]);
                 }
             } else {
                 if (action === 'e-resize' || action === 'ne-resize' || action === 'se-resize') {
@@ -303,17 +306,19 @@
                 }
 
                 // fix coordinates
-                if (x2 < x1) {
+                if (action && x2 < x1) {
                     const t = x2;
                     x2 = x1;
                     x1 = t;
-                    action = `${action.split('-')[0].replace('e', 'W').replace('w', 'e').replace('W', 'w')}-resize`;
+                    action =
+                        `${action.split('-')[0].replace('e', 'W').replace('w', 'e').replace('W', 'w')}-resize` as typeof action;
                 }
-                if (y2 < y1) {
+                if (action && y2 < y1) {
                     const t = y2;
                     y2 = y1;
                     y1 = t;
-                    action = `${action.split('-')[0].replace('n', 'S').replace('s', 'n').replace('S', 's')}-resize`;
+                    action =
+                        `${action.split('-')[0].replace('n', 'S').replace('s', 'n').replace('S', 's')}-resize` as typeof action;
                 }
             }
 
