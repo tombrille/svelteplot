@@ -207,10 +207,12 @@
         if (dragging) {
             const px = newPos[0] - pxPointer[0];
             const py = newPos[1] - pxPointer[1];
-            const dx1 = plot.scales.x.fn.invert(plot.scales.x.fn(x1) + px);
-            const dx2 = plot.scales.x.fn.invert(plot.scales.x.fn(x2) + px);
-            const dy1 = plot.scales.y.fn.invert(plot.scales.y.fn(y1) + py);
-            const dy2 = plot.scales.y.fn.invert(plot.scales.y.fn(y2) + py);
+            const hasX = limitDimension !== 'y';
+            const hasY = limitDimension !== 'x';
+            const dx1 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x1) + px);
+            const dx2 = !hasX ? 0 : plot.scales.x.fn.invert(plot.scales.x.fn(x2) + px);
+            const dy1 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y1) + py);
+            const dy2 = !hasY ? 0 : plot.scales.y.fn.invert(plot.scales.y.fn(y2) + py);
             if (action === 'move') {
                 // move edges
                 x1 = dx1;

@@ -90,7 +90,6 @@ function invertScale(scale: PlotScale, position: number) {
     if (scale.type === 'band') {
         // invert band scale since scaleBand doesn't have an invert function
         const eachBand = scale.fn.step();
-        console.log({ eachBand, position });
         const index = Math.floor(position / eachBand);
         return scale.fn.domain()[index];
     }
