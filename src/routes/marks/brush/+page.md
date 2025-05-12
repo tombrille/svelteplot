@@ -302,6 +302,57 @@ Another use case for the Brush mark would be to use create a zoomable plot by ch
     }} />
 ```
 
+Note that you cannot use a brush along a band/point scale:
+
+```svelte live
+<script>
+    import { Plot, BarX, Brush } from 'svelteplot';
+</script>
+
+<Plot>
+    <BarX data={[1, 2, 3]} />
+    <Brush />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <BarX data={[1, 2, 3]} />
+    <Brush brush={{ enabled: false }} />
+</Plot>
+```
+
+But you can still brush along a sequential dimension:
+
+```svelte live
+<script>
+    import { Plot, BarX, Rect, BrushX } from 'svelteplot';
+    let brush = $state({ enabled: false });
+    function fmt(o) {
+        return Object.fromEntries(
+            Object.entries(o).map(([k, v]) =>
+                typeof v === 'number'
+                    ? [k, +v.toFixed(2)]
+                    : [k, v]
+            )
+        );
+    }
+</script>
+
+<pre>{JSON.stringify(fmt(brush))}</pre>
+<Plot>
+    <BarX data={[1, 2, 4]} opacity={0.5} />
+    <BrushX bind:brush />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <BarX data={[1, 2, 4]} opacity={0.5} />
+    <BrushX bind:brush />
+</Plot>
+```
+
 ## Brush
 
 ### Options
