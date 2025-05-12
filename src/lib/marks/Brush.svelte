@@ -47,6 +47,7 @@
         strokeMiterlimit,
         cursor: forceCursor,
         limitDimension = false, // 'x'|'y'|false
+        resizeHandleSize = 10,
         onbrushstart,
         onbrushend,
         onbrush
@@ -97,8 +98,7 @@
         y2: plot.scales.y.fn(brush.y2)
     });
 
-    const EDGE_SIZE = 10; // make this a prop?
-    const HALF_EDGE = EDGE_SIZE * 0.5;
+    const HALF_EDGE = $derived(resizeHandleSize * 0.5);
 
     const isInsideBrush = $derived(
         (limitDimension === 'y' || pxPointer[0] > pxBrush.x1 + HALF_EDGE) &&

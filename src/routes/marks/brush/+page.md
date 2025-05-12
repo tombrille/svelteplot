@@ -363,6 +363,7 @@ But you can still brush along a sequential dimension:
 
 - **brush** - Object containing brush state with x1, x2, y1, y2 coordinates and enabled flag
 - **limitDimension** - Restrict brush to a specific dimension: 'x', 'y', or false (default: false)
+- **resizeHandleSize** - Width of the (invisible) drag resize handle area at the edges of the selection (default: 10)
 
 ### Events
 
