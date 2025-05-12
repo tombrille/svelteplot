@@ -133,10 +133,22 @@
     );
 
     $effect(() => {
-        brush.x1 = limitDimension === 'y' ? undefined : constrain(x1 < x2 ? x1 : x2, xDomain);
-        brush.x2 = limitDimension === 'y' ? undefined : constrain(x1 > x2 ? x1 : x2, xDomain);
-        brush.y1 = limitDimension === 'x' ? undefined : constrain(y1 < y2 ? y1 : y2, yDomain);
-        brush.y2 = limitDimension === 'x' ? undefined : constrain(y1 > y2 ? y1 : y2, yDomain);
+        brush.x1 =
+            !brush.enabled || limitDimension === 'y'
+                ? undefined
+                : constrain(x1 < x2 ? x1 : x2, xDomain);
+        brush.x2 =
+            !brush.enabled || limitDimension === 'y'
+                ? undefined
+                : constrain(x1 > x2 ? x1 : x2, xDomain);
+        brush.y1 =
+            !brush.enabled || limitDimension === 'x'
+                ? undefined
+                : constrain(y1 < y2 ? y1 : y2, yDomain);
+        brush.y2 =
+            !brush.enabled || limitDimension === 'x'
+                ? undefined
+                : constrain(y1 > y2 ? y1 : y2, yDomain);
     });
 
     function constrain(x: number | Date, extent: (number | Date)[]) {
@@ -147,7 +159,7 @@
         return x;
     }
 
-    const DRAG_DELAY = 100;
+    const DRAG_DELAY = 300;
 
     function onpointerdown(e: MouseEvent) {
         dragging = true;
@@ -237,9 +249,8 @@
 
 {#if stroke && brush.enabled}
     <Rect
-        data={[brush]}
-        {...limitDimension === 'x' ? {} : { y1: 'y1', y2: 'y2' }}
-        {...limitDimension === 'y' ? {} : { x1: 'x1', x2: 'x2' }}
+        {...limitDimension === 'x' ? {} : { y1: brush.y1, y2: brush.y2 }}
+        {...limitDimension === 'y' ? {} : { x1: brush.x1, x2: brush.x2 }}
         {stroke}
         {strokeDasharray}
         {strokeOpacity}
