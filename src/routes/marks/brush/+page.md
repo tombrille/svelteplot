@@ -2,7 +2,7 @@
 title: Brush mark
 ---
 
-The **Brush** mark is useful for interactively selecting data. In contrast to the [Pointer](/marks/pointer) mark, the brush mark is not bound to data. It will simply let you drag a rectangular selection and bind to the `brush` property or listen to brush events.
+The **Brush** mark is useful for interactively selecting data. In contrast to the [Pointer](/marks/pointer) mark, the Brush mark is not bound to data; it will simply let you drag a rectangular selection and bind to the `brush` property or listen to brush events.
 
 ```svelte live
 <script>
@@ -53,7 +53,9 @@ The **Brush** mark is useful for interactively selecting data. In contrast to th
 </Plot>
 ```
 
-By default the brush mark will use a `<Rect>` mark to render the selection with a dashed outline. You can prevent this by passing `stroke={false}` to the Brush mark. This is useful if you want to highlight the brushed elements in a different way.
+[fork](https://svelte.dev/playground/0f9c8158c19247f9badc0904fc938d2c?version=5.28.2)
+
+By default, the Brush mark will use a `<Rect>` mark to render the selection with a dashed outline. You can prevent this by passing `stroke={false}` to the Brush mark. This is useful if you want to highlight the brushed elements in a different way.
 
 ```svelte live
 <script>
@@ -123,6 +125,8 @@ By default the brush mark will use a `<Rect>` mark to render the selection with 
     <Brush bind:brush stroke={false} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/10a9c08e634848aea1f072d9f7cef11e?version=5.28.3)
 
 You can limit the brushing dimension using the BrushX and BrushY marks. Here we create an overview + detail time series. Also note how the moving and resizing of the selection is constrained to the plot domains:
 
@@ -208,7 +212,9 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
 </Plot>
 ```
 
-Another use case for the Brush mark would be to use create a zoomable plot by changing the (tweened) plot domains in the `brushend` event handler:
+[fork](https://svelte.dev/playground/5de8299760c6426f9bdf28f6723a20c5?version=5.28.3)
+
+Another use case for the Brush mark would be to create a zoomable plot by changing the (tweened) plot domains in the `brushend` event handler:
 
 ```svelte live
 <script>
@@ -307,7 +313,9 @@ Another use case for the Brush mark would be to use create a zoomable plot by ch
     }} />
 ```
 
-Note that you cannot use a brush along a band/point scale:
+[fork](https://svelte.dev/playground/4a5d9c70f5da4fc5ada8c11cc8b17aa7?version=5.28.3)
+
+Note that you cannot use a Brush along a band/point scale:
 
 ```svelte live
 <script>
@@ -360,7 +368,11 @@ But you can still brush along a sequential dimension:
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/4ec281c3b3544ec2821838b21e1a492c?version=5.28.3)
+
 ## Brush
+
+Helper mark for brushing 2-dimensional selections along the x and y axes.
 
 ### Options
 
@@ -401,8 +413,8 @@ The Brush mark provides three event handlers:
 
 ## BrushX
 
-Shorthand for `<Brush limitDimension="x" />`
+Helper mark for brushing 1-dimensional selections along the x axis. Shorthand for `<Brush limitDimension="x" />`
 
 ## BrushY
 
-Shorthand for `<Brush limitDimension="y" />`
+Helper mark for brushing 1-dimensional selections along the y axis. Shorthand for `<Brush limitDimension="y" />`
