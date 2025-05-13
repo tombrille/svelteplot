@@ -1,0 +1,6 @@
+Here are a few things you can help with:
+
+- If you find a bug in SveltePlot, please first create a reproducing example in the [Svelte Playground](https://svelte.dev/playground/) and open an [issue on Github](https://github.com/svelteplot/svelteplot/issues/new?template=bug_report.md).
+- If you spot a mistake in the documentation, you can fix it directly in Github (a PR will be created)
+- Feel free to suggest new features by opening a [feature request issue](https://github.com/svelteplot/svelteplot/issues/new?template=feature_request.md) on Github.
+- Still unsure how you can help? Please join our [Discord server](https://discord.gg/pp2wRJqtHV) and say Hi!
