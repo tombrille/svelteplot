@@ -349,11 +349,11 @@ export type PlotOptions = {
     /**
      * Options for the shared radius scale
      */
-    r: ScaleOptions;
+    r: Partial<ScaleOptions>;
     color: Partial<ColorScaleOptions>;
-    opacity: ScaleOptions;
-    symbol: LegendScaleOptions;
-    length: ScaleOptions;
+    opacity: Partial<ScaleOptions>;
+    symbol: Partial<LegendScaleOptions>;
+    length: Partial<ScaleOptions>;
     fx: Partial<ScaleOptions>;
     fy: Partial<ScaleOptions>;
     children: Snippet<
