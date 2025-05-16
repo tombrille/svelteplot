@@ -53,7 +53,7 @@
     }: DotProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
     function getSymbolPath(symbolType, size) {
         return d3Symbol(maybeSymbol(symbolType), size)();
@@ -96,7 +96,7 @@
     {#snippet children({ mark, usedScales, scaledData })}
         <g class="dots {className || ''}">
             {#if canvas}
-                <DotCanvas data={scaledData} {mark} {plot} {testFacet} {usedScales} />
+                <DotCanvas data={scaledData} {mark} />
             {:else}
                 {#each scaledData as d}
                     {#if d.valid && isValid(d.r)}

@@ -1,24 +1,31 @@
 <script lang="ts">
-    import type { PlotState, Mark, BaseMarkProps, ScaledDataRecord } from '$lib/types.js';
+    import type {
+        PlotState,
+        Mark,
+        BaseMarkProps,
+        ScaledDataRecord,
+        PlotContext
+    } from '$lib/types.js';
     import { CSS_VAR } from '$lib/constants.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
     import type { Attachment } from 'svelte/attachments';
+    import CanvasLayer from './CanvasLayer.svelte';
+    import { getContext } from 'svelte';
 
     let devicePixelRatio = $state(1);
 
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    const plot = $derived(getPlotState());
+
     let {
         mark,
-        plot,
-        data,
-        usedScales
+        data
     }: {
         mark: Mark<BaseMarkProps>;
         plot: PlotState;
         data: ScaledDataRecord[];
-        testFacet: any;
-        usedScales: any;
     } = $props();
 
     function drawSymbolPath(symbolType: string, size: number, context) {
@@ -32,7 +39,6 @@
         const context = canvas.getContext('2d');
 
         $effect(() => {
-            usedScales;
             if (context) {
                 context.resetTransform();
                 context.scale(devicePixelRatio, devicePixelRatio);
@@ -97,39 +103,6 @@
             };
         });
     };
-
-    // code from https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
-    let remove: null | (() => void) = null;
-
-    function updatePixelRatio() {
-        if (remove != null) {
-            remove();
-        }
-        const mqString = `(resolution: ${window.devicePixelRatio}dppx)`;
-        const media = matchMedia(mqString);
-        media.addEventListener('change', updatePixelRatio);
-        remove = () => {
-            media.removeEventListener('change', updatePixelRatio);
-        };
-        devicePixelRatio = window.devicePixelRatio;
-    }
-    $effect(() => {
-        updatePixelRatio();
-    });
 </script>
 
-<foreignObject x="0" y="0" width={plot.width} height={plot.height}>
-    <canvas
-        xmlns="http://www.w3.org/1999/xhtml"
-        {@attach renderDots}
-        width={plot.width * devicePixelRatio}
-        height={plot.height * devicePixelRatio}
-        style="width: {plot.width}px; height: {plot.height}px;"></canvas>
-</foreignObject>
-
-<style>
-    foreignObject,
-    canvas {
-        color: currentColor;
-    }
-</style>
+<CanvasLayer bind:devicePixelRatio {@attach renderDots} />
