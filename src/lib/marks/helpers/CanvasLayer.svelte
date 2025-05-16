@@ -1,35 +1,12 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import type { PlotContext } from 'svelteplot/types';
+    import { devicePixelRatio } from 'svelte/reactivity/window';
 
-    let {
-        devicePixelRatio = $bindable(1),
-        ...restProps
-    }: {
-        devicePixelRatio: number;
-    } = $props();
+    let restProps: {} = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
-
-    // code from https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
-    let remove: null | (() => void) = null;
-
-    function updatePixelRatio() {
-        if (remove != null) {
-            remove();
-        }
-        const mqString = `(resolution: ${window.devicePixelRatio}dppx)`;
-        const media = matchMedia(mqString);
-        media.addEventListener('change', updatePixelRatio);
-        remove = () => {
-            media.removeEventListener('change', updatePixelRatio);
-        };
-        devicePixelRatio = window.devicePixelRatio;
-    }
-    $effect(() => {
-        updatePixelRatio();
-    });
 </script>
 
 <!-- 
@@ -42,8 +19,8 @@
     <canvas
         xmlns="http://www.w3.org/1999/xhtml"
         {...restProps}
-        width={plot.width * devicePixelRatio}
-        height={plot.height * devicePixelRatio}
+        width={plot.width * (devicePixelRatio.current ?? 1)}
+        height={plot.height * (devicePixelRatio.current ?? 1)}
         style="width: {plot.width}px; height: {plot.height}px;"></canvas>
 </foreignObject>
 

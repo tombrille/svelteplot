@@ -13,8 +13,7 @@
     import type { Attachment } from 'svelte/attachments';
     import CanvasLayer from './CanvasLayer.svelte';
     import { getContext } from 'svelte';
-
-    let devicePixelRatio = $state(1);
+    import { devicePixelRatio } from 'svelte/reactivity/window';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -41,7 +40,7 @@
         $effect(() => {
             if (context) {
                 context.resetTransform();
-                context.scale(devicePixelRatio, devicePixelRatio);
+                context.scale(devicePixelRatio.current ?? 1, devicePixelRatio.current ?? 1);
 
                 for (const datum of data) {
                     if (datum.valid) {
@@ -97,12 +96,12 @@
                 context?.clearRect(
                     0,
                     0,
-                    plot.width * devicePixelRatio,
-                    plot.height * devicePixelRatio
+                    plot.width * (devicePixelRatio.current ?? 1),
+                    plot.height * (devicePixelRatio.current ?? 1)
                 );
             };
         });
     };
 </script>
 
-<CanvasLayer bind:devicePixelRatio {@attach renderDots} />
+<CanvasLayer {@attach renderDots} />
