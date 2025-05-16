@@ -1,9 +1,6 @@
 import { describe, it, expect, test } from 'vitest';
 import { render } from '@testing-library/svelte';
 import LineTest from './line.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
-
-global.ResizeObserver = ResizeObserver;
 
 describe('Line mark', () => {
     it('single line', () => {

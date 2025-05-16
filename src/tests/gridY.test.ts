@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import GridYTest from './gridY.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
-
-global.ResizeObserver = ResizeObserver;
 
 describe('GridY mark', () => {
   it('simple y grid with stroke styles', () => {
