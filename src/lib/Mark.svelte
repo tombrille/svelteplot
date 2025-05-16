@@ -18,6 +18,7 @@
         ScaledDataRecord,
         ScaleType
     } from './types.js';
+    import { isEqual } from 'es-toolkit';
     import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
     import { testFilter, isValid } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from './helpers/resolve.js';
@@ -106,6 +107,13 @@
     let added = false;
 
     $effect(() => {
+        const prevOptions = untrack(() => mark.options);
+        if (!isEqual(prevOptions, optionsWithAutoFacet)) {
+            mark.options = optionsWithAutoFacet;
+        }
+    });
+
+    $effect(() => {
         if (added) return;
         // without using untrack() here we end up with inexplicable
         // circular dependency updates resulting in a stack overflow
@@ -118,6 +126,7 @@
         );
         mark.data = untrack(() => data);
         mark.options = untrack(() => optionsWithAutoFacet);
+
         addMark(mark);
         added = true;
     });
@@ -225,6 +234,7 @@
                                       usedScales.y,
                                       suffix
                                   );
+
                         out[`x${suffix}`] = x;
                         out[`y${suffix}`] = y;
                         out.valid =
@@ -243,7 +253,7 @@
                 ScaleName
             ][]) {
                 // check if the mark has defined an accessor for this channel
-                if (options?.[channel] !== undefined && out[channel] === undefined) {
+                if (options?.[channel] != null && out[channel] === undefined) {
                     // resolve value
                     const value = row[channel];
 
@@ -256,6 +266,7 @@
                         : value;
 
                     out.valid = out.valid && isValid(value);
+
                     // apply dx/dy transform
                     out[channel] =
                         scale === 'x' && Number.isFinite(scaled) ? (scaled as number) + dx : scaled;

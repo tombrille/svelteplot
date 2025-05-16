@@ -44,18 +44,19 @@ export function isSymbolOrNull(v: RawValue | null | undefined) {
 }
 
 export function isColorOrNull(v: RawValue | null | undefined) {
-    return (
-        v == null ||
-        (typeof v === 'string' &&
-            (v === 'currentColor' ||
-                CSS_VAR.test(v) ||
-                CSS_COLOR.test(v) ||
-                CSS_COLOR_MIX.test(v) ||
-                CSS_COLOR_CONTRAST.test(v) ||
-                CSS_RGBA.test(v) ||
-                CSS_URL.test(v) ||
-                color(v) !== null))
-    );
+    if (v == null) return true;
+    if (typeof v === 'string') {
+        v = `${v}`.toLowerCase();
+        return (v === 'currentcolor' ||
+            CSS_VAR.test(v) ||
+            CSS_COLOR.test(v) ||
+            CSS_COLOR_MIX.test(v) ||
+            CSS_COLOR_CONTRAST.test(v) ||
+            CSS_RGBA.test(v) ||
+            CSS_URL.test(v) ||
+            color(v) !== null)
+    }
+    return false;
 }
 
 export function isOpacityOrNull(v: RawValue) {

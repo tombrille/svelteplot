@@ -96,7 +96,7 @@
     {#snippet children({ mark, usedScales, scaledData })}
         <g class="dots {className || ''}">
             {#if canvas}
-                <DotCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} />
+                <DotCanvas data={scaledData} {mark} {plot} {testFacet} {usedScales} />
             {:else}
                 {#each scaledData as d}
                     {#if d.valid && isValid(d.r)}

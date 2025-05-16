@@ -134,16 +134,16 @@ export function computeScales(
 
     const projection = plotOptions.projection
         ? createProjection(
-              { projOptions: plotOptions.projection, inset: plotOptions.inset },
-              {
-                  width: plotWidth,
-                  height: plotHeight,
-                  marginBottom: plotOptions.marginBottom,
-                  marginLeft: plotOptions.marginLeft,
-                  marginRight: plotOptions.marginRight,
-                  marginTop: plotOptions.marginTop
-              }
-          )
+            { projOptions: plotOptions.projection, inset: plotOptions.inset },
+            {
+                width: plotWidth,
+                height: plotHeight,
+                marginBottom: plotOptions.marginBottom,
+                marginLeft: plotOptions.marginLeft,
+                marginRight: plotOptions.marginRight,
+                marginTop: plotOptions.marginTop
+            }
+        )
         : null;
     return { x, y, r, color, opacity, length, symbol, fx, fy, projection };
 }
@@ -168,6 +168,7 @@ export function createScale<T extends ScaleOptions>(
     const dataValues = new Set<RawValue>();
     const allDataValues: RawValue[] = [];
     const markTypes = new Set<MarkType>();
+
     const skip = new Map<ScaledChannelName, Set<symbol>>();
     let manualActiveMarks = 0;
     const propNames = new Set<string>();
@@ -212,8 +213,8 @@ export function createScale<T extends ScaleOptions>(
                             name === 'color'
                                 ? isColorOrNull
                                 : name === 'symbol'
-                                  ? isSymbolOrNull
-                                  : false;
+                                    ? isSymbolOrNull
+                                    : false;
 
                         let allValuesAreOutputType = !!isOutputType && mark.data.length > 0;
 
@@ -304,10 +305,10 @@ export function createScale<T extends ScaleOptions>(
             type === 'categorical' ||
             type === 'quantile' ||
             type === 'quantile-cont'
-          ? name === 'y'
-              ? valueArr.toReversed()
-              : valueArr
-          : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
+            ? name === 'y'
+                ? valueArr.toReversed()
+                : valueArr
+            : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
 
     if (!scaleOptions.scale) {
         throw new Error(`No scale function defined for ${name}`);
@@ -337,8 +338,8 @@ export function createScale<T extends ScaleOptions>(
             type === 'time'
                 ? null
                 : propNames.size === 1
-                  ? `${[...propNames.values()][0]}${type === 'log' ? ' (log)' : ''}`
-                  : null
+                    ? `${[...propNames.values()][0]}${type === 'log' ? ' (log)' : ''}`
+                    : null
     };
 }
 
@@ -415,8 +416,8 @@ export function getUsedScales(
             return [
                 channel,
                 !skipMarks.has(mark.id) &&
-                    toChannelOption(channel, options[channel]).scale !== null &&
-                    !plot.scales[scale].isDummy
+                toChannelOption(channel, options[channel]).scale !== null &&
+                !plot.scales[scale].isDummy
             ];
         })
     ) as { [k in ScaledChannelName]: boolean };
@@ -470,8 +471,8 @@ export function projectX(channel: 'x' | 'x1' | 'x2', scales: PlotScales, value: 
         (channel === 'x' && scales.x.type === 'band'
             ? scales.x.fn.bandwidth() * 0.5
             : channel === 'x2' && scales.x.type === 'band'
-              ? scales.x.fn.bandwidth()
-              : 0)
+                ? scales.x.fn.bandwidth()
+                : 0)
     );
 }
 
@@ -481,7 +482,7 @@ export function projectY(channel: 'y' | 'y1' | 'y2', scales: PlotScales, value: 
         (channel === 'y' && scales.y.type === 'band'
             ? scales.y.fn.bandwidth() * 0.5
             : channel === 'y2' && scales.y.type === 'band'
-              ? scales.y.fn.bandwidth()
-              : 0)
+                ? scales.y.fn.bandwidth()
+                : 0)
     );
 }
