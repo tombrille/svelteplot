@@ -12,7 +12,6 @@
         mark,
         plot,
         data,
-        testFacet,
         usedScales
     }: {
         mark: Mark<BaseMarkProps>;
