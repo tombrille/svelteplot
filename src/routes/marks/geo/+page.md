@@ -2,15 +2,25 @@
 title: Geo mark
 ---
 
+<script>
+    import { setContext } from 'svelte';
+    import { writable } from 'svelte/store';
+    const canvas = writable(false);
+    setContext('useCanvas', canvas);
+</script>
+
 The **geo mark** draws geographic features — polygons, lines, points, and other geometry — often as thematic maps. It works with SveltePlot’s [projection system](/features/projections). For example, the [choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) below shows unemployment by county in the United States.
 
 ```svelte live
 <script>
+    import { getContext } from 'svelte';
     import { Plot, Geo } from 'svelteplot';
     import { Slider } from '$lib/ui';
     import { page } from '$app/state';
     import { geoEqualEarth } from 'd3-geo';
     import * as topojson from 'topojson-client';
+
+    const useCanvas = getContext('useCanvas');
 
     let { us, unemployment } = $derived(page.data.data);
     let rateMap = $derived(
@@ -46,6 +56,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
     }}>
     <Geo
         data={counties}
+        canvas={$useCanvas}
         fill={(d) => d.properties.unemployment}
         title={(d) =>
             `${d.properties.name}\n${d.properties.unemployment}%`} />
@@ -98,7 +109,7 @@ Earthquakes SVG
 </Plot>
 ```
 
-Earthquakes Canvas
+Here's the same map rendered on a canvas instead of SVG:
 
 ```svelte live
 <script>
@@ -121,8 +132,6 @@ Earthquakes Canvas
         fill="var(--svp-red)"
         canvas
         fillOpacity="0.2"
-        title={(d) => d.properties.title}
-        href={(d) => d.properties.url}
         r={(d) => Math.pow(10, d.properties.mag)} />
 </Plot>
 ```
@@ -135,62 +144,37 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoCircle } from 'd3-geo';
+    import { Checkbox } from '$lib/ui';
     import { range } from 'd3-array';
 
     let { world, earthquakes } = $derived(page.data.data);
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );
+
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
+<Checkbox bind:value={$useCanvas} label="use canvas" />
 <Plot
     color={{
         legend: true,
         label: 'Distance from Tonga (km)'
     }}
     projection={{ type: 'equal-earth', rotate: [90, 0] }}>
-    <Sphere stroke="currentColor" />
-    <Geo data={[land]} stroke="currentColor" />
+    <Sphere stroke="currentcolor" canvas={$useCanvas} />
+    <Geo
+        data={[land]}
+        stroke="currentcolor"
+        canvas={$useCanvas} />
     <Geo
         data={[0.5, 179.5].concat(range(10, 171, 10))}
+        canvas={$useCanvas}
         geometry={geoCircle()
             .center([-175.38, -20.57])
             .radius((r) => r)}
         stroke={(r) => r * 111.2}
-        strokeWidth={2} />
-</Plot>
-```
-
-```svelte live
-<script>
-    import { Plot, Geo, Sphere } from 'svelteplot';
-    import { page } from '$app/state';
-    import * as topojson from 'topojson-client';
-    import { geoCircle } from 'd3-geo';
-    import { range } from 'd3-array';
-
-    let { world, earthquakes } = $derived(page.data.data);
-    let land = $derived(
-        topojson.feature(world, world.objects.land)
-    );
-</script>
-
-<Plot
-    color={{
-        legend: true,
-        label: 'Distance from Tonga (km)'
-    }}
-    projection={{ type: 'equal-earth', rotate: [90, 0] }}>
-    <Sphere stroke="currentColor" />
-    <Geo data={[land]} canvas stroke="currentColor" />
-    <Geo
-        canvas
-        data={[0.5, 179.5].concat(range(10, 171, 10))}
-        geometry={geoCircle()
-            .center([-175.38, -20.57])
-            .radius((r) => r)}
-        stroke="red"
-        _stroke={(r) => r * 111.2}
         strokeWidth={2} />
 </Plot>
 ```
@@ -226,6 +210,8 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 <script>
     import { Plot, Graticule, Sphere } from 'svelteplot';
     import { Slider } from '$lib/ui';
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 
     let stepX = $state(10);
     let stepY = $state(10);
@@ -240,8 +226,12 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
         type: 'orthographic',
         rotate: [0, -30, 20]
     }}>
-    <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3} {stepX} {stepY} />
+    <Sphere stroke="currentColor" canvas={$useCanvas} />
+    <Graticule
+        strokeOpacity={0.3}
+        {stepX}
+        {stepY}
+        canvas={$useCanvas} />
 </Plot>
 ```
 

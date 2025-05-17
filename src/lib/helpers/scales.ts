@@ -23,7 +23,8 @@ import type {
     ScaleName,
     ScaleOptions,
     ScaleType,
-    ScaledChannelName
+    ScaledChannelName,
+    UsedScales
 } from '../types.js';
 import isDataRecord from './isDataRecord.js';
 
@@ -408,7 +409,7 @@ export function getUsedScales(
     plot: PlotState,
     options: GenericMarkOptions,
     mark: Mark<GenericMarkOptions>
-) {
+): UsedScales {
     return Object.fromEntries(
         scaledChannelNames.map((channel) => {
             const scale = CHANNEL_SCALE[channel];

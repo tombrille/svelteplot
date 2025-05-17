@@ -885,3 +885,5 @@ export type MapMethod =
     | MapIndexObject;
 
 export type MapOptions = Partial<Record<ScaledChannelName, MapMethod>>;
+
+export type UsedScales = Record<ScaledChannelName, boolean>;

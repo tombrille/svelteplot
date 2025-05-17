@@ -22,6 +22,7 @@
     import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
     import { testFilter, isValid } from '$lib/helpers/index.js';
     import { resolveChannel, resolveProp } from './helpers/resolve.js';
+    import { RAW_VALUE } from './transforms/recordize.js';
 
     type MarkProps = {
         data?: DataRecord[];
@@ -150,7 +151,11 @@
                     // check if the mark has defined an accessor for this channel
                     if (options?.[channel] !== undefined && out[channel] === undefined) {
                         // resolve value
-                        out[channel] = resolveChannel(channel, row, options);
+                        out[channel] = resolveChannel(
+                            channel,
+                            row[RAW_VALUE] != null ? row[RAW_VALUE] : row,
+                            options
+                        );
                     }
                 }
                 return [out];
