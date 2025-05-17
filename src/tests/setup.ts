@@ -4,15 +4,12 @@ import type MatchMedia from 'vitest-matchmedia-mock';
 
 import { afterEach, beforeAll } from "vitest";
 
-let matchMedia: MatchMedia;
+let matchMedia: MatchMedia = new MatchMediaMock();
 
 beforeAll(() => {
     global.ResizeObserver = ResizeObserver;
-    matchMedia = new MatchMediaMock();
-
-    console.log('m', window.matchMedia);
 })
 
 afterEach(() => {
     matchMedia.clear();
-})
+});
