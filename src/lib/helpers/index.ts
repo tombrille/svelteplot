@@ -59,8 +59,8 @@ export function maybeNumber(value: RawValue | null): number | null {
 
 export const constant =
     <T>(x: T) =>
-    () =>
-        x;
+        () =>
+            x;
 
 export const POSITION_CHANNELS: Set<ChannelName> = new Set(['x', 'x1', 'x2', 'y', 'y1', 'y2']);
 
@@ -83,3 +83,5 @@ export function omit<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
 export function identity<T>(x: T): T {
     return x;
 }
+
+export const GEOJSON_PREFER_STROKE = new Set(['MultiLineString', 'LineString']);

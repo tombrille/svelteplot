@@ -16,6 +16,7 @@ import type {
     ConstantAccessor
 } from '../types.js';
 import { getBaseStylesObject } from './getBaseStyles.js';
+import { RAW_VALUE } from 'svelteplot/transforms/recordize.js';
 
 type ChannelAlias = { channel: ScaledChannelName };
 
@@ -25,13 +26,13 @@ export function resolveProp<T>(
     _defaultValue: T | null = null
 ): T | null {
     if (typeof accessor === 'function') {
-        // datum.___orig___ exists if an array of raw values was used as dataset and got
+        // datum[RAW_VALUE] exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
         // so we're passing the original value to accessor functions instead of our wrapped record
         return datum == null
             ? accessor()
-            : accessor(datum.___orig___ != null ? datum.___orig___ : datum);
-    } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
+            : accessor(datum[RAW_VALUE] != null ? datum[RAW_VALUE] : datum);
+    } else if ((typeof accessor === 'string' || typeof accessor === 'symbol') && datum && datum[accessor] !== undefined) {
         return datum[accessor] as T;
     }
     return isRawValue(accessor) ? accessor : _defaultValue;
@@ -90,10 +91,10 @@ function resolve(
     if (isDataRecord(datum)) {
         // use accessor function
         if (typeof accessor === 'function')
-            // datum.___orig___ exists if an array of raw values was used as dataset and got
+            // datum[RAW_VALUE] exists if an array of raw values was used as dataset and got
             // "recordized" by the recordize transform. We want to hide this wrapping to the user
             // so we're passing the original value to accessor functions instead of our wrapped record
-            return accessor(datum.___orig___ != null ? datum.___orig___ : datum);
+            return accessor(datum[RAW_VALUE] != null ? datum[RAW_VALUE] : datum);
         // use accessor string
         if ((typeof accessor === 'string' || typeof accessor === 'symbol') && datum[accessor] !== undefined) return datum[accessor];
         // fallback to channel name as accessor

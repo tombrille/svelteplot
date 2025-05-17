@@ -23,7 +23,8 @@ import type {
     ScaleName,
     ScaleOptions,
     ScaleType,
-    ScaledChannelName
+    ScaledChannelName,
+    UsedScales
 } from '../types.js';
 import isDataRecord from './isDataRecord.js';
 
@@ -250,7 +251,7 @@ export function createScale<T extends ScaleOptions>(
                             for (const datum of mark.data) {
                                 const value = resolveProp(channelOptions.value, datum);
                                 dataValues.add(value);
-                                if (name === 'color' && scaleOptions.type === 'quantile') {
+                                if (name === 'color' && scaleOptions.type === 'quantile' || scaleOptions.type === 'quantile-cont') {
                                     allDataValues.push(value);
                                 }
                             }
@@ -295,6 +296,8 @@ export function createScale<T extends ScaleOptions>(
         valueArr.sort(ascending);
     }
 
+    const valueArray = type === 'quantile' || type === 'quantile-cont' ? allDataValues.toSorted() : valueArr;
+
     const domain = scaleOptions.domain
         ? isOrdinal
             ? scaleOptions.domain
@@ -306,9 +309,9 @@ export function createScale<T extends ScaleOptions>(
             type === 'quantile' ||
             type === 'quantile-cont'
             ? name === 'y'
-                ? valueArr.toReversed()
-                : valueArr
-            : extent(scaleOptions.zero ? [0, ...valueArr] : valueArr);
+                ? valueArray.toReversed()
+                : valueArray
+            : extent(scaleOptions.zero ? [0, ...valueArray] : valueArray);
 
     if (!scaleOptions.scale) {
         throw new Error(`No scale function defined for ${name}`);
@@ -408,7 +411,7 @@ export function getUsedScales(
     plot: PlotState,
     options: GenericMarkOptions,
     mark: Mark<GenericMarkOptions>
-) {
+): UsedScales {
     return Object.fromEntries(
         scaledChannelNames.map((channel) => {
             const scale = CHANNEL_SCALE[channel];

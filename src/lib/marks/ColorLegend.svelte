@@ -2,7 +2,7 @@
     import { getContext } from 'svelte';
     import { Plot, AxisX, Frame } from '$lib/index.js';
     import { symbol as d3Symbol, symbol } from 'd3-shape';
-    import { range as d3Range } from 'd3-array';
+    import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
     import type { DefaultOptions, PlotContext } from '../types.js';
@@ -72,7 +72,7 @@
                 </div>
             {/each}
         {:else if scaleType === 'quantile' || scaleType === 'quantize' || scaleType === 'threshold'}
-            {@const domain = plot.scales.color.domain}
+            {@const domain = extent(plot.scales.color.fn.domain())}
             {@const range = plot.scales.color.range}
             {@const tickLabels =
                 scaleType === 'quantile'
@@ -85,7 +85,6 @@
                 domain[1],
                 (domain[1] - domain[0]) / range.length
             ).slice(1)}
-
             <Plot
                 maxWidth="240px"
                 margins={1}
@@ -112,16 +111,13 @@
                     </linearGradient>
                 </defs>
                 <Frame dy={-5} stroke={null} fill="url(#gradient-{randId})" />
-                <AxisX tickSize={18} dy={-17} />
+                <AxisX tickSize={18} dy={-17} tickFormat={(d, i) => tickFormat(tickLabels[i])} />
             </Plot>
         {:else}
             <!--- continuous -->
-            {@const domain = plot.scales.color.domain}
-            {@const ticks = new Set([
-                domain[0],
-                ...(plot.scales.color?.fn?.ticks?.(Math.ceil(width / 5)) ?? []),
-                domain[1]
-            ])}
+            {@const domain = extent(plot.scales.color.domain)}
+            {@const ticks = d3Range(domain[0], domain[1], (domain[1] - domain[0]) / 7).slice(1)}
+
             <Plot
                 maxWidth="240px"
                 margins={1}

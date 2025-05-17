@@ -1,15 +1,22 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-    import type { DataRecord, PlotContext, BaseMarkProps } from '../types.js';
+    import type {
+        DataRecord,
+        PlotContext,
+        BaseMarkProps,
+        FacetContext,
+        ConstantAccessor,
+        UsedScales
+    } from '../types.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';
-    import { resolveChannel, resolveProp, resolveScaledStyles } from '$lib/helpers/resolve.js';
-    import { getUsedScales } from '$lib/helpers/scales.js';
+    import { resolveChannel, resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { sort } from '$lib/index.js';
-    import { testFilter } from '$lib/helpers/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import GeoCanvas from './helpers/GeoCanvas.svelte';
+    import { recordize } from '$lib/transforms/recordize.js';
+    import { GEOJSON_PREFER_STROKE } from '$lib/helpers/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -19,6 +26,8 @@
         geoType?: 'sphere' | 'graticule';
         dragRotate: boolean;
         canvas: boolean;
+        href: ConstantAccessor<string>;
+        target: ConstantAccessor<string>;
     } & BaseMarkProps;
 
     let {
@@ -39,60 +48,60 @@
     );
 
     const args = $derived(
-        sort({
-            data,
-            ...(options.r ? { sort: { channel: '-r' } } : {}),
-            ...options
-        })
+        sort(
+            recordize({
+                data,
+                ...(options.r ? { sort: { channel: '-r' } } : {}),
+                ...options
+            })
+        )
     );
-    const preferStroke = new Set(['MultiLineString', 'LineString']);
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    const testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
     type="geo"
     channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r']}
     {...args}>
-    {#snippet children({ mark, usedScales })}
+    {#snippet children({ mark, scaledData, usedScales })}
+        {#snippet el(d)}
+            {@const title = resolveProp(args.title, d.datum, '')}
+            {@const geometry = resolveProp(args.geometry, d.datum, d.datum)}
+            {@const [style, styleClass] = resolveStyles(
+                plot,
+                d,
+                args,
+                GEOJSON_PREFER_STROKE.has(geometry.type) ? 'stroke' : 'fill',
+                usedScales
+            )}
+            <path
+                d={path(geometry)}
+                {style}
+                class={[styleClass]}
+                use:addEventHandlers={{
+                    getPlotState,
+                    options: args,
+                    datum: d.datum
+                }}>
+                {#if title}<title>{title}</title>{/if}
+            </path>
+        {/snippet}
         <g
             aria-label="geo"
             class={['geo', geoType && `geo-${geoType}`, className]}
             style="fill:currentColor">
             {#if canvas}
-                <GeoCanvas data={args.data} {mark} {plot} {testFacet} {usedScales} {path} />
+                <GeoCanvas data={scaledData} {path} {mark} {usedScales} />
             {:else}
-                {#each args.data as datum}
-                    {#if testFilter(datum, mark.options) && testFacet(datum, mark.options)}
-                        {#snippet el(datum)}
-                            {@const title = resolveProp(args.title, datum, '')}
-                            {@const geometry = resolveProp(args.geometry, datum, datum)}
-                            <path
-                                d={path(geometry)}
-                                style={resolveScaledStyles(
-                                    datum,
-                                    args,
-                                    usedScales,
-                                    plot,
-                                    preferStroke.has(geometry.type) ? 'stroke' : 'fill'
-                                )}
-                                use:addEventHandlers={{
-                                    getPlotState,
-                                    options: args,
-                                    datum
-                                }}>
-                                {#if title}<title>{title}</title>{/if}
-                            </path>
-                        {/snippet}
+                {#each scaledData as d}
+                    {#if d.valid}
                         {#if options.href}
                             <a
-                                href={resolveProp(args.href, datum, '')}
-                                target={resolveProp(args.target, datum, '_self')}>
-                                {@render el(datum)}
+                                href={resolveProp(args.href, d.datum, '')}
+                                target={resolveProp(args.target, d.datum, '_self')}>
+                                {@render el(d)}
                             </a>
                         {:else}
-                            {@render el(datum)}
+                            {@render el(d)}
                         {/if}
                     {/if}
                 {/each}

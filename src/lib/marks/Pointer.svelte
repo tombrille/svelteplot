@@ -31,6 +31,7 @@
     import { quadtree } from 'd3-quadtree';
     import { projectXY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
+    import { RAW_VALUE } from 'svelteplot/transforms/recordize.js';
 
     let {
         data = [{}],
@@ -109,7 +110,7 @@
                             true
                         );
                         return {
-                            ...(isDataRecord(d) ? d : { ___orig___: d }),
+                            ...(isDataRecord(d) ? d : { [RAW_VALUE]: d }),
                             __pointerX: px,
                             __pointerY: py
                         };
