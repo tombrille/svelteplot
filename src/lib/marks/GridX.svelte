@@ -39,9 +39,9 @@
 
 <Mark
     type="gridX"
-    data={data.length ? data.map((tick) => ({ __x: tick })) : []}
+    data={data.length ? data.map((tick) => ({ [RAW_VALUE]: tick })) : []}
     channels={['y1', 'y2', 'x', 'stroke', 'strokeOpacity']}
-    {...{ ...options, x: '__x' }}
+    {...{ ...options, x: RAW_VALUE }}
     {automatic}>
     {#snippet children({ usedScales })}
         <g class="grid-x">
