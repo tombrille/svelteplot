@@ -47,10 +47,10 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
     bind:value={type}
     options={[
         'linear',
+        'quantize',
         'log',
         'sqrt',
         'quantile-cont',
-        'quantize',
         'quantile'
     ]}
     label="Scale" />
@@ -99,7 +99,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 
 Earthquakes SVG
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
@@ -127,7 +127,7 @@ Earthquakes SVG
 
 Here's the same map rendered on a canvas instead of SVG:
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
@@ -154,7 +154,7 @@ Here's the same map rendered on a canvas instead of SVG:
 
 The geo mark’s **geometry** channel can be used to generate geometry from a non-GeoJSON data source.
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Geo, Sphere } from 'svelteplot';
     import { page } from '$app/state';
@@ -222,7 +222,7 @@ The geo mark’s **geometry** channel can be used to generate geometry from a no
 
 The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a uniform grid of meridians (lines of constant longitude) and parallels (lines of constant latitude) every 10° between ±80° latitude; for the polar regions, meridians are drawn every 90°. The [sphere](/marks/geo#Sphere) helper draws the outline of the projected sphere.
 
-```svelte --live
+```svelte live
 <script>
     import { Plot, Graticule, Sphere } from 'svelteplot';
     import { Slider } from '$lib/ui';
