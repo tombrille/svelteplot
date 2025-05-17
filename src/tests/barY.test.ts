@@ -1,10 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import BarYTest from './barY.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
 import { groupBy } from 'es-toolkit';
-
-global.ResizeObserver = ResizeObserver;
 
 describe('BarY mark', () => {
     it('simple bar chart from number array', () => {

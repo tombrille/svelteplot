@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import GridXTest from './gridX.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
 
-global.ResizeObserver = ResizeObserver;
 
 describe('GridX mark', () => {
   it('simple x grid with stroke styles', () => {

@@ -2,10 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import { userEvent } from '@testing-library/user-event';
 import BrushTest from './brush.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
 import { tick, type ComponentProps } from 'svelte';
 
-global.ResizeObserver = ResizeObserver;
 
 describe('Brush mark', () => {
     it('single brush with basic properties', async () => {

@@ -17,6 +17,7 @@ describe('isColorOrNull', () => {
 
     it('returns true for "currentColor"', () => {
         expect(isColorOrNull('currentColor')).toBe(true);
+        expect(isColorOrNull('currentcolor')).toBe(true);
     });
 
     it('returns true for valid CSS variable', () => {

@@ -9,7 +9,7 @@ y↑ and fuel efficiency in miles per gallon in x→.
 ```svelte live
 <script>
     import { Plot, Dot, Pointer, RuleX } from 'svelteplot';
-    import Slider from '$lib/ui/Slider.svelte';
+    import { Checkbox, Slider } from '$lib/ui';
     import { page } from '$app/state';
 
     const { cars } = $derived(page.data.data);
@@ -23,8 +23,8 @@ y↑ and fuel efficiency in miles per gallon in x→.
     );
 </script>
 
-<input type="checkbox" bind:checked={fill} /> fill symbols<br />
-<input type="checkbox" bind:checked={canvas} /> use canvas<br />
+<Checkbox bind:value={fill} label="fill symbols" />
+<Checkbox bind:value={canvas} label="use canvas" /><br />
 
 <Slider
     label="max cylinders"
@@ -35,10 +35,11 @@ y↑ and fuel efficiency in miles per gallon in x→.
 <Plot grid height={500} testid="cars1">
     <Dot
         {canvas}
-        data={filteredCars}
+        filter={(d) => d.cylinders <= maxCylinders}
+        data={cars}
         x="economy (mpg)"
         y="power (hp)"
-        stroke="manufactor"
+        {...{ [fill ? 'fill' : 'stroke']: 'manufactor' }}
         symbol="manufactor" />
 </Plot>
 ```
@@ -50,6 +51,7 @@ When showing plots with a lot of dots, you can switch to canvas rendering to imp
     import { Plot, Dot } from 'svelteplot';
     import { range } from 'd3-array';
     import { randomNormal } from 'd3-random';
+    import { Checkbox } from '$lib/ui';
 
     const randX = randomNormal();
     const randY = randomNormal();
@@ -57,14 +59,13 @@ When showing plots with a lot of dots, you can switch to canvas rendering to imp
     let fill = $state(false);
 </script>
 
-<input type="checkbox" bind:checked={fill} /> fill symbols<br />
+<Checkbox bind:value={fill} label="fill symbol" />
 
 <Plot>
     <Dot
-        fill={fill ? 'currentColor' : null}
-        stroke={!fill ? 'currentColor' : null}
-        opacity={0.4}
         canvas
+        {...{ [fill ? 'fill' : 'stroke']: 'currentColor' }}
+        opacity={0.4}
         data={range(20000).map((i) => [
             randX(),
             randY()
@@ -181,7 +182,7 @@ Using the <b>DotY</b> mark, you can quickly plot a list of numbers as dots:
     let { cars } = $derived(page.data.data);
 </script>
 
-<Plot testid="doty">
+<Plot testid="doty" height={400}>
     <DotY data={cars.map((d) => d['economy (mpg)'])} />
 </Plot>
 ```
@@ -203,6 +204,7 @@ You can use the color channel for encoding a third quantitative variable.
 
 <Plot
     grid
+    height={400}
     color={{
         legend: false,
         type: 'linear',

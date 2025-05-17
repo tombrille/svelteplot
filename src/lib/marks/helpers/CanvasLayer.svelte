@@ -1,18 +1,12 @@
 <script lang="ts">
-    let {
-        canvas = $bindable(),
-        devicePixelRatio = $bindable(1),
-        plot
-    }: {
-        canvas: HTMLCanvasElement;
-        devicePixelRatio: number;
-        plot: PlotState;
-    } = $props();
+    import { getContext } from 'svelte';
+    import type { PlotContext } from 'svelteplot/types';
+    import { devicePixelRatio } from 'svelte/reactivity/window';
 
-    $effect(() => {
-        devicePixelRatio = window.devicePixelRatio || 1;
-        const ctx = canvas.getContext('2d');
-    });
+    let restProps: {} = $props();
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    const plot = $derived(getPlotState());
 </script>
 
 <!-- 
@@ -24,9 +18,9 @@
 <foreignObject x="0" y="0" width={plot.width} height={plot.height}>
     <canvas
         xmlns="http://www.w3.org/1999/xhtml"
-        bind:this={canvas}
-        width={plot.width * devicePixelRatio}
-        height={plot.height * devicePixelRatio}
+        {...restProps}
+        width={plot.width * (devicePixelRatio.current ?? 1)}
+        height={plot.height * (devicePixelRatio.current ?? 1)}
         style="width: {plot.width}px; height: {plot.height}px;"></canvas>
 </foreignObject>
 

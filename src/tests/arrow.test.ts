@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import ArrowTest from './arrow.test.svelte';
-import ResizeObserver from 'resize-observer-polyfill';
-
-global.ResizeObserver = ResizeObserver;
 
 describe('Arrow mark', () => {
     it('single arrow with basic properties', () => {
