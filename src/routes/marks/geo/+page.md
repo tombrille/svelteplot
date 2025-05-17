@@ -97,6 +97,8 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/234af6d4d7154b02b43a2be9f9328505?version=5.30.2)
+
 Earthquakes SVG
 
 ```svelte live
@@ -259,9 +261,11 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
         rotate: [0, -30, 20]
     }}>
     <Sphere stroke="currentColor" />
-    <Graticule strokeOpacity={0.3} />
+    <Graticule strokeOpacity={0.3} stepX={10} stepY={5} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/c574050e755544d795235a296c4518ad?version=5.30.2)
 
 You can customize the step size using the following options
 
