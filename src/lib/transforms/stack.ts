@@ -20,6 +20,10 @@ import {
     stackOffsetDiverging
 } from 'd3-shape';
 import { index, union, groups as d3Groups } from 'd3-array';
+import { RAW_VALUE } from './recordize';
+
+const GROUP = Symbol('group');
+const FACET = Symbol('group');
 
 const DEFAULT_STACK_OPTIONS: StackOptions = {
     order: null,
@@ -81,8 +85,8 @@ function stackXY(
         const resolvedData = data.map((d) => ({
             ...(isDataRecord(d) ? d : { __orig: d }),
             [`__${secondDim}`]: resolveChannel(secondDim, d, channels),
-            __group: groupBy === true ? 'G' : resolveChannel(groupBy, d, channels),
-            __facet:
+            [GROUP]: groupBy === true ? 'G' : resolveChannel(groupBy, d, channels),
+            [FACET]:
                 groupFacetsBy.length > 0
                     ? groupFacetsBy
                         .map((channel) => String(resolveChannel(channel, d, channels)))
@@ -96,14 +100,14 @@ function stackXY(
 
         // first we group the dataset by facets to avoid stacking of rows that are
         // in separate panels
-        const groups = d3Groups(resolvedData, (d) => d.__facet);
+        const groups = d3Groups(resolvedData, (d) => d[FACET]);
         for (const [, facetData] of groups) {
             // now we index the data on the second dimension, e.g. over x
             // when stacking over y
             const indexed = index(
                 facetData,
                 (d) => d[`__${secondDim}`],
-                (d) => d.__group
+                (d) => d[GROUP]
             );
 
             const stackOrder = (series: number[][]) => {
@@ -115,7 +119,7 @@ function stackXY(
             const series = stack()
                 .order(stackOrder)
                 .offset(STACK_OFFSET[options.offset])
-                .keys(union(facetData.map((d) => d.__group) as string[]))
+                .keys(union(facetData.map((d) => d[GROUP]) as string[]))
                 .value(([, group], key) => (group.get(key) ? group.get(key)[`__${byDim}`] : 0))(
                     indexed
                 );
@@ -129,8 +133,8 @@ function stackXY(
                         .map((d) => {
                             const datum = d.data[1].get(groupKey);
                             // cleanup our internal keys
-                            delete datum.__group;
-                            delete datum.__facet;
+                            delete datum[GROUP];
+                            delete datum[FACET];
                             return { ...datum, [`__${byLow}`]: d[0], [`__${byHigh}`]: d[1] };
                         });
                 })
