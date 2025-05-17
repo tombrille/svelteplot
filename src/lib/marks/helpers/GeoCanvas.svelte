@@ -84,7 +84,7 @@
 
                     context.fillStyle = fill ? fill : 'none';
                     context.strokeStyle = stroke ? stroke : 'none';
-
+                    context.lineJoin = 'round';
                     context.beginPath();
 
                     path(geometry);
