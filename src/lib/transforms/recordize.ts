@@ -18,13 +18,12 @@ export function recordizeX(
         return {
             data: data.map((value, index) => ({
                 __value: value,
-                ...(withIndex ? { __index: index } : {}),
+                ...(withIndex ? { [INDEX]: index } : {}),
                 [RAW_VALUE]: value,
-                ___orig___: value
             })) as DataRecord[],
             ...channels,
-            x: '__value',
-            ...(withIndex ? { y: '__index' } : {})
+            x: RAW_VALUE,
+            ...(withIndex ? { y: INDEX } : {})
         };
     }
     return { data: data as DataRecord[], ...channels };
@@ -46,7 +45,6 @@ export function recordizeY(
             data: Array.from(data).map((value, index) => ({
                 ...(withIndex ? { __index: index } : {}),
                 [RAW_VALUE]: value,
-                ___orig___: value
             })) as DataRecord[],
             ...channels,
             ...(withIndex ? { x: '__index' } : {}),

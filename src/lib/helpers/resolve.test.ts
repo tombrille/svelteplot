@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { resolveChannel, resolveProp } from './resolve.js';
+import { RAW_VALUE } from '$lib/transforms/recordize.js';
+
 
 describe('resolveProp', () => {
     it('resolves string keys', () => {
@@ -19,7 +21,7 @@ describe('resolveProp', () => {
         expect(resolveProp('bar', { foo: 42 })).toBe('bar');
     });
     it('passes original value to accessor function', () => {
-        expect(resolveProp((d) => d * 2, { ___orig___: 42 })).toBe(84);
+        expect(resolveProp((d) => d * 2, { [RAW_VALUE]: 42 })).toBe(84);
     });
 });
 

@@ -32,7 +32,7 @@ export function resolveProp<T>(
         return datum == null
             ? accessor()
             : accessor(datum[RAW_VALUE] != null ? datum[RAW_VALUE] : datum);
-    } else if (typeof accessor === 'string' && datum && datum[accessor] !== undefined) {
+    } else if ((typeof accessor === 'string' || typeof accessor === 'symbol') && datum && datum[accessor] !== undefined) {
         return datum[accessor] as T;
     }
     return isRawValue(accessor) ? accessor : _defaultValue;
