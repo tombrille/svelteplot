@@ -15,18 +15,17 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 <script>
     import { getContext } from 'svelte';
     import { Plot, Geo } from 'svelteplot';
-    import { Slider } from '$lib/ui';
+    import { Slider, Select } from '$lib/ui';
     import { page } from '$app/state';
-    import { geoEqualEarth } from 'd3-geo';
     import * as topojson from 'topojson-client';
 
     const useCanvas = getContext('useCanvas');
 
-    let { us, unemployment } = $derived(page.data.data);
-    let rateMap = $derived(
+    const { us, unemployment } = $derived(page.data.data);
+    const rateMap = $derived(
         new Map(unemployment.map((d) => [d.id, +d.rate]))
     );
-    let counties = $derived(
+    const counties = $derived(
         topojson
             .feature(us, us.objects.counties)
             .features.map((feat) => {
@@ -40,19 +39,37 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
             })
     );
 
+    let type = $state('linear');
     let n = $state(5);
 </script>
 
-<Slider label="Steps (n)" bind:value={n} min={2} max={11} />
+<Select
+    bind:value={type}
+    options={[
+        'linear',
+        'log',
+        'sqrt',
+        'quantile-cont',
+        'quantize',
+        'quantile'
+    ]}
+    label="Scale" />
+{#if type === 'quantize' || type === 'quantile'}
+    <Slider
+        label="Steps (n)"
+        bind:value={n}
+        min={2}
+        max={11} />
+{/if}
 <Plot
     projection="albers-usa"
     color={{
         scheme: 'blues',
         label: 'Unemployment (%)',
         legend: true,
-        domain: [1, 5, 8, 10],
+        // domain: [1, 5, 8, 10],
         n,
-        type: 'threshold'
+        type
     }}>
     <Geo
         data={counties}
