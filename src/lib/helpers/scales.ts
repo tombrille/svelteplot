@@ -296,7 +296,7 @@ export function createScale<T extends ScaleOptions>(
         valueArr.sort(ascending);
     }
 
-    const valueArray = type === 'quantile' || type === 'quantile-cont' ? allDataValues : valueArr;
+    const valueArray = type === 'quantile' || type === 'quantile-cont' ? allDataValues.toSorted() : valueArr;
 
     const domain = scaleOptions.domain
         ? isOrdinal
