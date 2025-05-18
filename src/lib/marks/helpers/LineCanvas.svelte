@@ -44,7 +44,7 @@
                 context.scale(devicePixelRatio.current ?? 1, devicePixelRatio.current ?? 1);
                 context.lineJoin = 'round';
                 context.lineCap = 'round';
-                console.log({ groupedLineData });
+                
                 for (const group of groupedLineData) {
                     if (group.length < 2) continue;
 
