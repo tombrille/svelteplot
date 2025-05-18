@@ -6,9 +6,7 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { recordizeY, sort } from '$lib/index.js';
-    import { roundedRect } from '../helpers/roundedRect.js';
-    import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { coalesce, maybeNumber } from '../helpers/index.js';
+    import { resolveChannel } from '../helpers/resolve.js';
     import type {
         PlotContext,
         DataRecord,
@@ -17,7 +15,7 @@
         ChannelAccessor
     } from '../types.js';
     import { isValid } from '../helpers/isValid.js';
-    import { addEventHandlers } from './helpers/events.js';
+    import RectPath from './helpers/RectPath.svelte';
 
     type CellProps = BaseMarkProps & {
         data: DataRecord[];
@@ -59,43 +57,21 @@
     requiredScales={{ x: ['band'], y: ['band'] }}
     channels={['x', 'y', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, scaledData, usedScales })}
+    {#snippet children({ scaledData, usedScales })}
         {@const bwx = plot.scales.x.fn.bandwidth()}
         {@const bwy = plot.scales.y.fn.bandwidth()}
         <g class="cell {className || ''}" data-fill={usedScales.fillOpacity}>
             {#each scaledData as d}
-                {@const inset = resolveProp(args.inset, d.datum, 0)}
-                {@const insetLeft = resolveProp(args.insetLeft, d.datum)}
-                {@const insetRight = resolveProp(args.insetRight, d.datum)}
-                {@const insetTop = resolveProp(args.insetTop, d.datum)}
-                {@const insetBottom = resolveProp(args.insetBottom, d.datum)}
-                {@const dx = resolveProp(args.dx, d.datum, 0)}
-                {@const dy = resolveProp(args.dy, d.datum, 0)}
-                {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0))}
-                {@const insetT = maybeNumber(coalesce(insetTop, inset, 0))}
-                {@const insetR = maybeNumber(coalesce(insetRight, inset, 0))}
-                {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0))}
                 {#if d.valid && (args.fill == null || isValid(resolveChannel('fill', d.datum, args)))}
-                    {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
-                    <path
-                        d={roundedRect(
-                            0,
-                            0,
-                            bwx - insetL - insetR,
-                            bwy - insetT - insetB,
-                            options.borderRadius
-                        )}
-                        class={[styleClass]}
-                        {style}
-                        transform="translate({[
-                            d.x + insetL + dx - bwx * 0.5,
-                            d.y + insetT + dy - bwy * 0.5
-                        ]})"
-                        use:addEventHandlers={{
-                            getPlotState,
-                            options: args,
-                            datum: d.datum
-                        }} />
+                    <RectPath
+                        datum={d}
+                        class={className}
+                        {usedScales}
+                        options={args}
+                        x={d.x - bwx * 0.5}
+                        y={d.y - bwy * 0.5}
+                        width={bwx}
+                        height={bwy} />
                 {/if}
             {/each}
         </g>
