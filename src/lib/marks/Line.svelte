@@ -18,8 +18,9 @@
         data: DataRecord[];
         z?: ChannelAccessor;
         stroke?: ChannelAccessor;
-        outlineStroke?: ConstantAccessor<string>;
-        outlineStrokeWidth?: ConstantAccessor<number>;
+        outlineStroke?: string;
+        outlineStrokeWidth?: number;
+        outlineStrokeOpacity?: number;
         dx?: ConstantAccessor<number>;
         dy?: ConstantAccessor<number>;
         curve?: CurveName | CurveFactory;
@@ -31,6 +32,7 @@
         textStartOffset?: ConstantAccessor<string>;
         textStrokeWidth?: ConstantAccessor<number>;
         lineClass?: ConstantAccessor<string>;
+        canvas?: boolean;
     } & MarkerOptions;
 </script>
 
@@ -39,11 +41,12 @@
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { line, type CurveFactory } from 'd3-shape';
+    import { line, type CurveFactory, type Line } from 'd3-shape';
     import { geoPath } from 'd3-geo';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { pick } from 'es-toolkit';
+    import LineCanvas from './helpers/LineCanvas.svelte';
 
     type LineMarkProps = BaseMarkProps & {
         x?: ChannelAccessor;
@@ -61,6 +64,7 @@
         curve = 'auto',
         tension = 0,
         text,
+        canvas = false,
         class: className = null,
         lineClass = null,
         ...options
@@ -98,7 +102,7 @@
 
     type LinePath = (dr: DataRecord[]) => string;
 
-    const linePath: LinePath = $derived(
+    const linePath: Line<ScaledDataRecord> = $derived(
         plot.scales.projection && curve === 'auto'
             ? sphereLine(plot.scales.projection)
             : callWithProps(line, [], {
@@ -111,7 +115,7 @@
 
     function sphereLine(projection) {
         const path = geoPath(projection);
-        return (lineData: ScaledDataRecord[]) => {
+        const fn = (lineData: ScaledDataRecord[]) => {
             let line = [];
             const lines = [line];
             for (const { x, y } of lineData) {
@@ -125,6 +129,8 @@
             }
             return path({ type: 'MultiLineString', coordinates: lines });
         };
+        fn.context = path.context;
+        return fn;
     }
 </script>
 
@@ -135,87 +141,101 @@
     {...args}>
     {#snippet children({ mark, usedScales, scaledData })}
         {#if scaledData.length > 0}
+            {@const groupedLineData = groupIndex(scaledData, groupByKey)};
             <g class={['lines', className]}>
-                {#each groupIndex(scaledData, groupByKey) as lineData, i}
-                    {@const pathString = linePath(lineData)}
-                    {#if pathString}
-                        <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
-                            {#if options.outlineStroke}
-                                {@const [outlineStyle, outlineStyleClass] = resolveStyles(
+                {#if canvas}
+                    <LineCanvas {groupedLineData} {mark} {usedScales} {linePath} {groupByKey} />
+                {:else}
+                    {#each groupedLineData as lineData, i}
+                        {@const pathString = linePath(lineData)}
+                        {#if pathString}
+                            <GroupMultiple class={resolveProp(lineClass, lineData[0])}>
+                                {#if options.outlineStroke}
+                                    {@const [outlineStyle, outlineStyleClass] = resolveStyles(
+                                        plot,
+                                        { ...lineData[0], stroke: options.outlineStroke },
+                                        {
+                                            strokeLinejoin: 'round',
+                                            ...args,
+                                            stroke: options.outlineStroke,
+                                            strokeOpacity: options.outlineStrokeOpacity ?? 1,
+                                            strokeWidth:
+                                                options.outlineStrokeWidth ||
+                                                resolveProp(
+                                                    options.strokeWidth,
+                                                    lineData[0].datum,
+                                                    1.4
+                                                ) + 2
+                                        },
+                                        'stroke',
+                                        usedScales
+                                    )}
+                                    <path
+                                        d={pathString}
+                                        style={outlineStyle}
+                                        class={['is-outline', outlineStyleClass]} />
+                                {/if}
+                                {@const [style, styleClass] = resolveStyles(
                                     plot,
-                                    { ...lineData[0], stroke: options.outlineStroke },
+                                    lineData[0],
                                     {
+                                        strokeWidth: 1.4,
                                         strokeLinejoin: 'round',
                                         ...args,
-                                        stroke: options.outlineStroke,
-                                        strokeWidth:
-                                            options.outlineStrokeWidth ||
-                                            (+options.strokeWidth || 1.4) + 2
+                                        stroke: lineData[0].stroke
                                     },
                                     'stroke',
                                     usedScales
                                 )}
-                                <path
+                                {@const [textStyle, textStyleClass] = resolveStyles(
+                                    plot,
+                                    lineData[0],
+                                    {
+                                        textAnchor: 'middle',
+                                        ...pick(args, [
+                                            'fontSize',
+                                            'fontWeight',
+                                            'fontStyle',
+                                            'textAnchor'
+                                        ]),
+                                        strokeWidth: args.textStrokeWidth
+                                            ? args.textStrokeWidth
+                                            : args.textStroke
+                                              ? 2
+                                              : 0,
+                                        fill: args.textFill || args.stroke,
+                                        stroke: args.textStroke
+                                    },
+                                    'fill',
+                                    usedScales,
+                                    true
+                                )}
+                                <MarkerPath
+                                    {mark}
+                                    scales={plot.scales}
+                                    markerStart={args.markerStart}
+                                    markerMid={args.markerMid}
+                                    markerEnd={args.markerEnd}
+                                    marker={args.marker}
+                                    strokeWidth={args.strokeWidth}
+                                    datum={lineData[0]}
                                     d={pathString}
-                                    style={outlineStyle}
-                                    class={['is-outline', outlineStyleClass]} />
-                            {/if}
-                            {@const [style, styleClass] = resolveStyles(
-                                plot,
-                                lineData[0],
-                                {
-                                    strokeWidth: 1.4,
-                                    strokeLinejoin: 'round',
-                                    ...args,
-                                    stroke: lineData[0].stroke
-                                },
-                                'stroke',
-                                usedScales
-                            )}
-                            {@const [textStyle, textStyleClass] = resolveStyles(
-                                plot,
-                                lineData[0],
-                                {
-                                    textAnchor: 'middle',
-                                    ...pick(args, [
-                                        'fontSize',
-                                        'fontWeight',
-                                        'fontStyle',
-                                        'textAnchor'
-                                    ]),
-                                    strokeWidth: args.textStrokeWidth
-                                        ? args.textStrokeWidth
-                                        : args.textStroke
-                                          ? 2
-                                          : 0,
-                                    fill: args.textFill || args.stroke,
-                                    stroke: args.textStroke
-                                },
-                                'fill',
-                                usedScales,
-                                true
-                            )}
-                            <MarkerPath
-                                {mark}
-                                scales={plot.scales}
-                                markerStart={args.markerStart}
-                                markerMid={args.markerMid}
-                                markerEnd={args.markerEnd}
-                                marker={args.marker}
-                                strokeWidth={args.strokeWidth}
-                                datum={lineData[0]}
-                                d={pathString}
-                                dInv={text ? linePath(lineData.toReversed()) : null}
-                                color={lineData[0].stroke || 'currentColor'}
-                                {style}
-                                class={styleClass}
-                                text={text ? resolveProp(text, lineData[0]) : null}
-                                startOffset={resolveProp(args.textStartOffset, lineData[0], '50%')}
-                                {textStyle}
-                                {textStyleClass} />
-                        </GroupMultiple>
-                    {/if}
-                {/each}
+                                    dInv={text ? linePath(lineData.toReversed()) : null}
+                                    color={lineData[0].stroke || 'currentColor'}
+                                    {style}
+                                    class={styleClass}
+                                    text={text ? resolveProp(text, lineData[0]) : null}
+                                    startOffset={resolveProp(
+                                        args.textStartOffset,
+                                        lineData[0],
+                                        '50%'
+                                    )}
+                                    {textStyle}
+                                    {textStyleClass} />
+                            </GroupMultiple>
+                        {/if}
+                    {/each}
+                {/if}
             </g>
         {/if}
     {/snippet}

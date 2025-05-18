@@ -53,29 +53,6 @@ If the **x** and **y** options are not defined, the line mark assumes that the d
 
 [fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
 
-The [LineY constructor](/marks/line#LineY) provides default channel definitions of **x** = index and **y** = [identity](/features/transforms#identity), letting you pass an array of numbers as data. The [LineX constructor](/marks/line#LineX) similarly provides **x** = identity and **y** = index defaults for lines that go up↑ instead of to the right→. Below, a random walk is made using [d3.cumsum](https://d3js.org/d3-array/summarize#cumsum) and [d3.randomNormal](https://d3js.org/d3-random#randomNormal).
-
-```svelte live
-<script lang="ts">
-    import { Plot, LineY } from 'svelteplot';
-    import type { Datasets } from '$lib/types.js';
-    import { randomNormal } from 'd3-random';
-    import { range, cumsum } from 'd3-array';
-</script>
-
-<Plot grid height={250}>
-    <LineY data={cumsum(range(600).map(randomNormal()))} />
-</Plot>
-```
-
-```svelte
-<Plot grid>
-    <LineY data={cumsum(range(600).map(randomNormal()))} />
-</Plot>
-```
-
-[fork](https://svelte.dev/playground/ede4503f8072438e934b7c09b1bea441?version=5.28.1)
-
 As with [areas](/marks/area), points in lines are connected in input order: the first point is connected to the second point, the second is connected to the third, and so on. Line data is typically in chronological order. Unsorted data may produce gibberish.
 
 ```svelte live
@@ -256,16 +233,6 @@ There is no requirement that **y** be dependent on **x**; lines can be used in c
 </Plot>
 ```
 
-The following channels are supported:
-
-- **x** - bound to x scale
-- **y** - bound to y scale
-- **z**
-- **stroke** - bound to color scale
-- **sort**
-- **outlineStroke** - for adding an outline stroke aka casing behind the line
-- **outlineStrokeWidth** -
-
 BLS Demo:
 
 ```svelte live
@@ -283,12 +250,13 @@ BLS Demo:
         x="date"
         y="unemployment"
         z="division"
+        canvas={true}
         outlineStroke="var(--svelteplot-bg)"
         sort={(d) => /, MI /.test(d.division)}
         stroke={(d) =>
             /, MI /.test(d.division)
                 ? 'red'
-                : '#99999955'} />
+                : '#99999956'} />
 </Plot>
 ```
 
@@ -307,11 +275,80 @@ BLS Demo:
 
 ## Line
 
-Channels:
+The following channels are supported:
+
+- **data** - The data to be visualized (required)
+- **x** - Channel accessor for x-axis position (required)
+- **y** - Channel accessor for y-axis position (required)
+- **z** - Channel accessor for grouping points into separate lines
+- **dx** - Horizontal offset for positioning
+- **dy** - Vertical offset for positioning
+
+Rendering options:
+
+- **canvas** - Render using Canvas instead of SVG for better performance with large datasets. Note that some features are only supported in SVG rendering (default: false)
+
+Styling:
+
+- **stroke** - Channel accessor for line color, bound to color scale
+- **strokeWidth** - Line width in pixels (default: 1.4)
+- **strokeOpacity** - Opacity of the line (default: 1)
+- **opacity** - Overall opacity of the mark (default: 1)
+- **outlineStroke** - Color for adding an outline stroke (casing) behind the line
+- **outlineStrokeWidth** - Width of the outline stroke in pixels (default: strokeWidth + 2)
+- **outlineStrokeOpacity** - Opacity of the outline stroke (default: 1)
+- **lineClass** - CSS class to apply to each line (SVG only)
+- **class** - CSS class to apply to the entire lines group (SVG only)
+
+[Interpolation options](#Interpolation):
+
+- **curve** - Line interpolation method (default: "auto")
+- **tension** - Tension parameter for curve interpolation (default: 0)
+- **sort** - Sort data before drawing (can be a field name or accessor function)
+
+[Marker options](/features/markers) (only SVG rendering):
+
+- **marker** - Symbol to display at points along the line
+- **markerStart** - Symbol to display at the start of the line
+- **markerMid** - Symbol to display at intermediate points of the line
+- **markerEnd** - Symbol to display at the end of the line
+
+[Text along path](#Text-along-path) (only SVG rendering):
+
+- **text** - Text to display along the line path
+- **textFill** - Color for the text (default: same as stroke)
+- **textStroke** - Outline color for the text
+- **textStrokeWidth** - Width of the text outline in pixels (default: 2 if textStroke is set, 0 otherwise)
+- **textStartOffset** - Position of text along the path (default: "50%")
+
+## LineY
+
+The [LineY constructor](/marks/line#LineY) provides default channel definitions of **x** = index and **y** = [identity](/features/transforms#identity), letting you pass an array of numbers as data. The [LineX constructor](/marks/line#LineX) similarly provides **x** = identity and **y** = index defaults for lines that go up↑ instead of to the right→. Below, a random walk is made using [d3.cumsum](https://d3js.org/d3-array/summarize#cumsum) and [d3.randomNormal](https://d3js.org/d3-random#randomNormal).
+
+```svelte live
+<script lang="ts">
+    import { Plot, LineY } from 'svelteplot';
+    import type { Datasets } from '$lib/types.js';
+    import { randomNormal } from 'd3-random';
+    import { range, cumsum } from 'd3-array';
+</script>
+
+<Plot grid height={250}>
+    <LineY data={cumsum(range(600).map(randomNormal()))} />
+</Plot>
+```
+
+```svelte
+<Plot grid>
+    <LineY data={cumsum(range(600).map(randomNormal()))} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/ede4503f8072438e934b7c09b1bea441?version=5.28.1)
 
 ## LineX
 
-Convenience wrapper
+Convenience wrapper for rendering an array of numbers over their indices.
 
 ```svelte live
 <script lang="ts">
@@ -335,133 +372,6 @@ Convenience wrapper
         )} />
 </Plot>
 ```
-
-## LineY
-
-Convenience wrapper for wrapping a list of numbers over their indices
-
-```svelte live
-<script lang="ts">
-    import { Plot, LineY, AreaY } from 'svelteplot';
-    import { range } from 'd3-array';
-</script>
-
-<Plot grid y={{ nice: true }} height={150}>
-    <LineY
-        data={range(Math.PI * 100).map((i) =>
-            Math.sin(i / 10)
-        )} />
-</Plot>
-```
-
-```svelte
-<Plot grid y={{ nice: true }}>
-    <LineY
-        data={range(Math.PI * 100).map((i) =>
-            Math.sin(i / 50)
-        )} />
-</Plot>
-```
-
-LineY can automatically stack?
-
-```svelte live
-<script lang="ts">
-    import { Plot, Line } from 'svelteplot';
-    import { page } from '$app/state';
-    let { riaa } = $derived(page.data.data);
-</script>
-
-<Plot grid y={{ nice: true }} height={350}>
-    <Line
-        data={riaa}
-        x="year"
-        y="revenue"
-        z="format"
-        stroke="group" />
-</Plot>
-```
-
-Line charts do not support implicit stacking, but you can use the [stack](/transforms/stack) explicitely:
-
-```svelte live
-<script lang="ts">
-    import { Plot, Line, stackY } from 'svelteplot';
-    import { page } from '$app/state';
-    let { riaa } = $derived(page.data.data);
-</script>
-
-<Plot grid y={{ nice: true }} height={350}>
-    <Line
-        {...stackY({
-            data: riaa,
-            x: 'year',
-            y: 'revenue',
-            z: 'format',
-            stroke: 'group'
-        })} />
-</Plot>
-```
-
-## Interpolation
-
-You can set the line interpolation using the **interpolation** option.
-
-```svelte live
-<script>
-    import { Plot, LineY, Dot } from '$lib/index.js';
-    import Slider from '$lib/ui/Slider.svelte';
-    import Select from '$lib/ui/Select.svelte';
-
-    // curve demo
-    const numbers = [
-        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12,
-        0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6, 0.09, 0.14,
-        0.95, 0.92, 0.89
-    ];
-    let curve = $state('catmull-rom');
-    let tension = $state(0.5);
-    const CURVES =
-        'basis,basis-open,basis-closed,bump-x,bump-y,bundle,cardinal,cardinal-open,cardinal-closed,catmull-rom,catmull-rom-open,catmull-rom-closed,linear,linear-closed,monotone-x,monotone-y,natural,step,step-after,step-before'.split(
-            ','
-        );
-</script>
-
-<Select label="curve" bind:value={curve} options={CURVES} />
-
-{#if curve.includes('bundle') || curve.includes('catmull') || curve.includes('cardinal')}
-    <Slider
-        label="tension"
-        bind:value={tension}
-        min={0}
-        max={2}
-        step={0.1} />
-{/if}
-
-<Plot grid testid="curvedemo" height={300}>
-    <LineY data={numbers} {curve} {tension} />
-    <!-- TODO: use DotY here -->
-    <Dot
-        data={numbers.map((d, i) => ({
-            value: d,
-            index: i
-        }))}
-        symbol="plus"
-        y="value"
-        x="index" />
-</Plot>
-```
-
-```svelte
-<Plot>
-    <LineY
-        data={numbers}
-        curve="catmul-rom"
-        tension={0.3} />
-</Plot>
-```
-
-As you see in the previous plot, lines can show [markers](/features/markers) by setting the **marker** channel.
 
 ## More examples
 
@@ -554,25 +464,7 @@ With a [spherical projection](/features/projections), line segments become [geod
 
 [fork](https://svelte.dev/playground/8f433172583d4b7eb4ae1d72572d2e31?version=5.28.1)
 
-Lines can show a text label along the path:
-
-```svelte live
-<script lang="ts">
-    import { Plot, Line, Dot } from 'svelteplot';
-
-    import { page } from '$app/state';
-    let { aapl } = $derived(page.data.data);
-</script>
-
-<Plot grid>
-    <Line
-        data={aapl.slice(20, 40)}
-        x="Date"
-        y="Close"
-        curve="basis"
-        text="AAPL" />
-</Plot>
-```
+### Sparklines
 
 ```svelte live
 <script lang="ts">
@@ -605,8 +497,6 @@ Lines can show a text label along the path:
 </style>
 ```
 
-Doo
-
 ```svelte
 <p>
     By disabling the plot axes and reducing the margins and
@@ -622,3 +512,158 @@ Doo
     to as sparklines.
 </p>
 ```
+
+### Interpolation
+
+You can set the line interpolation using the **interpolation** option.
+
+```svelte live
+<script>
+    import { Plot, LineY, Dot } from '$lib/index.js';
+    import Slider from '$lib/ui/Slider.svelte';
+    import Select from '$lib/ui/Select.svelte';
+
+    // curve demo
+    const numbers = [
+        0.25, 0.09, 0.58, 0.22, 0.38, 0.03, 0.45, 0.12,
+        0.87, 0.99, 0.85, 0.5, 0.64, 0.86, 0.6, 0.09, 0.14,
+        0.95, 0.92, 0.89
+    ];
+    let curve = $state('catmull-rom');
+    let tension = $state(0.5);
+    const CURVES =
+        'basis,basis-open,basis-closed,bump-x,bump-y,bundle,cardinal,cardinal-open,cardinal-closed,catmull-rom,catmull-rom-open,catmull-rom-closed,linear,linear-closed,monotone-x,monotone-y,natural,step,step-after,step-before'.split(
+            ','
+        );
+</script>
+
+<Select label="curve" bind:value={curve} options={CURVES} />
+
+{#if curve.includes('bundle') || curve.includes('catmull') || curve.includes('cardinal')}
+    <Slider
+        label="tension"
+        bind:value={tension}
+        min={0}
+        max={2}
+        step={0.1} />
+{/if}
+
+<Plot grid testid="curvedemo" height={300}>
+    <LineY data={numbers} {curve} {tension} />
+    <!-- TODO: use DotY here -->
+    <Dot
+        data={numbers.map((d, i) => ({
+            value: d,
+            index: i
+        }))}
+        symbol="plus"
+        y="value"
+        x="index" />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <LineY
+        data={numbers}
+        curve="catmul-rom"
+        tension={0.3} />
+</Plot>
+```
+
+As you see in the previous plot, lines can show [markers](/features/markers) by setting the **marker** channel.
+
+### Text along path
+
+Lines can show a text label along the path:
+
+```svelte live
+<script lang="ts">
+    import { Plot, Line, Dot } from 'svelteplot';
+    import { Slider } from '$lib/ui';
+
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
+    let offset = $state(50);
+</script>
+
+<Slider
+    bind:value={offset}
+    label="textStartOffset"
+    min={0}
+    max={100} />
+<Plot height={200}>
+    <Line
+        data={aapl.slice(20, 40)}
+        x="Date"
+        y="Close"
+        curve="basis"
+        text="AAPL"
+        textSize={16}
+        textStartOffset="{offset}%" />
+</Plot>
+```
+
+```svelte
+<Plot grid>
+    <Line
+        data={aapl.slice(20, 40)}
+        x="Date"
+        y="Close"
+        curve="basis"
+        text="AAPL" />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/6056bec8e77b447684364389b01b16ee?version=5.30.2)
+
+### Stacking
+
+Line charts do not support implicit stacking, but you can use the [stack](/transforms/stack) transform explicitely. Here we're adding the baselines and toplines for each area in a stacked area chart:
+
+```svelte live
+<script lang="ts">
+    import {
+        Plot,
+        Line,
+        AreaY,
+        stackY,
+        renameChannels
+    } from 'svelteplot';
+    import { page } from '$app/state';
+    const { riaa } = $derived(page.data.data);
+
+    const stacked = $derived(
+        stackY(
+            {
+                data: riaa,
+                x: 'year',
+                y: 'revenue',
+                z: 'format',
+                stroke: 'group'
+            },
+            { offset: 'wiggle' }
+        )
+    );
+</script>
+
+<Plot grid height={250}>
+    <AreaY {...stacked} opacity={0.5} fill="group" />
+    {#each ['y1', 'y2'] as y}
+        <Line {...renameChannels(stacked, { [y]: 'y' })} />
+    {/each}
+</Plot>
+```
+
+```svelte
+<Plot grid height={250}>
+    <AreaY {...stacked} opacity={0.5} fill="group" />
+    {#each ['y1', 'y2'] as y}
+        <Line {...renameChannels(stacked, { [y]: 'y' })} />
+    {/each}
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/6c6d74532b8440358735672de5a66768?version=5.30.2)
+
+Note that the stackY transform is setting the y1 and y2 channel, but the Line mark expects a y channel. That's why we have to rename the channel using the [renameChannel](/transforms/rename) transform.

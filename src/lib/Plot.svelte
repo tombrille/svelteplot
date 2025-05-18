@@ -151,7 +151,7 @@
                 ...restProps
             })}
             {#snippet failed(error, reset)}
-                <text class="error" transform="translate(10,10)">
+                <text class="error" transform="translate(10,10)" onclick={reset}>
                     {#each error.message.split('\n') as line, i}
                         <tspan x="0" dy={i ? 14 : 0}>{line}</tspan>
                     {/each}
