@@ -44,7 +44,7 @@
                 context.scale(devicePixelRatio.current ?? 1, devicePixelRatio.current ?? 1);
                 context.lineJoin = 'round';
                 context.lineCap = 'round';
-                
+
                 for (const group of groupedLineData) {
                     if (group.length < 2) continue;
 
@@ -102,12 +102,12 @@
             }
 
             return () => {
-                // context?.clearRect(
-                //     0,
-                //     0,
-                //     plot.width * (devicePixelRatio.current ?? 1),
-                //     plot.height * (devicePixelRatio.current ?? 1)
-                // );
+                context?.clearRect(
+                    0,
+                    0,
+                    plot.width * (devicePixelRatio.current ?? 1),
+                    plot.height * (devicePixelRatio.current ?? 1)
+                );
             };
         });
     }) as Attachment;
