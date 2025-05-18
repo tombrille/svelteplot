@@ -24,7 +24,7 @@ export function resolveProp<T>(
     accessor: ConstantAccessor<T>,
     datum: DataRecord | null,
     _defaultValue: T | null = null
-): T | null {
+): T | typeof _defaultValue {
     if (typeof accessor === 'function') {
         // datum[RAW_VALUE] exists if an array of raw values was used as dataset and got
         // "recordized" by the recordize transform. We want to hide this wrapping to the user
