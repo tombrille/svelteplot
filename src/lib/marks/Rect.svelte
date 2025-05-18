@@ -17,6 +17,7 @@
     } from '../types.js';
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
+    import RectPath from './helpers/RectPath.svelte';
 
     type RectMarkProps = BaseMarkProps & {
         data: DataRecord[];
@@ -57,31 +58,16 @@
                     {@const maxy = Math.max(y1, y2)}
                     {@const minx = Math.min(x1, x2)}
                     {@const maxx = Math.max(x1, x2)}
-                    {@const inset = resolveProp(args.inset, d.datum, 0)}
-                    {@const insetLeft = resolveProp(args.insetLeft, d.datum)}
-                    {@const insetRight = resolveProp(args.insetRight, d.datum)}
-                    {@const insetTop = resolveProp(args.insetTop, d.datum)}
-                    {@const insetBottom = resolveProp(args.insetBottom, d.datum)}
-                    {@const insetL = maybeNumber(coalesce(insetLeft, inset, 0)) ?? 0}
-                    {@const insetT = maybeNumber(coalesce(insetTop, inset, 0)) ?? 0}
-                    {@const insetR = maybeNumber(coalesce(insetRight, inset, 0)) ?? 0}
-                    {@const insetB = maybeNumber(coalesce(insetBottom, inset, 0)) ?? 0}
 
-                    {@const [style, styleClass] = resolveStyles(plot, d, args, 'fill', usedScales)}
-                    <rect
-                        class={[scaledData.length === 1 && className, styleClass]}
-                        {style}
-                        x={minx + insetL}
-                        y={miny + insetT}
-                        width={maxx - minx - insetL - insetR}
-                        height={maxy - miny - insetT - insetB}
-                        rx={resolveProp(args.rx, d.datum, null)}
-                        ry={resolveProp(args.ry, d.datum, null)}
-                        use:addEventHandlers={{
-                            getPlotState,
-                            options: args,
-                            datum: d.datum
-                        }} />
+                    <RectPath
+                        datum={d}
+                        class={scaledData.length === 1 ? className : null}
+                        x={minx}
+                        y={miny}
+                        width={maxx - minx}
+                        height={maxy - miny}
+                        options={args}
+                        {usedScales} />
                 {/if}
             {/each}
         </GroupMultiple>
