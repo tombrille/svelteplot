@@ -142,10 +142,10 @@
     {#snippet children({ mark, usedScales, scaledData })}
         {#if scaledData.length > 0}
             {@const groupedLineData = groupIndex(scaledData, groupByKey)};
-            <g class={['lines', className]}>
-                {#if canvas}
-                    <LineCanvas {groupedLineData} {mark} {usedScales} {linePath} {groupByKey} />
-                {:else}
+            {#if canvas}
+                <LineCanvas {groupedLineData} {mark} {usedScales} {linePath} {groupByKey} />
+            {:else}
+                <g class={['lines', className]}>
                     {#each groupedLineData as lineData, i}
                         {@const pathString = linePath(lineData)}
                         {#if pathString}
@@ -235,8 +235,8 @@
                             </GroupMultiple>
                         {/if}
                     {/each}
-                {/if}
-            </g>
+                </g>
+            {/if}
         {/if}
     {/snippet}
 </Mark>
