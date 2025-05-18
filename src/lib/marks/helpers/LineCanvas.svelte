@@ -74,7 +74,7 @@
                         const outlineStroke = resolveColor(mark.options.outlineStroke, canvas);
                         const outlineStrokeWidth =
                             mark.options.outlineStrokeWidth ?? strokeWidth + 2;
-                        const outlineStrokeOpacity = mark.options.outlineStrokeWidth ?? 1;
+                        const outlineStrokeOpacity = mark.options.outlineStrokeOpacity ?? 1;
 
                         context.lineWidth = outlineStrokeWidth;
                         context.strokeStyle = outlineStroke;
