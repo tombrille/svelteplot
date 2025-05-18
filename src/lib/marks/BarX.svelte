@@ -56,7 +56,7 @@
                         {options}
                         datum={d}
                         x={minx}
-                        fallbackInsetH={false}
+                        useInsetAsFallbackHorizontally={false}
                         y={d.y - bw * 0.5}
                         width={maxx - minx}
                         height={bw} />

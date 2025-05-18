@@ -64,7 +64,7 @@
                         height={maxy - miny}
                         datum={d}
                         {usedScales}
-                        fallbackInsetV={false} />
+                        useInsetAsFallbackVertically={false} />
                 {/if}
             {/each}
         </GroupMultiple>

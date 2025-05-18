@@ -23,8 +23,8 @@ Helper component for rendering rectangular marks in SVG
         y,
         width,
         height,
-        fallbackInsetV = true,
-        fallbackInsetH = true,
+        useInsetAsFallbackVertically = true,
+        useInsetAsFallbackHorizontally = true,
         usedScales
     }: {
         datum: ScaledDataRecord;
@@ -35,13 +35,17 @@ Helper component for rendering rectangular marks in SVG
         height: number;
         options: BaseRectMarkProps & BaseMarkProps;
         /**
-         * if true, the general inset setting will be applied as vertical inset
+         * By default, the `inset` property is applied to all four insets. Mark components
+         * can tweak this behavior for insetTop and insetBottom by setting the
+         * useInsetAsFallbackVertically prop to false.
          */
-        fallbackInsetV?: boolean;
+        useInsetAsFallbackVertically?: boolean;
         /**
-         * if true, the general inset setting will be applied as horizonal insets
+         * By default, the `inset` property is applied to all four insets. Mark components
+         * can tweak this behavior for insetLeft and insetRight by setting the
+         * useInsetAsFallbackHorizontally prop to false.
          */
-        fallbackInsetH?: boolean;
+        useInsetAsFallbackHorizontally?: boolean;
         usedScales: UsedScales;
     } = $props();
 
@@ -52,16 +56,32 @@ Helper component for rendering rectangular marks in SVG
     const dy = $derived(+(resolveProp(options.dy, datum.datum, 0) as number));
     const inset = $derived(+(resolveProp(options.inset, datum.datum, 0) as number));
     const insetLeft = $derived(
-        +(resolveProp(options.insetLeft, datum.datum, fallbackInsetH ? inset : 0) as number)
+        +(resolveProp(
+            options.insetLeft,
+            datum.datum,
+            useInsetAsFallbackHorizontally ? inset : 0
+        ) as number)
     );
     const insetRight = $derived(
-        +(resolveProp(options.insetRight, datum.datum, fallbackInsetH ? inset : 0) as number)
+        +(resolveProp(
+            options.insetRight,
+            datum.datum,
+            useInsetAsFallbackHorizontally ? inset : 0
+        ) as number)
     );
     const insetTop = $derived(
-        +(resolveProp(options.insetTop, datum.datum, fallbackInsetV ? inset : 0) as number)
+        +(resolveProp(
+            options.insetTop,
+            datum.datum,
+            useInsetAsFallbackVertically ? inset : 0
+        ) as number)
     );
     const insetBottom = $derived(
-        +(resolveProp(options.insetBottom, datum.datum, fallbackInsetV ? inset : 0) as number)
+        +(resolveProp(
+            options.insetBottom,
+            datum.datum,
+            useInsetAsFallbackVertically ? inset : 0
+        ) as number)
     );
     const borderRadius = $derived((options.borderRadius ?? 0) as BorderRadius);
     const hasBorderRadius = $derived(
