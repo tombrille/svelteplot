@@ -16,7 +16,8 @@ export const load: PageLoad = async ({ fetch }) => {
                     'riaa',
                     'stateage',
                     'tdf',
-                    'rightwing'
+                    'rightwing',
+                    'stocks'
                 ],
                 fetch
             ))

@@ -63,7 +63,7 @@ export { normalizeX, normalizeY } from './transforms/normalize.js';
 export { group, groupX, groupY, groupZ } from './transforms/group.js';
 export { intervalX, intervalY } from './transforms/interval.js';
 export { recordizeX, recordizeY } from './transforms/recordize.js';
-export { renameChannels } from './transforms/rename.js';
+export { renameChannels, replaceChannels } from './transforms/rename.js';
 export {
     select,
     selectFirst,

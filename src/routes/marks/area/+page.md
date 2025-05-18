@@ -188,6 +188,8 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/dda47d8f1396450cb317c656cd9ef6e3?version=5.30.2)
+
 You can control the stacking for the implicit [stackY](/transforms/stack) transform using the `stack` options:
 
 - `order` - can be one of `none`, `appearance`, `inside-out`, or `sum`.
@@ -228,7 +230,9 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 </Plot>
 ```
 
-Streamgraph example:
+[fork](https://svelte.dev/playground/c2dc2d73cbcf4a06adf45074d5615161?version=5.30.2)
+
+You can use the **offset** option to create a streamgraph:
 
 ```svelte live
 <script>
@@ -261,6 +265,20 @@ Streamgraph example:
         stack={{ offset }} />
 </Plot>
 ```
+
+```svelte
+<Plot x={{ grid: true }} y={{ axis: false }}>
+    <AreaY
+        data={riaa}
+        x="year"
+        y="revenue"
+        z="format"
+        fill="group"
+        stack={{ order: 'inside-out', offset: 'wiggle' }} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/1e9f757c7e7d41bd8183f0d898662450?version=5.30.2)
 
 ## AreaX
 
