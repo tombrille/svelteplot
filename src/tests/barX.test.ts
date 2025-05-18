@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import BarXTest from './barX.test.svelte';
+import { parseSVG, makeAbsolute } from 'svg-path-parser';
 
 const testData = [{
     year: '2010',
@@ -24,9 +25,9 @@ describe('BarX mark', () => {
             }
         });
 
-        const bars = container.querySelectorAll('g.bar-x > path') as NodeListOf<SVGPathElement>;
+        const bars = container.querySelectorAll('g.bar-x > rect') as NodeListOf<SVGRectElement>;
         expect(bars.length).toBe(5);
-        const barDims = Array.from(bars).map(getDims);
+        const barDims = Array.from(bars).map(getRectDims);
         // check that bar height are equal
         expect(barDims.map(d => d.h)).toStrictEqual(new Array(5).fill(barDims[0].h))
         // check that bar length match data
@@ -48,25 +49,62 @@ describe('BarX mark', () => {
             }
         });
 
-        const bars = container.querySelectorAll('g.bar-x > path') as NodeListOf<SVGPathElement>;
+        const bars = container.querySelectorAll('g.bar-x > rect') as NodeListOf<SVGRectElement>;
         expect(bars.length).toBe(2);
-        const barDims = Array.from(bars).map(getDims);
+        const barDims = Array.from(bars).map(getRectDims);
         expect(barDims[0].w).toBe(barDims[1].w);
         expect(barDims[0].x).not.toBe(barDims[1].x);
-    })
+    });
+
+    it('uses path for rounded rects', () => {
+        const { container } = render(BarXTest, {
+            props: {
+                plotArgs: {},
+                barArgs: {
+                    data: [1, 2, 3, 4, 5],
+                    borderRadius: { topLeft: 2 }
+                }
+            }
+        });
+
+        const bars = container.querySelectorAll('g.bar-x > path') as NodeListOf<SVGPathElement>;
+        expect(bars.length).toBe(5);
+        const barDims = Array.from(bars).map(getPathDims);
+        // // check that bar height are equal
+        expect(barDims.map(d => d.h)).toStrictEqual(new Array(5).fill(barDims[0].h))
+        // // check that bar length match data
+        expect(barDims.map(d => d.w)).toStrictEqual([1, 2, 3, 4, 5].map(m => barDims[0].w * m))
+    });
 });
 
-function getDims(path: SVGPathElement) {
-    const r = path?.getAttribute('d')?.match(/H\s*(\d+(?:\.\d+)?)\s*V\s*(\d+(?:\.\d+)?)/m);
+function getRectDims(rect: SVGRectElement) {
+    const t = rect
+        ?.getAttribute('transform')
+        ?.match(/translate\((\d+(?:\.\d+)?),(\d+(?:\.\d+)?)\)/);
+    return {
+        x: Math.round(+t[1]),
+        y: Math.round(+t[2]),
+        w: Math.round(+rect.getAttribute('width')),
+        h: Math.round(+rect.getAttribute('height')),
+        fill: rect.style.fill,
+        stroke: rect.style.stroke,
+        strokeWidth: rect.style.strokeWidth,
+    }
+}
+
+function getPathDims(path: SVGPathElement) {
+    const r = makeAbsolute(parseSVG(path.getAttribute('d')));
+    const x = r.flatMap(d => [d.x, d.x0, d.x1]).filter(x => x != null);
+    const y = r.flatMap(d => [d.y, d.y0, d.y1]).filter(y => y != null);
     const t = path
         ?.getAttribute('transform')
         ?.match(/translate\((\d+(?:\.\d+)?),(\d+(?:\.\d+)?)\)/);
     if (!r || !t) return { x: NaN, y: NaN, w: NaN, h: NaN };
     return {
-        x: Math.round(+t[1]),
-        y: Math.round(+t[2]),
-        w: Math.round(+r[1]),
-        h: Math.round(+r[2]),
+        x: Math.round(Math.min(...x)),
+        y: Math.round(Math.min(...y)),
+        w: Math.round(Math.max(...x) - Math.min(...x)),
+        h: Math.round(Math.max(...y) - Math.min(...y)),
         fill: path.style.fill,
         stroke: path.style.stroke,
         strokeWidth: path.style.strokeWidth,
