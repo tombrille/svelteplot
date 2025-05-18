@@ -385,10 +385,11 @@ While uncommon, you can draw a line with ordinal position values. For example be
 </script>
 
 <Plot
+    grid
     x={{ label: 'Age range (years)' }}
     y={{
         percent: true,
-        grid: true,
+
         label: 'Population (%)'
     }}>
     <Line
@@ -396,6 +397,7 @@ While uncommon, you can draw a line with ordinal position values. For example be
         x="age"
         y="pop_share"
         z="state"
+        canvas
         strokeOpacity={0.5} />
     <RuleY data={[0]} />
 </Plot>
