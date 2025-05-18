@@ -669,3 +669,101 @@ Line charts do not support implicit stacking, but you can use the [stack](/trans
 [fork](https://svelte.dev/playground/6c6d74532b8440358735672de5a66768?version=5.30.2)
 
 Note that the stackY transform is setting the y1 and y2 channel, but the Line mark expects a y channel. That's why we have to rename the channel using the [renameChannel](/transforms/rename) transform.
+
+### Facetting
+
+Like all marks, Line marks support [faceting](/features/faceting). In this example we show four [normalized](/transform/normalize) animated stock price charts:
+
+```svelte live
+<script lang="ts">
+    import {
+        Plot,
+        Line,
+        Frame,
+        normalizeY
+    } from 'svelteplot';
+    import { innerWidth } from 'svelte/reactivity/window';
+    import { page } from '$app/state';
+    import { Checkbox } from '$lib/ui';
+    import { writable } from 'svelte/store';
+
+    // Use stocks dataset
+    let { stocks } = $derived(page.data.data);
+
+    // Create a store for canvas rendering toggle
+    let useCanvas = $state(false);
+
+    let maxDate = $state(new Date('2013-05-13'));
+
+    $effect(() => {
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame() {
+        maxDate = new Date(maxDate.getTime() + 864e5);
+        if (maxDate.getFullYear() >= 2018) {
+            maxDate = new Date('2013-05-13');
+        }
+        requestAnimationFrame(frame);
+    }
+
+    const normalized = $derived(
+        normalizeY(
+            {
+                data: stocks.filter(
+                    (d) =>
+                        d.Date <
+                            new Date(
+                                maxDate.getTime() +
+                                    864e5 * 420
+                            ) && d.Date > maxDate
+                ),
+                x: 'Date',
+                y: 'Close',
+                stroke: 'Symbol'
+            },
+            'extent'
+        )
+    );
+</script>
+
+<Checkbox label="Canvas rendering" bind:value={useCanvas} />
+<Plot
+    height={innerWidth.current < 500 ? 400 : 130}
+    inset={5}
+    x={{
+        interval: 'year',
+        grid: true,
+        tickFormat: (d) => d.getFullYear()
+    }}
+    y={{ axis: false }}>
+    <Frame fill opacity={0.05} />
+    <Line
+        {...normalized}
+        curve="basis"
+        strokeWidth={2}
+        canvas={useCanvas}
+        outlineStroke="var(--svelteplot-bg)"
+        {...{
+            [innerWidth.current < 500 ? 'fy' : 'fx']:
+                'Symbol'
+        }} />
+    />
+</Plot>
+```
+
+```svelte
+<Line
+    {...normalizeY(
+        {
+            data: stocks,
+            x: 'Date',
+            y: 'Close',
+            stroke: 'Symbol'
+        },
+        'extent'
+    )}
+    curve="basis"
+    fx="Symbol" />
+/>
+```
