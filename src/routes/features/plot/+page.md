@@ -29,7 +29,7 @@ In the following example, you can see that the `<Plot>` component has added axes
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/8d65004eee1e4375b8b45b92e69f26cd?version=5.28.1)
+[fork](https://svelte.dev/playground/8d65004eee1e4375b8b45b92e69f26cd?version=5)
 
 :::info
 The implicit axes are added by default.
@@ -86,13 +86,19 @@ But if we wanted to, we can add these marks individually, and it would look just
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/c447b344808943deb11522956e481222?version=5.28.1)
+[fork](https://svelte.dev/playground/c447b344808943deb11522956e481222?version=5)
 
 This can be useful if you want to customize the styling of the frame or grids, for instance. So you can style plots to look like [ggplot2](https://ggplot2.tidyverse.org/)'s default theme:
 
 ```svelte live
 <script>
-    import { Plot, Line, GridX, GridY, Frame } from 'svelteplot';
+    import {
+        Plot,
+        Line,
+        GridX,
+        GridY,
+        Frame
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -114,7 +120,7 @@ This can be useful if you want to customize the styling of the frame or grids, f
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/1147c6b7fc4347cdb894df3b6a893125?version=5.28.1)
+[fork](https://svelte.dev/playground/1147c6b7fc4347cdb894df3b6a893125?version=5)
 
 For convenience, you can pass **title**, **subtitle**, and **caption** to the Plot component and it will create headings and a figure caption for you:
 

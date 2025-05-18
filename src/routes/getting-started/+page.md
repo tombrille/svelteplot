@@ -80,7 +80,7 @@ pnpm add svelteplot
 </Plot>
 ```
 
-[Fork](https://svelte.dev/playground/7637c04038f14499a7230af60def22b5?version=5.14.0)
+[Fork](https://svelte.dev/playground/7637c04038f14499a7230af60def22b5?version=5)
 
 ## Use SveltePlot in vanilla HTML
 

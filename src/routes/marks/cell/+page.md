@@ -65,7 +65,7 @@ For example, the heatmap below shows the decline of _The Simpsons_ after Season 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/35a0374e59944167ae83852e2c844c25?version=5.28.1)
+[fork](https://svelte.dev/playground/35a0374e59944167ae83852e2c844c25?version=5)
 
 Seattle temperatures
 

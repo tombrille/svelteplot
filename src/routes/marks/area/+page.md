@@ -26,7 +26,7 @@ The **area mark** draws the region between a baseline (x1, y1) and a topline (x2
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/0d3db990450f42bab5a0fe474d5d9cb2?version=5.28.2)
+[fork](https://svelte.dev/playground/0d3db990450f42bab5a0fe474d5d9cb2?version=5)
 
 If you supply `undefined` values, the area mark will create gaps in the visualization at those points. This is useful when you want to represent missing or invalid data without interpolating across it.
 
@@ -188,7 +188,7 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/dda47d8f1396450cb317c656cd9ef6e3?version=5.30.2)
+[fork](https://svelte.dev/playground/dda47d8f1396450cb317c656cd9ef6e3?version=5)
 
 You can control the stacking for the implicit [stackY](/transforms/stack) transform using the `stack` options:
 
@@ -230,7 +230,7 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/c2dc2d73cbcf4a06adf45074d5615161?version=5.30.2)
+[fork](https://svelte.dev/playground/c2dc2d73cbcf4a06adf45074d5615161?version=5)
 
 You can use the **offset** option to create a streamgraph:
 
@@ -278,7 +278,7 @@ You can use the **offset** option to create a streamgraph:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/1e9f757c7e7d41bd8183f0d898662450?version=5.30.2)
+[fork](https://svelte.dev/playground/1e9f757c7e7d41bd8183f0d898662450?version=5)
 
 ## AreaX
 

@@ -6,7 +6,13 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 
 ```svelte live
 <script>
-    import { Plot, Line, Dot, Text, Pointer } from 'svelteplot';
+    import {
+        Plot,
+        Line,
+        Dot,
+        Text,
+        Pointer
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 
@@ -60,7 +66,7 @@ Pointer is a mark that doesn't render anything by itself, but you can use it to 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/a1220e8cb4d74338a3b7468466113df2?version=5.28.1)
+[fork](https://svelte.dev/playground/a1220e8cb4d74338a3b7468466113df2?version=5)
 
 You can create a "crosshair" mark by wrapping grids and axes marks inside a pointer mark:
 

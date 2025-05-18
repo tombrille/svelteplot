@@ -23,7 +23,7 @@ Axis marks are useful for rendering the x and y axes! Since they are useful in 9
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/a3203dccac324843adb69022bf8ebb36?version=5.28.1)
+[fork](https://svelte.dev/playground/a3203dccac324843adb69022bf8ebb36?version=5)
 
 You can turn the implicit axes off by adding `axis: false`
 
@@ -46,7 +46,7 @@ You can turn the implicit axes off by adding `axis: false`
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/90670fa63bac442b93f68ddb9cdee63a?version=5.28.1)
+[fork](https://svelte.dev/playground/90670fa63bac442b93f68ddb9cdee63a?version=5)
 
 You can also control the implicit axes individually using the x and y options. Here we're forcing the x axis to be displayed on both sides of the plot and we're disabling the implicit y axis:
 
@@ -68,7 +68,7 @@ You can also control the implicit axes individually using the x and y options. H
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/607be633a22c48989c683ebda5b8f740?version=5.28.1)
+[fork](https://svelte.dev/playground/607be633a22c48989c683ebda5b8f740?version=5)
 
 ## Implicit axis options
 
@@ -312,7 +312,7 @@ You can customize the automatic axis ticks using the `interval` and `tickSpacing
 <Plot x={{ domain: [0, 101], interval: 15 }} />
 ```
 
-[fork](https://svelte.dev/playground/9cb92cbfa837428686a7f4bc990b74f9?version=5.28.1)
+[fork](https://svelte.dev/playground/9cb92cbfa837428686a7f4bc990b74f9?version=5)
 
 For time-scales you can define the interval as string:
 
@@ -377,7 +377,7 @@ Another way to customize the number of ticks shown is to set the **tickSpacing**
 <Plot x={{ domain: [0, 101], tickSpacing: 30 }} />
 ```
 
-[fork](https://svelte.dev/playground/6ccccb750ac84912bda3ac498c28e8b3?version=5.28.1)
+[fork](https://svelte.dev/playground/6ccccb750ac84912bda3ac498c28e8b3?version=5)
 
 You can also define the ticks manually:
 
@@ -486,7 +486,7 @@ You can assign custom class to ticks based on the tick value by passing a `tickC
 </style>
 ```
 
-[fork](https://svelte.dev/playground/f94f7dbe5c2842d28e3a3e87666663bd?version=5.28.1)
+[fork](https://svelte.dev/playground/f94f7dbe5c2842d28e3a3e87666663bd?version=5)
 
 ### Two layers of ticks
 
@@ -536,7 +536,7 @@ You can use two explicit axes to create multiple layers of ticks. The yearly tic
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/abb8f5bfa45b416db9aa7ddac833d1e3?version=5.28.2)
+[fork](https://svelte.dev/playground/abb8f5bfa45b416db9aa7ddac833d1e3?version=5)
 
 Note that you can achieve a similar axis using a custom tick format function that returns an array. Repeating tick text lines are being omitted automatically:
 
@@ -575,7 +575,7 @@ Note that you can achieve a similar axis using a custom tick format function tha
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/52b5047e28014118921ce753c8c601a7?version=5.28.1)
+[fork](https://svelte.dev/playground/52b5047e28014118921ce753c8c601a7?version=5)
 
 ### Rotated ticks
 

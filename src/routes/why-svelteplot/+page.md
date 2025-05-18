@@ -39,7 +39,7 @@ This means there is no "scatterplot" component in SveltePlot, but you can use th
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/ec6da6d3ab314edd89ef038281b419c5?version=5.14.0)
+[fork](https://svelte.dev/playground/ec6da6d3ab314edd89ef038281b419c5?version=5)
 
 You can think of marks as the building blocks for your visualizations -- or the _nouns_ in your visual language, to stick with the grammar metaphor. We can use the exact same Dot we used for the above scatterplot to create a symbol map, a bubble heatmap, or a Cleveland-style dot plot:
 
@@ -91,7 +91,7 @@ You can think of marks as the building blocks for your visualizations -- or the 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/b329bb028a5445ba8f884291f0475be6?version=5.15.0)
+[fork](https://svelte.dev/playground/b329bb028a5445ba8f884291f0475be6?version=5)
 
 This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer.
 
@@ -153,7 +153,13 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 
 ```svelte live
 <script>
-    import { Plot, Dot, Line, GridY, RuleY } from 'svelteplot';
+    import {
+        Plot,
+        Dot,
+        Line,
+        GridY,
+        RuleY
+    } from 'svelteplot';
     import { page } from '$app/state';
 
     let { languages: allLanguages } = $derived(
@@ -197,7 +203,7 @@ And if we wanted to add uncertainty ranges, we can add a rule mark as well.
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/7bf86302c8b64e749c9b2d44bac2832c?version=5.14.0)
+[fork](https://svelte.dev/playground/7bf86302c8b64e749c9b2d44bac2832c?version=5)
 
 Would you still call this a dot plot or is it a line chart already? Perhaps a dot-line-range chart? The beauty of grammar of graphics style frameworks that _it doesn't matter_ how you call your plot! We can create tons of chart variations without having to "switch" the chart template or go through a list of special options in existing templates. Instead, we can just mix the marks and transforms in SveltePlot!
 
@@ -327,7 +333,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/e136cdefec7943cba5e6d7b604a2e50c?version=5.14.0)
+[fork](https://svelte.dev/playground/e136cdefec7943cba5e6d7b604a2e50c?version=5)
 
 Also, simply by being a Svelte framework, SveltePlot can support tweens and transitions! In the following plot, we're using the [Tween state](https://svelte.dev/docs/svelte-motion#Tween) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
 
@@ -390,7 +396,7 @@ Also, simply by being a Svelte framework, SveltePlot can support tweens and tran
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/5f3acc2b098e4490b09f679218c4cb2d?version=5.28.2)
+[fork](https://svelte.dev/playground/5f3acc2b098e4490b09f679218c4cb2d?version=5)
 
 ## Easy to extend
 
@@ -483,7 +489,7 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/45a256864cb14e0ba2d9578a1b21efeb?version=5.28.1)
+[fork](https://svelte.dev/playground/45a256864cb14e0ba2d9578a1b21efeb?version=5)
 
 ## Built on top of D3
 

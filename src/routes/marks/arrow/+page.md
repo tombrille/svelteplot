@@ -107,7 +107,7 @@ Metro dataset:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/dd59763190914a7a975c6f0f2f38bb34?version=5.28.1)
+[fork](https://svelte.dev/playground/dd59763190914a7a975c6f0f2f38bb34?version=5)
 
 Works as well with a point scale:
 
@@ -154,7 +154,7 @@ Works as well with a point scale:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/9280f8ad582f43f7927005c6a54997d2?version=5.28.1)
+[fork](https://svelte.dev/playground/9280f8ad582f43f7927005c6a54997d2?version=5)
 
 Another thing you can use the arrow mark for is drawing network diagrams:
 
@@ -255,7 +255,7 @@ Another thing you can use the arrow mark for is drawing network diagrams:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/86683daafa8f46bdb98fce9f43330ad8?version=5.28.2)
+[fork](https://svelte.dev/playground/86683daafa8f46bdb98fce9f43330ad8?version=5)
 
 ## Arrow options
 

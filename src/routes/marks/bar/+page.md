@@ -76,7 +76,7 @@ You can create stacked bar charts by defining a fill channel which will be used 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/6d334e103f9e444d99bb67c8af1335bc?version=5.28.2)
+[fork](https://svelte.dev/playground/6d334e103f9e444d99bb67c8af1335bc?version=5)
 
 ## BarX
 
@@ -170,7 +170,7 @@ Additionally, `BarY` supports all common styling properties like `fill`, `stroke
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/8b9fb6c1946d4579a3dc9da32f6c983c?version=5.30.2)
+[fork](https://svelte.dev/playground/8b9fb6c1946d4579a3dc9da32f6c983c?version=5)
 
 For stacked bar charts, provide a `fill` channel that will be used for grouping the series:
 
@@ -206,7 +206,7 @@ You can create bullet bars using the `inset` option and two `BarX` layers:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/d8170543f02c482ba64e82787d716e40?version=5.28.2)
+[fork](https://svelte.dev/playground/d8170543f02c482ba64e82787d716e40?version=5)
 
 Note that **inset** by default only applies along the band scale axis, but won't affect the "length" the bars. You can use insetLeft, insetRight, insetTop, and insetBottom directly, e.g. to add space in a stacked bar chart:
 
@@ -247,7 +247,7 @@ Note that **inset** by default only applies along the band scale axis, but won't
     insetRight={1} />
 ```
 
-[fork](https://svelte.dev/playground/6f5f4ae882e24f5b81c60842c6250f31?version=5.28.2)
+[fork](https://svelte.dev/playground/6f5f4ae882e24f5b81c60842c6250f31?version=5)
 
 :::caution
 Please be aware that by setting insets, you are slightly distorting the area of the bars.

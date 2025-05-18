@@ -151,7 +151,7 @@ You can also group by temporal intervals
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/8d65004eee1e4375b8b45b92e69f26cd?version=5.28.2)
+[fork](https://svelte.dev/playground/8d65004eee1e4375b8b45b92e69f26cd?version=5)
 
 ## Group options
 

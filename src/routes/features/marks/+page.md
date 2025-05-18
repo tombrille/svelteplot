@@ -103,7 +103,7 @@ Styles can also be defined as function, even for non-scaled attributes like
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/0d11ad8b8fbd49a1a2a3a7d8f85a47dc?version=5.28.2)
+[fork](https://svelte.dev/playground/0d11ad8b8fbd49a1a2a3a7d8f85a47dc?version=5)
 
 By default mark styles are applied as inline styles to the respective DOM elements. This can make it harder to apply styles from "outside" using global CSS selectors, since you need `!important` to [override inline styles](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity#inline_styles). SveltePlot offers a convenient way around this problem: if you pass an instance to the `css` function from `@emotion/css`, the styles will be applied via class instead of inline styles.
 
@@ -155,7 +155,7 @@ Compare the DOM of the example below:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/d72f3c91050c4397a179d884a564cfa5?version=5.28.2)
+[fork](https://svelte.dev/playground/d72f3c91050c4397a179d884a564cfa5?version=5)
 
 ## Event Handling
 

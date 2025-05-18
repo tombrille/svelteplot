@@ -27,7 +27,7 @@ The **line mark** draws two-dimensional lines as in a line chart. Because the li
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5)
 
 If the **x** and **y** options are not defined, the line mark assumes that the data is an iterable of points \[\[_x₁_, _y₁_\], \[_x₂_, _y₂_\], …\].
 
@@ -51,7 +51,7 @@ If the **x** and **y** options are not defined, the line mark assumes that the d
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.1)
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5)
 
 As with [areas](/marks/area), points in lines are connected in input order: the first point is connected to the second point, the second is connected to the third, and so on. Line data is typically in chronological order. Unsorted data may produce gibberish.
 
@@ -77,7 +77,7 @@ As with [areas](/marks/area), points in lines are connected in input order: the 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/e21a4fa678c6427c84221e29cb68bf50?version=5.28.1)
+[fork](https://svelte.dev/playground/e21a4fa678c6427c84221e29cb68bf50?version=5)
 
 If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 
@@ -108,7 +108,7 @@ If your data isn’t sorted, use the [sort](/transforms/sort) transform.
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/0de37ed2d05341f8b7faa85bb7858b41?version=5.28.1)
+[fork](https://svelte.dev/playground/0de37ed2d05341f8b7faa85bb7858b41?version=5)
 
 Lines are automatically grouped by `stroke`, `fill`, or the `z` channel. Only points within a group are connected with a line.
 
@@ -138,7 +138,7 @@ Lines are automatically grouped by `stroke`, `fill`, or the `z` channel. Only po
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5.28.2)
+[fork](https://svelte.dev/playground/316a66aa0af548bdb64a9a472834daee?version=5)
 
 While the _x_ scale of a line chart often represents time, this is not required. For example, we can plot the elevation profile of a Tour de France stage.
 
@@ -174,7 +174,7 @@ While the _x_ scale of a line chart often represents time, this is not required.
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/83193494dc8142b69f9ca15988e4a47f?version=5.28.1)
+[fork](https://svelte.dev/playground/83193494dc8142b69f9ca15988e4a47f?version=5)
 
 There is no requirement that **y** be dependent on **x**; lines can be used in connected scatterplots to show two independent (but often correlated) variables. (See also [phase plots](https://en.wikipedia.org/wiki/Phase_portrait).) The chart below recreates Hannah Fairfield’s [“Driving Shifts Into Reverse”](http://www.nytimes.com/imagepages/2010/05/02/business/02metrics.html) from 2009.
 
@@ -344,7 +344,7 @@ The [LineY constructor](/marks/line#LineY) provides default channel definitions 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/ede4503f8072438e934b7c09b1bea441?version=5.28.1)
+[fork](https://svelte.dev/playground/ede4503f8072438e934b7c09b1bea441?version=5)
 
 ## LineX
 
@@ -416,7 +416,7 @@ While uncommon, you can draw a line with ordinal position values. For example be
 </Plot>
 ```
 
-The following plot demonstrates combining grouping of lines with coloring by value. You can out this [Playground Demo](https://svelte.dev/playground/8adc0301f1b24de6a69a11594ea2bc06?version=5.28.1) to see and _edit_ the source code.
+The following plot demonstrates combining grouping of lines with coloring by value. You can out this [Playground Demo](https://svelte.dev/playground/8adc0301f1b24de6a69a11594ea2bc06?version=5) to see and _edit_ the source code.
 
 <CO2Decades />
 
@@ -464,7 +464,7 @@ With a [spherical projection](/features/projections), line segments become [geod
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/8f433172583d4b7eb4ae1d72572d2e31?version=5.28.1)
+[fork](https://svelte.dev/playground/8f433172583d4b7eb4ae1d72572d2e31?version=5)
 
 ### Sparklines
 
@@ -617,7 +617,7 @@ Lines can show a text label along the path:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/6056bec8e77b447684364389b01b16ee?version=5.30.2)
+[fork](https://svelte.dev/playground/6056bec8e77b447684364389b01b16ee?version=5)
 
 ### Stacking
 
@@ -666,7 +666,7 @@ Line charts do not support implicit stacking, but you can use the [stack](/trans
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/6c6d74532b8440358735672de5a66768?version=5.30.2)
+[fork](https://svelte.dev/playground/6c6d74532b8440358735672de5a66768?version=5)
 
 Note that the stackY transform is setting the y1 and y2 channel, but the Line mark expects a y channel. That's why we have to rename the channel using the [renameChannel](/transforms/rename) transform.
 

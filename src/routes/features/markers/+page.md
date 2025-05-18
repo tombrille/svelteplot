@@ -2,7 +2,7 @@
 title: Markers
 ---
 
-Markers can be used with the [line](/marks/line) and [link](/marks/link) marks.  Markers are automatically scaled with the line width:
+Markers can be used with the [line](/marks/line) and [link](/marks/link) marks. Markers are automatically scaled with the line width:
 
 ```svelte live
 <script>
@@ -28,11 +28,13 @@ Markers can be used with the [line](/marks/line) and [link](/marks/link) marks. 
     let { crimea } = $derived(page.data.data);
 </script>
 
-<Select
-    label="Marker:"
-    bind:value={marker}
-    {options} />
-<Slider label="Stroke width" bind:value={strokeWidth} min={1} max={5} step={0.1} />
+<Select label="Marker:" bind:value={marker} {options} />
+<Slider
+    label="Stroke width"
+    bind:value={strokeWidth}
+    min={1}
+    max={5}
+    step={0.1} />
 <br />
 <Plot inset={10} grid>
     <Line
@@ -122,7 +124,8 @@ Note that for the interpolation methods `basis`, `bundle`, and `step`, the marke
     <DotY data={numbers} symbol="plus" />
 </Plot>
 ```
-[fork](https://svelte.dev/playground/0be2cc3070c844e692a3300d87212f58?version=5.28.2)
+
+[fork](https://svelte.dev/playground/0be2cc3070c844e692a3300d87212f58?version=5)
 
 ## Custom markers
 
@@ -173,7 +176,8 @@ You can also specify a custom marker icon using the `marker` snippet:
     </Line>
 </Plot>
 ```
-[fork](https://svelte.dev/playground/2e63a26ff02646db90f2e33849668033?version=5.28.2)
+
+[fork](https://svelte.dev/playground/2e63a26ff02646db90f2e33849668033?version=5)
 
 And since the marker snippets contain regular Svelte code, you can do whatever you want with the markers, like animate them, for instance:
 
@@ -237,4 +241,5 @@ And since the marker snippets contain regular Svelte code, you can do whatever y
 {/snippet}
 <!-- </Line></Plot> -->
 ```
-[fork](https://svelte.dev/playground/f02d094c5761416ca1c2f14e1f6d168d?version=5.28.2)
+
+[fork](https://svelte.dev/playground/f02d094c5761416ca1c2f14e1f6d168d?version=5)

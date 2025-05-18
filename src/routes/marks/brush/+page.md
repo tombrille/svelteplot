@@ -53,7 +53,7 @@ The **Brush** mark is useful for interactively selecting data. In contrast to th
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/0f9c8158c19247f9badc0904fc938d2c?version=5.28.2)
+[fork](https://svelte.dev/playground/0f9c8158c19247f9badc0904fc938d2c?version=5)
 
 By default, the Brush mark will use a `<Rect>` mark to render the selection with a dashed outline. You can prevent this by passing `stroke={false}` to the Brush mark. This is useful if you want to highlight the brushed elements in a different way.
 
@@ -126,7 +126,7 @@ By default, the Brush mark will use a `<Rect>` mark to render the selection with
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/10a9c08e634848aea1f072d9f7cef11e?version=5.28.3)
+[fork](https://svelte.dev/playground/10a9c08e634848aea1f072d9f7cef11e?version=5)
 
 You can limit the brushing dimension using the BrushX and BrushY marks. Here we create an overview + detail time series. Also note how the moving and resizing of the selection is constrained to the plot domains:
 
@@ -212,7 +212,7 @@ You can limit the brushing dimension using the BrushX and BrushY marks. Here we 
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/5de8299760c6426f9bdf28f6723a20c5?version=5.28.3)
+[fork](https://svelte.dev/playground/5de8299760c6426f9bdf28f6723a20c5?version=5)
 
 Another use case for the Brush mark would be to create a zoomable plot by changing the (tweened) plot domains in the `brushend` event handler:
 
@@ -313,7 +313,7 @@ Another use case for the Brush mark would be to create a zoomable plot by changi
     }} />
 ```
 
-[fork](https://svelte.dev/playground/4a5d9c70f5da4fc5ada8c11cc8b17aa7?version=5.28.3)
+[fork](https://svelte.dev/playground/4a5d9c70f5da4fc5ada8c11cc8b17aa7?version=5)
 
 Note that you cannot use a Brush along a band/point scale:
 
@@ -368,7 +368,7 @@ But you can still brush along a sequential dimension:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/4ec281c3b3544ec2821838b21e1a492c?version=5.28.3)
+[fork](https://svelte.dev/playground/4ec281c3b3544ec2821838b21e1a492c?version=5)
 
 ## Brush
 

@@ -44,7 +44,7 @@ For example, here is a histogram showing the distribution of weights of Olympic 
 </Plot>
 ```
 
-[Fork](https://svelte.dev/playground/41c71f19e4d24caaae1854f8a7693c1c?version=5.15.0)
+[Fork](https://svelte.dev/playground/41c71f19e4d24caaae1854f8a7693c1c?version=5)
 
 The [binX](#binX) transform takes **x** as input and outputs **x1** and **x2** representing the extent of each bin in _x_. The _outputs_ argument (here `y: "count"`) declares additional output channels (**y**) and the associated reducer (_count_). Hence the height of each rect above represents the number of athletes in the corresponding bin, _i.e._, the number of athletes with a similar weight.
 
@@ -455,7 +455,13 @@ Here's an example where we use the bin transform to compute weekly aggregates fr
 
 ```svelte live
 <script>
-    import { Plot, Line, RectY, RuleX, binX } from 'svelteplot';
+    import {
+        Plot,
+        Line,
+        RectY,
+        RuleX,
+        binX
+    } from 'svelteplot';
     import { Select } from '$lib/ui';
 
     import { page } from '$app/state';

@@ -123,13 +123,18 @@ Here's an example where all arrows point towards the mouse cursor:
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/9d686b316798439fbb52b19edaa51f5f?version=5.28.2)
+[fork](https://svelte.dev/playground/9d686b316798439fbb52b19edaa51f5f?version=5)
 
 Vector mark can deal with projection system, allowing you to create shift maps:
 
 ```svelte live
 <script>
-    import { Plot, Geo, Vector, geoCentroid } from 'svelteplot';
+    import {
+        Plot,
+        Geo,
+        Vector,
+        geoCentroid
+    } from 'svelteplot';
     import * as topojson from 'topojson-client';
     import { page } from '$app/state';
     let { us, election } = $derived(page.data.data);
@@ -234,7 +239,7 @@ You can use the Vector mark with **custom shapes** by passing an object with a `
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/0710be65038b49e2917f45bf42ee9060?version=5.28.2)
+[fork](https://svelte.dev/playground/0710be65038b49e2917f45bf42ee9060?version=5)
 
 ```svelte live
 <script>
@@ -318,7 +323,12 @@ The **Spike** mark is a [convenience wrapper](https://github.com/svelteplot/svel
 
 ```svelte live
 <script>
-    import { Plot, Geo, Spike, geoCentroid } from 'svelteplot';
+    import {
+        Plot,
+        Geo,
+        Spike,
+        geoCentroid
+    } from 'svelteplot';
     import * as topojson from 'topojson-client';
     import { page } from '$app/state';
     const { us, election } = $derived(page.data.data);

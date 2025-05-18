@@ -97,7 +97,7 @@ The **geo mark** draws geographic features — polygons, lines, points, and oth
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/234af6d4d7154b02b43a2be9f9328505?version=5.30.2)
+[fork](https://svelte.dev/playground/234af6d4d7154b02b43a2be9f9328505?version=5)
 
 Earthquakes SVG
 
@@ -265,7 +265,7 @@ The [graticule](https://d3js.org/d3-geo/shape#geoGraticule) helper draws a unifo
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/c574050e755544d795235a296c4518ad?version=5.30.2)
+[fork](https://svelte.dev/playground/c574050e755544d795235a296c4518ad?version=5)
 
 You can customize the step size using the following options
 
