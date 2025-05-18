@@ -147,15 +147,30 @@ Additionally, `BarY` supports all common styling properties like `fill`, `stroke
 
 ### Example
 
-```svelte
-<Plot x={{ type: 'band' }} y={{ grid: true }}>
+```svelte live
+<script>
+    import { Plot, BarY, RuleY } from 'svelteplot';
+    import { range } from 'es-toolkit';
+</script>
+
+<Plot>
     <BarY
-        data={myData}
-        x="category"
-        y="value"
+        data={range(2, 10).map((v) => v ** 2)}
         fill="steelblue" />
+    <RuleY y={0} />
 </Plot>
 ```
+
+```svelte
+<Plot>
+    <BarY
+        data={range(2, 10).map((v) => v ** 2)}
+        fill="steelblue" />
+    <RuleY y={0} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/8b9fb6c1946d4579a3dc9da32f6c983c?version=5.30.2)
 
 For stacked bar charts, provide a `fill` channel that will be used for grouping the series:
 

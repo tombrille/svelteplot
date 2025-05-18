@@ -700,14 +700,22 @@ export type BaseMarkProps = Partial<{
     cursor: ConstantAccessor<CSS.Property.Cursor>;
 }>;
 
+export type BorderRadius =
+    | number
+    | {
+        topLeft?: number;
+        topRight?: number;
+        bottomRight?: number;
+        bottomLeft?: number;
+    };
+
 export type BaseRectMarkProps = {
-    rx?: ConstantAccessor<number>;
-    ry?: ConstantAccessor<number>;
     inset?: ConstantAccessor<number>;
     insetLeft?: ConstantAccessor<number>;
     insetTop?: ConstantAccessor<number>;
     insetRight?: ConstantAccessor<number>;
     insetBottom?: ConstantAccessor<number>;
+    borderRadius?: BorderRadius;
 };
 
 export type Channels = Record<
