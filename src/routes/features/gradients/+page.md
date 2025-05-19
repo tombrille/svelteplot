@@ -101,27 +101,23 @@ For vertical gradients (from top to bottom)
         LinearGradientY
     } from 'svelteplot';
     import { page } from '$app/state';
-    let { aapl } = $derived(page.data.data);
+    let { sftemp } = $derived(page.data.data);
 </script>
 
-<Plot y={{ grid: true }}>
+<Plot marginRight={10} height={250} y={{ grid: true }}>
     <defs>
         <LinearGradientY
             id="gradient-y"
             stops={[
-                { y: 180, color: 'cyan' },
-                { y: 140, color: 'magenta' },
-                { y: 100, color: 'magenta' },
-                { y: 80, color: 'gold' },
-                { y: 60, color: 'gold' }
+                { y: 70, color: 'var(--svp-red)' },
+                { y: 50, color: 'var(--svp-blue)' }
             ]} />
     </defs>
     <Line
-        data={aapl}
-        x="Date"
-        y="Close"
+        data={sftemp}
+        x="date"
+        y="high"
         stroke="url(#gradient-y)" />
-    <Frame fill="url(#gradient-y)" opacity={0.1} />
 </Plot>
 ```
 
@@ -129,20 +125,16 @@ For vertical gradients (from top to bottom)
 <Plot>
     <defs>
         <LinearGradientY
-            id="gradient-y"
+            id="temp-gradient"
             stops={[
-                { y: 180, color: 'cyan' },
-                { y: 140, color: 'magenta' },
-                { y: 100, color: 'magenta' },
-                { y: 80, color: 'gold' },
-                { y: 60, color: 'gold' }
+                { y: 70, color: 'red' },
+                { y: 50, color: 'blue' }
             ]} />
     </defs>
     <Line
-        data={aapl}
-        x="Date"
-        y="Close"
-        stroke="url(#gradient-y)" />
-    <Frame fill="url(#gradient-y)" opacity={0.1} />
+        data={sftemp}
+        x="date"
+        y="high"
+        stroke="url(#temp-gradient)" />
 </Plot>
 ```
