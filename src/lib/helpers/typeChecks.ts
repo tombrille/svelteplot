@@ -14,7 +14,7 @@ export function isBooleanOrNull(v: RawValue) {
     return v == null || typeof v === 'boolean';
 }
 
-export function isDate(v: RawValue) {
+export function isDate(v: RawValue): v is Date {
     return v instanceof Date && !isNaN(v.getTime());
 }
 
