@@ -117,6 +117,7 @@ For vertical gradients (from top to bottom)
         data={sftemp}
         x="date"
         y="high"
+        canvas
         stroke="url(#gradient-y)" />
 </Plot>
 ```
@@ -135,6 +136,7 @@ For vertical gradients (from top to bottom)
         data={sftemp}
         x="date"
         y="high"
+        canvas
         stroke="url(#temp-gradient)" />
 </Plot>
 ```

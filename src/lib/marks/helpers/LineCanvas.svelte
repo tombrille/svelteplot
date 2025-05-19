@@ -6,7 +6,6 @@
         ScaledDataRecord,
         UsedScales
     } from '$lib/types.js';
-    import { CSS_VAR, CSS_URL } from '$lib/constants.js';
     import { resolveProp, resolveScaledStyleProps } from '$lib/helpers/resolve.js';
     import { getContext } from 'svelte';
     import { type Line } from 'd3-shape';

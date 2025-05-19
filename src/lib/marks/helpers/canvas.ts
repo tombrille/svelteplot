@@ -18,7 +18,7 @@ export function resolveColor(color: string, canvas: HTMLCanvasElement) {
             | SVGRadialGradientElement;
         if (gradient) {
             // parse gradient
-            if (gradient.nodeName === 'linearGradient') {
+            if (gradient.nodeName.toLowerCase() === 'lineargradient') {
                 const x0 = +gradient.getAttribute('x1');
                 const x1 = +gradient.getAttribute('x2');
                 const y0 = +gradient.getAttribute('y1');
@@ -28,7 +28,7 @@ export function resolveColor(color: string, canvas: HTMLCanvasElement) {
                     .createLinearGradient(x0, y0, x1, y1);
                 for (const stop of gradient.querySelectorAll('stop')) {
                     const offset = +stop.getAttribute('offset');
-                    const color = stop.getAttribute('stop-color');
+                    const color = resolveColor(stop.getAttribute('stop-color'), canvas);
                     ctxGradient.addColorStop(offset, color);
                 }
                 return ctxGradient;
