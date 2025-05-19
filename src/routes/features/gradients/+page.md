@@ -11,7 +11,7 @@ For horizontal gradients (= from left to right)
 **Options:**
 
 - **id** - the gradient id to be used in `url(#...)` fills and strokes
-- **stops** - a list of `({ y, color })` pairs, y in data coordinates
+- **stops** - a list of `({ x, color })` pairs, with x coordinates defined in data space
 
 ```svelte live
 <script lang="ts">
@@ -89,7 +89,7 @@ For vertical gradients (from top to bottom)
 **Options:**
 
 - **id** - the gradient id to be used in `url(#...)` fills and strokes
-- **stops** - a list of `({ y, color })` pairs, y in data coordinates
+- **stops** - a list of `({ y, color })` pairs, y coordinates defined in data space
 
 ```svelte live
 <script lang="ts">
