@@ -9,6 +9,7 @@
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
         stack?: Partial<StackOptions>;
+        canvas?: boolean;
     };
 </script>
 
@@ -22,6 +23,7 @@
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { isValid } from '$lib/helpers/index.js';
+    import AreaCanvas from './helpers/AreaCanvas.svelte';
 
     import type {
         CurveName,
@@ -52,7 +54,8 @@
         /** the curve */
         curve = 'linear',
         tension = 0,
-        class: className = null,
+        class: className = '',
+        canvas = false,
         ...options
     }: AreaProps = $props();
 
@@ -61,7 +64,7 @@
 
     const groupByKey = $derived(options.z || options.fill || options.stroke);
 
-    const areaPath: (d: ScaledDataRecord[]) => string = $derived(
+    const areaPath = $derived(
         callWithProps(area, [], {
             curve: maybeCurve(curve, tension),
             defined: (d: ScaledDataRecord) =>
@@ -113,34 +116,38 @@
     {...options}>
     {#snippet children({ mark, usedScales, scaledData })}
         {@const grouped = groupAndSort(scaledData)}
-        <GroupMultiple length={grouped.length}>
-            {#each grouped as areaData}
-                {#snippet el(datum: ScaledDataRecord)}
-                    {@const [style, styleClass] = resolveStyles(
-                        plot,
-                        datum,
-                        options,
-                        'fill',
-                        usedScales
-                    )}
-                    <path
-                        class={['svelteplot-area', className, styleClass]}
-                        clip-path={options.clipPath}
-                        d={areaPath(areaData)}
-                        {style} />
-                {/snippet}
-                {#if areaData.length > 0}
-                    {#if options.href}
-                        <a
-                            href={resolveProp(options.href, areaData[0].datum, '')}
-                            target={resolveProp(options.target, areaData[0].datum, '_self')}>
+        {#if canvas}
+            <AreaCanvas groupedAreaData={grouped} {mark} {usedScales} {areaPath} />
+        {:else}
+            <GroupMultiple length={grouped.length}>
+                {#each grouped as areaData}
+                    {#snippet el(datum: ScaledDataRecord)}
+                        {@const [style, styleClass] = resolveStyles(
+                            plot,
+                            datum,
+                            options,
+                            'fill',
+                            usedScales
+                        )}
+                        <path
+                            class={['svelteplot-area', className, styleClass]}
+                            clip-path={options.clipPath}
+                            d={areaPath(areaData)}
+                            {style} />
+                    {/snippet}
+                    {#if areaData.length > 0}
+                        {#if options.href}
+                            <a
+                                href={resolveProp(options.href, areaData[0].datum, '')}
+                                target={resolveProp(options.target, areaData[0].datum, '_self')}>
+                                {@render el(areaData[0])}
+                            </a>
+                        {:else}
                             {@render el(areaData[0])}
-                        </a>
-                    {:else}
-                        {@render el(areaData[0])}
+                        {/if}
                     {/if}
-                {/if}
-            {/each}
-        </GroupMultiple>
+                {/each}
+            </GroupMultiple>
+        {/if}
     {/snippet}
 </Mark>

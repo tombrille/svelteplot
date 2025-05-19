@@ -3,7 +3,11 @@ title: Area mark
 ---
 
 <script lang="ts">
-    import Streamgraph from './Streamgraph.svelte';
+    import { setContext } from 'svelte';
+    import { writable } from 'svelte/store';
+
+    const canvas = writable(false);
+    setContext('useCanvas', canvas);
 </script>
 
 The **area mark** draws the region between a baseline (x1, y1) and a topline (x2, y2) as in an area chart. Often the baseline represents y = 0, and because the area mark interpolates between adjacent data points, typically both the x and y scales are quantitative or temporal.
@@ -13,10 +17,17 @@ The **area mark** draws the region between a baseline (x1, y1) and a topline (x2
     import { Plot, AreaY } from '$lib/index';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid>
-    <AreaY data={aapl} x="Date" y="Close" />
+    <AreaY
+        data={aapl}
+        canvas={$useCanvas}
+        x="Date"
+        y="Close" />
 </Plot>
 ```
 
@@ -35,10 +46,14 @@ If you supply `undefined` values, the area mark will create gaps in the visualiz
     import { Plot, AreaY } from '$lib/index';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid height={250}>
     <AreaY
+        canvas={$useCanvas}
         data={[
             1.5,
             2,
@@ -70,11 +85,14 @@ In order to interpolate across undefined values you need to filter them, e.g. us
     import { Plot, AreaY } from '$lib/index';
     import { page } from '$app/state';
     const { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid height={255}>
     <AreaY
         filter={(d) => d !== undefined}
+        canvas={$useCanvas}
         data={[
             1.5,
             2,
@@ -99,6 +117,18 @@ In order to interpolate across undefined values you need to filter them, e.g. us
 </Plot>
 ```
 
+The Area mark supports **canvas rendering** by passing setting the `canvas` property to `true`. You can use the checkbox below to switch all examples on this page to canvas rendering:
+
+```svelte live
+<script>
+    import { Checkbox } from '$lib/ui';
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
+</script>
+
+<Checkbox bind:value={$useCanvas} label="use canvas" />
+```
+
 ## AreaY
 
 If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels instead of
@@ -109,10 +139,17 @@ If you need a different baseline you can pass <b>y1</b> and <b>y2</b> channels i
     import { Plot, AreaY } from '$lib/index';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid>
-    <AreaY data={aapl} x="Date" y1={120} y2="Close" />
+    <AreaY
+        data={aapl}
+        canvas={$useCanvas}
+        x="Date"
+        y1={120}
+        y2="Close" />
 </Plot>
 ```
 
@@ -135,6 +172,8 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
 <script>
     import { Plot, AreaY, RuleY } from 'svelteplot';
     import { range } from 'd3-array';
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot
@@ -144,7 +183,8 @@ You can also just pass an array of numbers to <b>AreaY</b> for a quick plot:
     y={{ ticks: [-1, 0, 1] }}>
     <AreaY
         data={range(100).map((v) => Math.cos(v / 5))}
-        opacity={0.5} />
+        opacity={0.5}
+        canvas={$useCanvas} />
     <RuleY data={[0]} />
 </Plot>
 ```
@@ -164,12 +204,15 @@ To create a stacked area chart you can use the implicit [stackY](/transforms/sta
 <script>
     import { Plot, AreaY } from 'svelteplot';
     import { page } from '$app/state';
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
     let { riaa } = $derived(page.data.data);
 </script>
 
 <Plot>
     <AreaY
         data={riaa}
+        canvas={$useCanvas}
         x="year"
         y="revenue"
         z="format"
@@ -202,6 +245,8 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
     import { page } from '$app/state';
     import { Select } from '$lib/ui';
     let { riaa } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 
     const CURVES =
         'basis,basis-open,bump-x,bump-y,bundle,cardinal,cardinal-open,catmull-rom,catmull-rom-open,catmull,linear,monotone-x,monotone-y,natural,step,step-after,step-before'.split(
@@ -226,6 +271,7 @@ You can control the stacking for the implicit [stackY](/transforms/stack) transf
         z="format"
         fill="group"
         {curve}
+        canvas={$useCanvas}
         stack={{ order, reverse }} />
 </Plot>
 ```
@@ -239,6 +285,8 @@ You can use the **offset** option to create a streamgraph:
     import { Plot, AreaY } from '$lib/index.js';
     import { Select } from '$lib/ui';
     import { page } from '$app/stores';
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
     const { riaa } = $derived($page.data.data);
     let offset = $state('wiggle');
 </script>
@@ -262,6 +310,7 @@ You can use the **offset** option to create a streamgraph:
         z="format"
         curve="basis"
         fill="group"
+        canvas={$useCanvas}
         stack={{ offset }} />
 </Plot>
 ```
@@ -289,10 +338,16 @@ For "vertical" area charts you can use the <b>AreaX</b> mark as shorthand
     import { Plot, AreaX } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid testid="area-x" height={600} maxWidth="300px">
-    <AreaX data={aapl} y="Date" x="Close" />
+    <AreaX
+        data={aapl}
+        canvas={$useCanvas}
+        y="Date"
+        x="Close" />
 </Plot>
 ```
 
@@ -320,6 +375,8 @@ Required channels for horizontal area charts:
     } from '$lib/index.js';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 </script>
 
 <Plot grid testid="area-line-rule">
@@ -328,6 +385,7 @@ Required channels for horizontal area charts:
         x1="Date"
         y1={0}
         y2="Close"
+        canvas={$useCanvas}
         opacity={0.25} />
     <Line data={aapl} x="Date" y="Close" />
     <RuleY data={[0]} />
@@ -347,25 +405,25 @@ Required channels for horizontal area charts:
 </Plot>
 ```
 
-Typically, you won't want to use the <b>Area</b> mark directly, but want to use <b>AreaY</b>
-for "horizontal" area charts, where the time axis goes from left to right, or <b>AreaX</b> for "vertical" area charts.
+Typically, you won't want to use the <b>Area</b> mark directly, but want to use [AreaY](#AreaY)
+for "horizontal" area charts, where the time axis goes from left to right, or [AreaX](#AreaX) for (less common) "vertical" area charts.
 
 The Area mark is useful when you need precise control over both baseline and topline positions along both axes. It accepts the following required channels:
 
-- `x1`: The x-coordinate for the baseline
-- `y1`: The y-coordinate for the baseline
-- `x2`: The x-coordinate for the topline (for vertical areas)
-- `y2`: The y-coordinate for the topline (for horizontal areas)
+- **x1**: The x-coordinate for the baseline
+- **y1**: The y-coordinate for the baseline
+- **x2**: The x-coordinate for the topline (for vertical areas)
+- **y2**: The y-coordinate for the topline (for horizontal areas)
 
 Additional options include:
 
-- `z`: Group data into separate areas
-- `fill`: Fill color for the area
-- `stroke`: Stroke color for the area border
-- `opacity`: Overall opacity
-- `fillOpacity`: Opacity for just the fill
-- `strokeOpacity`: Opacity for just the stroke
-- `curve`: Curve type for interpolation between points
+- **z**: Group data into separate areas
+- **fill**: Fill color for the area
+- **stroke**: Stroke color for the area border
+- **opacity**: Overall opacity
+- **fillOpacity**: Opacity for just the fill
+- **strokeOpacity**: Opacity for just the stroke
+- **curve**: Curve type for interpolation between points
   (options: linear, basis, cardinal, step, etc.)
 
 ```svelte live
@@ -373,6 +431,8 @@ Additional options include:
     import { Plot, Area, Line } from '$lib/index.js';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
+    import { getContext } from 'svelte';
+    const useCanvas = getContext('useCanvas');
 
     // Create a subset of lower value points
     const baseline = aapl.map((d) => ({
@@ -384,6 +444,7 @@ Additional options include:
 <Plot grid>
     <Area
         data={aapl}
+        canvas={$useCanvas}
         x1="Date"
         y1={(d) =>
             baseline.find((b) => +b.date === +d.Date)
