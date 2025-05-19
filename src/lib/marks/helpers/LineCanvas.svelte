@@ -6,13 +6,13 @@
         ScaledDataRecord,
         UsedScales
     } from '$lib/types.js';
-    import { CSS_VAR } from '$lib/constants.js';
     import { resolveProp, resolveScaledStyleProps } from '$lib/helpers/resolve.js';
     import { getContext } from 'svelte';
     import { type Line } from 'd3-shape';
     import CanvasLayer from './CanvasLayer.svelte';
     import type { Attachment } from 'svelte/attachments';
     import { devicePixelRatio } from 'svelte/reactivity/window';
+    import { resolveColor } from './canvas';
 
     let {
         mark,
@@ -111,18 +111,6 @@
             };
         });
     }) as Attachment;
-
-    function resolveColor(color, canvas) {
-        if (`${color}`.toLowerCase() === 'currentcolor') {
-            color = getComputedStyle(
-                canvas?.parentElement?.parentElement as Element
-            ).getPropertyValue('color');
-        }
-        if (CSS_VAR.test(color)) {
-            color = getComputedStyle(canvas).getPropertyValue(color.slice(4, -1));
-        }
-        return color;
-    }
 </script>
 
 <CanvasLayer {@attach render} />

@@ -767,3 +767,55 @@ Like all marks, Line marks support [faceting](/features/faceting). In this examp
     fx="Symbol" />
 />
 ```
+
+### Gradient lines
+
+You can use the [LinearGradient](/features/gradients) helper components to color lines:
+
+```svelte live
+<script lang="ts">
+    import {
+        Plot,
+        Line,
+        Frame,
+        LinearGradientX,
+        LinearGradientY
+    } from 'svelteplot';
+    import { page } from '$app/state';
+    let { sftemp } = $derived(page.data.data);
+</script>
+
+<Plot height={250} y={{ grid: true }}>
+    <defs>
+        <LinearGradientY
+            id="gradient-y"
+            stops={[
+                { y: 70, color: 'var(--svp-red)' },
+                { y: 50, color: 'var(--svp-blue)' }
+            ]} />
+    </defs>
+    <Line
+        data={sftemp}
+        x="date"
+        y="high"
+        stroke="url(#gradient-y)" />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <defs>
+        <LinearGradientY
+            id="temp-gradient"
+            stops={[
+                { y: 70, color: 'red' },
+                { y: 50, color: 'blue' }
+            ]} />
+    </defs>
+    <Line
+        data={sftemp}
+        x="date"
+        y="high"
+        stroke="url(#temp-gradient)" />
+</Plot>
+```

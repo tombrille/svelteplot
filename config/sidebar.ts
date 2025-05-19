@@ -114,6 +114,10 @@ export default {
                 {
                     title: 'Defaults',
                     to: '/features/defaults/'
+                },
+                {
+                    title: 'Gradients',
+                    to: '/features/gradients/'
                 }
             ]
         }

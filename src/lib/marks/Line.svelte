@@ -100,8 +100,6 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
-    type LinePath = (dr: DataRecord[]) => string;
-
     const linePath: Line<ScaledDataRecord> = $derived(
         plot.scales.projection && curve === 'auto'
             ? sphereLine(plot.scales.projection)

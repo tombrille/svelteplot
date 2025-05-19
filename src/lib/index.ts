@@ -78,5 +78,7 @@ export { sort, shuffle, reverse } from './transforms/sort.js';
 export { stackX, stackY } from './transforms/stack.js';
 export { windowX, windowY } from './transforms/window.js';
 
-// format helpers
+// helpers
 export { formatMonth } from './helpers/formats.js';
+export { default as LinearGradientX } from './marks/helpers/LinearGradientX.svelte';
+export { default as LinearGradientY } from './marks/helpers/LinearGradientY.svelte';
