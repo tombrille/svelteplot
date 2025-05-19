@@ -5,6 +5,11 @@ title: Line mark
 <script>
     import CurveDemo from './CurveDemo.svelte';
     import CO2Decades from './CO2Decades.svelte';
+
+    import { setContext } from 'svelte';
+    import { writable } from 'svelte/store';
+    const canvas = writable(false);
+    setContext('useCanvas', canvas);
 </script>
 
 The **line mark** draws two-dimensional lines as in a line chart. Because the line mark interpolates between adjacent data points, typically both the x and y scales are quantitative or temporal. For example, below is a line chart of the closing price of Apple stock.
