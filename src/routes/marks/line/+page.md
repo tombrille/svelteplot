@@ -819,3 +819,5 @@ You can use the [LinearGradient](/features/gradients) helper components to color
         stroke="url(#temp-gradient)" />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/20b8564678c842f5bd23133780bc255d?version=5)

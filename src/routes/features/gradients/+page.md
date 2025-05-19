@@ -82,6 +82,8 @@ For horizontal gradients (= from left to right)
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/ef606d66499d444bbf10bde9663909e6?version=5)
+
 ## LinearGradientY
 
 For vertical gradients (from top to bottom)
@@ -140,3 +142,5 @@ For vertical gradients (from top to bottom)
         stroke="url(#temp-gradient)" />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/20b8564678c842f5bd23133780bc255d?version=5)
