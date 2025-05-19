@@ -767,3 +767,83 @@ Like all marks, Line marks support [faceting](/features/faceting). In this examp
     fx="Symbol" />
 />
 ```
+
+### Gradient line
+
+If you want lines with gradients
+
+```svelte live
+<script lang="ts">
+    import {
+        Plot,
+        Line,
+        RuleY,
+        LinearGradientX,
+        LinearGradientY
+    } from 'svelteplot';
+    import { page } from '$app/state';
+    let { aapl } = $derived(page.data.data);
+</script>
+
+<Plot marginTop={60} grid y={{ grid: true }}>
+    {#snippet children({ width, options, height, scales })}
+        <defs>
+            <LinearGradientY
+                id="rdbu-gradient"
+                stops={[
+                    { y: 300, color: 'yellow' },
+                    { y: 250, color: 'yellow' },
+                    { y: 200, color: 'green' },
+                    { y: 100.1, color: 'green' },
+                    { y: 100, color: 'red' }
+                ]} />
+            <LinearGradientX
+                id="gradient2"
+                stops={[
+                    {
+                        x: new Date(2014, 0, 1),
+                        color: 'cyan'
+                    },
+                    {
+                        x: new Date(2017, 0, 1),
+                        color: 'cyan'
+                    },
+                    {
+                        x: new Date(2017, 0, 2),
+                        color: 'magenta'
+                    },
+                    {
+                        x: new Date(2018, 0, 1),
+                        color: 'magenta'
+                    },
+                    {
+                        x: new Date(2018, 4, 1),
+                        color: 'white'
+                    }
+                ]} />
+        </defs>
+        <Line
+            data={aapl}
+            x="Date"
+            y="Close"
+            stroke="url(#rdbu-gradient)" />
+        <Line
+            data={aapl}
+            x="Date"
+            y={(d) => d.Close * 1.2}
+            canvas
+            stroke="url(#rdbu-gradient)" />
+        <Line
+            data={aapl}
+            x="Date"
+            y={(d) => d.Close * 2}
+            stroke="url(#gradient2)" />
+        <Line
+            data={aapl}
+            x="Date"
+            y={(d) => d.Close * 2.2}
+            canvas
+            stroke="url(#gradient2)" />
+    {/snippet}
+</Plot>
+```

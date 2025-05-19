@@ -14,6 +14,7 @@
     import CanvasLayer from './CanvasLayer.svelte';
     import { getContext } from 'svelte';
     import { devicePixelRatio } from 'svelte/reactivity/window';
+    import { resolveColor } from './canvas';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -46,19 +47,8 @@
                     if (datum.valid) {
                         let { fill, stroke } = datum;
 
-                        if (`${fill}`.toLowerCase() === 'currentcolor')
-                            fill = getComputedStyle(
-                                canvas?.parentElement?.parentElement
-                            ).getPropertyValue('color');
-                        if (`${stroke}`.toLowerCase() === 'currentcolor')
-                            stroke = getComputedStyle(
-                                canvas?.parentElement?.parentElement
-                            ).getPropertyValue('color');
-
-                        if (CSS_VAR.test(fill))
-                            fill = getComputedStyle(canvas).getPropertyValue(fill.slice(4, -1));
-                        if (CSS_VAR.test(stroke))
-                            stroke = getComputedStyle(canvas).getPropertyValue(stroke.slice(4, -1));
+                        fill = resolveColor(fill, canvas);
+                        stroke = resolveColor(stroke, canvas);
 
                         if (stroke && stroke !== 'none') {
                             const strokeWidth = resolveProp(
