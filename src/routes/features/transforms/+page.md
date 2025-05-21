@@ -82,3 +82,11 @@ More text here
         })} />
 </Plot>
 ```
+
+## Using transforms without Svelte
+
+In case you want to use SveltePlot transforms outside of a Svelte project you can import them via the `svelteplot/transform` entry point:
+
+```js
+import { binX } from 'svelteplot/transforms';
+```
