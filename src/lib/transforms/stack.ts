@@ -20,7 +20,6 @@ import {
     stackOffsetDiverging
 } from 'd3-shape';
 import { index, union, groups as d3Groups } from 'd3-array';
-import { RAW_VALUE } from './recordize';
 
 const GROUP = Symbol('group');
 const FACET = Symbol('group');
@@ -89,8 +88,8 @@ function stackXY(
             [FACET]:
                 groupFacetsBy.length > 0
                     ? groupFacetsBy
-                        .map((channel) => String(resolveChannel(channel, d, channels)))
-                        .join('---')
+                          .map((channel) => String(resolveChannel(channel, d, channels)))
+                          .join('---')
                     : 'F',
             [`__${byDim}`]: resolveChannel(byDim, d, channels)
         })) as DataRecord[];
@@ -121,8 +120,8 @@ function stackXY(
                 .offset(STACK_OFFSET[options.offset])
                 .keys(union(facetData.map((d) => d[GROUP]) as string[]))
                 .value(([, group], key) => (group.get(key) ? group.get(key)[`__${byDim}`] : 0))(
-                    indexed
-                );
+                indexed
+            );
 
             // and combine it all back into a flat array
             const newData = series

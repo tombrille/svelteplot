@@ -7,7 +7,7 @@ import type {
 } from '$lib/types.js';
 import type { Snippet } from 'svelte';
 import { resolveProp } from './resolve.js';
-import { isDate } from '$lib/helpers/typeChecks';
+import { isDate } from '$lib/helpers/typeChecks.js';
 import { RAW_VALUE } from '$lib/transforms/recordize.js';
 
 /**
@@ -59,8 +59,8 @@ export function maybeNumber(value: RawValue | null): number | null {
 
 export const constant =
     <T>(x: T) =>
-        () =>
-            x;
+    () =>
+        x;
 
 export const POSITION_CHANNELS: Set<ChannelName> = new Set(['x', 'x1', 'x2', 'y', 'y1', 'y2']);
 

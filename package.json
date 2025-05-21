@@ -36,6 +36,9 @@
         },
         "./marks/*.svelte": {
             "import": "./dist/marks/*.svelte"
+        },
+        "./transforms": {
+            "import": "./dist/transforms/index.js"
         }
     },
     "main": "./dist/index.js",

@@ -13,7 +13,7 @@ import {
 } from 'd3-array';
 import { Reducer, reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { groupFacetsAndZ } from '$lib/helpers/group.js';
-import { isDate } from '$lib/helpers/typeChecks';
+import { isDate } from '$lib/helpers/typeChecks.js';
 
 type NamedThresholdsGenerator = 'auto' | 'scott' | 'sturges' | 'freedman-diaconis';
 
