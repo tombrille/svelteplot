@@ -62,6 +62,7 @@
         initialWidth: 500,
         inset: 0,
         colorScheme: 'turbo',
+        unknown: '#cccccc',
         dotRadius: 3,
         frame: false,
         axes: true,
@@ -160,7 +161,7 @@
     );
 
     // if the plot is showing filled dot marks we're using different defaults
-    // for the symbol axis range, so we're passing on this info to the createScales
+    // for the symbol axis range, so we're passing on this info to the computeScales
     // function below
     const hasFilledDotMarks = $derived(
         !!explicitMarks.find((d) => d.type === 'dot' && d.options.fill)

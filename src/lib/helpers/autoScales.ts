@@ -47,6 +47,7 @@ import callWithProps from './callWithProps.js';
 import { interpolateLab, interpolateRound } from 'd3-interpolate';
 import { coalesce, maybeNumber } from './index.js';
 import { getLogTicks } from './getLogTicks.js';
+import { isPlainObject } from 'es-toolkit';
 
 const Scales: Record<
     ScaleType,
@@ -207,12 +208,28 @@ export function autoScaleColor({
         scheme,
         interpolate,
         pivot,
-        n = type === 'threshold' ? domain.length + 1 : 9
+        n = type === 'threshold' ? domain.length + 1 : 9,
+        unknown = plotDefaults.unknown
     } = scaleOptions;
 
     if (type === 'categorical' || type === 'ordinal') {
         // categorical
-        const scheme_ = scheme || plotDefaults.categoricalColorScheme;
+        let scheme_ = scheme || plotDefaults.categoricalColorScheme;
+
+        if (isPlainObject(scheme_)) {
+            const newScheme = Object.values(scheme_);
+            const newDomain = Object.keys(scheme_);
+            // for every value in domain that's not part of the scheme, map to unknown
+            for (const v of domain) {
+                if (scheme_[v] == null) {
+                    newDomain.push(v);
+                    newScheme.push(unknown)
+                }
+            }
+            domain = newDomain;
+            scheme_ = newScheme;
+        }
+
         // categorical scale
         range = Array.isArray(scheme_)
             ? scheme_

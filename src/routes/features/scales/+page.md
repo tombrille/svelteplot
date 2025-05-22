@@ -569,6 +569,54 @@ Note that the colors are picked in the order the categories appear in your datas
 </Plot>
 ```
 
+[fork](https://svelte.dev/playground/573be4d5791648fcb71d8ea9cdcc7112?version=5.33.1)
+
+As a simpler syntax you can also pass domain -> scheme mapping as object:
+
+```svelte live
+<script>
+    import { Plot, Dot } from 'svelteplot';
+    import { page } from '$app/state';
+    let { penguins } = $derived(page.data.data);
+</script>
+
+<Plot
+    grid
+    color={{
+        legend: true,
+        scheme: {
+            FEMALE: 'var(--svp-green)',
+            MALE: 'var(--svp-violet)'
+        }
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        fill="sex" />
+</Plot>
+```
+
+```svelte
+<Plot
+    grid
+    color={{
+        legend: true,
+        scheme: {
+            FEMALE: 'green',
+            MALE: 'violet'
+        }
+    }}>
+    <Dot
+        data={penguins}
+        x="culmen_length_mm"
+        y="culmen_depth_mm"
+        stroke="sex" />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/49fb6bcbeb9e4789ba1680c0ffc63678?version=5.33.1)
+
 ## Continuous color scales
 
 ### Linear
