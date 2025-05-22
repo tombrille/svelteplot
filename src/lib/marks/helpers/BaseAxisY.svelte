@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { getContext, untrack } from 'svelte';
+    import { getContext, tick, untrack } from 'svelte';
     import { randomId, testFilter } from '$lib/helpers/index.js';
-    import { resolveProp, resolveScaledStyles } from '$lib/helpers/resolve.js';
+    import { resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import type {
         AutoMarginStores,
@@ -84,6 +84,8 @@
 
     let tickTexts = $state([] as SVGTextElement[]);
 
+    const isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
+
     // generate id used for registering margins
     const id = randomId();
 
@@ -141,29 +143,43 @@
 </script>
 
 <g class="axis-y">
-    {#each positionedTicks as tick, t}
+    {#each positionedTicks as tick, t (t)}
         {#if testFilter(tick.value, options) && !tick.hidden}
             {@const tickClass_ = resolveProp(tickClass, tick.value)}
+            {@const [textStyle, textClass] = resolveStyles(
+                plot,
+                tick,
+                {
+                    fontVariant: isQuantitative ? 'tabular-nums' : 'normal',
+                    ...options,
+                    fontSize: tickFontSize,
+                    stroke: null
+                },
+                'fill',
+                { y: true }
+            )}
             <g
                 class="tick {tickClass_ || ''}"
                 transform="translate({tick.dx +
                     marginLeft +
                     (anchor === 'left' ? 0 : width)},{tick.y + tick.dy})">
                 {#if tickSize}
+                    {@const [tickLineStyle, tickLineClass] = resolveStyles(
+                        plot,
+                        tick,
+                        options,
+                        'stroke',
+                        { y: true }
+                    )}
                     <line
-                        style={resolveScaledStyles(tick.value, options, {}, plot, 'stroke')}
+                        style={tickLineStyle}
+                        class={tickLineClass}
                         x2={anchor === 'left' ? -tickSize : tickSize} />
                 {/if}
                 <text
                     bind:this={tickTexts[t]}
-                    class={{ 'is-left': anchor === 'left' }}
-                    style={resolveScaledStyles(
-                        tick.value,
-                        { ...options, fontSize: tickFontSize, stroke: null },
-                        {},
-                        plot,
-                        'fill'
-                    )}
+                    class={[textClass, { 'is-left': anchor === 'left' }]}
+                    style={textStyle}
                     x={(tickSize + tickPadding) * (anchor === 'left' ? -1 : 1)}
                     dominant-baseline={LINE_ANCHOR[lineAnchor]}
                     >{Array.isArray(tick.text) ? tick.text.join(' ') : tick.text}</text>

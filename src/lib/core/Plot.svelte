@@ -28,22 +28,6 @@
     import mergeDeep from '../helpers/mergeDeep.js';
     import { computeScales, projectXY } from '../helpers/scales.js';
     import { CHANNEL_SCALE, SCALES } from '../constants.js';
-    import { scale } from 'svelte/transition';
-
-    let {
-        header,
-        footer,
-        overlay,
-        underlay,
-        children,
-        facetAxes,
-        testid,
-        facet,
-        class: className = '',
-        css,
-        width: fixedWidth,
-        ...initialOpts
-    }: Partial<PlotOptions> = $props();
 
     // automatic margins can be applied by the marks, registered
     // with their respective unique identifier as keys
@@ -94,6 +78,21 @@
         markerDotRadius: 3,
         ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
+
+    let {
+        header,
+        footer,
+        overlay,
+        underlay,
+        children,
+        facetAxes,
+        testid,
+        facet,
+        class: className = '',
+        css = DEFAULTS.css,
+        width: fixedWidth,
+        ...initialOpts
+    }: Partial<PlotOptions> = $props();
 
     let width = $state(DEFAULTS.initialWidth);
 
@@ -454,7 +453,8 @@
             symbol: { type: 'ordinal' },
             fx: { type: 'band', axis: 'top' },
             fy: { type: 'band', axis: 'right' },
-            locale: DEFAULTS.locale
+            locale: DEFAULTS.locale,
+            css: DEFAULTS.css
         };
     }
 

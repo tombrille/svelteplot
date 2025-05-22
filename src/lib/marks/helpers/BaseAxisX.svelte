@@ -11,7 +11,7 @@
         RawValue,
         ScaleType
     } from '$lib/types.js';
-    import { resolveScaledStyles, resolveProp } from '$lib/helpers/resolve.js';
+    import { resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import { randomId, testFilter } from '$lib/helpers/index.js';
 
@@ -142,7 +142,7 @@
 </script>
 
 <g class="axis-x">
-    {#each positionedTicks as tick, t}
+    {#each positionedTicks as tick, t (t)}
         {#if testFilter(tick.value, options) && !tick.hidden}
             {@const textLines = tick.text}
             {@const prevTextLines = t && positionedTicks[t - 1].text}
@@ -152,27 +152,41 @@
             {@const moveDown =
                 (tickSize + tickPadding + (tickRotate !== 0 ? tickFontSize * 0.35 : 0)) *
                 (anchor === 'bottom' ? 1 : -1)}
+            {@const [textStyle, textClass] = resolveStyles(
+                plot,
+                tick,
+                {
+                    fontVariant: isQuantitative ? 'tabular-nums' : 'normal',
+                    ...options,
+                    fontSize: tickFontSize,
+                    stroke: null
+                },
+                'fill',
+                { x: true }
+            )}
             <g
                 class="tick {tickClass_ || ''}"
                 transform="translate({tick.x + tick.dx}, {tickY + tick.dy})"
                 text-anchor={tickRotate < 0 ? 'end' : tickRotate > 0 ? 'start' : 'middle'}>
                 {#if tickSize}
+                    {@const [tickLineStyle, tickLineClass] = resolveStyles(
+                        plot,
+                        tick,
+                        options,
+                        'stroke',
+                        { x: true }
+                    )}
                     <line
-                        style={resolveScaledStyles(tick, options, {}, plot, 'stroke')}
+                        style={tickLineStyle}
+                        class={tickLineClass}
                         y2={anchor === 'bottom' ? tickSize : -tickSize} />
                 {/if}
 
                 <text
                     bind:this={tickTextElements[t]}
                     transform="translate(0, {moveDown})  rotate({tickRotate})"
-                    style:font-variant={isQuantitative ? 'tabular-nums' : 'normal'}
-                    style={resolveScaledStyles(
-                        tick,
-                        { ...options, fontSize: tickFontSize, stroke: null },
-                        {},
-                        plot,
-                        'fill'
-                    )}
+                    style={textStyle}
+                    class={textClass}
                     x={0}
                     y={0}
                     dominant-baseline={tickRotate !== 0
