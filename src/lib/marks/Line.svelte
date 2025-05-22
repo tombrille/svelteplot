@@ -41,7 +41,7 @@
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { line, type CurveFactory, type Line } from 'd3-shape';
+    import { line, type CurveFactory, type Line as D3Line } from 'd3-shape';
     import { geoPath } from 'd3-geo';
     import callWithProps from '$lib/helpers/callWithProps.js';
     import { maybeCurve } from '$lib/helpers/curves.js';
@@ -100,7 +100,7 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
-    const linePath: Line<ScaledDataRecord> = $derived(
+    const linePath: D3Line<ScaledDataRecord> = $derived(
         plot.scales.projection && curve === 'auto'
             ? sphereLine(plot.scales.projection)
             : callWithProps(line, [], {
