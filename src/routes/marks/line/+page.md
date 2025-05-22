@@ -626,7 +626,7 @@ Lines can show a text label along the path:
 
 ### Stacking
 
-Line charts do not support implicit stacking, but you can use the [stack](/transforms/stack) transform explicitely. Here we're adding the baselines and toplines for each area in a stacked area chart:
+Line charts do not support implicit stacking, but you can use the [stack](/transforms/stack) transform explicitly. Here we're adding the baselines and toplines for each area in a stacked area chart:
 
 ```svelte live
 <script lang="ts">

@@ -129,7 +129,7 @@ The following channels are required:
 - **lineAnchor** - `top`, `bottom` or `middle`
 - **frameAnchor** - if no x or y is given, the text can be positioned relative to the plot frame - `bottom`, `top`, `left`, `right`, `top-left`, `bottom-left`, `top-right`, `bottom-right`
 - **class** - CSS class name to applied to the `<g>` around all texts
-- **textClass** - CSS class to be applied to each `<text>` element, can be a funciton of data
+- **textClass** - CSS class to be applied to each `<text>` element, can be a function of data
 
 ### Frame anchor
 

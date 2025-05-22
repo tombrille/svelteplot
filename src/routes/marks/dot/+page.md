@@ -73,7 +73,7 @@ When showing plots with a lot of dots, you can switch to canvas rendering to imp
 </Plot>
 ```
 
-dsdsd sd sd sdsd sd
+This example uses stroke color and mark shape/symbol to redundantly encode a categorical variable:
 
 ```svelte live
 <script>

@@ -321,7 +321,7 @@ function getScaleRange(
                     : name === 'r'
                         ? [0, 10]
                         : name === 'symbol'
-                            ? // Plot is smart enough to pick different default shapes depending on wether
+                            ? // Plot is smart enough to pick different default shapes depending on whether
                             // or not there are filled dot marks in the plot, so we have to pass this
                             // information all the way here
                             plotHasFilledDotMarks

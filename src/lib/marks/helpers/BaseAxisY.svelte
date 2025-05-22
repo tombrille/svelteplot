@@ -70,7 +70,7 @@
         const T = tickObjects.length;
         for (let i = 0; i < T; i++) {
             let j = i;
-            // find the preceeding tick that was not hidden
+            // find the preceding tick that was not hidden
             do {
                 j--;
             } while (j >= 0 && tickObjects[j].hidden);

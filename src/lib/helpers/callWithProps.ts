@@ -4,7 +4,7 @@ type Setter = (v: any) => void;
 
 /**
  * Helper function to call a D3 "function class" while also calling
- * porperty setter functions on the result.
+ * property setter functions on the result.
  */
 export default function (
     d3func: () => Record<string, Setter>,
