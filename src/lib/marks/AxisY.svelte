@@ -6,11 +6,9 @@
         PlotContext,
         BaseMarkProps,
         RawValue,
-        DataRecord,
         FacetContext,
         DefaultOptions
     } from '../types.js';
-    import getBaseStyles from '$lib/helpers/getBaseStyles.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';

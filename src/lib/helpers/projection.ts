@@ -1,6 +1,6 @@
 import { geoClipRectangle, geoPath, geoTransform } from 'd3-geo';
 
-import { constant, isObject, isValid } from './index.js';
+import { constant, isObject } from './index.js';
 
 const identity = constant({ stream: (stream) => stream });
 

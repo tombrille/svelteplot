@@ -1,4 +1,4 @@
-import { extent, range as d3Range, ascending } from 'd3-array';
+import { extent, ascending } from 'd3-array';
 
 import {
     isColorOrNull,

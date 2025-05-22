@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext, tick, untrack } from 'svelte';
+    import { getContext, untrack } from 'svelte';
     import { randomId, testFilter } from '$lib/helpers/index.js';
     import { resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';

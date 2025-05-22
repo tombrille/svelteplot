@@ -6,8 +6,6 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { intervalX, intervalY } from '$lib/index.js';
-    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { coalesce, maybeNumber } from '../helpers/index.js';
     import type {
         PlotContext,
         DataRecord,
@@ -15,7 +13,6 @@
         BaseRectMarkProps,
         ChannelAccessor
     } from '../types.js';
-    import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 

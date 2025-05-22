@@ -1,6 +1,6 @@
 import { maybeInterval } from '$lib/helpers/autoTicks.js';
 import { isValid } from '$lib/helpers/index.js';
-import { Reducer, mayberReducer, type ReducerName } from '$lib/helpers/reduce.js';
+import { mayberReducer, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import type { DataRecord, ScaledChannelName, TransformArg } from '$lib/types.js';
 import { groups as d3Groups } from 'd3-array';

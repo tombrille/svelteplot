@@ -1,4 +1,4 @@
-import { coalesce, isObject, pick, omit } from './index';
+import { coalesce, isObject, omit } from './index';
 import { describe, it, expect } from 'vitest';
 
 describe('coalesce', () => {

@@ -8,7 +8,7 @@
     } from '$lib/types.js';
     import { CSS_VAR } from '$lib/constants.js';
     import { resolveProp, resolveScaledStyleProps } from '$lib/helpers/resolve.js';
-    import { getContext, untrack } from 'svelte';
+    import { getContext } from 'svelte';
     import { type GeoPath } from 'd3-geo';
     import CanvasLayer from './CanvasLayer.svelte';
     import type { Attachment } from 'svelte/attachments';

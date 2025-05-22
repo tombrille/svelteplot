@@ -1,15 +1,11 @@
 <script lang="ts">
-    import { Plot, Frame, Line, RuleX, RuleY } from '$lib/index.js';
+    import { Plot, Line, RuleX, RuleY } from '$lib/index.js';
     import type { Datasets } from '$lib/types.js';
-    import { range } from 'd3-array';
     import { getContext } from 'svelte';
     import SineRules from './SineRules.svelte';
     import BarcodeExample from './BarcodeExample.svelte';
     import CandlestickExample from './CandlestickExample.svelte';
-    import { randomNormal, randomLcg } from 'd3-random';
     import Code from '../../Code.svelte';
-
-    const seededNormal = randomNormal.source(randomLcg(0.1234));
 
     const { aapl } = getContext<Datasets>('data');
 

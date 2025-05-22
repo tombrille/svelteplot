@@ -9,7 +9,6 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext,
         RawValue
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';

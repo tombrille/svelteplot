@@ -1,5 +1,4 @@
 import type {
-    BaseMarkProps,
     ChannelAccessor,
     ChannelName,
     DataRecord,

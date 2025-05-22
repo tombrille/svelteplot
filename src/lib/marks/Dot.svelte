@@ -15,7 +15,7 @@
     import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
-    import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';
+    import { maybeData, isValid } from '$lib/helpers/index.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
     import { addEventHandlers } from './helpers/events.js';
 

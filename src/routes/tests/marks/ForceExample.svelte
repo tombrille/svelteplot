@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Plot, Arrow, Dot, Text, LineY, RuleY } from '$lib/index.js';
+    import { Plot, Arrow, Dot, LineY, RuleY } from '$lib/index.js';
     import { json } from 'd3-fetch';
-    import { range } from 'd3-array';
+    // import { range } from 'd3-array';
     import { noise } from './noise.js';
     import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
 

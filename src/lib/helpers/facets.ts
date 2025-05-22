@@ -1,4 +1,4 @@
-import type { GenericMarkOptions, Mark, PlotScale, RawValue } from '$lib/types.js';
+import type { GenericMarkOptions, Mark, RawValue } from '$lib/types.js';
 import { resolveChannel } from './resolve.js';
 
 /**

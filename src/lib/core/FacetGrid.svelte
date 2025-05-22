@@ -4,7 +4,7 @@
     marks for each facet domain value 
 -->
 <script lang="ts">
-    import { getContext, setContext, type Snippet } from 'svelte';
+    import { getContext, type Snippet } from 'svelte';
     import type { PlotContext, GenericMarkOptions, Mark } from '../types.js';
     import { scaleBand } from 'd3-scale';
     import Facet from './Facet.svelte';

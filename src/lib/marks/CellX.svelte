@@ -1,6 +1,6 @@
 <script lang="ts">
     import Cell from './Cell.svelte';
-    import { recordizeX, recordizeY } from '$lib/index.js';
+    import { recordizeY } from '$lib/index.js';
     import type { BaseMarkProps, DataRow, RectMarkProps } from '../types.js';
     import type { ChannelAccessor } from '$lib/types.js';
 
