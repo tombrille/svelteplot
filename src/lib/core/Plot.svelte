@@ -471,7 +471,7 @@
     data-testid={testid}>
     {#if header}
         <div class="plot-header">
-            {#if header}{@render header()}{/if}
+            {@render header?.()}
         </div>
     {/if}
     <div class="plot-body" bind:this={plotBody}>
@@ -500,11 +500,11 @@
                 {/if}
             </FacetGrid>
         </svg>
-        {#if overlay}<div class="plot-overlay">{@render overlay()}</div>{/if}
+        {#if overlay}<div class="plot-overlay">{@render overlay?.()}</div>{/if}
     </div>
     {#if footer}
         <figcaption class="plot-footer">
-            {#if footer}{@render footer()}{/if}
+            {@render footer?.()}
         </figcaption>
     {/if}
 </figure>

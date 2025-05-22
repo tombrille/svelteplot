@@ -74,7 +74,7 @@
     {#if restOptions.title}<h2>{restOptions.title}</h2>{/if}
     {#if restOptions.subtitle}<h3>{restOptions.subtitle}</h3>{/if}
     <!-- also pass on user header -->
-    {#if userHeader}{@render userHeader()}{/if}
+    {#if userHeader}{@render userHeader?.()}{/if}
     {#if restOptions.color?.legend}
         <ColorLegend />
     {/if}
@@ -85,7 +85,7 @@
 
 {#snippet footer()}
     {#if restOptions.caption}<div>{restOptions.caption}</div>{/if}
-    {#if userFooter}{@render userFooter()}{/if}
+    {#if userFooter}{@render userFooter?.()}{/if}
 {/snippet}
 
 <!-- There's a bug triggering RangeError: Maximum call stack size exceeded 
