@@ -2,7 +2,6 @@
     import type {
         BaseMarkProps,
         ChannelAccessor,
-        ConstantAccessor,
         CurveName,
         DataRecord,
         PlotContext

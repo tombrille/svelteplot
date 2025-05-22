@@ -4,9 +4,7 @@
         DataRecord,
         PlotContext,
         BaseMarkProps,
-        FacetContext,
-        ConstantAccessor,
-        UsedScales
+        ConstantAccessor
     } from '../types.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';

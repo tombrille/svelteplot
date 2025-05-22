@@ -5,13 +5,12 @@ import { maybeInterval } from '$lib/helpers/autoTicks.js';
 import {
     bin as d3Bin,
     extent,
-    groups as d3Groups,
     thresholdFreedmanDiaconis,
     thresholdScott,
     thresholdSturges,
     type ThresholdCountGenerator
 } from 'd3-array';
-import { Reducer, reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
+import { reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { groupFacetsAndZ } from '$lib/helpers/group.js';
 import { isDate } from '$lib/helpers/typeChecks.js';
 

@@ -6,7 +6,6 @@
         ScaledDataRecord,
         PlotContext
     } from '$lib/types.js';
-    import { CSS_VAR } from '$lib/constants.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';

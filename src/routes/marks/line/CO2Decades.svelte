@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Plot, Line, Pointer, Text, RectY, RuleY, Dot, selectLast } from '$lib/index.js';
-    import { groups, range } from 'd3-array';
+    import { range } from 'd3-array';
     import { page } from '$app/stores';
 
     let { co2 } = $derived($page.data.data);

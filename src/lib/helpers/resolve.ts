@@ -3,7 +3,6 @@ import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
 import type { MarkStyleProps, PlotState, ScaledDataRecord } from '$lib/types.js';
 import { isValid } from './isValid.js';
-import { pick } from 'es-toolkit';
 
 import type {
     ScaleName,

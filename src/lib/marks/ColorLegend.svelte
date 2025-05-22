@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import { Plot, AxisX, Frame } from '$lib/index.js';
-    import { symbol as d3Symbol, symbol } from 'd3-shape';
+    import { symbol as d3Symbol } from 'd3-shape';
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 

@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { renameChannels, renameChannelsAndData, replaceChannels } from './rename.js';
+import { renameChannels } from './rename.js';
 import type { DataRecord } from '$lib/types.js';
-import { csvParse } from 'd3-dsv';
-import { readFileSync } from 'fs';
 
 const inputData: DataRecord[] = [
     { year: 2000, facet: 'A', value: 10 },

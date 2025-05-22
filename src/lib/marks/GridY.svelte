@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkProps, RawValue, DataRecord } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue } from '../types.js';
     import { resolveChannel, resolveStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { testFilter } from '$lib/helpers/index.js';

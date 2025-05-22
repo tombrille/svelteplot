@@ -1,6 +1,6 @@
-import type { BaseMarkProps, DataRecord, PlotScale, PlotScales, PlotState } from '$lib/types.js';
+import type { BaseMarkProps, DataRecord, PlotScale, PlotState } from '$lib/types.js';
 import type { MouseEventHandler } from 'svelte/elements';
-import { invert, pick } from 'es-toolkit';
+import { pick } from 'es-toolkit';
 import { RAW_VALUE } from '$lib/transforms/recordize.js';
 import { INDEX } from '$lib/constants.js';
 
