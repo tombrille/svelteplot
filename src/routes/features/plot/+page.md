@@ -336,7 +336,7 @@ to add events and scoped styles.
 
 ## Core plot
 
-SveltePlot provides a lot of convenience features with the unfortunate side-effect of blowing up the bundle size a bit. In situations where this is a concern, you may use a more light-weight version of the Plot component. Note that you need to explicitely include all marks that you want, such as grids or axis marks.
+SveltePlot provides a lot of convenience features with the unfortunate side-effect of blowing up the bundle size a bit. In situations where this is a concern, you may use a more light-weight version of the Plot component. Note that you need to explicitly include all marks that you want, such as grids or axis marks.
 
 ```svelte live
 <script>

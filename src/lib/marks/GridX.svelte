@@ -7,12 +7,12 @@
     import { testFilter } from '$lib/helpers/index.js';
     import { RAW_VALUE } from '$lib/transforms/recordize.js';
 
-    type GrixXMarkProps = BaseMarkProps & {
+    type GridXMarkProps = BaseMarkProps & {
         data?: RawValue[];
         automatic?: boolean;
     };
 
-    let { data = [], automatic = false, ...options }: GrixXMarkProps = $props();
+    let { data = [], automatic = false, ...options }: GridXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

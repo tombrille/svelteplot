@@ -194,7 +194,7 @@ SveltePlot will automatically detect a scale type, but you can also set it expli
 
 ### Bi-symmetrical log scales
 
-For input domains ranging multiple magnitudes above and below zero, the bi-symmertrical log scale may be useful. It can be controlled using the `constant` option.
+For input domains ranging multiple magnitudes above and below zero, the bi-symmetrical log scale may be useful. It can be controlled using the `constant` option.
 
 ```svelte live
 <script>
@@ -246,7 +246,7 @@ For input domains ranging multiple magnitudes above and below zero, the bi-symme
 
 ### Point scale
 
-Point scales map a discrete input domain to single coordinates in your plot. SveltePlot automatically choses a point scale if you're mapping categorical data to an extent-less mark, like the [dot](/marks/dot) mark. In the following example, the car manufactors are categorical data so the plot uses a point scale for the x scale.
+Point scales map a discrete input domain to single coordinates in your plot. SveltePlot automatically chooses a point scale if you're mapping categorical data to an extent-less mark, like the [dot](/marks/dot) mark. In the following example, the car manufacturers are categorical data so the plot uses a point scale for the x scale.
 
 ```svelte live
 <script>
@@ -1085,7 +1085,7 @@ If you also pass the `n` option to set a different number of output values, Svel
 
 ### Quantile (discrete)
 
-Similiar to the `quantile` scale. Not to be confused with the continuous [quantile](<#Quantile-(continuous)>) scale.
+Similar to the `quantile` scale. Not to be confused with the continuous [quantile](<#Quantile-(continuous)>) scale.
 
 ```svelte live
 <script>

@@ -32,7 +32,7 @@ The vector mark lets you place shapes (like arrows) on your plot. If you want to
 
 ## Vector options:
 
-- **x** - the horizontal postion (or longitude)
+- **x** - the horizontal position (or longitude)
 - **y** - the vertical position (or latitude)
 - **length**
 - **rotate**

@@ -159,7 +159,7 @@ export function binY<T>(
 }
 
 /**
- * for binning in x and y dimension simulatenously
+ * for binning in x and y dimension simultaneously
  */
 export function bin<T>(
     { data, ...channels }: TransformArg<T, DataRecord>,

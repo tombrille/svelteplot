@@ -23,7 +23,7 @@ easiest way to add a frame is to set the <b>frame</b> option of the Plot element
 </Plot>
 ```
 
-If you need more customization options, you can add the frame manually by explicitely adding the <b
+If you need more customization options, you can add the frame manually by explicitly adding the <b
         >Frame</b
     > mark to your plot:
 

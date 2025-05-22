@@ -402,9 +402,9 @@ const scaledChannelNames: ScaledChannelName[] = [
 ];
 
 /**
- * Mark channels can explicitely or implicitely be exempt from being
+ * Mark channels can explicitly or implicitly be exempt from being
  * mapped to a scale, so everywhere where values are being mapped to
- * scales, we need to check if the the scale is supposed to be used
+ * scales, we need to check if the scale is supposed to be used
  * not. That's what this function is used for.
  */
 export function getUsedScales(
@@ -450,7 +450,7 @@ export function projectXY(
 ): [number, number] {
     if (scales.projection) {
         // TODO: pretty sure this is not how projection streams are supposed to be used
-        // efficiantly, in observable plot, all data points of a mark are projected using
+        // efficiently, in observable plot, all data points of a mark are projected using
         // the same stream
         let x_, y_;
         const stream = scales.projection.stream({

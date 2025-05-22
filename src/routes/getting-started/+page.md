@@ -9,7 +9,7 @@ Welcome! SveltePlot is still in an alpha stage, and its API may change. The docu
 
 ## Try SveltePlot online
 
-You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev). You can click the "Fork" button next to all examples in the SveltePlot documenation to edit them in the **Svelte playground**.
+You can use SveltePlot inside any platform that supports Svelte 5, such as [StackBlitz](https://stackblitz.com/edit/vitejs-vite-mh9ogv?file=src%2FApp.svelte&terminal=dev). You can click the "Fork" button next to all examples in the SveltePlot documentation to edit them in the **Svelte playground**.
 
 ```svelte live
 <script>

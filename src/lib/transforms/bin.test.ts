@@ -73,7 +73,7 @@ describe('binX', () => {
         y: d
     }));
 
-    it('bins dailys into weekly data', () => {
+    it('bins daily into weekly data', () => {
         const { data, ...channels } = binX(
             {
                 data: dailyData,
@@ -119,7 +119,7 @@ describe('binX', () => {
         expect(binDuration).toBeLessThanOrEqual(7 * 24 * 60 * 60 * 1000);
     });
 
-    // it.only('bins dailys into weekly data', () => {
+    // it.only('bins daily into weekly data', () => {
     //     const { data, ...channels } = binX(
     //         {
     //             data: dailyData,

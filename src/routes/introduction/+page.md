@@ -51,7 +51,7 @@ If we want to plot a line showing the closing price over time, all we have to wr
 [Fork](https://svelte.dev/playground/ec67a8a48dce45c29373781a6b68491a)
 
 :::info
-Noticed how SveltePlot added **axes automatically**? That's because it assumes that most plots will benefit from axes and it adds them implicitely. (You can disable this by passing `axes={false}` to the Plot component).
+Noticed how SveltePlot added **axes automatically**? That's because it assumes that most plots will benefit from axes and it adds them implicitly. (You can disable this by passing `axes={false}` to the Plot component).
 :::
 
 Let's say we also want to add a grid and a horizontal rule at zero. To activate the implicit grids we set the `grid` flag. Then we add the `RuleY` mark with `y` set to zero.
@@ -278,7 +278,7 @@ Also, somehow, these axes already know the extent of our data! This is possible 
 </Plot>
 ```
 
-Similarily you can enable the implicit grids by setting `grid` to `true`:
+Similarly, you can enable the implicit grids by setting `grid` to `true`:
 
 ```svelte
 <Plot grid>

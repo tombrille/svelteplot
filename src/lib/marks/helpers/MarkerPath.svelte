@@ -25,7 +25,7 @@
         datum: DataRecord;
         /**
          * the marker shape to use at the start of the path, defaults to
-         * cirlce
+         * circle
          */
         markerStart?: boolean | MarkerShape;
         /**

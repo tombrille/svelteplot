@@ -27,7 +27,7 @@ describe('groupFacetsAndZ', () => {
         expect(result).toEqual([2, 1, 1, 1]);
     });
 
-    it('implicitely groups by fill and stroke if z is not present', () => {
+    it('implicitly groups by fill and stroke if z is not present', () => {
         const items = [
             { color: 'red', value: 10 },
             { color: 'red', value: 15 },
