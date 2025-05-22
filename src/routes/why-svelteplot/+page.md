@@ -3,7 +3,7 @@ title: Why SveltePlot?
 description: Why do we need yet another Svelte visualization framework?
 ---
 
-SveltePlot combines the concise API and concepts of Observable Plot with Svelte reactivity. It is not just a Svelte-wrapper, but re-implemented from scratch on top of D3. But what makes SveltePlot better than the existing visualization frameworks in Svelte?
+SveltePlot combines the concise API and concepts of [Observable Plot](https://observablehq.com/plot/) with [Svelte](https://svelte.dev/) reactivity. It is not just a Svelte-wrapper, but re-implemented from scratch on top of [D3](https://d3js.org/). But what makes SveltePlot better than the existing visualization frameworks in Svelte?
 
 ## Layered grammar of graphics
 
@@ -93,7 +93,7 @@ You can think of marks as the building blocks for your visualizations -- or the 
 
 [fork](https://svelte.dev/playground/b329bb028a5445ba8f884291f0475be6?version=5)
 
-This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a Line mark as extra layer.
+This makes it a lot easier to iterate over different ideas for visualizations. For instance, if we want to combine the dot plot above with a line chart, we can just throw in a [Line mark](/marks/line) as extra layer.
 
 ```svelte live
 <script>
@@ -149,7 +149,7 @@ This makes it a lot easier to iterate over different ideas for visualizations. F
 </Plot>
 ```
 
-And if we wanted to add uncertainty ranges, we can add a rule mark as well.
+And if we wanted to add uncertainty ranges, we can add a [Rule mark](/marks/rule) as well.
 
 ```svelte live
 <script>
@@ -244,7 +244,7 @@ Take the following example, where you can filter the data using the [filter](/tr
 </Plot>
 ```
 
-Here's an example where we're binding a live-updated dataset to a line mark. Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being re-created on every frame:
+Here's an example where we're binding a live-updated dataset to a [Line mark](/marks/line). Note how the `<path>` elements rendering the line and area get re-used, and ticks and grid lines get moved around instead of being re-created on every frame:
 
 ```svelte live
 <script lang="ts">
@@ -336,6 +336,7 @@ Here's an example where we're binding a live-updated dataset to a line mark. Not
 [fork](https://svelte.dev/playground/e136cdefec7943cba5e6d7b604a2e50c?version=5)
 
 Also, simply by being a Svelte framework, SveltePlot can support tweens and transitions! In the following plot, we're using the [Tween state](https://svelte.dev/docs/svelte-motion#Tween) from `svelte/motion` to smoothly update the vertical domain whenever the data changes.
+Try clicking on the bars to change their values.
 
 ```svelte live
 <script>
@@ -400,7 +401,7 @@ Also, simply by being a Svelte framework, SveltePlot can support tweens and tran
 
 ## Easy to extend
 
-You can extend SveltePlot by injecting regular Svelte snippets. For instance, the Line mark allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
+You can extend SveltePlot by injecting regular Svelte snippets. For instance, the [Line mark](/marks/line) allows you to provide custom markers by passing a `marker` snippet. So why no use animated line markers, just because we can?
 
 ```svelte live
 <script lang="ts">
@@ -493,4 +494,4 @@ You can extend SveltePlot by injecting regular Svelte snippets. For instance, th
 
 ## Built on top of D3
 
-Like its inspiration Observable Plot, SveltePlot is built on top of D3.
+Like its inspiration Observable Plot, SveltePlot is built on top of [D3](https://d3js.org/).
