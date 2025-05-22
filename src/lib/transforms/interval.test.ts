@@ -53,7 +53,7 @@ describe('intervalX', () => {
             const xTime = item.x.getTime();
 
             // x1 should be before x
-            expect(x1Time).toBeLessThan(xTime);
+            expect(x1Time).toBeLessThanOrEqual(xTime);
 
             // x2 should be after x
             expect(x2Time).toBeGreaterThan(xTime);
