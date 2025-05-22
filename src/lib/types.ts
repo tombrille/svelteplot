@@ -438,6 +438,10 @@ export type PlotDefaults = {
      */
     numberFormat: Intl.NumberFormatOptions;
     markerDotRadius: number;
+    /**
+     * fallback color to be used for null/NA
+     */
+    unknown: string;
     css: (d: string) => string | undefined;
 };
 
