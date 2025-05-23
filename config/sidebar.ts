@@ -6,15 +6,15 @@ export default {
             items: [
                 {
                     title: 'Getting started',
-                    to: '/getting-started/'
+                    to: '/getting-started'
                 },
                 {
                     title: 'Why SveltePlot?',
-                    to: '/why-svelteplot/'
+                    to: '/why-svelteplot'
                 }
                 // {
                 //     title: 'Introduction',
-                //     to: '/introduction/'
+                //     to: '/introduction'
                 // }
             ]
         },
@@ -24,24 +24,24 @@ export default {
             items: [
                 {
                     title: 'Plot',
-                    to: '/features/plot/'
+                    to: '/features/plot'
                 },
 
                 {
                     title: 'Marks',
-                    to: '/features/marks/'
+                    to: '/features/marks'
                 },
                 {
                     title: 'Scales',
-                    to: '/features/scales/'
+                    to: '/features/scales'
                 },
                 {
                     title: 'Transforms',
-                    to: '/features/transforms/'
+                    to: '/features/transforms'
                 },
                 {
                     title: 'Faceting',
-                    to: '/features/facets/'
+                    to: '/features/facets'
                 }
             ]
         },
@@ -97,27 +97,27 @@ export default {
             items: [
                 {
                     title: 'Markers',
-                    to: '/features/markers/'
+                    to: '/features/markers'
                 },
                 {
                     title: 'Transforms',
-                    to: '/features/transforms/'
+                    to: '/features/transforms'
                 },
                 {
                     title: 'Projections',
-                    to: '/features/projections/'
+                    to: '/features/projections'
                 },
                 {
                     title: 'Interactivity',
-                    to: '/features/interactivity/'
+                    to: '/features/interactivity'
                 },
                 {
                     title: 'Defaults',
-                    to: '/features/defaults/'
+                    to: '/features/defaults'
                 },
                 {
                     title: 'Gradients',
-                    to: '/features/gradients/'
+                    to: '/features/gradients'
                 }
             ]
         }
