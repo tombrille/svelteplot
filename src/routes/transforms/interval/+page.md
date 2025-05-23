@@ -11,12 +11,12 @@ The interval transform is often used for time-series bar charts. For example, co
     import { Plot, BarY, RuleY } from 'svelteplot';
     import type { Datasets } from '$lib/types.js';
 
-    const MONTH_YEAR = new Intl.DateTimeFormat('en-US', {
+    const DAY_MONTH = new Intl.DateTimeFormat('en-US', {
+        day: 'numeric',
         month: 'short',
-        year: 'numeric'
     });
-    const tickFormat = (date: Date) =>
-        MONTH_YEAR.format(date).split(' ');
+
+    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ');
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -72,12 +72,12 @@ The meaning of the interval mark option depends on the associated mark, such as 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 
-    const MONTH_DAY = new Intl.DateTimeFormat('en-US', {
+    const DAY_MONTH = new Intl.DateTimeFormat('en-US', {
+        day: 'numeric',
         month: 'short',
-        date: 'numeric'
     });
-    const tickFormat = (date: Date) =>
-        MONTH_DAY.format(date).split(' ');
+
+    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ');
 </script>
 
 <Plot marginLeft={40} x={{ tickFormat }} grid>
