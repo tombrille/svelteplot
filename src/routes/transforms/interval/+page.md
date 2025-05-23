@@ -16,7 +16,7 @@ The interval transform is often used for time-series bar charts. For example, co
         month: 'short',
     });
 
-    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ');
+    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ').reverse();
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
@@ -37,9 +37,15 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
+    
+    const DAY_MONTH = new Intl.DateTimeFormat('en-US', {
+        day: 'numeric',
+        month: 'short',
+    });
+    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ').reverse();
 </script>
 
-<Plot marginLeft={40} x={{ type: 'time' }} grid>
+<Plot marginLeft={40} x={{ tickFormat }} grid>
     <RectY
         data={aapl.slice(-40)}
         x="Date"
@@ -51,7 +57,7 @@ In contrast, a [rectY](/marks/rect) mark with the interval option and the day in
 ```
 
 ```svelte
-<Plot marginLeft={40} x={{ type: 'time' }} grid>
+<Plot marginLeft={40} x={{ tickFormat }} grid>
     <RectY
         data={aapl.slice(-40)}
         x="Date"
@@ -77,7 +83,7 @@ The meaning of the interval mark option depends on the associated mark, such as 
         month: 'short',
     });
 
-    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ');
+    const tickFormat = (date: Date) => DAY_MONTH.format(date).split(' ').reverse();
 </script>
 
 <Plot marginLeft={40} x={{ tickFormat }} grid>
