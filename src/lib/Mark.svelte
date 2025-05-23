@@ -174,7 +174,9 @@
                 ScaledChannelName,
                 ScaleName
             ][]) {
-                if (array1[i][channel] !== array2[i][channel]) return true;
+                if (!isEqual(array1[i][channel], array2[i][channel])) {
+                    return true;
+                }
             }
         }
         return false;
