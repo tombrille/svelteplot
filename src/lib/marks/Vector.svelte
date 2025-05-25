@@ -170,7 +170,7 @@
                 <text x="30" y="30" style="color:red"
                     >implement canvas rendering for vector mark</text>
             {:else}
-                {#each scaledData as d}
+                {#each scaledData as d, i (i)}
                     {@const r = resolveChannel('r', d.datum, { r: 3, ...args })}
                     {#if d.valid && isValid(r)}
                         {@const dx = +resolveProp(args.dx, d.datum, 0)}

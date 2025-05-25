@@ -47,7 +47,7 @@
 <Mark type="tickX" channels={['x', 'y', 'stroke', 'opacity', 'strokeOpacity']} {...args}>
     {#snippet children({ mark, usedScales })}
         <g class="tick-x">
-            {#each args.data as datum}
+            {#each args.data as datum, i (i)}
                 {#if testFacet(datum, mark.options) && testFilter(datum, args)}
                     {@const x_ = resolveChannel('x', datum, args)}
                     {@const y_ = resolveChannel('y', datum, args)}

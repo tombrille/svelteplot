@@ -6,7 +6,12 @@
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
-    import type { PlotContext, BaseMarkProps, RectMarkProps, ChannelAccessor } from '../types.js';
+    import type {
+        PlotContext,
+        BaseMarkProps,
+        BaseRectMarkProps,
+        ChannelAccessor
+    } from '../types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
@@ -19,7 +24,7 @@
         x2?: ChannelAccessor;
         y?: ChannelAccessor;
         stack?: StackOptions;
-    } & RectMarkProps;
+    } & BaseRectMarkProps;
 
     let { data = [{}], class: className = null, stack, ...options }: BarXProps = $props();
 

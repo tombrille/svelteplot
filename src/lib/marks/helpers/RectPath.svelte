@@ -99,7 +99,7 @@ Helper component for rendering rectangular marks in SVG
 
 {#if hasBorderRadius}
     <path
-        transform="translate({[x + dx + insetLeft, y + insetBottom + dy]})"
+        transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
         d={roundedRect(
             0,
             0,
@@ -116,7 +116,7 @@ Helper component for rendering rectangular marks in SVG
         }} />
 {:else}
     <rect
-        transform="translate({[x + dx + insetLeft, y + insetBottom + dy]})"
+        transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
         width={width - insetLeft - insetRight}
         height={height - insetTop - insetBottom}
         class={[styleClass, className]}

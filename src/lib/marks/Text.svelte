@@ -78,7 +78,7 @@
     {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
         <GroupMultiple class="text {className || null}" length={className ? 2 : args.data.length}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {#if d.valid}
                     {@const title = resolveProp(args.title, d.datum, '')}
                     {@const frameAnchor = resolveProp(args.frameAnchor, d.datum)}
@@ -148,20 +148,17 @@
                         <text
                             class={[textClassName]}
                             dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                            transform="translate({[
-                                Math.round(x + dx),
-                                Math.round(
-                                    y +
-                                        dy -
-                                        (lineAnchor === 'bottom'
-                                            ? textLines.length - 1
-                                            : lineAnchor === 'middle'
-                                              ? (textLines.length - 1) * 0.5
-                                              : 0) *
-                                            fontSize
-                                )
-                            ]})"
-                            >{#each textLines as line, l}<tspan
+                            transform="translate({Math.round(x + dx)},{Math.round(
+                                y +
+                                    dy -
+                                    (lineAnchor === 'bottom'
+                                        ? textLines.length - 1
+                                        : lineAnchor === 'middle'
+                                          ? (textLines.length - 1) * 0.5
+                                          : 0) *
+                                        fontSize
+                            )})"
+                            >{#each textLines as line, l (l)}<tspan
                                     x="0"
                                     dy={l ? fontSize : 0}
                                     class={styleClass}
@@ -172,7 +169,7 @@
                         <text
                             class={[textClassName, styleClass]}
                             dominant-baseline={LINE_ANCHOR[lineAnchor]}
-                            transform="translate({[Math.round(x + dx), Math.round(y + dy)]})"
+                            transform="translate({Math.round(x + dx)},{Math.round(y + dy)})"
                             {style}
                             >{textLines[0]}{#if title}<title>{title}</title>{/if}</text>
                     {/if}
