@@ -1,11 +1,6 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-    import type {
-        DataRecord,
-        PlotContext,
-        BaseMarkProps,
-        ConstantAccessor
-    } from '../types.js';
+    import type { DataRecord, PlotContext, BaseMarkProps, ConstantAccessor } from '../types.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';
     import { resolveChannel, resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
