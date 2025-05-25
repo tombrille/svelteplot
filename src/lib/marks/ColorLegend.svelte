@@ -1,3 +1,9 @@
+<script module lang="ts">
+    export type ColorLegendMarkProps = {
+        class: string | null;
+    };
+</script>
+
 <script lang="ts">
     import { getContext } from 'svelte';
     import { Plot, AxisX, Frame } from '$lib/index.js';
@@ -7,11 +13,7 @@
 
     import type { DefaultOptions, PlotContext } from '../types.js';
 
-    let {
-        width = 250,
-        tickSpacing = 30,
-        class: className = null
-    }: { width?: number; tickSpacing?: number; class?: string } = $props();
+    let { class: className = null }: ColorLegendMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
