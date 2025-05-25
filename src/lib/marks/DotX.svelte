@@ -8,8 +8,7 @@
 <script lang="ts">
     import Dot, { type DotMarkProps } from './Dot.svelte';
     import { recordizeX } from '$lib/index.js';
-    import type { BaseMarkProps, DataRow } from '../types.js';
-    import type { ChannelAccessor } from '$lib/types.js';
+    import type { DataRow } from '../types.js';
 
     let { data = [{}], ...options }: DotXMarkProps = $props();
 
