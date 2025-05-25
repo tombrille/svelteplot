@@ -1,6 +1,17 @@
 <!-- @component
     Renders geographical data using projections and GeoJSON geometries
 -->
+<script module lang="ts">
+    export type GeoMarkProps = {
+        data: DataRecord[];
+        geoType?: 'sphere' | 'graticule';
+        dragRotate: boolean;
+        canvas: boolean;
+        href: ConstantAccessor<string>;
+        target: ConstantAccessor<string>;
+    } & BaseMarkProps;
+</script>
+
 <script lang="ts">
     import { getContext } from 'svelte';
     import type { DataRecord, PlotContext, BaseMarkProps, ConstantAccessor } from '../types.js';
@@ -16,15 +27,6 @@
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
-
-    type GeoMarkProps = {
-        data: DataRecord[];
-        geoType?: 'sphere' | 'graticule';
-        dragRotate: boolean;
-        canvas: boolean;
-        href: ConstantAccessor<string>;
-        target: ConstantAccessor<string>;
-    } & BaseMarkProps;
 
     let {
         data = [{}],
