@@ -1,3 +1,6 @@
+<!-- @component
+    Calculates and displays a regression line with x as the dependent variable
+-->
 <script lang="ts">
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import type { ChannelName } from '$lib/types.js';

@@ -1,3 +1,6 @@
+<!-- @component
+    Renders vertical rule lines at specified x positions with customizable vertical range
+-->
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';

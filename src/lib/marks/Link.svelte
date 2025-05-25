@@ -1,3 +1,6 @@
+<!-- @component
+    Creates connections between pairs of points with optional curve styling and markers
+-->
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {

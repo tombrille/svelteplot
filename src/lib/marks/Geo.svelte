@@ -1,3 +1,6 @@
+<!-- @component
+    Renders geographical data using projections and GeoJSON geometries
+-->
 <script lang="ts">
     import { getContext } from 'svelte';
     import type { DataRecord, PlotContext, BaseMarkProps, ConstantAccessor } from '../types.js';

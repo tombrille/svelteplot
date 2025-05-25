@@ -1,3 +1,6 @@
+<!-- @component
+    Renders a geographic graticule grid with customizable step sizes
+-->
 <script module lang="ts">
     import type { DefaultOptions, BaseMarkProps } from '../types.js';
     export type GraticuleMarkProps = Omit<
