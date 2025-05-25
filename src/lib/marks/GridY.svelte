@@ -1,3 +1,6 @@
+<!-- @component
+    Renders horizontal gridlines at y-axis tick positions
+-->
 <script lang="ts">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';

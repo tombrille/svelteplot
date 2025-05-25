@@ -1,5 +1,6 @@
-<!--
-@component
+<!-- @component
+    Creates a vertical area chart with y value and baseline. Areas are implicitly 
+    stacked vertically if just the y channel is defined.
 -->
 <script lang="ts">
     import Area, { type AreaMarkProps } from './Area.svelte';

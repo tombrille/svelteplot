@@ -1,3 +1,7 @@
+<!-- @component
+    Creates a horizontal area chart with x value and baseline.  Areas are implicitly 
+    stacked horizontally if just the x channel is defined.
+-->
 <script lang="ts">
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels } from '$lib/transforms/rename.js';

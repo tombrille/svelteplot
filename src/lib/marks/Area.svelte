@@ -1,3 +1,6 @@
+<!-- @component
+    Creates an area chart with filled regions between two x-y value pairs
+-->
 <script module lang="ts">
     export type AreaMarkProps = {
         data: DataRecord[];

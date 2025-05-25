@@ -1,3 +1,6 @@
+<!-- @component
+    Renders a horizontal axis with labels and tick marks
+-->
 <script module lang="ts">
     export type AxisXMarkProps = Omit<
         BaseMarkProps,

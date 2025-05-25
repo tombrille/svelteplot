@@ -1,5 +1,5 @@
-<!--
-    @component Arrow
+<!-- @component
+    Creates arrows with customizable heads, angles, and bending
 -->
 <script module lang="ts">
     export type ArrowMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {

@@ -1,3 +1,6 @@
+<!-- @component
+    Creates dots or symbols at specified positions with customizable size and appearance
+-->
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {

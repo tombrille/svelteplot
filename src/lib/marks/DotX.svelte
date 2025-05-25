@@ -1,3 +1,6 @@
+<!-- @component
+    Creates a horizontal dot plot with x values along a single y position
+-->
 <script lang="ts">
     import Dot from './Dot.svelte';
     import { recordizeX } from '$lib/index.js';

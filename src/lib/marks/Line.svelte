@@ -1,6 +1,5 @@
-<!--
-    @component
-    Line mark, useful for line charts
+<!-- @component
+    Creates line charts with connecting points in a dataset with customizable curves and markers
 -->
 <script module lang="ts">
     import type {
