@@ -33,7 +33,7 @@
 
     let {
         automatic,
-        class: className = '',
+        class: className = 'frame',
         fill,
         stroke,
         fillOpacity,
