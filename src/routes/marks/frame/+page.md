@@ -37,7 +37,6 @@ If you need more customization options, you can add the frame manually by explic
 <Plot grid testid="frame-demo" inset={20}>
     <Frame
         fill="yellow"
-       
         fillOpacity="0.2"
         stroke="magenta"
         strokeWidth="2"

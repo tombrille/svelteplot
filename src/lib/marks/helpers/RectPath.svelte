@@ -99,7 +99,6 @@ Helper component for rendering rectangular marks in SVG
     const [style, styleClass] = $derived(
         resolveStyles(plot, datum, options, fallbackStyle, usedScales)
     );
-    $inspect({ style, stroke: options.stroke, fill: options.fill, options });
 </script>
 
 {#if hasBorderRadius}
