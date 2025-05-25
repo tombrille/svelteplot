@@ -120,17 +120,15 @@
         facetAnchor !== 'auto' ? facetAnchor : anchor === 'left' ? 'left-empty' : 'right-empty'
     );
 
-    let showAxis = $state(false);
-    $effect.pre(() => {
-        showAxis =
-            useFacetAnchor === 'left'
-                ? left
-                : useFacetAnchor === 'right'
-                  ? right
-                  : useFacetAnchor === 'left-empty'
-                    ? leftEmpty
-                    : rightEmpty;
-    });
+    const showAxis = $state(
+        useFacetAnchor === 'left'
+            ? left
+            : useFacetAnchor === 'right'
+              ? right
+              : useFacetAnchor === 'left-empty'
+                ? leftEmpty
+                : rightEmpty
+    );
 </script>
 
 <Mark

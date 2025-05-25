@@ -130,7 +130,7 @@
     {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
         <g class={['link', className]} data-use-x={usedScales.x ? 1 : 0}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {#if d.valid || true}
                     {@const dx = resolveProp(args.dx, d.datum, 0)}
                     {@const dy = resolveProp(args.dx, d.datum, 0)}

@@ -50,7 +50,7 @@
     {...args}>
     {#snippet children({ mark, usedScales, scaledData })}
         <GroupMultiple class="bar-x" length={scaledData.length}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {@const bw = plot.scales.y.fn.bandwidth()}
                 {@const minx = Math.min(d.x1, d.x2)}
                 {@const maxx = Math.max(d.x1, d.x2)}

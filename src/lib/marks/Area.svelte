@@ -110,7 +110,7 @@
             <AreaCanvas groupedAreaData={grouped} {mark} {usedScales} {areaPath} />
         {:else}
             <GroupMultiple length={grouped.length}>
-                {#each grouped as areaData}
+                {#each grouped as areaData, i (i)}
                     {#snippet el(datum: ScaledDataRecord)}
                         {@const [style, styleClass] = resolveStyles(
                             plot,

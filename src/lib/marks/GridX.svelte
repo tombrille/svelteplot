@@ -45,7 +45,7 @@
     {automatic}>
     {#snippet children({ usedScales })}
         <g class="grid-x">
-            {#each ticks as tick}
+            {#each ticks as tick, t (t)}
                 {#if testFilter(tick, options)}
                     {@const x =
                         plot.scales.x.fn(tick) +

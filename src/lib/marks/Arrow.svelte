@@ -81,7 +81,7 @@
     {#snippet children({ mark, usedScales, scaledData })}
         {@const sweep = maybeSweep(args.sweep)}
         <GroupMultiple class="arrow" length={scaledData.length}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {#if d.valid}
                     {@const inset = resolveProp(args.inset, d.datum, 0)}
                     {@const insetStart = resolveProp(args.insetStart, d.datum)}

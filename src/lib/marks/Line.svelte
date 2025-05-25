@@ -144,7 +144,7 @@
                 <LineCanvas {groupedLineData} {mark} {usedScales} {linePath} {groupByKey} />
             {:else}
                 <g class={['lines', className]}>
-                    {#each groupedLineData as lineData, i}
+                    {#each groupedLineData as lineData, i (i)}
                         {@const pathString = linePath(lineData)}
                         {#if pathString}
                             <GroupMultiple class={resolveProp(lineClass, lineData[0])}>

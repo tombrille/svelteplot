@@ -139,17 +139,15 @@
     const useFacetAnchor = $derived(
         facetAnchor !== 'auto' ? facetAnchor : anchor === 'bottom' ? 'bottom-empty' : 'top-empty'
     );
-    let showAxis = $state(false);
-    $effect.pre(() => {
-        showAxis =
-            useFacetAnchor === 'top'
-                ? top
-                : useFacetAnchor === 'bottom'
-                  ? bottom
-                  : useFacetAnchor === 'top-empty'
-                    ? topEmpty
-                    : bottomEmpty;
-    });
+    const showAxis = $derived(
+        useFacetAnchor === 'top'
+            ? top
+            : useFacetAnchor === 'bottom'
+              ? bottom
+              : useFacetAnchor === 'top-empty'
+                ? topEmpty
+                : bottomEmpty
+    );
 </script>
 
 <Mark

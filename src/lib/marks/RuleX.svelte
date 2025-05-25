@@ -34,7 +34,7 @@
 <Mark type="ruleX" channels={['x', 'y1', 'y2', 'stroke', 'opacity', 'strokeOpacity']} {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
         <GroupMultiple class="rule-x {className || ''}" length={className ? 2 : scaledData.length}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {@const inset = resolveProp(args.inset, d.datum, 0)}
                 {@const insetTop = resolveProp(args.insetTop, d.datum, 0)}
                 {@const insetBottom = resolveProp(args.insetBottom, d.datum, 0)}

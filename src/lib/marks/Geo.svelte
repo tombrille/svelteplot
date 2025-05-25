@@ -85,7 +85,7 @@
             {#if canvas}
                 <GeoCanvas data={scaledData} {path} {mark} {usedScales} />
             {:else}
-                {#each scaledData as d}
+                {#each scaledData as d, i (i)}
                     {#if d.valid}
                         {#if options.href}
                             <a

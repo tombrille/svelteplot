@@ -61,7 +61,7 @@
         {@const bwx = plot.scales.x.fn.bandwidth()}
         {@const bwy = plot.scales.y.fn.bandwidth()}
         <g class="cell {className || ''}" data-fill={usedScales.fillOpacity}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {#if d.valid && (args.fill == null || isValid(resolveChannel('fill', d.datum, args)))}
                     <RectPath
                         datum={d}

@@ -45,7 +45,7 @@
             <div class="title">{@html legendTitle}</div>
         {/if}
         {#if scaleType === 'ordinal' || scaleType === 'categorical'}
-            {#each plot.scales.color.domain as value}
+            {#each plot.scales.color.domain as value (value)}
                 {@const symbolV = plot.scales.symbol.fn(value)}
                 {@const symbolType = maybeSymbol(symbolV)}
                 <div class="item">
@@ -98,7 +98,7 @@
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         <stop offset="0%" stop-color={range[0]} />
-                        {#each ticks as t, i}
+                        {#each ticks as t, i (i)}
                             {@const offset = (100 * (t - domain[0])) / (domain[1] - domain[0])}
                             <stop
                                 offset="{offset - 0.001}%"
@@ -130,7 +130,7 @@
                 x={{ domain, tickSpacing, tickFormat }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
-                        {#each ticks as t}
+                        {#each ticks as t (t)}
                             <stop
                                 offset="{(100 * (t - domain[0])) / (domain[1] - domain[0])}%"
                                 stop-color={plot.scales.color.fn(t)} />

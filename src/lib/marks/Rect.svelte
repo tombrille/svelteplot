@@ -44,7 +44,7 @@
     {...args}>
     {#snippet children({ usedScales, scaledData })}
         <GroupMultiple class={scaledData.length > 1 ? className : null} length={scaledData.length}>
-            {#each scaledData as d}
+            {#each scaledData as d, i (i)}
                 {#if d.valid}
                     {@const x1 = d.x1 == null ? plot.options.marginLeft : d.x1}
                     {@const x2 = d.x2 == null ? plot.options.marginLeft + plot.facetWidth : d.x2}

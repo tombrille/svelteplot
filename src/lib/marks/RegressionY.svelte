@@ -20,7 +20,7 @@
 </script>
 
 <Mark type="regression">
-    {#each groups as group}
+    {#each groups as group, i (i)}
         <Regression data={group} dependent="y" {...options} />
     {/each}
 </Mark>

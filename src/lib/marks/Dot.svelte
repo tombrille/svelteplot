@@ -98,7 +98,7 @@
             {#if canvas}
                 <DotCanvas data={scaledData} {mark} />
             {:else}
-                {#each scaledData as d}
+                {#each scaledData as d, i (i)}
                     {#if d.valid && isValid(d.r)}
                         {@const [style, styleClass] = resolveStyles(
                             plot,
