@@ -2,31 +2,36 @@
     @component
     For horizontal bar charts using a band scale as y axis
 -->
-<script lang="ts">
-    import Mark from '../Mark.svelte';
-    import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
+<script module lang="ts">
     import type {
         PlotContext,
         BaseMarkProps,
         BaseRectMarkProps,
         ChannelAccessor
     } from '../types.js';
+
+    export type BarXMarkProps = BaseMarkProps &
+        BaseRectMarkProps & {
+            data: DataRow[];
+            x?: ChannelAccessor;
+            x1?: ChannelAccessor;
+            x2?: ChannelAccessor;
+            y?: ChannelAccessor;
+            stack?: StackOptions;
+        };
+</script>
+
+<script lang="ts">
+    import Mark from '../Mark.svelte';
+    import { getContext } from 'svelte';
+    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
+
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from '$lib/types.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 
-    type BarXProps = BaseMarkProps & {
-        data: DataRow[];
-        x?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y?: ChannelAccessor;
-        stack?: StackOptions;
-    } & BaseRectMarkProps;
-
-    let { data = [{}], class: className = null, stack, ...options }: BarXProps = $props();
+    let { data = [{}], class: className = null, stack, ...options }: BarXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
