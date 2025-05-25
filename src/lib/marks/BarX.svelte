@@ -18,6 +18,11 @@
             x2?: ChannelAccessor;
             y?: ChannelAccessor;
             stack?: StackOptions;
+            /**
+             * Converts x into x1/x2 ranges based on the provided interval. Disables the
+             * implicit stacking
+             */
+            interval?: number | string;
         };
 </script>
 
