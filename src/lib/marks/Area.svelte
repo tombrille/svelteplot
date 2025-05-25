@@ -1,16 +1,17 @@
 <script module lang="ts">
     export type AreaMarkProps = {
+        data: DataRecord[];
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
         z?: ChannelAccessor;
-        fill?: ChannelAccessor;
-        stroke?: ChannelAccessor;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
         stack?: Partial<StackOptions>;
         canvas?: boolean;
-    };
+    } & BaseMarkProps;
 </script>
 
 <script lang="ts">
@@ -38,17 +39,6 @@
     import type { RawValue } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
-    type AreaProps = BaseMarkProps & {
-        data: DataRecord[];
-        /**
-         * Lorem ipsum
-         */
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-    } & AreaMarkProps;
-
     let {
         data,
         /** the curve */
@@ -57,7 +47,7 @@
         class: className = '',
         canvas = false,
         ...options
-    }: AreaProps = $props();
+    }: AreaMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

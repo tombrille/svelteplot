@@ -1,3 +1,6 @@
+<!--
+@component
+-->
 <script lang="ts">
     import Area, { type AreaMarkProps } from './Area.svelte';
     import { renameChannels } from '$lib/transforms/rename.js';
@@ -8,16 +11,10 @@
     /**
      * AreaY mark foo
      */
-    type AreaYProps = BaseMarkProps & {
-        data: DataRecord[];
+    type AreaYProps = Omit<AreaMarkProps, 'x1' | 'x2'> & {
         x?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        /**
-         * this some extensive help for the y channel
-         */
         y?: ChannelAccessor;
-    } & AreaMarkProps;
+    };
 
     let { data, stack, ...options }: AreaYProps = $props();
 
@@ -28,11 +25,5 @@
         )
     );
 </script>
-
-<!--
-@component
-The AreaY component can be used for foobar
-
--->
 
 <Area {...args}></Area>
