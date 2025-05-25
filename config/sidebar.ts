@@ -40,7 +40,7 @@ export default {
                     to: '/features/transforms'
                 },
                 {
-                    title: 'Faceting',
+                    title: 'Facets',
                     to: '/features/facets'
                 }
             ]
