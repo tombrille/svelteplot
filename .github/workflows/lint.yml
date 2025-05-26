@@ -1,4 +1,4 @@
-name: Run Tests
+name: Lint Check
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
         branches: [main]
 
 jobs:
-    test:
+    lint:
         runs-on: ubuntu-latest
 
         steps:
@@ -28,5 +28,5 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
-            - name: Run Vitest tests
-              run: pnpm test
+            - name: Run linting
+              run: pnpm run lint

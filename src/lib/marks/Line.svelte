@@ -1,6 +1,5 @@
-<!--
-    @component
-    Line mark, useful for line charts
+<!-- @component
+    Creates line charts with connecting points in a dataset with customizable curves and markers
 -->
 <script module lang="ts">
     import type {
@@ -14,15 +13,14 @@
         ScaledDataRecord
     } from '../types.js';
 
-    export type BaseLineMarkProps = {
+    export type LineMarkProps = {
         data: DataRecord[];
+        x?: ChannelAccessor;
+        y?: ChannelAccessor;
         z?: ChannelAccessor;
-        stroke?: ChannelAccessor;
         outlineStroke?: string;
         outlineStrokeWidth?: number;
         outlineStrokeOpacity?: number;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
@@ -33,7 +31,8 @@
         textStrokeWidth?: ConstantAccessor<number>;
         lineClass?: ConstantAccessor<string>;
         canvas?: boolean;
-    } & MarkerOptions;
+    } & MarkerOptions &
+        BaseMarkProps;
 </script>
 
 <script lang="ts">
@@ -47,11 +46,6 @@
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { pick } from 'es-toolkit';
     import LineCanvas from './helpers/LineCanvas.svelte';
-
-    type LineMarkProps = BaseMarkProps & {
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-    } & BaseLineMarkProps;
 
     import type { RawValue } from '$lib/types.js';
     import { isValid } from '$lib/helpers/index.js';
@@ -144,7 +138,7 @@
                 <LineCanvas {groupedLineData} {mark} {usedScales} {linePath} {groupByKey} />
             {:else}
                 <g class={['lines', className]}>
-                    {#each groupedLineData as lineData, i}
+                    {#each groupedLineData as lineData, i (i)}
                         {@const pathString = linePath(lineData)}
                         {#if pathString}
                             <GroupMultiple class={resolveProp(lineClass, lineData[0])}>

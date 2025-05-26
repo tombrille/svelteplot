@@ -1,3 +1,30 @@
+<!-- @component
+    Renders a horizontal axis with labels and tick marks
+-->
+<script module lang="ts">
+    export type AxisXMarkProps = Omit<
+        BaseMarkProps,
+        'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
+    > & {
+        data?: RawValue[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'top' | 'bottom';
+        interval?: string | number;
+        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number>;
+        tickPadding?: number;
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string>;
+    };
+</script>
+
 <script lang="ts">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
@@ -23,30 +50,11 @@
         ...getContext<Partial<DefaultOptions>>('svelteplot/_defaults')
     };
 
-    type AxisXProps = BaseMarkProps & {
-        data?: RawValue[];
-        automatic?: boolean;
-        title?: string;
-        anchor?: 'top' | 'bottom';
-        interval?: string | number;
-        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
-        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
-        tickSize?: number;
-        tickFontSize?: ConstantAccessor<number>;
-        tickPadding?: number;
-        tickFormat?:
-            | 'auto'
-            | Intl.DateTimeFormatOptions
-            | Intl.NumberFormatOptions
-            | ((d: RawValue) => string);
-        tickClass?: ConstantAccessor<string>;
-    };
-
     let {
         data = [],
         automatic = false,
         title,
-        anchor = DEFAULTS.axisXAnchor,
+        anchor = DEFAULTS.axisXAnchor as 'top' | 'bottom',
         facetAnchor = 'auto',
         interval,
         tickSize = DEFAULTS.tickSize,
@@ -55,17 +63,18 @@
         labelAnchor,
         tickFormat,
         tickClass,
+        class: className,
         ...options
-    }: AxisXProps = $props();
+    }: AxisXMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
-    let plot = $derived(getPlotState());
+    const plot = $derived(getPlotState());
 
-    let autoTickCount = $derived(
+    const autoTickCount = $derived(
         Math.max(3, Math.round(plot.facetWidth / plot.options.x.tickSpacing))
     );
 
-    let ticks: RawValue[] = $derived(
+    const ticks: RawValue[] = $derived(
         data.length > 0
             ? // use custom tick values if user passed any as prop
               data
@@ -103,12 +112,11 @@
                         }).format(d)
     );
 
-    let optionsLabel = $derived(plot.options?.x?.label);
+    const optionsLabel = $derived(plot.options?.x?.label);
+    const scaleType = $derived(plot.scales.x.type);
+    const isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
 
-    let scaleType = $derived(plot.scales.x.type);
-    let isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
-
-    let useTitle = $derived(
+    const useTitle = $derived(
         title ||
             (optionsLabel === null
                 ? null
@@ -123,28 +131,26 @@
                     : '')
     );
 
-    let useLabelAnchor = $derived(labelAnchor || plot.options?.x?.labelAnchor || 'auto');
-    let titleAlign = $derived(
+    const useLabelAnchor = $derived(labelAnchor || plot.options?.x?.labelAnchor || 'auto');
+    const titleAlign = $derived(
         useLabelAnchor === 'auto' ? (isQuantitative ? 'right' : 'center') : useLabelAnchor
     );
 
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
-    let { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
+    const { left, top, bottom, bottomEmpty, topEmpty } = $derived(getFacetState());
 
-    let useFacetAnchor = $derived(
+    const useFacetAnchor = $derived(
         facetAnchor !== 'auto' ? facetAnchor : anchor === 'bottom' ? 'bottom-empty' : 'top-empty'
     );
-    let showAxis = $state(false);
-    $effect.pre(() => {
-        showAxis =
-            useFacetAnchor === 'top'
-                ? top
-                : useFacetAnchor === 'bottom'
-                  ? bottom
-                  : useFacetAnchor === 'top-empty'
-                    ? topEmpty
-                    : bottomEmpty;
-    });
+    const showAxis = $derived(
+        useFacetAnchor === 'top'
+            ? top
+            : useFacetAnchor === 'bottom'
+              ? bottom
+              : useFacetAnchor === 'top-empty'
+                ? topEmpty
+                : bottomEmpty
+    );
 </script>
 
 <Mark

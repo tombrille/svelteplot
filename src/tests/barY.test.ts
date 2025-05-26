@@ -27,7 +27,13 @@ describe('BarY mark', () => {
         expect(barDims[2].h).toBe(barDims[0].h * 3);
         expect(barDims[3].h).toBe(barDims[0].h * 4);
         expect(barDims[4].h).toBe(barDims[0].h * 5);
-        expect(barDims.map(d => d.strokeWidth)).toStrictEqual(['1px', '2px', '3px', '4px', '5px']);
+        expect(barDims.map((d) => d.strokeWidth)).toStrictEqual([
+            '1px',
+            '2px',
+            '3px',
+            '4px',
+            '5px'
+        ]);
     });
 
     it('stacked bar chart', () => {
@@ -117,14 +123,14 @@ function getRectDims(rect: SVGRectElement) {
         h: Math.round(+rect.getAttribute('height')),
         fill: rect.style.fill,
         stroke: rect.style.stroke,
-        strokeWidth: rect.style.strokeWidth,
-    }
+        strokeWidth: rect.style.strokeWidth
+    };
 }
 
 function getPathDims(path: SVGPathElement) {
     const r = makeAbsolute(parseSVG(path.getAttribute('d')));
-    const x = r.flatMap(d => [d.x, d.x0, d.x1]).filter(x => x != null);
-    const y = r.flatMap(d => [d.y, d.y0, d.y1]).filter(y => y != null);
+    const x = r.flatMap((d) => [d.x, d.x0, d.x1]).filter((x) => x != null);
+    const y = r.flatMap((d) => [d.y, d.y0, d.y1]).filter((y) => y != null);
     const t = path
         ?.getAttribute('transform')
         ?.match(/translate\((\d+(?:\.\d+)?),(\d+(?:\.\d+)?)\)/);
@@ -136,6 +142,6 @@ function getPathDims(path: SVGPathElement) {
         h: Math.round(Math.max(...y) - Math.min(...y)),
         fill: path.style.fill,
         stroke: path.style.stroke,
-        strokeWidth: path.style.strokeWidth,
+        strokeWidth: path.style.strokeWidth
     };
 }

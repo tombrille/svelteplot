@@ -1,3 +1,31 @@
+<!-- @component
+    Renders a vertical axis with labels and tick marks
+-->
+<script module lang="ts">
+    export type AxisYMarkProps = Omit<
+        BaseMarkProps,
+        'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
+    > & {
+        data?: RawValue[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'left' | 'right';
+        facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
+        lineAnchor?: 'top' | 'center' | 'bottom';
+        interval?: string | number;
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number>;
+        tickPadding?: number;
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string>;
+    };
+</script>
+
 <script lang="ts">
     import { getContext } from 'svelte';
     import BaseAxisY from './helpers/BaseAxisY.svelte';
@@ -22,29 +50,11 @@
         ...getContext<Partial<DefaultOptions>>('svelteplot/_defaults')
     };
 
-    type AxisYProps = BaseMarkProps & {
-        data?: RawValue[];
-        automatic?: boolean;
-        title?: string;
-        anchor?: 'left' | 'right';
-        facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
-        lineAnchor?: 'top' | 'center' | 'bottom';
-        tickSize?: number;
-        tickFontSize?: ConstantAccessor<number>;
-        tickPadding?: number;
-        tickFormat?:
-            | 'auto'
-            | Intl.DateTimeFormatOptions
-            | Intl.NumberFormatOptions
-            | ((d: RawValue) => string);
-        tickClass?: ConstantAccessor<string>;
-    };
-
     let {
         data = [],
         automatic = false,
         title,
-        anchor = DEFAULTS.axisYAnchor,
+        anchor = DEFAULTS.axisYAnchor as 'left' | 'right',
         facetAnchor = 'auto',
         lineAnchor = 'center',
         tickSize = DEFAULTS.tickSize,
@@ -53,7 +63,7 @@
         tickFormat,
         tickClass,
         ...options
-    }: AxisYProps = $props();
+    }: AxisYMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -120,17 +130,15 @@
         facetAnchor !== 'auto' ? facetAnchor : anchor === 'left' ? 'left-empty' : 'right-empty'
     );
 
-    let showAxis = $state(false);
-    $effect.pre(() => {
-        showAxis =
-            useFacetAnchor === 'left'
-                ? left
-                : useFacetAnchor === 'right'
-                  ? right
-                  : useFacetAnchor === 'left-empty'
-                    ? leftEmpty
-                    : rightEmpty;
-    });
+    const showAxis = $state(
+        useFacetAnchor === 'left'
+            ? left
+            : useFacetAnchor === 'right'
+              ? right
+              : useFacetAnchor === 'left-empty'
+                ? leftEmpty
+                : rightEmpty
+    );
 </script>
 
 <Mark

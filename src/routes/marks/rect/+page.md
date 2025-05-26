@@ -133,6 +133,90 @@ RectY can be used for range annotations:
 
 ## Stacking
 
-```svelte live
+RectX marks can be stacked along the x dimension (over identical y1 values):
 
+```svelte live
+<script>
+    import { Plot, RectX } from 'svelteplot';
+
+    const data = [
+        {
+            width: 2.5,
+            height: 1,
+            category: 'A'
+        },
+        {
+            width: 3,
+            height: 4,
+            category: 'B'
+        },
+        {
+            width: 4,
+            height: 3,
+            category: 'C'
+        }
+    ];
+</script>
+
+<Plot height={300} color={{ legend: true }}>
+    <RectX
+        {data}
+        x="width"
+        y1={0}
+        y2="height"
+        fill="category"
+        insetRight={1} />
+</Plot>
 ```
+
+```svelte
+<Plot>
+    <RectX
+        {data}
+        x="width"
+        y1={0}
+        y2="height"
+        fill="category"
+        insetRight={1} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/9fe225752dbd43fdb00123dcf7bf9441?version=5)
+
+RectY marks can be stacked along y (over identical x1 values).
+
+```svelte live
+<script>
+    import { Plot, RectY } from 'svelteplot';
+
+    const data = [
+        { width: 2.5, height: 1, category: 'A' },
+        { width: 3, height: 4, category: 'B' },
+        { width: 4, height: 3, category: 'C' }
+    ];
+</script>
+
+<Plot height={300} color={{ legend: true }}>
+    <RectY
+        {data}
+        x1={0}
+        x2="width"
+        y="height"
+        fill="category"
+        insetBottom={1} />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <RectY
+        {data}
+        x1={0}
+        x2="width"
+        y="height"
+        fill="category"
+        insetBottom={1} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/4db4c6caea4f4329a30c1f18c46ea7d9?version=5)
