@@ -5,13 +5,13 @@ on:
         branches: [main]
 
 permissions:
-  contents: write
-  pull-requests: write
+    contents: write
+    pull-requests: write
 
 jobs:
     test:
         runs-on: ubuntu-latest
-        
+
         steps:
             - uses: actions/checkout@v4
 
@@ -32,7 +32,7 @@ jobs:
 
             - name: Run Vitest tests
               run: pnpm test
-              
+
     publish-preview:
         # Prevent this job from running on forks
         if: github.repository == 'svelteplot/svelteplot' && github.event.pull_request.draft == false
@@ -40,7 +40,7 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: npm
-            
+
         steps:
             - uses: actions/checkout@v4
 
@@ -55,7 +55,7 @@ jobs:
               with:
                   node-version: '22'
                   cache: 'pnpm'
-                  registry-url: "https://registry.npmjs.org"
+                  registry-url: 'https://registry.npmjs.org'
 
             - name: Install dependencies
               run: pnpm install
@@ -99,8 +99,6 @@ jobs:
 
                   echo "Generated version: $(node -p "require('./package.json').version")"
 
-
-
             - name: Publish to npm
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH }}
@@ -109,14 +107,14 @@ jobs:
             # Save version for use in PR comment
             - name: Save version
               run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-              
+
             - name: Comment on PR
               uses: peter-evans/create-or-update-comment@v3
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   body: |
                       📦 Preview package for this PR is published!
-                      
+
                       Version: `${{ env.PACKAGE_VERSION }}`
 
                       Install it with:
