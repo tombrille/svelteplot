@@ -7,21 +7,34 @@ on:
 jobs:
     publish-preview:
         runs-on: ubuntu-latest
+        
         permissions:
             contents: write
             issues: write
             pull-requests: write
+        
         steps:
             - uses: actions/checkout@v4
 
-            - name: Set up Node.js
+            runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 10
+                  run_install: false
+
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
-                  registry-url: 'https://registry.npmjs.org/'
+                  node-version: '22'
+                  cache: 'pnpm'
 
             - name: Install dependencies
-              run: pnpm i
+              run: pnpm install
 
             - name: Generate preview version
               run: |
