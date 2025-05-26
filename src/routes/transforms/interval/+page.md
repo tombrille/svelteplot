@@ -9,7 +9,6 @@ The interval transform is often used for time-series bar charts. For example, co
 ```svelte live
 <script lang="ts">
     import { Plot, BarY, RuleY } from 'svelteplot';
-    import type { Datasets } from '$lib/types.js';
 
     const DAY_MONTH = new Intl.DateTimeFormat('en-US', {
         day: 'numeric',
