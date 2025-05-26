@@ -30,6 +30,8 @@ jobs:
               run: pnpm test
               
     publish-preview:
+        # Prevent this job from running on forks
+        if: github.repository == 'svelteplot/svelteplot'
         needs: test
         runs-on: ubuntu-latest
         environment:
