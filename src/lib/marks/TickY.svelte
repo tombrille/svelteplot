@@ -1,3 +1,27 @@
+<!-- 
+    @component 
+    The TickY mark is useful for showing one-dimensional distributions along the y axis. The x axis must be a band scale.
+-->
+<script module lang="ts">
+    export type TickYMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
+        data: DataRow[];
+        /**
+         * the vertical position; bound to the x scale
+         */
+        y?: ChannelAccessor;
+        /**
+         * the horizontal position; bound to the x scale, which must be band. If the x channel
+         * is not specified, the tick will span the full horizontal extent of the frame.
+         */
+        x?: ChannelAccessor;
+        /**
+         * if ticks are used on a non-bandwidth scale, this will determine the
+         * length of the tick. Defaults to 10 pixel
+         */
+        tickLength?: ConstantAccessor<number>;
+    };
+</script>
+
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
@@ -17,25 +41,6 @@
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
-
-    type TickYMarkProps = BaseMarkProps & {
-        data: DataRow[];
-        /**
-         * the vertical position; bound to the x scale
-         */
-        y?: ChannelAccessor;
-        /**
-         * the horizontal position; bound to the x scale, which must be band. If the x channel
-         * is not specified, the tick will span the full horizontal extent of the frame.
-         */
-        x?: ChannelAccessor;
-        stroke?: ChannelAccessor;
-        /**
-         * if ticks are used on a non-bandwidth scale, this will determine the
-         * length of the tick. Defaults to 10 pixel
-         */
-        tickLength?: ConstantAccessor<number>;
-    };
 
     let { data = [{}], ...options }: TickYMarkProps = $props();
 
