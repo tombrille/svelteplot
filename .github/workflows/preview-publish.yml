@@ -7,7 +7,9 @@ on:
 jobs:
     publish-preview:
         runs-on: ubuntu-latest
-
+        environment:
+            name: npm
+            
         steps:
             - uses: actions/checkout@v4
 
@@ -32,8 +34,6 @@ jobs:
                   npm version prerelease --preid=pr-${pr_number} --no-git-tag-version
 
             - name: Publish to npm
-              environment:
-                  name: npm
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH }}
               run: npm publish --tag pr-${{ github.event.pull_request.number }} --access public
