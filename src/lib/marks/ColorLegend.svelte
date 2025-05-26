@@ -163,7 +163,8 @@
     .item,
     .item-label,
     .swatch {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
     }
     .item-label {
         vertical-align: super;
