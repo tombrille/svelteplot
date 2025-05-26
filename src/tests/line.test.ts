@@ -229,7 +229,6 @@ describe('Line mark', () => {
     });
 
     it('does not connect points from different groups', () => {
-
         const { container } = render(LineTest, {
             props: {
                 data: [
@@ -249,10 +248,9 @@ describe('Line mark', () => {
         ) as NodeListOf<SVGPathElement>;
         expect(lines).toHaveLength(3);
 
-        const ds = Array.from(lines).map(l => l.getAttribute('d'));
+        const ds = Array.from(lines).map((l) => l.getAttribute('d'));
         expect(ds[0]).toBe('M1,95L96,5');
         expect(ds[1]).toBe('M1,5Z');
         expect(ds[2]).toBe('M48.5,5Z');
-
-    })
+    });
 });

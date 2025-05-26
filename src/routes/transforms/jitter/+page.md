@@ -76,7 +76,6 @@ The jitter transform accepts the following options:
     - Useful for deterministic jittering (testing or reproducibility)
     - Can be used with d3's random generators: `randomLcg()` from d3-random
 
-
 ## jitterX
 
 Jitters along the x dimension:

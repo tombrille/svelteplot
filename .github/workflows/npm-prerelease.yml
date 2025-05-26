@@ -35,8 +35,7 @@ jobs:
               
     publish-preview:
         # Prevent this job from running on forks
-        if: github.repository == 'svelteplot/svelteplot'
-        if: github.event.pull_request.draft == false
+        if: github.repository == 'svelteplot/svelteplot' && github.event.pull_request.draft == false
         needs: test
         runs-on: ubuntu-latest
         environment:
