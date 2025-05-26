@@ -1,6 +1,18 @@
 <!-- @component
     Renders horizontal rule lines at specified y positions with customizable horizontal range
 -->
+<script module lang="ts">
+    export type RuleYMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
+        data: DataRecord[];
+        y?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        inset?: ConstantAccessor<number>;
+        insetLeft?: ConstantAccessor<number>;
+        insetRight?: ConstantAccessor<number>;
+    };
+</script>
+
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
@@ -14,18 +26,6 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-
-    type RuleYMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        y?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        inset?: ConstantAccessor<number>;
-        insetLeft?: ConstantAccessor<number>;
-        insetRight?: ConstantAccessor<number>;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
-    };
 
     let { data = [{}], class: className = null, ...options }: RuleYMarkProps = $props();
 

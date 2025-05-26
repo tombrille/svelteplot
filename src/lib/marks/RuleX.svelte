@@ -1,6 +1,18 @@
 <!-- @component
     Renders vertical rule lines at specified x positions with customizable vertical range
 -->
+<script module lang="ts">
+    export type RuleXMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
+        data: DataRecord[];
+        x?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+        inset?: ConstantAccessor<number>;
+        insetTop?: ConstantAccessor<number>;
+        insetBottom?: ConstantAccessor<number>;
+    };
+</script>
+
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
@@ -14,18 +26,6 @@
         ConstantAccessor,
         ChannelAccessor
     } from '../types.js';
-
-    type RuleXMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        x?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        inset?: ConstantAccessor<number>;
-        insetTop?: ConstantAccessor<number>;
-        insetBottom?: ConstantAccessor<number>;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
-    };
 
     let { data = [{}], class: className = null, ...options }: RuleXMarkProps = $props();
 
