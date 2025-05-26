@@ -1,6 +1,22 @@
 <!-- @component
     Creates connections between pairs of points with optional curve styling and markers
 -->
+<script lang="ts" module>
+    export type LinkMarkProps = BaseMarkProps &
+        MarkerOptions & {
+            data: DataRecord[];
+            sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+            x1: ChannelAccessor;
+            y1: ChannelAccessor;
+            x2: ChannelAccessor;
+            y2: ChannelAccessor;
+            curve?: 'auto' | CurveName | CurveFactory;
+            tension?: number;
+            text: ConstantAccessor<string>;
+            children?: Snippet;
+        };
+</script>
+
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {
@@ -25,20 +41,6 @@
     import { geoPath } from 'd3-geo';
     import { pick } from 'es-toolkit';
 
-    type LinkMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-        x1: ChannelAccessor;
-        y1: ChannelAccessor;
-        x2: ChannelAccessor;
-        y2: ChannelAccessor;
-        stroke?: ChannelAccessor;
-        curve?: 'auto' | CurveName | CurveFactory;
-        tension?: number;
-        text: ConstantAccessor<string>;
-        children?: Snippet;
-    } & MarkerOptions;
-
     let {
         data = [{}],
         curve = 'auto',
@@ -50,10 +52,6 @@
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
-
-    function isValid(value: RawValue): value is number | Date | string {
-        return value !== null && (typeof value === 'string' || !Number.isNaN(value));
-    }
 
     const sorted = $derived(
         options.sort
