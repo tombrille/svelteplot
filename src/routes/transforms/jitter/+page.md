@@ -76,13 +76,6 @@ The jitter transform accepts the following options:
     - Useful for deterministic jittering (testing or reproducibility)
     - Can be used with d3's random generators: `randomLcg()` from d3-random
 
-The following time interval strings are supported for temporal jittering:
-
-- `'1 day'`, `'3 days'`
-- `'1 week'`, `'2 weeks'`, `'3 weeks'`
-- `'1 month'`, `'2 months'`
-- `'1 quarter'`
-- `'1 year'`
 
 ## jitterX
 
