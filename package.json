@@ -1,6 +1,6 @@
 {
     "name": "svelteplot",
-    "version": "0.2.6-next.5",
+    "version": "0.2.6",
     "license": "ISC",
     "author": {
         "name": "Gregor Aisch",
