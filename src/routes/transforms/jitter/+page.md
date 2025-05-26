@@ -121,7 +121,7 @@ Jittering also works for temporal data. When jittering Date objects, random time
             }))
     );
 
-    let type = $state('uniform');
+    let type = $state('normal');
     let width = $state('1 month');
 
     const timeIntervals = [
@@ -163,6 +163,25 @@ Jittering also works for temporal data. When jittering Date objects, random time
 </Plot>
 ```
 
+```svelte
+<Plot y={{ grid: true }}>
+    <Dot
+        {...jitterX(
+            {
+                data,
+                x: 'year',
+                y: 'bmi'
+            },
+            {
+                type: 'normal',
+                std: '1 month'
+            }
+        )} />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/6938e854283d4e56893ceca748393f6f?version=5)
+
 This example shows how jittering can be applied to date values in the x-axis, which can be useful when multiple events occur at the same date and would otherwise overlap.
 
 ## Custom random sources
@@ -189,6 +208,8 @@ For reproducible jittering or specialized random distributions, you can provide 
     <Dot {...jitteredProps} />
 </Plot>
 ```
+
+[fork](https://svelte.dev/playground/ef02e12058354e53a9da72ae249ad359?version=5.30.2)
 
 This is particularly useful for:
 
