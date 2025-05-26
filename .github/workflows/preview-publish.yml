@@ -1,47 +1,47 @@
 name: Publish PR Preview Package
 
 on:
-  pull_request:
-    branches: [main]
-    
+    pull_request:
+        branches: [main]
+
 jobs:
-  publish-preview:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-    steps:
-    - uses: actions/checkout@v4
+    publish-preview:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        registry-url: 'https://registry.npmjs.org/'
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: 'https://registry.npmjs.org/'
 
-    - name: Install dependencies
-      run: pnpm i
+            - name: Install dependencies
+              run: pnpm i
 
-    - name: Generate preview version
-      run: |
-        pr_number=${{ github.event.pull_request.number }}
-        npm version prerelease --preid=pr-${pr_number} --no-git-tag-version
+            - name: Generate preview version
+              run: |
+                  pr_number=${{ github.event.pull_request.number }}
+                  npm version prerelease --preid=pr-${pr_number} --no-git-tag-version
 
-    - name: Publish to npm
-      environment:
-        name: npm
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH }}
-      run: npm publish --tag pr-${{ github.event.pull_request.number }} --access public
+            - name: Publish to npm
+              environment:
+                  name: npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH }}
+              run: npm publish --tag pr-${{ github.event.pull_request.number }} --access public
 
-    - name: Comment on PR
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        message: |
-          📦 Preview package for this PR is published!
+            - name: Comment on PR
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  message: |
+                      📦 Preview package for this PR is published!
 
-          Install it with:
-          ```bash
-          npm install svelteplot@pr-${{ github.event.pull_request.number }}
-          ```
+                      Install it with:
+                      ```bash
+                      npm install svelteplot@pr-${{ github.event.pull_request.number }}
+                      ```
