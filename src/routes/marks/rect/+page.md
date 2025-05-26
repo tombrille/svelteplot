@@ -219,4 +219,4 @@ RectY marks can be stacked along y (over identical x1 values).
 </Plot>
 ```
 
-[fork](https://svelte.dev/playground/4db4c6caea4f4329a30c1f18c46ea7d9?version=5.33.2)
+[fork](https://svelte.dev/playground/4db4c6caea4f4329a30c1f18c46ea7d9?version=5)
