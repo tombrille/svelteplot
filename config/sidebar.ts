@@ -82,6 +82,7 @@ export default {
                 { title: 'Filter', to: '/transforms/filter' },
                 { title: 'Group', to: '/transforms/group' },
                 { title: 'Interval', to: '/transforms/interval' },
+                { title: 'Jitter', to: '/transforms/jitter' },
                 { title: 'Map', to: '/transforms/map' },
                 { title: 'Normalize', to: '/transforms/normalize' },
                 { title: 'Select', to: '/transforms/select' },
