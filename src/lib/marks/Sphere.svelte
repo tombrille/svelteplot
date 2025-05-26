@@ -2,11 +2,11 @@
     Geo mark with Sphere geometry object  -->
 
 <script module lang="ts">
-    export let SphereMarkProps = BaseMarkProps;
+    import { type BaseMarkProps } from '$lib/types.js';
+    export type SphereMarkProps = BaseMarkProps;
 </script>
 
 <script lang="ts">
-    import { type BaseMarkProps } from '$lib/types.js';
     import Geo from './Geo.svelte';
 
     let { ...args }: SphereMarkProps = $props();
