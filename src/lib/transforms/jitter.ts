@@ -13,17 +13,28 @@ type JitterOptions = {
     width: number;
     /** standard deviation for normal jittering */
     std: number;
-}
+};
 
-export function jitterX({ data, ...channels }: TransformArg<DataRecord>, options: JitterOptions): TransformArg<DataRecord> {
+export function jitterX(
+    { data, ...channels }: TransformArg<DataRecord>,
+    options: JitterOptions
+): TransformArg<DataRecord> {
     return jitter('x', data, channels, options);
 }
 
-export function jitterY({ data, ...channels }: TransformArg<DataRecord>, options: JitterOptions): TransformArg<DataRecord> {
+export function jitterY(
+    { data, ...channels }: TransformArg<DataRecord>,
+    options: JitterOptions
+): TransformArg<DataRecord> {
     return jitter('y', data, channels, options);
 }
 
-export function jitter(channel: 'x' | 'y', data: DataRecord[], channels: Channels, options: JitterOptions): TransformArg<DataRecord> {
+export function jitter(
+    channel: 'x' | 'y',
+    data: DataRecord[],
+    channels: Channels,
+    options: JitterOptions
+): TransformArg<DataRecord> {
     if (channels[channel]) {
         const type = options?.type ?? 'uniform';
         const width = parseNumber(options?.width ?? 0.35);
@@ -33,21 +44,26 @@ export function jitter(channel: 'x' | 'y', data: DataRecord[], channels: Channel
         const random = type === 'uniform' ? randomUniform(-width, width) : randomNormal(0, std);
         const accKey = channel === 'x' ? JITTER_X : JITTER_Y;
         return {
-            data: data.map(row => {
+            data: data.map((row) => {
                 const value = resolveChannel(channel, row, channels);
                 return {
                     ...row,
-                    [accKey]: typeof value === 'number' ? value + random() : isDate(value) ? new Date(value.getTime() + random()) : value
-                }
+                    [accKey]:
+                        typeof value === 'number'
+                            ? value + random()
+                            : isDate(value)
+                              ? new Date(value.getTime() + random())
+                              : value
+                };
             }),
             ...channels,
             // point channel to new accessor symbol
             [channel]: accKey
-        }
+        };
     }
     return {
         data,
-        ...channels,
+        ...channels
     };
 }
 

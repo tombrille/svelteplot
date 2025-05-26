@@ -90,6 +90,7 @@ In case you want to use SveltePlot transforms outside of a Svelte project you ca
 ```js
 import { binX } from 'svelteplot/transforms';
 ```
+
 ## Available Transforms
 
 - [bin](/transforms/bin) - Groups data into discrete bins

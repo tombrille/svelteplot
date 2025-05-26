@@ -245,7 +245,7 @@ export function generalizeTimeInterval(interval, n) {
     if (duration % durationDay === 0 && durationDay < duration && duration < durationMonth) return; // not generalizable
     const [i] =
         tickIntervals[
-        bisector(([, step]) => Math.log(step)).center(tickIntervals, Math.log(duration * n))
+            bisector(([, step]) => Math.log(step)).center(tickIntervals, Math.log(duration * n))
         ];
     return (interval[intervalType] === 'time' ? maybeTimeInterval : maybeUtcInterval)(i);
 }
