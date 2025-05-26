@@ -21,7 +21,7 @@
         outlineStroke?: string;
         outlineStrokeWidth?: number;
         outlineStrokeOpacity?: number;
-        curve?: CurveName | CurveFactory;
+        curve?: CurveName | CurveFactory | 'auto';
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
         text?: ConstantAccessor<string>;
@@ -76,10 +76,6 @@
             if (groupValue === lastGroupValue) {
                 group.push(d);
             } else {
-                if (group.length === 1) {
-                    // just one point makes a bad line, add this one, too
-                    group.push(d);
-                }
                 // new group
                 group = [d];
                 groups.push(group);
