@@ -151,12 +151,12 @@ export type ScaleOptions = {
     base?: number;
     // sorting for band and point scales
     sort?:
-        | ChannelAccessor
-        | ((a: RawValue, b: RawValue) => number)
-        | {
-              channel: string;
-              order: 'ascending' | 'descending';
-          };
+    | ChannelAccessor
+    | ((a: RawValue, b: RawValue) => number)
+    | {
+        channel: string;
+        order: 'ascending' | 'descending';
+    };
     // symlog scales
     constant?: number;
 };
@@ -164,18 +164,18 @@ export type ScaleOptions = {
 export type ColorScaleOptions = ScaleOptions & {
     legend: boolean;
     type:
-        | ScaleType
-        | 'categorical'
-        | 'sequential'
-        | 'cyclical'
-        | 'threshold'
-        | 'quantile'
-        | 'quantize'
-        | 'diverging'
-        | 'diverging-log'
-        | 'diverging-pow'
-        | 'diverging-sqrt'
-        | 'diverging-symlog';
+    | ScaleType
+    | 'categorical'
+    | 'sequential'
+    | 'cyclical'
+    | 'threshold'
+    | 'quantile'
+    | 'quantize'
+    | 'diverging'
+    | 'diverging-log'
+    | 'diverging-pow'
+    | 'diverging-sqrt'
+    | 'diverging-symlog';
     scheme: string;
     /**
      * fallback color used for null/undefined
@@ -479,9 +479,9 @@ export type PlotScale = {
     uniqueScaleProps: Set<ChannelAccessor>;
     skip: Map<ScaledChannelName, Set<symbol>>;
     fn: ScaleLinear<RawValue, number> &
-        ScaleBand<RawValue> &
-        ScaleOrdinal<string | Date, number> &
-        ScaleOrdinal<string | Date, string>;
+    ScaleBand<RawValue> &
+    ScaleOrdinal<string | Date, number> &
+    ScaleOrdinal<string | Date, string>;
 };
 
 export type CurveName =
@@ -632,6 +632,20 @@ export type FacetContext = {
     getFacetState: () => FacetState;
 };
 
+export type LinkableMarkProps = {
+    /**
+         * simple browser tooltip to be displayed on mouseover
+         */
+    title: ConstantAccessor<string>;
+    /**
+     * if set, the mark element will be wrapped in a <a> link
+     * element
+     */
+    href: ConstantAccessor<string>;
+    target: ConstantAccessor<'_self' | '_blank' | string>;
+
+}
+
 export type BaseMarkProps = Partial<{
     /**
      * Filter the data without modifying the inferred scales
@@ -689,18 +703,8 @@ export type BaseMarkProps = Partial<{
     oncontextmenu?: MouseEventHandler<SVGPathElement>;
     onwheel?: MouseEventHandler<SVGPathElement>;
     /**
-     * simple browser tooltip to be displayed on mouseover
-     */
-    title: ConstantAccessor<string>;
-    /**
-     * if set, the mark element will be wrapped in a <a> link
-     * element
-     */
-    href: ConstantAccessor<string>;
-    target: ConstantAccessor<'_self' | '_blank' | string>;
-    /**
-     * if you want to give your mark element an extra CSS class
-     */
+    * if you want to give your mark element an extra CSS class
+    */
     class: string | null;
     cursor: ConstantAccessor<CSS.Property.Cursor>;
 }>;
@@ -708,11 +712,11 @@ export type BaseMarkProps = Partial<{
 export type BorderRadius =
     | number
     | {
-          topLeft?: number;
-          topRight?: number;
-          bottomRight?: number;
-          bottomLeft?: number;
-      };
+        topLeft?: number;
+        topRight?: number;
+        bottomRight?: number;
+        bottomLeft?: number;
+    };
 
 export type BaseRectMarkProps = {
     inset?: ConstantAccessor<number>;

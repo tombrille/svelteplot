@@ -14,7 +14,8 @@
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
         stack?: Partial<StackOptions>;
         canvas?: boolean;
-    } & BaseMarkProps;
+    } & BaseMarkProps &
+        LinkableMarkProps;
 </script>
 
 <script lang="ts">
@@ -37,7 +38,8 @@
         ConstantAccessor,
         ChannelAccessor,
         FacetContext,
-        ScaledDataRecord
+        ScaledDataRecord,
+        LinkableMarkProps
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
@@ -96,9 +98,6 @@
         }
         return groups;
     }
-
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
-    let testFacet = $derived(getTestFacet());
 </script>
 
 <Mark
@@ -115,6 +114,7 @@
             <GroupMultiple length={grouped.length}>
                 {#each grouped as areaData, i (i)}
                     {#snippet el(datum: ScaledDataRecord)}
+                        {@const title = resolveProp(options.title, datum.datum, '')}
                         {@const [style, styleClass] = resolveStyles(
                             plot,
                             datum,
@@ -126,7 +126,8 @@
                             class={['svelteplot-area', className, styleClass]}
                             clip-path={options.clipPath}
                             d={areaPath(areaData)}
-                            {style} />
+                            {style}
+                            >{#if title}<title>{title}</title>{/if}</path>
                     {/snippet}
                     {#if areaData.length > 0}
                         {#if options.href}
