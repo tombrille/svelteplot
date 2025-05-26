@@ -67,12 +67,15 @@ jobs:
               run: npm publish --tag pr-${{ github.event.pull_request.number }} --access public
 
             - name: Comment on PR
-              uses: marocchino/sticky-pull-request-comment@v2
+              uses: peter-evans/create-or-update-comment@v3
               with:
-                  message: |
+                  issue-number: ${{ github.event.pull_request.number }}
+                  body: |
                       📦 Preview package for this PR is published!
 
                       Install it with:
                       ```bash
                       npm install svelteplot@pr-${{ github.event.pull_request.number }}
                       ```
+                  reactions: '+1, rocket'
+                  edit-mode: replace
