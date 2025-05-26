@@ -65,19 +65,19 @@ jobs:
                   pr_number=${{ github.event.pull_request.number }}
 
                   # Get existing prerelease versions for this PR
-                  existing_versions=$(npm view svelteplot versions --json 2>/dev/null | grep -o "\"[0-9]*\.[0-9]*\.[0-9]*-pr-${pr_number}\.[0-9]*\"" || echo "")
+                  existing_versions=$(npm view svelteplot versions --json 2>/dev/null | grep -o "\"[0-9]*\.[0-9]*\.[0-9]*-pr-${pr_number}\.[0-9]*\"" | tr -d '"' || echo "")
 
                   if [ -n "$existing_versions" ]; then
                     # Get the highest existing prerelease version
-                    latest_version=$(echo $existing_versions | sed 's/,/\n/g' | sort -V | tail -n 1 | sed 's/"//g')
+                    latest_version=$(echo "$existing_versions" | sort -V | tail -n 1)
                     
-                    echo "Found existing prerelease version: $latest_version"
+                    echo "Found latest existing prerelease version: $latest_version"
                     
                     # Extract base version (before the `-pr-N.x` part)
-                    base_version=$(echo $latest_version | sed -E "s/-pr-${pr_number}\.[0-9]+//")
+                    base_version=$(echo "$latest_version" | sed -E "s/-pr-${pr_number}\.[0-9]+//")
                     
                     # Extract current prerelease number (the `.x` part)
-                    prerelease_num=$(echo $latest_version | sed -E "s/.*-pr-${pr_number}\.([0-9]+)$/\1/")
+                    prerelease_num=$(echo "$latest_version" | sed -E "s/.*-pr-${pr_number}\.([0-9]+)$/\1/")
                     
                     # Increment prerelease number
                     next_prerelease=$((prerelease_num + 1))
@@ -86,7 +86,6 @@ jobs:
                     
                     echo "Bumping to next prerelease version: $next_version"
                     
-                    # Set the package version
                     npm version "$next_version" --no-git-tag-version
                   else
                     # No existing prerelease, start fresh from current base version
