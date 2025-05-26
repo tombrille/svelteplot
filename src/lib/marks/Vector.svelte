@@ -1,3 +1,7 @@
+<!--
+    @component
+    The vector mark lets you place shapes (like arrows) on your plot.
+-->
 <script lang="ts" module>
     import type {
         PlotContext,
@@ -21,8 +25,6 @@
         r?: number;
         length?: ChannelAccessor;
         rotate?: ChannelAccessor;
-        fill?: ChannelAccessor;
-        stroke?: ChannelAccessor;
         /**
          * Controls where the vector is anchored in relation to the x, y position.
          * If set to 'start', the arrow will start at the x, y position. If set to
@@ -32,8 +34,6 @@
         anchor: 'start' | 'middle' | 'end';
         shape?: 'arrow' | 'spike' | 'arrow-filled' | ShapeRenderer;
         children?: Snippet;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
         canvas?: boolean;
     };
 </script>
