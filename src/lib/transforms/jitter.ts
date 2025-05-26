@@ -13,7 +13,7 @@ type JitterOptions = {
     width: number;
     /** standard deviation for normal jittering */
     std: number;
-    /** 
+    /**
      * optional random number source that produces values in range [0,1)
      * useful for testing with a deterministic source
      */
@@ -48,9 +48,10 @@ export function jitter(
 
         // Use the provided source or default to Math.random
         const rng = options?.source ?? Math.random;
-        const random = type === 'uniform'
-            ? randomUniform.source(rng)(-width, width)
-            : randomNormal.source(rng)(0, std);
+        const random =
+            type === 'uniform'
+                ? randomUniform.source(rng)(-width, width)
+                : randomNormal.source(rng)(0, std);
 
         const accKey = channel === 'x' ? JITTER_X : JITTER_Y;
         return {
@@ -62,8 +63,8 @@ export function jitter(
                         typeof value === 'number'
                             ? value + random()
                             : isDate(value)
-                                ? new Date(value.getTime() + random())
-                                : value
+                              ? new Date(value.getTime() + random())
+                              : value
                 };
             }),
             ...channels,

@@ -64,7 +64,7 @@ The jitter transform accepts the following options:
 - **type**: Distribution type, either `'uniform'` (default) or `'normal'`
 - **width**: Width of the uniform distribution (default: `0.35`); used when `type` is `'uniform'`
 - **std**: Standard deviation for the normal distribution (default: `0.15`); used when `type` is `'normal'`
-- **source**: Optional random number source that produces values in range [0,1). 
+- **source**: Optional random number source that produces values in range [0,1).
 
 ## jitterX
 
@@ -102,23 +102,39 @@ Jittering also works for temporal data. When jittering Date objects, random time
     let { bmi } = $derived(page.data.data);
 
     // Use a subset of the data for this example
-    const data = $derived(bmi.filter(d => d.year > 2018).map(d => ({ ...d, year: new Date(d.year,0,1)})));
+    const data = $derived(
+        bmi
+            .filter((d) => d.year > 2018)
+            .map((d) => ({
+                ...d,
+                year: new Date(d.year, 0, 1)
+            }))
+    );
 
     let type = $state('uniform');
     let width = $state('1 month');
 
-    const timeIntervals = ['1 day', '3 days', '1 week', '2 weeks', '3 weeks', '1 month', '2 months', '1 quarter', '1 year']
+    const timeIntervals = [
+        '1 day',
+        '3 days',
+        '1 week',
+        '2 weeks',
+        '3 weeks',
+        '1 month',
+        '2 months',
+        '1 quarter',
+        '1 year'
+    ];
 </script>
 
 <Select
     bind:value={type}
     options={['uniform', 'normal']}
     label="Distribution type" />
-     <Select
-        options={timeIntervals}
-        bind:value={width}
-        label={type === 'uniform' ? 'Width' : 'Std'}
-         />
+<Select
+    options={timeIntervals}
+    bind:value={width}
+    label={type === 'uniform' ? 'Width' : 'Std'} />
 
 <Plot inset={20} x={{ type: 'time' }} y={{ grid: true }}>
     <Dot
@@ -130,7 +146,8 @@ Jittering also works for temporal data. When jittering Date objects, random time
             },
             {
                 type,
-                [type === 'uniform' ? 'width' : 'std']: width,
+                [type === 'uniform' ? 'width' : 'std']:
+                    width
             }
         )} />
 </Plot>

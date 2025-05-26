@@ -69,10 +69,7 @@ describe('jitterX', () => {
 
         const data = [{ y: 5 }, { y: 10 }];
         // @ts-ignore - Bypassing type checking for tests
-        const result = jitterX(
-            { data, y: 'y' },
-            { source: mockRandom }
-        );
+        const result = jitterX({ data, y: 'y' }, { source: mockRandom });
 
         // The result should be the same as the input
         expect(result.data).toEqual(data);
@@ -85,17 +82,13 @@ describe('jitterX', () => {
 
         const data = [{ x: new Date(Date.UTC(2020, 0, 1)) }, { x: new Date(Date.UTC(2021, 0, 1)) }];
         // @ts-ignore - Bypassing type checking for tests
-        const result = jitterX(
-            { data, x: 'x' },
-            { source: mockRandom, width: '1 month' }
-        );
+        const result = jitterX({ data, x: 'x' }, { source: mockRandom, width: '1 month' });
 
         const { x } = result;
-        expect(result.data[0][x]).toBeTypeOf("object");
-        expect(result.data[0][x].getTime).toBeTypeOf("function");
+        expect(result.data[0][x]).toBeTypeOf('object');
+        expect(result.data[0][x].getTime).toBeTypeOf('function');
         expect(result.data[0][x]).toStrictEqual(new Date(Date.UTC(2020, 0, 16)));
     });
-
 });
 
 describe('jitterY', () => {
@@ -163,10 +156,7 @@ describe('jitterY', () => {
 
         const data = [{ x: 5 }, { x: 10 }];
         // @ts-ignore - Bypassing type checking for tests
-        const result = jitterY(
-            { data, x: 'x' },
-            { source: mockRandom }
-        );
+        const result = jitterY({ data, x: 'x' }, { source: mockRandom });
 
         // The result should be the same as the input
         expect(result.data).toEqual(data);
