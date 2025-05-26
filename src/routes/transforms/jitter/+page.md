@@ -2,9 +2,11 @@
 title: Jitter transform
 ---
 
-The **jitter transform** adds random noise to data points, which is useful for revealing overlapping points in scatter plots and reducing overplotting. This is particularly helpful when working with discrete or categorical data where many points might share the same coordinates.
+The **jitter transform** adds random noise to data points, which is useful for revealing overlapping points in scatter plots and reducing overplotting. 
 
-> **Note:** The jitter transform works in data coordinates. To jitter in screen coordinates, you can use the `dx` and `dy` mark properties instead.
+:::info
+**Note:** The jitter transform works in data coordinates. To jitter in screen coordinates, you can use the `dx` and `dy` mark properties instead.
+:::
 
 The jitter transform spreads out overlapping points by adding random noise. This makes it easier to see the distribution and density of points:
 
@@ -62,13 +64,29 @@ The jitter transform spreads out overlapping points by adding random noise. This
 The jitter transform accepts the following options:
 
 - **type**: Distribution type, either `'uniform'` (default) or `'normal'`
+  - `uniform`: Evenly distributed points within range [-width, width]
+  - `normal`: Normal distribution centered at 0 with standard deviation `std`
 - **width**: Width of the uniform distribution (default: `0.35`); used when `type` is `'uniform'`
+  - For numeric data: A number representing the range on either side of the original value
+  - For date data: A time interval string (e.g., `'1 month'`, `'2 weeks'`, `'3 days'`)
 - **std**: Standard deviation for the normal distribution (default: `0.15`); used when `type` is `'normal'`
-- **source**: Optional random number source that produces values in range [0,1).
+  - For numeric data: A number representing the standard deviation
+  - For date data: A time interval string (e.g., `'1 month'`, `'2 weeks'`, `'3 days'`)
+- **source**: Optional random number source that produces values in range [0,1)
+  - Useful for deterministic jittering (testing or reproducibility)
+  - Can be used with d3's random generators: `randomLcg()` from d3-random
+
+The following time interval strings are supported for temporal jittering:
+- `'1 day'`, `'3 days'`
+- `'1 week'`, `'2 weeks'`, `'3 weeks'`
+- `'1 month'`, `'2 months'` 
+- `'1 quarter'`
+- `'1 year'`
+
 
 ## jitterX
 
-Jitters along the x dimensio
+Jitters along the x dimension:
 
 ```svelte
 <Dot
@@ -80,7 +98,7 @@ Jitters along the x dimensio
 
 ## jitterY
 
-Jitters along the y dimension
+Jitters along the y dimension:
 
 ```svelte
 <Dot
@@ -90,7 +108,8 @@ Jitters along the y dimension
     )} />
 ```
 
-## Jittering with dates
+
+## Temporal jittering
 
 Jittering also works for temporal data. When jittering Date objects, random time offsets are added to each date value:
 
@@ -154,3 +173,33 @@ Jittering also works for temporal data. When jittering Date objects, random time
 ```
 
 This example shows how jittering can be applied to date values in the x-axis, which can be useful when multiple events occur at the same date and would otherwise overlap.
+
+## Custom random sources
+
+For reproducible jittering or specialized random distributions, you can provide a custom random source:
+
+```svelte
+<script>
+    import { Plot, Dot, jitterX } from 'svelteplot';
+    import { randomLcg } from 'd3-random';
+    
+    // Create a deterministic random source with a seed
+    const seed = 42;
+    const myRandomSource = randomLcg(seed);
+    
+    // This will produce the same jitter pattern every time
+    const jitteredProps = jitterX(
+        { data, x: 'value' },
+        { source: myRandomSource }
+    );
+</script>
+
+<Plot>
+    <Dot {...jitteredProps} />
+</Plot>
+```
+
+This is particularly useful for:
+- Testing and debugging visualizations
+- Creating reproducible figures for publications
+- Ensuring consistent visual appearance across renders
