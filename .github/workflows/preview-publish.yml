@@ -2,8 +2,8 @@ name: Publish PR Preview Package
 
 on:
   pull_request:
-    types: [opened, synchronize]
-
+    branches: [main]
+    
 jobs:
   publish-preview:
     runs-on: ubuntu-latest
