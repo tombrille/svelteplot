@@ -2,6 +2,20 @@
     @component
     For arbitrary rectangles, requires quantitative x and y scales 
 -->
+<script module lang="ts">
+    export type RectMarkProps = {
+        data: DataRecord[];
+        x?: ChannelAccessor;
+        x1?: ChannelAccessor;
+        x2?: ChannelAccessor;
+        y?: ChannelAccessor;
+        y1?: ChannelAccessor;
+        y2?: ChannelAccessor;
+        interval?: number | string;
+    } & BaseMarkProps &
+        BaseRectMarkProps;
+</script>
+
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
@@ -15,17 +29,6 @@
     } from '../types.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
-
-    type RectMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        x?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        interval?: number | string;
-    } & BaseRectMarkProps;
 
     let { data = [{}], class: className = 'rect', ...options }: RectMarkProps = $props();
 
