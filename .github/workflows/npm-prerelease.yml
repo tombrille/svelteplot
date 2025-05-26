@@ -1,4 +1,4 @@
-name: Publish PR Preview Package
+name: npm prerelease
 
 on:
     pull_request:
