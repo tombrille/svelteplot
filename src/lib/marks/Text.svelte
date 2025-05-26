@@ -1,26 +1,13 @@
-<script lang="ts">
-    import { getContext, type Snippet } from 'svelte';
-    import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type {
-        PlotContext,
-        DataRecord,
-        BaseMarkProps,
-        ConstantAccessor,
-        ChannelAccessor
-    } from '../types.js';
-    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import Mark from '../Mark.svelte';
-    import { sort } from '$lib/index.js';
-
-    type TextMarkProps = BaseMarkProps & {
+<!--
+    @component
+    Useful for adding SVG text labels to your plot.
+-->
+<script module lang="ts">
+    export type TextMarkProps = BaseMarkProps & {
         data: DataRecord[];
         x: ChannelAccessor;
         y: ChannelAccessor;
-        fill?: ChannelAccessor;
-        stroke?: ChannelAccessor;
         children?: Snippet;
-        dx?: ConstantAccessor<number>;
-        dy?: ConstantAccessor<number>;
         text: ConstantAccessor<string>;
         title?: ConstantAccessor<string>;
         /**
@@ -42,6 +29,21 @@
             | 'bottom-right'
         >;
     };
+</script>
+
+<script lang="ts">
+    import { getContext, type Snippet } from 'svelte';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
+    import type {
+        PlotContext,
+        DataRecord,
+        BaseMarkProps,
+        ConstantAccessor,
+        ChannelAccessor
+    } from '../types.js';
+    import { resolveProp, resolveStyles } from '../helpers/resolve.js';
+    import Mark from '../Mark.svelte';
+    import { sort } from '$lib/index.js';
 
     let { data = [{}], class: className = null, ...options }: TextMarkProps = $props();
 
