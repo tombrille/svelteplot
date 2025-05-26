@@ -7,7 +7,7 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackY } from '$lib/transforms/stack.js';
     import { recordizeY } from '$lib/transforms/recordize.js';
-    import type { DataRecord, BaseMarkProps, ChannelAccessor } from '../types.js';
+    import type { ChannelAccessor } from '../types.js';
 
     /**
      * AreaY mark foo

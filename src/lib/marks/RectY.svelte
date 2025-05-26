@@ -2,7 +2,7 @@
     Convenience wrapper for rectangles oriented along the x axis 
 -->
 <script module lang="ts">
-    export type RectYMarkProps = Omit<RectMarkProps, 'x'>;
+    export type RectYMarkProps = Omit<RectMarkProps, 'x'> & { stack?: Partial<StackOptions> };
 </script>
 
 <script lang="ts">
@@ -10,6 +10,7 @@
     import { intervalX, stackY, recordizeY } from '$lib/index.js';
     import type { PlotContext } from '../types.js';
     import { getContext } from 'svelte';
+    import type { StackOptions } from '$lib/transforms/stack';
 
     let { data = [{}], stack, ...options }: RectYMarkProps = $props();
 
