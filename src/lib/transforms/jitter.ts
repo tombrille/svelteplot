@@ -13,6 +13,11 @@ type JitterOptions = {
     width: number;
     /** standard deviation for normal jittering */
     std: number;
+    /** 
+     * optional random number source that produces values in range [0,1)
+     * useful for testing with a deterministic source
+     */
+    source?: () => number;
 };
 
 export function jitterX(
@@ -41,7 +46,12 @@ export function jitter(
         const std = parseNumber(options?.std ?? 0.15);
         // @todo support time interval strings as width/std parameters
 
-        const random = type === 'uniform' ? randomUniform(-width, width) : randomNormal(0, std);
+        // Use the provided source or default to Math.random
+        const rng = options?.source ?? Math.random;
+        const random = type === 'uniform'
+            ? randomUniform.source(rng)(-width, width)
+            : randomNormal.source(rng)(0, std);
+
         const accKey = channel === 'x' ? JITTER_X : JITTER_Y;
         return {
             data: data.map((row) => {
@@ -52,8 +62,8 @@ export function jitter(
                         typeof value === 'number'
                             ? value + random()
                             : isDate(value)
-                              ? new Date(value.getTime() + random())
-                              : value
+                                ? new Date(value.getTime() + random())
+                                : value
                 };
             }),
             ...channels,

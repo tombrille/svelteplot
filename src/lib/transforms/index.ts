@@ -19,6 +19,7 @@ export {
     selectMinY
 } from './select.js';
 export { shiftX, shiftY } from './shift.js';
+
 export { sort, shuffle, reverse } from './sort.js';
 export { stackX, stackY } from './stack.js';
 export { windowX, windowY } from './window.js';
