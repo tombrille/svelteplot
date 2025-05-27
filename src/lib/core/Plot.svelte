@@ -73,7 +73,7 @@
         locale: 'en-US',
         numberFormat: {
             style: 'decimal',
-            notation: 'compact',
+            // notation: 'compact',
             compactDisplay: 'short'
         },
         markerDotRadius: 3,

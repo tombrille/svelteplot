@@ -105,6 +105,10 @@
                   : // auto
                     (d: RawValue) =>
                         Intl.NumberFormat(plot.options.locale, {
+                            // use compact notation if range covers multipe magnitudes
+                            ...(new Set(ticks.map(Math.log10).map(Math.round)).size > 1
+                                ? { notation: 'compact' }
+                                : {}),
                             ...DEFAULTS.numberFormat,
                             style: plot.options.y.percent ? 'percent' : 'decimal'
                         }).format(d)

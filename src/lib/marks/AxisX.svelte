@@ -89,9 +89,9 @@
               )
     );
 
-    let tickFmt = $derived(tickFormat || plot.options.x.tickFormat);
+    const tickFmt = $derived(tickFormat || plot.options.x.tickFormat);
 
-    let useTickFormat = $derived(
+    const useTickFormat = $derived(
         typeof tickFmt === 'function'
             ? tickFmt
             : plot.scales.x.type === 'band' || plot.scales.x.type === 'point'
@@ -107,6 +107,10 @@
                   : // auto
                     (d: RawValue) =>
                         Intl.NumberFormat(plot.options.locale, {
+                            // use compact notation if range covers multipe magnitudes
+                            ...(new Set(ticks.map(Math.log10).map(Math.round)).size > 1
+                                ? { notation: 'compact' }
+                                : {}),
                             ...DEFAULTS.numberFormat,
                             style: plot.options.x.percent ? 'percent' : 'decimal'
                         }).format(d)
