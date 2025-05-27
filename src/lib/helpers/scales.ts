@@ -320,11 +320,13 @@ export function createScale<T extends ScaleOptions>(
 
     if (scaleOptions.interval) {
         if (isOrdinal) {
-            domain = domainFromInterval(domain, scaleOptions.interval);
+            domain = domainFromInterval(domain, scaleOptions.interval, name);
         } else {
-            throw new Error(
-                'Setting interval via axis options is only supported for ordinal scales'
-            );
+            if (markTypes.size > 0) {
+                console.warn(
+                    'Setting interval via axis options is only supported for ordinal scales'
+                );
+            }
         }
     }
 
@@ -361,10 +363,11 @@ export function createScale<T extends ScaleOptions>(
     };
 }
 
-function domainFromInterval(domain: RawValue[], interval: string | number) {
+function domainFromInterval(domain: RawValue[], interval: string | number, name: ScaleName) {
     const interval_ = maybeInterval(interval);
     const [lo, hi] = extent(domain);
-    return interval_.range(lo, interval_.offset(hi));
+    const out = interval_.range(lo, interval_.offset(hi));
+    return name === 'y' ? out.toReversed() : out;
 }
 
 /**
