@@ -151,6 +151,31 @@ The `BarY` component renders vertical bars (columns), typically used with a band
 
 Additionally, `BarY` supports all common styling properties like `fill`, `stroke`, `opacity`, etc.
 
+```svelte live
+<script>
+    import { Plot, BarY, RuleY } from 'svelteplot';
+    const data = [
+        { year: 2019, value: 20 },
+        { year: 2020, value: 24 },
+        { year: 2021, value: 32 },
+        { year: 2022, value: 39 },
+        { year: 2024, value: 56 }
+    ];
+</script>
+
+<Plot height={250}>
+    <BarY {data} x="year" y="value" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
+```svelte
+<Plot>
+    <BarY {data} x="year" y="value" />
+    <RuleY data={[0]} />
+</Plot>
+```
+
 [fork](https://svelte.dev/playground/8b9fb6c1946d4579a3dc9da32f6c983c?version=5)
 
 ## Insets

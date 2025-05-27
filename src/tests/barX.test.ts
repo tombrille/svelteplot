@@ -84,6 +84,67 @@ describe('BarX mark', () => {
         // // check that bar length match data
         expect(barDims.map((d) => d.w)).toStrictEqual([1, 2, 3, 4, 5].map((m) => barDims[0].w * m));
     });
+
+    const timeseries = [
+        { year: 2019, value: 1 },
+        { year: 2020, value: 2 },
+        { year: 2021, value: 3 },
+        { year: 2022, value: 4 },
+        { year: 2024, value: 5 }
+    ];
+
+    it('skips missing years in band scale domain', () => {
+        const { container } = render(BarXTest, {
+            props: {
+                plotArgs: {
+                    height: 200,
+                    axes: true
+                },
+                barArgs: {
+                    data: timeseries,
+                    x: 'value',
+                    y: 'year'
+                }
+            }
+        });
+
+        const bars = container.querySelectorAll('g.bar-x > rect') as NodeListOf<SVGRectElement>;
+        expect(bars.length).toBe(5);
+
+        const yAxisLabels = container.querySelectorAll(
+            'g.axis-y .tick text'
+        ) as NodeListOf<SVGGElement>;
+        expect(yAxisLabels.length).toBe(5);
+        const labels = Array.from(yAxisLabels).map((d) => d.textContent);
+        expect(labels.sort()).toStrictEqual(['2019', '2020', '2021', '2022', '2024']);
+    });
+
+    it('includes missing years in band scale domain if interval is set', () => {
+        const { container } = render(BarXTest, {
+            props: {
+                plotArgs: {
+                    height: 200,
+                    axes: true,
+                    y: { interval: 1 }
+                },
+                barArgs: {
+                    data: timeseries,
+                    x: 'value',
+                    y: 'year'
+                }
+            }
+        });
+
+        const bars = container.querySelectorAll('g.bar-x > rect') as NodeListOf<SVGRectElement>;
+        expect(bars.length).toBe(5);
+
+        const yAxisLabels = container.querySelectorAll(
+            'g.axis-y .tick text'
+        ) as NodeListOf<SVGGElement>;
+        expect(yAxisLabels.length).toBe(6);
+        const labels = Array.from(yAxisLabels).map((d) => d.textContent);
+        expect(labels.sort()).toEqual(['2019', '2020', '2021', '2022', '2023', '2024']);
+    });
 });
 
 function getRectDims(rect: SVGRectElement) {
