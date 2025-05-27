@@ -29,6 +29,7 @@ import type {
 import isDataRecord from './isDataRecord.js';
 
 import { createProjection } from './projection.js';
+import { maybeInterval } from './autoTicks.js';
 
 /**
  * compute the plot scales
@@ -302,7 +303,7 @@ export function createScale<T extends ScaleOptions>(
     const valueArray =
         type === 'quantile' || type === 'quantile-cont' ? allDataValues.toSorted() : valueArr;
 
-    const domain = scaleOptions.domain
+    let domain = scaleOptions.domain
         ? isOrdinal
             ? scaleOptions.domain
             : extent(scaleOptions.zero ? [0, ...scaleOptions.domain] : scaleOptions.domain)
@@ -316,6 +317,18 @@ export function createScale<T extends ScaleOptions>(
               ? valueArray.toReversed()
               : valueArray
           : extent(scaleOptions.zero ? [0, ...valueArray] : valueArray);
+
+    if (scaleOptions.interval) {
+        if (isOrdinal) {
+            domain = domainFromInterval(domain, scaleOptions.interval, name);
+        } else {
+            if (markTypes.size > 0) {
+                console.warn(
+                    'Setting interval via axis options is only supported for ordinal scales'
+                );
+            }
+        }
+    }
 
     if (!scaleOptions.scale) {
         throw new Error(`No scale function defined for ${name}`);
@@ -348,6 +361,13 @@ export function createScale<T extends ScaleOptions>(
                   ? `${[...propNames.values()][0]}${type === 'log' ? ' (log)' : ''}`
                   : null
     };
+}
+
+function domainFromInterval(domain: RawValue[], interval: string | number, name: ScaleName) {
+    const interval_ = maybeInterval(interval);
+    const [lo, hi] = extent(domain);
+    const out = interval_.range(lo, interval_.offset(hi));
+    return name === 'y' ? out.toReversed() : out;
 }
 
 /**
