@@ -2,7 +2,85 @@
 title: Rect mark
 ---
 
-The Rect mark can be used to add rectangles to the plot, defined by x1, y1, x2, and y2 coordinates:
+The Rect mark can be used to add rectangles to the plot, defined by x1, y1, x2, and y2 coordinates. It is useful in cases where both the x and y axis are using quantitative scales.
+
+:::tip
+**Tip:** If one of your axes is a band scale, you may want to use the [Bar](/marks/bar) marks instead, and if both axes are band scales you probably need the [Cell](/marks/cell) mark.
+:::
+
+In it's purest form, the `<Rect>` mark will just add rectangles at the given coordinates:
+
+```svelte live
+<script>
+    import { Plot, Rect, Text } from 'svelteplot';
+
+    const data = [
+        {
+            x1: 10,
+            x2: 15,
+            y1: 5,
+            y2: 9
+        },
+        {
+            x1: 7,
+            x2: 12,
+            y1: 7,
+            y2: 13
+        }
+    ];
+</script>
+
+<Plot grid inset={10}>
+    <Rect
+        {data}
+        x1="x1"
+        x2="x2"
+        y1="y1"
+        y2="y2"
+        stroke="currentColor"
+        fill="currentColor"
+        fillOpacity={0.5} />
+</Plot>
+```
+
+```svelte
+<Plot grid inset={10}>
+    <Rect {data} x1="x1" x2="x2" y1="y1" y2="y2" />
+</Plot>
+```
+
+[fork](https://svelte.dev/playground/7a6b0ae12c624ffeb52448adac644b5b?version=5)
+
+If your data does not come with x1/x2 and y1/y2 pairs but x/y coordinates, you can use the implicit interval transform:
+
+```svelte live
+<script>
+    import { Plot, Rect, Text } from 'svelteplot';
+
+    const data = [
+        { x: 1, y1: 5, y2: 8 },
+        { x: 3, y1: 7, y2: 11 }
+    ];
+</script>
+
+<Plot grid inset={10}>
+    <Rect
+        {data}
+        x="x"
+        y1="y1"
+        y2="y2"
+        interval={1}
+        stroke="currentColor"
+        fill="currentColor"
+        fillOpacity={0.5} />
+</Plot>
+```
+
+```svelte
+<Plot grid inset={10}>
+    <Rect {data} x="x" y="y" interval={1} />
+</Plot>
+```
 
 The interval transform may be used to convert a single value in x or y (or both) into an extent. For example, the chart below shows the observed daily maximum temperature in Seattle for the year 2015. The day-in-month and month-in-year numbers are expanded to unit intervals by setting the [interval option](/transforms/interval) to 1.
 
@@ -54,6 +132,8 @@ The interval transform may be used to convert a single value in x or y (or both)
         inset="0.5" />
 </Plot>
 ```
+
+## Rect
 
 ## RectX
 
