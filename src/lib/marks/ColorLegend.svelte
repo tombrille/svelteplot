@@ -129,7 +129,7 @@
                 marginBottom={20}
                 height={38}
                 inset={0}
-                x={{ domain, tickSpacing, tickFormat }}>
+                x={{ domain, tickSpacing: 30, tickFormat }}>
                 <defs>
                     <linearGradient id="gradient-{randId}" x2="1">
                         {#each ticks as t (t)}
