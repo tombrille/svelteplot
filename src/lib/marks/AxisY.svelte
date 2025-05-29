@@ -2,6 +2,7 @@
     Renders a vertical axis with labels and tick marks
 -->
 <script module lang="ts">
+    import type { XOR } from 'ts-essentials';
     export type AxisYMarkProps = Omit<
         BaseMarkProps,
         'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
@@ -23,7 +24,16 @@
             | Intl.NumberFormatOptions
             | ((d: RawValue) => string);
         tickClass?: ConstantAccessor<string>;
-    };
+    } & XOR<
+            {
+                /** approximate number of ticks to be generated */
+                tickCount?: number;
+            },
+            {
+                /** approximate number of pixels between generated ticks */
+                tickSpacing?: number;
+            }
+        >;
 </script>
 
 <script lang="ts">
@@ -62,6 +72,8 @@
         tickPadding = DEFAULTS.tickPadding,
         tickFormat,
         tickClass,
+        tickCount,
+        tickSpacing,
         ...options
     }: AxisYMarkProps = $props();
 
@@ -69,7 +81,11 @@
     const plot = $derived(getPlotState());
 
     const autoTickCount = $derived(
-        Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
+        tickCount != null
+            ? tickCount
+            : tickSpacing != null
+              ? Math.max(3, Math.round(plot.facetWidth / tickSpacing))
+              : Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
     );
 
     const ticks: RawValue[] = $derived(

@@ -260,6 +260,8 @@ You can explicitly add an x axis using the `AxisX` mark component. The `AxisX` c
 - `tickSize` - size of the tick marks in pixels (default: 6)
 - `tickFontSize` - font size for tick labels (default: 11)
 - `tickPadding` - padding between tick lines and labels (default: 3)
+- `tickSpacing` - approximate pixel space between generated ticks
+- `tickCount` - approximate number of ticks to generate
 - `tickFormat` - custom formatter for tick labels (can be 'auto', Intl.DateTimeFormatOptions, Intl.NumberFormatOptions, or custom function)
 - `tickClass` - function to assign custom classes to ticks based on their values
 - `automatic` - internal flag, set to true for implicit axes
@@ -280,6 +282,8 @@ The `AxisY` component provides extensive customization options for y-axis presen
 - `tickSize` - size of the tick marks in pixels (default: 6)
 - `tickFontSize` - font size for tick labels (default: 11)
 - `tickPadding` - padding between tick lines and labels (default: 3)
+- `tickSpacing` - approximate pixel space between generated ticks
+- `tickCount` - approximate number of ticks to generate
 - `tickFormat` - custom formatter for tick labels (can be 'auto', Intl.DateTimeFormatOptions, Intl.NumberFormatOptions, or custom function)
 - `tickClass` - function to assign custom classes to ticks based on their values
 - `automatic` - internal flag, set to true for implicit axes
