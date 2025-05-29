@@ -302,8 +302,6 @@ export function createScale<T extends ScaleOptions>(
         valueArr.sort(ascending);
     }
 
-    console.log({ valueArr, isOrdinal, sortOrdinalDomain });
-
     const valueArray =
         type === 'quantile' || type === 'quantile-cont' ? allDataValues.toSorted() : valueArr;
 
