@@ -94,7 +94,7 @@ const takeScreenshot = async (page, urlPath, outputPath, isDarkMode = false) => 
     const finalOutputPath = outputPath.replace('.png', `${themeSuffix}.png`);
 
     // Wait for the Plot component to be rendered
-    await page.waitForSelector('.svelteplot', { timeout: 10000 });
+    await page.waitForSelector('.content > figure.svelteplot', { timeout: 10000 });
 
     // Toggle dark mode if needed
     if (isDarkMode) {
@@ -112,7 +112,7 @@ const takeScreenshot = async (page, urlPath, outputPath, isDarkMode = false) => 
 
     // Get the Plot SVG element
     const elementHandle = await page.evaluateHandle(() =>
-        document.querySelector('.svelteplot svg')
+        document.querySelector('.content > figure.svelteplot > .plot-body > svg')
     );
 
     // Take a screenshot of the element

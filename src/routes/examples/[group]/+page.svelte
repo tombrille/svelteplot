@@ -5,6 +5,7 @@
     const { isDark } = getContext(SVELTEPRESS_CONTEXT_KEY);
 
     import { getContext } from 'svelte';
+    import ExamplesGrid from 'svelteplot/ui/ExamplesGrid.svelte';
 
     const pages = import.meta.glob('../**/*.svelte', { eager: true });
 
@@ -24,6 +25,21 @@
     const subPages = $derived(
         Object.keys(pages).filter((d) => d.replace(/^..\//, '').startsWith(`${page.params.group}/`))
     );
+
+    const examples = $derived(
+        subPages
+            .filter((page) => !page.endsWith('/_index.svelte'))
+            .map((page) => ({
+                page,
+                title: pages[page].title,
+                url: `/examples/${page.replace(/^..\//, './').replace('.svelte', '')}`,
+                screenshot: screenshots[
+                    page
+                        .replace(/^..\//, '/static/examples/')
+                        .replace('.svelte', $isDark ? '.dark.png' : '.png')
+                ]?.replace('/static', '')
+            }))
+    );
 </script>
 
 {#if subPages.length}
@@ -31,77 +47,8 @@
         <a href="/examples">Examples</a>
         <indexMod.default />
 
-        <div class="list">
-            {#each subPages as page, i (i)}
-                {#if !page.endsWith('/_index.svelte')}
-                    {@const url = `/examples/${page.replace(/^..\//, './').replace('.svelte', '')}`}
-                    {@const screenshotUrl = page
-                        .replace(/^..\//, '/static/examples/')
-                        .replace('.svelte', $isDark ? '.dark.png' : '.png')}
-                    <div>
-                        {#if screenshots[screenshotUrl]}
-                            <a href={url}
-                                ><img
-                                    src={screenshots[screenshotUrl].replace('/static', '')}
-                                    alt={pages[page].title} /></a
-                            >{/if}
-                        <h4>
-                            <a href={url}>{pages[page].title}</a>
-                        </h4>
-                    </div>
-                {/if}
-            {/each}
-        </div>
+        <ExamplesGrid {examples} />
     {/if}
 {:else}
     <h2>Not found</h2>
 {/if}
-
-<style>
-    .list {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-        width: 100%;
-        margin: 2rem 0;
-    }
-
-    .list > div {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        row-gap: 0.3rem;
-
-        > a {
-            border: 1px solid #88888822;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            padding: 1.5ex;
-        }
-
-        &:hover {
-            > a {
-                border: 1px solid currentColor;
-            }
-            h4 a {
-                text-decoration: underline;
-            }
-        }
-    }
-
-    .list img {
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 3px;
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .list h4 {
-        margin: 0rem;
-        font-weight: normal;
-        font-size: 13px;
-        line-height: 1;
-        > a {
-            text-decoration: none;
-        }
-    }
-</style>

@@ -7,6 +7,7 @@ export const load: PageLoad = async ({ fetch }) => {
     return {
         data: {
             world: await loadJSON(fetch, 'countries-110m'),
+            us: await loadJSON(fetch, 'us-counties-10m'),
             ...(await loadDatasets(
                 [
                     'aapl',
@@ -20,6 +21,7 @@ export const load: PageLoad = async ({ fetch }) => {
                     'tdf',
                     'rightwing',
                     'stocks',
+                    'unemployment',
                     'sftemp'
                 ],
                 fetch
