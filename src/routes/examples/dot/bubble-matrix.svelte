@@ -8,7 +8,12 @@
     let { penguins } = $derived(page.data.data);
 </script>
 
-<Plot marginLeft={60} height={240} grid color={{ legend: true }} r={{ range: [0, 40] }}>
+<Plot
+    marginLeft={60}
+    height={240}
+    grid
+    color={{ legend: true }}
+    r={{ range: [0, 40] }}>
     <Dot
         {...group(
             {
