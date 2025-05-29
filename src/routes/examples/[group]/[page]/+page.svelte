@@ -31,6 +31,7 @@
 </script>
 
 <svelte:head>
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html $isDark ? codeStyleDark : codeStyleLight}
 </svelte:head>
 
@@ -40,6 +41,7 @@
         <a href="/examples/{page.params.group}">{pages[parentPage].title}</a>
     </div>
     <h1 class="page-title">{mod.title}</h1>
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {#if mod.description}<p>{@html mod.description}</p>{/if}
     <mod.default />
 
