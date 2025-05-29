@@ -1,6 +1,7 @@
 <script module>
     export const title = 'Simple line';
-    export const description = "The classic line chart example you've seen a million times.";
+    export const description =
+        "The classic line chart example you've seen a million times.";
 </script>
 
 <script lang="ts">

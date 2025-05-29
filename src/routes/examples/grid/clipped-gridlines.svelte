@@ -1,10 +1,17 @@
 <script module>
     export const title = 'Clipped grid lines';
-    export const description = 'You can use an area mark as clipping path for grid lines';
+    export const description =
+        'You can use an area mark as clipping path for grid lines';
 </script>
 
 <script>
-    import { Plot, AreaY, Line, GridX, RuleY } from 'svelteplot';
+    import {
+        Plot,
+        AreaY,
+        Line,
+        GridX,
+        RuleY
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

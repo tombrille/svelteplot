@@ -3,7 +3,11 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Line, LinearGradientX } from 'svelteplot';
+    import {
+        Plot,
+        Line,
+        LinearGradientX
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>
@@ -28,5 +32,9 @@
                 }
             ]} />
     </defs>
-    <Line data={aapl} x="Date" y="Close" stroke="url(#gradient-line-x)" />
+    <Line
+        data={aapl}
+        x="Date"
+        y="Close"
+        stroke="url(#gradient-line-x)" />
 </Plot>

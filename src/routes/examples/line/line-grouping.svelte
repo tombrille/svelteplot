@@ -9,5 +9,9 @@
 </script>
 
 <Plot color={{ scheme: 'rainbow' }}>
-    <Line data={aapl} x="Date" y="Close" stroke={(d) => d.Date.getFullYear()} />
+    <Line
+        data={aapl}
+        x="Date"
+        y="Close"
+        stroke={(d) => d.Date.getFullYear()} />
 </Plot>

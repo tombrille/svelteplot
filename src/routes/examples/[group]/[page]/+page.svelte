@@ -9,7 +9,9 @@
 
     import { getContext } from 'svelte';
 
-    const pages = import.meta.glob('../../**/*.svelte', { eager: true });
+    const pages = import.meta.glob('../../**/*.svelte', {
+        eager: true
+    });
     const pagesSrc = import.meta.glob('../../**/*.svelte', {
         eager: true,
         query: '?raw',
@@ -19,13 +21,23 @@
     const parentPage = $derived(
         Object.keys(pages).find(
             (d) =>
-                d.replace(/^..\/..\//, '').replace('.svelte', '') === `${page.params.group}/_index`
+                d
+                    .replace(/^..\/..\//, '')
+                    .replace('.svelte', '') ===
+                `${page.params.group}/_index`
         )
     );
 
-    const key = $derived(`${page.params.group}/${page.params.page}`);
+    const key = $derived(
+        `${page.params.group}/${page.params.page}`
+    );
     const plotKey = $derived(
-        Object.keys(pages).find((d) => d.replace(/^..\/..\//, '').replace('.svelte', '') === key)
+        Object.keys(pages).find(
+            (d) =>
+                d
+                    .replace(/^..\/..\//, '')
+                    .replace('.svelte', '') === key
+        )
     );
     const mod = $derived(plotKey ? pages[plotKey] : null);
 </script>
@@ -38,7 +50,8 @@
 {#if plotKey}
     <div class="breadcrumb">
         <a href="/examples">Examples</a> <span>/</span>
-        <a href="/examples/{page.params.group}">{pages[parentPage].title}</a>
+        <a href="/examples/{page.params.group}"
+            >{pages[parentPage].title}</a>
     </div>
     <h1 class="page-title">{mod.title}</h1>
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -49,7 +62,9 @@
         <div class="svp-code-block">
             <HighlightSvelte
                 lang="svelte"
-                code={pagesSrc[plotKey].substring(pagesSrc[plotKey].indexOf('<Plot'))} />
+                code={pagesSrc[plotKey].substring(
+                    pagesSrc[plotKey].indexOf('<Plot')
+                )} />
         </div>
     </div>
 {:else}

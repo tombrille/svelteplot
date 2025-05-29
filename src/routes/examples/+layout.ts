@@ -16,6 +16,7 @@ export const load: PageLoad = async ({ fetch }) => {
                     'co2',
                     'crimea',
                     'driving',
+                    'penguins',
                     'riaa',
                     'stateage',
                     'tdf',

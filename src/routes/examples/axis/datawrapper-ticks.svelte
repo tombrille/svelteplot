@@ -4,7 +4,13 @@
 </script>
 
 <script>
-    import { Plot, AxisX, Line, GridX, RuleY } from 'svelteplot';
+    import {
+        Plot,
+        AxisX,
+        Line,
+        GridX,
+        RuleY
+    } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

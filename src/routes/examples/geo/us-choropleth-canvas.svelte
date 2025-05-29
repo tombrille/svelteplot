@@ -1,6 +1,7 @@
 <script module>
     export const title = 'US choropleth map (canvas)';
-    export const description = 'See also the <a href="/examples/geo/us-choropleth">SVG version</a>';
+    export const description =
+        'See also the <a href="/examples/geo/us-choropleth">SVG version</a>';
 </script>
 
 <script>
@@ -10,17 +11,21 @@
     import { page } from '$app/state';
 
     const { us, unemployment } = $derived(page.data.data);
-    const rateMap = $derived(new Map(unemployment.map((d) => [d.id, +d.rate])));
+    const rateMap = $derived(
+        new Map(unemployment.map((d) => [d.id, +d.rate]))
+    );
     const counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: {
-                    ...feat.properties,
-                    unemployment: rateMap.get(+feat.id)
-                }
-            };
-        })
+        topojson
+            .feature(us, us.objects.counties)
+            .features.map((feat) => {
+                return {
+                    ...feat,
+                    properties: {
+                        ...feat.properties,
+                        unemployment: rateMap.get(+feat.id)
+                    }
+                };
+            })
     );
 </script>
 
@@ -33,5 +38,8 @@
         n: 5,
         type: 'quantile'
     }}>
-    <Geo canvas data={counties} fill={(d) => d.properties.unemployment} />
+    <Geo
+        canvas
+        data={counties}
+        fill={(d) => d.properties.unemployment} />
 </Plot>

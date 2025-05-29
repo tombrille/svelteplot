@@ -11,17 +11,21 @@
     import { page } from '$app/state';
 
     const { us, unemployment } = $derived(page.data.data);
-    const rateMap = $derived(new Map(unemployment.map((d) => [d.id, +d.rate])));
+    const rateMap = $derived(
+        new Map(unemployment.map((d) => [d.id, +d.rate]))
+    );
     const counties = $derived(
-        topojson.feature(us, us.objects.counties).features.map((feat) => {
-            return {
-                ...feat,
-                properties: {
-                    ...feat.properties,
-                    unemployment: rateMap.get(+feat.id)
-                }
-            };
-        })
+        topojson
+            .feature(us, us.objects.counties)
+            .features.map((feat) => {
+                return {
+                    ...feat,
+                    properties: {
+                        ...feat.properties,
+                        unemployment: rateMap.get(+feat.id)
+                    }
+                };
+            })
     );
 </script>
 
@@ -37,5 +41,6 @@
     <Geo
         data={counties}
         fill={(d) => d.properties.unemployment}
-        title={(d) => `${d.properties.name}\n${d.properties.unemployment}%`} />
+        title={(d) =>
+            `${d.properties.name}\n${d.properties.unemployment}%`} />
 </Plot>
