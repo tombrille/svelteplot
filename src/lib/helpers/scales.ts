@@ -183,7 +183,9 @@ export function createScale<T extends ScaleOptions>(
         // we're deliberately checking for !== undefined and not for != null
         // since the explicit sort transforms like shuffle will set the
         // sort channel to null to we know that there's an explicit order
-        if (mark.channels.sort !== undefined) sortOrdinalDomain = false;
+        if (name === 'x' && mark.options.sort != null) {
+            sortOrdinalDomain = false;
+        }
         for (const channel of mark.channels) {
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
@@ -299,6 +301,8 @@ export function createScale<T extends ScaleOptions>(
     if (isOrdinal && sortOrdinalDomain) {
         valueArr.sort(ascending);
     }
+
+    console.log({ valueArr, isOrdinal, sortOrdinalDomain });
 
     const valueArray =
         type === 'quantile' || type === 'quantile-cont' ? allDataValues.toSorted() : valueArr;
