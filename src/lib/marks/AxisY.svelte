@@ -66,6 +66,7 @@
         title,
         anchor = DEFAULTS.axisYAnchor as 'left' | 'right',
         facetAnchor = 'auto',
+        interval,
         lineAnchor = 'center',
         tickSize = DEFAULTS.tickSize,
         tickFontSize = DEFAULTS.tickFontSize,
@@ -96,7 +97,7 @@
               autoTicks(
                   plot.scales.y.type,
                   plot.options.y.ticks,
-                  plot.options.y.interval,
+                  interval || plot.options.y.interval,
                   plot.scales.y.domain,
                   plot.scales.y.fn,
                   autoTickCount
