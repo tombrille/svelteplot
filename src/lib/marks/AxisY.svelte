@@ -85,7 +85,7 @@
         tickCount != null
             ? tickCount
             : tickSpacing != null
-              ? Math.max(3, Math.round(plot.facetWidth / tickSpacing))
+              ? Math.max(3, Math.round(plot.facetHeight / tickSpacing))
               : Math.max(2, Math.round(plot.facetHeight / plot.options.y.tickSpacing))
     );
 
