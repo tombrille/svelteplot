@@ -119,6 +119,10 @@ export default {
                 {
                     title: 'Gradients',
                     to: '/features/gradients'
+                },
+                {
+                    title: 'Examples',
+                    to: '/examples'
                 }
             ]
         }
