@@ -266,6 +266,8 @@ You can explicitly add an x axis using the `AxisX` mark component. The `AxisX` c
 - `tickClass` - function to assign custom classes to ticks based on their values
 - `automatic` - internal flag, set to true for implicit axes
 
+For compatibility reasons AxisX also supports the "magic" **ticks** option which can be an alias for **data** (array), **interval** (string) or **tickCount** (number) depending on the type of value you're passing.
+
 The `AxisX` component also inherits all styling properties from the base mark component (fill, stroke, strokeWidth, opacity, etc.).
 
 ## AxisY
@@ -287,6 +289,8 @@ The `AxisY` component provides extensive customization options for y-axis presen
 - `tickFormat` - custom formatter for tick labels (can be 'auto', Intl.DateTimeFormatOptions, Intl.NumberFormatOptions, or custom function)
 - `tickClass` - function to assign custom classes to ticks based on their values
 - `automatic` - internal flag, set to true for implicit axes
+
+For compatibility reasons AxisY also supports the "magic" **ticks** option which can be an alias for **data** (array), **interval** (string) or **tickCount** (number) depending on the type of value you're passing.
 
 The `AxisY` component also inherits all styling properties from the base mark component (fill, stroke, strokeWidth, opacity, etc.).
 

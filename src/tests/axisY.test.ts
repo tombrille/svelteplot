@@ -30,6 +30,20 @@ describe('AxisY mark', () => {
         expect(tickValues).toStrictEqual(['0', '20', '80']);
     });
 
+    it('custom tick values via axis.ticks', () => {
+        const { container } = render(AxisYTest, {
+            props: {
+                plotArgs: { height: 300, y: { domain: [0, 100] } },
+                axisArgs: { ticks: [0, 20, 80] }
+            }
+        });
+
+        const ticks = container.querySelectorAll('g.axis-y > g.tick') as NodeListOf<SVGGElement>;
+        const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
+        expect(ticks.length).toBe(3);
+        expect(tickValues).toStrictEqual(['0', '20', '80']);
+    });
+
     it('custom tick values via x scale ticks options', () => {
         const { container } = render(AxisYTest, {
             props: {
@@ -43,11 +57,25 @@ describe('AxisY mark', () => {
         expect(tickValues).toStrictEqual(['0', '20', '80']);
     });
 
-    it('tickCount', () => {
+    it('tick count via axis.tickCount', () => {
         const { container } = render(AxisYTest, {
             props: {
                 plotArgs: { height: 300, y: { domain: [0, 100] } },
                 axisArgs: { tickCount: 3 }
+            }
+        });
+
+        const ticks = container.querySelectorAll('g.axis-y > g.tick') as NodeListOf<SVGGElement>;
+        const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
+        expect(ticks.length).toBe(3);
+        expect(tickValues).toStrictEqual(['0', '50', '100']);
+    });
+
+    it('tick count via axis.ticks', () => {
+        const { container } = render(AxisYTest, {
+            props: {
+                plotArgs: { height: 300, y: { domain: [0, 100] } },
+                axisArgs: { ticks: 3 }
             }
         });
 

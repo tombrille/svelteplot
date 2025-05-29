@@ -24,6 +24,8 @@
             | Intl.NumberFormatOptions
             | ((d: RawValue) => string);
         tickClass?: ConstantAccessor<string>;
+        /** ticks is a shorthand for defining data, tickCount or interval */
+        ticks?: number | string | RawValue[];
     } & XOR<
             {
                 /** approximate number of ticks to be generated */
@@ -61,19 +63,20 @@
     };
 
     let {
-        data = [],
+        ticks: magicTicks,
+        data = Array.isArray(magicTicks) ? magicTicks : [],
         automatic = false,
         title,
         anchor = DEFAULTS.axisYAnchor as 'left' | 'right',
         facetAnchor = 'auto',
-        interval,
+        interval = typeof magicTicks === 'string' ? magicTicks : undefined,
         lineAnchor = 'center',
         tickSize = DEFAULTS.tickSize,
         tickFontSize = DEFAULTS.tickFontSize,
         tickPadding = DEFAULTS.tickPadding,
         tickFormat,
         tickClass,
-        tickCount,
+        tickCount = typeof magicTicks === 'number' ? magicTicks : undefined,
         tickSpacing,
         ...options
     }: AxisYMarkProps = $props();

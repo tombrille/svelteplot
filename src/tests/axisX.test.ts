@@ -43,11 +43,39 @@ describe('AxisX mark', () => {
         expect(tickValues).toStrictEqual(['0', '20', '80']);
     });
 
-    it('tickCount', () => {
+    it('custom tick values via axis.ticks', () => {
+        const { container } = render(AxisXTest, {
+            props: {
+                plotArgs: { width: 400, x: { domain: [0, 100] } },
+                axisArgs: { ticks: [0, 20, 80] }
+            }
+        });
+
+        const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
+        const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
+        expect(ticks.length).toBe(3);
+        expect(tickValues).toStrictEqual(['0', '20', '80']);
+    });
+
+    it('tick count via axis tickCount option', () => {
         const { container } = render(AxisXTest, {
             props: {
                 plotArgs: { width: 400, x: { domain: [0, 100] } },
                 axisArgs: { tickCount: 3 }
+            }
+        });
+
+        const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
+        const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
+        expect(ticks.length).toBe(3);
+        expect(tickValues).toStrictEqual(['0', '50', '100']);
+    });
+
+    it('tick count via axis.ticks', () => {
+        const { container } = render(AxisXTest, {
+            props: {
+                plotArgs: { width: 400, x: { domain: [0, 100] } },
+                axisArgs: { ticks: 3 }
             }
         });
 
@@ -107,5 +135,22 @@ describe('AxisX mark', () => {
         const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
         const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
         expect(tickValues).toStrictEqual(['0', '30', '60', '90', '120']);
+    });
+
+    it('tick interval via axis.ticks', () => {
+        const { container } = render(AxisXTest, {
+            props: {
+                plotArgs: {
+                    width: 400,
+                    x: { domain: [new Date(2000, 0, 1), new Date(2002, 0, 1)] }
+                },
+                axisArgs: { ticks: '6 months' }
+            }
+        });
+
+        const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
+        const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
+        expect(ticks.length).toBe(5);
+        expect(tickValues).toStrictEqual(['Jan2000', 'Jul', 'Jan2001', 'Jul', 'Jan2002']);
     });
 });
