@@ -172,8 +172,8 @@ describe('AxisX mark', () => {
         const tickLabels = container.querySelectorAll(
             'g.axis-x > g.tick text'
         ) as NodeListOf<SVGTextElement>;
-        expect(ticks.length).toBe(23);
-        expect(tickLines.length).toBe(23);
+        expect(ticks.length).toBe(25);
+        expect(tickLines.length).toBe(25);
         expect(tickLabels.length).toBe(0);
     });
 });

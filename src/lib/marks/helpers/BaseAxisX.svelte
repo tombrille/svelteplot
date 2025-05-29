@@ -137,8 +137,6 @@
         }
     });
 
-    $inspect({ ticks, positionedTicks });
-
     $effect(() => {
         // clear margins on destroy
         return () => {
