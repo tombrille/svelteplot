@@ -1,24 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import DotTest from './dot.test.svelte';
-import { getPathDims, getTranslate } from './utils';
-import {
-    symbol,
-    symbolAsterisk,
-    symbolDiamond2,
-    symbolPlus,
-    symbolSquare2,
-    symbolTriangle2,
-    symbolX as symbolTimes,
-    symbolCircle,
-    symbolCross,
-    symbolDiamond,
-    symbolSquare,
-    symbolStar,
-    symbolTriangle,
-    symbolWye,
-    type SymbolType
-} from 'd3-shape';
+import { getTranslate } from './utils';
+import { symbol, symbolCircle } from 'd3-shape';
 
 const testData = [
     { x: 10, y: 20, value: 5 },
@@ -93,7 +77,7 @@ describe('Dot mark', () => {
             }
         });
 
-        const dots = container.querySelectorAll('g.dot > path');
+        const dots = container.querySelectorAll('g.dot > path') as NodeListOf<SVGPathElement>;
         expect(dots.length).toBe(2);
         expect(dots[0].style.fill).toBe('blue');
         expect(dots[1].style.fill).toBe('red');
