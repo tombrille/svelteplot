@@ -660,6 +660,7 @@ export type BaseMarkProps = Partial<{
     sort:
         | string
         | ConstantAccessor<RawValue>
+        | ((a: RawValue, b: RawValue) => number)
         | {
               /** sort data using an already defined channel */
               channel: string;
@@ -740,7 +741,7 @@ export type Channels = Record<
     ChannelAccessor | ConstantAccessor<string | number | boolean | symbol>
 >;
 
-export type TransformArg<K> = Channels & { data: K[] };
+export type TransformArg<K> = Channels & BaseMarkProps & { data: K[] };
 export type MapArg<K> = Channels & { data: K[] };
 
 export type TransformArgsRow = Partial<Channels> & { data: DataRow[] };
