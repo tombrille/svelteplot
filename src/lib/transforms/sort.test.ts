@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sort } from './sort.js';
+import { sort, shuffle } from './sort.js';
 import type { DataRecord } from '$lib/types.js';
 
 const data: DataRecord[] = [
@@ -41,5 +41,15 @@ describe('sort transform', () => {
         expect(sort({ data, y: 'A', sort: { channel: '-y' } }).data).toStrictEqual(
             sortedByA.toReversed()
         );
+    });
+});
+
+describe('shuffle transform', () => {
+    it('shuffles the data', () => {
+        const shuffled = shuffle({ data }, { seed: 1 });
+        expect(shuffled.sort).toBe(null);
+        expect(shuffled.data).toHaveLength(data.length);
+        expect(shuffled.data).not.toStrictEqual(data);
+        expect(shuffled.data.sort((a, b) => a.A - b.A)).toStrictEqual(sortedByA);
     });
 });

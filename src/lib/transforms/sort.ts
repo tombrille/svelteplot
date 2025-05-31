@@ -63,7 +63,7 @@ export function sort(
 }
 
 /**
- * reverses the data row order
+ * shuffles the data row order
  */
 export function shuffle(
     { data, ...channels }: TransformArg<DataRow[]>,
@@ -76,7 +76,8 @@ export function shuffle(
         ...channels,
         // set the sort channel to null to disable the implicit
         // alphabetical ordering of ordinal domains
-        sort: null
+        sort: null,
+        [IS_SORTED]: true
     };
 }
 
@@ -89,6 +90,7 @@ export function reverse({ data, ...channels }: TransformArg<DataRow[]>) {
         ...channels,
         // set the sort channel to null to disable the implicit
         // alphabetical ordering of ordinal domains
-        sort: null
+        sort: null,
+        [IS_SORTED]: true
     };
 }
