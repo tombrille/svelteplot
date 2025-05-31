@@ -11,6 +11,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
             ...(await loadDatasets(
                 [
                     'aapl',
+                    'alphabet',
                     'beagle',
                     'bls',
                     'co2',
