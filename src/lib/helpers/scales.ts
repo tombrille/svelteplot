@@ -184,10 +184,10 @@ export function createScale<T extends ScaleOptions>(
         // we're deliberately checking for !== undefined and not for != null
         // since the explicit sort transforms like shuffle will set the
         // sort channel to null to we know that there's an explicit order
-        if (name === 'y') console.log(mark.type, mark.options[IS_SORTED]);
-        if (mark.options[IS_SORTED] != null) {
+        if ((name === 'x' || name === 'y') && mark.options[IS_SORTED] != undefined) {
             sortOrdinalDomain = false;
         }
+
         for (const channel of mark.channels) {
             // channelOptions can be passed as prop, but most often users will just
             // pass the channel accessor or constant value, so we may need to wrap
@@ -280,6 +280,10 @@ export function createScale<T extends ScaleOptions>(
                 // (skip.get(channel) as Set<symbol>).add(mark.id);
             }
         }
+    }
+
+    if ((name === 'x' || name === 'y') && scaleOptions.sort) {
+        sortOrdinalDomain = true;
     }
 
     // construct domain from data values
