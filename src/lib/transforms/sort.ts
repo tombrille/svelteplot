@@ -22,21 +22,31 @@ export function sort(
             sort.channel = sort.channel.substring(1);
             sort.order = 'descending';
         }
+        // if sort is a function that does not take exactly one argument, we treat it
+        // as comparator function, as you would pass to array.sort
+        const isComparator = typeof channels.sort === 'function' && channels.sort.length !== 1;
+
         // sort data
         return {
-            data: data
-                .map((d) => ({
-                    ...d,
-                    [SORT_KEY]: resolveChannel('sort', d, { ...channels, sort })
-                }))
-                .toSorted(
-                    (a, b) =>
-                        (a[SORT_KEY] > b[SORT_KEY] ? 1 : a[SORT_KEY] < b[SORT_KEY] ? -1 : 0) *
-                        (options.reverse || (isDataRecord(sort) && sort?.order === 'descending')
-                            ? -1
-                            : 1)
-                )
-                .map(({ [SORT_KEY]: a, ...rest }) => rest),
+            data: isComparator
+                ? data.toSorted(channels.sort as (a: DataRecord, b: DataRecord) => number)
+                : data
+                      .map((d) => ({
+                          ...d,
+                          [SORT_KEY]: resolveChannel('sort', d, { ...channels, sort }) as
+                              | number
+                              | Date
+                              | string
+                      }))
+                      .toSorted(
+                          (a, b) =>
+                              (a[SORT_KEY] > b[SORT_KEY] ? 1 : a[SORT_KEY] < b[SORT_KEY] ? -1 : 0) *
+                              (options.reverse ||
+                              (isDataRecord(sort) && sort?.order === 'descending')
+                                  ? -1
+                                  : 1)
+                      )
+                      .map(({ [SORT_KEY]: a, ...rest }) => rest),
 
             ...channels,
             [IS_SORTED]: sort,
