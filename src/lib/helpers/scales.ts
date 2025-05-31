@@ -285,6 +285,9 @@ export function createScale<T extends ScaleOptions>(
     if ((name === 'x' || name === 'y') && scaleOptions.sort) {
         sortOrdinalDomain = true;
     }
+    if ((name === 'x' || name === 'y') && scaleOptions.sort === false) {
+        sortOrdinalDomain = false;
+    }
 
     // construct domain from data values
     const valueArr = [...dataValues.values(), ...(scaleOptions.domain || [])].filter(
