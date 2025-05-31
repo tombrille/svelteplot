@@ -13,6 +13,7 @@
     height={240}
     grid
     color={{ legend: true }}
+    x={{ sort: true }}
     r={{ range: [0, 40] }}>
     <Dot
         {...group(
