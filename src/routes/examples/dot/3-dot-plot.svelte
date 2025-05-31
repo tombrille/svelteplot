@@ -20,7 +20,9 @@
     y={{ type: 'point', label: '' }}>
     <GridY strokeDasharray="1,3" strokeOpacity={0.5} />
     <Dot
-        data={languages.filter((d) => d['Total speakers'] >= 70e6)}
+        data={languages.filter(
+            (d) => d['Total speakers'] >= 70e6
+        )}
         fill="currentColor"
         sort={{ channel: '-x' }}
         y="Language"
