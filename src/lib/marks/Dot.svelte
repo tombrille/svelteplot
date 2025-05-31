@@ -49,7 +49,6 @@
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
 
-    const { getTestFacet } = getContext<FacetContext>('svelteplot/facet');
     const { dotRadius } = getContext<PlotDefaults>('svelteplot/_defaults');
 
     const args = $derived(
