@@ -1,4 +1,4 @@
-<script module type="ts">
+<script module lang="ts">
     export type BrushXMarkProps = Omit<BrushMarkProps, 'limitDimension'>;
 </script>
 
