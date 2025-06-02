@@ -10,7 +10,7 @@
         symbol?: ChannelAccessor | Snippet<[number, string]>;
         canvas?: boolean;
         dotClass?: ConstantAccessor<string>;
-    };
+    } & LinkableMarkProps;
 </script>
 
 <script lang="ts">
@@ -21,8 +21,8 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext,
-        PlotDefaults
+        PlotDefaults,
+        LinkableMarkProps
     } from '../types.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
@@ -33,6 +33,7 @@
     import { maybeData, isValid } from '$lib/helpers/index.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
     import { addEventHandlers } from './helpers/events.js';
+    import Anchor from './helpers/Anchor.svelte';
 
     let {
         data = [{}],
@@ -95,19 +96,21 @@
                             'stroke',
                             usedScales
                         )}
-                        <path
-                            transform="translate({d.x}, {d.y})"
-                            d={getSymbolPath(d.symbol, d.r ** 2 * Math.PI)}
-                            class={[
-                                dotClass ? resolveProp(dotClass, d.datum, null) : null,
-                                styleClass
-                            ]}
-                            {style}
-                            use:addEventHandlers={{
-                                getPlotState,
-                                options: args,
-                                datum: d.datum
-                            }} />
+                        <Anchor {options} datum={d.datum}>
+                            <path
+                                transform="translate({d.x}, {d.y})"
+                                d={getSymbolPath(d.symbol, d.r ** 2 * Math.PI)}
+                                class={[
+                                    dotClass ? resolveProp(dotClass, d.datum, null) : null,
+                                    styleClass
+                                ]}
+                                {style}
+                                use:addEventHandlers={{
+                                    getPlotState,
+                                    options: args,
+                                    datum: d.datum
+                                }} />
+                        </Anchor>
                     {/if}
                 {/each}
             {/if}
