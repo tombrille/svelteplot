@@ -123,7 +123,7 @@
     );
 
     let confBandGen = $derived(
-        confidence !== false
+        confidence !== false && regression.predict
             ? confidenceInterval(
                   data
                       .map((d) => ({
