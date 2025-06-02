@@ -9,7 +9,9 @@
         'line/gradient-line',
         'dot/1-colored-scatterplot',
         'geo/us-choropleth',
-        'axis/datawrapper-ticks'
+        'axis/datawrapper-ticks',
+        'geo/earthquakes',
+        'regression/grouped'
     ];
 </script>
 
