@@ -12,6 +12,7 @@
     } from '../types.js';
 
     export type CellMarkProps = BaseMarkProps &
+        LinkableMarkProps &
         BaseRectMarkProps & {
             data: DataRecord[];
             x?: ChannelAccessor;

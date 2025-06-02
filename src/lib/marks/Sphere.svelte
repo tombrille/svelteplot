@@ -2,8 +2,8 @@
     Geo mark with Sphere geometry object  -->
 
 <script module lang="ts">
-    import { type BaseMarkProps } from '$lib/types.js';
-    export type SphereMarkProps = BaseMarkProps;
+    import { type BaseMarkProps, type LinkableMarkProps } from '$lib/types.js';
+    export type SphereMarkProps = BaseMarkProps & LinkableMarkProps;
 </script>
 
 <script lang="ts">

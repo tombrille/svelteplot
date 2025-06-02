@@ -12,6 +12,7 @@
     } from '../types.js';
 
     export type BarYMarkProps = BaseMarkProps &
+        LinkableMarkProps &
         BaseRectMarkProps & {
             data: DataRow[];
             x?: ChannelAccessor;

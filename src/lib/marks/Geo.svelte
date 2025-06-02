@@ -7,8 +7,10 @@
         geoType?: 'sphere' | 'graticule';
         dragRotate: boolean;
         canvas: boolean;
-        href: ConstantAccessor<string>;
-        target: ConstantAccessor<string>;
+        /**
+         * simple browser tooltip to be displayed on mouseover
+         */
+        title: ConstantAccessor<string>;
     } & BaseMarkProps &
         LinkableMarkProps;
 </script>
@@ -31,6 +33,7 @@
     import GeoCanvas from './helpers/GeoCanvas.svelte';
     import { recordize } from '$lib/transforms/recordize.js';
     import { GEOJSON_PREFER_STROKE } from '$lib/helpers/index.js';
+    import Anchor from './helpers/Anchor.svelte';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -68,28 +71,6 @@
     channels={['fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'r']}
     {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
-        {#snippet el(d)}
-            {@const title = resolveProp(args.title, d.datum, '')}
-            {@const geometry = resolveProp(args.geometry, d.datum, d.datum)}
-            {@const [style, styleClass] = resolveStyles(
-                plot,
-                d,
-                args,
-                GEOJSON_PREFER_STROKE.has(geometry.type) ? 'stroke' : 'fill',
-                usedScales
-            )}
-            <path
-                d={path(geometry)}
-                {style}
-                class={[styleClass]}
-                use:addEventHandlers={{
-                    getPlotState,
-                    options: args,
-                    datum: d.datum
-                }}>
-                {#if title}<title>{title}</title>{/if}
-            </path>
-        {/snippet}
         <g
             aria-label="geo"
             class={['geo', geoType && `geo-${geoType}`, className]}
@@ -99,15 +80,28 @@
             {:else}
                 {#each scaledData as d, i (i)}
                     {#if d.valid}
-                        {#if options.href}
-                            <a
-                                href={resolveProp(args.href, d.datum, '')}
-                                target={resolveProp(args.target, d.datum, '_self')}>
-                                {@render el(d)}
-                            </a>
-                        {:else}
-                            {@render el(d)}
-                        {/if}
+                        <Anchor {options} datum={d.datum}>
+                            {@const title = resolveProp(args.title, d.datum, '')}
+                            {@const geometry = resolveProp(args.geometry, d.datum, d.datum)}
+                            {@const [style, styleClass] = resolveStyles(
+                                plot,
+                                d,
+                                args,
+                                GEOJSON_PREFER_STROKE.has(geometry.type) ? 'stroke' : 'fill',
+                                usedScales
+                            )}
+                            <path
+                                d={path(geometry)}
+                                {style}
+                                class={[styleClass]}
+                                use:addEventHandlers={{
+                                    getPlotState,
+                                    options: args,
+                                    datum: d.datum
+                                }}>
+                                {#if title}<title>{title}</title>{/if}
+                            </path>
+                        </Anchor>
                     {/if}
                 {/each}
             {/if}

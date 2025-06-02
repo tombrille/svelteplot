@@ -13,6 +13,7 @@
         y2?: ChannelAccessor;
         interval?: number | string;
     } & BaseMarkProps &
+        LinkableMarkProps &
         BaseRectMarkProps;
 </script>
 

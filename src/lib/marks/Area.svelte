@@ -29,6 +29,7 @@
     import { maybeCurve } from '$lib/helpers/curves.js';
     import { isValid } from '$lib/helpers/index.js';
     import AreaCanvas from './helpers/AreaCanvas.svelte';
+    import Anchor from './helpers/Anchor.svelte';
 
     import type {
         CurveName,
@@ -37,7 +38,6 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext,
         ScaledDataRecord,
         LinkableMarkProps
     } from '../types.js';
@@ -113,32 +113,24 @@
         {:else}
             <GroupMultiple length={grouped.length}>
                 {#each grouped as areaData, i (i)}
-                    {#snippet el(datum: ScaledDataRecord)}
-                        {@const title = resolveProp(options.title, datum.datum, '')}
-                        {@const [style, styleClass] = resolveStyles(
-                            plot,
-                            datum,
-                            options,
-                            'fill',
-                            usedScales
-                        )}
-                        <path
-                            class={['svelteplot-area', className, styleClass]}
-                            clip-path={options.clipPath}
-                            d={areaPath(areaData)}
-                            {style}
-                            >{#if title}<title>{title}</title>{/if}</path>
-                    {/snippet}
+                    {@const datum = areaData[0]}
                     {#if areaData.length > 0}
-                        {#if options.href}
-                            <a
-                                href={resolveProp(options.href, areaData[0].datum, '')}
-                                target={resolveProp(options.target, areaData[0].datum, '_self')}>
-                                {@render el(areaData[0])}
-                            </a>
-                        {:else}
-                            {@render el(areaData[0])}
-                        {/if}
+                        <Anchor {options} {datum}>
+                            {@const title = resolveProp(options.title, datum.datum, '')}
+                            {@const [style, styleClass] = resolveStyles(
+                                plot,
+                                datum,
+                                options,
+                                'fill',
+                                usedScales
+                            )}
+                            <path
+                                class={['svelteplot-area', className, styleClass]}
+                                clip-path={options.clipPath}
+                                d={areaPath(areaData)}
+                                {style}
+                                >{#if title}<title>{title}</title>{/if}</path>
+                        </Anchor>
                     {/if}
                 {/each}
             </GroupMultiple>

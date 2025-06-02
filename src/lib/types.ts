@@ -634,15 +634,31 @@ export type FacetContext = {
 
 export type LinkableMarkProps = {
     /**
-     * simple browser tooltip to be displayed on mouseover
-     */
-    title: ConstantAccessor<string>;
-    /**
-     * if set, the mark element will be wrapped in a <a> link
-     * element
+     * if set, the mark element will be wrapped in a <a> link element
      */
     href: ConstantAccessor<string>;
-    target: ConstantAccessor<'_self' | '_blank' | string>;
+    /**
+     * the relationship of the target object to the link object (e.g. "noopener")
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#rel
+     */
+    rel: ConstantAccessor<string>;
+    /**
+     * the link target mime type, e.g. "text/csv"
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#type
+     */
+    type: ConstantAccessor<string>;
+    /**
+     * the target of the link, e.g. "_blank" or "_self"
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#target
+     */
+    target: ConstantAccessor<'_self' | '_blank' | '_parent' | '_top' | string>;
+    /**
+     * if set to true, the link will be downloaded instead of navigating to it
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
+     */
+    download: ConstantAccessor<boolean>;
+    // allow data-sveltekit-* attributes on the link element, e.g. data-sveltekit-reload
+    [key: `data-sveltekit-${string}`]: string | boolean;
 };
 
 export type BaseMarkProps = Partial<{

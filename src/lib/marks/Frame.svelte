@@ -7,6 +7,7 @@
         BaseMarkProps,
         'fill' | 'stroke' | 'fillOpacity' | 'strokeOpacity'
     > &
+        LinkableMarkProps &
         Omit<
             BaseRectMarkProps,
             'inset' | 'insetLeft' | 'insetRight' | 'insetTop' | 'insetBottom'
@@ -27,7 +28,7 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import type { PlotContext, BaseRectMarkProps } from '../types.js';
+    import type { PlotContext, BaseRectMarkProps, LinkableMarkProps } from '../types.js';
     import type { BaseMarkProps } from '../types.js';
     import RectPath from './helpers/RectPath.svelte';
 

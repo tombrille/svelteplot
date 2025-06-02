@@ -7,10 +7,12 @@
         PlotContext,
         BaseMarkProps,
         BaseRectMarkProps,
-        ChannelAccessor
+        ChannelAccessor,
+        LinkableMarkProps
     } from '../types.js';
 
     export type BarXMarkProps = BaseMarkProps &
+        LinkableMarkProps &
         BaseRectMarkProps & {
             data: DataRow[];
             x?: ChannelAccessor;

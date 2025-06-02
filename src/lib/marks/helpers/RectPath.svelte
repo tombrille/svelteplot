@@ -14,6 +14,7 @@ Helper component for rendering rectangular marks in SVG
     } from 'svelteplot/types';
     import { addEventHandlers } from './events';
     import { getContext } from 'svelte';
+    import Anchor from './Anchor.svelte';
 
     let {
         datum,
@@ -101,33 +102,35 @@ Helper component for rendering rectangular marks in SVG
     );
 </script>
 
-{#if hasBorderRadius}
-    <path
-        transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
-        d={roundedRect(
-            0,
-            0,
-            width - insetLeft - insetRight,
-            height - insetTop - insetBottom,
-            borderRadius
-        )}
-        class={[styleClass, className]}
-        {style}
-        use:addEventHandlers={{
-            getPlotState,
-            options,
-            datum: datum?.datum
-        }} />
-{:else}
-    <rect
-        transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
-        width={width - insetLeft - insetRight}
-        height={height - insetTop - insetBottom}
-        class={[styleClass, className]}
-        {style}
-        use:addEventHandlers={{
-            getPlotState,
-            options,
-            datum: datum?.datum
-        }} />
-{/if}
+<Anchor {options} datum={datum?.datum}>
+    {#if hasBorderRadius}
+        <path
+            transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
+            d={roundedRect(
+                0,
+                0,
+                width - insetLeft - insetRight,
+                height - insetTop - insetBottom,
+                borderRadius
+            )}
+            class={[styleClass, className]}
+            {style}
+            use:addEventHandlers={{
+                getPlotState,
+                options,
+                datum: datum?.datum
+            }} />
+    {:else}
+        <rect
+            transform="translate({x + dx + insetLeft},{y + insetBottom + dy})"
+            width={width - insetLeft - insetRight}
+            height={height - insetTop - insetBottom}
+            class={[styleClass, className]}
+            {style}
+            use:addEventHandlers={{
+                getPlotState,
+                options,
+                datum: datum?.datum
+            }} />
+    {/if}
+</Anchor>
