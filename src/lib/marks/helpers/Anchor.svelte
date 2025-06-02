@@ -8,6 +8,13 @@
     const rel = $derived(resolveProp(options.rel, datum, null));
     const type = $derived(resolveProp(options.type, datum, null));
     const download = $derived(resolveProp(options.download, datum, null));
+
+    // filter data attributes from options
+    const dataAttributes = $derived(
+        Object.fromEntries(
+            Object.entries(options).filter(([key]) => key.startsWith('data-sveltekit-'))
+        )
+    );
 </script>
 
 {#if href}
@@ -20,6 +27,7 @@
         {rel}
         {type}
         {download}
+        {...dataAttributes}
         aria-label="link"
         xmlns="http://www.w3.org/2000/svg">
         {@render children?.()}

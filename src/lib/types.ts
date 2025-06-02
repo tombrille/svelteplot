@@ -657,6 +657,8 @@ export type LinkableMarkProps = {
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
      */
     download: ConstantAccessor<boolean>;
+    // allow data-sveltekit-* attributes on the link element, e.g. data-sveltekit-reload
+    [key: `data-sveltekit-${string}`]: string | boolean;
 };
 
 export type BaseMarkProps = Partial<{

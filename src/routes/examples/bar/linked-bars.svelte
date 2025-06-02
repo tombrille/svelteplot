@@ -7,11 +7,30 @@
 <script>
     import { Plot, BarX } from 'svelteplot';
     import { page } from '$app/state';
+    const data = [
+        {
+            url: '/marks/line',
+            label: 'Line',
+            value: 5
+        },
+        {
+            url: '/marks/bar',
+            label: 'Bar',
+            value: 3
+        },
+        {
+            url: '/marks/dot',
+            label: 'Dot',
+            value: 4
+        }
+    ];
 </script>
 
 <Plot>
     <BarX
-        data={[1, 2, 3, 4, 5]}
-        href={(d) => `#/${d}`}
-        target="_blank" />
+        {data}
+        x="value"
+        y="label"
+        data-sveltekit-noscroll
+        href="url" />
 </Plot>
