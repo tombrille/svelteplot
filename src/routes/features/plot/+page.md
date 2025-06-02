@@ -314,7 +314,7 @@ to add events and scoped styles.
     {#snippet footer()}
         <h4>
             Centered headline below plot with
-            <a href="#/" on:click={() => alert('works')}
+            <a href="#/" onclick={() => alert('works')}
                 >custom link</a>
         </h4>
     {/snippet}
