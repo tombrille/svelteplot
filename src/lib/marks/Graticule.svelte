@@ -2,7 +2,7 @@
     Renders a geographic graticule grid with customizable step sizes
 -->
 <script module lang="ts">
-    import type { DefaultOptions, BaseMarkProps } from '../types.js';
+    import type { PlotDefaults, BaseMarkProps } from '../types.js';
     export type GraticuleMarkProps = Omit<
         BaseMarkProps,
         'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target' | 'cursor'
@@ -20,7 +20,7 @@
 
     const DEFAULTS = {
         graticuleStep: 10,
-        ...getContext<Partial<DefaultOptions>>('svelteplot/defaults')
+        ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
     };
 
     let { step = DEFAULTS.graticuleStep, stepX, stepY, ...options }: GraticuleMarkProps = $props();

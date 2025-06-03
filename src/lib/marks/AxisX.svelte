@@ -49,7 +49,7 @@
         RawValue,
         ConstantAccessor,
         FacetContext,
-        DefaultOptions
+        PlotDefaults
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { derived } from 'svelte/store';
@@ -61,7 +61,7 @@
         tickPadding: 3,
         tickFontSize: 11,
         axisXAnchor: 'bottom',
-        ...getContext<Partial<DefaultOptions>>('svelteplot/_defaults')
+        ...getContext<Partial<PlotDefaults>>('svelteplot/_defaults')
     };
 
     let {

@@ -54,19 +54,24 @@
     // default settings in the plot and marks can be overwritten by
     // defining the svelteplot/defaults context outside of Plot
     const DEFAULTS: PlotDefaults = {
-        axisXAnchor: 'bottom',
-        axisYAnchor: 'left',
-        xTickSpacing: 80,
-        yTickSpacing: 50,
         height: 350,
         initialWidth: 500,
         inset: 0,
         colorScheme: 'turbo',
         unknown: '#cccccc99',
-        dotRadius: 3,
-        frame: false,
-        axes: true,
-        grid: false,
+        implicitMarks: {
+            frame: false,
+            grid: false,
+            axes: true
+        },
+        axisX: {
+            anchor: 'bottom',
+            tickSpacing: 80
+        },
+        axisY: {
+            anchor: 'left',
+            tickSpacing: 50
+        },
         categoricalColorScheme: 'observable10',
         pointScaleHeight: 18,
         bandScaleHeight: 30,
@@ -390,16 +395,16 @@
                   ? margins
                   : Math.max(5, maxMarginBottom),
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
-            grid: DEFAULTS.grid,
-            axes: DEFAULTS.axes,
-            frame: DEFAULTS.frame,
+            grid: DEFAULTS.implicitMarks.grid,
+            axes: DEFAULTS.implicitMarks.axes,
+            frame: DEFAULTS.implicitMarks.frame,
             projection: null,
             aspectRatio: null,
             facet: {},
             padding: 0.1,
             x: {
                 type: 'auto',
-                axis: autoXAxis ? DEFAULTS.axisXAnchor : false,
+                axis: autoXAxis ? DEFAULTS.axisX.anchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -408,13 +413,13 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: DEFAULTS.xTickSpacing,
+                tickSpacing: DEFAULTS.axisX.tickSpacing,
                 tickFormat: 'auto',
                 grid: false
             },
             y: {
                 type: 'auto',
-                axis: autoYAxis ? DEFAULTS.axisYAnchor : false,
+                axis: autoYAxis ? DEFAULTS.axisY.anchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -423,7 +428,7 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: DEFAULTS.yTickSpacing,
+                tickSpacing: DEFAULTS.axisY.tickSpacing,
                 tickFormat: 'auto',
                 grid: false
             },

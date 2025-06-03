@@ -40,7 +40,7 @@
         ChannelAccessor,
         ScaledDataRecord,
         LinkableMarkProps,
-        DefaultOptions
+        PlotDefaults
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
@@ -51,7 +51,7 @@
         fill: 'currentColor',
         curve: 'linear',
         tension: 0,
-        ...getContext<DefaultOptions>('svelteplot/_defaults').area
+        ...getContext<PlotDefaults>('svelteplot/_defaults').area
     };
 
     const {

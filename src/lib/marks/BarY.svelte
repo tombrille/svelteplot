@@ -9,7 +9,7 @@
         BaseRectMarkProps,
         ChannelAccessor,
         DataRow,
-        DefaultOptions
+        PlotDefaults
     } from '../types.js';
 
     export type BarYMarkProps = BaseMarkProps &
@@ -43,8 +43,8 @@
 
     const DEFAULTS = {
         fill: 'currentColor',
-        ...getContext<DefaultOptions>('svelteplot/_defaults').bar,
-        ...getContext<DefaultOptions>('svelteplot/_defaults').barY
+        ...getContext<PlotDefaults>('svelteplot/_defaults').bar,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').barY
     };
 
     let markProps: BarYMarkProps = $props();

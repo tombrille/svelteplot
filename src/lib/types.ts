@@ -425,52 +425,6 @@ export type PlotOptions = {
     css: (d: string) => string | undefined;
 };
 
-export type PlotDefaults = {
-    axisXAnchor: AxisXAnchor;
-    axisYAnchor: AxisYAnchor;
-    xTickSpacing: number;
-    yTickSpacing: number;
-    height: number;
-    inset: number;
-    colorScheme: ColorScheme | string[];
-    categoricalColorScheme: ColorScheme | string[];
-    dotRadius: number;
-    /**
-     * for computing the automatic height based on the number of
-     * domain items in a point scale
-     */
-    pointScaleHeight: number;
-    /**
-     * for computing the automatic height based on the number of
-     * domain items in a band scale
-     */
-    bandScaleHeight: number;
-    /**
-     * add frame to plots by default
-     */
-    frame: boolean;
-    grid: boolean;
-    axes: boolean;
-    /**
-     * initial width of the plot before measuring the actual width
-     */
-    initialWidth: number;
-    /**
-     * locale, used for automatic axis ticks
-     */
-    locale: string;
-    /**
-     * default number format for axis ticks
-     */
-    numberFormat: Intl.NumberFormatOptions;
-    markerDotRadius: number;
-    /**
-     * fallback color to be used for null/NA
-     */
-    unknown: string;
-    css: (d: string) => string | undefined;
-};
-
 export type GenericMarkOptions = Record<string | symbol, any>;
 
 export type DataRecord = Record<string | symbol, RawValue> & {
@@ -883,7 +837,7 @@ export type AutoMarginStores = {
  * these are the default options for the plot marks that can be set using
  * the 'svelteplot/defaults' context.
  */
-export type DefaultOptions = {
+export type PlotDefaults = {
     /**
      * default plot height
      */
@@ -896,6 +850,43 @@ export type DefaultOptions = {
      * default color scheme
      */
     colorScheme: ColorScheme;
+    categoricalColorScheme: ColorScheme | string[];
+    implicitMarks: {
+        /**
+         * add grid to plots by default
+         */
+        grid: boolean;
+        /**
+         * add axes to plots by default
+         */
+        axes: boolean;
+        /**
+         * add frame to plots by default
+         */
+        frame: boolean;
+    };
+    /**
+     * fallback color to be used for null/NA
+     */
+    unknown: string;
+    /**
+     * optional @emotion/css function to style the plot
+     */
+    css: (d: string) => string | undefined;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a point scale
+     */
+    pointScaleHeight: number;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a band scale
+     */
+    bandScaleHeight: number;
+    /**
+     * initial width of the plot before measuring the actual width
+     */
+    initialWidth: number;
     /**
      * locale, used for automatic axis ticks
      */
@@ -911,147 +902,147 @@ export type DefaultOptions = {
     /**
      * default props for area marks, applied to area, areaX, and areaY marks
      */
-    area: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    area: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for areaX marks
      */
-    areaX: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    areaX: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for areaY marks
      */
-    areaY: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    areaY: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for arrow marks
      */
-    arrow: Omit<ArrowMarkProps, 'data' | 'facet' | ChannelName>;
+    arrow: Partial<Omit<ArrowMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for axis marks, applied to both axisX and axisY marks
      */
-    axis: BaseMarkProps;
+    axis: Partial<BaseMarkProps>;
     /**
      * default props for axisX marks
      */
-    axisX: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    axisX: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for axisY marks
      */
-    axisY: Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>;
+    axisY: Partial<Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for bar marks, applied to both barX and barY marks
      */
-    bar: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    bar: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for barX marks
      */
-    barX: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    barX: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for barY marks
      */
-    barY: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    barY: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for brush marks, applied to brush, brushX and brushY marks
      */
-    brush: Omit<BrushMarkProps, 'data' | 'facet' | 'limitDimension' | ChannelName>;
+    brush: Partial<Omit<BrushMarkProps, 'data' | 'facet' | 'limitDimension' | ChannelName>>;
     /**
      * default props for brushX marks
      */
-    brushX: Omit<BrushXMarkProps, 'data' | 'facet' | ChannelName>;
+    brushX: Partial<Omit<BrushXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for brushY marks
      */
-    brushY: Omit<BrushYMarkProps, 'data' | 'facet' | ChannelName>;
+    brushY: Partial<Omit<BrushYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for cell marks
      */
-    cell: Omit<CellMarkProps, 'data' | 'facet' | ChannelName>;
+    cell: Partial<Omit<CellMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for dot marks
      */
-    dot: Omit<DotMarkProps, 'data' | 'facet' | ChannelName>;
+    dot: Partial<Omit<DotMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for frame marks
      */
-    frame: FrameMarkProps;
+    frame: Partial<FrameMarkProps>;
     /**
      * default props for geo marks
      */
-    geo: Omit<GeoMarkProps, 'data' | 'facet' | ChannelName>;
+    geo: Partial<Omit<GeoMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for graticule marks
      */
-    graticule: Omit<GraticuleMarkProps, 'data' | 'facet' | ChannelName>;
+    graticule: Partial<Omit<GraticuleMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for grid marks, applied to both gridX and gridY marks
      */
-    grid: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    grid: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for gridX marks
      */
-    gridX: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    gridX: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for gridY marks
      */
-    gridY: Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>;
+    gridY: Partial<Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for line marks
      */
-    line: Omit<LineMarkProps, 'data' | 'facet' | ChannelName>;
+    line: Partial<Omit<LineMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for link marks
      */
-    link: Omit<LinkMarkProps, 'data' | 'facet' | ChannelName>;
+    link: Partial<Omit<LinkMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rect marks, applied to rect and rectX marks
      */
-    rect: Omit<RectMarkProps, 'data' | 'facet' | ChannelName>;
+    rect: Partial<Omit<RectMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rectX marks
      */
-    rectX: Omit<RectXMarkProps, 'data' | 'facet' | ChannelName>;
+    rectX: Partial<Omit<RectXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rectY marks
      */
-    rectY: Omit<RectYMarkProps, 'data' | 'facet' | ChannelName>;
+    rectY: Partial<Omit<RectYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rule marks
      */
-    rule: Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>;
+    rule: Partial<Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rule marks
      */
-    ruleX: Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>;
+    ruleX: Partial<Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for rule marks
      */
-    ruleY: Omit<RuleYMarkProps, 'data' | 'facet' | ChannelName>;
+    ruleY: Partial<Omit<RuleYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for sphere marks
      */
-    sphere: SphereMarkProps;
+    sphere: Partial<SphereMarkProps>;
     /**
      * default props for spike marks
      */
-    spike: Omit<SpikeMarkProps, 'data' | 'facet' | ChannelName>;
+    spike: Partial<Omit<SpikeMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for text marks
      */
-    text: Omit<TextMarkProps, 'data' | 'facet' | ChannelName>;
+    text: Partial<Omit<TextMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for tick marks, applied to tickX and tickY marks
      */
-    tick: Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>;
+    tick: Partial<Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for tickX marks
      */
-    tickX: Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>;
+    tickX: Partial<Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for tickY marks
      */
-    tickY: Omit<TickYMarkProps, 'data' | 'facet' | ChannelName>;
+    tickY: Partial<Omit<TickYMarkProps, 'data' | 'facet' | ChannelName>>;
     /**
      * default props for vector marks
      */
-    vector: Omit<VectorMarkProps, 'data' | 'facet' | ChannelName>;
+    vector: Partial<Omit<VectorMarkProps, 'data' | 'facet' | ChannelName>>;
 };
 
 export type MapIndexObject = {

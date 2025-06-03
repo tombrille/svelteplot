@@ -9,8 +9,7 @@
         BaseRectMarkProps,
         ChannelAccessor,
         LinkableMarkProps,
-        PlotDefaults,
-        DefaultOptions
+        PlotDefaults
     } from '../types.js';
 
     export type BarXMarkProps = BaseMarkProps &
@@ -42,8 +41,8 @@
 
     const DEFAULTS = {
         fill: 'currentColor',
-        ...getContext<DefaultOptions>('svelteplot/_defaults').bar,
-        ...getContext<DefaultOptions>('svelteplot/_defaults').barX
+        ...getContext<PlotDefaults>('svelteplot/_defaults').bar,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').barX
     };
 
     let markProps: BarXMarkProps = $props();
