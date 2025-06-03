@@ -2,6 +2,7 @@
     export const title = 'US choropleth map';
     export const description =
         'See also the <a href="/examples/geo/us-choropleth-canvas">Canvas version</a>';
+    export const sortKey = 1;
 </script>
 
 <script>

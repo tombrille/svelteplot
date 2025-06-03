@@ -2,6 +2,7 @@
     export const title = 'US choropleth map (canvas)';
     export const description =
         'See also the <a href="/examples/geo/us-choropleth">SVG version</a>';
+    export const sortKey = 2;
 </script>
 
 <script>
