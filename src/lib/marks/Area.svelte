@@ -39,12 +39,22 @@
         ConstantAccessor,
         ChannelAccessor,
         ScaledDataRecord,
-        LinkableMarkProps
+        LinkableMarkProps,
+        DefaultOptions
     } from '../types.js';
     import type { RawValue } from '$lib/types.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
-    let {
+    let markProps: AreaMarkProps = $props();
+
+    const DEFAULTS = {
+        fill: 'currentColor',
+        curve: 'linear',
+        tension: 0,
+        ...getContext<DefaultOptions>('svelteplot/_defaults').area
+    };
+
+    const {
         data,
         /** the curve */
         curve = 'linear',
@@ -52,7 +62,7 @@
         class: className = '',
         canvas = false,
         ...options
-    }: AreaMarkProps = $props();
+    }: AreaMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
