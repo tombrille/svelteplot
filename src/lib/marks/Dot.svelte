@@ -35,13 +35,19 @@
     import { addEventHandlers } from './helpers/events.js';
     import Anchor from './helpers/Anchor.svelte';
 
-    let {
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').dot
+    };
+
+    let markProps: DotMarkProps = $props();
+
+    const {
         data = [{}],
         canvas = false,
         class: className = '',
         dotClass = null,
         ...options
-    }: DotMarkProps = $props();
+    }: DotMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -49,8 +55,6 @@
     function getSymbolPath(symbolType, size) {
         return d3Symbol(maybeSymbol(symbolType), size)();
     }
-
-    const { dotRadius } = getContext<PlotDefaults>('svelteplot/_defaults');
 
     const args = $derived(
         // todo: move sorting to Mark
@@ -80,7 +84,7 @@
         'fillOpacity',
         'strokeOpacity'
     ]}
-    defaults={{ r: dotRadius, symbol: 'circle' }}
+    defaults={{ r: 3, symbol: 'circle' }}
     {...args}>
     {#snippet children({ mark, usedScales, scaledData })}
         <g class="dot {className || ''}">
