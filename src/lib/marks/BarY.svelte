@@ -8,7 +8,8 @@
         BaseMarkProps,
         BaseRectMarkProps,
         ChannelAccessor,
-        DataRow
+        DataRow,
+        DefaultOptions
     } from '../types.js';
 
     export type BarYMarkProps = BaseMarkProps &
@@ -37,10 +38,23 @@
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 
-    let { data = [{}], class: className = null, stack, ...options }: BarYMarkProps = $props();
-
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
+
+    const DEFAULTS = {
+        fill: 'currentColor',
+        ...getContext<DefaultOptions>('svelteplot/_defaults').bar,
+        ...getContext<DefaultOptions>('svelteplot/_defaults').barY
+    };
+
+    let markProps: BarYMarkProps = $props();
+
+    const {
+        data = [{}],
+        class: className = null,
+        stack,
+        ...options
+    }: BarYMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const args = $derived(
         stackY(

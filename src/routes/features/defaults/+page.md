@@ -110,3 +110,32 @@ SveltePlot is also relying on CSS variables.
         fill="species" />
 </Plot>
 ```
+
+You can set mark-specific defaults, too:
+
+```svelte live
+<script>
+    import { Plot, BarX, AreaY } from 'svelteplot';
+    import { page } from '$app/state';
+    import { setContext } from 'svelte';
+
+    let { penguins } = $derived(page.data.data);
+    setContext('svelteplot/defaults', {
+        bar: {
+            borderRadius: 4,
+            stroke: 'currentColor',
+            fill: null
+        },
+        area: {
+            curve: 'basis'
+        }
+    });
+</script>
+
+<Plot>
+    <BarX data={[1, 2, 3, 4, 5, 6]} />
+</Plot>
+<Plot>
+    <AreaY data={[1, 3, 2, 4, 6, 5]} />
+</Plot>
+```

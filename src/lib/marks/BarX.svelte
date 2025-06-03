@@ -8,7 +8,9 @@
         BaseMarkProps,
         BaseRectMarkProps,
         ChannelAccessor,
-        LinkableMarkProps
+        LinkableMarkProps,
+        PlotDefaults,
+        DefaultOptions
     } from '../types.js';
 
     export type BarXMarkProps = BaseMarkProps &
@@ -38,7 +40,20 @@
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 
-    let { data = [{}], class: className = null, stack, ...options }: BarXMarkProps = $props();
+    const DEFAULTS = {
+        fill: 'currentColor',
+        ...getContext<DefaultOptions>('svelteplot/_defaults').bar,
+        ...getContext<DefaultOptions>('svelteplot/_defaults').barX
+    };
+
+    let markProps: BarXMarkProps = $props();
+
+    const {
+        data = [{}],
+        class: className = null,
+        stack,
+        ...options
+    }: BarXMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

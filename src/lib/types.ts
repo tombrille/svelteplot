@@ -909,9 +909,17 @@ export type DefaultOptions = {
      */
     markerDotRadius: number;
     /**
-     * default props for area marks
+     * default props for area marks, applied to area, areaX, and areaY marks
      */
     area: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for areaX marks
+     */
+    areaX: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for areaY marks
+     */
+    areaY: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
     /**
      * default props for arrow marks
      */
