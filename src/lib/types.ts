@@ -4,6 +4,32 @@ import type { MouseEventHandler } from 'svelte/elements';
 import type { MarkerShape } from './marks/helpers/Marker.svelte';
 import type { Writable } from 'svelte/store';
 import type * as CSS from 'csstype';
+import type { AreaMarkProps } from './marks/Area.svelte';
+import type { ArrowMarkProps } from './marks/Arrow.svelte';
+import type { AxisXMarkProps } from './marks/AxisX.svelte';
+import type { AxisYMarkProps } from './marks/AxisY.svelte';
+import type { BarXMarkProps } from './marks/BarX.svelte';
+import type { CellMarkProps } from './marks/Cell.svelte';
+import type { DotMarkProps } from './marks/Dot.svelte';
+import type { FrameMarkProps } from './marks/Frame.svelte';
+import type { GeoMarkProps } from './marks/Geo.svelte';
+import type { GraticuleMarkProps } from './marks/Graticule.svelte';
+import type { LineMarkProps } from './marks/Line.svelte';
+import type { LinkMarkProps } from './marks/Link.svelte';
+import type { RectMarkProps } from './marks/Rect.svelte';
+import type { RuleXMarkProps } from './marks/RuleX.svelte';
+import type { SphereMarkProps } from './marks/Sphere.svelte';
+import type { SpikeMarkProps } from './marks/Spike.svelte';
+import type { TextMarkProps } from './marks/Text.svelte';
+import type { TickXMarkProps } from './marks/TickX.svelte';
+import type { VectorMarkProps } from './marks/Vector.svelte';
+import type { BrushMarkProps } from './marks/Brush.svelte';
+import type { BrushXMarkProps } from './marks/BrushX.svelte';
+import type { BrushYMarkProps } from './marks/BrushY.svelte';
+import type { RectXMarkProps } from './marks/RectX.svelte';
+import type { RectYMarkProps } from './marks/RectY.svelte';
+import type { RuleYMarkProps } from './marks/RuleY.svelte';
+import type { TickYMarkProps } from './marks/TickY.svelte';
 
 export type MarkType =
     | 'area'
@@ -867,41 +893,9 @@ export type DefaultOptions = {
      */
     inset: number;
     /**
-     * default tick line length
-     */
-    tickSize: number;
-    /**
-     * default padding between tick line and tick label
-     */
-    tickPadding: number;
-    /**
-     * default font size for tick labels
-     */
-    tickFontSize: number;
-    /**
-     * default anchor for x axis
-     */
-    axisXAnchor: 'bottom' | 'top';
-    /**
-     * default anchor for y axis
-     */
-    axisYAnchor: 'left' | 'right';
-    /**
-     * default spacing between ticks in AxisX and GridX
-     */
-    xTickSpacing: number;
-    /**
-     * default spacing between ticks in AxisY and GridY
-     */
-    yTickSpacing: number;
-    /**
      * default color scheme
      */
     colorScheme: ColorScheme;
-    /**
-     * default step for graticule, in degrees
-     */
-    graticuleStep: number;
     /**
      * locale, used for automatic axis ticks
      */
@@ -914,6 +908,142 @@ export type DefaultOptions = {
      * default dot radius for line markers, used in dot, circle, and circle-stroke markers
      */
     markerDotRadius: number;
+    /**
+     * default props for area marks
+     */
+    area: Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for arrow marks
+     */
+    arrow: Omit<ArrowMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for axis marks, applied to both axisX and axisY marks
+     */
+    axis: BaseMarkProps;
+    /**
+     * default props for axisX marks
+     */
+    axisX: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for axisY marks
+     */
+    axisY: Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for bar marks, applied to both barX and barY marks
+     */
+    bar: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for barX marks
+     */
+    barX: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for barY marks
+     */
+    barY: Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for brush marks, applied to brush, brushX and brushY marks
+     */
+    brush: Omit<BrushMarkProps, 'data' | 'facet' | 'limitDimension' | ChannelName>;
+    /**
+     * default props for brushX marks
+     */
+    brushX: Omit<BrushXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for brushY marks
+     */
+    brushY: Omit<BrushYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for cell marks
+     */
+    cell: Omit<CellMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for dot marks
+     */
+    dot: Omit<DotMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for frame marks
+     */
+    frame: FrameMarkProps;
+    /**
+     * default props for geo marks
+     */
+    geo: Omit<GeoMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for graticule marks
+     */
+    graticule: Omit<GraticuleMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for grid marks, applied to both gridX and gridY marks
+     */
+    grid: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for gridX marks
+     */
+    gridX: Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for gridY marks
+     */
+    gridY: Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for line marks
+     */
+    line: Omit<LineMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for link marks
+     */
+    link: Omit<LinkMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rect marks, applied to rect and rectX marks
+     */
+    rect: Omit<RectMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rectX marks
+     */
+    rectX: Omit<RectXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rectY marks
+     */
+    rectY: Omit<RectYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rule marks
+     */
+    rule: Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rule marks
+     */
+    ruleX: Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for rule marks
+     */
+    ruleY: Omit<RuleYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for sphere marks
+     */
+    sphere: SphereMarkProps;
+    /**
+     * default props for spike marks
+     */
+    spike: Omit<SpikeMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for text marks
+     */
+    text: Omit<TextMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for tick marks, applied to tickX and tickY marks
+     */
+    tick: Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for tickX marks
+     */
+    tickX: Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for tickY marks
+     */
+    tickY: Omit<TickYMarkProps, 'data' | 'facet' | ChannelName>;
+    /**
+     * default props for vector marks
+     */
+    vector: Omit<VectorMarkProps, 'data' | 'facet' | ChannelName>;
 };
 
 export type MapIndexObject = {
