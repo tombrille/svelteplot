@@ -74,6 +74,13 @@
                 )} />
         </div>
     </div>
+
+    {#if pages[plotKey].repl}
+        <p>
+            <a href={pages[plotKey].repl} target="_blank"
+                >Open in Svelte playground</a>
+        </p>
+    {/if}
 {:else}
     <h2>Not found</h2>
 {/if}
