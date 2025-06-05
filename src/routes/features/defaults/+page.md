@@ -141,15 +141,34 @@ You can set mark-specific defaults, too:
             fill: null
         },
         area: {
-            curve: 'basis'
+            curve: 'basis',
+            fillOpacity: 0.5
         }
     });
 </script>
 
-<Plot>
-    <BarX data={[1, 2, 3, 4, 5, 6]} />
-</Plot>
-<Plot>
-    <AreaY data={[1, 3, 2, 4, 6, 5]} />
-</Plot>
+<div style="columns:2">
+    <Plot height={300}>
+        <BarX data={[1, 2, 3, 4, 5, 6]} />
+    </Plot>
+    <Plot height={300}>
+        <AreaY data={[1, 3, 2, 4, 6, 5]} />
+    </Plot>
+</div>
 ```
+
+```js
+setContext('svelteplot/defaults', {
+    bar: {
+        borderRadius: 4,
+        stroke: 'currentColor',
+        fill: null
+    },
+    area: {
+        curve: 'basis',
+        fillOpacity: 0.5
+    }
+});
+```
+
+[fork](https://svelte.dev/playground/e3d2f66c442245ab9b7922b5d79b0b00?version=5)
