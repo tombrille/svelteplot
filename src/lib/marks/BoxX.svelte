@@ -15,6 +15,8 @@
 
     let markProps: BoxXMarkProps = $props();
     const DEFAULTS = {
+        tickMedian: true,
+        tickMinMax: false,
         ...getContext<PlotDefaults>('svelteplot/_defaults').box,
         ...getContext<PlotDefaults>('svelteplot/_defaults').boxX
     };
