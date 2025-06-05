@@ -8,16 +8,26 @@
 
 <script lang="ts">
     import Vector, { type VectorMarkProps } from './Vector.svelte';
-    let { data = [{}], ...options }: SpikeMarkProps = $props();
+    import type { PlotDefaults } from '../types.js';
+    import { getContext } from 'svelte';
+
+    let markProps: SpikeMarkProps = $props();
+
+    const DEFAULTS = {
+        fill: 'currentColor',
+        fillOpacity: 0.3,
+        strokeWidth: 1,
+        anchor: 'start' as const,
+        stroke: 'currentColor',
+        sort: { channel: '-y' },
+        shape: 'spike' as const,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').spike
+    };
+
+    const { data = [{}], ...options }: SpikeMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 </script>
 
-<Vector
-    {data}
-    fill={options.stroke || 'currentColor'}
-    fillOpacity={0.3}
-    strokeWidth={1}
-    anchor="start"
-    stroke="currentColor"
-    sort={{ channel: '-y' }}
-    {...options}
-    shape="spike" />
+<Vector {data} {...options} />

@@ -72,6 +72,7 @@
                 }} />
         {:else}
             <Frame
+                stroke={false}
                 fill="transparent"
                 cursor="zoom-out"
                 onpointerup={resetZoom} />
