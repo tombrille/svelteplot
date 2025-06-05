@@ -7,7 +7,7 @@
     import type { PlotDefaults } from '../types.js';
     import { getContext } from 'svelte';
 
-    let { brush = $bindable(), ...options }: BrushYMarkProps = $props();
+    let { brush = $bindable({ enabled: false }), ...options }: BrushYMarkProps = $props();
     const DEFAULTS = {
         ...getContext<PlotDefaults>('svelteplot/_defaults').brush,
         ...getContext<PlotDefaults>('svelteplot/_defaults').brushY

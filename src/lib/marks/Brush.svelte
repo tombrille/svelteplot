@@ -47,7 +47,7 @@
     import type { BaseMarkProps, PlotContext, PlotDefaults } from '$lib/types.js';
     import { clientToLayerCoordinates } from './helpers/events.js';
 
-    let { brush = $bindable(), ...markProps }: BrushMarkProps = $props();
+    let { brush = $bindable({ enabled: false }), ...markProps }: BrushMarkProps = $props();
 
     const DEFAULTS = {
         stroke: 'currentColor',
