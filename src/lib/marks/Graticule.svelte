@@ -22,6 +22,7 @@
     let markProps: GraticuleMarkProps = $props();
 
     const DEFAULTS = {
+        step: 10,
         ...getContext<PlotDefaults>('svelteplot/_defaults').graticule
     };
 
