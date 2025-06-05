@@ -27,16 +27,11 @@
         ticks?: number | string | RawValue[];
         /** set to false or null to disable tick labels */
         text: boolean | null;
-    } & XOR<
-            {
-                /** approximate number of ticks to be generated */
-                tickCount?: number;
-            },
-            {
-                /** approximate number of pixels between generated ticks */
-                tickSpacing?: number;
-            }
-        >;
+        /** approximate number of ticks to be generated */
+        tickCount?: number;
+        /** approximate number of pixels between generated ticks */
+        tickSpacing?: number;
+    };
 </script>
 
 <script lang="ts">

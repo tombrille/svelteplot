@@ -28,16 +28,11 @@
         ticks?: number | string | RawValue[];
         /** set to false or null to disable tick labels */
         text: boolean | null;
-    } & XOR<
-            {
-                /** approximate number of ticks to be generated */
-                tickCount?: number;
-            },
-            {
-                /** approximate number of pixels between generated ticks */
-                tickSpacing?: number;
-            }
-        >;
+        /** approximate number of ticks to be generated */
+        tickCount?: number;
+        /** approximate number of pixels between generated ticks */
+        tickSpacing?: number;
+    };
 </script>
 
 <script lang="ts">
@@ -49,40 +44,44 @@
         BaseMarkProps,
         RawValue,
         FacetContext,
-        PlotDefaults
+        PlotDefaults,
+        ChannelName
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
 
-    const DEFAULTS = {
+    let markProps: AxisYMarkProps = $props();
+
+    const DEFAULTS: Omit<AxisYMarkProps, 'data' | ChannelName> = {
         tickSize: 6,
         tickPadding: 3,
         tickFontSize: 11,
-        axisYAnchor: 'left',
-        ...getContext<Partial<PlotDefaults>>('svelteplot/_defaults')
+        anchor: 'left',
+        ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').axisY
     };
 
-    let {
+    const {
         ticks: magicTicks,
         data = Array.isArray(magicTicks) ? magicTicks : [],
         automatic = false,
         title,
-        anchor = DEFAULTS.axisYAnchor as 'left' | 'right',
+        anchor,
         facetAnchor = 'auto',
         interval = typeof magicTicks === 'string' ? magicTicks : undefined,
         lineAnchor = 'center',
-        tickSize = DEFAULTS.tickSize,
-        tickFontSize = DEFAULTS.tickFontSize,
-        tickPadding = DEFAULTS.tickPadding,
+        tickSize,
+        tickFontSize,
+        tickPadding,
         tickFormat,
         tickClass,
         tickCount = typeof magicTicks === 'number' ? magicTicks : undefined,
         tickSpacing,
         text = true,
         ...options
-    }: AxisYMarkProps = $props();
+    }: AxisYMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
