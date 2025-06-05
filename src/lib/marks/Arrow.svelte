@@ -67,9 +67,12 @@
 
     const {
         data = [{}],
-        class: className = null,
+        class: className = '',
         ...options
-    }: ArrowMarkProps = $derived({ ...DEFAULTS, ...markProps });
+    }: ArrowMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

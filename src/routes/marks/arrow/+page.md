@@ -15,7 +15,6 @@ Metro dataset:
 
 ```svelte live
 <script lang="ts">
-    import { css } from '@emotion/css';
     import { Plot, Arrow, Dot, Text } from '$lib/index.js';
     import { page } from '$app/state';
     let { metros } = $derived(page.data.data);
@@ -30,7 +29,6 @@ Metro dataset:
     height={450}
     x={{ type: 'log', label: 'P..opulation' }}
     y={{ label: 'Inequality' }}
-    {css}
     color={{
         label: 'Change in inequality from 1980 to 2015',
         legend: true,

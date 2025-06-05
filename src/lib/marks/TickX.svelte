@@ -31,7 +31,8 @@
         BaseMarkProps,
         ChannelAccessor,
         DataRow,
-        FacetContext
+        FacetContext,
+        PlotDefaults
     } from '../types.js';
     import { recordizeX } from '$lib/index.js';
     import { projectX, projectY } from '../helpers/scales.js';
@@ -41,7 +42,19 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data = [{}], ...options }: TickXMarkProps = $props();
+    let markProps: TickXMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').tick,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').tickX
+    };
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: TickXMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     let args = $derived(recordizeX({ data, ...options }, { withIndex: false }));
 

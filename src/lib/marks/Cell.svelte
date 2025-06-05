@@ -8,7 +8,8 @@
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
-        ChannelAccessor
+        ChannelAccessor,
+        PlotDefaults
     } from '../types.js';
 
     export type CellMarkProps = BaseMarkProps &
@@ -29,7 +30,20 @@
     import { isValid } from '../helpers/isValid.js';
     import RectPath from './helpers/RectPath.svelte';
 
-    let { data = [{}], class: className = null, ...options }: CellMarkProps = $props();
+    let markProps: CellMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').cell
+    };
+
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: CellMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

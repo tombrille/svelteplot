@@ -44,27 +44,41 @@
     import { getContext } from 'svelte';
     import Frame from '$lib/marks/Frame.svelte';
     import Rect from '$lib/marks/Rect.svelte';
-    import type { BaseMarkProps, PlotContext } from '$lib/types.js';
+    import type { BaseMarkProps, PlotContext, PlotDefaults } from '$lib/types.js';
     import { clientToLayerCoordinates } from './helpers/events.js';
 
-    let {
-        brush = $bindable({ enabled: false }),
-        stroke = 'currentColor',
+    let { brush = $bindable(), ...markProps }: BrushMarkProps = $props();
+
+    const DEFAULTS = {
+        stroke: 'currentColor',
+        strokeDasharray: '2,3',
+        strokeOpacity: 0.6,
+        resizeHandleSize: 10,
+        constrainToDomain: false,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').brush
+    };
+
+    const {
+        data = [{}],
+        stroke,
         strokeWidth,
-        strokeDasharray = '2,3',
-        strokeOpacity = 0.6,
+        strokeDasharray,
+        strokeOpacity,
         strokeLinecap,
         strokeDashoffset,
         strokeLinejoin,
         strokeMiterlimit,
         cursor: forceCursor,
         limitDimension = false,
-        constrainToDomain = false,
-        resizeHandleSize = 10,
+        constrainToDomain,
+        resizeHandleSize,
         onbrushstart,
         onbrushend,
         onbrush
-    }: BrushMarkProps = $props();
+    }: BrushMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -361,4 +375,10 @@
         {strokeMiterlimit}
         {strokeWidth} />
 {/if}
-<Frame fill="transparent" inset={-20} {cursor} {onpointerdown} {onpointermove} />
+<Frame
+    fill="transparent"
+    stroke="transparent"
+    inset={-20}
+    {cursor}
+    {onpointerdown}
+    {onpointermove} />

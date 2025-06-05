@@ -2,7 +2,7 @@
     Creates a vertical box plot for visualizing data distribution with quartiles and outliers
 -->
 <script lang="ts" module>
-    export type BoxProps = {
+    export type BoxYMarkProps = Pick<BaseMarkProps, 'class'> & {
         data: DataRecord[];
         x: ChannelAccessor;
         y: ChannelAccessor;
@@ -31,21 +31,31 @@
 
 <script lang="ts">
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type { ChannelAccessor, DataRecord } from '$lib/types.js';
+    import type { BaseMarkProps, ChannelAccessor, DataRecord } from '$lib/types.js';
     import { groupX, BarY, TickY, RuleX, Dot } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
+    import { getContext } from 'svelte';
+    import type { PlotDefaults } from '../types.js';
 
-    let {
+    let markProps: BoxYMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').box,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').boxY
+    };
+    const {
         data = [{}],
-        x,
-        y,
-        rule,
+        class: className = '',
         bar,
-        tickMedian = true,
-        tickMinMax = false,
+        rule,
+        tickMedian,
+        tickMinMax,
         dot,
-        class: className = null
-    }: BoxProps = $props();
+        x,
+        y
+    }: BoxYMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     let { data: grouped } = $derived(
         groupX(

@@ -17,17 +17,26 @@
     import Geo from './Geo.svelte';
     import { geoGraticule } from 'd3-geo';
     import { getContext } from 'svelte';
+    import type { PlotDefaults } from '../types.js';
+
+    let markProps: GraticuleMarkProps = $props();
 
     const DEFAULTS = {
-        graticuleStep: 10,
-        ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
+        ...getContext<PlotDefaults>('svelteplot/_defaults').graticule
     };
 
-    let { step = DEFAULTS.graticuleStep, stepX, stepY, ...options }: GraticuleMarkProps = $props();
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: GraticuleMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     let graticule = $derived.by(() => {
         const graticule = geoGraticule();
-        graticule.stepMinor([stepX || step, stepY || step]);
+        graticule.stepMinor([options.stepX || options.step, options.stepY || options.step]);
         return graticule;
     });
 </script>

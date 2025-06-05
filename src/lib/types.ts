@@ -32,6 +32,9 @@ import type { RuleYMarkProps } from './marks/RuleY.svelte';
 import type { TickYMarkProps } from './marks/TickY.svelte';
 import type { GridYMarkProps } from './marks/GridY.svelte';
 import type { GridXMarkProps } from './marks/GridX.svelte';
+import type { PointerMarkProps } from './marks/Pointer.svelte';
+import type { BoxXMarkProps } from './marks/BoxX.svelte';
+import type { BoxYMarkProps } from './marks/BoxY.svelte';
 
 export type MarkType =
     | 'area'
@@ -835,7 +838,7 @@ export type AutoMarginStores = {
     autoMarginBottom: Writable<Map<string, number>>;
 };
 
-type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title' | 'automatic';
+type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title' | 'automatic' | 'children';
 
 /**
  * these are the default options for the plot marks that can be set using
@@ -935,6 +938,18 @@ export type PlotDefaults = {
      */
     barY: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
     /**
+     * default props for box marks, applied to boxX and boxY marks
+     */
+    box: Partial<Omit<BoxXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for boxX marks
+     */
+    boxX: Partial<Omit<BoxXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for boxY marks
+     */
+    boxY: Partial<Omit<BoxYMarkProps, IgnoreDefaults>>;
+    /**
      * default props for brush marks, applied to brush, brushX and brushY marks
      */
     brush: Partial<Omit<BrushMarkProps, IgnoreDefaults | 'limitDimension'>>;
@@ -986,6 +1001,10 @@ export type PlotDefaults = {
      * default props for link marks
      */
     link: Partial<Omit<LinkMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for pointer marks
+     */
+    pointer: Partial<Omit<PointerMarkProps, IgnoreDefaults>>;
     /**
      * default props for rect marks, applied to rect and rectX marks
      */
