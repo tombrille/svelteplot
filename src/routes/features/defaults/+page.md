@@ -66,16 +66,21 @@ SveltePlot is also relying on CSS variables.
 
     let { penguins } = $derived(page.data.data);
     setContext('svelteplot/defaults', {
-        dotRadius: 5,
-        tickSize: 0,
-        frame: true,
-        grid: true,
+        axis: {
+            tickSize: 0,
+            tickPadding: 5
+        },
+        frame: { implicit: true },
+        grid: { implicit: true },
         inset: 15,
         categoricalColorScheme: [
             'var(--svp-red)',
             'var(--svp-blue)',
             'var(--svp-green)'
-        ]
+        ],
+        dot: {
+            r: 5
+        }
     });
 </script>
 
@@ -92,12 +97,21 @@ SveltePlot is also relying on CSS variables.
 ```svelte
 <script>
     setContext('svelteplot/defaults', {
-        dotRadius: 5,
-        tickSize: 0,
-        frame: true,
-        grid: true,
+        axis: {
+            tickSize: 0,
+            tickPadding: 5
+        },
+        frame: { implicit: true },
+        grid: { implicit: true },
         inset: 15,
-        categoricalColorScheme: ['red', 'blue', 'green']
+        categoricalColorScheme: [
+            'var(--svp-red)',
+            'var(--svp-blue)',
+            'var(--svp-green)'
+        ],
+        dot: {
+            r: 5
+        }
     });
 </script>
 

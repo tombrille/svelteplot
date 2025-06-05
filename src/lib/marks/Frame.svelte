@@ -28,19 +28,38 @@
 <script lang="ts">
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import type { PlotContext, BaseRectMarkProps, LinkableMarkProps } from '../types.js';
+    import type {
+        PlotContext,
+        BaseRectMarkProps,
+        LinkableMarkProps,
+        PlotDefaults
+    } from '../types.js';
     import type { BaseMarkProps } from '../types.js';
     import RectPath from './helpers/RectPath.svelte';
 
-    let {
+    let markProps: FrameMarkProps = $props();
+
+    const DEFAULTS: FrameMarkProps = {
+        fill: 'none',
+        class: 'frame',
+        stroke: 'currentColor',
+        fillOpacity: 1,
+        strokeOpacity: 1,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').frame
+    };
+
+    const {
         automatic,
-        class: className = 'frame',
+        class: className,
         fill,
         stroke,
         fillOpacity,
         strokeOpacity,
         ...options
-    }: FrameMarkProps = $props();
+    }: FrameMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

@@ -51,6 +51,8 @@
     const maxMarginBottom = $derived(Math.max(...$autoMarginBottom.values()));
     const maxMarginTop = $derived(Math.max(...$autoMarginTop.values()));
 
+    const USER_DEFAULTS = getContext<Partial<PlotDefaults>>('svelteplot/defaults') || {};
+
     // default settings in the plot and marks can be overwritten by
     // defining the svelteplot/defaults context outside of Plot
     const DEFAULTS: PlotDefaults = {
@@ -59,17 +61,7 @@
         inset: 0,
         colorScheme: 'turbo',
         unknown: '#cccccc99',
-        implicitMarks: {
-            frame: false,
-            grid: false,
-            axes: true
-        },
-        axisX: {
-            anchor: 'bottom'
-        },
-        axisY: {
-            anchor: 'left'
-        },
+
         categoricalColorScheme: 'observable10',
         pointScaleHeight: 18,
         bandScaleHeight: 30,
@@ -80,7 +72,29 @@
             compactDisplay: 'short'
         },
         markerDotRadius: 3,
-        ...getContext<Partial<PlotDefaults>>('svelteplot/defaults')
+        ...USER_DEFAULTS,
+        axisX: {
+            anchor: 'bottom',
+            implicit: true,
+            ...USER_DEFAULTS.axis,
+            ...USER_DEFAULTS.axisX
+        },
+        axisY: {
+            anchor: 'left',
+            implicit: true,
+            ...USER_DEFAULTS.axis,
+            ...USER_DEFAULTS.axisY
+        },
+        gridX: {
+            implicit: false,
+            ...USER_DEFAULTS.grid,
+            ...USER_DEFAULTS.gridX
+        },
+        gridY: {
+            implicit: false,
+            ...USER_DEFAULTS.grid,
+            ...USER_DEFAULTS.gridY
+        }
     };
 
     let {
@@ -393,16 +407,16 @@
                   ? margins
                   : Math.max(5, maxMarginBottom),
             inset: isOneDimensional ? 10 : DEFAULTS.inset,
-            grid: DEFAULTS.implicitMarks.grid,
-            axes: DEFAULTS.implicitMarks.axes,
-            frame: DEFAULTS.implicitMarks.frame,
+            grid: (DEFAULTS.gridX?.implicit ?? false) && (DEFAULTS.gridY?.implicit ?? false),
+            axes: (DEFAULTS.axisX?.implicit ?? false) && (DEFAULTS.axisY?.implicit ?? false),
+            frame: DEFAULTS.frame?.implicit ?? false,
             projection: null,
             aspectRatio: null,
             facet: {},
             padding: 0.1,
             x: {
                 type: 'auto',
-                axis: autoXAxis ? DEFAULTS.axisX.anchor : false,
+                axis: DEFAULTS.axisX.implicit && autoXAxis ? DEFAULTS.axisX.anchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -413,11 +427,11 @@
                 align: 0.5,
                 tickSpacing: DEFAULTS.axisX.tickSpacing ?? 80,
                 tickFormat: 'auto',
-                grid: false
+                grid: DEFAULTS.gridX.implicit ?? false
             },
             y: {
                 type: 'auto',
-                axis: autoYAxis ? DEFAULTS.axisY.anchor : false,
+                axis: DEFAULTS.axisY.implicit && autoYAxis ? DEFAULTS.axisY.anchor : false,
                 labelAnchor: 'auto',
                 reverse: false,
                 clamp: false,
@@ -428,7 +442,7 @@
                 align: 0.5,
                 tickSpacing: DEFAULTS.axisY.tickSpacing ?? 50,
                 tickFormat: 'auto',
-                grid: false
+                grid: DEFAULTS.gridY.implicit ?? false
             },
             opacity: {
                 type: 'linear',

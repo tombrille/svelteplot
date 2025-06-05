@@ -30,6 +30,8 @@ import type { RectXMarkProps } from './marks/RectX.svelte';
 import type { RectYMarkProps } from './marks/RectY.svelte';
 import type { RuleYMarkProps } from './marks/RuleY.svelte';
 import type { TickYMarkProps } from './marks/TickY.svelte';
+import type { GridYMarkProps } from './marks/GridY.svelte';
+import type { GridXMarkProps } from './marks/GridX.svelte';
 
 export type MarkType =
     | 'area'
@@ -833,7 +835,7 @@ export type AutoMarginStores = {
     autoMarginBottom: Writable<Map<string, number>>;
 };
 
-type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title';
+type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title' | 'automatic';
 
 /**
  * these are the default options for the plot marks that can be set using
@@ -853,20 +855,6 @@ export type PlotDefaults = {
      */
     colorScheme: ColorScheme;
     categoricalColorScheme: ColorScheme | string[];
-    implicitMarks: {
-        /**
-         * add grid to plots by default
-         */
-        grid: boolean;
-        /**
-         * add axes to plots by default
-         */
-        axes: boolean;
-        /**
-         * add frame to plots by default
-         */
-        frame: boolean;
-    };
     /**
      * fallback color to be used for null/NA
      */
@@ -924,16 +912,16 @@ export type PlotDefaults = {
         Omit<
             AxisXMarkProps,
             'data' | 'facet' | ChannelName | 'facetAnchor' | 'labelAnchor' | 'anchor'
-        >
+        > & { implicit: boolean }
     >;
     /**
      * default props for axisX marks
      */
-    axisX: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
+    axisX: Partial<Omit<AxisXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
     /**
      * default props for axisY marks
      */
-    axisY: Partial<Omit<AxisYMarkProps, IgnoreDefaults>>;
+    axisY: Partial<Omit<AxisYMarkProps, IgnoreDefaults> & { implicit: boolean }>;
     /**
      * default props for bar marks, applied to both barX and barY marks
      */
@@ -969,7 +957,7 @@ export type PlotDefaults = {
     /**
      * default props for frame marks
      */
-    frame: Partial<FrameMarkProps>;
+    frame: Partial<FrameMarkProps & { implicit: boolean }>;
     /**
      * default props for geo marks
      */
@@ -981,15 +969,15 @@ export type PlotDefaults = {
     /**
      * default props for grid marks, applied to both gridX and gridY marks
      */
-    grid: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
+    grid: Partial<Omit<GridXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
     /**
      * default props for gridX marks
      */
-    gridX: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
+    gridX: Partial<Omit<GridXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
     /**
      * default props for gridY marks
      */
-    gridY: Partial<Omit<AxisYMarkProps, IgnoreDefaults>>;
+    gridY: Partial<Omit<GridYMarkProps, IgnoreDefaults> & { implicit: boolean }>;
     /**
      * default props for line marks
      */
