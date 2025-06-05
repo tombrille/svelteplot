@@ -11,14 +11,14 @@
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
-    import type { DefaultOptions, PlotContext } from '../types.js';
+    import type { PlotDefaults, PlotContext } from '../types.js';
 
     let { class: className = null }: ColorLegendMarkProps = $props();
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
-    const DEFAULTS = getContext<Partial<DefaultOptions>>('svelteplot/_defaults');
+    const DEFAULTS = getContext<Partial<PlotDefaults>>('svelteplot/_defaults');
 
     const legendTitle = $derived(plot.options.color.label);
     const scaleType = $derived(plot.scales.color.type);

@@ -1,6 +1,6 @@
 <script module>
     export const title = 'Datawrapper-style ticks';
-    export const description = 'Foobar';
+    export const sortKey = 99;
 </script>
 
 <script>

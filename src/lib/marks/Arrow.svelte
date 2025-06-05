@@ -38,14 +38,15 @@
 </script>
 
 <script lang="ts">
-    import { getContext, type Snippet } from 'svelte';
+    import { getContext } from 'svelte';
     import type {
         PlotContext,
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        RawValue
+        RawValue,
+        PlotDefaults
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, maybeNumber } from '../helpers/index.js';
@@ -55,7 +56,23 @@
     import { addEventHandlers } from './helpers/events.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
-    let { data = [{}], class: className = null, ...options }: ArrowMarkProps = $props();
+    let markProps: ArrowMarkProps = $props();
+
+    const DEFAULTS = {
+        headAngle: 60,
+        headLength: 8,
+        inset: 0,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').arrow
+    };
+
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: ArrowMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
@@ -68,7 +85,7 @@
             : maybeData(data)
     );
 
-    const args: ArrowProps = $derived(
+    const args: ArrowMarkProps = $derived(
         replaceChannels({ data: sorted, ...options }, { y: ['y1', 'y2'], x: ['x1', 'x2'] })
     );
 </script>
@@ -78,7 +95,7 @@
     required={['x1', 'x2', 'y1', 'y2']}
     channels={['x1', 'y1', 'x2', 'y2', 'opacity', 'stroke', 'strokeOpacity']}
     {...args}>
-    {#snippet children({ mark, usedScales, scaledData })}
+    {#snippet children({ usedScales, scaledData })}
         {@const sweep = maybeSweep(args.sweep)}
         <GroupMultiple class="arrow" length={scaledData.length}>
             {#each scaledData as d, i (i)}
@@ -86,8 +103,8 @@
                     {@const inset = resolveProp(args.inset, d.datum, 0)}
                     {@const insetStart = resolveProp(args.insetStart, d.datum)}
                     {@const insetEnd = resolveProp(args.insetEnd, d.datum)}
-                    {@const headAngle = resolveProp(args.headAngle, d.datum, 60)}
-                    {@const headLength = resolveProp(args.headLength, d.datum, 8)}
+                    {@const headAngle = resolveProp(args.headAngle, d.datum)}
+                    {@const headLength = resolveProp(args.headLength, d.datum)}
                     {@const bend = resolveProp(args.bend, d.datum, 0)}
                     {@const strokeWidth = resolveProp(args.strokeWidth, d.datum, 1)}
                     {@const arrPath = arrowPath(

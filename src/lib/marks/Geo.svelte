@@ -22,7 +22,8 @@
         PlotContext,
         BaseMarkProps,
         ConstantAccessor,
-        LinkableMarkProps
+        LinkableMarkProps,
+        PlotDefaults
     } from '../types.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';
@@ -38,14 +39,23 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
 
-    let {
+    let markProps: GeoMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').geo
+    };
+
+    const {
         data = [{}],
         canvas = false,
         geoType,
         dragRotate,
-        class: className = null,
+        class: className = '',
         ...options
-    }: GeoMarkProps = $props();
+    }: GeoMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const path = $derived(
         callWithProps(geoPath, [plot.scales.projection], {

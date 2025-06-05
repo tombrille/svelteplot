@@ -32,7 +32,8 @@
         ChannelAccessor,
         DataRow,
         FacetContext,
-        ConstantAccessor
+        ConstantAccessor,
+        PlotDefaults
     } from '../types.js';
     import { recordizeY } from '$lib/index.js';
     import { projectX, projectY } from '../helpers/scales.js';
@@ -42,7 +43,19 @@
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
 
-    let { data = [{}], ...options }: TickYMarkProps = $props();
+    let markProps: TickYMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').tick,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').tickY
+    };
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: TickYMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     let args = $derived(recordizeY({ data, ...options }, { withIndex: false }));
 

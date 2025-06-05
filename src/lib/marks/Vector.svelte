@@ -9,7 +9,8 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        FacetContext
+        FacetContext,
+        PlotDefaults
     } from '../types.js';
 
     type D3Path = ReturnType<typeof import('d3-path').path>;
@@ -53,19 +54,26 @@
     const defaultRadius = 3.5;
 
     // The size of the arrowhead is proportional to its length, but we still allow
-    // the relative size of the head to be controlled via the mark’s width option;
+    // the relative size of the head to be controlled via the mark's width option;
     // doubling the default radius will produce an arrowhead that is twice as big.
-    // That said, we’ll probably want a arrow with a fixed head size, too.
+    // That said, we'll probably want a arrow with a fixed head size, too.
     const wingRatio = defaultRadius * 5;
 
-    let {
+    let markProps: VectorMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').vector
+    };
+    const {
         data = [{}],
         canvas,
         shape = 'arrow',
         anchor = 'middle',
         r = defaultRadius,
         ...options
-    }: VectorMarkProps = $props();
+    }: VectorMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

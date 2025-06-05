@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { page } from '$app/state';
     import { HighlightSvelte } from 'svelte-highlight';
     import codeStyleLight from 'svelte-highlight/styles/atom-one-light';
@@ -56,14 +56,21 @@
     <h1 class="page-title">{mod.title}</h1>
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {#if mod.description}<p>{@html mod.description}</p>{/if}
-    <mod.default />
+
+    <div class="screenshot">
+        <mod.default />
+    </div>
 
     <div class="svp-code-block-wrapper">
         <div class="svp-code-block">
             <HighlightSvelte
                 lang="svelte"
                 code={pagesSrc[plotKey].substring(
-                    pagesSrc[plotKey].indexOf('<Plot')
+                    pagesSrc[plotKey].indexOf(
+                        pages[plotKey].fullCode
+                            ? '<script lang="ts">'
+                            : '<Plot'
+                    )
                 )} />
         </div>
     </div>

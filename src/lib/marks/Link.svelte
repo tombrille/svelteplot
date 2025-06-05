@@ -28,7 +28,8 @@
         CurveName,
         MarkerOptions,
         RawValue,
-        ScaledDataRecord
+        ScaledDataRecord,
+        PlotDefaults
     } from '../types.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeData } from '../helpers/index.js';
@@ -41,14 +42,21 @@
     import { geoPath } from 'd3-geo';
     import { pick } from 'es-toolkit';
 
-    let {
+    let markProps: LinkMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').link
+    };
+    const {
         data = [{}],
         curve = 'auto',
         tension = 0,
         text,
-        class: className = null,
+        class: className = '',
         ...options
-    }: LinkMarkProps = $props();
+    }: LinkMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

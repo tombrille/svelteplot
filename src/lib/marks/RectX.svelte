@@ -8,11 +8,25 @@
 <script lang="ts">
     import Rect, { type RectMarkProps } from './Rect.svelte';
     import { intervalY, stackX, recordizeX } from '$lib/index.js';
-    import type { PlotContext } from '../types.js';
+    import type { PlotContext, PlotDefaults } from '../types.js';
     import { getContext } from 'svelte';
     import type { StackOptions } from '$lib/transforms/stack';
 
-    let { data = [{}], stack, ...options }: RectXMarkProps = $props();
+    let markProps: RectXMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').rect,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').rectX
+    };
+
+    const {
+        data = [{}],
+        stack,
+        ...options
+    }: RectXMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

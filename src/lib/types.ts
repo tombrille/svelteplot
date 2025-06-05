@@ -4,6 +4,37 @@ import type { MouseEventHandler } from 'svelte/elements';
 import type { MarkerShape } from './marks/helpers/Marker.svelte';
 import type { Writable } from 'svelte/store';
 import type * as CSS from 'csstype';
+import type { AreaMarkProps } from './marks/Area.svelte';
+import type { ArrowMarkProps } from './marks/Arrow.svelte';
+import type { AxisXMarkProps } from './marks/AxisX.svelte';
+import type { AxisYMarkProps } from './marks/AxisY.svelte';
+import type { BarXMarkProps } from './marks/BarX.svelte';
+import type { CellMarkProps } from './marks/Cell.svelte';
+import type { DotMarkProps } from './marks/Dot.svelte';
+import type { FrameMarkProps } from './marks/Frame.svelte';
+import type { GeoMarkProps } from './marks/Geo.svelte';
+import type { GraticuleMarkProps } from './marks/Graticule.svelte';
+import type { LineMarkProps } from './marks/Line.svelte';
+import type { LinkMarkProps } from './marks/Link.svelte';
+import type { RectMarkProps } from './marks/Rect.svelte';
+import type { RuleXMarkProps } from './marks/RuleX.svelte';
+import type { SphereMarkProps } from './marks/Sphere.svelte';
+import type { SpikeMarkProps } from './marks/Spike.svelte';
+import type { TextMarkProps } from './marks/Text.svelte';
+import type { TickXMarkProps } from './marks/TickX.svelte';
+import type { VectorMarkProps } from './marks/Vector.svelte';
+import type { BrushMarkProps } from './marks/Brush.svelte';
+import type { BrushXMarkProps } from './marks/BrushX.svelte';
+import type { BrushYMarkProps } from './marks/BrushY.svelte';
+import type { RectXMarkProps } from './marks/RectX.svelte';
+import type { RectYMarkProps } from './marks/RectY.svelte';
+import type { RuleYMarkProps } from './marks/RuleY.svelte';
+import type { TickYMarkProps } from './marks/TickY.svelte';
+import type { GridYMarkProps } from './marks/GridY.svelte';
+import type { GridXMarkProps } from './marks/GridX.svelte';
+import type { PointerMarkProps } from './marks/Pointer.svelte';
+import type { BoxXMarkProps } from './marks/BoxX.svelte';
+import type { BoxYMarkProps } from './marks/BoxY.svelte';
 
 export type MarkType =
     | 'area'
@@ -396,52 +427,6 @@ export type PlotOptions = {
     /**
      * pass a @emotion/css function to style plot using dynamic classes
      */
-    css: (d: string) => string | undefined;
-};
-
-export type PlotDefaults = {
-    axisXAnchor: AxisXAnchor;
-    axisYAnchor: AxisYAnchor;
-    xTickSpacing: number;
-    yTickSpacing: number;
-    height: number;
-    inset: number;
-    colorScheme: ColorScheme | string[];
-    categoricalColorScheme: ColorScheme | string[];
-    dotRadius: number;
-    /**
-     * for computing the automatic height based on the number of
-     * domain items in a point scale
-     */
-    pointScaleHeight: number;
-    /**
-     * for computing the automatic height based on the number of
-     * domain items in a band scale
-     */
-    bandScaleHeight: number;
-    /**
-     * add frame to plots by default
-     */
-    frame: boolean;
-    grid: boolean;
-    axes: boolean;
-    /**
-     * initial width of the plot before measuring the actual width
-     */
-    initialWidth: number;
-    /**
-     * locale, used for automatic axis ticks
-     */
-    locale: string;
-    /**
-     * default number format for axis ticks
-     */
-    numberFormat: Intl.NumberFormatOptions;
-    markerDotRadius: number;
-    /**
-     * fallback color to be used for null/NA
-     */
-    unknown: string;
     css: (d: string) => string | undefined;
 };
 
@@ -853,11 +838,13 @@ export type AutoMarginStores = {
     autoMarginBottom: Writable<Map<string, number>>;
 };
 
+type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title' | 'automatic' | 'children';
+
 /**
  * these are the default options for the plot marks that can be set using
  * the 'svelteplot/defaults' context.
  */
-export type DefaultOptions = {
+export type PlotDefaults = {
     /**
      * default plot height
      */
@@ -867,41 +854,32 @@ export type DefaultOptions = {
      */
     inset: number;
     /**
-     * default tick line length
-     */
-    tickSize: number;
-    /**
-     * default padding between tick line and tick label
-     */
-    tickPadding: number;
-    /**
-     * default font size for tick labels
-     */
-    tickFontSize: number;
-    /**
-     * default anchor for x axis
-     */
-    axisXAnchor: 'bottom' | 'top';
-    /**
-     * default anchor for y axis
-     */
-    axisYAnchor: 'left' | 'right';
-    /**
-     * default spacing between ticks in AxisX and GridX
-     */
-    xTickSpacing: number;
-    /**
-     * default spacing between ticks in AxisY and GridY
-     */
-    yTickSpacing: number;
-    /**
      * default color scheme
      */
     colorScheme: ColorScheme;
+    categoricalColorScheme: ColorScheme | string[];
     /**
-     * default step for graticule, in degrees
+     * fallback color to be used for null/NA
      */
-    graticuleStep: number;
+    unknown: string;
+    /**
+     * optional @emotion/css function to style the plot
+     */
+    css: (d: string) => string | undefined;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a point scale
+     */
+    pointScaleHeight: number;
+    /**
+     * for computing the automatic height based on the number of
+     * domain items in a band scale
+     */
+    bandScaleHeight: number;
+    /**
+     * initial width of the plot before measuring the actual width
+     */
+    initialWidth: number;
     /**
      * locale, used for automatic axis ticks
      */
@@ -914,6 +892,171 @@ export type DefaultOptions = {
      * default dot radius for line markers, used in dot, circle, and circle-stroke markers
      */
     markerDotRadius: number;
+    /**
+     * default props for area marks, applied to area, areaX, and areaY marks
+     */
+    area: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for areaX marks
+     */
+    areaX: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for areaY marks
+     */
+    areaY: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for arrow marks
+     */
+    arrow: Partial<Omit<ArrowMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for axis marks, applied to both axisX and axisY marks
+     */
+    axis: Partial<
+        Omit<
+            AxisXMarkProps,
+            'data' | 'facet' | ChannelName | 'facetAnchor' | 'labelAnchor' | 'anchor'
+        > & { implicit: boolean }
+    >;
+    /**
+     * default props for axisX marks
+     */
+    axisX: Partial<Omit<AxisXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
+    /**
+     * default props for axisY marks
+     */
+    axisY: Partial<Omit<AxisYMarkProps, IgnoreDefaults> & { implicit: boolean }>;
+    /**
+     * default props for bar marks, applied to both barX and barY marks
+     */
+    bar: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for barX marks
+     */
+    barX: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for barY marks
+     */
+    barY: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for box marks, applied to boxX and boxY marks
+     */
+    box: Partial<Omit<BoxXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for boxX marks
+     */
+    boxX: Partial<Omit<BoxXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for boxY marks
+     */
+    boxY: Partial<Omit<BoxYMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for brush marks, applied to brush, brushX and brushY marks
+     */
+    brush: Partial<Omit<BrushMarkProps, IgnoreDefaults | 'limitDimension'>>;
+    /**
+     * default props for brushX marks
+     */
+    brushX: Partial<Omit<BrushXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for brushY marks
+     */
+    brushY: Partial<Omit<BrushYMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for cell marks
+     */
+    cell: Partial<Omit<CellMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for dot marks
+     */
+    dot: Partial<Omit<DotMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for frame marks
+     */
+    frame: Partial<FrameMarkProps & { implicit: boolean }>;
+    /**
+     * default props for geo marks
+     */
+    geo: Partial<Omit<GeoMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for graticule marks
+     */
+    graticule: Partial<Omit<GraticuleMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for grid marks, applied to both gridX and gridY marks
+     */
+    grid: Partial<Omit<GridXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
+    /**
+     * default props for gridX marks
+     */
+    gridX: Partial<Omit<GridXMarkProps, IgnoreDefaults> & { implicit: boolean }>;
+    /**
+     * default props for gridY marks
+     */
+    gridY: Partial<Omit<GridYMarkProps, IgnoreDefaults> & { implicit: boolean }>;
+    /**
+     * default props for line marks
+     */
+    line: Partial<Omit<LineMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for link marks
+     */
+    link: Partial<Omit<LinkMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for pointer marks
+     */
+    pointer: Partial<Omit<PointerMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rect marks, applied to rect and rectX marks
+     */
+    rect: Partial<Omit<RectMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rectX marks
+     */
+    rectX: Partial<Omit<RectXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rectY marks
+     */
+    rectY: Partial<Omit<RectYMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rule marks
+     */
+    rule: Partial<Omit<RuleXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rule marks
+     */
+    ruleX: Partial<Omit<RuleXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for rule marks
+     */
+    ruleY: Partial<Omit<RuleYMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for sphere marks
+     */
+    sphere: Partial<SphereMarkProps>;
+    /**
+     * default props for spike marks
+     */
+    spike: Partial<Omit<SpikeMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for text marks
+     */
+    text: Partial<Omit<TextMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for tick marks, applied to tickX and tickY marks
+     */
+    tick: Partial<Omit<TickXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for tickX marks
+     */
+    tickX: Partial<Omit<TickXMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for tickY marks
+     */
+    tickY: Partial<Omit<TickYMarkProps, IgnoreDefaults>>;
+    /**
+     * default props for vector marks
+     */
+    vector: Partial<Omit<VectorMarkProps, IgnoreDefaults>>;
 };
 
 export type MapIndexObject = {

@@ -7,7 +7,8 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackY } from '$lib/transforms/stack.js';
     import { recordizeY } from '$lib/transforms/recordize.js';
-    import type { ChannelAccessor } from '../types.js';
+    import type { ChannelAccessor, PlotDefaults } from '../types.js';
+    import { getContext } from 'svelte';
 
     /**
      * AreaY mark foo
@@ -17,7 +18,11 @@
         y?: ChannelAccessor;
     };
 
-    let { data, stack, ...options }: AreaYProps = $props();
+    let markProps: AreaMarkProps = $props();
+
+    const DEFAULTS = getContext<PlotDefaults>('svelteplot/_defaults').areaY;
+
+    const { data, stack, ...options }: AreaMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const args = $derived(
         renameChannels<AreaYProps>(

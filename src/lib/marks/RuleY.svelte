@@ -24,10 +24,23 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor
+        ChannelAccessor,
+        PlotDefaults
     } from '../types.js';
 
-    let { data = [{}], class: className = null, ...options }: RuleYMarkProps = $props();
+    let markProps: RuleYMarkProps = $props();
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').rule,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').ruleY
+    };
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: RuleYMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

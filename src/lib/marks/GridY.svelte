@@ -11,13 +11,27 @@
 <script lang="ts">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkProps, RawValue } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue, PlotDefaults } from '../types.js';
     import { resolveChannel, resolveStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { testFilter } from '$lib/helpers/index.js';
     import { RAW_VALUE } from '$lib/transforms/recordize.js';
 
-    let { data = [], automatic = false, ...options }: GridYMarkProps = $props();
+    let markProps: GridYMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').grid,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').gridY
+    };
+
+    const {
+        data = [],
+        automatic = false,
+        ...options
+    }: GridYMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

@@ -7,15 +7,19 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackX } from '$lib/transforms/stack.js';
     import { recordizeX } from '$lib/transforms/recordize.js';
-    import type { ChannelAccessor } from '../types.js';
+    import type { ChannelAccessor, PlotDefaults } from '../types.js';
+    import { getContext } from 'svelte';
 
     type AreaXProps = Omit<AreaMarkProps, 'y1' | 'y2'> & {
         x?: ChannelAccessor;
         y?: ChannelAccessor;
     };
 
-    // we're discarding y1 and y2 props since they are not
-    let { data, stack, ...options }: AreaXProps = $props();
+    let markProps: AreaMarkProps = $props();
+
+    const DEFAULTS = getContext<PlotDefaults>('svelteplot/_defaults').areaX;
+
+    const { data, stack, ...options }: AreaMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const args = $derived(
         renameChannels<AreaXProps>(

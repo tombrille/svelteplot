@@ -66,16 +66,21 @@ SveltePlot is also relying on CSS variables.
 
     let { penguins } = $derived(page.data.data);
     setContext('svelteplot/defaults', {
-        dotRadius: 5,
-        tickSize: 0,
-        frame: true,
-        grid: true,
+        axis: {
+            tickSize: 0,
+            tickPadding: 5
+        },
+        frame: { implicit: true },
+        grid: { implicit: true },
         inset: 15,
         categoricalColorScheme: [
             'var(--svp-red)',
             'var(--svp-blue)',
             'var(--svp-green)'
-        ]
+        ],
+        dot: {
+            r: 5
+        }
     });
 </script>
 
@@ -92,12 +97,21 @@ SveltePlot is also relying on CSS variables.
 ```svelte
 <script>
     setContext('svelteplot/defaults', {
-        dotRadius: 5,
-        tickSize: 0,
-        frame: true,
-        grid: true,
+        axis: {
+            tickSize: 0,
+            tickPadding: 5
+        },
+        frame: { implicit: true },
+        grid: { implicit: true },
         inset: 15,
-        categoricalColorScheme: ['red', 'blue', 'green']
+        categoricalColorScheme: [
+            'var(--svp-red)',
+            'var(--svp-blue)',
+            'var(--svp-green)'
+        ],
+        dot: {
+            r: 5
+        }
     });
 </script>
 
@@ -110,3 +124,51 @@ SveltePlot is also relying on CSS variables.
         fill="species" />
 </Plot>
 ```
+
+You can set mark-specific defaults, too:
+
+```svelte live
+<script>
+    import { Plot, BarX, AreaY } from 'svelteplot';
+    import { page } from '$app/state';
+    import { setContext } from 'svelte';
+
+    let { penguins } = $derived(page.data.data);
+    setContext('svelteplot/defaults', {
+        bar: {
+            borderRadius: 4,
+            stroke: 'currentColor',
+            fill: null
+        },
+        area: {
+            curve: 'basis',
+            fillOpacity: 0.5
+        }
+    });
+</script>
+
+<div style="columns:2">
+    <Plot height={300}>
+        <BarX data={[1, 2, 3, 4, 5, 6]} />
+    </Plot>
+    <Plot height={300}>
+        <AreaY data={[1, 3, 2, 4, 6, 5]} />
+    </Plot>
+</div>
+```
+
+```js
+setContext('svelteplot/defaults', {
+    bar: {
+        borderRadius: 4,
+        stroke: 'currentColor',
+        fill: null
+    },
+    area: {
+        curve: 'basis',
+        fillOpacity: 0.5
+    }
+});
+```
+
+[fork](https://svelte.dev/playground/e3d2f66c442245ab9b7922b5d79b0b00?version=5)

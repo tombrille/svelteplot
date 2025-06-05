@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { page } from '$app/state';
 
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
@@ -9,7 +9,14 @@
 
     const pages = import.meta.glob('../**/*.svelte', {
         eager: true
-    });
+    }) as Record<
+        string,
+        {
+            title: string;
+            description?: string;
+            sortKey?: number;
+        }
+    >;
 
     const screenshots = import.meta.glob(
         '/static/examples/**/*.png',
@@ -46,6 +53,11 @@
             .filter(
                 (page) => !page.endsWith('/_index.svelte')
             )
+            .sort((a, b) => {
+                const sortA = pages[a].sortKey ?? 10;
+                const sortB = pages[b].sortKey ?? 10;
+                return sortA - sortB;
+            })
             .map((page) => ({
                 page,
                 title: pages[page].title,

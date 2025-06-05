@@ -39,13 +39,30 @@
         DataRecord,
         BaseMarkProps,
         ConstantAccessor,
-        ChannelAccessor
+        ChannelAccessor,
+        PlotDefaults
     } from '../types.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
 
-    let { data = [{}], class: className = null, ...options }: TextMarkProps = $props();
+    const DEFAULTS = {
+        fontSize: 12,
+        fontWeight: 500,
+        strokeWidth: 1.6,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').text
+    };
+
+    let markProps: TextMarkProps = $props();
+
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: TextMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -54,7 +71,7 @@
         bottom: 'auto',
         middle: 'central',
         top: 'hanging'
-    };
+    } as const;
 
     const args = $derived(
         sort({
@@ -77,9 +94,10 @@
         'strokeOpacity',
         'fillOpacity'
     ]}
+    required={['x', 'y']}
     {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
-        <GroupMultiple class="text {className || null}" length={className ? 2 : args.data.length}>
+        <GroupMultiple class="text {className}" length={className ? 2 : args.data.length}>
             {#each scaledData as d, i (i)}
                 {#if d.valid}
                     {@const title = resolveProp(args.title, d.datum, '')}

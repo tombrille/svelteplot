@@ -36,7 +36,7 @@
             border: 1px solid #88888822;
             border-radius: 2px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            padding: 1.5ex;
+            padding: 1.5ex 1.5ex 0.4ex 1.5ex;
         }
 
         &:hover {

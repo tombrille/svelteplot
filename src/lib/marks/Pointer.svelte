@@ -21,7 +21,7 @@
 
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
-    import type { PlotContext } from '../types.js';
+    import type { PlotContext, PlotDefaults } from '../types.js';
     import { groups as d3Groups } from 'd3-array';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
@@ -33,7 +33,13 @@
     import isDataRecord from '$lib/helpers/isDataRecord.js';
     import { RAW_VALUE } from 'svelteplot/transforms/recordize.js';
 
-    let {
+    let markProps: PointerMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').pointer
+    };
+
+    const {
         data = [{}],
         children,
         x,
@@ -41,7 +47,10 @@
         z,
         maxDistance = 15,
         onupdate = null
-    }: PointerMarkProps = $props();
+    }: PointerMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     let selectedData = $state([]);
 

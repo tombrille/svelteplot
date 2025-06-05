@@ -15,7 +15,7 @@
     ];
 </script>
 
-<script>
+<script lang="ts">
     import { groupBy } from 'es-toolkit';
     import { SVELTEPRESS_CONTEXT_KEY } from '@sveltepress/theme-default/context';
     import { getContext } from 'svelte';
@@ -24,7 +24,14 @@
 
     const pages = import.meta.glob('./**/*.svelte', {
         eager: true
-    });
+    }) as Record<
+        string,
+        {
+            title: string;
+            description?: string;
+            sortKey?: number;
+        }
+    >;
 
     const paths = groupBy(
         Object.keys(pages).filter(
@@ -66,6 +73,12 @@
                 ]?.replace('/static', '')
             }))
     );
+
+    function sortPages(a: string, b: string) {
+        const sortA = pages[a].sortKey ?? 10;
+        const sortB = pages[b].sortKey ?? 10;
+        return sortA - sortB;
+    }
 </script>
 
 <p>
@@ -87,7 +100,9 @@
                     ].title}</a>
             </h3>
             <ul>
-                {#each groupPages.filter((p) => !p.endsWith('/_index.svelte')) as page (page)}
+                {#each groupPages
+                    .sort(sortPages)
+                    .filter((p) => !p.endsWith('/_index.svelte')) as page (page)}
                     <li>
                         <a
                             href={page

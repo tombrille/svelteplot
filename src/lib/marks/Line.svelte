@@ -47,22 +47,36 @@
     import { pick } from 'es-toolkit';
     import LineCanvas from './helpers/LineCanvas.svelte';
 
-    import type { RawValue } from '$lib/types.js';
+    import type { RawValue, PlotDefaults } from '$lib/types.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
-    let {
+    let markProps: LineMarkProps = $props();
+
+    const DEFAULTS: LineMarkProps = {
+        curve: 'auto',
+        tension: 0,
+        canvas: false,
+        class: null,
+        lineClass: null,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').line
+    };
+
+    const {
         data = [{}],
-        curve = 'auto',
-        tension = 0,
+        curve,
+        tension,
         text,
-        canvas = false,
-        class: className = null,
-        lineClass = null,
+        canvas,
+        class: className,
+        lineClass,
         ...options
-    }: LineMarkProps = $props();
+    }: LineMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const args = $derived(sort(recordizeXY({ data, ...options })));
 

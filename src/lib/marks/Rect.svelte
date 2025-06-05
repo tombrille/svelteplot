@@ -26,12 +26,26 @@
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
-        ChannelAccessor
+        ChannelAccessor,
+        PlotDefaults
     } from '../types.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 
-    let { data = [{}], class: className = 'rect', ...options }: RectMarkProps = $props();
+    let markProps: RectMarkProps = $props();
+
+    const DEFAULTS = {
+        ...getContext<PlotDefaults>('svelteplot/_defaults').rect
+    };
+
+    const {
+        data = [{}],
+        class: className = '',
+        ...options
+    }: RectMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

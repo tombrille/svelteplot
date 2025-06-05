@@ -1,23 +1,39 @@
 <!-- @component
     Creates a horizontal box plot for visualizing data distribution with quartiles and outliers
 -->
+<script module lang="ts">
+    export type BoxXMarkProps = BoxYMarkProps;
+</script>
+
 <script lang="ts">
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type { BoxProps } from './BoxY.svelte';
+    import type { BoxYMarkProps } from './BoxY.svelte';
     import { BarX, TickX, RuleY, Dot, groupY } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
+    import { getContext } from 'svelte';
+    import type { PlotDefaults } from '../types.js';
 
-    let {
+    let markProps: BoxXMarkProps = $props();
+    const DEFAULTS = {
+        tickMedian: true,
+        tickMinMax: false,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').box,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').boxX
+    };
+    const {
         data = [{}],
+        bar,
+        rule,
+        tickMedian,
+        tickMinMax,
+        dot,
         x,
         y,
-        rule,
-        bar,
-        tickMedian = true,
-        tickMinMax = false,
-        dot,
-        class: className = null
-    }: BoxProps = $props();
+        class: className = ''
+    }: BoxXMarkProps = $derived({
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const { data: grouped } = $derived(
         groupY(
