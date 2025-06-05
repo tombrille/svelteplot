@@ -65,12 +65,10 @@
             axes: true
         },
         axisX: {
-            anchor: 'bottom',
-            tickSpacing: 80
+            anchor: 'bottom'
         },
         axisY: {
-            anchor: 'left',
-            tickSpacing: 50
+            anchor: 'left'
         },
         categoricalColorScheme: 'observable10',
         pointScaleHeight: 18,
@@ -413,7 +411,7 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: DEFAULTS.axisX.tickSpacing,
+                tickSpacing: DEFAULTS.axisX.tickSpacing ?? 80,
                 tickFormat: 'auto',
                 grid: false
             },
@@ -428,7 +426,7 @@
                 round: false,
                 percent: false,
                 align: 0.5,
-                tickSpacing: DEFAULTS.axisY.tickSpacing,
+                tickSpacing: DEFAULTS.axisY.tickSpacing ?? 50,
                 tickFormat: 'auto',
                 grid: false
             },

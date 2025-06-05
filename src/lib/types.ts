@@ -616,27 +616,27 @@ export type LinkableMarkProps = {
     /**
      * if set, the mark element will be wrapped in a <a> link element
      */
-    href: ConstantAccessor<string>;
+    href?: ConstantAccessor<string>;
     /**
      * the relationship of the target object to the link object (e.g. "noopener")
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#rel
      */
-    rel: ConstantAccessor<string>;
+    rel?: ConstantAccessor<string>;
     /**
      * the link target mime type, e.g. "text/csv"
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#type
      */
-    type: ConstantAccessor<string>;
+    type?: ConstantAccessor<string>;
     /**
      * the target of the link, e.g. "_blank" or "_self"
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#target
      */
-    target: ConstantAccessor<'_self' | '_blank' | '_parent' | '_top' | string>;
+    target?: ConstantAccessor<'_self' | '_blank' | '_parent' | '_top' | string>;
     /**
      * if set to true, the link will be downloaded instead of navigating to it
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
      */
-    download: ConstantAccessor<boolean>;
+    download?: ConstantAccessor<boolean>;
     // allow data-sveltekit-* attributes on the link element, e.g. data-sveltekit-reload
     [key: `data-sveltekit-${string}`]: string | boolean;
 };
@@ -833,6 +833,8 @@ export type AutoMarginStores = {
     autoMarginBottom: Writable<Map<string, number>>;
 };
 
+type IgnoreDefaults = 'data' | 'facet' | ChannelName | 'title';
+
 /**
  * these are the default options for the plot marks that can be set using
  * the 'svelteplot/defaults' context.
@@ -902,63 +904,68 @@ export type PlotDefaults = {
     /**
      * default props for area marks, applied to area, areaX, and areaY marks
      */
-    area: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
+    area: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
     /**
      * default props for areaX marks
      */
-    areaX: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
+    areaX: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
     /**
      * default props for areaY marks
      */
-    areaY: Partial<Omit<AreaMarkProps, 'data' | 'facet' | ChannelName>>;
+    areaY: Partial<Omit<AreaMarkProps, IgnoreDefaults>>;
     /**
      * default props for arrow marks
      */
-    arrow: Partial<Omit<ArrowMarkProps, 'data' | 'facet' | ChannelName>>;
+    arrow: Partial<Omit<ArrowMarkProps, IgnoreDefaults>>;
     /**
      * default props for axis marks, applied to both axisX and axisY marks
      */
-    axis: Partial<BaseMarkProps>;
+    axis: Partial<
+        Omit<
+            AxisXMarkProps,
+            'data' | 'facet' | ChannelName | 'facetAnchor' | 'labelAnchor' | 'anchor'
+        >
+    >;
     /**
      * default props for axisX marks
      */
-    axisX: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
+    axisX: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
     /**
      * default props for axisY marks
      */
-    axisY: Partial<Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>>;
+    axisY: Partial<Omit<AxisYMarkProps, IgnoreDefaults>>;
     /**
      * default props for bar marks, applied to both barX and barY marks
      */
-    bar: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
+    bar: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
     /**
      * default props for barX marks
      */
-    barX: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
+    barX: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
     /**
      * default props for barY marks
      */
-    barY: Partial<Omit<BarXMarkProps, 'data' | 'facet' | ChannelName>>;
+    barY: Partial<Omit<BarXMarkProps, IgnoreDefaults>>;
     /**
      * default props for brush marks, applied to brush, brushX and brushY marks
      */
-    brush: Partial<Omit<BrushMarkProps, 'data' | 'facet' | 'limitDimension' | ChannelName>>;
+    brush: Partial<Omit<BrushMarkProps, IgnoreDefaults | 'limitDimension'>>;
     /**
      * default props for brushX marks
      */
-    brushX: Partial<Omit<BrushXMarkProps, 'data' | 'facet' | ChannelName>>;
+    brushX: Partial<Omit<BrushXMarkProps, IgnoreDefaults>>;
     /**
      * default props for brushY marks
      */
-    brushY: Partial<Omit<BrushYMarkProps, 'data' | 'facet' | ChannelName>>;
+    brushY: Partial<Omit<BrushYMarkProps, IgnoreDefaults>>;
     /**
      * default props for cell marks
      */
-    cell: Partial<Omit<CellMarkProps, 'data' | 'facet' | ChannelName>>;
+    cell: Partial<Omit<CellMarkProps, IgnoreDefaults>>;
     /**
      * default props for dot marks
      */
-    dot: Partial<Omit<DotMarkProps, 'data' | 'facet' | ChannelName>>;
+    dot: Partial<Omit<DotMarkProps, IgnoreDefaults>>;
     /**
      * default props for frame marks
      */
@@ -966,55 +973,55 @@ export type PlotDefaults = {
     /**
      * default props for geo marks
      */
-    geo: Partial<Omit<GeoMarkProps, 'data' | 'facet' | ChannelName>>;
+    geo: Partial<Omit<GeoMarkProps, IgnoreDefaults>>;
     /**
      * default props for graticule marks
      */
-    graticule: Partial<Omit<GraticuleMarkProps, 'data' | 'facet' | ChannelName>>;
+    graticule: Partial<Omit<GraticuleMarkProps, IgnoreDefaults>>;
     /**
      * default props for grid marks, applied to both gridX and gridY marks
      */
-    grid: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
+    grid: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
     /**
      * default props for gridX marks
      */
-    gridX: Partial<Omit<AxisXMarkProps, 'data' | 'facet' | ChannelName>>;
+    gridX: Partial<Omit<AxisXMarkProps, IgnoreDefaults>>;
     /**
      * default props for gridY marks
      */
-    gridY: Partial<Omit<AxisYMarkProps, 'data' | 'facet' | ChannelName>>;
+    gridY: Partial<Omit<AxisYMarkProps, IgnoreDefaults>>;
     /**
      * default props for line marks
      */
-    line: Partial<Omit<LineMarkProps, 'data' | 'facet' | ChannelName>>;
+    line: Partial<Omit<LineMarkProps, IgnoreDefaults>>;
     /**
      * default props for link marks
      */
-    link: Partial<Omit<LinkMarkProps, 'data' | 'facet' | ChannelName>>;
+    link: Partial<Omit<LinkMarkProps, IgnoreDefaults>>;
     /**
      * default props for rect marks, applied to rect and rectX marks
      */
-    rect: Partial<Omit<RectMarkProps, 'data' | 'facet' | ChannelName>>;
+    rect: Partial<Omit<RectMarkProps, IgnoreDefaults>>;
     /**
      * default props for rectX marks
      */
-    rectX: Partial<Omit<RectXMarkProps, 'data' | 'facet' | ChannelName>>;
+    rectX: Partial<Omit<RectXMarkProps, IgnoreDefaults>>;
     /**
      * default props for rectY marks
      */
-    rectY: Partial<Omit<RectYMarkProps, 'data' | 'facet' | ChannelName>>;
+    rectY: Partial<Omit<RectYMarkProps, IgnoreDefaults>>;
     /**
      * default props for rule marks
      */
-    rule: Partial<Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>>;
+    rule: Partial<Omit<RuleXMarkProps, IgnoreDefaults>>;
     /**
      * default props for rule marks
      */
-    ruleX: Partial<Omit<RuleXMarkProps, 'data' | 'facet' | ChannelName>>;
+    ruleX: Partial<Omit<RuleXMarkProps, IgnoreDefaults>>;
     /**
      * default props for rule marks
      */
-    ruleY: Partial<Omit<RuleYMarkProps, 'data' | 'facet' | ChannelName>>;
+    ruleY: Partial<Omit<RuleYMarkProps, IgnoreDefaults>>;
     /**
      * default props for sphere marks
      */
@@ -1022,27 +1029,27 @@ export type PlotDefaults = {
     /**
      * default props for spike marks
      */
-    spike: Partial<Omit<SpikeMarkProps, 'data' | 'facet' | ChannelName>>;
+    spike: Partial<Omit<SpikeMarkProps, IgnoreDefaults>>;
     /**
      * default props for text marks
      */
-    text: Partial<Omit<TextMarkProps, 'data' | 'facet' | ChannelName>>;
+    text: Partial<Omit<TextMarkProps, IgnoreDefaults>>;
     /**
      * default props for tick marks, applied to tickX and tickY marks
      */
-    tick: Partial<Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>>;
+    tick: Partial<Omit<TickXMarkProps, IgnoreDefaults>>;
     /**
      * default props for tickX marks
      */
-    tickX: Partial<Omit<TickXMarkProps, 'data' | 'facet' | ChannelName>>;
+    tickX: Partial<Omit<TickXMarkProps, IgnoreDefaults>>;
     /**
      * default props for tickY marks
      */
-    tickY: Partial<Omit<TickYMarkProps, 'data' | 'facet' | ChannelName>>;
+    tickY: Partial<Omit<TickYMarkProps, IgnoreDefaults>>;
     /**
      * default props for vector marks
      */
-    vector: Partial<Omit<VectorMarkProps, 'data' | 'facet' | ChannelName>>;
+    vector: Partial<Omit<VectorMarkProps, IgnoreDefaults>>;
 };
 
 export type MapIndexObject = {

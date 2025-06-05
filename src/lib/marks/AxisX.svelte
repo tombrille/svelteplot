@@ -49,32 +49,36 @@
         RawValue,
         ConstantAccessor,
         FacetContext,
-        PlotDefaults
+        PlotDefaults,
+        ChannelName
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { derived } from 'svelte/store';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
 
-    const DEFAULTS = {
+    let markProps: AxisXMarkProps = $props();
+
+    const DEFAULTS: Omit<AxisXMarkProps, 'data' | ChannelName> = {
         tickSize: 6,
         tickPadding: 3,
         tickFontSize: 11,
-        axisXAnchor: 'bottom',
-        ...getContext<Partial<PlotDefaults>>('svelteplot/_defaults')
+        anchor: 'bottom',
+        ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
+        ...getContext<PlotDefaults>('svelteplot/_defaults').axisX
     };
 
-    let {
+    const {
         ticks: magicTicks,
         data = Array.isArray(magicTicks) ? magicTicks : [],
         automatic = false,
         title,
-        anchor = DEFAULTS.axisXAnchor as 'top' | 'bottom',
+        anchor,
         facetAnchor = 'auto',
         interval = typeof magicTicks === 'string' ? magicTicks : undefined,
-        tickSize = DEFAULTS.tickSize,
-        tickFontSize = DEFAULTS.tickFontSize,
-        tickPadding = DEFAULTS.tickPadding,
+        tickSize,
+        tickFontSize,
+        tickPadding,
         labelAnchor,
         tickFormat,
         tickClass,
@@ -83,7 +87,7 @@
         tickSpacing,
         text = true,
         ...options
-    }: AxisXMarkProps = $props();
+    }: AxisXMarkProps = $derived({ ...DEFAULTS, ...markProps });
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());
