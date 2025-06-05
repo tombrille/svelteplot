@@ -12,17 +12,15 @@
     import type { PlotDefaults } from '../types.js';
 
     let markProps: SphereMarkProps = $props();
+
     const DEFAULTS = {
         ...getContext<PlotDefaults>('svelteplot/_defaults').sphere
     };
-    const {
-        data = [{}],
-        class: className = '',
-        ...options
-    }: SphereMarkProps = $derived({
+
+    const { ...options }: SphereMarkProps = $derived({
         ...DEFAULTS,
         ...markProps
     });
 </script>
 
-<Geo {data} {...options} geoType="sphere" />
+<Geo data={[{ type: 'Sphere' }]} {...options} geoType="sphere" />
