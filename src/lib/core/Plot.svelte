@@ -578,10 +578,4 @@
     .plot-footer {
         margin-bottom: 2rem;
     }
-
-    .plot-footer :global(> div) {
-        font-size: 12px;
-        font-style: italic;
-        opacity: 0.7;
-    }
 </style>
