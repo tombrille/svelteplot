@@ -2,18 +2,23 @@
     @component
     Useful for adding SVG text labels to your plot.
 -->
-<script module lang="ts">
-    export type TextMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        x: ChannelAccessor;
-        y: ChannelAccessor;
+
+<script lang="ts" generics="Datum extends DataRecord">
+    interface TextMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
+        data: Datum[];
+        x: ChannelAccessor<Datum>;
+        y: ChannelAccessor<Datum>;
         children?: Snippet;
-        text: ConstantAccessor<string>;
-        title?: ConstantAccessor<string>;
+        text: ConstantAccessor<string | null | false | undefined, Datum>;
+        title?: ConstantAccessor<string, Datum>;
+        /**
+         * the font size of the text
+         */
+        fontSize?: ConstantAccessor<number, Datum>;
         /**
          * if you want to apply class names to individual text elements
          */
-        textClass?: ConstantAccessor<string>;
+        textClass?: ConstantAccessor<string, Datum>;
         /**
          * the line anchor for vertical position; top, bottom, or middle
          */
@@ -22,7 +27,7 @@
          * line height as multiplier of font size
          * @default 1.2
          */
-        lineHeight?: ConstantAccessor<number>;
+        lineHeight?: ConstantAccessor<number, Datum>;
         frameAnchor?: ConstantAccessor<
             | 'bottom'
             | 'top'
@@ -31,12 +36,11 @@
             | 'top-left'
             | 'bottom-left'
             | 'top-right'
-            | 'bottom-right'
+            | 'bottom-right',
+            Datum
         >;
-    };
-</script>
+    }
 
-<script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import type {
@@ -44,11 +48,15 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        PlotDefaults
+        PlotDefaults,
+        TransformArg,
+        RawValue,
+        LinkableMarkProps
     } from '../types.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import Mark from '../Mark.svelte';
     import { sort } from '$lib/index.js';
+    import Anchor from './helpers/Anchor.svelte';
 
     import MultilineText from './helpers/MultilineText.svelte';
 
@@ -64,7 +72,7 @@
     let markProps: TextMarkProps = $props();
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: TextMarkProps = $derived({
