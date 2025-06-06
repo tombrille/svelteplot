@@ -4,7 +4,7 @@
         'Demonstrates how to use inset and aspect ratio in geographic projections.';
 </script>
 
-<script>
+<script lang="ts">
     import { Slider } from '$lib/ui';
     import {
         Plot,
@@ -54,7 +54,6 @@
         data={countries}
         opacity={0.2}
         fill="currentColor"
-        href={(d) => `#/${d.properties.name}`}
         stroke="var(--svelteplot-bg)"
         onclick={(d, e) => (selected = e)} />
     <Geo data={[selected]} />
