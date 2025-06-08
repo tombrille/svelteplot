@@ -4,7 +4,7 @@
         'A map of earthquakes around the world, with markers sized by magnitude.';
 </script>
 
-<script>
+<script lang="ts">
     import {
         Plot,
         Geo,
@@ -13,8 +13,11 @@
     } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
+    import type { ExamplesData } from '../types';
 
-    let { world, earthquakes } = $derived(page.data.data);
+    let { world, earthquakes } = $derived(
+        page.data.data
+    ) as ExamplesData;
     let land = $derived(
         topojson.feature(world, world.objects.land)
     );

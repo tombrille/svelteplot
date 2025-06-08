@@ -1,21 +1,27 @@
 <!-- @component
     Renders geographical data using projections and GeoJSON geometries
 -->
-<script module lang="ts">
-    export type GeoMarkProps = {
-        data: DataRecord[];
+<script lang="ts" generics="Datum = DataRecord">
+    interface GeoMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
+        data?: Datum[];
         geoType?: 'sphere' | 'graticule';
-        dragRotate: boolean;
-        canvas: boolean;
+        /**
+         * todo: implement?
+         */
+        dragRotate?: boolean;
+        /**
+         * toggle canvas rendering mode
+         */
+        canvas?: boolean;
         /**
          * simple browser tooltip to be displayed on mouseover
          */
-        title: ConstantAccessor<string>;
-    } & BaseMarkProps &
-        LinkableMarkProps;
-</script>
-
-<script lang="ts">
+        title?: ConstantAccessor<string, Datum>;
+        /**
+         * radius for point features
+         */
+        r?: ChannelAccessor<Datum>;
+    }
     import { getContext } from 'svelte';
     import type {
         DataRecord,
@@ -23,7 +29,8 @@
         BaseMarkProps,
         ConstantAccessor,
         LinkableMarkProps,
-        PlotDefaults
+        PlotDefaults,
+        ChannelAccessor
     } from '../types.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';
@@ -46,7 +53,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         canvas = false,
         geoType,
         dragRotate,

@@ -27,8 +27,45 @@ type LanguagesRow = {
     [`Total speakers`]: number;
 };
 
+type EarthquakeFeature = {
+    type: 'Feature';
+    properties: {
+        mag: number;
+        place: string;
+        time: number;
+        updated: number;
+        url: string;
+        detail: string;
+        status: 'reviewed';
+        tsunami: number;
+        sig: number;
+        net: string;
+        code: string;
+        ids: string;
+        sources: string;
+        types: string;
+        nst: number;
+        dmin: number;
+        rms: number;
+        gap: number;
+        magType: string;
+        type: 'earthquake';
+        title: string;
+    };
+    geometry: {
+        type: 'Point';
+        coordinates: [number, number, number];
+    };
+    id: string;
+};
+
 export type ExamplesData = {
     simpsons: SimpsonsRow[];
     penguins: PenguinsRow[];
     languages: LanguagesRow[];
+    earthquakes: {
+        type: 'FeatureCollection';
+        features: EarthquakeFeature[];
+    };
+    world: any;
 };

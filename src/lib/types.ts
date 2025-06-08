@@ -41,6 +41,8 @@ import type {
     TickY,
     Vector
 } from './marks';
+import type { GeoProjection } from 'd3-geo';
+import type { Clip } from './helpers/projection';
 
 export type MarkType =
     | 'area'
@@ -356,7 +358,19 @@ export type PlotOptions = {
     /**
      * Geo-projection
      */
-    projection: string | null;
+    projection:
+        | string
+        | null
+        | {
+              type?: string;
+              rotate?: [number, number] | [number, number, number];
+              domain?: object;
+              inset?: number;
+              clip?: Clip;
+          }
+        | {
+              type: (d: { width: number; height: number }) => GeoProjection;
+          };
     /**
      * if not null, computes a default height such that a variation of one
      * unit in the x dimension is represented by the corresponding number
@@ -664,7 +678,7 @@ export type LinkableMarkProps<T> = {
      */
     download?: ConstantAccessor<boolean, T>;
     // allow data-sveltekit-* attributes on the link element, e.g. data-sveltekit-reload
-    [key: `data-sveltekit-${string}`]: string | boolean;
+    [key: `data-sveltekit-${string}`]: string | boolean | undefined;
 };
 
 export type BaseMarkProps<T> = Partial<{
