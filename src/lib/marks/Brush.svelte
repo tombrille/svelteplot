@@ -1,15 +1,21 @@
-<script module lang="ts">
-    export type Brush = {
-        x1?: Date | number;
-        x2?: Date | number;
-        y1?: Date | number;
-        y2?: Date | number;
-        enabled: boolean;
-    };
-
-    type BrushEvent = MouseEvent & { brush: Brush };
-
-    export type BrushMarkProps = {
+<!--
+    @component
+    For creating a two-dimensional brush selection
+-->
+<script lang="ts" generics="Datum extends DataRecord">
+    interface BrushMarkProps
+        extends Pick<
+            BaseMarkProps<Datum>,
+            | 'cursor'
+            | 'stroke'
+            | 'strokeDasharray'
+            | 'strokeOpacity'
+            | 'strokeWidth'
+            | 'strokeLinecap'
+            | 'strokeDashoffset'
+            | 'strokeLinejoin'
+            | 'strokeMiterlimit'
+        > {
         brush: Brush;
         /**
          * limit brushing to x or y dimension
@@ -26,25 +32,10 @@
         onbrushstart?: (evt: BrushEvent) => void;
         onbrushend?: (evt: BrushEvent) => void;
         onbrush?: (evt: BrushEvent) => void;
-    } & Pick<
-        BaseMarkProps,
-        | 'cursor'
-        | 'stroke'
-        | 'strokeDasharray'
-        | 'strokeOpacity'
-        | 'strokeWidth'
-        | 'strokeLinecap'
-        | 'strokeDashoffset'
-        | 'strokeLinejoin'
-        | 'strokeMiterlimit'
-    >;
-</script>
-
-<script lang="ts">
+    }
     import { getContext } from 'svelte';
-    import Frame from '$lib/marks/Frame.svelte';
     import Rect from '$lib/marks/Rect.svelte';
-    import type { BaseMarkProps, PlotContext, PlotDefaults } from '$lib/types.js';
+    import type { BaseMarkProps, DataRecord, PlotContext, PlotDefaults } from '$lib/types.js';
     import { clientToLayerCoordinates } from './helpers/events.js';
 
     let { brush = $bindable({ enabled: false }), ...markProps }: BrushMarkProps = $props();
@@ -59,7 +50,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         stroke,
         strokeWidth,
         strokeDasharray,
@@ -375,10 +366,3 @@
         {strokeMiterlimit}
         {strokeWidth} />
 {/if}
-<Frame
-    fill="transparent"
-    stroke="transparent"
-    inset={-20}
-    {cursor}
-    {onpointerdown}
-    {onpointermove} />

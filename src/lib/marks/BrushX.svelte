@@ -1,11 +1,13 @@
-<script module lang="ts">
-    export type BrushXMarkProps = Omit<BrushMarkProps, 'limitDimension'>;
-</script>
-
+<!--
+    @component
+    For creating a brush that can be dragged horizontally
+-->
 <script lang="ts">
-    import Brush, { type BrushMarkProps } from './Brush.svelte';
-    import type { PlotDefaults } from '../types.js';
-    import { getContext } from 'svelte';
+    interface BrushXMarkProps extends Omit<ComponentProps<typeof Brush>, 'limitDimension'> {}
+
+    import Brush from './Brush.svelte';
+    import type { PlotDefaults, DataRecord } from '../types.js';
+    import { getContext, type ComponentProps } from 'svelte';
 
     let { brush = $bindable({ enabled: false }), ...options }: BrushXMarkProps = $props();
     const DEFAULTS = {
