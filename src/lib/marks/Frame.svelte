@@ -7,10 +7,10 @@
         extends Omit<BaseMarkProps<Datum>, 'fill' | 'stroke' | 'fillOpacity' | 'strokeOpacity'>,
             BaseRectMarkProps<Datum>,
             LinkableMarkProps<Datum> {
-        fill: string;
-        stroke: string;
-        fillOpacity: number;
-        strokeOpacity: number;
+        fill?: string;
+        stroke?: string;
+        fillOpacity?: number;
+        strokeOpacity?: number;
         automatic?: boolean;
         inset?: number;
         insetLeft?: number;
