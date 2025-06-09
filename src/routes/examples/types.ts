@@ -1,3 +1,13 @@
+type AaplRow = {
+    date: Date;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+    adj_close: number;
+};
+
 type SimpsonsRow = {
     episode: string;
     season: string;
@@ -60,6 +70,7 @@ type EarthquakeFeature = {
 };
 
 export type ExamplesData = {
+    aapl: AaplRow[];
     simpsons: SimpsonsRow[];
     penguins: PenguinsRow[];
     languages: LanguagesRow[];
