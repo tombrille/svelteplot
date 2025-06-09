@@ -129,7 +129,7 @@
         untrack(() => [$autoMarginTop]);
         if (title) {
             // add margin top to make some space for title
-            $autoMarginTop.set(id, 20);
+            $autoMarginTop.set(id, 27);
         } else {
             // no need for extra margin top
             $autoMarginTop.delete(id);
