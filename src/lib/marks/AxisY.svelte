@@ -187,6 +187,7 @@
     {/if}
     {#if showAxis}
         <BaseAxisY
+            {plot}
             scaleFn={plot.scales.y.fn}
             scaleType={plot.scales.y.type}
             tickFormat={useTickFormat}
