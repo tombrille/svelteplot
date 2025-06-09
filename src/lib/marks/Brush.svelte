@@ -37,6 +37,7 @@
     import Rect from '$lib/marks/Rect.svelte';
     import type { BaseMarkProps, DataRecord, PlotContext, PlotDefaults } from '$lib/types.js';
     import { clientToLayerCoordinates } from './helpers/events.js';
+    import Frame from '$lib/marks/Frame.svelte';
 
     let { brush = $bindable({ enabled: false }), ...markProps }: BrushMarkProps = $props();
 
@@ -366,3 +367,10 @@
         {strokeMiterlimit}
         {strokeWidth} />
 {/if}
+<Frame
+    fill="transparent"
+    stroke="transparent"
+    inset={-20}
+    {cursor}
+    {onpointerdown}
+    {onpointermove} />
