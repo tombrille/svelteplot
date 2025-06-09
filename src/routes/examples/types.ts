@@ -69,6 +69,11 @@ type EarthquakeFeature = {
     id: string;
 };
 
+type BeagleRow = {
+    lon: number;
+    lat: number;
+};
+
 export type ExamplesData = {
     aapl: AaplRow[];
     simpsons: SimpsonsRow[];
@@ -79,4 +84,5 @@ export type ExamplesData = {
         features: EarthquakeFeature[];
     };
     world: any;
+    beagle: BeagleRow[];
 };
