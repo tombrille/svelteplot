@@ -1,40 +1,7 @@
 <!-- @component
     Renders a horizontal axis with labels and tick marks
 -->
-<script module lang="ts">
-    import type { XOR } from 'ts-essentials';
-    export type AxisXMarkProps = Omit<
-        BaseMarkProps,
-        'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
-    > & {
-        data?: RawValue[];
-        automatic?: boolean;
-        title?: string;
-        anchor?: 'top' | 'bottom';
-        interval?: string | number;
-        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
-        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
-        tickSize?: number;
-        tickFontSize?: ConstantAccessor<number>;
-        tickPadding?: number;
-        tickFormat?:
-            | 'auto'
-            | Intl.DateTimeFormatOptions
-            | Intl.NumberFormatOptions
-            | ((d: RawValue) => string);
-        tickClass?: ConstantAccessor<string>;
-        /** ticks is a shorthand for defining data, tickCount or interval */
-        ticks?: number | string | RawValue[];
-        /** set to false or null to disable tick labels */
-        text: boolean | null;
-        /** approximate number of ticks to be generated */
-        tickCount?: number;
-        /** approximate number of pixels between generated ticks */
-        tickSpacing?: number;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum extends RawValue">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import BaseAxisX from './helpers/BaseAxisX.svelte';
@@ -51,6 +18,37 @@
     import { derived } from 'svelte/store';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
+
+    interface AxisXMarkProps
+        extends Omit<
+            BaseMarkProps<Datum>,
+            'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
+        > {
+        data?: Datum[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'top' | 'bottom';
+        interval?: string | number;
+        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number, Datum>;
+        tickPadding?: number;
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string, Datum>;
+        /** ticks is a shorthand for defining data, tickCount or interval */
+        ticks?: number | string | Datum[];
+        /** set to false or null to disable tick labels */
+        text: boolean | null;
+        /** approximate number of ticks to be generated */
+        tickCount?: number;
+        /** approximate number of pixels between generated ticks */
+        tickSpacing?: number;
+    }
 
     let markProps: AxisXMarkProps = $props();
 
@@ -203,11 +201,10 @@
                 plot,
                 'fill'
             )}
-            x={plot.options.marginLeft +
-                plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
-            y={anchor === 'top' ? 13 : plot.height - 13}
+            x={titleAlign === 'right' ? plot.width : titleAlign === 'center' ? plot.width / 2 : 0}
+            y={5}
             class="axis-x-title"
-            dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text>
+            dominant-baseline="hanging">{useTitle}</text>
     {/if}
     {#if showAxis}
         <BaseAxisX
@@ -223,9 +220,9 @@
             {tickFontSize}
             {tickClass}
             {text}
-            {options}
-            title={useTitle}
-            {plot} />
+            {labelAnchor}
+            {className}
+            {options} />
     {/if}
 </Mark>
 

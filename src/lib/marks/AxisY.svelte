@@ -1,41 +1,7 @@
 <!-- @component
     Renders a vertical axis with labels and tick marks
 -->
-<script module lang="ts">
-    import type { XOR } from 'ts-essentials';
-    export type AxisYMarkProps = Omit<
-        BaseMarkProps,
-        'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
-    > & {
-        data?: RawValue[];
-        automatic?: boolean;
-        title?: string;
-        anchor?: 'left' | 'right';
-        facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
-        lineAnchor?: 'top' | 'center' | 'bottom';
-        interval?: string | number;
-        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
-        tickSize?: number;
-        tickFontSize?: ConstantAccessor<number>;
-        tickPadding?: number;
-        tickFormat?:
-            | 'auto'
-            | Intl.DateTimeFormatOptions
-            | Intl.NumberFormatOptions
-            | ((d: RawValue) => string);
-        tickClass?: ConstantAccessor<string>;
-        /** ticks is a shorthand for defining data, tickCount or interval */
-        ticks?: number | string | RawValue[];
-        /** set to false or null to disable tick labels */
-        text: boolean | null;
-        /** approximate number of ticks to be generated */
-        tickCount?: number;
-        /** approximate number of pixels between generated ticks */
-        tickSpacing?: number;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum extends RawValue">
     import { getContext } from 'svelte';
     import BaseAxisY from './helpers/BaseAxisY.svelte';
     import Mark from '../Mark.svelte';
@@ -45,12 +11,44 @@
         RawValue,
         FacetContext,
         PlotDefaults,
-        ChannelName
+        ChannelName,
+        ConstantAccessor
     } from '../types.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
-    import type { ConstantAccessor } from '$lib/types.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
+
+    interface AxisYMarkProps
+        extends Omit<
+            BaseMarkProps<Datum>,
+            'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
+        > {
+        data?: Datum[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'left' | 'right';
+        facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
+        lineAnchor?: 'top' | 'center' | 'bottom';
+        interval?: string | number;
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number, Datum>;
+        tickPadding?: number;
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string, Datum>;
+        /** ticks is a shorthand for defining data, tickCount or interval */
+        ticks?: number | string | Datum[];
+        /** set to false or null to disable tick labels */
+        text: boolean | null;
+        /** approximate number of ticks to be generated */
+        tickCount?: number;
+        /** approximate number of pixels between generated ticks */
+        tickSpacing?: number;
+    }
 
     let markProps: AxisYMarkProps = $props();
 
@@ -201,10 +199,8 @@
             {tickPadding}
             {tickFontSize}
             {tickClass}
-            {options}
             {text}
-            title={useTitle}
-            {plot} />
+            {options} />
     {/if}
 </Mark>
 

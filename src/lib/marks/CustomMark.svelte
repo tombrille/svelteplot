@@ -2,21 +2,23 @@
     @component
     For showing custom SVG marks positioned at x/y coordinates
 -->
-<script module lang="ts">
-    import type { ChannelAccessor, DataRow } from '$lib/types.js';
-    import type { Snippet } from 'svelte';
+<script lang="ts" generics="Datum extends DataRecord">
+    interface CustomMarkProps extends BaseMarkProps<Datum> {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        children: Snippet<[{ datum: Datum; x: number; y: number }]>;
+    }
 
-    export type HTMLMarkProps = {
-        data: DataRow[];
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        children: Snippet<{ datum: DataRow; x: number; y: number }>;
-    };
-</script>
-
-<script lang="ts">
     import { getContext } from 'svelte';
-    import type { PlotContext } from '../types.js';
+    import type {
+        PlotContext,
+        DataRecord,
+        ChannelAccessor,
+        BaseMarkProps,
+        DataRow
+    } from '$lib/types.js';
+    import type { Snippet } from 'svelte';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());
@@ -26,13 +28,19 @@
     import { isValid } from '$lib/helpers/index.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
 
-    let { data = [{}], x, y, children, class: className = null }: HTMLMarkProps = $props();
+    let {
+        data = [{} as Datum],
+        x,
+        y,
+        children,
+        class: className = null
+    }: CustomMarkProps = $props();
 </script>
 
 <GroupMultiple class="g-custom-mark {className || ''}" length={className ? 2 : data.length}>
     {#each data as datum, i (i)}
-        {@const x_ = resolveChannel('x', datum, { x, y })}
-        {@const y_ = resolveChannel('y', datum, { x, y })}
+        {@const x_ = resolveChannel<Datum>('x', datum, { x, y })}
+        {@const y_ = resolveChannel<Datum>('y', datum, { x, y })}
         {#if isValid(x_) && isValid(y_)}
             {@const [px, py] = projectXY(plot.scales, x_, y_)}
             <g transform="translate({px}, {py})">
