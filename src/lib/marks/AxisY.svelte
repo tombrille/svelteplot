@@ -66,7 +66,8 @@
         data = Array.isArray(magicTicks) ? magicTicks : [],
         automatic = false,
         title,
-        anchor,
+        anchor = 'left',
+        class: className,
         facetAnchor = 'auto',
         interval = typeof magicTicks === 'string' ? magicTicks : undefined,
         lineAnchor = 'center',
@@ -187,21 +188,23 @@
     {/if}
     {#if showAxis}
         <BaseAxisY
+            {anchor}
+            {className}
+            {lineAnchor}
+            {options}
             {plot}
+            {text}
+            {tickClass}
+            {tickFontSize}
+            {tickPadding}
+            {ticks}
+            {tickSize}
+            marginLeft={plot.options.marginLeft}
             scaleFn={plot.scales.y.fn}
             scaleType={plot.scales.y.type}
             tickFormat={useTickFormat}
-            {ticks}
-            marginLeft={plot.options.marginLeft}
-            width={plot.facetWidth}
-            {anchor}
-            {lineAnchor}
-            {tickSize}
-            {tickPadding}
-            {tickFontSize}
-            {tickClass}
-            {text}
-            {options} />
+            title={useTitle}
+            width={plot.facetWidth} />
     {/if}
 </Mark>
 

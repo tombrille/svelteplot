@@ -201,29 +201,31 @@
                 plot,
                 'fill'
             )}
-            x={titleAlign === 'right' ? plot.width : titleAlign === 'center' ? plot.width / 2 : 0}
-            y={5}
+            x={plot.options.marginLeft +
+                plot.plotWidth * (titleAlign === 'right' ? 1 : titleAlign === 'center' ? 0.5 : 0)}
+            y={anchor === 'top' ? 13 : plot.height - 13}
             class="axis-x-title"
-            dominant-baseline="hanging">{useTitle}</text>
+            dominant-baseline={anchor === 'top' ? 'auto' : 'hanging'}>{useTitle}</text>
     {/if}
     {#if showAxis}
         <BaseAxisX
+            {anchor}
+            {className}
+            {labelAnchor}
+            {options}
             {plot}
+            {text}
+            {tickClass}
+            {tickFontSize}
+            {tickPadding}
+            {ticks}
+            {tickSize}
+            height={plot.facetHeight}
+            marginTop={plot.options.marginTop}
             scaleFn={plot.scales.x.fn}
             scaleType={plot.scales.x.type}
             tickFormat={useTickFormat}
-            {ticks}
-            marginTop={plot.options.marginTop}
-            height={plot.facetHeight}
-            {anchor}
-            {tickSize}
-            {tickPadding}
-            {tickFontSize}
-            {tickClass}
-            {text}
-            {labelAnchor}
-            {className}
-            {options} />
+            title={useTitle} />
     {/if}
 </Mark>
 
