@@ -1,15 +1,14 @@
 <!-- @component
     Convenience wrapper for rectangles oriented along the x axis 
 -->
-<script module lang="ts">
-    export type RectYMarkProps = Omit<RectMarkProps, 'x'> & { stack?: Partial<StackOptions> };
-</script>
-
-<script lang="ts">
-    import Rect, { type RectMarkProps } from './Rect.svelte';
+<script lang="ts" generics="Datum extends DataRecord">
+    interface RectYMarkProps extends Omit<ComponentProps<typeof Rect>, 'y'> {
+        stack?: Partial<StackOptions>;
+    }
+    import Rect from './Rect.svelte';
     import { intervalX, stackY, recordizeY } from '$lib/index.js';
-    import type { PlotContext, PlotDefaults } from '../types.js';
-    import { getContext } from 'svelte';
+    import type { DataRecord, PlotContext, PlotDefaults } from '../types.js';
+    import { getContext, type ComponentProps } from 'svelte';
     import type { StackOptions } from '$lib/transforms/stack';
 
     let markProps: RectYMarkProps = $props();
@@ -20,7 +19,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         stack,
         ...options
     }: RectYMarkProps = $derived({
