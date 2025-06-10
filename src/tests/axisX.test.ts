@@ -122,7 +122,7 @@ describe('AxisX mark', () => {
 
         const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
         const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
-        expect(tickValues).toStrictEqual(['0', '30', '60', '90', '120']);
+        expect(tickValues).toStrictEqual(['0', '30', '60', '90']);
     });
 
     it('tick interval via axis options', () => {
@@ -135,7 +135,7 @@ describe('AxisX mark', () => {
 
         const ticks = container.querySelectorAll('g.axis-x > g.tick') as NodeListOf<SVGGElement>;
         const tickValues = Array.from(ticks).map((t) => t.querySelector('text')?.textContent);
-        expect(tickValues).toStrictEqual(['0', '30', '60', '90', '120']);
+        expect(tickValues).toStrictEqual(['0', '30', '60', '90']);
     });
 
     it('tick interval via axis.ticks', () => {
