@@ -10,7 +10,7 @@
     let { aapl } = $derived(page.data.data) as ExamplesData;
 
     setContext('svelteplot/defaults', {
-        height: 200
+        height: 100
     });
 </script>
 
