@@ -74,6 +74,13 @@ type BeagleRow = {
     lat: number;
 };
 
+type RiaaRow = {
+    year: Date;
+    format: string;
+    group: string;
+    revenue: number;
+};
+
 export type ExamplesData = {
     aapl: AaplRow[];
     simpsons: SimpsonsRow[];
@@ -85,4 +92,5 @@ export type ExamplesData = {
     };
     world: any;
     beagle: BeagleRow[];
+    riaa: RiaaRow[];
 };

@@ -12,6 +12,9 @@ const OUTPUT_DIR = path.join(__dirname, 'static', 'examples');
 const SCREENSHOT_WIDTH = 600;
 const DEVICE_PIXEL_RATIO = 2;
 
+// Only take missing screenshots if ENV variable is set
+const ONLY_MISSING = process.env.ONLY_MISSING == 1;
+
 // Start the development server and return server instance and local URL
 const startServer = () => {
     console.log('Starting development server...');
@@ -60,6 +63,26 @@ const getSvelteFiles = async (dir) => {
                 !entry.name.startsWith('+') &&
                 !entry.name.startsWith('_')
             ) {
+                return [fullPath];
+            }
+
+            return [];
+        })
+    );
+
+    return files.flat();
+};
+
+const getExistingScreenshots = async (dir) => {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+
+    const files = await Promise.all(
+        entries.map(async (entry) => {
+            const fullPath = path.join(dir, entry.name);
+
+            if (entry.isDirectory()) {
+                return getExistingScreenshots(fullPath);
+            } else if (entry.isFile() && entry.name.endsWith('.png')) {
                 return [fullPath];
             }
 
@@ -161,8 +184,34 @@ const screenshotExamples = async () => {
         });
 
         // Get all example Svelte files
-        const svelteFiles = await getSvelteFiles(EXAMPLES_DIR);
+        let svelteFiles = await getSvelteFiles(EXAMPLES_DIR);
         console.log(`Found ${svelteFiles.length} example files to screenshot`);
+
+        if (ONLY_MISSING) {
+            // Filter to only include files that don't have screenshots ()
+            const existingScreenshots = (await getExistingScreenshots(OUTPUT_DIR)).map((file) =>
+                path.relative(OUTPUT_DIR, file)
+            );
+
+            console.log(`Found ${existingScreenshots.length} existing screenshots`);
+
+            // Filter out files that already have screenshots
+            svelteFiles = svelteFiles.filter((filePath) => {
+                return (
+                    !existingScreenshots.find((screenshot) =>
+                        filePath.endsWith(screenshot.replace('.png', '.svelte'))
+                    ) ||
+                    !existingScreenshots.find((screenshot) =>
+                        filePath.endsWith(screenshot.replace('.dark.png', '.svelte'))
+                    )
+                );
+            });
+
+            console.log(
+                `Filtered down to ${svelteFiles.length} files needing screenshots`,
+                svelteFiles
+            );
+        }
 
         // Process each file
         for (const filePath of svelteFiles) {
