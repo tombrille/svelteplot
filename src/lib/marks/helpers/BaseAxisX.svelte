@@ -223,7 +223,6 @@
         stroke: currentColor;
     }
     text {
-        font-size: 11px;
         opacity: 0.8;
         fill: currentColor;
     }
