@@ -1,24 +1,21 @@
 <!-- @component
     Creates an area chart with filled regions between two x-y value pairs
 -->
-<script module lang="ts">
-    export type AreaMarkProps = {
-        data: DataRecord[];
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        z?: ChannelAccessor;
+<script lang="ts" generics="Datum extends DataRecord">
+    interface AreaMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
+        data: Datum[];
+        x1?: ChannelAccessor<Datum>;
+        x2?: ChannelAccessor<Datum>;
+        y1?: ChannelAccessor<Datum>;
+        y2?: ChannelAccessor<Datum>;
+        z?: ChannelAccessor<Datum>;
         curve?: CurveName | CurveFactory;
         tension?: number;
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
         stack?: Partial<StackOptions>;
         canvas?: boolean;
-    } & BaseMarkProps &
-        LinkableMarkProps;
-</script>
+    }
 
-<script lang="ts">
     import Mark from '../Mark.svelte';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
@@ -49,15 +46,15 @@
 
     const DEFAULTS = {
         fill: 'currentColor',
-        curve: 'linear',
+        curve: 'linear' as CurveName,
         tension: 0,
         ...getContext<PlotDefaults>('svelteplot/_defaults').area
     };
 
     const {
-        data,
+        data = [{} as Datum],
         /** the curve */
-        curve = 'linear',
+        curve = 'linear' as CurveName,
         tension = 0,
         class: className = '',
         canvas = false,
