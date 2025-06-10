@@ -81,6 +81,19 @@ type RiaaRow = {
     revenue: number;
 };
 
+type MetrosRow = {
+    Metro: string;
+    POP_1980: number;
+    LPOP_1980: number;
+    R90_10_1980: number;
+    POP_2015: number;
+    LPOP_2015: number;
+    R90_10_2015: number;
+    nyt_display: string;
+    state_display: string;
+    highlight: number;
+};
+
 export type ExamplesData = {
     aapl: AaplRow[];
     simpsons: SimpsonsRow[];
@@ -93,4 +106,5 @@ export type ExamplesData = {
     world: any;
     beagle: BeagleRow[];
     riaa: RiaaRow[];
+    metros: MetrosRow[];
 };

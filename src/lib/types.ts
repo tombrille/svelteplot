@@ -229,6 +229,10 @@ export type ColorScaleOptions = ScaleOptions & {
      */
     n: number;
     interpolate: (d: any) => typeof d;
+    /**
+     * The tick format for the color scale legend.
+     */
+    tickFormat: false | Intl.NumberFormatOptions | ((d: RawValue) => string);
 };
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
@@ -254,7 +258,7 @@ export type XScaleOptions = ScaleOptions & {
 
     labelAnchor: 'auto' | 'left' | 'center' | 'right';
 
-    tickFormat: 'auto' | string | ((d: RawValue) => string);
+    tickFormat: false | Intl.NumberFormatOptions | ((d: RawValue) => string);
 };
 
 export type YScaleOptions = ScaleOptions & {
@@ -270,7 +274,7 @@ export type YScaleOptions = ScaleOptions & {
      * add an explicit AxisY mark to your plot instead of using the implicit axes.
      */
     axis: AxisYAnchor | false;
-    tickFormat: string | ((d: RawValue) => string);
+    tickFormat: false | Intl.NumberFormatOptions | ((d: RawValue) => string);
     /**
      * rotate the axis ticks
      */
