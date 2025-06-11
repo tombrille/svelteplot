@@ -30,7 +30,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
                     'simpsons',
                     'stocks',
                     'unemployment',
-                    'sftemp'
+                    'sftemp',
+                    'wind'
                 ],
                 fetch
             ))

@@ -94,6 +94,13 @@ type MetrosRow = {
     highlight: number;
 };
 
+type WindRow = {
+    longitude: number;
+    latitude: number;
+    u: number;
+    v: number;
+};
+
 export type ExamplesData = {
     aapl: AaplRow[];
     simpsons: SimpsonsRow[];
@@ -107,4 +114,5 @@ export type ExamplesData = {
     beagle: BeagleRow[];
     riaa: RiaaRow[];
     metros: MetrosRow[];
+    wind: WindRow[];
 };
