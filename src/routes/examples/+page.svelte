@@ -9,10 +9,13 @@
         'line/gradient-line',
         'dot/1-colored-scatterplot',
         'geo/us-choropleth',
-        'area/streamgraph',
-        // 'axis/datawrapper-ticks',
         'geo/earthquakes',
-        'regression/grouped'
+        'area/streamgraph',
+
+        'regression/grouped',
+        'vector/spike-map',
+        'vector/wind',
+        'axis/datawrapper-ticks'
     ];
 </script>
 
