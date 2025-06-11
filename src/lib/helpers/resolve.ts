@@ -38,6 +38,7 @@ export function resolveProp<T>(
     ) {
         return datum[accessor] as T;
     }
+
     return isRawValue(accessor) ? accessor : _defaultValue;
 }
 

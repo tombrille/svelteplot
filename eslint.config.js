@@ -13,7 +13,13 @@ export default [
         files: ['**/*.svelte', '*.svelte'],
         rules: {
             'svelte/no-object-in-text-mustaches': 'warn',
-            'svelte/no-inspect': 'warn'
+            'svelte/no-inspect': 'warn',
+            'svelte/no-useless-mustaches': [
+                'error',
+                {
+                    ignoreStringEscape: true
+                }
+            ]
         },
         ignores: ['dist/*', '.sveltepress/*'],
         languageOptions: {
