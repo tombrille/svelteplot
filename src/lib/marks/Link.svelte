@@ -1,23 +1,39 @@
 <!-- @component
     Creates connections between pairs of points with optional curve styling and markers
 -->
-<script lang="ts" module>
-    export type LinkMarkProps = BaseMarkProps &
-        MarkerOptions & {
-            data: DataRecord[];
-            sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-            x1: ChannelAccessor;
-            y1: ChannelAccessor;
-            x2: ChannelAccessor;
-            y2: ChannelAccessor;
-            curve?: 'auto' | CurveName | CurveFactory;
-            tension?: number;
-            text: ConstantAccessor<string>;
-            children?: Snippet;
-        };
-</script>
 
-<script lang="ts">
+<script lang="ts" generics="Datum extends DataRecord">
+    interface LinkMarkProps extends BaseMarkProps<Datum>, MarkerOptions {
+        data: Datum[];
+        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
+        /**
+         * the x1 channel accessor for the start of the link
+         */
+        x1: ChannelAccessor<Datum>;
+        /**
+         * the y1 channel accessor for the start of the link
+         */
+        y1: ChannelAccessor<Datum>;
+        /**
+         * the x2 channel accessor for the end of the link
+         */
+        x2: ChannelAccessor<Datum>;
+
+        y2: ChannelAccessor<Datum>;
+        /**
+         * the curve type, defaults to 'auto' which uses a linear curve for planar projections
+         * and a spherical line for geographic projections
+         */
+        curve?: 'auto' | CurveName | CurveFactory;
+        /**
+         * the tension of the curve, defaults to 0
+         */
+        tension?: number;
+        /**
+         * the text label for the link, can be a constant or a function
+         */
+        text?: ConstantAccessor<string, Datum>;
+    }
     import { getContext, type Snippet } from 'svelte';
     import type {
         PlotContext,
@@ -47,7 +63,7 @@
         ...getContext<PlotDefaults>('svelteplot/_defaults').link
     };
     const {
-        data = [{}],
+        data = [{} as Datum],
         curve = 'auto',
         tension = 0,
         text,
