@@ -50,6 +50,7 @@
         fontSize: 12,
         fontWeight: 500,
         strokeWidth: 1.6,
+        frameAnchor: 'center',
         ...getContext<PlotDefaults>('svelteplot/_defaults').text
     };
 
@@ -94,7 +95,7 @@
         'strokeOpacity',
         'fillOpacity'
     ]}
-    required={['x', 'y']}
+    required={[]}
     {...args}>
     {#snippet children({ mark, scaledData, usedScales })}
         <GroupMultiple class="text {className}" length={className ? 2 : args.data.length}>
