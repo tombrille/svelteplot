@@ -50,3 +50,13 @@ export function maybeToPixel(cssKey: string, value: string | number) {
     }
     return value;
 }
+
+export function maybeFromPixel(value: string | number) {
+    return typeof value === 'string' && value.endsWith('px') ? +value.slice(0, -2) : value;
+}
+
+export function maybeFromRem(value: string | number, rootFontSize: number = 16) {
+    return typeof value === 'string' && value.endsWith('rem')
+        ? +value.slice(0, -3) * rootFontSize
+        : value;
+}
