@@ -115,9 +115,3 @@
         </GroupMultiple>
     {/snippet}
 </Mark>
-
-<style>
-    text {
-        paint-order: stroke fill;
-    }
-</style>
