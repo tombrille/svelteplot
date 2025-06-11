@@ -3,48 +3,44 @@
     The vector mark lets you place shapes (like arrows) on your plot.
 -->
 <script lang="ts" module>
-    import type {
-        PlotContext,
-        DataRecord,
-        BaseMarkProps,
-        ConstantAccessor,
-        ChannelAccessor,
-        FacetContext,
-        PlotDefaults
-    } from '../types/index.js';
-
     type D3Path = ReturnType<typeof import('d3-path').path>;
-
     export type ShapeRenderer = {
         draw(context: D3Path, l: number, r: number): void;
     };
+</script>
 
-    export type VectorMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        x: ChannelAccessor;
-        y: ChannelAccessor;
+<script lang="ts" generics="Datum extends DataRecord">
+    interface VectorMarkProps extends BaseMarkProps<Datum> {
+        data: Datum[];
+        x: ChannelAccessor<Datum>;
+        y: ChannelAccessor<Datum>;
         r?: number;
-        length?: ChannelAccessor;
-        rotate?: ChannelAccessor;
+        length?: ChannelAccessor<Datum>;
+        rotate?: ChannelAccessor<Datum>;
         /**
          * Controls where the vector is anchored in relation to the x, y position.
          * If set to 'start', the arrow will start at the x, y position. If set to
          * 'middle', the arrow will be centered at the x, y position. If set to
          * 'end', the arrow will end at the x, y position.
          */
-        anchor: 'start' | 'middle' | 'end';
+        anchor?: 'start' | 'middle' | 'end';
         shape?: 'arrow' | 'spike' | 'arrow-filled' | ShapeRenderer;
         children?: Snippet;
         canvas?: boolean;
-    };
-</script>
+    }
+    import type {
+        PlotContext,
+        DataRecord,
+        BaseMarkProps,
+        ChannelAccessor,
+        FacetContext,
+        PlotDefaults
+    } from '../types/index.js';
 
-<script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import { pathRound as path } from 'd3-path';
 
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { projectXY } from '../helpers/scales.js';
     import { sort } from 'svelteplot';
     import Mark from '../Mark.svelte';
     //import DotCanvas from './helpers/DotCanvas.svelte';

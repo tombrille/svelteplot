@@ -2,14 +2,11 @@
     @component
     Wrapper around the vector mark with presets suitable for spike maps 
 -->
-<script module lang="ts">
-    export type SpikeMarkProps = VectorMarkProps;
-</script>
-
-<script lang="ts">
-    import Vector, { type VectorMarkProps } from './Vector.svelte';
-    import type { PlotDefaults } from '../types/index.js';
-    import { getContext } from 'svelte';
+<script lang="ts" generics="Datum extends DataRecord">
+    interface SpikeMarkProps extends ComponentProps<typeof Vector> {}
+    import Vector from './Vector.svelte';
+    import type { DataRecord, PlotDefaults } from '../types/index.js';
+    import { getContext, type ComponentProps } from 'svelte';
 
     let markProps: SpikeMarkProps = $props();
 
@@ -24,7 +21,7 @@
         ...getContext<PlotDefaults>('svelteplot/_defaults').spike
     };
 
-    const { data = [{}], ...options }: SpikeMarkProps = $derived({
+    const { data = [{} as Datum], ...options }: SpikeMarkProps = $derived({
         ...DEFAULTS,
         ...markProps
     });
