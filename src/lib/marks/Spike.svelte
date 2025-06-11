@@ -3,9 +3,20 @@
     Wrapper around the vector mark with presets suitable for spike maps 
 -->
 <script lang="ts" generics="Datum extends DataRecord">
-    interface SpikeMarkProps extends ComponentProps<typeof Vector> {}
+    interface SpikeMarkProps
+        extends Omit<
+            ComponentProps<typeof Vector>,
+            'data' | 'x' | 'y' | 'r' | 'length' | 'rotate'
+        > {
+        data: Datum[];
+        x: ChannelAccessor<Datum>;
+        y: ChannelAccessor<Datum>;
+        r?: number;
+        length?: ChannelAccessor<Datum>;
+        rotate?: ChannelAccessor<Datum>;
+    }
     import Vector from './Vector.svelte';
-    import type { DataRecord, PlotDefaults } from '../types/index.js';
+    import type { ChannelAccessor, DataRecord, PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
 
     let markProps: SpikeMarkProps = $props();

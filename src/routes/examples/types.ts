@@ -101,6 +101,44 @@ type WindRow = {
     v: number;
 };
 
+type ElectionRow = {
+    // state,fips,margin2020,margin2016,votes,votes2016
+    state: string;
+    fips: number;
+    margin2020: number;
+    margin2016: number;
+    votes: number;
+    votes2016: number;
+};
+
+interface WorldAtlas extends TopoJSON.Topology {
+    objects: {
+        countries: {
+            type: 'GeometryCollection';
+            geometries: Array<TopoJSON.Polygon | TopoJSON.MultiPolygon>;
+        };
+        land: TopoJSON.GeometryCollection;
+    };
+    bbox: [number, number, number, number];
+    transform: TopoJSON.Transform;
+}
+
+interface USAtlas extends TopoJSON.Topology {
+    objects: {
+        counties: {
+            type: 'GeometryCollection';
+            geometries: Array<TopoJSON.Polygon | TopoJSON.MultiPolygon>;
+        };
+        states: {
+            type: 'GeometryCollection';
+            geometries: Array<TopoJSON.Polygon | TopoJSON.MultiPolygon>;
+        };
+        nation: TopoJSON.GeometryCollection;
+    };
+    bbox: [number, number, number, number];
+    transform: TopoJSON.Transform;
+}
+
 export type ExamplesData = {
     aapl: AaplRow[];
     simpsons: SimpsonsRow[];
@@ -110,9 +148,11 @@ export type ExamplesData = {
         type: 'FeatureCollection';
         features: EarthquakeFeature[];
     };
-    world: any;
+    world: WorldAtlas;
+    us: USAtlas;
     beagle: BeagleRow[];
     riaa: RiaaRow[];
     metros: MetrosRow[];
     wind: WindRow[];
+    election: ElectionRow[];
 };

@@ -1,5 +1,5 @@
 <script module>
-    export const title = 'Wind Vectors';
+    export const title = 'Flow plot';
 </script>
 
 <script lang="ts">

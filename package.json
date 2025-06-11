@@ -74,6 +74,7 @@
         "@types/d3-scale-chromatic": "^3.1.0",
         "@types/d3-shape": "^3.1.7",
         "@types/geojson": "^7946.0.16",
+        "@types/topojson": "^3.2.6",
         "@types/topojson-client": "^3.1.5",
         "@typescript-eslint/eslint-plugin": "^8.33.1",
         "@typescript-eslint/parser": "^8.33.1",
