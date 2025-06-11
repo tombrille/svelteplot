@@ -1,7 +1,7 @@
 import { loadDatasets, loadJSON } from '$lib/helpers/data.js';
 import type { PageServerLoad } from '../$types';
 
-export const ssr = false;
+export const ssr = true;
 
 export const load: PageServerLoad = async ({ fetch }) => {
     return {
