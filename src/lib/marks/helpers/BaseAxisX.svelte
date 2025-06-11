@@ -10,7 +10,7 @@
         PlotState,
         RawValue,
         ScaleType
-    } from '$lib/types.js';
+    } from 'svelteplot/types/index.js';
     import { resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import { max } from 'd3-array';
     import { randomId, testFilter } from '$lib/helpers/index.js';

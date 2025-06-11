@@ -5,7 +5,7 @@
         BaseMarkProps,
         ScaledDataRecord,
         PlotContext
-    } from '$lib/types.js';
+    } from 'svelteplot/types/index.js';
     import { resolveProp } from '$lib/helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';

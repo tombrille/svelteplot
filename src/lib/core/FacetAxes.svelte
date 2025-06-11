@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
     import { getContext } from 'svelte';
-    import type { PlotContext } from '../types.js';
+    import type { PlotContext } from '../types/index.js';
     import { scaleBand } from 'd3-scale';
     import BaseAxisX from '../marks/helpers/BaseAxisX.svelte';
     import BaseAxisY from '../marks/helpers/BaseAxisY.svelte';

@@ -1,19 +1,17 @@
 <!-- @component
     Creates dots or symbols at specified positions with customizable size and appearance
 -->
-<script module lang="ts">
-    export type DotMarkProps = BaseMarkProps & {
-        data: DataRecord[];
-        x: ChannelAccessor;
-        y: ChannelAccessor;
-        r?: ChannelAccessor;
-        symbol?: ChannelAccessor | Snippet<[number, string]>;
+<script lang="ts" generics="Datum extends DataRecord">
+    interface DotMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
+        data: Datum[];
+        x: ChannelAccessor<Datum>;
+        y: ChannelAccessor<Datum>;
+        r?: ChannelAccessor<Datum>;
+        symbol?: ChannelAccessor<Datum> | Snippet<[number, string]>;
         canvas?: boolean;
-        dotClass?: ConstantAccessor<string>;
-    } & LinkableMarkProps;
-</script>
+        dotClass?: ConstantAccessor<string, Datum>;
+    }
 
-<script lang="ts">
     import { getContext, type Snippet } from 'svelte';
     import type {
         PlotContext,
@@ -23,17 +21,18 @@
         ChannelAccessor,
         PlotDefaults,
         LinkableMarkProps
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { sort } from '$lib/index.js';
+    import { sort } from 'svelteplot';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, isValid } from '$lib/helpers/index.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
     import { addEventHandlers } from './helpers/events.js';
     import Anchor from './helpers/Anchor.svelte';
+    import type { D } from 'vitest/dist/chunks/reporters.d.DL9pg5DB.js';
 
     const DEFAULTS = {
         ...getContext<PlotDefaults>('svelteplot/_defaults').dot
@@ -42,7 +41,7 @@
     let markProps: DotMarkProps = $props();
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         canvas = false,
         class: className = '',
         dotClass = null,

@@ -1,7 +1,26 @@
 <!-- @component
     Creates line charts with connecting points in a dataset with customizable curves and markers
 -->
-<script module lang="ts">
+<script lang="ts" generics="Datum extends DataRecord">
+    interface LineMarkProps extends MarkerOptions, BaseMarkProps<Datum> {
+        data?: Datum[];
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        z?: ChannelAccessor<Datum>;
+        outlineStroke?: string;
+        outlineStrokeWidth?: number;
+        outlineStrokeOpacity?: number;
+        curve?: CurveName | CurveFactory | 'auto';
+        tension?: number;
+        sort?: ConstantAccessor<RawValue, Datum> | { channel: 'stroke' | 'fill' };
+        text?: ConstantAccessor<string, Datum>;
+        textFill?: ConstantAccessor<string, Datum>;
+        textStroke?: ConstantAccessor<string, Datum>;
+        textStartOffset?: ConstantAccessor<string, Datum>;
+        textStrokeWidth?: ConstantAccessor<number, Datum>;
+        lineClass?: ConstantAccessor<string, Datum>;
+        canvas?: boolean;
+    }
     import type {
         CurveName,
         PlotContext,
@@ -11,31 +30,7 @@
         ChannelAccessor,
         MarkerOptions,
         ScaledDataRecord
-    } from '../types.js';
-
-    export type LineMarkProps = {
-        data: DataRecord[];
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        z?: ChannelAccessor;
-        outlineStroke?: string;
-        outlineStrokeWidth?: number;
-        outlineStrokeOpacity?: number;
-        curve?: CurveName | CurveFactory | 'auto';
-        tension?: number;
-        sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-        text?: ConstantAccessor<string>;
-        textFill?: ConstantAccessor<string>;
-        textStroke?: ConstantAccessor<string>;
-        textStartOffset?: ConstantAccessor<string>;
-        textStrokeWidth?: ConstantAccessor<number>;
-        lineClass?: ConstantAccessor<string>;
-        canvas?: boolean;
-    } & MarkerOptions &
-        BaseMarkProps;
-</script>
-
-<script lang="ts">
+    } from '../types/index.js';
     import Mark from '../Mark.svelte';
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
@@ -47,7 +42,7 @@
     import { pick } from 'es-toolkit';
     import LineCanvas from './helpers/LineCanvas.svelte';
 
-    import type { RawValue, PlotDefaults } from '$lib/types.js';
+    import type { RawValue, PlotDefaults } from 'svelteplot/types/index.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';
@@ -61,11 +56,11 @@
         canvas: false,
         class: null,
         lineClass: null,
-        ...getContext<PlotDefaults>('svelteplot/_defaults').line
+        ...getContext<Partial<PlotDefaults>>('svelteplot/_defaults').line
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         curve,
         tension,
         text,

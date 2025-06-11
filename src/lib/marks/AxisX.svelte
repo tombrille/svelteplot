@@ -1,40 +1,7 @@
 <!-- @component
     Renders a horizontal axis with labels and tick marks
 -->
-<script module lang="ts">
-    import type { XOR } from 'ts-essentials';
-    export type AxisXMarkProps = Omit<
-        BaseMarkProps,
-        'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
-    > & {
-        data?: RawValue[];
-        automatic?: boolean;
-        title?: string;
-        anchor?: 'top' | 'bottom';
-        interval?: string | number;
-        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
-        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
-        tickSize?: number;
-        tickFontSize?: ConstantAccessor<number>;
-        tickPadding?: number;
-        tickFormat?:
-            | 'auto'
-            | Intl.DateTimeFormatOptions
-            | Intl.NumberFormatOptions
-            | ((d: RawValue) => string);
-        tickClass?: ConstantAccessor<string>;
-        /** ticks is a shorthand for defining data, tickCount or interval */
-        ticks?: number | string | RawValue[];
-        /** set to false or null to disable tick labels */
-        text: boolean | null;
-        /** approximate number of ticks to be generated */
-        tickCount?: number;
-        /** approximate number of pixels between generated ticks */
-        tickSpacing?: number;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum extends RawValue">
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
     import BaseAxisX from './helpers/BaseAxisX.svelte';
@@ -46,11 +13,42 @@
         FacetContext,
         PlotDefaults,
         ChannelName
-    } from '../types.js';
+    } from '../types/index.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { derived } from 'svelte/store';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';
+
+    interface AxisXMarkProps
+        extends Omit<
+            BaseMarkProps<Datum>,
+            'fill' | 'fillOpacity' | 'paintOrder' | 'title' | 'href' | 'target'
+        > {
+        data?: Datum[];
+        automatic?: boolean;
+        title?: string;
+        anchor?: 'top' | 'bottom';
+        interval?: string | number;
+        facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
+        labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        tickSize?: number;
+        tickFontSize?: ConstantAccessor<number, Datum>;
+        tickPadding?: number;
+        tickFormat?:
+            | 'auto'
+            | Intl.DateTimeFormatOptions
+            | Intl.NumberFormatOptions
+            | ((d: RawValue) => string);
+        tickClass?: ConstantAccessor<string, Datum>;
+        /** ticks is a shorthand for defining data, tickCount or interval */
+        ticks?: number | string | Datum[];
+        /** set to false or null to disable tick labels */
+        text: boolean | null;
+        /** approximate number of ticks to be generated */
+        tickCount?: number;
+        /** approximate number of pixels between generated ticks */
+        tickSpacing?: number;
+    }
 
     let markProps: AxisXMarkProps = $props();
 
@@ -211,21 +209,23 @@
     {/if}
     {#if showAxis}
         <BaseAxisX
+            {anchor}
+            {className}
+            {labelAnchor}
+            {options}
+            {plot}
+            {text}
+            {tickClass}
+            {tickFontSize}
+            {tickPadding}
+            {ticks}
+            {tickSize}
+            height={plot.facetHeight}
+            marginTop={plot.options.marginTop}
             scaleFn={plot.scales.x.fn}
             scaleType={plot.scales.x.type}
             tickFormat={useTickFormat}
-            {ticks}
-            marginTop={plot.options.marginTop}
-            height={plot.facetHeight}
-            {anchor}
-            {tickSize}
-            {tickPadding}
-            {tickFontSize}
-            {tickClass}
-            {text}
-            {options}
-            title={useTitle}
-            {plot} />
+            title={useTitle} />
     {/if}
 </Mark>
 

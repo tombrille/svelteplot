@@ -1,17 +1,14 @@
-<script module lang="ts">
-    export type ColorLegendMarkProps = {
-        class: string | null;
-    };
-</script>
-
 <script lang="ts">
+    interface ColorLegendMarkProps {
+        class: string | null;
+    }
     import { getContext } from 'svelte';
-    import { Plot, AxisX, Frame } from '$lib/index.js';
+    import { Plot, AxisX, Frame } from 'svelteplot';
     import { symbol as d3Symbol } from 'd3-shape';
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
-    import type { PlotDefaults, PlotContext } from '../types.js';
+    import type { PlotDefaults, PlotContext } from '../types/index.js';
 
     let { class: className = null }: ColorLegendMarkProps = $props();
 

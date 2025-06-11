@@ -1,6 +1,6 @@
 {
     "name": "svelteplot",
-    "version": "0.3.3",
+    "version": "0.3.2",
     "license": "ISC",
     "author": {
         "name": "Gregor Aisch",
@@ -68,10 +68,14 @@
         "@types/d3-geo": "^3.1.0",
         "@types/d3-interpolate": "^3.0.4",
         "@types/d3-path": "^3.1.1",
+        "@types/d3-quadtree": "^3.0.6",
         "@types/d3-random": "^3.0.3",
         "@types/d3-scale": "^4.0.9",
         "@types/d3-scale-chromatic": "^3.1.0",
         "@types/d3-shape": "^3.1.7",
+        "@types/geojson": "^7946.0.16",
+        "@types/topojson": "^3.2.6",
+        "@types/topojson-client": "^3.1.5",
         "@typescript-eslint/eslint-plugin": "^8.34.0",
         "@typescript-eslint/parser": "^8.34.0",
         "csstype": "^3.1.3",

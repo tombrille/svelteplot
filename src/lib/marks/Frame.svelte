@@ -2,39 +2,32 @@
     @component 
     Renders a simple frame around the entire plot domain 
 -->
-<script module lang="ts">
-    export type FrameMarkProps = Omit<
-        BaseMarkProps,
-        'fill' | 'stroke' | 'fillOpacity' | 'strokeOpacity'
-    > &
-        LinkableMarkProps &
-        Omit<
-            BaseRectMarkProps,
-            'inset' | 'insetLeft' | 'insetRight' | 'insetTop' | 'insetBottom'
-        > & {
-            fill: string;
-            stroke: string;
-            fillOpacity: number;
-            strokeOpacity: number;
-            automatic?: boolean;
-            inset?: number;
-            insetLeft?: number;
-            insetRight?: number;
-            insetTop?: number;
-            insetBottom?: number;
-        };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum extends DataRecord">
+    interface FrameMarkProps
+        extends Omit<BaseMarkProps<Datum>, 'fill' | 'stroke' | 'fillOpacity' | 'strokeOpacity'>,
+            BaseRectMarkProps<Datum>,
+            LinkableMarkProps<Datum> {
+        fill?: string;
+        stroke?: string;
+        fillOpacity?: number;
+        strokeOpacity?: number;
+        automatic?: boolean;
+        inset?: number;
+        insetLeft?: number;
+        insetRight?: number;
+        insetTop?: number;
+        insetBottom?: number;
+    }
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import type {
         PlotContext,
         BaseRectMarkProps,
         LinkableMarkProps,
-        PlotDefaults
-    } from '../types.js';
-    import type { BaseMarkProps } from '../types.js';
+        PlotDefaults,
+        DataRecord
+    } from '../types/index.js';
+    import type { BaseMarkProps } from '../types/index.js';
     import RectPath from './helpers/RectPath.svelte';
 
     let markProps: FrameMarkProps = $props();

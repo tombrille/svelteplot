@@ -6,7 +6,7 @@
     import { setContext } from 'svelte';
 
     import { Plot, Text } from 'svelteplot';
-    import type { PlotDefaults } from 'svelteplot/types';
+    import type { PlotDefaults } from 'svelteplot';
     setContext<Partial<PlotDefaults>>(
         'svelteplot/defaults',
         {

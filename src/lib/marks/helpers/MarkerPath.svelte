@@ -13,7 +13,7 @@
         Mark,
         PlotContext,
         PlotScales
-    } from '$lib/types.js';
+    } from 'svelteplot/types/index.js';
     import { addEventHandlers } from './events.js';
     import { getContext } from 'svelte';
 

@@ -3,11 +3,14 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Arrow, Text } from '$lib/index.js';
+    import { Plot, Arrow, Text } from 'svelteplot';
     import { page } from '$app/state';
     import { setContext } from 'svelte';
-    import { type PlotDefaults } from 'svelteplot/types';
-    let { metros } = $derived(page.data.data);
+    import { type PlotDefaults } from 'svelteplot';
+    import type { ExamplesData } from '../types';
+    let { metros } = $derived(
+        page.data.data
+    ) as ExamplesData;
 
     setContext<Partial<PlotDefaults>>(
         'svelteplot/defaults',
@@ -18,7 +21,7 @@
         }
     );
 
-    let hl = $state(false);
+    let hl: false | (typeof metros)[0] = $state(false);
 </script>
 
 <Plot
@@ -31,7 +34,10 @@
     color={{
         label: 'Change in inequality from 1980 to 2015',
         legend: true,
-        tickFormat: '+f'
+        tickFormat: {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 1
+        }
     }}>
     <Arrow
         data={metros}

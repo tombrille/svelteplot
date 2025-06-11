@@ -5,7 +5,7 @@
         PlotContext,
         ScaledDataRecord,
         UsedScales
-    } from '$lib/types.js';
+    } from 'svelteplot/types/index.js';
     import { resolveProp, resolveScaledStyleProps } from '$lib/helpers/resolve.js';
     import { getContext } from 'svelte';
     import { type Line } from 'd3-shape';

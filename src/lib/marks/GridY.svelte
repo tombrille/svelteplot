@@ -1,17 +1,14 @@
 <!-- @component
     Renders horizontal gridlines at y-axis tick positions
 -->
-<script module lang="ts">
-    export type GridYMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
-        data?: RawValue[];
+<script lang="ts" generics="Datum = RawValue">
+    interface GridYMarkProps extends Omit<BaseMarkProps<Datum>, 'fill' | 'fillOpacity'> {
+        data?: Datum[];
         automatic?: boolean;
-    };
-</script>
-
-<script lang="ts">
+    }
     import { getContext } from 'svelte';
     import Mark from '../Mark.svelte';
-    import type { PlotContext, BaseMarkProps, RawValue, PlotDefaults } from '../types.js';
+    import type { PlotContext, BaseMarkProps, RawValue, PlotDefaults } from '../types/index.js';
     import { resolveChannel, resolveStyles } from '../helpers/resolve.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { testFilter } from '$lib/helpers/index.js';

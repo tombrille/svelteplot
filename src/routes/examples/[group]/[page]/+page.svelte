@@ -65,13 +65,17 @@
         <div class="svp-code-block">
             <HighlightSvelte
                 lang="svelte"
-                code={pagesSrc[plotKey].substring(
-                    pagesSrc[plotKey].indexOf(
+                code={pagesSrc[plotKey]
+                    .substring(
                         pages[plotKey].fullCode
-                            ? '<script lang="ts">'
-                            : '<Plot'
+                            ? pagesSrc[plotKey].indexOf(
+                                  '<script lang="ts">'
+                              )
+                            : pagesSrc[plotKey].lastIndexOf(
+                                  '</scr' + 'ipt>'
+                              ) + 9
                     )
-                )} />
+                    .trim()} />
         </div>
     </div>
 

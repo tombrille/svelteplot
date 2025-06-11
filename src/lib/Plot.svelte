@@ -12,7 +12,7 @@
 <script lang="ts">
     import Plot from './core/Plot.svelte';
 
-    import type { PlotDefaults, PlotOptions } from './types.js';
+    import type { PlotDefaults, PlotOptions } from './types/index.js';
 
     // implicit marks
     import AxisX from './marks/AxisX.svelte';
@@ -28,7 +28,6 @@
     import { autoScale, autoScaleColor } from './helpers/autoScales.js';
     import { namedProjection } from './helpers/autoProjection.js';
     import { isObject } from './helpers/index.js';
-    import { getContext } from 'svelte';
 
     let {
         header: userHeader,

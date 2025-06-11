@@ -10,7 +10,10 @@
     import { Plot, Geo, Dot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
-    const { world, beagle } = $derived(page.data.data);
+    import type { ExamplesData } from '../types';
+    const { world, beagle } = $derived(
+        page.data.data
+    ) as ExamplesData;
     const land = $derived(
         topojson.feature(world, world.objects.land)
     );

@@ -7,7 +7,8 @@
 <script lang="ts">
     import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
-    let { aapl } = $derived(page.data.data);
+    import type { ExamplesData } from '../types';
+    let { aapl } = $derived(page.data.data) as ExamplesData;
 </script>
 
 <Plot y={{ grid: true }}>

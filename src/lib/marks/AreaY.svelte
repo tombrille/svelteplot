@@ -2,30 +2,30 @@
     Creates a vertical area chart with y value and baseline. Areas are implicitly 
     stacked vertically if just the y channel is defined.
 -->
-<script lang="ts">
-    import Area, { type AreaMarkProps } from './Area.svelte';
+<script lang="ts" generics="Datum extends DataRow">
+    interface AreaYMarkProps extends Omit<ComponentProps<typeof Area>, 'x1' | 'x2'> {
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+    }
+    import Area from './Area.svelte';
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackY } from '$lib/transforms/stack.js';
     import { recordizeY } from '$lib/transforms/recordize.js';
-    import type { ChannelAccessor, PlotDefaults } from '../types.js';
-    import { getContext } from 'svelte';
+    import type { ChannelAccessor, DataRow, PlotDefaults } from '../types/index.js';
+    import { getContext, type Component, type ComponentProps } from 'svelte';
 
-    /**
-     * AreaY mark foo
-     */
-    type AreaYProps = Omit<AreaMarkProps, 'x1' | 'x2'> & {
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-    };
-
-    let markProps: AreaMarkProps = $props();
+    let markProps: AreaYMarkProps = $props();
 
     const DEFAULTS = getContext<PlotDefaults>('svelteplot/_defaults').areaY;
 
-    const { data, stack, ...options }: AreaMarkProps = $derived({ ...DEFAULTS, ...markProps });
+    const { data, stack, ...options }: AreaYMarkProps = $derived({
+        ...(markProps.y == undefined ? { y1: 0, y2: 0 } : {}),
+        ...DEFAULTS,
+        ...markProps
+    });
 
     const args = $derived(
-        renameChannels<AreaYProps>(
+        renameChannels<AreaYMarkProps>(
             stackY(recordizeY({ data, ...options, x1: null, x2: null }), stack),
             { x: 'x1' }
         )

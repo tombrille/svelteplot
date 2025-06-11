@@ -2,33 +2,33 @@
     @component
     For arbitrary rectangles, requires quantitative x and y scales 
 -->
-<script module lang="ts">
-    export type RectMarkProps = {
-        data: DataRecord[];
-        x?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        y?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
+<script lang="ts" generics="Datum extends DataRecord">
+    interface RectMarkProps
+        extends BaseMarkProps<Datum>,
+            LinkableMarkProps<Datum>,
+            BaseRectMarkProps<Datum> {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        x1?: ChannelAccessor<Datum>;
+        x2?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        y1?: ChannelAccessor<Datum>;
+        y2?: ChannelAccessor<Datum>;
         interval?: number | string;
-    } & BaseMarkProps &
-        LinkableMarkProps &
-        BaseRectMarkProps;
-</script>
-
-<script lang="ts">
+        className?: string;
+    }
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { intervalX, intervalY } from '$lib/index.js';
+    import { intervalX, intervalY } from 'svelteplot';
     import type {
         PlotContext,
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
         ChannelAccessor,
-        PlotDefaults
-    } from '../types.js';
+        PlotDefaults,
+        LinkableMarkProps
+    } from '../types/index.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 
@@ -39,7 +39,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: RectMarkProps = $derived({

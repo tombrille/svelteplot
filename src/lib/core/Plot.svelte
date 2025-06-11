@@ -22,7 +22,7 @@
         PlotDefaults,
         PlotState,
         RawValue
-    } from '../types.js';
+    } from '../types/index.js';
     import FacetGrid from './FacetGrid.svelte';
 
     import mergeDeep from '../helpers/mergeDeep.js';

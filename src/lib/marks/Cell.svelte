@@ -2,29 +2,28 @@
     @component
     For arbitrary rectangles, requires band x and y scales 
 -->
-<script module lang="ts">
+<script lang="ts" generics="Datum extends DataRecord">
+    interface CellMarkProps
+        extends BaseMarkProps<Datum>,
+            LinkableMarkProps<Datum>,
+            BaseRectMarkProps<Datum> {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+    }
     import type {
         PlotContext,
         DataRecord,
         BaseMarkProps,
         BaseRectMarkProps,
         ChannelAccessor,
-        PlotDefaults
-    } from '../types.js';
-
-    export type CellMarkProps = BaseMarkProps &
-        LinkableMarkProps &
-        BaseRectMarkProps & {
-            data: DataRecord[];
-            x?: ChannelAccessor;
-            y?: ChannelAccessor;
-        };
-</script>
-
-<script lang="ts">
+        PlotDefaults,
+        LinkableMarkProps,
+        MarkType
+    } from '../types/index.js';
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { recordizeY, sort } from '$lib/index.js';
+    import { recordizeY, sort } from 'svelteplot';
     import { resolveChannel } from '../helpers/resolve.js';
 
     import { isValid } from '../helpers/isValid.js';
@@ -37,7 +36,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: CellMarkProps = $derived({
@@ -59,8 +58,8 @@
                       sort: { channel: 'x' }
                   }),
                   sort: { channel: 'y' }
-              }) as Props)
-    );
+              }) as CellMarkProps)
+    ) as CellMarkProps;
 </script>
 
 <Mark

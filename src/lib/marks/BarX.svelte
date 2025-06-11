@@ -2,7 +2,32 @@
     @component
     For horizontal bar charts using a band scale as y axis
 -->
-<script module lang="ts">
+<script lang="ts" generics="Datum extends DataRow">
+    interface BarXMarkProps
+        extends BaseMarkProps<Datum>,
+            LinkableMarkProps<Datum>,
+            BaseRectMarkProps<Datum> {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        x1?: ChannelAccessor<Datum>;
+        x2?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        stack?: StackOptions;
+        /**
+         * Converts x into x1/x2 ranges based on the provided interval. Disables the
+         * implicit stacking
+         */
+        interval?: number | string;
+    }
+
+    import Mark from '../Mark.svelte';
+    import { getContext } from 'svelte';
+    import { stackX, recordizeX, intervalX, sort } from 'svelteplot';
+
+    import type { StackOptions } from '$lib/transforms/stack.js';
+    import type { DataRow } from 'svelteplot/types/index.js';
+    import GroupMultiple from './helpers/GroupMultiple.svelte';
+    import RectPath from './helpers/RectPath.svelte';
     import type {
         PlotContext,
         BaseMarkProps,
@@ -10,34 +35,7 @@
         ChannelAccessor,
         LinkableMarkProps,
         PlotDefaults
-    } from '../types.js';
-
-    export type BarXMarkProps = BaseMarkProps &
-        LinkableMarkProps &
-        BaseRectMarkProps & {
-            data: DataRow[];
-            x?: ChannelAccessor;
-            x1?: ChannelAccessor;
-            x2?: ChannelAccessor;
-            y?: ChannelAccessor;
-            stack?: StackOptions;
-            /**
-             * Converts x into x1/x2 ranges based on the provided interval. Disables the
-             * implicit stacking
-             */
-            interval?: number | string;
-        };
-</script>
-
-<script lang="ts">
-    import Mark from '../Mark.svelte';
-    import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
-
-    import type { StackOptions } from '$lib/transforms/stack.js';
-    import type { DataRow } from '$lib/types.js';
-    import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import RectPath from './helpers/RectPath.svelte';
+    } from '../types/index.js';
 
     const DEFAULTS = {
         fill: 'currentColor',
@@ -48,7 +46,7 @@
     let markProps: BarXMarkProps = $props();
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = null,
         stack,
         ...options

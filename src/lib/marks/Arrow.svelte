@@ -1,43 +1,40 @@
 <!-- @component
     Creates arrows with customizable heads, angles, and bending
 -->
-<script module lang="ts">
-    export type ArrowMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
-        data: DataRecord[];
+<script lang="ts" generics="Datum extends DataRecord">
+    interface ArrowMarkProps extends Omit<BaseMarkProps<Datum>, 'fill' | 'fillOpacity'> {
+        data: Datum[];
         sort?: ConstantAccessor<RawValue> | { channel: 'stroke' | 'fill' };
-        x1: ChannelAccessor;
-        y1: ChannelAccessor;
-        x2: ChannelAccessor;
-        y2: ChannelAccessor;
+        x1: ChannelAccessor<Datum>;
+        y1: ChannelAccessor<Datum>;
+        x2: ChannelAccessor<Datum>;
+        y2: ChannelAccessor<Datum>;
         /**
          * the bend angle, in degrees; defaults to 0°; true for 22.5°
          */
-        bend?: ConstantAccessor<number> | true;
+        bend?: ConstantAccessor<number, Datum> | true;
         /**
          * the arrowhead angle, in degrees; defaults to 60°
          */
-        headAngle?: ConstantAccessor<number>;
+        headAngle?: ConstantAccessor<number, Datum>;
         /**
          * the arrowhead scale; defaults to 8
          */
-        headLength?: ConstantAccessor<number>;
+        headLength?: ConstantAccessor<number, Datum>;
         /**
          * inset at the end of the arrow (useful if the arrow points to a dot)
          */
-        insetEnd?: ConstantAccessor<number>;
+        insetEnd?: ConstantAccessor<number, Datum>;
         /**
          * inset at the start of the arrow
          */
-        insetStart?: ConstantAccessor<number>;
+        insetStart?: ConstantAccessor<number, Datum>;
         /**
          * shorthand for the two insets
          */
-        inset?: ConstantAccessor<number>;
+        inset?: ConstantAccessor<number, Datum>;
         sweep?: SweepOption;
-    };
-</script>
-
-<script lang="ts">
+    }
     import { getContext } from 'svelte';
     import type {
         PlotContext,
@@ -47,7 +44,7 @@
         ChannelAccessor,
         RawValue,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, maybeNumber } from '../helpers/index.js';
     import Mark from '../Mark.svelte';
@@ -66,7 +63,7 @@
     };
 
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: ArrowMarkProps = $derived({

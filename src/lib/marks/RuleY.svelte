@@ -1,19 +1,16 @@
 <!-- @component
     Renders horizontal rule lines at specified y positions with customizable horizontal range
 -->
-<script module lang="ts">
-    export type RuleYMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
-        data: DataRecord[];
-        y?: ChannelAccessor;
-        x1?: ChannelAccessor;
-        x2?: ChannelAccessor;
-        inset?: ConstantAccessor<number>;
-        insetLeft?: ConstantAccessor<number>;
-        insetRight?: ConstantAccessor<number>;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum = DataRecord">
+    interface RuleYMarkProps extends Omit<BaseMarkProps<Datum>, 'fill' | 'fillOpacity'> {
+        data?: Datum[];
+        y?: ChannelAccessor<Datum>;
+        x1?: ChannelAccessor<Datum>;
+        x2?: ChannelAccessor<Datum>;
+        inset?: ConstantAccessor<number, Datum>;
+        insetLeft?: ConstantAccessor<number, Datum>;
+        insetRight?: ConstantAccessor<number, Datum>;
+    }
     import Mark from '../Mark.svelte';
     import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
@@ -26,7 +23,7 @@
         ConstantAccessor,
         ChannelAccessor,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
 
     let markProps: RuleYMarkProps = $props();
     const DEFAULTS = {
@@ -34,7 +31,7 @@
         ...getContext<PlotDefaults>('svelteplot/_defaults').ruleY
     };
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: RuleYMarkProps = $derived({

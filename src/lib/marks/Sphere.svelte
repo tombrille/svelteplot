@@ -1,15 +1,14 @@
 <!-- @component
     Geo mark with Sphere geometry object  -->
 
-<script module lang="ts">
-    import { type BaseMarkProps, type LinkableMarkProps } from '$lib/types.js';
-    export type SphereMarkProps = BaseMarkProps & LinkableMarkProps;
-</script>
-
 <script lang="ts">
-    import Geo from './Geo.svelte';
+    interface SphereMarkProps
+        extends BaseMarkProps<GeoJSON.GeoJsonObject>,
+            LinkableMarkProps<GeoJSON.GeoJsonObject> {}
+
     import { getContext } from 'svelte';
-    import type { PlotDefaults } from '../types.js';
+    import Geo from './Geo.svelte';
+    import type { BaseMarkProps, LinkableMarkProps, PlotDefaults } from '../types/index.js';
 
     let markProps: SphereMarkProps = $props();
 

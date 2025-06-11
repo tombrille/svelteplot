@@ -2,27 +2,24 @@
     @component 
     The TickY mark is useful for showing one-dimensional distributions along the y axis. The x axis must be a band scale.
 -->
-<script module lang="ts">
-    export type TickYMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
-        data: DataRow[];
+<script lang="ts" generics="Datum extends DataRow">
+    interface TickYMarkProps extends Omit<BaseMarkProps<Datum>, 'fill' | 'fillOpacity'> {
+        data: Datum[];
         /**
          * the vertical position; bound to the x scale
          */
-        y?: ChannelAccessor;
+        y?: ChannelAccessor<Datum>;
         /**
-         * the horizontal position; bound to the x scale, which must be band. If the x channel
-         * is not specified, the tick will span the full horizontal extent of the frame.
+         * the horizontal position; bound to the y scale, which must be band. If the y channel
+         * is not specified, the tick will span the full vertical extent of the frame.
          */
-        x?: ChannelAccessor;
+        x?: ChannelAccessor<Datum>;
         /**
          * if ticks are used on a non-bandwidth scale, this will determine the
          * length of the tick. Defaults to 10 pixel
          */
-        tickLength?: ConstantAccessor<number>;
-    };
-</script>
-
-<script lang="ts">
+        tickLength?: ConstantAccessor<number, Datum>;
+    }
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
     import { resolveChannel, resolveProp, resolveScaledStyles } from '../helpers/resolve.js';
@@ -34,8 +31,8 @@
         FacetContext,
         ConstantAccessor,
         PlotDefaults
-    } from '../types.js';
-    import { recordizeY } from '$lib/index.js';
+    } from '../types/index.js';
+    import { recordizeY } from 'svelteplot';
     import { projectX, projectY } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
     import { testFilter, parseInset } from '$lib/helpers/index.js';
