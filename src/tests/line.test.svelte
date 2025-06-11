@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Line, Plot } from 'svelteplot/types';
+    import { Line, Plot } from 'svelteplot';
     import type { ComponentProps } from 'svelte';
 
     let args: ComponentProps<typeof Line> = $props();

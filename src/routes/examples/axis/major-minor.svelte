@@ -5,12 +5,7 @@
 </script>
 
 <script>
-    import {
-        Plot,
-        AxisX,
-        AxisY,
-        Line
-    } from 'svelteplot/types';
+    import { Plot, AxisX, AxisY, Line } from 'svelteplot';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

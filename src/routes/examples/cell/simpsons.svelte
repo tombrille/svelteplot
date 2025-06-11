@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Cell, Text } from 'svelteplot/types';
+    import { Plot, Cell, Text } from 'svelteplot';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
 

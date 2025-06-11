@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, RectY } from 'svelteplot/types';
+    import { Plot, RectY } from 'svelteplot';
 
     const data = [
         { width: 2.5, height: 1, category: 'A' },

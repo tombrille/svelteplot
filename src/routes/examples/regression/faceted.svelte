@@ -6,11 +6,7 @@
 </script>
 
 <script>
-    import {
-        Plot,
-        Dot,
-        RegressionY
-    } from 'svelteplot/types';
+    import { Plot, Dot, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
     let { penguins } = $derived(page.data.data);
 </script>

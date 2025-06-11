@@ -3,12 +3,7 @@
 </script>
 
 <script>
-    import {
-        Plot,
-        Dot,
-        Rect,
-        Brush
-    } from 'svelteplot/types';
+    import { Plot, Dot, Rect, Brush } from 'svelteplot';
     import { page } from '$app/state';
 
     const { penguins } = $derived(page.data.data);

@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, AreaY } from 'svelteplot/types';
+    import { Plot, AreaY } from 'svelteplot';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     import { setContext } from 'svelte';

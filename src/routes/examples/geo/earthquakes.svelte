@@ -10,7 +10,7 @@
         Geo,
         Sphere,
         Graticule
-    } from 'svelteplot/types';
+    } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import type { ExamplesData } from '../types';

@@ -3,11 +3,7 @@
 </script>
 
 <script lang="ts">
-    import {
-        Plot,
-        Dot,
-        RegressionY
-    } from 'svelteplot/types';
+    import { Plot, Dot, RegressionY } from 'svelteplot';
     import { page } from '$app/state';
 
     let { cars } = $derived(page.data.data);

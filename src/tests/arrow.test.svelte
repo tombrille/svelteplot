@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Arrow, Plot } from 'svelteplot/types';
+    import { Arrow, Plot } from 'svelteplot';
     import type { ComponentProps } from 'svelte';
 
     let args: ComponentProps<typeof Arrow> = $props();

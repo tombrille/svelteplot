@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Geo, Dot, Line } from 'svelteplot/types';
+    import { Plot, Geo, Dot, Line } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import type { ExamplesData } from '../types';

@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Rect, Text } from 'svelteplot/types';
+    import { Plot, Rect, Text } from 'svelteplot';
 
     const data = [
         {

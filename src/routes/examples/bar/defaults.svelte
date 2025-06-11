@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, BarX } from 'svelteplot/types';
+    import { Plot, BarX } from 'svelteplot';
     import { setContext } from 'svelte';
 
     setContext('svelteplot/defaults', {

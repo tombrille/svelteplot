@@ -36,7 +36,7 @@ Helper component for rendering rectangular marks in SVG
         UsedScales,
         PlotContext,
         DataRecord
-    } from 'svelteplot/types';
+    } from 'svelteplot';
     import { addEventHandlers } from './events';
     import { getContext } from 'svelte';
     import Anchor from './Anchor.svelte';

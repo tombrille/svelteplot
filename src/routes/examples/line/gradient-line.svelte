@@ -7,7 +7,7 @@
         Plot,
         Line,
         LinearGradientX
-    } from 'svelteplot/types';
+    } from 'svelteplot';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     let { aapl } = $derived(page.data.data) as ExamplesData;

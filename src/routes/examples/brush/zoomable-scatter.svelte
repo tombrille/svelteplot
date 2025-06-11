@@ -4,12 +4,7 @@
 </script>
 
 <script lang="ts">
-    import {
-        Plot,
-        Dot,
-        Brush,
-        Frame
-    } from 'svelteplot/types';
+    import { Plot, Dot, Brush, Frame } from 'svelteplot';
     import { Tween } from 'svelte/motion';
     import { cubicInOut } from 'svelte/easing';
     import { page } from '$app/state';

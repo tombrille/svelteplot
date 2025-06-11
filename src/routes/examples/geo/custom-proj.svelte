@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { Slider } from '$lib/ui';
-    import { Plot, Geo, Graticule } from 'svelteplot/types';
+    import { Plot, Geo, Graticule } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import { geoOrthographic } from 'd3-geo';

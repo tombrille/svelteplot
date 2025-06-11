@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Line, RuleY } from 'svelteplot/types';
+    import { Plot, Line, RuleY } from 'svelteplot';
     import { page } from '$app/state';
     let { tdf } = $derived(page.data.data);
 </script>

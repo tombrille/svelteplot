@@ -28,7 +28,6 @@
     import { autoScale, autoScaleColor } from './helpers/autoScales.js';
     import { namedProjection } from './helpers/autoProjection.js';
     import { isObject } from './helpers/index.js';
-    import { getContext } from 'svelte';
 
     let {
         header: userHeader,

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Brush, Plot } from 'svelteplot/types';
+    import { Brush, Plot } from 'svelteplot';
     import type { ComponentProps } from 'svelte';
     import type { Brush as BrushT } from 'svelteplot/marks/Brush.svelte';
 

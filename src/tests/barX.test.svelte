@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { BarX, Plot } from 'svelteplot/types';
+    import { BarX, Plot } from 'svelteplot';
     import type { ComponentProps } from 'svelte';
 
     interface Props {

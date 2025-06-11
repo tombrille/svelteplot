@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, AreaX } from 'svelteplot/types';
+    import { Plot, AreaX } from 'svelteplot';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     let { aapl } = $derived(page.data.data) as ExamplesData;

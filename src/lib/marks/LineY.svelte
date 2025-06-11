@@ -8,7 +8,7 @@
     import Line from './Line.svelte';
     import { recordizeY } from 'svelteplot';
     import type { ComponentProps } from 'svelte';
-    import type { DataRow } from 'svelteplot/types';
+    import type { DataRow } from 'svelteplot';
 
     let { data = [{} as Datum], ...rest }: LineYMarkProps = $props();
 

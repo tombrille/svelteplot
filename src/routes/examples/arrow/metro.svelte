@@ -6,7 +6,7 @@
     import { Plot, Arrow, Text } from 'svelteplot';
     import { page } from '$app/state';
     import { setContext } from 'svelte';
-    import { type PlotDefaults } from 'svelteplot/types';
+    import { type PlotDefaults } from 'svelteplot';
     import type { ExamplesData } from '../types';
     let { metros } = $derived(
         page.data.data
