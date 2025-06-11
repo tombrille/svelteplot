@@ -1,12 +1,10 @@
-<script module lang="ts">
-    import type { ChannelAccessor, DataRow } from '$lib/types.js';
-
-    export type PointerMarkProps = {
-        data: DataRow[];
-        children: Snippet<[{ data: DataRow[] }]>;
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        z?: ChannelAccessor;
+<script lang="ts" generics="Datum extends DataRow">
+    interface PointerMarkProps {
+        data: Datum[];
+        children: Snippet<[{ data: Datum[] }]>;
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        z?: ChannelAccessor<Datum>;
         /**
          * maximum cursor distance to select data points
          */
@@ -15,23 +13,20 @@
          * called whenever the selection changes
          * @param data
          */
-        onupdate?: (data: DataRow[]) => void;
-    };
-</script>
+        onupdate?: (data: Datum[]) => void;
+    }
 
-<script lang="ts">
     import { getContext, type Snippet } from 'svelte';
-    import type { PlotContext, PlotDefaults } from '../types.js';
+    import type { ChannelAccessor, DataRow, PlotContext, PlotDefaults } from '../types.js';
     import { groups as d3Groups } from 'd3-array';
-
-    const { getPlotState } = getContext<PlotContext>('svelteplot');
-    const plot = $derived(getPlotState());
-
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';
     import { projectXY } from '$lib/helpers/scales.js';
     import isDataRecord from '$lib/helpers/isDataRecord.js';
     import { RAW_VALUE } from 'svelteplot/transforms/recordize.js';
+
+    const { getPlotState } = getContext<PlotContext>('svelteplot');
+    const plot = $derived(getPlotState());
 
     let markProps: PointerMarkProps = $props();
 
