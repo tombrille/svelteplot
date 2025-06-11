@@ -1,19 +1,16 @@
 <!-- @component
     Renders vertical rule lines at specified x positions with customizable vertical range
 -->
-<script module lang="ts">
-    export type RuleXMarkProps = Omit<BaseMarkProps, 'fill' | 'fillOpacity'> & {
-        data: DataRecord[];
-        x?: ChannelAccessor;
-        y1?: ChannelAccessor;
-        y2?: ChannelAccessor;
-        inset?: ConstantAccessor<number>;
-        insetTop?: ConstantAccessor<number>;
-        insetBottom?: ConstantAccessor<number>;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum = DataRecord | RawValue">
+    interface RuleXMarkProps extends Omit<BaseMarkProps<Datum>, 'fill' | 'fillOpacity'> {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        y1?: ChannelAccessor<Datum>;
+        y2?: ChannelAccessor<Datum>;
+        inset?: ConstantAccessor<number, Datum>;
+        insetTop?: ConstantAccessor<number, Datum>;
+        insetBottom?: ConstantAccessor<number, Datum>;
+    }
     import Mark from '../Mark.svelte';
     import GroupMultiple from '$lib/marks/helpers/GroupMultiple.svelte';
     import { getContext } from 'svelte';
@@ -25,7 +22,8 @@
         BaseMarkProps,
         ConstantAccessor,
         ChannelAccessor,
-        PlotDefaults
+        PlotDefaults,
+        RawValue
     } from '../types/index.js';
 
     let markProps: RuleXMarkProps = $props();
@@ -34,7 +32,7 @@
         ...getContext<PlotDefaults>('svelteplot/_defaults').ruleX
     };
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         ...options
     }: RuleXMarkProps = $derived({
