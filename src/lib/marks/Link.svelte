@@ -34,7 +34,7 @@
          */
         text?: ConstantAccessor<string, Datum>;
     }
-    import { getContext, type Snippet } from 'svelte';
+    import { getContext } from 'svelte';
     import type {
         PlotContext,
         DataRecord,

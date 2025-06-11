@@ -543,6 +543,15 @@ export type MarkerOptions = {
 export type PlotScales = Record<ScaleName, PlotScale>;
 
 export type ChannelAccessor<T = Record<string | symbol, RawValue>> =
+    | ChannelValue<T>
+    | {
+          /** the channel value */
+          value: ChannelValue<T>;
+          /** you can bypass the scale by passing null */
+          scale: boolean | null;
+      };
+
+export type ChannelValue<T = Record<string | symbol, RawValue>> =
     | RawValue
     | keyof T
     | ((d: T) => RawValue)
