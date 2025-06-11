@@ -3,7 +3,7 @@
 -->
 <script lang="ts" generics="Datum = DataRecord | GeoJSON.GeoJsonObject">
     interface GeoMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
-        data?: Datum[];
+        data?: Datum[] | { type: 'Sphere' }[];
         geoType?: 'sphere' | 'graticule';
         /**
          * todo: implement?
