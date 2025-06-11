@@ -2,21 +2,16 @@
     @component
     For showing custom HTML tooltips positioned at x/y coordinates
 -->
-<script module lang="ts">
-    import type { ChannelAccessor, DataRow } from '$lib/types.js';
-
-    export type HTMLTooltipMarkProps = {
-        data: DataRow[];
-        x?: ChannelAccessor;
-        y?: ChannelAccessor;
-        r?: ChannelAccessor;
-        children: Snippet<[{ datum: DataRow }]>;
-    };
-</script>
-
-<script lang="ts">
+<script lang="ts" generics="Datum = DataRow">
+    interface HTMLTooltipMarkProps {
+        data: Datum[];
+        x?: ChannelAccessor<Datum>;
+        y?: ChannelAccessor<Datum>;
+        r?: ChannelAccessor<Datum>;
+        children: Snippet<[{ datum: Datum }]>;
+    }
     import { getContext, type Snippet } from 'svelte';
-    import type { PlotContext } from '../types.js';
+    import type { ChannelAccessor, DataRow, PlotContext } from '../types/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     let plot = $derived(getPlotState());

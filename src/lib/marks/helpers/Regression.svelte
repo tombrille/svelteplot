@@ -1,5 +1,10 @@
 <script module lang="ts">
-    import type { BaseMarkProps, ChannelAccessor, FacetContext, PlotContext } from '../../types.js';
+    import type {
+        BaseMarkProps,
+        ChannelAccessor,
+        FacetContext,
+        PlotContext
+    } from '../../types/index.js';
 
     type RegressionType = 'linear' | 'quad' | 'poly' | 'exp' | 'log' | 'pow' | 'loess';
 
@@ -28,7 +33,7 @@
 
 <script lang="ts">
     import { getContext } from 'svelte';
-    import { Line, Area } from '$lib/index.js';
+    import { Line, Area } from 'svelteplot';
 
     import {
         regressionLinear,

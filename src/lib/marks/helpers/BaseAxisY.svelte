@@ -9,7 +9,7 @@
         PlotState,
         RawValue,
         ScaleType
-    } from '$lib/types.js';
+    } from 'svelteplot/types/index.js';
 
     type BaseAxisYProps = {
         scaleFn: (d: RawValue) => number;

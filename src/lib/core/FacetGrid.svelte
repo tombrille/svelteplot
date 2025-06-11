@@ -5,7 +5,7 @@
 -->
 <script lang="ts">
     import { getContext, type Snippet } from 'svelte';
-    import type { PlotContext, GenericMarkOptions, Mark } from '../types.js';
+    import type { PlotContext, GenericMarkOptions, Mark } from '../types/index.js';
     import { scaleBand } from 'd3-scale';
     import Facet from './Facet.svelte';
     import { getEmptyFacets } from '../helpers/facets.js';

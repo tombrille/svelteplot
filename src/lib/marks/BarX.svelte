@@ -22,10 +22,10 @@
 
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
+    import { stackX, recordizeX, intervalX, sort } from 'svelteplot';
 
     import type { StackOptions } from '$lib/transforms/stack.js';
-    import type { DataRow } from '$lib/types.js';
+    import type { DataRow } from 'svelteplot/types/index.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
     import type {
@@ -35,7 +35,7 @@
         ChannelAccessor,
         LinkableMarkProps,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
 
     const DEFAULTS = {
         fill: 'currentColor',

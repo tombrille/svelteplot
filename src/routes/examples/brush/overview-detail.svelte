@@ -11,7 +11,7 @@
         AreaY,
         RectX,
         BrushX
-    } from 'svelteplot';
+    } from 'svelteplot/types';
     import { page } from '$app/state';
 
     const { aapl } = $derived(page.data.data);

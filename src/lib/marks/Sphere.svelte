@@ -2,14 +2,14 @@
     Geo mark with Sphere geometry object  -->
 
 <script module lang="ts">
-    import { type BaseMarkProps, type LinkableMarkProps } from '$lib/types.js';
+    import { type BaseMarkProps, type LinkableMarkProps } from 'svelteplot/types/index.js';
     export type SphereMarkProps = BaseMarkProps & LinkableMarkProps;
 </script>
 
 <script lang="ts">
     import Geo from './Geo.svelte';
     import { getContext } from 'svelte';
-    import type { PlotDefaults } from '../types.js';
+    import type { PlotDefaults } from '../types/index.js';
 
     let markProps: SphereMarkProps = $props();
 

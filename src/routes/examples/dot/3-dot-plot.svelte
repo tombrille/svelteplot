@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Dot, GridY } from 'svelteplot';
+    import { Plot, Dot, GridY } from 'svelteplot/types';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     let { languages } = $derived(

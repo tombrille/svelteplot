@@ -13,7 +13,7 @@
         FacetContext,
         PlotDefaults,
         ChannelName
-    } from '../types.js';
+    } from '../types/index.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { derived } from 'svelte/store';
     import { autoTicks } from '$lib/helpers/autoTicks.js';

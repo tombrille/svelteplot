@@ -13,7 +13,7 @@
         PlotDefaults,
         ChannelName,
         ConstantAccessor
-    } from '../types.js';
+    } from '../types/index.js';
     import autoTimeFormat from '$lib/helpers/autoTimeFormat.js';
     import { autoTicks } from '$lib/helpers/autoTicks.js';
     import { resolveScaledStyles } from '$lib/helpers/resolve.js';

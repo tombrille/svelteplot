@@ -38,8 +38,8 @@
         ScaledDataRecord,
         LinkableMarkProps,
         PlotDefaults
-    } from '../types.js';
-    import type { RawValue } from '$lib/types.js';
+    } from '../types/index.js';
+    import type { RawValue } from 'svelteplot/types/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
     let markProps: AreaMarkProps = $props();

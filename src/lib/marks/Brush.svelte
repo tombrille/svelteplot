@@ -35,7 +35,12 @@
     }
     import { getContext } from 'svelte';
     import Rect from '$lib/marks/Rect.svelte';
-    import type { BaseMarkProps, DataRecord, PlotContext, PlotDefaults } from '$lib/types.js';
+    import type {
+        BaseMarkProps,
+        DataRecord,
+        PlotContext,
+        PlotDefaults
+    } from 'svelteplot/types/index.js';
     import { clientToLayerCoordinates } from './helpers/events.js';
     import Frame from '$lib/marks/Frame.svelte';
 

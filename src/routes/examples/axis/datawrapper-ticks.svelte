@@ -10,7 +10,7 @@
         Line,
         GridX,
         RuleY
-    } from 'svelteplot';
+    } from 'svelteplot/types';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

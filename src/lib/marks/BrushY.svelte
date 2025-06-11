@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
     import Brush from './Brush.svelte';
-    import type { PlotDefaults, DataRecord } from '../types.js';
+    import type { PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
 
     interface BrushYMarkProps extends Omit<ComponentProps<typeof Brush>, 'limitDimension'> {}

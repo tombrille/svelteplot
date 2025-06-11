@@ -11,7 +11,7 @@
     import { renameChannels } from '$lib/transforms/rename.js';
     import { stackX } from '$lib/transforms/stack.js';
     import { recordizeX } from '$lib/transforms/recordize.js';
-    import type { ChannelAccessor, DataRow, PlotDefaults } from '../types.js';
+    import type { ChannelAccessor, DataRow, PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
 
     let markProps: AreaXMarkProps = $props();

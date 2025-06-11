@@ -11,7 +11,7 @@
         ChannelAccessor,
         FacetContext,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
 
     type D3Path = ReturnType<typeof import('d3-path').path>;
 
@@ -45,7 +45,7 @@
 
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { projectXY } from '../helpers/scales.js';
-    import { sort } from '$lib/index.js';
+    import { sort } from 'svelteplot';
     import Mark from '../Mark.svelte';
     //import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';

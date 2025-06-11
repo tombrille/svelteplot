@@ -1,41 +1,38 @@
 <!-- @component
     Creates a vertical box plot for visualizing data distribution with quartiles and outliers
 -->
-<script lang="ts" module>
-    export type BoxYMarkProps = Pick<BaseMarkProps, 'class'> & {
-        data: DataRecord[];
+<script lang="ts" generics="Datum extends DataRecord">
+    interface BoxYMarkProps extends Pick<BaseMarkProps<Datum>, 'class'> {
+        data: Datum[];
         x: ChannelAccessor;
         y: ChannelAccessor;
         /**
          * Options for the rule marks that represent the min/max range
          */
-        rule: Record<string, ChannelAccessor>;
+        rule: Record<string, ChannelAccessor<Datum>>;
         /**
          * Options for the bar marks that represent the IQR range
          */
-        bar: Record<string, ChannelAccessor>;
+        bar: Record<string, ChannelAccessor<Datum>>;
         /**
          * Options for the tick marks that represent the median
          */
-        tickMedian: Record<string, ChannelAccessor> | boolean;
+        tickMedian: Record<string, ChannelAccessor<Datum>> | boolean;
         /**
          * Options for the tick marks that represent the min/max range
          */
-        tickMinMax: Record<string, ChannelAccessor> | boolean;
+        tickMinMax: Record<string, ChannelAccessor<Datum>> | boolean;
         /**
          * Options for the dot marks that represent the outliers
          */
-        dot: Record<string, ChannelAccessor>;
-    };
-</script>
-
-<script lang="ts">
+        dot: Record<string, ChannelAccessor<Datum>>;
+    }
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import type { BaseMarkProps, ChannelAccessor, DataRecord } from '$lib/types.js';
-    import { groupX, BarY, TickY, RuleX, Dot } from '$lib/index.js';
+    import type { BaseMarkProps, ChannelAccessor, DataRecord } from 'svelteplot/types/index.js';
+    import { groupX, BarY, TickY, RuleX, Dot } from 'svelteplot';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { getContext } from 'svelte';
-    import type { PlotDefaults } from '../types.js';
+    import type { PlotDefaults } from '../types/index.js';
 
     let markProps: BoxYMarkProps = $props();
     const DEFAULTS = {
@@ -45,7 +42,7 @@
         ...getContext<PlotDefaults>('svelteplot/_defaults').boxY
     };
     const {
-        data = [{}],
+        data = [{} as Datum],
         class: className = '',
         bar,
         rule,

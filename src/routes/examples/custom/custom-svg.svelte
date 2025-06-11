@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, CustomMark } from 'svelteplot';
+    import { Plot, CustomMark } from 'svelteplot/types';
     import Spiral from '$lib/ui/Spiral.svelte';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';

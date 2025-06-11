@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { GridX, Plot } from 'svelteplot';
+    import { GridX, Plot } from 'svelteplot/types';
     import type { ComponentProps } from 'svelte';
 
     interface Props {

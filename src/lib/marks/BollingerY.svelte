@@ -3,8 +3,13 @@
     line representing a moving average and an area representing volatility as a band
 -->
 <script lang="ts" generics="Datum extends DataRecord">
-    import { Area, Line, bollingerY, recordizeY } from '$lib/index.js';
-    import type { BaseMarkProps, ChannelAccessor, DataRecord, TransformArg } from '$lib/types.js';
+    import { Area, Line, bollingerY, recordizeY } from 'svelteplot';
+    import type {
+        BaseMarkProps,
+        ChannelAccessor,
+        DataRecord,
+        TransformArg
+    } from 'svelteplot/types/index.js';
     import { pick } from 'es-toolkit';
 
     interface BollingerYMarkProps extends BaseMarkProps<Datum> {

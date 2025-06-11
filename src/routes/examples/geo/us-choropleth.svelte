@@ -6,7 +6,7 @@
 </script>
 
 <script>
-    import { Plot } from 'svelteplot';
+    import { Plot } from 'svelteplot/types';
     import Geo from 'svelteplot/marks/Geo.svelte';
     import * as topojson from 'topojson-client';
     import { page } from '$app/state';

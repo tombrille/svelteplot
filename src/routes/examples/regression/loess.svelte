@@ -3,7 +3,11 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Dot, RegressionY } from 'svelteplot';
+    import {
+        Plot,
+        Dot,
+        RegressionY
+    } from 'svelteplot/types';
     import { page } from '$app/state';
     import { Slider } from '$lib/ui';
 

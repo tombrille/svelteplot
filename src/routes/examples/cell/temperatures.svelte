@@ -8,7 +8,11 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Cell, formatMonth } from 'svelteplot';
+    import {
+        Plot,
+        Cell,
+        formatMonth
+    } from 'svelteplot/types';
 
     import { page } from '$app/state';
     let { seattle } = $derived(page.data.data);

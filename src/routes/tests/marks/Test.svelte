@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, Arrow } from '$lib/index.js';
+    import { Plot, Arrow } from 'svelteplot';
     import { page } from '$app/stores';
     let { metros } = $derived($page.data.data);
 </script>

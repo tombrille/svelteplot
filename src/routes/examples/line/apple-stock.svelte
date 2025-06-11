@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Line, RuleY } from 'svelteplot';
+    import { Plot, Line, RuleY } from 'svelteplot/types';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     let { aapl } = $derived(page.data.data) as ExamplesData;

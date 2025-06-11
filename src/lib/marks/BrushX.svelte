@@ -6,7 +6,7 @@
     interface BrushXMarkProps extends Omit<ComponentProps<typeof Brush>, 'limitDimension'> {}
 
     import Brush from './Brush.svelte';
-    import type { PlotDefaults, DataRecord } from '../types.js';
+    import type { PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
 
     let { brush = $bindable({ enabled: false }), ...options }: BrushXMarkProps = $props();

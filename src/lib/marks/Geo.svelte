@@ -1,7 +1,7 @@
 <!-- @component
     Renders geographical data using projections and GeoJSON geometries
 -->
-<script lang="ts" generics="Datum = DataRecord">
+<script lang="ts" generics="Datum = DataRecord | GeoJSON.GeoJsonObject">
     interface GeoMarkProps extends BaseMarkProps<Datum>, LinkableMarkProps<Datum> {
         data?: Datum[];
         geoType?: 'sphere' | 'graticule';
@@ -31,12 +31,12 @@
         LinkableMarkProps,
         PlotDefaults,
         ChannelAccessor
-    } from '../types.js';
+    } from '../types/index.js';
     import Mark from '../Mark.svelte';
     import { geoPath } from 'd3-geo';
     import { resolveChannel, resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
-    import { sort } from '$lib/index.js';
+    import { sort } from '$lib/transforms';
     import { addEventHandlers } from './helpers/events.js';
     import GeoCanvas from './helpers/GeoCanvas.svelte';
     import { recordize } from '$lib/transforms/recordize.js';

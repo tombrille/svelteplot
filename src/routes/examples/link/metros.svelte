@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Link, Dot, Text } from '$lib/index.js';
+    import { Plot, Link, Dot, Text } from 'svelteplot';
     import { page } from '$app/state';
     import type { ExamplesData } from '../types';
     let { metros } = $derived(

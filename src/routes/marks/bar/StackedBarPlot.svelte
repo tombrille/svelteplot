@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, BarX } from 'svelteplot';
+    import { Plot, BarX } from 'svelteplot/types';
     import { rollups } from 'd3-array';
 
     import { page } from '$app/stores';

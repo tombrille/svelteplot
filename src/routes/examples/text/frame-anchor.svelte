@@ -5,7 +5,7 @@
 <script lang="ts">
     import { setContext } from 'svelte';
 
-    import { Plot, Text } from 'svelteplot';
+    import { Plot, Text } from 'svelteplot/types';
     import type { PlotDefaults } from 'svelteplot/types';
     setContext<Partial<PlotDefaults>>(
         'svelteplot/defaults',

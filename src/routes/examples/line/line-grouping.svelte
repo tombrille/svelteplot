@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Line } from 'svelteplot';
+    import { Plot, Line } from 'svelteplot/types';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

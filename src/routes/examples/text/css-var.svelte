@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Text } from 'svelteplot';
+    import { Plot, Text } from 'svelteplot/types';
     import Frame from 'svelteplot/marks/Frame.svelte';
 </script>
 

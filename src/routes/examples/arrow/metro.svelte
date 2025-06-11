@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Arrow, Text } from '$lib/index.js';
+    import { Plot, Arrow, Text } from 'svelteplot';
     import { page } from '$app/state';
     import { setContext } from 'svelte';
     import { type PlotDefaults } from 'svelteplot/types';

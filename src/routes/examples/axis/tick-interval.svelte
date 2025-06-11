@@ -3,7 +3,12 @@
 </script>
 
 <script>
-    import { Plot, AxisX, AxisY, Line } from 'svelteplot';
+    import {
+        Plot,
+        AxisX,
+        AxisY,
+        Line
+    } from 'svelteplot/types';
     import { page } from '$app/state';
     let { aapl } = $derived(page.data.data);
 </script>

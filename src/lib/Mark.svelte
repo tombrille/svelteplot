@@ -35,7 +35,7 @@
         ResolvedDataRecord,
         ScaledDataRecord,
         ScaleType
-    } from './types.js';
+    } from './types/index.js';
     import { isEqual } from 'es-toolkit';
     import { getUsedScales, projectXY, projectX, projectY } from './helpers/scales.js';
     import { testFilter, isValid } from '$lib/helpers/index.js';

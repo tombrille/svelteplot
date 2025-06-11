@@ -15,9 +15,8 @@
         PlotContext,
         DataRecord,
         ChannelAccessor,
-        BaseMarkProps,
-        DataRow
-    } from '$lib/types.js';
+        BaseMarkProps
+    } from 'svelteplot/types/index.js';
     import type { Snippet } from 'svelte';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');

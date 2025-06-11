@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, RuleX } from '$lib/index.js';
+    import { Plot, RuleX } from 'svelteplot';
     import { range } from 'd3-array';
     import { randomNormal, randomLcg } from 'd3-random';
     import Code from '../../Code.svelte';

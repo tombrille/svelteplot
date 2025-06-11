@@ -46,7 +46,7 @@
         RawValue,
         ScaledDataRecord,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeData } from '../helpers/index.js';
     import Mark from '../Mark.svelte';

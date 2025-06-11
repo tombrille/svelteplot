@@ -17,7 +17,7 @@
     }
 
     import { getContext, type Snippet } from 'svelte';
-    import type { ChannelAccessor, DataRow, PlotContext, PlotDefaults } from '../types.js';
+    import type { ChannelAccessor, DataRow, PlotContext, PlotDefaults } from '../types/index.js';
     import { groups as d3Groups } from 'd3-array';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { quadtree } from 'd3-quadtree';

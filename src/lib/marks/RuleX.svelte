@@ -26,7 +26,7 @@
         ConstantAccessor,
         ChannelAccessor,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
 
     let markProps: RuleXMarkProps = $props();
     const DEFAULTS = {

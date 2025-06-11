@@ -8,7 +8,7 @@
 
 <script lang="ts">
     import Vector, { type VectorMarkProps } from './Vector.svelte';
-    import type { PlotDefaults } from '../types.js';
+    import type { PlotDefaults } from '../types/index.js';
     import { getContext } from 'svelte';
 
     let markProps: SpikeMarkProps = $props();

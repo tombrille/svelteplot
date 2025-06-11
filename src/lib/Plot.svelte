@@ -12,7 +12,7 @@
 <script lang="ts">
     import Plot from './core/Plot.svelte';
 
-    import type { PlotDefaults, PlotOptions } from './types.js';
+    import type { PlotDefaults, PlotOptions } from './types/index.js';
 
     // implicit marks
     import AxisX from './marks/AxisX.svelte';

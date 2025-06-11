@@ -21,11 +21,11 @@
         ChannelAccessor,
         PlotDefaults,
         LinkableMarkProps
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
     import { symbol as d3Symbol } from 'd3-shape';
-    import { sort } from '$lib/index.js';
+    import { sort } from 'svelteplot';
     import Mark from '../Mark.svelte';
     import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, isValid } from '$lib/helpers/index.js';

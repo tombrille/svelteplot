@@ -19,7 +19,7 @@
     }
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { intervalX, intervalY } from '$lib/index.js';
+    import { intervalX, intervalY } from 'svelteplot';
     import type {
         PlotContext,
         DataRecord,
@@ -28,7 +28,7 @@
         ChannelAccessor,
         PlotDefaults,
         LinkableMarkProps
-    } from '../types.js';
+    } from '../types/index.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import RectPath from './helpers/RectPath.svelte';
 

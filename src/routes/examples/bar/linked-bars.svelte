@@ -5,7 +5,7 @@
 </script>
 
 <script>
-    import { Plot, BarX } from 'svelteplot';
+    import { Plot, BarX } from 'svelteplot/types';
     import { page } from '$app/state';
     const data = [
         {

@@ -33,8 +33,8 @@
         DataRow,
         FacetContext,
         PlotDefaults
-    } from '../types.js';
-    import { recordizeX } from '$lib/index.js';
+    } from '../types/index.js';
+    import { recordizeX } from 'svelteplot';
     import { projectX, projectY } from '../helpers/scales.js';
     import { isValid } from '../helpers/isValid.js';
     import { testFilter, parseInset } from '$lib/helpers/index.js';

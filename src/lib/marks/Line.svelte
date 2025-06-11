@@ -30,7 +30,7 @@
         ChannelAccessor,
         MarkerOptions,
         ScaledDataRecord
-    } from '../types.js';
+    } from '../types/index.js';
     import Mark from '../Mark.svelte';
     import MarkerPath from './helpers/MarkerPath.svelte';
     import { getContext } from 'svelte';
@@ -42,7 +42,7 @@
     import { pick } from 'es-toolkit';
     import LineCanvas from './helpers/LineCanvas.svelte';
 
-    import type { RawValue, PlotDefaults } from '$lib/types.js';
+    import type { RawValue, PlotDefaults } from 'svelteplot/types/index.js';
     import { isValid } from '$lib/helpers/index.js';
     import { sort } from '$lib/transforms/sort.js';
     import { recordizeXY } from '$lib/transforms/recordize.js';

@@ -26,8 +26,8 @@
         LinkableMarkProps,
         PlotDefaults,
         DataRecord
-    } from '../types.js';
-    import type { BaseMarkProps } from '../types.js';
+    } from '../types/index.js';
+    import type { BaseMarkProps } from '../types/index.js';
     import RectPath from './helpers/RectPath.svelte';
 
     let markProps: FrameMarkProps = $props();

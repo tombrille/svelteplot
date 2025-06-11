@@ -44,7 +44,7 @@
         ChannelAccessor,
         RawValue,
         PlotDefaults
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
     import { coalesce, maybeData, maybeNumber } from '../helpers/index.js';
     import Mark from '../Mark.svelte';

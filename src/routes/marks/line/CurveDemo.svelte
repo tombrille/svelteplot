@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Plot, LineY, Dot } from '$lib/index.js';
+    import { Plot, LineY, Dot } from 'svelteplot';
     import Slider from '$lib/ui/Slider.svelte';
     import Select from '$lib/ui/Select.svelte';
-    import type { CurveName } from '$lib/types.js';
+    import type { CurveName } from 'svelteplot/types/index.js';
 
     // curve demo
     const numbers = [

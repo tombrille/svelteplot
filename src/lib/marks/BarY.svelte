@@ -23,7 +23,7 @@
 
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
+    import { intervalY, stackY, recordizeY, sort } from 'svelteplot';
 
     import type { StackOptions } from '$lib/transforms/stack.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';
@@ -36,7 +36,7 @@
         DataRow,
         PlotDefaults,
         LinkableMarkProps
-    } from '../types.js';
+    } from '../types/index.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

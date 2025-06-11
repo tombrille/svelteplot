@@ -3,7 +3,12 @@
 </script>
 
 <script>
-    import { Plot, BarY, RuleY, shuffle } from 'svelteplot';
+    import {
+        Plot,
+        BarY,
+        RuleY,
+        shuffle
+    } from 'svelteplot/types';
 
     import { page } from '$app/state';
     let { alphabet } = $derived(page.data.data);

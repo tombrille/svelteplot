@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Dot, Plot } from 'svelteplot';
+    import { Dot, Plot } from 'svelteplot/types';
     import type { ComponentProps } from 'svelte';
 
     interface Props {

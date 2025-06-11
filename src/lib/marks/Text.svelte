@@ -52,10 +52,10 @@
         TransformArg,
         RawValue,
         LinkableMarkProps
-    } from '../types.js';
+    } from '../types/index.js';
     import { resolveProp, resolveStyles } from '../helpers/resolve.js';
     import Mark from '../Mark.svelte';
-    import { sort } from '$lib/index.js';
+    import { sort } from 'svelteplot';
     import Anchor from './helpers/Anchor.svelte';
 
     import MultilineText from './helpers/MultilineText.svelte';

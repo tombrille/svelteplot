@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-    import { Plot, Geo, Sphere, Link } from '$lib/index.js';
+    import { Plot, Geo, Sphere, Link } from 'svelteplot';
     import { page } from '$app/state';
     import * as topojson from 'topojson-client';
     import type { ExamplesData } from '../types';

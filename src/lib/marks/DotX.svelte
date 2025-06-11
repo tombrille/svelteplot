@@ -6,8 +6,8 @@
         data: Datum[];
     }
     import Dot from './Dot.svelte';
-    import { recordizeX } from '$lib/index.js';
-    import type { DataRow } from '../types.js';
+    import { recordizeX } from 'svelteplot';
+    import type { DataRow } from '../types/index.js';
     import type { ComponentProps } from 'svelte';
 
     let { data = [{} as Datum], ...options }: DotXMarkProps = $props();
