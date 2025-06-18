@@ -3,7 +3,9 @@
         class: string | null;
     }
     import { getContext } from 'svelte';
-    import { Plot, AxisX, Frame } from '$lib';
+    import Plot from '$lib/Plot.svelte';
+    import AxisX from '$lib/marks/AxisX.svelte';
+    import Frame from '$lib/marks/Frame.svelte';
     import { symbol as d3Symbol } from 'd3-shape';
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
