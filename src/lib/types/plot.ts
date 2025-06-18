@@ -11,7 +11,7 @@ import type {
     ScaleOptions,
     XScaleOptions,
     YScaleOptions
-} from '.';
+} from './index.js';
 import type { Snippet } from 'svelte';
 
 import type {
@@ -50,7 +50,7 @@ import type {
     TickX,
     TickY,
     Vector
-} from '../marks';
+} from '../marks/index.js';
 
 export type PlotState = {
     width: number;

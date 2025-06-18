@@ -37,9 +37,9 @@
         ChannelAccessor,
         ScaledDataRecord,
         LinkableMarkProps,
-        PlotDefaults
+        PlotDefaults,
+        RawValue
     } from '../types/index.js';
-    import type { RawValue } from 'svelteplot/types/index.js';
     import type { StackOptions } from '$lib/transforms/stack.js';
 
     let markProps: AreaMarkProps = $props();

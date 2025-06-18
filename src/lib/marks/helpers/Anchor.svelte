@@ -1,5 +1,5 @@
 <script>
-    import { resolveProp } from '$lib/helpers/resolve';
+    import { resolveProp } from '$lib/helpers/resolve.js';
 
     let { datum = {}, options = {}, children } = $props();
 
