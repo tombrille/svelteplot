@@ -1,4 +1,4 @@
-import type { ScaledChannelName } from './channel';
+import type { ScaledChannelName } from './channel.js';
 
 export type RawValue = number | Date | boolean | string | symbol;
 

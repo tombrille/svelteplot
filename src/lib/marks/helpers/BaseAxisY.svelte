@@ -21,12 +21,14 @@
         tickSize: number;
         tickPadding: number;
         tickFontSize: ConstantAccessor<number>;
+        tickClass: ConstantAccessor<number>;
         marginLeft: number;
         width: number;
         title: string | null;
         options: {
             dx: ConstantAccessor<number>;
             dy: ConstantAccessor<number>;
+            textAnchor: 'start' | 'middle' | 'end';
         };
         plot: PlotState;
         text: boolean | null;
@@ -92,6 +94,8 @@
 
     // generate id used for registering margins
     const id = randomId();
+
+    $inspect({ options });
 
     const { autoMarginLeft, autoMarginRight, autoMarginTop } =
         getContext<AutoMarginStores>('svelteplot/autoMargins');
@@ -160,7 +164,8 @@
                     stroke: null
                 },
                 'fill',
-                { y: true }
+                { y: true },
+                true
             )}
             <g
                 class="tick {tickClass_ || ''}"
@@ -173,7 +178,8 @@
                         tick,
                         options,
                         'stroke',
-                        { y: true }
+                        { y: true },
+                        true
                     )}
                     <line
                         style={tickLineStyle}
@@ -199,10 +205,6 @@
         stroke: currentColor;
     }
     text {
-        opacity: 0.8;
         fill: currentColor;
-    }
-    text.is-left {
-        text-anchor: end;
     }
 </style>

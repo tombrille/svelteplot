@@ -23,7 +23,7 @@
 
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { intervalY, stackY, recordizeY, sort } from 'svelteplot';
+    import { intervalY, stackY, recordizeY, sort } from '$lib/index.js';
 
     import type { StackOptions } from '$lib/transforms/stack.js';
     import GroupMultiple from './helpers/GroupMultiple.svelte';

@@ -6,10 +6,10 @@
         stack?: Partial<StackOptions>;
     }
     import Rect from './Rect.svelte';
-    import { intervalX, stackY, recordizeY } from 'svelteplot';
+    import { intervalX, stackY, recordizeY } from '$lib/index.js';
     import type { DataRecord, PlotContext, PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
-    import type { StackOptions } from '$lib/transforms/stack';
+    import type { StackOptions } from '$lib/transforms/stack.js';
 
     let markProps: RectYMarkProps = $props();
 

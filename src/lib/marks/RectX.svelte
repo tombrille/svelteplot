@@ -8,10 +8,10 @@
     }
 
     import Rect from './Rect.svelte';
-    import { intervalY, stackX, recordizeX } from 'svelteplot';
+    import { intervalY, stackX, recordizeX } from '$lib/index.js';
     import type { DataRecord, PlotContext, PlotDefaults } from '../types/index.js';
     import { getContext, type ComponentProps } from 'svelte';
-    import type { StackOptions } from '$lib/transforms/stack';
+    import type { StackOptions } from '$lib/transforms/stack.js';
 
     let markProps: RectXMarkProps = $props();
 

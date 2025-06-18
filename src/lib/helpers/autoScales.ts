@@ -32,7 +32,7 @@ import type {
     ScaleName,
     ScaleOptions,
     ScaleType
-} from '../types.js';
+} from '../types/index.js';
 import {
     categoricalSchemes,
     isCategoricalScheme,

@@ -36,6 +36,7 @@
             scaleType="band"
             ticks={fxValues}
             tickFormat={(d) => d}
+            tickFontSize={11}
             tickSize={0}
             tickPadding={5}
             anchor={plot.options.fx.axis}
@@ -53,6 +54,7 @@
             scaleType="band"
             ticks={fyValues}
             tickFormat={(d) => d}
+            tickFontSize={11}
             tickSize={0}
             tickPadding={5}
             anchor={plot.options.fy.axis}

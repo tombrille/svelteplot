@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { AxisX, Plot } from 'svelteplot';
+    import { AxisX, Plot } from '$lib/index.js';
     import type { ComponentProps } from 'svelte';
 
     let {

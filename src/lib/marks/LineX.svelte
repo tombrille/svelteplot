@@ -6,9 +6,9 @@
         data: Datum[];
     }
     import Line from './Line.svelte';
-    import { recordizeX } from 'svelteplot';
+    import { recordizeX } from '$lib/index.js';
     import type { ComponentProps } from 'svelte';
-    import type { DataRow } from 'svelteplot';
+    import type { DataRow } from '$lib/index.js';
 
     let { data = [{} as Datum], ...rest }: LineXMarkProps = $props();
 

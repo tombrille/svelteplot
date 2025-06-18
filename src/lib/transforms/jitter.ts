@@ -1,4 +1,4 @@
-import type { Channels, DataRecord, TransformArg } from '$lib/types.js';
+import type { Channels, DataRecord, TransformArg } from '$lib/types/index.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
 import { randomUniform, randomNormal } from 'd3-random';
 import { isDate } from '$lib/helpers/typeChecks.js';

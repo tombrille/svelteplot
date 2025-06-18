@@ -1,4 +1,4 @@
-import type { ChannelAccessor, ChannelName, DataRecord, RawValue } from '.';
+import type { ChannelAccessor, ChannelName, DataRecord, RawValue } from './index.js';
 
 type FacetState = {
     fx: RawValue;

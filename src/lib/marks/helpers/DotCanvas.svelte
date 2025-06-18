@@ -13,7 +13,7 @@
     import CanvasLayer from './CanvasLayer.svelte';
     import { getContext } from 'svelte';
     import { devicePixelRatio } from 'svelte/reactivity/window';
-    import { resolveColor } from './canvas';
+    import { resolveColor } from './canvas.js';
 
     const { getPlotState } = getContext<PlotContext>('svelteplot');
     const plot = $derived(getPlotState());

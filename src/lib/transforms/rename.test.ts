@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renameChannels } from './rename.js';
-import type { DataRecord } from '$lib/types.js';
+import type { DataRecord } from '$lib/types/index.js';
 
 const inputData: DataRecord[] = [
     { year: 2000, facet: 'A', value: 10 },

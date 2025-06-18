@@ -23,7 +23,7 @@
     } from '../types/index.js';
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { recordizeY, sort } from 'svelteplot';
+    import { recordizeY, sort } from '$lib/index.js';
     import { resolveChannel } from '../helpers/resolve.js';
 
     import { isValid } from '../helpers/isValid.js';

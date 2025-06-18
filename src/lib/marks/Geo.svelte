@@ -36,7 +36,7 @@
     import { geoPath } from 'd3-geo';
     import { resolveChannel, resolveProp, resolveStyles } from '$lib/helpers/resolve.js';
     import callWithProps from '$lib/helpers/callWithProps.js';
-    import { sort } from '$lib/transforms';
+    import { sort } from '$lib/transforms/index.js';
     import { addEventHandlers } from './helpers/events.js';
     import GeoCanvas from './helpers/GeoCanvas.svelte';
     import { recordize } from '$lib/transforms/recordize.js';

@@ -1,4 +1,4 @@
-import type { BaseMarkProps, DataRecord, PlotScale, PlotState } from '$lib/types.js';
+import type { BaseMarkProps, DataRecord, PlotScale, PlotState } from '$lib/types/index.js';
 import type { MouseEventHandler } from 'svelte/elements';
 import { pick } from 'es-toolkit';
 import { RAW_VALUE } from '$lib/transforms/recordize.js';

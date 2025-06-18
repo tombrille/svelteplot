@@ -160,7 +160,8 @@
                         tick,
                         options,
                         'stroke',
-                        { x: true }
+                        { x: true },
+                        true
                     )}
                     <line
                         style={tickLineStyle}
@@ -185,7 +186,8 @@
                             stroke: null
                         },
                         'fill',
-                        { x: true }
+                        { x: true },
+                        true
                     )}
                     <text
                         bind:this={tickTextElements[t]}

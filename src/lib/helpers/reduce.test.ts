@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { reduceOutputs, type ReducerName } from './reduce.js';
-import type { ChannelAccessor, ChannelName } from '$lib/types.js';
+import type { ChannelAccessor, ChannelName } from '$lib/types/index.js';
 
 describe('reduceOutputs', () => {
     it('should correctly reduce outputs', () => {

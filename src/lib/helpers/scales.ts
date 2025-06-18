@@ -25,7 +25,7 @@ import type {
     ScaleType,
     ScaledChannelName,
     UsedScales
-} from '../types.js';
+} from '../types/index.js';
 import isDataRecord from './isDataRecord.js';
 
 import { createProjection } from './projection.js';

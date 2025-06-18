@@ -53,7 +53,7 @@
         PlotContext,
         PlotDefaults
     } from 'svelteplot/types/index.js';
-    import { Line, Area } from '$lib/marks';
+    import { Line, Area } from '$lib/marks/index.js';
     import { randomId, coalesce } from '$lib/helpers/index.js';
     import { getContext } from 'svelte';
     import { extent, max, min } from 'd3-array';
