@@ -5,7 +5,6 @@
 <script>
     import { Plot, AxisY, Line } from 'svelteplot';
     import { page } from '$app/state';
-    import { setContext } from 'svelte';
 
     let { aapl } = $derived(page.data.data);
 </script>

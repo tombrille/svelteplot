@@ -44,7 +44,7 @@
         /** ticks is a shorthand for defining data, tickCount or interval */
         ticks?: number | string | Datum[];
         /** set to false or null to disable tick labels */
-        text: boolean | null;
+        text?: boolean | null;
         /** approximate number of ticks to be generated */
         tickCount?: number;
         /** approximate number of pixels between generated ticks */
