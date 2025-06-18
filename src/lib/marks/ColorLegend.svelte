@@ -8,7 +8,7 @@
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
 
-    import type { PlotDefaults, PlotContext } from '../types/index.js';
+    import type { PlotDefaults, PlotContext } from '$lib/types/plot.js';
 
     let { class: className = null }: ColorLegendMarkProps = $props();
 
