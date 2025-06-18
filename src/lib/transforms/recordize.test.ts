@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { recordizeXY, RAW_VALUE } from './recordize.js';
-import type { RawValue } from '$lib/types.js';
+import type { RawValue } from '$lib/types/index.js';
 
 const coordsArray: [RawValue, RawValue][] = [
     [0, 4],

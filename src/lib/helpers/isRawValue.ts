@@ -1,4 +1,4 @@
-import type { RawValue } from '$lib/types.js';
+import type { RawValue } from '$lib/types/index.js';
 import { isDate } from '$lib/helpers/typeChecks.js';
 
 export default function (value: any): value is RawValue {

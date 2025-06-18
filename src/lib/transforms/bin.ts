@@ -1,6 +1,6 @@
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { DataRecord, RawValue } from '$lib/types.js';
-import type { TransformArg } from '$lib/types.js';
+import type { DataRecord, RawValue } from '$lib/types/index.js';
+import type { TransformArg } from '$lib/types/index.js';
 import { maybeInterval } from '$lib/helpers/autoTicks.js';
 import {
     bin as d3Bin,

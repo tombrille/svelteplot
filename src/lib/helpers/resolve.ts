@@ -1,7 +1,7 @@
 import { CHANNEL_SCALE } from '$lib/constants.js';
 import isDataRecord from '$lib/helpers/isDataRecord.js';
 import isRawValue from '$lib/helpers/isRawValue.js';
-import type { MarkStyleProps, PlotState, ScaledDataRecord } from '$lib/types.js';
+import type { MarkStyleProps, PlotState, ScaledDataRecord } from '$lib/types/index.js';
 import { isValid } from './isValid.js';
 
 import type {
@@ -13,7 +13,7 @@ import type {
     RawValue,
     DataRecord,
     ConstantAccessor
-} from '../types.js';
+} from '../types/index.js';
 import { getBaseStylesObject } from './getBaseStyles.js';
 import { RAW_VALUE } from 'svelteplot/transforms/recordize.js';
 

@@ -1,5 +1,5 @@
-import type { Channels } from '$lib/types.js';
-import type { MarkStyleProps, DataRow } from '$lib/types.js';
+import type { Channels } from '$lib/types/index.js';
+import type { MarkStyleProps, DataRow } from '$lib/types/index.js';
 import { resolveProp } from './resolve.js';
 
 /**

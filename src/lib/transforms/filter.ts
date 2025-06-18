@@ -1,5 +1,5 @@
 import { testFilter } from '$lib/helpers/index.js';
-import type { DataRecord, TransformArg } from '$lib/types.js';
+import type { DataRecord, TransformArg } from '$lib/types/index.js';
 
 export function filter({ data, ...channels }: TransformArg<DataRecord>): TransformArg<DataRecord> {
     return {

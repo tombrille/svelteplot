@@ -7,7 +7,7 @@ import type {
     DataRecord,
     TransformArg,
     ChannelName
-} from '$lib/types.js';
+} from '$lib/types/index.js';
 import {
     stack,
     stackOffsetExpand,

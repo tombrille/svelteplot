@@ -1,5 +1,5 @@
-import type { DataRecord } from '$lib/types.js';
-import type { ScaledChannelName, TransformArg } from '$lib/types.js';
+import type { DataRecord } from '$lib/types/index.js';
+import type { ScaledChannelName, TransformArg } from '$lib/types/index.js';
 
 type RenameChannelsOptions = Partial<Record<ScaledChannelName, ScaledChannelName>>;
 type ReplaceChannelsOptions = Partial<Record<ScaledChannelName, ScaledChannelName[]>>;

@@ -1,4 +1,4 @@
-import type { ScaleName, ScaleType, ScaledChannelName } from './types.js';
+import type { ScaleName, ScaleType, ScaledChannelName } from './types/index.js';
 
 export const SCALE_TYPES: Record<ScaleName, symbol> = {
     opacity: Symbol('opacity'),

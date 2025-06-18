@@ -1,5 +1,5 @@
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { ChannelName, Channels, DataRecord } from '$lib/types.js';
+import type { ChannelName, Channels, DataRecord } from '$lib/types/index.js';
 import { groups as d3Groups } from 'd3-array';
 
 /**

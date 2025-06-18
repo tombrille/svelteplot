@@ -2,7 +2,7 @@ import { groupFacetsAndZ } from '$lib/helpers/group.js';
 import { testFilter } from '$lib/helpers/index.js';
 import { reduceOutputs, type ReducerName } from '$lib/helpers/reduce.js';
 import { resolveChannel } from '$lib/helpers/resolve.js';
-import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types.js';
+import type { DataRecord, DataRow, RawValue, TransformArg } from '$lib/types/index.js';
 import { groups as d3Groups } from 'd3-array';
 import { omit } from '$lib/helpers/index.js';
 import { maybeInterval } from '$lib/helpers/autoTicks.js';
