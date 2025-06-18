@@ -1,4 +1,4 @@
-import type { ConstantAccessor, RawValue } from '.';
+import type { ConstantAccessor, RawValue } from './index.js';
 
 export type Channels = Record<
     string,

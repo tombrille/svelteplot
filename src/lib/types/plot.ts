@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'svelte';
-import type { ColorScheme } from './colorScheme';
+import type { ColorScheme } from './colorScheme.js';
 import type { GeoProjection } from 'd3-geo';
 import type {
     ChannelAccessor,

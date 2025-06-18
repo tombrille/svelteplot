@@ -1,10 +1,9 @@
-import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
 import type { Snippet } from 'svelte';
-import type { MarkerShape } from '../marks/helpers/Marker.svelte';
 import type { Writable } from 'svelte/store';
-import type { Channels, ScaledChannelName } from './channel';
-import type { DataRecord, DataRow, RawValue } from './data';
-import type { BaseMarkProps } from './mark';
+import type { MarkerShape } from '../marks/helpers/Marker.svelte';
+import type { Channels, ScaledChannelName } from './channel.js';
+import type { DataRecord, DataRow, RawValue } from './data.js';
+import type { BaseMarkProps } from './mark.js';
 
 export type GenericMarkOptions = Record<string | symbol, any>;
 

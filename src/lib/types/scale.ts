@@ -1,5 +1,5 @@
 import type { ScaleBand, ScaleLinear, ScaleOrdinal } from 'd3-scale';
-import type { ChannelAccessor, RawValue, ScaledChannelName } from '.';
+import type { ChannelAccessor, RawValue, ScaledChannelName } from './index.js';
 
 export type AxisXAnchor = 'bottom' | 'top' | 'both';
 export type AxisYAnchor = 'left' | 'right' | 'both';
