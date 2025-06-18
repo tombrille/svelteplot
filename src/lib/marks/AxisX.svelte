@@ -58,6 +58,7 @@
         tickPadding: 3,
         tickFontSize: 11,
         titleFontSize: 11,
+        opacity: 0.8,
         anchor: 'bottom',
         ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
         ...getContext<PlotDefaults>('svelteplot/_defaults').axisX

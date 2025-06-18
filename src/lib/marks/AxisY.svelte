@@ -58,6 +58,7 @@
         tickSize: 6,
         tickPadding: 3,
         tickFontSize: 11,
+        opacity: 0.8,
         anchor: 'left',
         textAnchor: 'auto',
         ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
@@ -196,7 +197,7 @@
             x={anchor === 'left' ? 0 : plot.width}
             y={5}
             class="axis-x-title"
-            dominant-baseline="hanging">{options.opacity}-{useTitle}</text>
+            dominant-baseline="hanging">{useTitle}</text>
     {/if}
     {#if showAxis}
         <BaseAxisY
