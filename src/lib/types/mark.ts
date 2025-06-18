@@ -59,9 +59,9 @@ export type MarkStyleProps =
     | 'width';
 
 import type { MouseEventHandler } from 'svelte/elements';
-import type { ChannelAccessor, ConstantAccessor, DataRecord, RawValue } from '.';
+import type { ChannelAccessor, ConstantAccessor, DataRecord, RawValue } from './index.js';
 import type * as CSS from 'csstype';
-import type { ScaledChannelName, ScaleName } from './scale';
+import type { ScaledChannelName, ScaleName } from './scale.js';
 
 export type BaseMarkProps<T> = Partial<{
     /**
