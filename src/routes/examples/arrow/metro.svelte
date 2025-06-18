@@ -29,7 +29,7 @@
     marginRight={20}
     inset={10}
     height={450}
-    x={{ type: 'log', label: 'P..opulation' }}
+    x={{ type: 'log', label: 'Population' }}
     y={{ label: 'Inequality' }}
     color={{
         label: 'Change in inequality from 1980 to 2015',
