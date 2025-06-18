@@ -3,7 +3,7 @@
         class: string | null;
     }
     import { getContext } from 'svelte';
-    import { Plot, AxisX, Frame } from 'svelteplot';
+    import { Plot, AxisX, Frame } from '$lib';
     import { symbol as d3Symbol } from 'd3-shape';
     import { range as d3Range, extent } from 'd3-array';
     import { maybeSymbol } from '$lib/helpers/symbols.js';
