@@ -25,14 +25,16 @@
         > {
         data?: Datum[];
         automatic?: boolean;
-        title?: string;
+        title?: string | false | null;
         anchor?: 'left' | 'right';
         facetAnchor?: 'auto' | 'left' | 'right' | 'left-empty' | 'right-empty';
         lineAnchor?: 'top' | 'center' | 'bottom';
         interval?: string | number;
         labelAnchor?: 'auto' | 'left' | 'center' | 'right';
+        textAnchor?: 'auto' | 'start' | 'middle' | 'end';
         tickSize?: number;
         tickFontSize?: ConstantAccessor<number, Datum>;
+        titleFontSize?: number;
         tickPadding?: number;
         tickFormat?:
             | 'auto'
@@ -43,7 +45,7 @@
         /** ticks is a shorthand for defining data, tickCount or interval */
         ticks?: number | string | Datum[];
         /** set to false or null to disable tick labels */
-        text: boolean | null;
+        text?: boolean | null;
         /** approximate number of ticks to be generated */
         tickCount?: number;
         /** approximate number of pixels between generated ticks */
@@ -57,6 +59,7 @@
         tickPadding: 3,
         tickFontSize: 11,
         anchor: 'left',
+        textAnchor: 'auto',
         ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
         ...getContext<PlotDefaults>('svelteplot/_defaults').axisY
     };
@@ -71,6 +74,7 @@
         facetAnchor = 'auto',
         interval = typeof magicTicks === 'string' ? magicTicks : undefined,
         lineAnchor = 'center',
+        textAnchor,
         tickSize,
         tickFontSize,
         tickPadding,
@@ -138,14 +142,15 @@
     const optionsLabel = $derived(plot.options.y.label);
 
     const useTitle = $derived(
-        title ||
-            (optionsLabel === null
-                ? null
-                : optionsLabel !== undefined
-                  ? optionsLabel
-                  : plot.scales.y.autoTitle
-                    ? `↑ ${plot.scales.y.autoTitle}${plot.options.y.percent ? ' (%)' : ''}`
-                    : '')
+        title !== undefined
+            ? title || ''
+            : optionsLabel === null
+              ? null
+              : optionsLabel !== undefined
+                ? optionsLabel
+                : plot.scales.y.autoTitle
+                  ? `↑ ${plot.scales.y.autoTitle}${plot.options.y.percent ? ' (%)' : ''}`
+                  : ''
     );
 
     const { getFacetState } = getContext<FacetContext>('svelteplot/facet');
@@ -176,7 +181,14 @@
         <text
             style={resolveScaledStyles(
                 null,
-                { ...options, stroke: null, textAnchor: anchor === 'left' ? 'start' : 'end' },
+                {
+                    opacity: 0.8,
+                    ...options,
+                    fontSize: options.titleFontSize ?? 11,
+                    fill: 'currentColor',
+                    stroke: null,
+                    textAnchor: anchor === 'left' ? 'start' : 'end'
+                },
                 {},
                 plot,
                 'fill'
@@ -184,14 +196,22 @@
             x={anchor === 'left' ? 0 : plot.width}
             y={5}
             class="axis-x-title"
-            dominant-baseline="hanging">{useTitle}</text>
+            dominant-baseline="hanging">{options.opacity}-{useTitle}</text>
     {/if}
     {#if showAxis}
         <BaseAxisY
             {anchor}
             {className}
             {lineAnchor}
-            {options}
+            options={{
+                ...options,
+                textAnchor:
+                    textAnchor == null || textAnchor === 'auto'
+                        ? anchor === 'left'
+                            ? 'end'
+                            : 'start'
+                        : textAnchor
+            }}
             {plot}
             {text}
             {tickClass}
@@ -210,8 +230,6 @@
 
 <style>
     text {
-        font-size: 11px;
-        opacity: 0.8;
         fill: currentColor;
     }
 </style>

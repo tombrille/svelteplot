@@ -5,6 +5,7 @@
 <script>
     import { Plot, AxisY, Line } from 'svelteplot';
     import { page } from '$app/state';
+    import { setContext } from 'svelte';
 
     let { aapl } = $derived(page.data.data);
 </script>
@@ -17,7 +18,6 @@
         tickSize={0}
         tickPadding={0}
         dy={-5}
-        title={false}
         lineAnchor="bottom"
         textAnchor="start" />
     <Line data={aapl} x="Date" y="Close" />

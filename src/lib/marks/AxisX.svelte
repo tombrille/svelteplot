@@ -26,13 +26,14 @@
         > {
         data?: Datum[];
         automatic?: boolean;
-        title?: string;
+        title?: string | false | null;
         anchor?: 'top' | 'bottom';
         interval?: string | number;
         facetAnchor?: 'auto' | 'top-empty' | 'bottom-empty' | 'top' | 'bottom';
         labelAnchor?: 'auto' | 'left' | 'center' | 'right';
         tickSize?: number;
         tickFontSize?: ConstantAccessor<number, Datum>;
+        titleFontSize?: number;
         tickPadding?: number;
         tickFormat?:
             | 'auto'
@@ -56,6 +57,7 @@
         tickSize: 6,
         tickPadding: 3,
         tickFontSize: 11,
+        titleFontSize: 11,
         anchor: 'bottom',
         ...getContext<PlotDefaults>('svelteplot/_defaults').axis,
         ...getContext<PlotDefaults>('svelteplot/_defaults').axisX
@@ -140,18 +142,19 @@
     const isQuantitative = $derived(scaleType !== 'point' && scaleType !== 'band');
 
     const useTitle = $derived(
-        title ||
-            (optionsLabel === null
-                ? null
-                : optionsLabel !== undefined
-                  ? optionsLabel
-                  : plot.scales.x.autoTitle
-                    ? isQuantitative
-                        ? plot.options.x?.reverse
-                            ? `← ${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''}`
-                            : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
-                        : plot.scales.x.autoTitle
-                    : '')
+        title !== undefined
+            ? title || ''
+            : optionsLabel === null
+              ? null
+              : optionsLabel !== undefined
+                ? optionsLabel
+                : plot.scales.x.autoTitle
+                  ? isQuantitative
+                      ? plot.options.x?.reverse
+                          ? `← ${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''}`
+                          : `${plot.scales.x.autoTitle}${plot.options.x.percent ? ' (%)' : ''} →`
+                      : plot.scales.x.autoTitle
+                  : ''
     );
 
     const useLabelAnchor = $derived(labelAnchor || plot.options?.x?.labelAnchor || 'auto');
@@ -188,8 +191,10 @@
             style={resolveScaledStyles(
                 null,
                 {
+                    opacity: 0.8,
                     ...options,
                     stroke: null,
+                    fontSize: options.titleFontSize || 11,
                     textAnchor:
                         titleAlign === 'right'
                             ? 'end'
@@ -231,8 +236,6 @@
 
 <style>
     text {
-        font-size: 11px;
-        opacity: 0.8;
         fill: currentColor;
     }
 </style>
