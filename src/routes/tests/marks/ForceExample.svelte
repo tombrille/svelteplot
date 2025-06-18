@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Plot, Arrow, Dot, LineY, RuleY } from 'svelteplot';
+    import { Plot, Arrow, Dot, LineY, RuleY } from '$lib/index.js';
     import { json } from 'd3-fetch';
     // import { range } from 'd3-array';
     import { noise } from './noise.js';

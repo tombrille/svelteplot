@@ -22,7 +22,7 @@
 
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { stackX, recordizeX, intervalX, sort } from 'svelteplot';
+    import { stackX, recordizeX, intervalX, sort } from '$lib/index.js';
 
     import type { StackOptions } from '$lib/transforms/stack.js';
     import type { DataRow } from 'svelteplot/types/index.js';

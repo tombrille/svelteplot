@@ -19,7 +19,7 @@
     }
     import Mark from '../Mark.svelte';
     import { getContext } from 'svelte';
-    import { intervalX, intervalY } from 'svelteplot';
+    import { intervalX, intervalY } from '$lib/index.js';
     import type {
         PlotContext,
         DataRecord,

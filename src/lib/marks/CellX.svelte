@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
     import Cell from './Cell.svelte';
-    import { recordizeY } from 'svelteplot';
+    import { recordizeY } from '$lib/index.js';
     import type { ComponentProps } from 'svelte';
     import type { TransformArgsRow } from 'svelteplot/types/index.js';
 

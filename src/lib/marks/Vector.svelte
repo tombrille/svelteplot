@@ -41,7 +41,7 @@
     import { pathRound as path } from 'd3-path';
 
     import { resolveChannel, resolveProp, resolveStyles } from '../helpers/resolve.js';
-    import { sort } from 'svelteplot';
+    import { sort } from '$lib/index.js';
     import Mark from '../Mark.svelte';
     //import DotCanvas from './helpers/DotCanvas.svelte';
     import { maybeData, testFilter, isValid } from '$lib/helpers/index.js';

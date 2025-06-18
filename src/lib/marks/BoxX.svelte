@@ -5,7 +5,7 @@
 <script lang="ts">
     interface BoxXMarkProps extends ComponentProps<typeof BoxY> {}
     import GroupMultiple from './helpers/GroupMultiple.svelte';
-    import { BarX, TickX, RuleY, Dot, groupY } from 'svelteplot';
+    import { BarX, TickX, RuleY, Dot, groupY } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { getContext, type ComponentProps } from 'svelte';
     import type { PlotDefaults } from '../types/index.js';

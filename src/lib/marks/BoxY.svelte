@@ -29,7 +29,7 @@
     }
     import GroupMultiple from './helpers/GroupMultiple.svelte';
     import type { BaseMarkProps, ChannelAccessor, DataRecord } from 'svelteplot/types/index.js';
-    import { groupX, BarY, TickY, RuleX, Dot } from 'svelteplot';
+    import { groupX, BarY, TickY, RuleX, Dot } from '$lib/index.js';
     import { resolveChannel } from '$lib/helpers/resolve.js';
     import { getContext } from 'svelte';
     import type { PlotDefaults } from '../types/index.js';
