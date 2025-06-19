@@ -95,8 +95,6 @@
     // generate id used for registering margins
     const id = randomId();
 
-    $inspect({ options });
-
     const { autoMarginLeft, autoMarginRight, autoMarginTop } =
         getContext<AutoMarginStores>('svelteplot/autoMargins');
 
