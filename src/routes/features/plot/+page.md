@@ -213,7 +213,6 @@ List of all plot options you can pass via props on the `<Plot />` component:
 - `length` - options for the length scale
 
 - You can set the following shared scale options for all the scales listed above:
-
     - `domain` - custom domain for the scale
     - `range` - custom range for the scale
     - `reverse` - reverse the scale direction
@@ -233,7 +232,6 @@ List of all plot options you can pass via props on the `<Plot />` component:
 **Scale-specific options**
 
 - `x` also supports:
-
     - `grid` - whether to show a grid
     - `axis` - axis position ('top', 'bottom', 'both', or false)
     - `tickRotate` - rotation angle for tick labels
@@ -242,7 +240,6 @@ List of all plot options you can pass via props on the `<Plot />` component:
     - `insetRight` - right inset value
 
 - `y` also supports:
-
     - `grid` - whether to show a grid
     - `axis` - axis position ('left', 'right', 'both', or false)
     - `tickRotate` - rotation angle for tick labels
